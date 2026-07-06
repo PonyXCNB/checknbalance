@@ -1,9 +1,9 @@
 // Test 3 — Data logic tests: run the pages' data + merge logic in Node and
 // assert on the results.
 //
-//   nc.html    — getCountyElections("37129") (New Hanover) returns the full
-//                merged race list with zero blank titles, valid types, and
-//                well-formed candidates.
+//   nc.html /  — getCountyElections(sample county) returns the full merged
+//   sc.html      race list with zero blank titles, valid types, and
+//                well-formed candidates; all counties merge cleanly.
 //   state.html — the openPanel merge ([...STATE_RACES[abbr], ...buildSeats(abbr)])
 //                never shows the same office twice, has the right specials for
 //                OH/FL, no Senate/Governor for WA, and delegate-only for DC.
@@ -16,63 +16,66 @@ const { check, summary } = makeChecker();
 const VALID_TYPES = new Set(["past", "upcoming", "scheduled"]);
 const VALID_PARTIES = new Set(["D", "R", "I", "L", "G"]);
 
-// If this number changes because races were legitimately added/removed,
-// update it here (and SITE_META.lastUpdated in nc.html).
-const EXPECTED_NEW_HANOVER_RACES = 15;
+// ---------------------------------------------------------------
+// Fully built state pages (nc.html pattern)
+// If a race count changes because races were legitimately added or
+// removed, update it here (and SITE_META.lastUpdated on that page).
+// ---------------------------------------------------------------
+const STATE_PAGES = [
+  { page: "nc.html", countyCount: 100, sampleFips: "37129", sampleName: "New Hanover", expectedRaces: 15 },
+  { page: "sc.html", countyCount: 46,  sampleFips: "45019", sampleName: "Charleston",  expectedRaces: 15 },
+];
 
-// ---------------------------------------------------------------
-// nc.html
-// ---------------------------------------------------------------
-console.log("— nc.html —");
-{
-  const code = extractInlineScripts("nc.html")[0]; // script #1 = data + logic, no d3
+for (const cfg of STATE_PAGES) {
+  console.log(`— ${cfg.page} —`);
+  const code = extractInlineScripts(cfg.page)[0]; // script #1 = data + logic, no d3
   const extra = `
     __exports.getCountyElections = getCountyElections;
     __exports.COUNTIES = COUNTIES;
-    __exports.STATEWIDE = STATEWIDE;
-    __exports.HOUSE_RACES = HOUSE_RACES;
-    __exports.LOCAL_RACES = LOCAL_RACES;
     __exports.SITE_META = SITE_META;
   `;
   const { sandbox, error } = runScript(cutAtD3(code), { extra });
-  check(!error, `nc.html data script runs${error ? ` — ${error.message}` : ""}`);
-  if (!error) {
-    const x = sandbox.__exports;
-    check(Object.keys(x.COUNTIES).length === 100, "COUNTIES has all 100 NC counties");
-    check(typeof x.SITE_META.lastUpdated === "string" && x.SITE_META.lastUpdated.length > 0,
-      "SITE_META.lastUpdated is set");
+  check(!error, `${cfg.page} data script runs${error ? ` — ${error.message}` : ""}`);
+  if (error) continue;
 
-    const result = x.getCountyElections("37129"); // New Hanover
-    const races = (result && result.elections) || [];
-    check(Array.isArray(result && result.elections), "getCountyElections('37129') returns { county, district, elections }");
-    check(races.length === EXPECTED_NEW_HANOVER_RACES,
-      `New Hanover has ${EXPECTED_NEW_HANOVER_RACES} races (got ${races.length})`);
-    check(races.every(r => r.office && String(r.office).trim() !== ""),
-      "every New Hanover race has a non-blank title");
-    check(races.every(r => VALID_TYPES.has(r.type)),
-      "every New Hanover race type is past/upcoming/scheduled");
-    const allCandidates = races.flatMap(r => r.candidates || []);
-    check(allCandidates.every(c => c.name && VALID_PARTIES.has(c.party)),
-      "every New Hanover candidate has a name and a valid party (D/R/I/L/G)");
+  const x = sandbox.__exports;
+  check(Object.keys(x.COUNTIES).length === cfg.countyCount,
+    `${cfg.page}: COUNTIES has all ${cfg.countyCount} counties`);
+  check(typeof x.SITE_META.lastUpdated === "string" && x.SITE_META.lastUpdated.length > 0,
+    `${cfg.page}: SITE_META.lastUpdated is set`);
 
-    check(x.getCountyElections("99999") === null, "unknown FIPS returns null");
+  const result = x.getCountyElections(cfg.sampleFips);
+  const races = (result && result.elections) || [];
+  check(Array.isArray(result && result.elections),
+    `${cfg.page}: getCountyElections('${cfg.sampleFips}') returns { county, district, elections }`);
+  check(races.length === cfg.expectedRaces,
+    `${cfg.page}: ${cfg.sampleName} has ${cfg.expectedRaces} races (got ${races.length})`);
+  check(races.every(r => r.office && String(r.office).trim() !== ""),
+    `${cfg.page}: every ${cfg.sampleName} race has a non-blank title`);
+  check(races.every(r => VALID_TYPES.has(r.type)),
+    `${cfg.page}: every ${cfg.sampleName} race type is past/upcoming/scheduled`);
+  const allCandidates = races.flatMap(r => r.candidates || []);
+  check(allCandidates.every(c => c.name && VALID_PARTIES.has(c.party)),
+    `${cfg.page}: every ${cfg.sampleName} candidate has a name and a valid party (D/R/I/L/G)`);
 
-    // every county in the state resolves and every race everywhere has a title + valid type
-    let badCounty = null;
-    for (const fips of Object.keys(x.COUNTIES)) {
-      const res = x.getCountyElections(fips);
-      const list = res && res.elections;
-      if (!list || !list.every(r => r.office && VALID_TYPES.has(r.type))) { badCounty = fips; break; }
-    }
-    check(badCounty === null,
-      `all 100 counties merge cleanly with titled, valid-type races${badCounty ? ` (bad: ${badCounty})` : ""}`);
+  check(x.getCountyElections("99999") === null, `${cfg.page}: unknown FIPS returns null`);
+
+  // every county resolves and every race everywhere has a title + valid type
+  let badCounty = null;
+  for (const fips of Object.keys(x.COUNTIES)) {
+    const res = x.getCountyElections(fips);
+    const list = res && res.elections;
+    if (!list || !list.every(r => r.office && VALID_TYPES.has(r.type))) { badCounty = fips; break; }
   }
+  check(badCounty === null,
+    `${cfg.page}: all ${cfg.countyCount} counties merge cleanly with titled, valid-type races${badCounty ? ` (bad: ${badCounty})` : ""}`);
+  console.log("");
 }
 
 // ---------------------------------------------------------------
 // state.html
 // ---------------------------------------------------------------
-console.log("\n— state.html —");
+console.log("— state.html —");
 const stateCode = cutAtD3(extractInlineScripts("state.html")[0]);
 const stateExtra = `
   __exports.STATE_RACES = STATE_RACES;
@@ -103,7 +106,8 @@ function officeKind(seat) {
   return null;
 }
 
-const FEATURED_ABBRS = ["GA", "AL", "SC", "FL", "NY", "VA", "MD", "DC", "NJ", "DE"];
+// NC and SC redirect to their own pages, so they are not tested here.
+const FEATURED_ABBRS = ["GA", "AL", "FL", "NY", "VA", "MD", "DC", "NJ", "DE"];
 const ALL_TESTED = [...new Set([...FEATURED_ABBRS, "TX", "CA", "OH", "WA"])];
 
 for (const abbr of ALL_TESTED) {
@@ -150,7 +154,7 @@ for (const abbr of ALL_TESTED) {
 // makes a race silently vanish from the grouped drawer)
 // ---------------------------------------------------------------
 console.log("\n— type-value audit —");
-for (const page of ["index.html", "nc.html", "state.html"]) {
+for (const page of ["index.html", "nc.html", "sc.html", "state.html"]) {
   const bad = [];
   for (const code of extractInlineScripts(page)) {
     for (const m of code.matchAll(/type\s*:\s*"([a-z]+)"/g)) {

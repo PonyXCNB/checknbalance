@@ -32,7 +32,8 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 |------|------|
 | `index.html` | National landing page: clickable US map (all 50 states + DC), voter-turnout facts section, IP-geolocation home-state pulse |
 | `nc.html` | North Carolina — the fully built flagship state (county map, 100 counties, full race data) |
-| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC redirects to `nc.html` |
+| `sc.html` | South Carolina — second fully built state (46 counties, 7 districts, June 2026 primary results; built July 2026 by cloning nc.html). No LOCAL_RACES yet |
+| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC redirects to `nc.html`, SC to `sc.html` |
 | `favicon.svg` | Gold-gradient circle + white checkmark (primary favicon, matches site crest) |
 | `favicon.png` | 32px PNG fallback |
 | `favicon.ico` | Multi-size ICO (16/32/48) at root for legacy auto-discovery |
@@ -84,8 +85,8 @@ italic gold word (`<em>`), pill badges, minimalism. Key recurring patterns:
   "★ ELECTED" badge.
 - **Capital markers:** muted star + city name only (the "State Capital" sub-label was removed for
   minimalism). Shown on individual state maps ONLY — never on the national map.
-- **National map tiers:** gold = fully built (NC only), lighter gold `#D9BE85` = marquee races
-  built (the PARTIAL set), cream = starter framework. Legend reflects all three.
+- **National map tiers:** gold = fully built (the BUILT map: NC + SC), lighter gold `#D9BE85` =
+  marquee races built (the PARTIAL set), cream = starter framework. Legend reflects all three.
 - **Small-state callouts (index.html):** VT, NH, MA, RI, CT, NJ, DE, MD, DC get leader lines to
   labels stacked on the right; each callout is a clickable group with an invisible 40×24 hit rect.
   Label coordinates are hand-tuned estimates — verify visually after any map layout change.
@@ -130,10 +131,16 @@ must appear AFTER its declaration; a top-level TDZ error kills the whole script 
 ### index.html (national)
 ```
 ST / NAME     : fips → abbr / full name             CAP: capitals (currently unused on this page)
-FEATURED      : "37" (NC → nc.html)
-PARTIAL       : Set of 10 fips (SC GA MD DC VA FL AL NY NJ DE) → lighter gold tier
+BUILT         : { "37": "nc.html", "45": "sc.html" } — fully built states → gold tier + dedicated page
+PARTIAL       : Set of 9 fips (GA MD DC VA FL AL NY NJ DE) → lighter gold tier
 CALLOUTS      : label anchor coords for 9 small states + DC
-destFor(fips) : nc.html for NC, else state.html?state=XX
+destFor(fips) : BUILT[fips] if fully built, else state.html?state=XX
+
+Fully built state pages (nc.html, sc.html) share one structure; a new one is made by cloning
+nc.html and replacing COUNTIES / STATEWIDE / HOUSE_RACES / LOCAL_RACES + the state-specific text
+(title, crest, hero, stats, capital marker, footer). Then: add the state.html redirect, add it to
+BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in tests
+(STATE_PAGES in data-logic.js, page lists in parse-check/smoke-test, redirect check).
 ```
 
 ## Editorial policy (non-negotiable)
@@ -143,10 +150,11 @@ destFor(fips) : nc.html for NC, else state.html?state=XX
    race — visible to the site owner, who is the final editorial check before publishing claims.
 2. **Voices blocks are sourced synthesis**, not invented quotes: paraphrase widely reported praise
    and criticism, evenhandedly, for both parties' candidates.
-3. **Sources used so far:** NC State Board of Elections filings, Ballotpedia, Wikipedia race pages,
-   AP/NBC primary results, FEC; local: WECT, Port City Daily, WHQR (Cape Fear region).
-4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` in nc.html —
-   update it whenever data changes).
+3. **Sources used so far:** NC State Board of Elections filings, SC Election Commission
+   (scvotes.gov), Ballotpedia, Wikipedia race pages, AP/NBC primary results, FEC; local: WECT,
+   Port City Daily, WHQR (Cape Fear region); SC Daily Gazette, The Post and Courier, The State (SC).
+4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
+   state page — update it whenever that state's data changes).
 
 ## Current state (as of July 6, 2026)
 
@@ -158,8 +166,14 @@ destFor(fips) : nc.html for NC, else state.html?state=XX
   (Dem slate: LaRue, Dale, Jerry Jones Jr. — **4th Dem nominee + GOP slate still [Verify]**),
   DA Jason Smith (unopposed), Clerk (Kennedy vs. Thomason), NC House 20 open seat (Scalise vs.
   Merrick), NC Senate 7 (Lee vs. Bichler), House 18/19 noted.
-- **10 marquee states (STATE_RACES):** GA (Ossoff–Collins, Jackson–Bottoms), AL (Tuberville–Jones
-  rematch; Senate open seat nominees [Verify]), SC (Wilson; Graham [Verify] opponent), FL
+- **SC (full, added July 6, 2026):** all 8 statewide 2026 races (Senate: Graham vs. Andrews;
+  Governor open seat: Wilson vs. Johnson; AG, SoS, Treasurer, Comptroller, Superintendent, Ag
+  Comm.) + June 9/23 primary results as past races + all 7 US House districts (2024 + 2026; open
+  seats SC-1 Honeycutt–Lacore and SC-5 Climer–Dittmer after Mace and Norman ran for governor) +
+  Census-verified county→district map (10 split counties; Charleston's primary district is 6).
+  Down-ballot statewide offices carry [Verify] markers — thin sourced reporting. No LOCAL_RACES yet.
+- **9 marquee states (STATE_RACES):** GA (Ossoff–Collins, Jackson–Bottoms), AL (Tuberville–Jones
+  rematch; Senate open seat nominees [Verify]), FL
   (pre-primary: Donalds/Jolly/Pizzo + Moody special — **Aug 18 primaries pending**), NY
   (Hochul–Stefanik [Verify] primary), VA (Warner, GOP [Verify]), MD (Moore, GOP [Verify]),
   DC (mayor + delegate, both [Verify]), NJ (Booker, GOP [Verify]), DE (Coons, GOP TBD Sept).
@@ -202,14 +216,15 @@ node tests/run-all.js
 |------|----------------|
 | `tests/parse-check.js` | Every inline `<script>` in every page must compile (syntax errors only) |
 | `tests/smoke-test.js` | Executes each page's scripts top-to-bottom with DOM stubs, cut at the first `d3.` usage; runs state.html for all 10 featured states + controls (TX, CA) + verifies the NC→nc.html redirect. **This is the test that catches declaration-order/TDZ bugs.** |
-| `tests/data-logic.js` | `getCountyElections("37129")` (New Hanover: 15 races, zero blank titles, valid types/parties), all 100 counties merge cleanly, `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC), plus the `type`-value audit from quirk #7 |
+| `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config: nc.html + sc.html): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly. Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
 | `tests/lib.js` | Shared helpers: inline-script extraction, the d3 cut, DOM stubs, vm sandbox runner |
 | `tests/run-all.js` | Runs all three suites; exits non-zero if anything fails |
 
 Notes for future edits:
 - `getCountyElections` returns `{ county, district, elections }` — the race list is `.elections`.
-- `data-logic.js` pins New Hanover's race count (`EXPECTED_NEW_HANOVER_RACES = 15`). When races
-  are legitimately added or removed, update that constant in the same commit.
+- `data-logic.js` pins each built state's sample-county race count in `STATE_PAGES` (New Hanover
+  and Charleston: 15 each). When races are legitimately added or removed, update the count in the
+  same commit.
 
 ## Backlog / roadmap
 
@@ -220,6 +235,12 @@ Notes for future edits:
 3. **Cape Fear expansion (the moat):** Brunswick, Pender, Columbus county local races at New
    Hanover depth (Brunswick sheriff/commission primary results already partially known: Chism won
    sheriff primary; Thompson and Hewett won commission primaries; Somers won DA-15 primary).
+3b. **East-coast full buildout (in progress):** SC done July 6, 2026 (statewide + House; county
+   LOCAL_RACES still to do). Next in line per the owner: the remaining east-coast marquee states —
+   suggested order GA, VA, MD, DE, NJ, NY (FL after its Aug 18 primaries; DC needs a different
+   page model — no counties). Also resolve SC's [Verify] backlog: down-ballot statewide platforms,
+   Whitener/Reeside/Corriea/Ethridge/Kaplan third-party detail, Fry's possible GOP ballot rival,
+   certified primary totals at scvotes.gov, Johnson's running mate, Dem Senate primary runner-up.
 4. ~~Migrate to GitHub + Netlify auto-deploy~~ (done July 6, 2026); next, consider extracting data
    objects into JSON files loaded by fetch (owner edits data without touching markup) or a Google
    Sheet layer.

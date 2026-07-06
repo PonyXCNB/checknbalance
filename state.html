@@ -269,6 +269,7 @@ let abbr = (params.get("state") || "CA").toUpperCase();
 if (!STATES[abbr]) abbr = "CA";
 // If someone lands here for NC, send them to the full build.
 if (abbr === "NC") { window.location.replace("nc.html"); }
+if (abbr === "SC") { window.location.replace("sc.html"); }
 
 const STATE = STATES[abbr];
 const FIPS = STATE.f;
@@ -405,30 +406,6 @@ const STATE_RACES = {
       office:"U.S. Senate — Alabama (open seat)",
       note:"Open because Tuberville is running for governor. [Verify] Nominees pending final primary/runoff certification — check AL Secretary of State.",
       candidates:[] }
-  ],
-  SC: [
-    { key:"governor", date:"Nov 3, 2026", type:"upcoming", scope:"State · Statewide · Nov 3, 2026",
-      office:"Governor of South Carolina",
-      note:"Open seat — Henry McMaster is term-limited. Alan Wilson won the June 23 GOP primary with ~68.6%. [Verify] Democratic nominee.",
-      candidates:[
-        { name:"Alan Wilson", party:"R", winner:false,
-          positions:["Law-and-order agenda from four terms as AG","Fentanyl prosecution and border-adjacent enforcement","Continue SC's tax-cut trajectory"],
-          differentiators:["Four-term SC Attorney General","Won the primary outright with ~68.6% — no runoff","Son of U.S. Rep. Joe Wilson"],
-          supporters:["Most experienced statewide official in the field","Led multistate cases defending SC interests"],
-          opponents:["Career officeholder and political-family scion","AG office controversies deserve scrutiny"] },
-        { name:"[Democratic nominee — verify]", party:"D", winner:false,
-          positions:["[Verify after certification]"], differentiators:["[Verify]"], supporters:[], opponents:[] }
-      ]},
-    { key:"senate", date:"Nov 3, 2026", type:"upcoming", scope:"Federal · Statewide · Nov 3, 2026",
-      office:"U.S. Senate — South Carolina",
-      note:"Lindsey Graham (R) seeking a fifth term. [Verify] primary result and Democratic nominee.",
-      candidates:[
-        { name:"Lindsey Graham (incumbent)", party:"R", winner:false,
-          positions:["Hawkish national security and defense spending","Judicial confirmations","Trump-aligned domestic agenda"],
-          differentiators:["Four-term incumbent; senior Judiciary Republican","Trump-endorsed despite past friction","[Verify] primary margin"],
-          supporters:["Seniority delivers for SC military bases","National security heavyweight"],
-          opponents:["Serial position-switcher on Trump","Four terms is enough — primary challengers said so too"] }
-      ]}
   ],
   FL: [
     { key:"governor", date:"Nov 3, 2026", type:"upcoming", scope:"State · Statewide · Nov 3, 2026",

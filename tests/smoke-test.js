@@ -11,12 +11,12 @@
 "use strict";
 const { extractInlineScripts, cutAtD3, runScript, makeChecker } = require("./lib");
 
-const FEATURED_ABBRS = ["GA", "AL", "SC", "FL", "NY", "VA", "MD", "DC", "NJ", "DE"];
+const FEATURED_ABBRS = ["GA", "AL", "FL", "NY", "VA", "MD", "DC", "NJ", "DE"];
 const CONTROL_ABBRS = ["TX", "CA"];
 const { check, summary } = makeChecker();
 
-// --- index.html and nc.html: run every inline script once ---
-for (const page of ["index.html", "nc.html"]) {
+// --- index.html and the fully built state pages: run every inline script once ---
+for (const page of ["index.html", "nc.html", "sc.html"]) {
   extractInlineScripts(page).forEach((code, i) => {
     const { error } = runScript(cutAtD3(code));
     check(!error, `${page} script #${i + 1} runs without error${error ? ` — ${error.message}` : ""}`);
@@ -36,12 +36,12 @@ for (const abbr of [...FEATURED_ABBRS, ...CONTROL_ABBRS]) {
   });
 }
 
-// --- NC must redirect to nc.html ---
-{
-  const { sandbox } = runScript(cutAtD3(stateScripts[0]), { search: "?state=NC" });
+// --- fully built states must redirect to their dedicated pages ---
+for (const [abbr, page] of [["NC", "nc.html"], ["SC", "sc.html"]]) {
+  const { sandbox } = runScript(cutAtD3(stateScripts[0]), { search: `?state=${abbr}` });
   check(
-    sandbox.__calls.locationReplace.includes("nc.html"),
-    "state.html?state=NC redirects to nc.html"
+    sandbox.__calls.locationReplace.includes(page),
+    `state.html?state=${abbr} redirects to ${page}`
   );
 }
 

@@ -174,7 +174,7 @@
 
 <section class="map-section">
   <div class="legend">
-    <span class="legend-swatch"><i style="background:#B8893C;border-color:#8C6420"></i> Fully built (North Carolina)</span>
+    <span class="legend-swatch"><i style="background:#B8893C;border-color:#8C6420"></i> Fully built (North &amp; South Carolina)</span>
     <span class="legend-swatch"><i style="background:#D9BE85;border-color:#B8893C"></i> Marquee races built</span>
     <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework</span>
   </div>
@@ -324,9 +324,10 @@ const CAP = {
   "49":[-111.891,40.761],"50":[-72.576,44.260],"51":[-77.436,37.541],"53":[-122.901,47.038],
   "54":[-81.612,38.336],"55":[-89.384,43.074],"56":[-104.820,41.140]
 };
-const FEATURED = "37";  // North Carolina is the fully built state
+// Fully built states — each has its own dedicated page (the gold tier)
+const BUILT = { "37": "nc.html", "45": "sc.html" };
 // States with marquee 2026 races built out (partial tier)
-const PARTIAL = new Set(["45","13","24","11","51","12","01","36","34","10"]); // SC GA MD DC VA FL AL NY NJ DE
+const PARTIAL = new Set(["13","24","11","51","12","01","36","34","10"]); // GA MD DC VA FL AL NY NJ DE
 
 // Small states that get a leader-line callout instead of an inline label.
 // lx/ly are label anchor positions in the g-coordinate space (right-side ocean).
@@ -349,7 +350,7 @@ const tooltip = document.getElementById("tooltip");
 const loading = document.getElementById("map-loading");
 
 function destFor(fips) {
-  return fips === FEATURED ? "nc.html" : `state.html?state=${ST[fips]}`;
+  return BUILT[fips] || `state.html?state=${ST[fips]}`;
 }
 function starPath(cx, cy, r) {
   let pts = [];
@@ -375,11 +376,11 @@ d3.json(TOPO_URL).then((us) => {
       .attr("d", path)
       .attr("class", d => {
         const f = String(d.id).padStart(2,"0");
-        return "state" + (f === FEATURED ? " featured" : (PARTIAL.has(f) ? " partial" : ""));
+        return "state" + (BUILT[f] ? " featured" : (PARTIAL.has(f) ? " partial" : ""));
       })
       .on("mousemove", (event, d) => {
         const fips = String(d.id).padStart(2,"0");
-        const tier = fips === FEATURED ? "Fully built" : (PARTIAL.has(fips) ? "Marquee races built" : "Starter framework");
+        const tier = BUILT[fips] ? "Fully built" : (PARTIAL.has(fips) ? "Marquee races built" : "Starter framework");
         tooltip.innerHTML = `<strong>${NAME[fips] || "—"}</strong><div class="tooltip-meta">${tier} · click to explore →</div>`;
         tooltip.style.opacity = 1;
         const rect = svg.node().getBoundingClientRect();
@@ -396,7 +397,7 @@ d3.json(TOPO_URL).then((us) => {
   g.selectAll(".state-abbr")
     .data(states.filter(d => !CALLOUT_FIPS.has(String(d.id).padStart(2,"0"))))
     .enter().append("text")
-      .attr("class", d => "state-abbr" + (String(d.id).padStart(2,"0") === FEATURED ? " on-featured" : ""))
+      .attr("class", d => "state-abbr" + (BUILT[String(d.id).padStart(2,"0")] ? " on-featured" : ""))
       .attr("transform", d => `translate(${path.centroid(d)})`)
       .attr("dy", "0.35em")
       .text(d => ST[String(d.id).padStart(2,"0")] || "");
@@ -430,7 +431,7 @@ d3.json(TOPO_URL).then((us) => {
       .text(ST[fips]);
 
     cg.on("mousemove", (event) => {
-        const tier = fips === FEATURED ? "Fully built" : (PARTIAL.has(fips) ? "Marquee races built" : "Starter framework");
+        const tier = BUILT[fips] ? "Fully built" : (PARTIAL.has(fips) ? "Marquee races built" : "Starter framework");
         tooltip.innerHTML = `<strong>${NAME[fips] || "—"}</strong><div class="tooltip-meta">${tier} · click to explore →</div>`;
         tooltip.style.opacity = 1;
         const rect = svg.node().getBoundingClientRect();
