@@ -1,0 +1,1909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Georgia Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every GA election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 2.2 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #ncmap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">GA</div>
+      <div class="brand-text">
+        <span class="brand-name">Georgia Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Georgia <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 159 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">159</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>14</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>11</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Georgia…</div>
+      <svg id="gamap" viewBox="0 0 1000 450" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>GA Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">May 2026</span><br>
+      Sources: Georgia Secretary of State, Ballotpedia, Wikipedia, AP, Atlanta Journal-Constitution, Georgia Recorder.
+    </div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every GA county + its primary US House district
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- (1) Counties + primary 2024 US House district -----
+// NOTE: 16 GA counties are split across multiple districts. The number below is
+// the PRIMARY district by population. Verify against your local board of elections.
+const COUNTIES = {
+  "13001":{n:"Appling",d:1},      "13003":{n:"Atkinson",d:8},     "13005":{n:"Bacon",d:1},
+  "13007":{n:"Baker",d:2},        "13009":{n:"Baldwin",d:8},      "13011":{n:"Banks",d:9},
+  "13013":{n:"Barrow",d:10},      "13015":{n:"Bartow",d:11},      "13017":{n:"Ben Hill",d:8},
+  "13019":{n:"Berrien",d:8},      "13021":{n:"Bibb",d:2},         "13023":{n:"Bleckley",d:8},
+  "13025":{n:"Brantley",d:1},     "13027":{n:"Brooks",d:8},       "13029":{n:"Bryan",d:1},
+  "13031":{n:"Bulloch",d:12},     "13033":{n:"Burke",d:12},       "13035":{n:"Butts",d:10},
+  "13037":{n:"Calhoun",d:2},      "13039":{n:"Camden",d:1},       "13043":{n:"Candler",d:12},
+  "13045":{n:"Carroll",d:3},      "13047":{n:"Catoosa",d:14},     "13049":{n:"Charlton",d:1},
+  "13051":{n:"Chatham",d:1},      "13053":{n:"Chattahoochee",d:2},"13055":{n:"Chattooga",d:14},
+  "13057":{n:"Cherokee",d:11},    "13059":{n:"Clarke",d:10},      "13061":{n:"Clay",d:2},
+  "13063":{n:"Clayton",d:5},      "13065":{n:"Clinch",d:8},       "13067":{n:"Cobb",d:11},
+  "13069":{n:"Coffee",d:8},       "13071":{n:"Colquitt",d:8},     "13073":{n:"Columbia",d:12},
+  "13075":{n:"Cook",d:8},         "13077":{n:"Coweta",d:3},       "13079":{n:"Crawford",d:2},
+  "13081":{n:"Crisp",d:8},        "13083":{n:"Dade",d:14},        "13085":{n:"Dawson",d:7},
+  "13087":{n:"Decatur",d:2},      "13089":{n:"DeKalb",d:4},       "13091":{n:"Dodge",d:8},
+  "13093":{n:"Dooly",d:2},        "13095":{n:"Dougherty",d:2},    "13097":{n:"Douglas",d:6},
+  "13099":{n:"Early",d:2},        "13101":{n:"Echols",d:8},       "13103":{n:"Effingham",d:1},
+  "13105":{n:"Elbert",d:10},      "13107":{n:"Emanuel",d:12},     "13109":{n:"Evans",d:12},
+  "13111":{n:"Fannin",d:9},       "13113":{n:"Fayette",d:3},      "13115":{n:"Floyd",d:14},
+  "13117":{n:"Forsyth",d:7},      "13119":{n:"Franklin",d:10},    "13121":{n:"Fulton",d:5},
+  "13123":{n:"Gilmer",d:9},       "13125":{n:"Glascock",d:12},    "13127":{n:"Glynn",d:1},
+  "13129":{n:"Gordon",d:11},      "13131":{n:"Grady",d:2},        "13133":{n:"Greene",d:10},
+  "13135":{n:"Gwinnett",d:13},    "13137":{n:"Habersham",d:9},    "13139":{n:"Hall",d:9},
+  "13141":{n:"Hancock",d:10},     "13143":{n:"Haralson",d:3},     "13145":{n:"Harris",d:3},
+  "13147":{n:"Hart",d:10},        "13149":{n:"Heard",d:3},        "13151":{n:"Henry",d:10},
+  "13153":{n:"Houston",d:8},      "13155":{n:"Irwin",d:8},        "13157":{n:"Jackson",d:9},
+  "13159":{n:"Jasper",d:10},      "13161":{n:"Jeff Davis",d:8},   "13163":{n:"Jefferson",d:12},
+  "13165":{n:"Jenkins",d:12},     "13167":{n:"Johnson",d:12},     "13169":{n:"Jones",d:8},
+  "13171":{n:"Lamar",d:3},        "13173":{n:"Lanier",d:8},       "13175":{n:"Laurens",d:12},
+  "13177":{n:"Lee",d:2},          "13179":{n:"Liberty",d:1},      "13181":{n:"Lincoln",d:12},
+  "13183":{n:"Long",d:1},         "13185":{n:"Lowndes",d:8},      "13187":{n:"Lumpkin",d:7},
+  "13189":{n:"McDuffie",d:12},    "13191":{n:"McIntosh",d:1},     "13193":{n:"Macon",d:2},
+  "13195":{n:"Madison",d:10},     "13197":{n:"Marion",d:2},       "13199":{n:"Meriwether",d:3},
+  "13201":{n:"Miller",d:2},       "13205":{n:"Mitchell",d:2},     "13207":{n:"Monroe",d:8},
+  "13209":{n:"Montgomery",d:12},  "13211":{n:"Morgan",d:10},      "13213":{n:"Murray",d:14},
+  "13215":{n:"Muscogee",d:2},     "13217":{n:"Newton",d:13},      "13219":{n:"Oconee",d:10},
+  "13221":{n:"Oglethorpe",d:10},  "13223":{n:"Paulding",d:14},    "13225":{n:"Peach",d:2},
+  "13227":{n:"Pickens",d:11},     "13229":{n:"Pierce",d:1},       "13231":{n:"Pike",d:3},
+  "13233":{n:"Polk",d:14},        "13235":{n:"Pulaski",d:8},      "13237":{n:"Putnam",d:10},
+  "13239":{n:"Quitman",d:2},      "13241":{n:"Rabun",d:9},        "13243":{n:"Randolph",d:2},
+  "13245":{n:"Richmond",d:12},    "13247":{n:"Rockdale",d:13},    "13249":{n:"Schley",d:2},
+  "13251":{n:"Screven",d:12},     "13253":{n:"Seminole",d:2},     "13255":{n:"Spalding",d:3},
+  "13257":{n:"Stephens",d:9},     "13259":{n:"Stewart",d:2},      "13261":{n:"Sumter",d:2},
+  "13263":{n:"Talbot",d:2},       "13265":{n:"Taliaferro",d:10},  "13267":{n:"Tattnall",d:12},
+  "13269":{n:"Taylor",d:2},       "13271":{n:"Telfair",d:8},      "13273":{n:"Terrell",d:2},
+  "13275":{n:"Thomas",d:2},       "13277":{n:"Tift",d:8},         "13279":{n:"Toombs",d:12},
+  "13281":{n:"Towns",d:9},        "13283":{n:"Treutlen",d:12},    "13285":{n:"Troup",d:3},
+  "13287":{n:"Turner",d:8},       "13289":{n:"Twiggs",d:8},       "13291":{n:"Union",d:9},
+  "13293":{n:"Upson",d:3},        "13295":{n:"Walker",d:14},      "13297":{n:"Walton",d:10},
+  "13299":{n:"Ware",d:1},         "13301":{n:"Warren",d:12},      "13303":{n:"Washington",d:12},
+  "13305":{n:"Wayne",d:1},        "13307":{n:"Webster",d:2},      "13309":{n:"Wheeler",d:12},
+  "13311":{n:"White",d:9},        "13313":{n:"Whitfield",d:14},   "13315":{n:"Wilcox",d:8},
+  "13317":{n:"Wilkes",d:12},      "13319":{n:"Wilkinson",d:8},    "13321":{n:"Worth",d:8}
+};
+
+// ----- (2) Statewide elections every county votes in -----
+const STATEWIDE = [
+  // UPCOMING — 2026 General Election (Nov 3, 2026)
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Georgia",
+    note: "The marquee Senate race of 2026. Jon Ossoff (D) defends against Rep. Mike Collins (R). Moved from Toss-up to Lean/Leans Democratic (Cook; Sabato, June 2026). If no one clears 50%, a December runoff follows.",
+    candidates: [
+      {
+        name: "Jon Ossoff (incumbent)",
+        party: "D",
+        winner: false,
+        positions: [
+          "Extend ACA premium tax credits (~1.4M Georgians buy exchange coverage) and lower health costs",
+          "Anti-corruption and voting-rights legislation",
+          "Opposes the Trump tariffs; frames the race as a referendum on the economy"
+        ],
+        differentiators: [
+          "First-term incumbent; the most exposed Democratic seat in a Trump-won state",
+          "Enormous fundraising: ~$78M raised, $31.7M cash on hand as of March 2026",
+          "Unopposed in his primary; has challenged Collins to three televised debates"
+        ],
+        supporters: [
+          "Steady, disciplined incumbent focused on kitchen-table health costs",
+          "Backed by Warnock, organized labor, LCV, and Planned Parenthood",
+          "Early post-runoff polls show him leading by double digits [Verify latest]"
+        ],
+        opponents: [
+          "Too liberal for Georgia — his voting record belies the moderate repositioning",
+          "First elected in a 2021 runoff with just 50.6%",
+          "A referendum on national Democrats in a state Trump carried in 2024"
+        ]
+      },
+      {
+        name: "Mike Collins",
+        party: "R",
+        winner: false,
+        positions: [
+          "Hard-line immigration enforcement",
+          "Trump-aligned economic agenda, including defense of the tariffs",
+          "Backs Georgia's heartbeat abortion law with exceptions (previously supported a ban without exceptions)"
+        ],
+        differentiators: [
+          "U.S. Representative (GA-10); trucking company founder",
+          "Won the June 16 runoff 55.5%–44.5% over Derek Dooley after Trump's endorsement beat Gov. Kemp's pick",
+          "Combative, viral social-media campaign style"
+        ],
+        supporters: [
+          "Authentic blue-collar fighter who energizes the Trump base",
+          "Beat the Kemp establishment decisively in the runoff",
+          "Trump called him a 'Friend, Fighter, and WARRIOR'"
+        ],
+        opponents: [
+          "GOP strategists openly worry he is a weak general-election candidate with women voters",
+          "Faces a reported ethics/federal inquiry over alleged misuse of tax dollars [Verify status]",
+          "Trails Ossoff by double digits in early post-runoff polling [Verify latest]"
+        ]
+      }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Governor of Georgia",
+    note: "Open seat — Brian Kemp (R) is term-limited. Rated a Toss Up (Cook, April 2026). Healthcare billionaire Rick Jackson beat Trump- and Kemp-backed Burt Jones in the runoff; Keisha Lance Bottoms won the Democratic primary outright.",
+    candidates: [
+      {
+        name: "Rick Jackson",
+        party: "R",
+        winner: false,
+        positions: [
+          "Cut the state income tax in half; lower property taxes",
+          "Lower healthcare costs, drawing on his healthcare-staffing career",
+          "Illegal immigrants 'deported or departed'"
+        ],
+        differentiators: [
+          "Founder of Jackson Healthcare; self-funded $100M+ — unprecedented in Georgia",
+          "Won the June 16 runoff 53%–47% over Lt. Gov. Burt Jones, despite Trump and Kemp backing Jones",
+          "Grew up partly in foster care at Techwood Homes — biography central to his campaign"
+        ],
+        supporters: [
+          "Proven businessman who can't be bought",
+          "Beat the entire GOP establishment and Trump's endorsee",
+          "Outsider energy in an anti-politician year"
+        ],
+        opponents: [
+          "Bought the nomination with personal wealth",
+          "First-time candidate, untested in government",
+          "The primary featured lawsuits and defamation claims between camps; he hasn't committed to debates [Verify]"
+        ]
+      },
+      {
+        name: "Keisha Lance Bottoms",
+        party: "D",
+        winner: false,
+        positions: [
+          "Medicaid expansion",
+          "Teacher pay — including eliminating the state income tax for teachers; fully fund pre-K; free technical-college pathway",
+          "Affordable and workforce housing; voting rights"
+        ],
+        differentiators: [
+          "Former Atlanta mayor (2018–2022) and Biden White House senior adviser",
+          "Won the May 19 primary outright with ~56% over Jason Esteves, Michael Thurmond, and others — no runoff",
+          "Would be Georgia's first Black woman governor"
+        ],
+        supporters: [
+          "Battle-tested executive who ran a major city through COVID",
+          "Decisive primary win with strong Black-voter enthusiasm",
+          "National profile and fundraising network"
+        ],
+        opponents: [
+          "One-term mayor who left amid rising crime and the 2020 unrest — 'she let Atlanta burn' (Jackson attack ads)",
+          "City suffered a major cyberattack on her watch",
+          "Defendant in the pending Secoriea Turner wrongful-death suit [Verify status]"
+        ]
+      }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Lieutenant Governor — Georgia",
+    note: "Open seat — Burt Jones (R) left to run for governor. Two state senators face off: Greg Dolezal (R) vs. Josh McLaurin (D).",
+    candidates: [
+      { name: "Greg Dolezal", party: "R", winner: false,
+        positions: ["School choice expansion","Riley Gaines Act (restricting transgender athletes in school sports)","Oppose DEI mandates"],
+        differentiators: ["State senator from Cumming; founding chair of the Georgia Freedom Caucus","Won the June 16 runoff 54%–46% over Sen. John F. Kennedy","Tech entrepreneur (ProPresenter software)"],
+        supporters: ["Consistent conservative with a legislative record"],
+        opponents: ["Once submitted fake mail-ballot applications to 'test' the system","Freedom Caucus ties run too far right for a swing state"] },
+      { name: "Josh McLaurin", party: "D", winner: false,
+        positions: ["Bipartisan-workhorse approach to presiding over the Senate","Pro-democracy and institutional-reform themes","[Verify] — fuller platform pending"],
+        differentiators: ["State senator from Sandy Springs; former state representative; Yale Law graduate","Won the June 16 runoff ~54%–45% over Nabilah Parkes","[Verify]"],
+        supporters: ["Earned Republicans' respect while fighting them — effective in the chamber he'd preside over"],
+        opponents: ["[Verify] — little widely-reported criticism retrieved"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Attorney General — Georgia",
+    note: "Open seat — Chris Carr (R) left to run for governor and lost the primary. State Rep. Tanya Miller (D) vs. state Sen. Brian Strickland (R); both won their primaries outright.",
+    candidates: [
+      { name: "Brian Strickland", party: "R", winner: false,
+        positions: ["[Verify] — Senate Judiciary chair profile; Kemp-aligned","Public safety [Verify]","[Verify]"],
+        differentiators: ["State senator from McDonough","Won the primary 71.6% over Sen. Bill Cowsert","[Verify]"],
+        supporters: ["Legislative judiciary experience [Verify]"], opponents: ["[Verify]"] },
+      { name: "Tanya Miller", party: "D", winner: false,
+        positions: ["Civil rights and criminal-justice reform [Verify]","[Verify]","[Verify]"],
+        differentiators: ["State representative from Atlanta; former prosecutor [Verify background]","Won the primary with 84.5% over former House minority leader Bob Trammell","[Verify]"],
+        supporters: ["Courtroom credentials plus a reform agenda [Verify]"], opponents: ["[Verify]"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Secretary of State — Georgia",
+    note: "Open seat — Brad Raffensperger (R) left to run for governor and lost. Kemp's ex-chief of staff Tim Fleming (R) vs. former judge Penny Brown Reynolds (D); both won June 16 runoffs.",
+    candidates: [
+      { name: "Tim Fleming", party: "R", winner: false,
+        positions: ["Restrict and overhaul absentee/mail voting, alleging fraud risk","Make it 'impossible for the left to cheat'","Election administration experience from inside the SoS office"],
+        differentiators: ["State representative (Covington); Kemp's former deputy secretary of state and first gubernatorial chief of staff","Chairs the House election-law committee","Won the runoff ~64–66% over Vernon Jones [Verify certified figure]"],
+        supporters: ["Deep operational experience inside the office he seeks"],
+        opponents: ["Election-denial-adjacent rhetoric (says 2020 had 'irregularities') undermines confidence"] },
+      { name: "Penny Brown Reynolds", party: "D", winner: false,
+        positions: ["Protect voting rights and restore trust in elections","Fraud protection for seniors and small businesses","[Verify]"],
+        differentiators: ["Former Fulton County State Court judge; TV's 'Family Court with Judge Penny'","Former Biden USDA senior official and counsel to Gov. Roy Barnes","Won the runoff ~63–64% over Dana Barrett [Verify certified figure]"],
+        supporters: ["Judicial gravitas for the state's elections office"],
+        opponents: ["[Verify] — limited criticism coverage retrieved"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Commissioner of Agriculture — Georgia",
+    note: "Tyler Harper (R) seeks a second term against Gwinnett farmer Katherine Juhan-Arnold (D). [Verify — low-coverage race]",
+    candidates: [
+      { name: "Tyler Harper (incumbent)", party: "R", winner: false,
+        positions: ["[Verify]","[Verify]","[Verify]"],
+        differentiators: ["First-term incumbent from Irwin County","Won the May 19 primary [Verify margin]","[Verify]"],
+        supporters: [], opponents: [] },
+      { name: "Katherine Juhan-Arnold", party: "D", winner: false,
+        positions: ["[Verify]","[Verify]","[Verify]"],
+        differentiators: ["Gwinnett County farmer with an engineering/construction background","Won the primary 62.1%","[Verify]"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Insurance Commissioner — Georgia",
+    note: "John King (R) seeks re-election against former Atlanta councilwoman Keisha Sean Waites (D). [Verify — low-coverage race]",
+    candidates: [
+      { name: "John King (incumbent)", party: "R", winner: false,
+        positions: ["[Verify]","[Verify]","[Verify]"],
+        differentiators: ["Incumbent; unopposed in the primary","First Hispanic statewide official in Georgia [Verify]","[Verify]"],
+        supporters: [], opponents: [] },
+      { name: "Keisha Sean Waites", party: "D", winner: false,
+        positions: ["[Verify]","[Verify]","[Verify]"],
+        differentiators: ["Former Atlanta City Council member and state representative","Won the June 16 runoff ~58%–41% over DeAndre Mathis","[Verify]"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "State School Superintendent — Georgia",
+    note: "Richard Woods (R) barely survived a runoff (51%–48%) for a shot at a fourth term; educator Lydia Powell (D) won her primary outright.",
+    candidates: [
+      { name: "Richard Woods (incumbent)", party: "R", winner: false,
+        positions: ["[Verify]","[Verify]","[Verify]"],
+        differentiators: ["Three-term incumbent","Forced to a runoff at 49.9%, then won it 51%–48% over Fred 'Bubba' Longgrear","[Verify]"],
+        supporters: ["Longest-serving current statewide school chief [Verify]"],
+        opponents: ["Nearly half his own party's primary voters chose someone else"] },
+      { name: "Lydia Powell", party: "D", winner: false,
+        positions: ["[Verify]","[Verify]","[Verify]"],
+        differentiators: ["Educator and diversity trainer","Won a three-way primary outright with 50.5%","[Verify]"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Labor Commissioner — Georgia",
+    note: "Bárbara Rivera Holmes (R), appointed in 2025, seeks a full term against Air Force veteran Nikki Porcher (D). [Verify — low-coverage race]",
+    candidates: [
+      { name: "Bárbara Rivera Holmes (incumbent)", party: "R", winner: false,
+        positions: ["[Verify]","[Verify]","[Verify]"],
+        differentiators: ["Appointed by Gov. Kemp in April 2025","Won the 2026 GOP primary [Verify margin]","[Verify]"],
+        supporters: [], opponents: [] },
+      { name: "Nikki Porcher", party: "D", winner: false,
+        positions: ["[Verify]","[Verify]","[Verify]"],
+        differentiators: ["Air Force veteran, nonprofit founder, and teacher","Won the June 16 runoff ~61%–38% over Michelle Sánchez","[Verify]"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Public Service Commission — District 3",
+    note: "A rematch: incumbent Peter Hubbard (D) vs. Fitz Johnson (R), whom Hubbard beat in 2025. PSC seats are voted statewide. [Verify details]",
+    candidates: [
+      { name: "Peter Hubbard (incumbent)", party: "D", winner: false,
+        positions: ["Clean-energy advocacy [Verify]","Ratepayer protection [Verify]","[Verify]"],
+        differentiators: ["Won the seat in 2025 [Verify]; unopposed in the 2026 primary","[Verify]","[Verify]"],
+        supporters: [], opponents: [] },
+      { name: "Fitz Johnson", party: "R", winner: false,
+        positions: ["[Verify]","[Verify]","[Verify]"],
+        differentiators: ["Former commissioner seeking a rematch after his 2025 loss","Won the primary 50.2% over Brandon Martin","[Verify]"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Public Service Commission — District 5",
+    note: "Sheila Edwards (D) vs. Josh Tolbert (R), who won the June 16 GOP runoff. PSC seats are voted statewide. [Verify incumbent status]",
+    candidates: [
+      { name: "Sheila Edwards", party: "D", winner: false,
+        positions: ["[Verify]","[Verify]","[Verify]"],
+        differentiators: ["Communications professional","Won a three-way primary outright","[Verify]"],
+        supporters: [], opponents: [] },
+      { name: "Josh Tolbert", party: "R", winner: false,
+        positions: ["[Verify]","[Verify]","[Verify]"],
+        differentiators: ["Cobb County mechanical engineer","Won the June 16 runoff ~59% over Bobby Mehan","[Verify]"],
+        supporters: [], opponents: [] }
+    ]
+  },
+
+  // PAST — May 19 primaries and June 16 runoffs (statewide marquee contests)
+  {
+    date: "Jun 16, 2026",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "GOP Runoff — U.S. Senate",
+    note: "Mike Collins beat Derek Dooley 55.5% to 44.5%. Trump endorsed Collins days before the runoff; Gov. Kemp had backed Dooley.",
+    candidates: [
+      { name: "Mike Collins", party: "R", winner: false,
+        positions: ["Trump-aligned agenda","Hard-line immigration","Trucking-industry economics"],
+        differentiators: ["GA-10 congressman; led the May 19 primary with ~40.5%","Trump's endorsement sealed the runoff"],
+        supporters: ["The base's fighter"], opponents: ["Establishment worried about November"] },
+      { name: "Derek Dooley", party: "R", winner: false,
+        positions: ["Mainstream conservatism","Electability argument","Kemp-model governance"],
+        differentiators: ["Former Tennessee football coach; son of UGA legend Vince Dooley","Kemp's endorsee; took 30.2% on May 19"],
+        supporters: ["The safer general-election bet"], opponents: ["Never held office; lost anyway"] }
+    ]
+  },
+  {
+    date: "Jun 16, 2026",
+    type: "past",
+    scope: "State · Statewide",
+    office: "GOP Runoff — Governor",
+    note: "Rick Jackson beat Lt. Gov. Burt Jones 53% to 47%, overcoming endorsements of Jones by both Trump and Kemp. The primary featured dueling lawsuits and a defamation claim.",
+    candidates: [
+      { name: "Rick Jackson", party: "R", winner: false,
+        positions: ["Halve the state income tax","Lower healthcare costs","Outsider governance"],
+        differentiators: ["Healthcare billionaire; spent $100M+ of his own money","Trailed Jones 38–33 on May 19, then won the runoff"],
+        supporters: ["Couldn't be bought, couldn't be stopped"], opponents: ["Personal fortune replaced party-building"] },
+      { name: "Burt Jones", party: "R", winner: false,
+        positions: ["Trump-agenda continuity","Tax cuts","Georgia-first economics"],
+        differentiators: ["Sitting Lt. Governor; led the May 19 field with ~38%","Endorsed by both Trump and Kemp — and still lost"],
+        supporters: ["The party's official heir apparent"], opponents: ["Couldn't close against an outsider's checkbook"] }
+    ]
+  },
+  {
+    date: "May 19, 2026",
+    type: "past",
+    scope: "State · Statewide",
+    office: "GOP Primary — Governor",
+    note: "Burt Jones (~38%) and Rick Jackson (~33%) advanced to the runoff. AG Chris Carr and SoS Brad Raffensperger — who both gave up their offices to run — were eliminated. [Verify final percentages]",
+    candidates: [
+      { name: "Burt Jones", party: "R", winner: false,
+        positions: ["Trump continuity","Tax cuts","Economic growth"],
+        differentiators: ["Lt. Governor; led round one ~38–39%"], supporters: ["Trump's pick"], opponents: ["Quasi-incumbent who couldn't crack 40%"] },
+      { name: "Rick Jackson", party: "R", winner: false,
+        positions: ["Outsider platform","Income-tax cuts","Healthcare costs"],
+        differentiators: ["Healthcare executive; ~33% in round one"], supporters: ["Self-made alternative"], opponents: ["Unlimited personal spending"] },
+      { name: "Chris Carr", party: "R", winner: false,
+        positions: ["Law-and-order record as AG","Mainstream conservatism","Anti-gang initiatives"],
+        differentiators: ["Attorney General since 2016; gave up the office to run and was eliminated May 19"], supporters: ["Serious résumé"], opponents: ["Squeezed out by bigger names and bigger money"] },
+      { name: "Brad Raffensperger", party: "R", winner: false,
+        positions: ["Election integrity as he defined it in 2020","Engineering-minded governance","Tax restraint"],
+        differentiators: ["Secretary of State who refused to 'find' votes in 2020; gave up the office to run and was eliminated"], supporters: ["Proved his integrity under historic pressure"], opponents: ["Unforgiven by much of the GOP base"] }
+    ]
+  },
+  {
+    date: "May 19, 2026",
+    type: "past",
+    scope: "State · Statewide",
+    office: "Democratic Primary — Governor",
+    note: "Keisha Lance Bottoms won outright with ~56%; Jason Esteves took ~18.7%. Michael Thurmond and Geoff Duncan were also in the field. [Verify final percentages]",
+    candidates: [
+      { name: "Keisha Lance Bottoms", party: "D", winner: false,
+        positions: ["Medicaid expansion","Teacher pay","Housing affordability"],
+        differentiators: ["Former Atlanta mayor; cleared 50% in a crowded field — no runoff"],
+        supporters: ["Commanding win with strong base enthusiasm"], opponents: ["Rivals questioned her mayoral record"] },
+      { name: "Jason Esteves", party: "D", winner: false,
+        positions: ["Public education investment","Economic opportunity","New-generation leadership"],
+        differentiators: ["State senator; ~18.7% finish"],
+        supporters: ["Fresh face"], opponents: ["Couldn't match Bottoms's name ID"] }
+    ]
+  },
+  {
+    date: "May 19, 2026",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "GOP Primary — U.S. Senate",
+    note: "Mike Collins (~40.5%) and Derek Dooley (~30.2%) advanced to the June 16 runoff; Rep. Buddy Carter, who gave up his GA-1 seat to run, finished a close third and was eliminated. [Verify Carter's percentage]",
+    candidates: [
+      { name: "Mike Collins", party: "R", winner: false,
+        positions: ["MAGA agenda","Immigration enforcement","Blue-collar economics"],
+        differentiators: ["GA-10 congressman; led round one"], supporters: ["Base favorite"], opponents: ["Electability doubts"] },
+      { name: "Derek Dooley", party: "R", winner: false,
+        positions: ["Mainstream conservatism","Electability","Kemp-style governance"],
+        differentiators: ["Former football coach; Kemp's endorsee"], supporters: ["Crossover appeal"], opponents: ["Political novice"] },
+      { name: "Buddy Carter", party: "R", winner: false,
+        positions: ["Pharmacy/healthcare policy","Coastal economy","Conservative record"],
+        differentiators: ["Gave up his GA-1 House seat to run; eliminated in third"], supporters: ["Longest résumé in the field"], opponents: ["Squeezed between the fighter and the coach"] }
+    ]
+  }
+];
+
+// ----- (3) US House races by district -----
+// Each district object holds: 2024 race + 2026 race
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — GA District 1",
+    region: "Coastal Georgia — Savannah, Brunswick, the coast",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Open seat — Buddy Carter (R) left to run for U.S. Senate. Jim Kingston avoided a runoff; Amanda Hollowell won the June 16 Democratic runoff.",
+        candidates: [
+          { name: "Jim Kingston", party: "R", winner: false,
+            positions: ["Full alignment with the Trump agenda","Cut federal waste — says trillions are wasted","Hard line on illegal immigration"],
+            differentiators: ["Insurance executive (SVP at Marsh McLennan); son of former Rep. Jack Kingston","Trump-endorsed (April 2026); won the May 19 primary outright with 52.4% in a six-way field","Top fundraiser in the race (~$1.81M)"],
+            supporters: ["Proven conservative with the endorsements and resources to hold the seat","A familiar coastal-Georgia political name"],
+            opponents: ["Legacy candidate trading on his father's name","Questions raised about his actual ties and residency in the district"] },
+          { name: "Amanda Hollowell", party: "D", winner: false,
+            positions: ["Voting rights and civic engagement","Economic policy for working families [Verify detailed platform]","[Verify]"],
+            differentiators: ["Savannah-based political strategist; Chief of Campaigns at Color Of Change; formerly When We All Vote","Came from second place to win the June 16 runoff 53.0%–47.0% over repeat nominee Joyce Griggs","National organizing background"],
+            supporters: ["Professional campaign infrastructure and fresh energy in a district Democrats rarely contest seriously"],
+            opponents: ["Activist résumé sits to the left of a Trump-won coastal district [Verify]"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Buddy Carter re-elected 62.0% to 38.0% in his final House race before running for Senate.",
+        candidates: [
+          { name: "Buddy Carter", party: "R", winner: true,
+            positions: ["Pharmacy and healthcare policy","Coastal economy","Conservative fiscal policy"],
+            differentiators: ["Incumbent since 2015; pharmacist","Left the seat to run for U.S. Senate in 2026"],
+            supporters: ["Deep coastal-Georgia roots"], opponents: ["Reliable party-line record"] },
+          { name: "Patti Hewitt", party: "D", winner: false,
+            positions: ["Healthcare access","Coastal resilience","Public education"],
+            differentiators: ["2024 Democratic nominee"],
+            supporters: ["Kept the seat contested"], opponents: ["Lost by 24 points"] }
+        ]
+      }
+    ]
+  },
+  2: {
+    name: "U.S. House — GA District 2",
+    region: "Southwest Georgia — Columbus, Albany",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Sanford Bishop (D), in Congress since 1993, seeks another term; both nominees were unopposed in their primaries.",
+        candidates: [
+          { name: "Sanford Bishop (incumbent)", party: "D", winner: false,
+            positions: ["Agriculture and the farm bill — peanuts and the rural ag economy","Military installations (Fort Moore, Robins AFB)","Centrist 'Blue Dog' record"],
+            differentiators: ["Senior House appropriator","In Congress since 1993","Unopposed in the 2026 primary"],
+            supporters: ["Seniority that delivers for rural Georgia and its military bases","A genuine moderate in a polarized House"],
+            opponents: ["Three-decade tenure — the case for generational change","Votes with Democrats when it counts, in a competitive district"] },
+          { name: "Matt Day", party: "R", winner: false,
+            positions: ["[Verify] — minimal coverage of platform","[Verify]","[Verify]"],
+            differentiators: ["Unopposed for the Republican nomination","[Verify background]","[Verify]"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Bishop won 56.3% to 43.7%.",
+        candidates: [
+          { name: "Sanford Bishop", party: "D", winner: true,
+            positions: ["Agriculture","Military bases","Bipartisan appropriations"],
+            differentiators: ["Incumbent since 1993","Blue Dog Democrat"],
+            supporters: ["Delivers for southwest Georgia"], opponents: ["Democratic vote in a purple district"] },
+          { name: "Wayne Johnson", party: "R", winner: false,
+            positions: ["Student-loan system reform","Conservative economics","Government efficiency"],
+            differentiators: ["Former federal student-aid official"],
+            supporters: ["Policy-serious challenger"], opponents: ["Couldn't crack Bishop's coalition"] }
+        ]
+      }
+    ]
+  },
+  3: {
+    name: "U.S. House — GA District 3",
+    region: "West-central Georgia — Peachtree City, Newnan, LaGrange, Carrollton",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "A 2024 rematch: Brian Jack (R) vs. Maura Keller (D) in a safe Republican district.",
+        candidates: [
+          { name: "Brian Jack (incumbent)", party: "R", winner: false,
+            positions: ["Trump-agenda alignment [Verify specifics]","Border security","Tax cuts"],
+            differentiators: ["Former Trump White House political director","One of Trump's closest House allies","Unopposed in the 2026 primary"],
+            supporters: ["A direct line to the White House"],
+            opponents: ["Party-line operative with a thin independent record"] },
+          { name: "Maura Keller", party: "D", winner: false,
+            positions: ["[Verify] — low coverage of platform","[Verify]","[Verify]"],
+            differentiators: ["2024 nominee running again","Won the 2026 primary 60.8%–39.2%","[Verify profession]"],
+            supporters: ["Persistent standard-bearer"], opponents: ["Lost the same matchup by 33 points in 2024"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Open seat (Drew Ferguson retired); Brian Jack won 66.3% to 33.7%.",
+        candidates: [
+          { name: "Brian Jack", party: "R", winner: true,
+            positions: ["Trump agenda","Border security","Economic conservatism"],
+            differentiators: ["Trump's former political director","First-time candidate"],
+            supporters: ["Trump's blessing in a deep-red district"], opponents: ["Never held office before"] },
+          { name: "Maura Keller", party: "D", winner: false,
+            positions: ["Healthcare access","Public education","Working-family economics"],
+            differentiators: ["2024 Democratic nominee"],
+            supporters: ["Gave voters a choice"], opponents: ["Out-funded and out-gunned"] }
+        ]
+      }
+    ]
+  },
+  4: {
+    name: "U.S. House — GA District 4",
+    region: "Eastern metro Atlanta — DeKalb, Rockdale, part of Gwinnett",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Hank Johnson (D) seeks an 11th term in a safely Democratic district.",
+        candidates: [
+          { name: "Hank Johnson (incumbent)", party: "D", winner: false,
+            positions: ["Civil rights and policing reform","Courts and ethics oversight — a leading Supreme Court reform advocate","Progressive economic agenda"],
+            differentiators: ["Senior Judiciary Committee member","In Congress since 2007","Won his 2026 primary with 79.3%"],
+            supporters: ["Reliable progressive with deep judiciary expertise"],
+            opponents: ["Partisan warrior with a history of gaffes"] },
+          { name: "James Duffie", party: "R", winner: false,
+            positions: ["[Verify] — minimal coverage","[Verify]","[Verify]"],
+            differentiators: ["Unopposed for the Republican nomination","[Verify]","[Verify]"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Johnson won 75.6% to 24.4%.",
+        candidates: [
+          { name: "Hank Johnson", party: "D", winner: true,
+            positions: ["Civil rights","Judiciary oversight","Progressive policy"],
+            differentiators: ["Incumbent since 2007"],
+            supporters: ["Institutional progressive voice"], opponents: ["Safe-seat longevity"] },
+          { name: "Eugene Yu", party: "R", winner: false,
+            positions: ["Law and order","Small business","Immigration enforcement"],
+            differentiators: ["Repeat Republican candidate"],
+            supporters: ["Willing challenger"], opponents: ["No path in a 75% Democratic district"] }
+        ]
+      }
+    ]
+  },
+  5: {
+    name: "U.S. House — GA District 5",
+    region: "Core Atlanta — the John Lewis legacy seat",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Nikema Williams (D) defends the safest Democratic seat in Georgia — a 2024 rematch with John Salvesen (R).",
+        candidates: [
+          { name: "Nikema Williams (incumbent)", party: "D", winner: false,
+            positions: ["Voting rights — lead advocate for the John Lewis Voting Rights Act","Abortion rights","Housing affordability"],
+            differentiators: ["Former Georgia Democratic Party chair","Holds John Lewis's former seat","Won her 2026 primary with 88.0%"],
+            supporters: ["Continues the Lewis legacy with real organizing muscle"],
+            opponents: ["Party insider [Verify specific criticism]"] },
+          { name: "John Salvesen", party: "R", winner: false,
+            positions: ["[Verify] — minimal coverage","[Verify]","[Verify]"],
+            differentiators: ["Repeat nominee (14.3% in 2024)","Unopposed in the 2026 primary","[Verify]"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Williams won 85.7% to 14.3%.",
+        candidates: [
+          { name: "Nikema Williams", party: "D", winner: true,
+            positions: ["Voting rights","Abortion rights","Housing"],
+            differentiators: ["Incumbent since 2021"],
+            supporters: ["Overwhelming mandate in the district"], opponents: ["No competitive pressure"] },
+          { name: "John Salvesen", party: "R", winner: false,
+            positions: ["Conservative economics","Public safety","School choice"],
+            differentiators: ["2024 nominee"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  6: {
+    name: "U.S. House — GA District 6",
+    region: "Western metro Atlanta suburbs — Cobb, Douglas, parts of Fulton",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Lucy McBath (D) runs again after suspending a 2026 governor bid in March 2025 to care for her husband during cancer treatment.",
+        candidates: [
+          { name: "Lucy McBath (incumbent)", party: "D", winner: false,
+            positions: ["Gun-safety legislation — her signature cause after her son Jordan Davis was shot and killed in 2012","Healthcare access","Family economic security"],
+            differentiators: ["National gun-violence-prevention leader","Suspended a gubernatorial exploratory bid (March 2025) for family health reasons","Unopposed in the 2026 primary"],
+            supporters: ["A personal story that transformed into serious legislative work","One of the most compelling voices in the House on gun violence"],
+            opponents: ["Everytown-backed agenda is too restrictive on gun rights","Ambitions beyond the district — explored the governor's race"] },
+          { name: "Kevin Martin", party: "R", winner: false,
+            positions: ["[Verify] — minimal coverage","[Verify]","[Verify]"],
+            differentiators: ["Won the GOP primary 70.1%–29.9%","[Verify]","[Verify]"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "McBath won 74.7% to 25.3%.",
+        candidates: [
+          { name: "Lucy McBath", party: "D", winner: true,
+            positions: ["Gun safety","Healthcare","Family economics"],
+            differentiators: ["Incumbent; survived multiple redistrictings"],
+            supporters: ["Resilient campaigner"], opponents: ["Single-issue profile"] },
+          { name: "Jeff Criswell", party: "R", winner: false,
+            positions: ["Fiscal conservatism","Public safety","Parental rights"],
+            differentiators: ["2024 nominee"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  7: {
+    name: "U.S. House — GA District 7",
+    region: "North Atlanta exurbs — Forsyth, Dawson, parts of Gwinnett, Fulton, Cherokee",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Rich McCormick (R) faces Navy combat pilot turned immigration attorney Tony Kozycki (D), who won the June 16 runoff.",
+        candidates: [
+          { name: "Rich McCormick (incumbent)", party: "R", winner: false,
+            positions: ["Healthcare costs, argued from an ER physician's experience","Fiscal conservatism and spending cuts","Border security"],
+            differentiators: ["Emergency-room physician and Marine veteran","Unopposed in the 2026 primary","Second-term incumbent"],
+            supporters: ["Doctor-legislator with military service — rare résumé in Congress"],
+            opponents: ["Hard-right voting record for a fast-growing, diversifying area [Verify]"] },
+          { name: "Tony Kozycki", party: "D", winner: false,
+            positions: ["Immigration reform grounded in his law practice","Veterans' issues","[Verify] — fuller platform pending coverage"],
+            differentiators: ["F/A-18 Navy combat pilot (three deployments; Naval Academy graduate)","Immigration attorney (Georgia State Law, summa cum laude)","Won the June 16 runoff 67.7%–32.3%"],
+            supporters: ["Service-first biography that can compete for moderate exurban voters"],
+            opponents: ["[Verify] — no substantive opposition coverage found yet"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "McCormick won 64.9% to 35.1%.",
+        candidates: [
+          { name: "Rich McCormick", party: "R", winner: true,
+            positions: ["Healthcare policy","Spending restraint","Border security"],
+            differentiators: ["ER doctor; Marine veteran"],
+            supporters: ["Distinctive dual-service background"], opponents: ["Votes with the hard right"] },
+          { name: "Bob Christian", party: "D", winner: false,
+            positions: ["Public education","Healthcare access","Infrastructure"],
+            differentiators: ["2024 nominee"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  8: {
+    name: "U.S. House — GA District 8",
+    region: "South-central Georgia — Warner Robins, Valdosta, Tifton",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Austin Scott (R) faces Navy veteran and policy PhD Kelly Esti (D).",
+        candidates: [
+          { name: "Austin Scott (incumbent)", party: "R", winner: false,
+            positions: ["Defense — Robins AFB and Armed Services seniority","Agriculture policy","Mainstream conservatism"],
+            differentiators: ["In Congress since 2011; Armed Services and Intelligence committees","Ran against Jim Jordan for Speaker in 2023 — occasional independence from the hard right","Unopposed in the 2026 primary"],
+            supporters: ["Serious defense workhorse for a military district"],
+            opponents: ["Entrenched safe-seat incumbent [Verify]"] },
+          { name: "Kelly Esti", party: "D", winner: false,
+            positions: ["Revive left-behind rural areas","'Civic engagement centers' instead of traditional district offices","Veterans and working-family economics"],
+            differentiators: ["Navy veteran (nuclear operator) with a PhD in public policy","Small-business CFO from Hapeville","Won the primary 53.5%–46.5%"],
+            supporters: ["Substantive, wonky challenger with a service record"],
+            opponents: ["District voted nearly 69% Republican in 2024"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Scott won 68.9% to 31.1%.",
+        candidates: [
+          { name: "Austin Scott", party: "R", winner: true,
+            positions: ["Defense","Agriculture","Conservative economics"],
+            differentiators: ["Incumbent since 2011"],
+            supporters: ["Defense-committee clout"], opponents: ["Long tenure"] },
+          { name: "Darrius Butler", party: "D", winner: false,
+            positions: ["Economic opportunity","Healthcare","Education"],
+            differentiators: ["2024 nominee"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  9: {
+    name: "U.S. House — GA District 9",
+    region: "Northeast Georgia — Gainesville and the mountain counties",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Andrew Clyde (R) beat two primary challengers with 76%; Gen-Z organizer Caitlyn Gegen (D) won her primary in one of Georgia's reddest districts.",
+        candidates: [
+          { name: "Andrew Clyde (incumbent)", party: "R", winner: false,
+            positions: ["Second Amendment absolutism — owns a gun store","Spending hawk; votes against omnibus bills","Freedom Caucus alignment"],
+            differentiators: ["Navy veteran and firearms dealer","Beat two primary challengers with 76.0%","Third-term incumbent"],
+            supporters: ["Unbending constitutional conservative"],
+            opponents: ["Obstructionist; infamously called Jan. 6 'a normal tourist visit'"] },
+          { name: "Caitlyn Gegen", party: "D", winner: false,
+            positions: ["Human rights: voting, abortion access, due process","Affordable living","Universal healthcare"],
+            differentiators: ["Gen-Z UGA graduate from Suwanee","Community-organizing background","Won the primary 60.0%–40.0%"],
+            supporters: ["Energetic progressive giving voters a real choice"],
+            opponents: ["Platform far to the left of a 70%-Republican district"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Clyde won 69.0% to 31.0%.",
+        candidates: [
+          { name: "Andrew Clyde", party: "R", winner: true,
+            positions: ["Gun rights","Spending cuts","Freedom Caucus priorities"],
+            differentiators: ["Incumbent since 2021"],
+            supporters: ["True believer, not a careerist"], opponents: ["Blocks routine governance"] },
+          { name: "Tambrei Cash", party: "D", winner: false,
+            positions: ["Healthcare","Education","Rural investment"],
+            differentiators: ["2024 nominee"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  10: {
+    name: "U.S. House — GA District 10",
+    region: "Northeast-central Georgia — Athens and exurbs east of Atlanta",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Open seat — Mike Collins (R) left to run for U.S. Senate. State Rep. Houston Gaines faces retired Army Col. Pamela DeLancy.",
+        candidates: [
+          { name: "Houston Gaines", party: "R", winner: false,
+            positions: ["Tax cuts — record in the Georgia House","Public safety","Education funding [Verify specific bills]"],
+            differentiators: ["State representative from Athens; UGA graduate","Won the primary outright with 66.9% over Ryan Millsap and Jeff Baker","Young proven vote-getter on Democratic-leaning home turf"],
+            supporters: ["Rising star who wins tough turf","Legislative record, not just rhetoric"],
+            opponents: ["Career-politician ascent [Verify]","Untested at the federal level"] },
+          { name: "Pamela DeLancy", party: "D", winner: false,
+            positions: ["Healthcare access","'Secure and ethical' immigration reform","Family economic relief"],
+            differentiators: ["Retired Army colonel — 39 years of service (enlisted 1980, commissioned 1987)","Registered nurse; Army War College M.S.; county Board of Health member","Beat the 2024 nominee in the primary with 54.4%"],
+            supporters: ["Four decades of Army service and a nurse's perspective on healthcare"],
+            opponents: ["District voted 63% Republican in 2024"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Mike Collins won 63.1% to 36.9% in his final House race before running for Senate.",
+        candidates: [
+          { name: "Mike Collins", party: "R", winner: true,
+            positions: ["Trucking deregulation","Highway investment","Border enforcement"],
+            differentiators: ["Trucking company owner","Left the seat to run for U.S. Senate in 2026"],
+            supporters: ["Blue-collar businessman"], opponents: ["Provocative online persona"] },
+          { name: "Lexy Doherty", party: "D", winner: false,
+            positions: ["Public education","Healthcare","Environmental protection"],
+            differentiators: ["2024 nominee; lost the 2026 primary to Pamela DeLancy"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  11: {
+    name: "U.S. House — GA District 11",
+    region: "Northwest Atlanta suburbs along I-75 — Cherokee, north Cobb, Bartow",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Open seat — Barry Loudermilk (R) retired in February 2026. Neurosurgeon John Cowan won the GOP runoff; attorney Chris Harden is the Democratic nominee.",
+        candidates: [
+          { name: "John Cowan", party: "R", winner: false,
+            positions: ["Healthcare policy from a physician's angle [Verify specifics]","Pro-Trump conservative agenda","Business growth"],
+            differentiators: ["Rome neurosurgeon and business owner; self-funded ~$1.5M","Won the June 16 runoff ~65%–35% over Loudermilk's former chief of staff Rob Adkerson [Verify certified totals — sources conflict]","Ran second to Marjorie Taylor Greene in the 2020 GA-14 primary"],
+            supporters: ["Accomplished surgeon-outsider, not a creature of Washington"],
+            opponents: ["Ran in two different districts — carpetbagging charge","Spent personal wealth to beat the retiring incumbent's chosen successor"] },
+          { name: "Chris Harden", party: "D", winner: false,
+            positions: ["Public education","Affordable healthcare access","'Restoring common sense and stability'"],
+            differentiators: ["Estate-planning attorney from Cherokee County (Woodstock)","Self-described 'moderate Democrat focused on results, not rhetoric'","Won the primary with 74.8%"],
+            supporters: ["Pragmatic, local, family-firm lawyer — not an ideologue"],
+            opponents: ["District has never been competitive for Democrats"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Barry Loudermilk won 65.6% to 31.9% in his final race; he retired in February 2026.",
+        candidates: [
+          { name: "Barry Loudermilk", party: "R", winner: true,
+            positions: ["Fiscal conservatism","Cybersecurity policy","Limited government"],
+            differentiators: ["Incumbent since 2015; retired Feb 2026"],
+            supporters: ["Steady conservative"], opponents: ["Quiet tenure"] },
+          { name: "Kate Stamper", party: "D", winner: false,
+            positions: ["Education","Healthcare","Suburban quality-of-life issues"],
+            differentiators: ["2024 nominee"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  12: {
+    name: "U.S. House — GA District 12",
+    region: "East Georgia — Augusta, Statesboro, Dublin",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Rick Allen (R) faces former Grovetown councilwoman and Army medic Ceretta Smith (D), who won the June 16 runoff.",
+        candidates: [
+          { name: "Rick Allen (incumbent)", party: "R", winner: false,
+            positions: ["Pro-Trump conservative agenda","Tax cuts and deregulation","Education & Workforce Committee work [Verify current committee]"],
+            differentiators: ["Construction-company founder; in Congress since 2015","Won his primary 83.4%","Sixth-term incumbent"],
+            supporters: ["Businessman's record and reliable conservatism"],
+            opponents: ["Little independent profile [Verify]"] },
+          { name: "Ceretta Smith", party: "D", winner: false,
+            positions: ["Healthcare access","Better schools","[Verify] — fuller platform pending"],
+            differentiators: ["Former Grovetown City Council member (six years)","Former Army medic","Won the June 16 runoff 55.8%–44.2%"],
+            supporters: ["Local-government record plus military service"],
+            opponents: ["District voted 60% Republican in 2024"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Allen won 60.3% to 39.7%.",
+        candidates: [
+          { name: "Rick Allen", party: "R", winner: true,
+            positions: ["Conservative economics","Deregulation","Workforce policy"],
+            differentiators: ["Incumbent since 2015"],
+            supporters: ["Consistent conservative"], opponents: ["Safe-seat autopilot"] },
+          { name: "Liz Johnson", party: "D", winner: false,
+            positions: ["Healthcare","Education","Economic fairness"],
+            differentiators: ["2024 nominee"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  13: {
+    name: "U.S. House — GA District 13",
+    region: "Southern metro Atlanta suburbs — Clayton, Henry, Rockdale, Newton",
+    races: [
+      {
+        date: "Jul 28, 2026", type: "upcoming",
+        note: "SPECIAL ELECTION for the remainder of the late Rep. David Scott's term (he died April 22, 2026). All-candidate ballot; runoff Aug 25 if no majority. Candidates include Jasmine Clark, Everton Blair, Emanuel Jones, and Scott's daughter Marcye Scott.",
+        candidates: [
+          { name: "Jasmine Clark", party: "D", winner: false,
+            positions: ["'Prioritize science in Congress'","Public health","Standing up to the Trump administration"],
+            differentiators: ["State representative (Lilburn); microbiologist and Emory lecturer","Already won the regular-term primary outright with 56.1%","Frontrunner for the special"],
+            supporters: ["Scientist-legislator generational upgrade"],
+            opponents: ["Boosted by $2M+ in crypto-aligned outside spending she says she didn't court"] },
+          { name: "Everton Blair", party: "D", winner: false,
+            positions: ["Public education — former school-board leadership","[Verify]","[Verify]"],
+            differentiators: ["Former Gwinnett school board chair","Took 11.6% in the May regular primary","[Verify]"],
+            supporters: [], opponents: [] },
+          { name: "Marcye Scott", party: "D", winner: false,
+            positions: ["[Verify] — continuing her father's legacy","[Verify]","[Verify]"],
+            differentiators: ["Daughter of the late Rep. David Scott","[Verify]","[Verify]"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "For the full term: state Rep. Jasmine Clark (D) won a six-way primary outright after David Scott's death; she faces 2024 GOP nominee Jonathan Chavez in a safe Democratic district.",
+        candidates: [
+          { name: "Jasmine Clark", party: "D", winner: false,
+            positions: ["Science-driven policymaking","Public health investment","Voting rights"],
+            differentiators: ["Microbiologist and Emory University lecturer; state representative","Won the May 19 primary with 56.1% against five opponents including Heavenly Kimes (21.5%)","Would bring a working scientist's voice to Congress"],
+            supporters: ["Generational, credentialed successor for a district that wanted new energy"],
+            opponents: ["Crypto-PAC outside money raises independence questions [Verify]"] },
+          { name: "Jonathan Chavez", party: "R", winner: false,
+            positions: ["[Verify] — minimal coverage","[Verify]","[Verify]"],
+            differentiators: ["Former Rockdale County GOP chair","2024 nominee (28.2%)","Unopposed in the 2026 primary"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "David Scott won a 12th term 71.8% to 28.2%; he died April 22, 2026, at age 80.",
+        candidates: [
+          { name: "David Scott", party: "D", winner: true,
+            positions: ["Agriculture committee leadership","Financial services","Constituent services"],
+            differentiators: ["First Black chair of the House Agriculture Committee","In Congress since 2003; died in office April 2026"],
+            supporters: ["Historic career of service"], opponents: ["Age and fitness questions dominated his final years"] },
+          { name: "Jonathan Chavez", party: "R", winner: false,
+            positions: ["Conservative economics","Public safety","School choice"],
+            differentiators: ["2024 nominee; renominated for 2026"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  14: {
+    name: "U.S. House — GA District 14",
+    region: "Northwest Georgia — Rome, Dalton, Paulding County",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "A rematch of April's special runoff: Rep. Clay Fuller (R), who won Marjorie Taylor Greene's old seat after her resignation, vs. retired Brig. Gen. Shawn Harris (D).",
+        candidates: [
+          { name: "Clay Fuller (incumbent)", party: "R", winner: false,
+            positions: ["Law-and-order prosecutorial agenda","Full Trump-agenda alignment","Border security"],
+            differentiators: ["Former district attorney across four NW Georgia counties; Air National Guard lieutenant colonel","Trump-endorsed; won the April 7 special runoff ~56%–44%","Won the regular GOP primary with 81.3% (Colton Moore took 6.7%)"],
+            supporters: ["Trump-vetted prosecutor with military credentials"],
+            opponents: ["Won by only 12 in a district Trump carried by 37 — a warning sign","Untested beyond one abbreviated term"] },
+          { name: "Shawn Harris", party: "D", winner: false,
+            positions: ["Rural economy","Veterans' issues","Agriculture"],
+            differentiators: ["Cattle farmer and retired Army brigadier general","Led round one of the March special with 37.3%; raised ~$7.9M vs. Fuller's ~$1.67M [Verify]","2024 nominee against Greene — her closest race"],
+            supporters: ["A general's biography and rural roots make him uniquely competitive here"],
+            opponents: ["Already lost the April runoff; no Democrat has closed a 37-point gap"] }
+        ]
+      },
+      {
+        date: "Apr 7, 2026", type: "past",
+        note: "SPECIAL RUNOFF for Marjorie Taylor Greene's seat (she resigned Jan 5, 2026, after her break with President Trump). Clay Fuller beat Shawn Harris ~56%–44% — a 12-point GOP margin in a +37 Trump district.",
+        candidates: [
+          { name: "Clay Fuller", party: "R", winner: true,
+            positions: ["Prosecutorial law-and-order record","Trump agenda","Border security"],
+            differentiators: ["Emerged from a 17-candidate special field","Trump-endorsed in February 2026"],
+            supporters: ["Kept the seat red"], opponents: ["Underperformed the district's partisan lean by 25 points"] },
+          { name: "Shawn Harris", party: "D", winner: false,
+            positions: ["Rural economy","Veterans","Agriculture"],
+            differentiators: ["Led the March 10 first round 37.3% to Fuller's 34.9%","Retired brigadier general"],
+            supporters: ["Best Democratic showing in the district's modern history"], opponents: ["Couldn't finish the job in the runoff"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Marjorie Taylor Greene won 64.4% to 35.6% — her closest race. She resigned January 5, 2026.",
+        candidates: [
+          { name: "Marjorie Taylor Greene", party: "R", winner: true,
+            positions: ["America First nationalism","Anti-establishment politics","Cultural conservatism"],
+            differentiators: ["National lightning rod; resigned Jan 5, 2026 after her public break with President Trump","Cited a 'hurtful and hateful primary' and safety threats"],
+            supporters: ["Fearless fighter who said what others wouldn't"], opponents: ["Chaos over constituent service"] },
+          { name: "Shawn Harris", party: "D", winner: false,
+            positions: ["Rural economy","Veterans","Agriculture"],
+            differentiators: ["Held Greene to her narrowest win; ran again in the 2026 special and general"],
+            supporters: ["Proved the district could be contested"], opponents: [] }
+        ]
+      }
+    ]
+  }
+};
+
+const SITE_META = { name: "Georgia Elections Hub", lastUpdated: "July 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — GA county-level down-ballot research is the next phase).
+const LOCAL_RACES = {
+  // County-level down-ballot research for Georgia has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = district
+    ? district.races.map(r => ({
+        ...r,
+        office: r.office || district.name,
+        scope: r.scope || `Federal · District ${county.d}`
+      }))
+    : [];
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const GA_STATE_FIPS = "13";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#gamap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(GA_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 450;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Atlanta ----
+  drawCapital(g, projection, { name: "Atlanta", lng: -84.3880, lat: 33.7490 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in GA";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our Georgia dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">Candidates not yet announced.</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>

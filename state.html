@@ -270,6 +270,7 @@ if (!STATES[abbr]) abbr = "CA";
 // If someone lands here for NC, send them to the full build.
 if (abbr === "NC") { window.location.replace("nc.html"); }
 if (abbr === "SC") { window.location.replace("sc.html"); }
+if (abbr === "GA") { window.location.replace("ga.html"); }
 
 const STATE = STATES[abbr];
 const FIPS = STATE.f;
@@ -354,38 +355,6 @@ const HOUSE_SEATS = {
 // Keys suppress the matching office-level entry in buildSeats.
 // ============================================================
 const STATE_RACES = {
-  GA: [
-    { key:"senate", date:"Nov 3, 2026", type:"upcoming", scope:"Federal · Statewide · Nov 3, 2026",
-      office:"U.S. Senate — Georgia",
-      note:"Rated the top toss-up of the 2026 cycle. A Dec 1 runoff occurs if no one clears 50%.",
-      candidates:[
-        { name:"Jon Ossoff (incumbent)", party:"D", winner:false,
-          positions:["Anti-corruption and ethics enforcement","Healthcare affordability and Medicaid protection","Infrastructure and semiconductor investment in Georgia"],
-          differentiators:["First-term incumbent; won a 2021 runoff with 50.6%","Unopposed for the Democratic nomination","Defending a seat in a state Trump won by ~2 in 2024"],
-          supporters:["Serious, workhorse senator with real oversight wins","Delivered federal investment to Georgia","Backed by HRC, LCV, and a broad coalition"],
-          opponents:["Won by a whisker in a runoff — out of step with a Trump-won state","Votes with national Democrats down the line","Vulnerable on border and cost-of-living records"] },
-        { name:"Mike Collins", party:"R", winner:false,
-          positions:["Trucking-industry deregulation and highway investment","Hard-line border enforcement","Trump-aligned economic agenda"],
-          differentiators:["U.S. Representative for GA-10","Won the June 16 runoff with ~55.5% after Trump's endorsement","Trucking company owner"],
-          supporters:["Blue-collar businessman, not a career politician","Trump's pick in a state Trump carried","Beat a crowded field including Buddy Carter and Derek Dooley"],
-          opponents:["Provocative online persona raises general-election risk","Thin legislative record beyond messaging bills","Runoff win means the party started divided"] }
-      ]},
-    { key:"governor", date:"Nov 3, 2026", type:"upcoming", scope:"State · Statewide · Nov 3, 2026",
-      office:"Governor of Georgia",
-      note:"Open seat — Brian Kemp is term-limited. Jackson won the June 16 GOP runoff over Burt Jones; Bottoms won the Democratic primary May 19.",
-      candidates:[
-        { name:"Rick Jackson", party:"R", winner:false,
-          positions:["Run the state like a business: efficiency audits","Healthcare-industry cost reform","Continue Georgia's low-tax, pro-business climate"],
-          differentiators:["Healthcare executive and first-time candidate","Won the runoff over Lt. Gov. Burt Jones","Self-funded outsider who beat three statewide officials"],
-          supporters:["Outsider with real executive experience","Not a politician — no baggage from the Kemp-Trump feuds"],
-          opponents:["Never held office; untested in government","Bought the nomination with personal wealth","Litigation with Jones split the party"] },
-        { name:"Keisha Lance Bottoms", party:"D", winner:false,
-          positions:["Medicaid expansion","Housing affordability statewide","Public-safety investment paired with criminal-justice reform"],
-          differentiators:["Former Atlanta mayor (2018–2022)","Served in the Biden White House as public engagement director","Won the primary outright over Esteves, Thurmond, and others"],
-          supporters:["Executive experience running a major city through COVID","Could be Georgia's first Black woman governor","Democratic primary turnout exceeded GOP's for the first time since 2006"],
-          opponents:["Atlanta crime rose during her tenure","Declined to seek re-election as mayor — quit when it got hard","Too closely tied to the Biden administration"] }
-      ]}
-  ],
   AL: [
     { key:"governor", date:"Nov 3, 2026", type:"upcoming", scope:"State · Statewide · Nov 3, 2026",
       office:"Governor of Alabama",
