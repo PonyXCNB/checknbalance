@@ -1,0 +1,1857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>North Carolina Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every NC election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 2.2 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #ncmap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">NC</div>
+      <div class="brand-text">
+        <span class="brand-name">North Carolina Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every North Carolina <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 100 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">100</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>14</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>10</em>+</div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of North Carolina…</div>
+      <svg id="ncmap" viewBox="0 0 1000 450" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>NC Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">May 2026</span><br>
+      Sources: NC State Board of Elections, Ballotpedia, Wikipedia, AP, CNN, NBC News.
+    </div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every NC county + its primary US House district
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- (1) Counties + primary 2024 US House district -----
+// NOTE: 11 NC counties are split across multiple districts. The number below is
+// the PRIMARY district by population. Verify against your local board of elections.
+const COUNTIES = {
+  "37001":{n:"Alamance",d:4},  "37003":{n:"Alexander",d:5},  "37005":{n:"Alleghany",d:5},
+  "37007":{n:"Anson",d:8},     "37009":{n:"Ashe",d:5},       "37011":{n:"Avery",d:5},
+  "37013":{n:"Beaufort",d:1},  "37015":{n:"Bertie",d:1},     "37017":{n:"Bladen",d:7},
+  "37019":{n:"Brunswick",d:7}, "37021":{n:"Buncombe",d:11},  "37023":{n:"Burke",d:14},
+  "37025":{n:"Cabarrus",d:8},  "37027":{n:"Caldwell",d:5},   "37029":{n:"Camden",d:1},
+  "37031":{n:"Carteret",d:3},  "37033":{n:"Caswell",d:6},    "37035":{n:"Catawba",d:10},
+  "37037":{n:"Chatham",d:9},   "37039":{n:"Cherokee",d:11},  "37041":{n:"Chowan",d:1},
+  "37043":{n:"Clay",d:11},     "37045":{n:"Cleveland",d:14}, "37047":{n:"Columbus",d:7},
+  "37049":{n:"Craven",d:3},    "37051":{n:"Cumberland",d:9}, "37053":{n:"Currituck",d:1},
+  "37055":{n:"Dare",d:3},      "37057":{n:"Davidson",d:6},   "37059":{n:"Davie",d:5},
+  "37061":{n:"Duplin",d:3},    "37063":{n:"Durham",d:4},     "37065":{n:"Edgecombe",d:1},
+  "37067":{n:"Forsyth",d:6},   "37069":{n:"Franklin",d:13},  "37071":{n:"Gaston",d:14},
+  "37073":{n:"Gates",d:1},     "37075":{n:"Graham",d:11},    "37077":{n:"Granville",d:1},
+  "37079":{n:"Greene",d:1},    "37081":{n:"Guilford",d:6},   "37083":{n:"Halifax",d:1},
+  "37085":{n:"Harnett",d:9},   "37087":{n:"Haywood",d:11},   "37089":{n:"Henderson",d:11},
+  "37091":{n:"Hertford",d:1},  "37093":{n:"Hoke",d:9},       "37095":{n:"Hyde",d:3},
+  "37097":{n:"Iredell",d:10},  "37099":{n:"Jackson",d:11},   "37101":{n:"Johnston",d:13},
+  "37103":{n:"Jones",d:3},     "37105":{n:"Lee",d:9},        "37107":{n:"Lenoir",d:1},
+  "37109":{n:"Lincoln",d:10},  "37111":{n:"McDowell",d:11},  "37113":{n:"Macon",d:11},
+  "37115":{n:"Madison",d:11},  "37117":{n:"Martin",d:1},     "37119":{n:"Mecklenburg",d:12},
+  "37121":{n:"Mitchell",d:5},  "37123":{n:"Montgomery",d:8}, "37125":{n:"Moore",d:9},
+  "37127":{n:"Nash",d:1},      "37129":{n:"New Hanover",d:7},"37131":{n:"Northampton",d:1},
+  "37133":{n:"Onslow",d:3},    "37135":{n:"Orange",d:4},     "37137":{n:"Pamlico",d:3},
+  "37139":{n:"Pasquotank",d:1},"37141":{n:"Pender",d:7},     "37143":{n:"Perquimans",d:1},
+  "37145":{n:"Person",d:4},    "37147":{n:"Pitt",d:1},       "37149":{n:"Polk",d:14},
+  "37151":{n:"Randolph",d:6},  "37153":{n:"Richmond",d:8},   "37155":{n:"Robeson",d:7},
+  "37157":{n:"Rockingham",d:6},"37159":{n:"Rowan",d:8},      "37161":{n:"Rutherford",d:14},
+  "37163":{n:"Sampson",d:7},   "37165":{n:"Scotland",d:8},   "37167":{n:"Stanly",d:8},
+  "37169":{n:"Stokes",d:5},    "37171":{n:"Surry",d:5},      "37173":{n:"Swain",d:11},
+  "37175":{n:"Transylvania",d:11},"37177":{n:"Tyrrell",d:1}, "37179":{n:"Union",d:8},
+  "37181":{n:"Vance",d:1},     "37183":{n:"Wake",d:2},       "37185":{n:"Warren",d:1},
+  "37187":{n:"Washington",d:1},"37189":{n:"Watauga",d:5},    "37191":{n:"Wayne",d:1},
+  "37193":{n:"Wilkes",d:5},    "37195":{n:"Wilson",d:1},     "37197":{n:"Yadkin",d:10},
+  "37199":{n:"Yancey",d:11}
+};
+
+// ----- (2) Statewide elections every county votes in -----
+const STATEWIDE = [
+  // UPCOMING — 2026 General Election (Nov 3, 2026)
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — North Carolina",
+    note: "Open seat. Incumbent Thom Tillis (R) is retiring. Primary was March 3, 2026.",
+    candidates: [
+      {
+        name: "Roy Cooper",
+        party: "D",
+        winner: false,
+        positions: [
+          "Expand Medicaid and protect ACA coverage",
+          "Rebuild and strengthen FEMA in the wake of Hurricane Helene recovery failures",
+          "Border-security pragmatist: opposes mass deportation but supports enforcement"
+        ],
+        differentiators: [
+          "Two-term NC Governor (2017–2025); six-time statewide winner",
+          "Won statewide in 2016 and 2020 even as Trump carried NC",
+          "Won 92.4% of Democratic primary vote in March 2026"
+        ],
+        supporters: [
+          "Proven moderate with crossover appeal in a purple state",
+          "Familiar profile and a steady leader during COVID and Helene",
+          "Best shot Democrats have had at flipping an NC Senate seat since 2008"
+        ],
+        opponents: [
+          "Vetoed conservative legislation 70+ times as governor",
+          "Helene recovery under his administration was slow and uneven",
+          "Career politician — too liberal for the modern NC electorate"
+        ]
+      },
+      {
+        name: "Michael Whatley",
+        party: "R",
+        winner: false,
+        positions: [
+          "Economic nationalism: prioritize US manufacturing and trade enforcement",
+          "Back the administration's enforcement-first immigration approach",
+          "Modernize federal disaster management via the FEMA Review Council"
+        ],
+        differentiators: [
+          "Former RNC Chairman (March 2024 – August 2025)",
+          "Endorsed by President Trump after Tillis withdrew",
+          "Raised $5M in Q1 2026 fundraising; serves on FEMA Review Council"
+        ],
+        supporters: [
+          "Trump-aligned fundraising powerhouse from a state Trump won three times",
+          "Practical experience running national party operations",
+          "Will fight for NC veterans and military bases (Liberty, Lejeune, Seymour Johnson)"
+        ],
+        opponents: [
+          "Less name recognition than Cooper — trails in early polling",
+          "No track record of governing or representing NC voters",
+          "Party functionary, not an independent voice for North Carolinians"
+        ]
+      },
+      {
+        name: "Shannon Bray",
+        party: "L",
+        winner: false,
+        positions: [
+          "Reduce federal spending and the national debt",
+          "Defend civil liberties; reduce regulatory burden",
+          "End military interventionism abroad"
+        ],
+        differentiators: [
+          "Libertarian Party nominee from Angier, NC",
+          "Previously ran for US Senate (2020) and NC Lt Gov (2024)",
+          "Veteran and cybersecurity professional"
+        ],
+        supporters: [
+          "A genuine third-party voice in a polarized race",
+          "Consistent libertarian principles, not party-line votes",
+          "Veteran perspective on military and foreign policy"
+        ],
+        opponents: [
+          "Third-party candidates rarely win Senate seats in NC",
+          "Limited campaign infrastructure compared to the major parties",
+          "Risk of 'spoiler' role in a tight race"
+        ]
+      }
+    ]
+  },
+
+  // PAST — 2024 General Election (Nov 5, 2024)
+  {
+    date: "Nov 5, 2024",
+    type: "past",
+    scope: "State · Statewide",
+    office: "NC Governor",
+    note: "Stein won by ~15 percentage points — widest margin in an NC governor's race in recent history.",
+    candidates: [
+      {
+        name: "Josh Stein",
+        party: "D",
+        winner: true,
+        positions: [
+          "Expand Medicaid access and protect ACA coverage",
+          "Defend reproductive rights at the state level",
+          "Invest in public education and teacher pay raises"
+        ],
+        differentiators: [
+          "Two-term NC Attorney General (2017–2024)",
+          "Led multistate opioid settlement actions",
+          "First Jewish governor of North Carolina"
+        ],
+        supporters: [
+          "Experienced prosecutor with deep policy chops on consumer protection",
+          "Steady, low-drama style after years of culture-war politics",
+          "Took on Big Pharma over opioids and won billions for NC"
+        ],
+        opponents: [
+          "Soft on crime; opposed parental-rights legislation",
+          "Continuation of the Cooper administration — same playbook",
+          "Tied to national Democratic positions unpopular in much of NC"
+        ]
+      },
+      {
+        name: "Mark Robinson",
+        party: "R",
+        winner: false,
+        positions: [
+          "Restrict abortion access; emphasize parental rights in schools",
+          "Cut state income taxes; reduce regulation on business",
+          "Increase law-enforcement funding and back-the-blue policies"
+        ],
+        differentiators: [
+          "NC Lieutenant Governor 2021–2024; first Black LG of NC",
+          "No elected office before LG; known for viral, fiery speeches",
+          "Trump-endorsed throughout the campaign"
+        ],
+        supporters: [
+          "Authentic voice of working-class North Carolinians",
+          "Came up through manufacturing — not a career politician",
+          "Strong on Second Amendment and parental-rights issues"
+        ],
+        opponents: [
+          "CNN reported he posted racist and lewd comments on a porn forum (2008–2012); senior staff resigned",
+          "Past public statements about women, LGBTQ people, and the Holocaust drew bipartisan condemnation",
+          "Trump and other Republicans distanced themselves in the final stretch"
+        ]
+      }
+    ]
+  },
+  {
+    date: "Nov 5, 2024",
+    type: "past",
+    scope: "State · Statewide",
+    office: "NC Lieutenant Governor",
+    note: "First Democrat elected NC Lieutenant Governor since 2008.",
+    candidates: [
+      {
+        name: "Rachel Hunt",
+        party: "D",
+        winner: true,
+        positions: [
+          "Protect and expand public education funding",
+          "Support reproductive rights and Medicaid",
+          "Defend voting rights and election integrity"
+        ],
+        differentiators: [
+          "State senator from Mecklenburg County; attorney",
+          "Daughter of former four-term NC Governor Jim Hunt",
+          "Won the Democratic primary with 70% of the vote"
+        ],
+        supporters: [
+          "Brings the Hunt family legacy of pragmatic North Carolina leadership",
+          "Strong education advocate; the LG chairs the State Board of Education",
+          "Won decisively in a year when Democrats were nervous statewide"
+        ],
+        opponents: [
+          "Liberal voting record in the state senate",
+          "Benefited from Robinson scandal dragging down the entire GOP ticket",
+          "Light on executive experience"
+        ]
+      },
+      {
+        name: "Hal Weatherman",
+        party: "R",
+        winner: false,
+        positions: [
+          "Push school-choice expansion and parental rights",
+          "Back tax cuts and pro-business regulation reform",
+          "Strengthen border security at the state level"
+        ],
+        differentiators: [
+          "Businessman; former chief of staff to a previous Lieutenant Governor",
+          "Won GOP nomination in a runoff after no candidate cleared 30% in March",
+          "Outsider conservative running on Trump-aligned themes"
+        ],
+        supporters: [
+          "Practical management background from years inside state government",
+          "Conservative principles without the Robinson baggage",
+          "Strong rural NC support"
+        ],
+        opponents: [
+          "Less name recognition than Hunt going into November",
+          "Couldn't separate himself from Robinson's collapse at the top of the ticket",
+          "Limited statewide campaign infrastructure after a contested primary"
+        ]
+      }
+    ]
+  },
+  {
+    date: "Nov 5, 2024",
+    type: "past",
+    scope: "State · Statewide",
+    office: "NC Attorney General",
+    note: "Replaces Josh Stein, who ran for governor.",
+    candidates: [
+      {
+        name: "Jeff Jackson",
+        party: "D",
+        winner: true,
+        positions: [
+          "Defend consumer rights and prosecute white-collar crime aggressively",
+          "Protect voting rights and free press",
+          "Tackle the fentanyl/opioid crisis with treatment + enforcement"
+        ],
+        differentiators: [
+          "Former US Representative for NC-14 (2023–2025); state senator before that",
+          "Army veteran and former assistant district attorney",
+          "Known for plain-English explainer videos with millions of followers"
+        ],
+        supporters: [
+          "Combines prosecutorial credibility with strong communication skills",
+          "Military service and bipartisan record in the state senate",
+          "Already won statewide attention through viral civic-education videos"
+        ],
+        opponents: [
+          "Gave up his House seat under unfavorable redistricting — politically expedient",
+          "Light on actual AG-office experience compared to typical winners",
+          "Will rubber-stamp the next governor's agenda"
+        ]
+      },
+      {
+        name: "Dan Bishop",
+        party: "R",
+        winner: false,
+        positions: [
+          "Aggressive prosecution of violent crime; back-the-blue policy",
+          "Defend election integrity and ID requirements",
+          "Push back on federal overreach into state authority"
+        ],
+        differentiators: [
+          "Outgoing US Representative for NC-8 (2020–2025)",
+          "Architect of the original 2016 NC HB2 'bathroom bill' as a state legislator",
+          "Trump-endorsed in the AG race"
+        ],
+        supporters: [
+          "Constitutional conservative with a long legal record",
+          "Will use the AG's office to push back on federal mandates",
+          "Tough-on-crime credentials"
+        ],
+        opponents: [
+          "Polarizing record on social issues going back to HB2",
+          "Hard-edged partisan in an office voters often want apolitical",
+          "Lost ground after Robinson controversy depressed GOP turnout"
+        ]
+      }
+    ]
+  },
+  {
+    date: "Nov 5, 2024",
+    type: "past",
+    scope: "State · Statewide",
+    office: "NC Supreme Court — Seat 6 (Riggs v. Griffin)",
+    note: "Decided by ~734 votes; outcome contested in court for months before Riggs's victory was certified.",
+    candidates: [
+      {
+        name: "Allison Riggs",
+        party: "D",
+        winner: true,
+        positions: [
+          "Defend voting rights and oppose partisan gerrymandering",
+          "Protect judicial independence from political pressure",
+          "Apply the constitution evenhandedly across cases"
+        ],
+        differentiators: [
+          "Appointed to the NC Supreme Court in 2023; previously a voting-rights attorney",
+          "Argued cases at the US Supreme Court",
+          "Survived a months-long post-election protest and certification fight"
+        ],
+        supporters: [
+          "A rare voting-rights expert serving on the bench",
+          "Defended the election outcome through repeated legal challenges",
+          "Lone Democratic check on an otherwise Republican-majority court"
+        ],
+        opponents: [
+          "Activist background; will rule based on policy, not law",
+          "Won by an extremely thin margin — questionable legitimacy",
+          "Beneficiary of late-counted mail ballots Republicans tried to challenge"
+        ]
+      },
+      {
+        name: "Jefferson Griffin",
+        party: "R",
+        winner: false,
+        positions: [
+          "Strict-constructionist reading of the NC Constitution",
+          "Skepticism of late-counted and overseas ballots without ID",
+          "Defer to the legislature on policy questions"
+        ],
+        differentiators: [
+          "Sitting NC Court of Appeals judge",
+          "Pursued ballot-eligibility challenges affecting ~60,000 voters post-election",
+          "Backed by the NC Republican Party throughout the protest"
+        ],
+        supporters: [
+          "Defended ballot integrity in line with state ID laws",
+          "Consistent record as a Court of Appeals judge",
+          "Stood up to a vote-count process he viewed as flawed"
+        ],
+        opponents: [
+          "Attempted to throw out ~60,000 ballots already cast by eligible voters",
+          "Lost in state courts repeatedly before conceding",
+          "Damaged public trust in NC elections through prolonged protest"
+        ]
+      }
+    ]
+  }
+];
+
+// ----- (3) US House races by district -----
+// Each district object holds: 2024 race + 2026 race
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — NC District 1",
+    region: "Northeastern NC (Rocky Mount, Greenville-area portions)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Top GOP pickup target; new map moved 6 GOP-leaning coastal counties into D1 in late 2025.",
+        candidates: [
+          { name: "Don Davis (incumbent)", party: "D", winner: false,
+            positions: ["Bipartisan rural broadband and agriculture investment","Veterans' services expansion","Affordable healthcare access in eastern NC"],
+            differentiators: ["First-term incumbent who won by 2 points in 2024 even as Trump carried the district by 3","Air Force veteran and former state senator","Pastor; one of the more conservative House Democrats"],
+            supporters: ["A genuine moderate who works across the aisle","Veteran and minister with deep roots in eastern NC","Outperformed Harris and other Democrats in the district"],
+            opponents: ["Will be a vote for Democratic House leadership","Newly redrawn district is significantly redder","Hurricane recovery in his district was bumpy"] },
+          { name: "[GOP nominee — primary March 2026]", party: "R", winner: false,
+            positions: ["[Verify after primary]","[Verify after primary]","[Verify after primary]"],
+            differentiators: ["Top early candidates: Rocky Mount Mayor Sandy Roberson, state Sen. Bobby Hanig, Commissioner Eric Rouse","Map redraw favors Republicans","NRCC pickup target"],
+            supporters: ["Will represent the district's actual partisan lean","Fresh face after Davis's narrow 2024 win"],
+            opponents: ["Crowded primary may produce a weak nominee","Will need to introduce themselves to many new constituents"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Don Davis won re-election 49.5% to 47.8% in NC's closest 2024 House race.",
+        candidates: [
+          { name: "Don Davis", party: "D", winner: true,
+            positions: ["Rural broadband and agriculture","Veterans' services","Affordable healthcare"],
+            differentiators: ["Incumbent first elected 2022","Air Force veteran","Won by 1.7 points"],
+            supporters: ["Genuine moderate who outperformed his district","Veteran with rural credibility","Worked across the aisle on farm-bill issues"],
+            opponents: ["Still voted with Democrats on most leadership questions","Won only because of a weak GOP opponent","District is fundamentally Republican-leaning"] },
+          { name: "Laurie Buckhout", party: "R", winner: false,
+            positions: ["Border security and immigration enforcement","Tax cuts and small-business relief","Strong national defense"],
+            differentiators: ["Retired Army Colonel; defense-industry executive","First-time candidate","Self-funded a significant portion of her race"],
+            supporters: ["Military leadership and business experience","Self-funder not beholden to special interests","Strong on national security"],
+            opponents: ["First-time candidate against an incumbent","Limited eastern NC profile prior to running","Underperformed Trump in the same district"] },
+          { name: "Tom Bailey", party: "I", winner: false, positions:["Reduce partisanship","Term limits","Fiscal restraint"], differentiators:["Independent candidate","Self-funded","Local NC business owner"], supporters:["A real alternative to the two-party system"], opponents:["Drew votes from Buckhout in a tight race"] }
+        ]
+      }
+    ]
+  },
+  2: {
+    name: "U.S. House — NC District 2",
+    region: "Wake County (most of Raleigh and surrounding suburbs)",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", note: "Safely Democratic district; incumbent expected to seek another term.",
+        candidates: [
+          { name: "Deborah Ross (incumbent)", party: "D", winner: false,
+            positions: ["[Verify] Reproductive rights and healthcare","[Verify] Climate and infrastructure investment","[Verify] Voting rights expansion"],
+            differentiators: ["Three-term incumbent","Former NC ACLU director","Sits on Judiciary and Foreign Affairs"],
+            supporters: ["Experienced legislator with deep policy knowledge","Reliable progressive vote on House floor"],
+            opponents: ["Out of step with state's purple lean","Long-time party insider"] },
+          { name: "[GOP nominee — TBD]", party: "R", winner: false, positions:["—","—","—"], differentiators:["—","—","—"], supporters:[], opponents:[] }
+        ] },
+      { date: "Nov 5, 2024", type: "past", note: "Ross re-elected easily.",
+        candidates: [
+          { name: "Deborah Ross", party: "D", winner: true,
+            positions:["Reproductive rights","Climate action","Voting rights"],
+            differentiators:["Incumbent since 2021","Former ACLU NC director","Attorney"],
+            supporters:["Tireless advocate for civil liberties","Strong constituent services in Wake County"],
+            opponents:["Liberal voting record disconnected from rural NC"] },
+          { name: "Alan Swain", party: "R", winner: false,
+            positions:["Reduce federal spending","Border security","Energy independence"],
+            differentiators:["Retired US Army officer","Businessman","First-time candidate in this race"],
+            supporters:["Military background","Outside-the-Beltway perspective"],
+            opponents:["Heavy Democratic lean of district","Limited name recognition"] }
+        ] }
+    ]
+  },
+  3: {
+    name: "U.S. House — NC District 3",
+    region: "Coastal NC (the Outer Banks south to Jacksonville area)",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", note: "Reliably Republican; Murphy is the long-tenured incumbent.",
+        candidates: [
+          { name: "Greg Murphy (incumbent)", party: "R", winner: false,
+            positions:["Healthcare policy reform from a physician's perspective","Military readiness and veteran services","Coastal economy and fisheries"],
+            differentiators:["Practicing urologist and surgeon","Won special election in 2019","Co-chairs the GOP Doctors Caucus"],
+            supporters:["A working physician in Congress","Strong constituent services on military and VA issues","Reliable vote for coastal NC priorities"],
+            opponents:["Reliably partisan on social issues","Voted against bipartisan infrastructure spending"] },
+          { name: "[Democratic nominee — TBD]", party: "D", winner: false, positions:["—","—","—"], differentiators:["—","—","—"], supporters:[], opponents:[] }
+        ] },
+      { date: "Nov 5, 2024", type: "past", note: "Murphy re-elected; faced only Libertarian opposition.",
+        candidates: [
+          { name: "Greg Murphy", party: "R", winner: true,
+            positions:["Healthcare reform","Military and veterans","Coastal economy"],
+            differentiators:["Practicing physician","Incumbent since 2019","Co-chair, GOP Doctors Caucus"],
+            supporters:["Working doctor in Congress","Strong on military and VA"],
+            opponents:["Reliably partisan voting record"] },
+          { name: "Gheorghe Cormos", party: "L", winner: false,
+            positions:["Reduce federal scope","Civil liberties","End interventionism abroad"],
+            differentiators:["Libertarian nominee","First-time congressional candidate"],
+            supporters:["A real alternative to two-party politics"],
+            opponents:["No realistic path in a deep-red district"] }
+        ] }
+    ]
+  },
+  4: {
+    name: "U.S. House — NC District 4",
+    region: "Durham, Orange, Alamance, Person counties (the Triangle's northern half)",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", note: "Strongly Democratic district.",
+        candidates: [
+          { name: "Valerie Foushee (incumbent)", party: "D", winner: false,
+            positions:["[Verify] Healthcare access and Medicaid","[Verify] Public education funding","[Verify] Voting rights"],
+            differentiators:["Second-term incumbent","Former state senator","Long career in Orange County local government"],
+            supporters:["Deep local roots","Steady, low-drama style"],
+            opponents:["Reliable party-line vote","Limited national profile"] },
+          { name: "[GOP nominee — TBD]", party: "R", winner: false, positions:["—","—","—"], differentiators:["—","—","—"], supporters:[], opponents:[] }
+        ] },
+      { date: "Nov 5, 2024", type: "past", note: "Foushee won easily.",
+        candidates: [
+          { name: "Valerie Foushee", party: "D", winner: true,
+            positions:["Healthcare access","Education funding","Voting rights"],
+            differentiators:["Incumbent since 2023","Former state senator","Orange County school board veteran"],
+            supporters:["Deep local roots and education experience"],
+            opponents:["Party-line voting record"] },
+          { name: "Eric Blankenburg", party: "R", winner: false,
+            positions:["Tax cuts","Border security","Reduce federal spending"],
+            differentiators:["Businessman","First-time candidate"],
+            supporters:["Outsider perspective"],
+            opponents:["Heavy D lean of the district"] }
+        ] }
+    ]
+  },
+  5: {
+    name: "U.S. House — NC District 5",
+    region: "Northwestern NC (the Triad foothills and western mountains)",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", note: "Safely Republican; Foxx is one of the longest-serving NC members.",
+        candidates: [
+          { name: "Virginia Foxx (incumbent)", party: "R", winner: false,
+            positions:["[Verify] Workforce education and apprenticeships","[Verify] Reduce federal regulation","[Verify] Fiscal conservatism"],
+            differentiators:["10-term incumbent (since 2005)","Chairs House Education and Workforce committee","Former community college president"],
+            supporters:["Senior committee influence brings resources to NC","Decades of policy expertise"],
+            opponents:["Career incumbent; out of touch with younger voters","Hard-line on social issues"] },
+          { name: "[Democratic nominee — TBD]", party: "D", winner: false, positions:["—","—","—"], differentiators:["—","—","—"], supporters:[], opponents:[] }
+        ] },
+      { date: "Nov 5, 2024", type: "past", note: "Foxx re-elected in a safe seat.",
+        candidates: [
+          { name: "Virginia Foxx", party: "R", winner: true,
+            positions:["Workforce education","Reduce regulation","Fiscal conservatism"],
+            differentiators:["Long-tenured incumbent","Chairs Education and Workforce","Former college president"],
+            supporters:["Brings seniority and committee clout to NC"],
+            opponents:["Decades-long incumbent in a state with fast change"] },
+          { name: "Chuck Hubbard", party: "D", winner: false,
+            positions:["Healthcare expansion","Education funding","Climate action"],
+            differentiators:["Small-business owner","Pastor","First-time congressional candidate"],
+            supporters:["Faith leader with grassroots credibility"],
+            opponents:["No realistic path in a deep-red district"] }
+        ] }
+    ]
+  },
+  6: {
+    name: "U.S. House — NC District 6",
+    region: "Piedmont Triad (Greensboro/Winston-Salem area and surrounds)",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", note: "Open in 2024 after Manning declined to run under the new map; now leans Republican.",
+        candidates: [
+          { name: "Addison McDowell (incumbent)", party: "R", winner: false,
+            positions:["[Verify] Immigration enforcement and border security","[Verify] Reduce federal spending","[Verify] Pro-business deregulation"],
+            differentiators:["First-term incumbent (elected 2024)","Former Trump administration staffer","Trump-endorsed in 2024 primary"],
+            supporters:["Aligned with Trump's agenda","Fresh face for a redrawn district"],
+            opponents:["Light on legislative experience","Won an open seat under a map favoring his party"] },
+          { name: "[Democratic nominee — TBD]", party: "D", winner: false, positions:["—","—","—"], differentiators:["—","—","—"], supporters:[], opponents:[] }
+        ] },
+      { date: "Nov 5, 2024", type: "past", note: "Open-seat race after Democratic incumbent Kathy Manning declined to run under the new map.",
+        candidates: [
+          { name: "Addison McDowell", party: "R", winner: true,
+            positions:["Immigration enforcement","Reduce spending","Deregulation"],
+            differentiators:["Trump-endorsed in primary","Former federal staffer","Young first-time candidate"],
+            supporters:["MAGA-aligned voice for the Triad"],
+            opponents:["Thin résumé for a House seat"] },
+          { name: "Kevin Hayes", party: "G", winner: false,
+            positions:["Constitutional originalism","Limit federal government","Religious liberty"],
+            differentiators:["Constitution Party nominee","Pastor","Third-party candidate"],
+            supporters:["A consistent constitutional voice"],
+            opponents:["No realistic path in a major-party race"] }
+        ] }
+    ]
+  },
+  7: {
+    name: "U.S. House — NC District 7",
+    region: "Southeastern NC (Wilmington, Brunswick, Robeson, Sampson counties)",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", note: "Solid Republican district.",
+        candidates: [
+          { name: "David Rouzer (incumbent)", party: "R", winner: false,
+            positions:["[Verify] Coastal flooding and storm recovery","[Verify] Agriculture and rural priorities","[Verify] Energy production"],
+            differentiators:["Multi-term incumbent (since 2015)","Chairs Transportation subcommittee","Former state senator and USDA official"],
+            supporters:["Seniority and committee position help bring resources home","Strong on storm-recovery funding"],
+            opponents:["Hasn't moved the needle on chronic coastal flooding","Reliable party-line vote"] },
+          { name: "[Democratic nominee — TBD]", party: "D", winner: false, positions:["—","—","—"], differentiators:["—","—","—"], supporters:[], opponents:[] }
+        ] },
+      { date: "Nov 5, 2024", type: "past", note: "Rouzer re-elected.",
+        candidates: [
+          { name: "David Rouzer", party: "R", winner: true,
+            positions:["Storm recovery","Agriculture","Energy"],
+            differentiators:["Multi-term incumbent","Transportation subcommittee chair","USDA experience"],
+            supporters:["Brings infrastructure dollars to coastal NC"],
+            opponents:["Hasn't solved chronic flooding issues"] },
+          { name: "Marlando Pridgen", party: "D", winner: false,
+            positions:["Healthcare expansion","Education funding","Coastal resilience"],
+            differentiators:["Pastor","First-time candidate","Robeson County native"],
+            supporters:["Local roots and faith-community ties"],
+            opponents:["No realistic path in this district"] }
+        ] }
+    ]
+  },
+  8: {
+    name: "U.S. House — NC District 8",
+    region: "South-central NC (Union, Stanly, Anson, parts of Mecklenburg and Cabarrus)",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", note: "Republican-leaning district; Harris took the seat in 2024 after Dan Bishop ran for AG.",
+        candidates: [
+          { name: "Mark Harris (incumbent)", party: "R", winner: false,
+            positions:["[Verify] Social conservatism: abortion restrictions and parental rights","[Verify] Tax cuts and deregulation","[Verify] Border security"],
+            differentiators:["Pastor of First Baptist Church Charlotte","Long history in NC politics; previously ran for Senate","Won in 2024 after a contested earlier history involving NC-9"],
+            supporters:["Faith leader with deep NC roots","Consistent social-conservative voice"],
+            opponents:["Tied to the 2018 NC-9 ballot fraud scandal involving a contractor on his campaign","Has shifted positions repeatedly across multiple campaigns"] },
+          { name: "[Democratic nominee — TBD]", party: "D", winner: false, positions:["—","—","—"], differentiators:["—","—","—"], supporters:[], opponents:[] }
+        ] },
+      { date: "Nov 5, 2024", type: "past", note: "Open seat after Dan Bishop ran for NC Attorney General; Harris took the seat.",
+        candidates: [
+          { name: "Mark Harris", party: "R", winner: true,
+            positions:["Social conservatism","Tax cuts","Border security"],
+            differentiators:["Baptist pastor","Returned to politics after the 2018 NC-9 controversy","Won open-seat race"],
+            supporters:["Faith leader returning to public service"],
+            opponents:["The 2018 NC-9 election was nullified due to fraud connected to his consultant"] },
+          { name: "Justin Dues", party: "D", winner: false,
+            positions:["Healthcare expansion","Education funding","Voting rights"],
+            differentiators:["First-time congressional candidate","Concord, NC"],
+            supporters:["Fresh face challenging an entrenched politician"],
+            opponents:["Limited resources against a well-known nominee"] }
+        ] }
+    ]
+  },
+  9: {
+    name: "U.S. House — NC District 9",
+    region: "Central NC (Cumberland, Harnett, Moore, Hoke, Lee counties)",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", note: "Solid Republican district.",
+        candidates: [
+          { name: "Richard Hudson (incumbent)", party: "R", winner: false,
+            positions:["[Verify] Military and Fort Bragg/Liberty priorities","[Verify] Energy production","[Verify] Pro-Second Amendment"],
+            differentiators:["Multi-term incumbent (since 2013)","Chair, National Republican Congressional Committee","Strong Fort Liberty advocate"],
+            supporters:["Deep military-base relationships","NRCC leadership role brings party resources"],
+            opponents:["Hardline party loyalist with little independence","Has done little for Cumberland County's poorer areas"] },
+          { name: "[Democratic nominee — TBD]", party: "D", winner: false, positions:["—","—","—"], differentiators:["—","—","—"], supporters:[], opponents:[] }
+        ] },
+      { date: "Nov 5, 2024", type: "past", note: "Hudson re-elected with 56% to Bristow's 38%.",
+        candidates: [
+          { name: "Richard Hudson", party: "R", winner: true,
+            positions:["Military priorities","Energy","Second Amendment"],
+            differentiators:["NRCC Chair","Multi-term incumbent","Strong Fort Liberty advocate"],
+            supporters:["Powerful committee role helps NC"],
+            opponents:["Party loyalist over independent voice"] },
+          { name: "Nigel Bristow", party: "D", winner: false,
+            positions:["Healthcare access","Education funding","Veterans' care"],
+            differentiators:["Pastor","Veteran","First-time candidate"],
+            supporters:["Faith-community and veteran ties"],
+            opponents:["Tough environment for Democrats here"] },
+          { name: "Shelane Etchison", party: "I", winner: false,
+            positions:["Reduce partisanship","Veterans' issues","Term limits"],
+            differentiators:["Army Special Forces veteran","Independent candidate","First-time run"],
+            supporters:["Genuine independent with military credibility"],
+            opponents:["Tough path as a non-major-party candidate"] }
+        ] }
+    ]
+  },
+  10: {
+    name: "U.S. House — NC District 10",
+    region: "Western Piedmont (Iredell, Catawba, Lincoln counties)",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", note: "Solid Republican district.",
+        candidates: [
+          { name: "Pat Harrigan (incumbent)", party: "R", winner: false,
+            positions:["[Verify] National security and defense industry","[Verify] Border enforcement","[Verify] Manufacturing and trade"],
+            differentiators:["First-term incumbent (elected 2024)","Green Beret veteran","Founder of a firearms-manufacturing company"],
+            supporters:["Special Forces background brings national-security credibility","Job-creating business owner"],
+            opponents:["Light on legislative experience","Manufacturing company ties raise potential conflicts"] },
+          { name: "[Democratic nominee — TBD]", party: "D", winner: false, positions:["—","—","—"], differentiators:["—","—","—"], supporters:[], opponents:[] }
+        ] },
+      { date: "Nov 5, 2024", type: "past", note: "Open seat after Patrick McHenry retired; Harrigan won.",
+        candidates: [
+          { name: "Pat Harrigan", party: "R", winner: true,
+            positions:["National security","Border enforcement","Manufacturing"],
+            differentiators:["Green Beret veteran","Firearms-company founder","Won contested primary"],
+            supporters:["Veteran and entrepreneur"],
+            opponents:["First-time officeholder"] },
+          { name: "Ralph Scott Jr.", party: "D", winner: false,
+            positions:["Healthcare access","Education funding","Worker rights"],
+            differentiators:["Educator","Veteran","First-time candidate"],
+            supporters:["Teaching background and military service"],
+            opponents:["Tough district for Democrats"] }
+        ] }
+    ]
+  },
+  11: {
+    name: "U.S. House — NC District 11",
+    region: "Western NC mountains (Asheville and the Great Smoky Mountains region)",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", note: "Republican-leaning district with Helene recovery as a top issue.",
+        candidates: [
+          { name: "Chuck Edwards (incumbent)", party: "R", winner: false,
+            positions:["[Verify] Helene recovery and disaster relief","[Verify] Tourism and small business","[Verify] Forest and public-lands management"],
+            differentiators:["Second-term incumbent","Former state senator","Restaurant-franchise businessman"],
+            supporters:["On-the-ground after Helene, securing federal recovery funds","Practical, less ideological than predecessor Madison Cawthorn"],
+            opponents:["Helene recovery in western NC has been slow and uneven","Hasn't broken from party on disaster spending"] },
+          { name: "[Democratic nominee — TBD]", party: "D", winner: false, positions:["—","—","—"], differentiators:["—","—","—"], supporters:[], opponents:[] }
+        ] },
+      { date: "Nov 5, 2024", type: "past", note: "Edwards re-elected just weeks after Hurricane Helene devastated western NC.",
+        candidates: [
+          { name: "Chuck Edwards", party: "R", winner: true,
+            positions:["Disaster relief","Tourism economy","Public lands"],
+            differentiators:["Incumbent since 2023","Former state senator","Businessman"],
+            supporters:["Steady hand during Helene response"],
+            opponents:["Recovery pace has frustrated mountain residents"] },
+          { name: "Caleb Rudow", party: "D", winner: false,
+            positions:["Healthcare expansion","Climate action","Education funding"],
+            differentiators:["State representative from Asheville","Younger progressive voice","Foreign-policy background"],
+            supporters:["Strong Asheville-area base"],
+            opponents:["District is geographically large and conservative outside Asheville"] }
+        ] }
+    ]
+  },
+  12: {
+    name: "U.S. House — NC District 12",
+    region: "Mecklenburg County (most of Charlotte)",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", note: "Safely Democratic district.",
+        candidates: [
+          { name: "Alma Adams (incumbent)", party: "D", winner: false,
+            positions:["[Verify] HBCU funding and educational equity","[Verify] Affordable housing","[Verify] Workforce development"],
+            differentiators:["Multi-term incumbent (since 2014)","Founder, HBCU Caucus","Former educator and state legislator"],
+            supporters:["Strong HBCU and Charlotte education advocate","Senior committee experience"],
+            opponents:["Reliable party-line vote","Long tenure raises term-limit questions for some"] },
+          { name: "[GOP nominee — TBD]", party: "R", winner: false, positions:["—","—","—"], differentiators:["—","—","—"], supporters:[], opponents:[] }
+        ] },
+      { date: "Nov 5, 2024", type: "past", note: "Adams re-elected in a safe seat.",
+        candidates: [
+          { name: "Alma Adams", party: "D", winner: true,
+            positions:["HBCU funding","Affordable housing","Workforce development"],
+            differentiators:["Long-tenured incumbent","HBCU Caucus founder","Former Bennett College professor"],
+            supporters:["Tireless HBCU advocate"],
+            opponents:["Reliable party-line vote"] },
+          { name: "Addul Ali", party: "R", winner: false,
+            positions:["Tax cuts","Education choice","Public safety"],
+            differentiators:["First-time candidate","Small-business owner"],
+            supporters:["A different perspective in a one-party district"],
+            opponents:["No realistic path in this seat"] }
+        ] }
+    ]
+  },
+  13: {
+    name: "U.S. House — NC District 13",
+    region: "Johnston, Franklin, and parts of Wake County",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", note: "Republican-leaning under the current map.",
+        candidates: [
+          { name: "Brad Knott (incumbent)", party: "R", winner: false,
+            positions:["[Verify] Public safety and prosecuting violent crime","[Verify] Border security","[Verify] Pro-business deregulation"],
+            differentiators:["First-term incumbent (elected 2024)","Former federal prosecutor","Trump-endorsed in primary"],
+            supporters:["Tough-on-crime prosecutorial credibility","Fresh face for a redrawn district"],
+            opponents:["Light on legislative experience","Trump-endorsed loyalty may limit independence"] },
+          { name: "[Democratic nominee — TBD]", party: "D", winner: false, positions:["—","—","—"], differentiators:["—","—","—"], supporters:[], opponents:[] }
+        ] },
+      { date: "Nov 5, 2024", type: "past", note: "Knott took an open seat in a redrawn district.",
+        candidates: [
+          { name: "Brad Knott", party: "R", winner: true,
+            positions:["Public safety","Border security","Deregulation"],
+            differentiators:["Former federal prosecutor","Trump-endorsed","First-time officeholder"],
+            supporters:["Law-enforcement background"],
+            opponents:["No legislative track record yet"] },
+          { name: "Frank Pierce", party: "D", winner: false,
+            positions:["Healthcare access","Education funding","Voting rights"],
+            differentiators:["First-time candidate","Local businessman"],
+            supporters:["Outsider perspective"],
+            opponents:["Tough new map for Democrats"] }
+        ] }
+    ]
+  },
+  14: {
+    name: "U.S. House — NC District 14",
+    region: "Gaston, Cleveland, Burke, Rutherford counties + parts of Mecklenburg and Polk",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", note: "Republican-leaning under the current map.",
+        candidates: [
+          { name: "Tim Moore (incumbent)", party: "R", winner: false,
+            positions:["[Verify] Tax cuts and pro-business policy","[Verify] Border enforcement","[Verify] Religious-liberty protections"],
+            differentiators:["First-term US House incumbent (elected 2024)","Longest-serving NC House Speaker in modern history (2015–2024)","Kings Mountain attorney"],
+            supporters:["Decades of state-government leadership experience","Knows how to move legislation through committee"],
+            opponents:["Architect of policies critics call extreme, including 2023 abortion restrictions","Drew his own US House district while still Speaker"] },
+          { name: "[Democratic nominee — TBD]", party: "D", winner: false, positions:["—","—","—"], differentiators:["—","—","—"], supporters:[], opponents:[] }
+        ] },
+      { date: "Nov 5, 2024", type: "past", note: "Moore took the seat 58.1% to 41.9% after Democrat Jeff Jackson left to run for AG.",
+        candidates: [
+          { name: "Tim Moore", party: "R", winner: true,
+            positions:["Tax cuts","Border enforcement","Religious liberty"],
+            differentiators:["Longest-serving NC House Speaker","21 years in the state legislature","Attorney from Kings Mountain"],
+            supporters:["Unmatched legislative experience"],
+            opponents:["Drew his own district while still Speaker — open ethics question"] },
+          { name: "Pam Genant", party: "D", winner: false,
+            positions:["Healthcare expansion","Public education funding","Reproductive rights"],
+            differentiators:["First-time congressional candidate","Educator","Gaston County resident"],
+            supporters:["Steady, locally grounded candidate"],
+            opponents:["District redrawn explicitly to elect Moore"] }
+        ] }
+    ]
+  }
+};
+
+const SITE_META = { name: "North Carolina Elections Hub", lastUpdated: "July 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: NC SBE candidate filings, WECT, Port City Daily, WHQR (Mar 2026 primary results).
+const LOCAL_RACES = {
+  "37129": [ // New Hanover
+    {
+      date: "Nov 3, 2026", type: "upcoming", scope: "Local · Countywide",
+      office: "New Hanover County Sheriff",
+      note: "Ed McMahon is unopposed after switching parties from Democrat to Republican in 2025.",
+      candidates: [
+        { name: "Ed McMahon (incumbent)", party: "R", winner: false,
+          positions: ["Continue the community-policing model built over four terms","School safety and school resource officer staffing","Fentanyl interdiction and regional task-force work"],
+          differentiators: ["Sheriff since 2010 — four four-year terms","Switched from Democrat to Republican in 2025 after 16 years in office","Unopposed in 2026: no primary or general challenger filed"],
+          supporters: ["Decades of steady leadership and deep community trust","Kept the office professional and scandal-free","Party switch reflects the county electorate, not politics"],
+          opponents: ["Sixteen years is too long for any one officeholder","The party switch looks like political convenience","An unopposed race means no accountability check this cycle"] }
+      ]
+    },
+    {
+      date: "Nov 3, 2026", type: "upcoming", scope: "Local · Countywide · 2 seats",
+      office: "County Commission (2 seats)",
+      note: "March primary: Rob Zapple and LeShonda Wallace won the Democratic nominations over sitting officials Salette Andrews and Judy Justice. No GOP primary was needed. Five candidates contest two seats in November.",
+      candidates: [
+        { name: "Rob Zapple (incumbent)", party: "D", winner: false,
+          positions: ["Manage growth with infrastructure-first development rules","Protect county water quality (the GenX/PFAS legacy)","Steward the hospital-sale Community Endowment funds"],
+          differentiators: ["Multi-term incumbent commissioner","Top Democratic primary finisher in March","Long record on stormwater and environmental issues"],
+          supporters: ["Institutional memory the board needs as the county booms","Consistent watchdog on the New Hanover Community Endowment"],
+          opponents: ["Long-tenured incumbent in a county wanting fresh direction","Growth accelerated on his watch"] },
+        { name: "LeShonda Wallace", party: "D", winner: false,
+          positions: ["Public-health-informed county budgeting","Affordable housing and childcare access","Health equity across county services"],
+          differentiators: ["Former chair of the county Health & Human Services board","PhD; healthcare professional","Beat two sitting elected officials in the primary"],
+          supporters: ["Public-health expertise the commission currently lacks","A fresh, qualified voice over career politicians"],
+          opponents: ["No elected-office experience","May push spending beyond county means"] },
+        { name: "LeAnn Pierce (incumbent)", party: "R", winner: false,
+          positions: ["Hold the line on property-tax rates","Business-friendly permitting and development review","Beach-town priorities: renourishment and the tourism economy"],
+          differentiators: ["Incumbent commissioner; former Carolina Beach mayor","Hospitality business owner","No primary — consolidated Republican support"],
+          supporters: ["Small-business owner who understands the tax burden","Coastal-town governing experience"],
+          opponents: ["Too aligned with developers","Tax-rate focus shortchanges schools and services"] },
+        { name: "Richard Collier", party: "R", winner: false,
+          positions: ["Slow-growth land-use planning through UDO reform","Infrastructure concurrency before new approvals","Fiscal restraint on county debt"],
+          differentiators: ["Wilmington Planning Board member","Engineer by profession","Ran for Wilmington City Council in 2025"],
+          supporters: ["Planning-board experience on exactly the issues that matter here","Technical, detail-oriented candidate"],
+          opponents: ["Lost his most recent council race","His planning board approved much of the growth he now criticizes"] },
+        { name: "Bob Drach", party: "L", winner: false,
+          positions: ["Cut county spending and debt service","Property-rights-first land use","Government transparency"],
+          differentiators: ["Former chair of the NC Libertarian Party","2024 candidate for State Auditor","Only third-party candidate in the race"],
+          supporters: ["A genuine alternative to the two-party board"],
+          opponents: ["No realistic path to a seat; may split the anti-incumbent vote"] }
+      ]
+    },
+    {
+      date: "Nov 3, 2026", type: "upcoming", scope: "Local · Countywide · 4 seats",
+      office: "Board of Education (4 seats)",
+      note: "Both parties held March primaries for four nominations each. Democratic top finishers: Brittnei LaRue, Wendy Dale, Jerry Jones Jr. [fourth nominee and full GOP slate — verify against certified results]. Incumbent Pat Bradford (R) sought re-nomination.",
+      candidates: [
+        { name: "Brittnei LaRue", party: "D", winner: false,
+          positions: ["Teacher retention and local pay supplements","Restore public trust after years of board turmoil","[Verify] Curriculum stability over politics"],
+          differentiators: ["Top vote-getter in the Democratic primary","First-time candidate","Community advocate"],
+          supporters: ["Fresh energy for a board voters are tired of fighting about"],
+          opponents: ["No board or education-governance experience"] },
+        { name: "Wendy Dale", party: "D", winner: false,
+          positions: ["[Verify] Public-school funding advocacy","[Verify] Teacher support","[Verify] Special-education services"],
+          differentiators: ["Second-place Democratic primary finisher","[Verify background]"],
+          supporters: [], opponents: [] },
+        { name: "Jerry Jones Jr.", party: "D", winner: false,
+          positions: ["[Verify] Equity and student achievement","[Verify] Community-schools model","[Verify]"],
+          differentiators: ["Third-place Democratic primary finisher","Completed Ballotpedia's candidate survey","[Verify background]"],
+          supporters: [], opponents: [] },
+        { name: "Pat Bradford (incumbent)", party: "R", winner: false,
+          positions: ["Parental rights and curriculum transparency","Fiscal oversight of the schools budget","Back-to-basics academics"],
+          differentiators: ["Incumbent board member seeking re-election","[Verify primary result]","Media and publishing background"],
+          supporters: ["Consistent conservative voice on a contentious board"],
+          opponents: ["Part of the board majority critics blame for the turmoil"] }
+      ]
+    },
+    {
+      date: "Nov 3, 2026", type: "upcoming", scope: "Local · Judicial District",
+      office: "District Attorney (District 6)",
+      note: "Jason Smith won in 2024 to complete Ben David's term; he is unopposed for a full four-year term.",
+      candidates: [
+        { name: "Jason Smith (incumbent)", party: "R", winner: false,
+          positions: ["Violent-crime and gang prosecutions","Fentanyl-death homicide charging policy","Victim-services modernization"],
+          differentiators: ["Won the 2024 special term after Ben David's retirement","Career prosecutor in the district","Unopposed for the full term"],
+          supporters: ["Continuity in an office with a strong regional reputation"],
+          opponents: ["Unopposed races deny voters any real choice"] }
+      ]
+    },
+    {
+      date: "Nov 3, 2026", type: "upcoming", scope: "Local · Countywide",
+      office: "Clerk of Superior Court",
+      note: "The clerk runs court records, estates, and special proceedings for the county.",
+      candidates: [
+        { name: "Jan Kennedy (incumbent)", party: "R", winner: false,
+          positions: ["Managing the eCourts digital transition","Estates and guardianship service speed","Office efficiency"],
+          differentiators: ["Incumbent clerk","Oversaw the county eCourts rollout","[Verify tenure details]"],
+          supporters: ["Experienced hand through a difficult digital transition"],
+          opponents: ["eCourts rollout frustrations happened on her watch"] },
+        { name: "Jennie Thomason", party: "D", winner: false,
+          positions: ["[Verify] Customer-service reform of the clerk office","[Verify] Faster estates processing","[Verify]"],
+          differentiators: ["Democratic challenger","[Verify background]"],
+          supporters: [], opponents: [] }
+      ]
+    },
+    {
+      date: "Nov 3, 2026", type: "upcoming", scope: "State · NC House 20",
+      office: "NC House District 20 (open seat)",
+      note: "Rep. Ted Davis (R) is retiring; he endorsed Dane Scalise for the seat.",
+      candidates: [
+        { name: "Dane Scalise", party: "R", winner: false,
+          positions: ["Pro-growth, low-tax state policy","Coastal insurance-market reform","Back law enforcement"],
+          differentiators: ["Sitting New Hanover County commissioner","Endorsed by retiring Rep. Ted Davis","Attorney"],
+          supporters: ["The Davis endorsement signals continuity for a pragmatic seat","County-level governing record"],
+          opponents: ["Leaving mid-term creates a commission vacancy his party fills","Too aligned with the development industry"] },
+        { name: "Tim Merrick", party: "D", winner: false,
+          positions: ["Public-school funding and educator pay","Healthcare access","Environmental protection of the Cape Fear"],
+          differentiators: ["Sitting school board member","Physician assistant background","If either candidate wins, their party appoints their replacement on the current board"],
+          supporters: ["Education front-liner in a district that votes on schools","Healthcare experience"],
+          opponents: ["Board tenure coincided with district turmoil","Left of the district on state issues"] }
+      ]
+    },
+    {
+      date: "Nov 3, 2026", type: "upcoming", scope: "State · NC Senate 7",
+      office: "NC Senate District 7",
+      note: "The Senate Majority Leader's seat.",
+      candidates: [
+        { name: "Michael Lee (incumbent)", party: "R", winner: false,
+          positions: ["School-choice expansion and Opportunity Scholarships","Continuing state tax cuts","Film-industry and port investment"],
+          differentiators: ["NC Senate Majority Leader","Multi-term incumbent from Wilmington","One of Raleigh\u2019s most influential education-policy voices"],
+          supporters: ["Majority Leader clout delivers for the region","Serious legislator, not a bomb-thrower"],
+          opponents: ["Champion of vouchers critics say drain public schools","Leadership role ties him to every unpopular Raleigh decision"] },
+        { name: "Jessica Bichler", party: "D", winner: false,
+          positions: ["[Verify] Public-education funding","[Verify] Reproductive rights","[Verify] Coastal environment"],
+          differentiators: ["Democratic challenger","[Verify background]"],
+          supporters: [], opponents: [] }
+      ]
+    },
+    {
+      date: "Nov 3, 2026", type: "upcoming", scope: "State · NC House 18 & 19",
+      office: "NC House Districts 18 & 19",
+      note: "D18: Deb Butler (D, incumbent) vs. Latisha Grady (R). D19: Charlie Miller (R, incumbent) vs. Scott Nasiff (D). District lines split the county — check your own ballot.",
+      candidates: []
+    }
+  ]
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = district
+    ? district.races.map(r => ({
+        ...r,
+        office: r.office || district.name,
+        scope: r.scope || `Federal · District ${county.d}`
+      }))
+    : [];
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const NC_STATE_FIPS = "37";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#ncmap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(NC_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 450;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Raleigh ----
+  drawCapital(g, projection, { name: "Raleigh", lng: -78.6382, lat: 35.7796 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in NC";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our North Carolina dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">Candidates not yet announced.</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>

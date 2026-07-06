@@ -1,0 +1,9 @@
+# Windows / OneDrive noise
+Thumbs.db
+desktop.ini
+
+# macOS (in case files are ever edited elsewhere)
+.DS_Store
+
+# Node (the site has no dependencies, but keep this just in case)
+node_modules/

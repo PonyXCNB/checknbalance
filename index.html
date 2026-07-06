@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>United States Elections Hub</title>
+<meta name="description" content="An interactive 50-state atlas of election coverage." />
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:#0E1726; --ink-soft:#4A5468; --paper:#FBF9F4; --paper-pure:#FFFFFF;
+    --gold:#B8893C; --gold-deep:#8C6420; --gold-soft:#E8D9B8;
+    --line:#E5DDC9;
+    --serif:'Cormorant Garamond', Georgia, serif;
+    --sans:'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+    --shadow:0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); color: var(--ink); background: var(--paper); line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+
+  .topbar { border-bottom: 1px solid var(--line); background: var(--paper-pure); position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px); }
+  .topbar-inner { max-width: 1240px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 16px 32px; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .crest {
+    width: 38px; height: 38px; display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold), var(--gold-deep));
+    border-radius: 50%; color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name { font-family: var(--serif); font-weight: 500; font-size: 17px; line-height: 1.1; }
+  .brand-sub { font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--ink-soft); margin-top: 2px; }
+
+  .hero { max-width: 1240px; margin: 0 auto; padding: 80px 32px 40px; text-align: center; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px; padding: 7px 16px; border: 1px solid var(--gold);
+    color: var(--gold-deep); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; border-radius: 999px; margin-bottom: 24px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+  h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(40px, 6vw, 72px); line-height: 1.06; letter-spacing: -0.018em; max-width: 22ch; margin: 0 auto; }
+  h1 em { font-style: italic; color: var(--gold-deep); font-weight: 500; }
+  .hero-lede { font-size: 17px; line-height: 1.65; color: var(--ink-soft); max-width: 62ch; margin: 24px auto 0; }
+
+  .map-section { max-width: 1240px; margin: 0 auto; padding: 32px 32px 64px; }
+  .legend { display: flex; align-items: center; gap: 18px; font-size: 12px; color: var(--ink-soft); margin-bottom: 16px; justify-content: center; }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; border: 1px solid rgba(0,0,0,.06); }
+
+  .map-shell { background: var(--paper-pure); border: 1px solid var(--line); border-radius: 18px; padding: 8px; box-shadow: var(--shadow); position: relative; overflow: hidden; }
+  .map-frame { background: radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%), var(--paper-pure); border-radius: 12px; aspect-ratio: 1.62 / 1; width: 100%; position: relative; }
+  #usmap { width: 100%; height: 100%; display: block; }
+  .map-loading { position: absolute; inset: 0; display: grid; place-items: center; color: var(--ink-soft); font-size: 14px; background: var(--paper-pure); }
+
+  .state { fill: #F1E9D2; stroke: var(--paper-pure); stroke-width: 0.8; transition: fill .15s ease; cursor: pointer; }
+  .state.featured { fill: var(--gold); }
+  .state.partial { fill: #D9BE85; }
+  .state.partial:hover { fill: var(--gold-deep); }
+  .state.featured:hover { fill: var(--gold-deep); }
+  .state:hover:not(.featured) { fill: #E5DBBE; }
+
+  /* Home-state pulse: light red, fade, light blue, fade — repeat */
+  @keyframes homePulse {
+    0%, 100% { fill: #F1E9D2; }
+    25%      { fill: #F3C4BD; }
+    50%      { fill: #F1E9D2; }
+    75%      { fill: #C3D7F2; }
+  }
+  .state.home { animation: homePulse 8s ease-in-out infinite; }
+  .state.home:hover { animation-play-state: paused; }
+  /* If the home state is the featured (gold) state, pulse its outline instead */
+  @keyframes homeRing {
+    0%, 100% { stroke: var(--paper-pure); stroke-width: 0.8; }
+    50%      { stroke: var(--ink); stroke-width: 2; }
+  }
+  .state.featured.home { animation: homeRing 5s ease-in-out infinite; }
+  .home-note {
+    text-align: center; font-size: 12px; color: var(--ink-soft);
+    margin-top: 14px; display: none;
+  }
+
+  .state-abbr { font-family: var(--sans); font-size: 11px; font-weight: 600; fill: var(--ink); text-anchor: middle; pointer-events: none; letter-spacing: 0.02em; }
+  .state-abbr.on-featured { fill: white; }
+  .callout { cursor: pointer; }
+  .callout-line { stroke: var(--ink-soft); stroke-width: 0.8; fill: none; opacity: 0.5; transition: stroke .15s ease, opacity .15s ease; }
+  .callout-abbr { font-family: var(--sans); font-size: 11px; font-weight: 600; fill: var(--ink); text-anchor: start; pointer-events: none; transition: fill .15s ease; }
+  .callout:hover .callout-abbr { fill: var(--gold-deep); }
+  .callout:hover .callout-line { stroke: var(--gold-deep); opacity: 0.95; }
+
+  /* Capital marker (muted) */
+  .capital-star { fill: var(--ink); fill-opacity: 0.55; pointer-events: none; }
+  .capital-label { font-family: var(--sans); font-size: 9px; font-weight: 600; letter-spacing: 0.05em; fill: var(--ink); fill-opacity: 0.5; pointer-events: none; }
+
+  .tooltip { position: absolute; pointer-events: none; background: var(--ink); color: var(--paper); padding: 10px 14px; border-radius: 8px; font-size: 12px; transform: translate(-50%, -130%); opacity: 0; transition: opacity .12s ease; white-space: nowrap; z-index: 10; box-shadow: 0 8px 24px rgba(0,0,0,.18); }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ---- Voter facts section ---- */
+  .facts { max-width: 1240px; margin: 0 auto; padding: 24px 32px 56px; }
+  .facts-head { text-align: center; margin-bottom: 36px; }
+  .facts-head h2 { font-family: var(--serif); font-weight: 400; font-size: 38px; letter-spacing: -0.018em; line-height: 1.1; }
+  .facts-head h2 em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .facts-head p { color: var(--ink-soft); font-size: 15px; max-width: 60ch; margin: 12px auto 0; }
+  .facts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .fact-card {
+    background: var(--paper-pure); border: 1px solid var(--line); border-radius: 16px;
+    padding: 28px 24px; box-shadow: var(--shadow); display: flex; flex-direction: column;
+  }
+  .fact-num { font-family: var(--serif); font-size: 52px; font-weight: 500; color: var(--gold-deep); line-height: 1; letter-spacing: -0.02em; }
+  .fact-num span { font-size: 26px; }
+  .fact-body { font-size: 14px; color: var(--ink); margin-top: 14px; line-height: 1.55; flex: 1; }
+  .fact-source { font-size: 11px; color: var(--ink-soft); margin-top: 16px; letter-spacing: 0.02em; }
+  .fact-wide { grid-column: span 3; }
+  .fact-wide .fact-inner { display: flex; align-items: center; gap: 28px; }
+  .fact-wide .fact-num { font-size: 44px; }
+
+  .roadmap { max-width: 1240px; margin: 0 auto; padding: 16px 32px 80px; text-align: center; }
+  .roadmap h2 { font-family: var(--serif); font-weight: 400; font-size: 32px; letter-spacing: -0.018em; line-height: 1.1; margin-bottom: 12px; }
+  .roadmap h2 em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .roadmap p { color: var(--ink-soft); font-size: 15px; max-width: 60ch; margin: 0 auto; }
+
+  .footer { border-top: 1px solid var(--line); background: var(--paper-pure); padding: 48px 32px 40px; margin-top: 20px; }
+  .footer-inner { max-width: 1240px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .footer-crest { font-family: var(--serif); font-size: 15px; color: var(--ink-soft); }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta { font-size: 12px; color: var(--ink-soft); line-height: 1.6; }
+
+  @media (max-width: 820px) {
+    .facts-grid { grid-template-columns: repeat(2, 1fr); }
+    .fact-wide { grid-column: span 2; }
+    .fact-wide .fact-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { padding: 12px 16px; }
+    .brand-text { display: none; }
+    .hero { padding: 48px 20px 20px; }
+    .map-section, .facts { padding-left: 16px; padding-right: 16px; }
+    .facts-grid { grid-template-columns: 1fr; }
+    .fact-wide { grid-column: span 1; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="index.html" class="brand">
+      <div class="crest">US</div>
+      <div class="brand-text">
+        <span class="brand-name">National Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> Fifty States · One Atlas</div>
+  <h1>Understand the candidates that will shape your <em>future</em>.</h1>
+  <p class="hero-lede">
+    Click any state to meet their election candidates, county by county.
+  </p>
+</section>
+
+<section class="map-section">
+  <div class="legend">
+    <span class="legend-swatch"><i style="background:#B8893C;border-color:#8C6420"></i> Fully built (North Carolina)</span>
+    <span class="legend-swatch"><i style="background:#D9BE85;border-color:#B8893C"></i> Marquee races built</span>
+    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework</span>
+  </div>
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of the United States…</div>
+      <svg id="usmap" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+  <div class="home-note" id="home-note"></div>
+</section>
+
+<!-- ============= VERIFIABLE VOTER FACTS ============= -->
+<section class="facts">
+  <div class="facts-head">
+    <h2>Why <em>down-ballot</em> matters.</h2>
+    <p>
+      The races on this site — Senate, House, judges, county seats — are decided by a fraction of eligible
+      voters, often by people who know little about the candidates. The numbers tell the story.
+    </p>
+  </div>
+
+  <div class="facts-grid">
+    <div class="fact-card">
+      <div class="fact-num">~20<span>%</span></div>
+      <div class="fact-body">
+        Average share of eligible Americans who vote in primary elections — the contests that decide who even
+        appears on the November ballot. In 2024, only about 34 million of roughly 149 million eligible voters
+        cast a primary ballot.
+      </div>
+      <div class="fact-source">Sources: academic study via Clark Univ.; The Midterm Project (2024 figures)</div>
+    </div>
+
+    <div class="fact-card">
+      <div class="fact-num">~80<span>%</span></div>
+      <div class="fact-body">
+        Of eligible voters do <em>not</em> participate in primaries. Turnout in the 2022 midterm primaries
+        was just 21.3% — still short of the 35%-by-2026 national target set by reform advocates.
+      </div>
+      <div class="fact-source">Source: Bipartisan Policy Center</div>
+    </div>
+
+    <div class="fact-card">
+      <div class="fact-num">60<span>%</span></div>
+      <div class="fact-body">
+        Of North Carolina voters in one study could not name a single justice on their own state supreme
+        court — a court whose seats appear on the very ballots they cast.
+      </div>
+      <div class="fact-source">Source: study cited in Maine Law faculty publication</div>
+    </div>
+
+    <div class="fact-card">
+      <div class="fact-num">~25<span>%</span></div>
+      <div class="fact-body">
+        Average turnout across 340 U.S. mayoral elections in one analysis. Some big-city mayors have won with
+        single-digit turnout; Philadelphia elected its mayor in 2019 with just 27% turnout.
+      </div>
+      <div class="fact-source">Source: FairVote, summarizing a 2013 study</div>
+    </div>
+
+    <div class="fact-card">
+      <div class="fact-num">½</div>
+      <div class="fact-body">
+        In San Francisco's 2014 election, roughly half of the people who voted skipped the judicial races
+        entirely — even though nearly everyone marked a choice for president two years earlier.
+      </div>
+      <div class="fact-source">Source: KQED analysis of San Francisco turnout</div>
+    </div>
+
+    <div class="fact-card">
+      <div class="fact-num">56–68<span>%</span></div>
+      <div class="fact-body">
+        The range of U.S. general-election turnout since 2000, versus just 18–29% for primaries. General
+        turnout runs more than double primary turnout — and falls off further the lower you go down the ballot.
+      </div>
+      <div class="fact-source">Source: States United Democracy Center</div>
+    </div>
+
+    <div class="fact-card fact-wide">
+      <div class="fact-inner">
+        <div class="fact-num">The party-label fallback</div>
+        <div class="fact-body" style="margin-top:0">
+          Research consistently finds that when voters lack information about down-ballot candidates — state
+          legislators, judges, county clerks, registers of deeds — they fall back on the party label as a
+          shortcut, rather than the candidate's record or qualifications. The less voters know, the more a
+          single letter next to a name decides the outcome. That's exactly the gap this project exists to close.
+        </div>
+      </div>
+      <div class="fact-source">Source: American Political Science Review; political-science research on voter heuristics</div>
+    </div>
+  </div>
+</section>
+
+<section class="roadmap">
+  <h2>How <em>you</em> can help.</h2>
+  <p>
+    North Carolina is the proof of concept. Every other state has a clickable starter map ready to be filled
+    in with verified candidates, positions, and the supporter/opponent perspectives that make a ballot legible.
+    Pick a state, click in, and you'll see the framework waiting for data.
+  </p>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-crest"><strong>Elections Hub</strong> · A civic side-project, not affiliated with any government agency.</div>
+    <div class="footer-meta">Last updated: May 2026</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+<script>
+// FIPS -> abbreviation
+const ST = {
+  "01":"AL","02":"AK","04":"AZ","05":"AR","06":"CA","08":"CO","09":"CT","10":"DE","11":"DC",
+  "12":"FL","13":"GA","15":"HI","16":"ID","17":"IL","18":"IN","19":"IA","20":"KS","21":"KY",
+  "22":"LA","23":"ME","24":"MD","25":"MA","26":"MI","27":"MN","28":"MS","29":"MO","30":"MT",
+  "31":"NE","32":"NV","33":"NH","34":"NJ","35":"NM","36":"NY","37":"NC","38":"ND","39":"OH",
+  "40":"OK","41":"OR","42":"PA","44":"RI","45":"SC","46":"SD","47":"TN","48":"TX","49":"UT",
+  "50":"VT","51":"VA","53":"WA","54":"WV","55":"WI","56":"WY"
+};
+const NAME = {
+  "01":"Alabama","02":"Alaska","04":"Arizona","05":"Arkansas","06":"California","08":"Colorado",
+  "09":"Connecticut","10":"Delaware","11":"District of Columbia","12":"Florida","13":"Georgia",
+  "15":"Hawaii","16":"Idaho","17":"Illinois","18":"Indiana","19":"Iowa","20":"Kansas","21":"Kentucky",
+  "22":"Louisiana","23":"Maine","24":"Maryland","25":"Massachusetts","26":"Michigan","27":"Minnesota",
+  "28":"Mississippi","29":"Missouri","30":"Montana","31":"Nebraska","32":"Nevada","33":"New Hampshire",
+  "34":"New Jersey","35":"New Mexico","36":"New York","37":"North Carolina","38":"North Dakota",
+  "39":"Ohio","40":"Oklahoma","41":"Oregon","42":"Pennsylvania","44":"Rhode Island","45":"South Carolina",
+  "46":"South Dakota","47":"Tennessee","48":"Texas","49":"Utah","50":"Vermont","51":"Virginia",
+  "53":"Washington","54":"West Virginia","55":"Wisconsin","56":"Wyoming"
+};
+// State capitals: [lng, lat]
+const CAP = {
+  "01":[-86.300,32.377],"02":[-134.420,58.302],"04":[-112.097,33.448],"05":[-92.290,34.746],
+  "06":[-121.494,38.576],"08":[-104.984,39.739],"09":[-72.682,41.764],"10":[-75.524,39.158],
+  "11":[-77.037,38.907],"12":[-84.281,30.438],"13":[-84.388,33.749],"15":[-157.858,21.307],
+  "16":[-116.200,43.617],"17":[-89.654,39.798],"18":[-86.158,39.768],"19":[-93.604,41.591],
+  "20":[-95.678,39.048],"21":[-84.863,38.197],"22":[-91.187,30.457],"23":[-69.782,44.307],
+  "24":[-76.492,38.979],"25":[-71.064,42.358],"26":[-84.555,42.733],"27":[-93.090,44.954],
+  "28":[-90.184,32.298],"29":[-92.173,38.579],"30":[-112.039,46.589],"31":[-96.700,40.808],
+  "32":[-119.766,39.164],"33":[-71.538,43.207],"34":[-74.770,40.220],"35":[-105.940,35.682],
+  "36":[-73.757,42.652],"37":[-78.639,35.780],"38":[-100.784,46.821],"39":[-82.999,39.961],
+  "40":[-97.535,35.482],"41":[-123.030,44.939],"42":[-76.883,40.264],"44":[-71.415,41.831],
+  "45":[-81.035,34.000],"46":[-100.346,44.367],"47":[-86.784,36.166],"48":[-97.743,30.267],
+  "49":[-111.891,40.761],"50":[-72.576,44.260],"51":[-77.436,37.541],"53":[-122.901,47.038],
+  "54":[-81.612,38.336],"55":[-89.384,43.074],"56":[-104.820,41.140]
+};
+const FEATURED = "37";  // North Carolina is the fully built state
+// States with marquee 2026 races built out (partial tier)
+const PARTIAL = new Set(["45","13","24","11","51","12","01","36","34","10"]); // SC GA MD DC VA FL AL NY NJ DE
+
+// Small states that get a leader-line callout instead of an inline label.
+// lx/ly are label anchor positions in the g-coordinate space (right-side ocean).
+const CALLOUTS = [
+  { fips:"50", lx:905, ly:78  }, // VT
+  { fips:"33", lx:905, ly:110 }, // NH
+  { fips:"25", lx:905, ly:150 }, // MA
+  { fips:"44", lx:905, ly:184 }, // RI
+  { fips:"09", lx:905, ly:218 }, // CT
+  { fips:"34", lx:905, ly:256 }, // NJ
+  { fips:"10", lx:905, ly:292 }, // DE
+  { fips:"24", lx:905, ly:328 }, // MD
+  { fips:"11", lx:905, ly:362 }  // DC
+];
+const CALLOUT_FIPS = new Set(CALLOUTS.map(c => c.fips));
+
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
+const svg = d3.select("#usmap");
+const tooltip = document.getElementById("tooltip");
+const loading = document.getElementById("map-loading");
+
+function destFor(fips) {
+  return fips === FEATURED ? "nc.html" : `state.html?state=${ST[fips]}`;
+}
+function starPath(cx, cy, r) {
+  let pts = [];
+  for (let i = 0; i < 10; i++) {
+    const ang = (Math.PI / 5) * i - Math.PI / 2;
+    const rad = i % 2 === 0 ? r : r * 0.42;
+    pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+  }
+  return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+}
+
+d3.json(TOPO_URL).then((us) => {
+  const states = topojson.feature(us, us.objects.states).features;
+  const width = 1000, height = 620;
+  // Reserve ~130px on the right for callout labels.
+  const projection = d3.geoAlbersUsa().fitSize([width - 150, height - 40], { type:"FeatureCollection", features: states });
+  const path = d3.geoPath().projection(projection);
+  const g = svg.append("g").attr("transform","translate(20,20)");
+
+  // States
+  g.selectAll(".state")
+    .data(states).enter().append("path")
+      .attr("d", path)
+      .attr("class", d => {
+        const f = String(d.id).padStart(2,"0");
+        return "state" + (f === FEATURED ? " featured" : (PARTIAL.has(f) ? " partial" : ""));
+      })
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(2,"0");
+        const tier = fips === FEATURED ? "Fully built" : (PARTIAL.has(fips) ? "Marquee races built" : "Starter framework");
+        tooltip.innerHTML = `<strong>${NAME[fips] || "—"}</strong><div class="tooltip-meta">${tier} · click to explore →</div>`;
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(2,"0");
+        window.location.href = destFor(fips);
+      });
+
+  // Inline abbreviations (skip callout states)
+  g.selectAll(".state-abbr")
+    .data(states.filter(d => !CALLOUT_FIPS.has(String(d.id).padStart(2,"0"))))
+    .enter().append("text")
+      .attr("class", d => "state-abbr" + (String(d.id).padStart(2,"0") === FEATURED ? " on-featured" : ""))
+      .attr("transform", d => `translate(${path.centroid(d)})`)
+      .attr("dy", "0.35em")
+      .text(d => ST[String(d.id).padStart(2,"0")] || "");
+
+  // Callout lines + labels for small states (clickable: the label navigates like the state would)
+  const byFips = {};
+  states.forEach(d => { byFips[String(d.id).padStart(2,"0")] = d; });
+  CALLOUTS.forEach(c => {
+    const feat = byFips[c.fips];
+    if (!feat) return;
+    const fips = c.fips;
+    const [cx, cy] = path.centroid(feat);
+    const cg = g.append("g").attr("class", "callout");
+
+    cg.append("path")
+      .attr("class", "callout-line")
+      .attr("d", `M${cx},${cy} L${c.lx - 6},${c.ly - 3}`);
+
+    // Generous invisible hit target so the small label is easy to click
+    cg.append("rect")
+      .attr("class", "callout-hit")
+      .attr("x", c.lx - 6).attr("y", c.ly - 12)
+      .attr("width", 40).attr("height", 24)
+      .attr("rx", 4)
+      .attr("fill", "transparent");
+
+    cg.append("text")
+      .attr("class", "callout-abbr")
+      .attr("x", c.lx).attr("y", c.ly)
+      .attr("dy", "0.32em")
+      .text(ST[fips]);
+
+    cg.on("mousemove", (event) => {
+        const tier = fips === FEATURED ? "Fully built" : (PARTIAL.has(fips) ? "Marquee races built" : "Starter framework");
+        tooltip.innerHTML = `<strong>${NAME[fips] || "—"}</strong><div class="tooltip-meta">${tier} · click to explore →</div>`;
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", () => { window.location.href = destFor(fips); });
+  });
+
+  loading.style.display = "none";
+
+  // ---- Highlight the visitor's home state (approximate, via IP geolocation) ----
+  // Fails silently if the lookup is blocked or rate-limited.
+  fetch("https://ipapi.co/json/")
+    .then(r => { if (!r.ok) throw new Error("geo lookup failed"); return r.json(); })
+    .then(info => {
+      const region = (info && info.country_code === "US" && info.region_code) ? info.region_code.toUpperCase() : null;
+      if (!region) return;
+      const fips = Object.keys(ST).find(f => ST[f] === region);
+      if (!fips) return;
+      g.selectAll(".state")
+        .filter(d => String(d.id).padStart(2, "0") === fips)
+        .classed("home", true);
+      const note = document.getElementById("home-note");
+      note.textContent = `The pulsing state is ${NAME[fips]} — your approximate location based on your network connection.`;
+      note.style.display = "block";
+    })
+    .catch(() => { /* no geolocation — page works fine without it */ });
+}).catch(err => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+</script>
+</body>
+</html>
