@@ -147,7 +147,10 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
 
 1. **Never fabricate candidate data.** Positions, differentiators, and voices must trace to real
    reporting. Anything unconfirmed carries an explicit `[Verify]` marker or a "verify" note in the
-   race — visible to the site owner, who is the final editorial check before publishing claims.
+   race. **Publishing is automatic** (owner decision, July 6, 2026): after tests pass, commit AND
+   push without waiting for review — the owner reviews on the live site and would rather catch an
+   error there than gate every publish. The [Verify] discipline is what makes this safe: uncertain
+   claims must be visibly marked, never silently asserted.
 2. **Voices blocks are sourced synthesis**, not invented quotes: paraphrase widely reported praise
    and criticism, evenhandedly, for both parties' candidates.
 3. **Sources used so far:** NC State Board of Elections filings, SC Election Commission
