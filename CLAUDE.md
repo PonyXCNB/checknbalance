@@ -36,7 +36,8 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 | `ga.html` | Georgia — third fully built state (159 counties, 14 districts, May 19/June 16 primary results, GA-13 July 28 special + GA-14 special history). No LOCAL_RACES yet |
 | `va.html` | Virginia — fourth fully built state (133 counties AND independent cities, 11 districts, 2025 statewide results as history). ⚠ VA's 2026 primary is **Aug 4** (moved by HB 29) — most challenger slots are pending fields, refresh after. No LOCAL_RACES yet |
 | `md.html` | Maryland — fifth fully built state (24 county-equivalents incl. Baltimore City, 8 districts, June 23 primary results — Moore–Cox rematch, Hoyer retirement). No LOCAL_RACES yet |
-| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD redirect to their dedicated pages |
+| `de.html` | Delaware — sixth fully built state (3 counties, 1 at-large seat). ⚠ Primary is **Sept 15, 2026**, filing deadline July 14 — fields provisional; open Treasurer seat (Ramone). No LOCAL_RACES yet |
+| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE redirect to their dedicated pages |
 | `favicon.svg` | Gold-gradient circle + white checkmark (primary favicon, matches site crest) |
 | `favicon.png` | 32px PNG fallback |
 | `favicon.ico` | Multi-size ICO (16/32/48) at root for legacy auto-discovery |
@@ -134,8 +135,8 @@ must appear AFTER its declaration; a top-level TDZ error kills the whole script 
 ### index.html (national)
 ```
 ST / NAME     : fips → abbr / full name             CAP: capitals (currently unused on this page)
-BUILT         : { "37": nc, "45": sc, "13": ga, "51": va, "24": md } (each → <abbr>.html)
-PARTIAL       : Set of 6 fips (DC FL AL NY NJ DE) → lighter gold tier
+BUILT         : { "37": nc, "45": sc, "13": ga, "51": va, "24": md, "10": de } (each → <abbr>.html)
+PARTIAL       : Set of 5 fips (DC FL AL NY NJ) → lighter gold tier
 CALLOUTS      : label anchor coords for 9 small states + DC
 destFor(fips) : BUILT[fips] if fully built, else state.html?state=XX
 
@@ -206,7 +207,14 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
   2026 at 87; Boafo vs. Chaffee), MD-6 (McClain Delaney beat Trone's $25M primary challenge; GOP
   nominated 83-year-old disbarred perennial Robin Ficker; Likely D), MD-7 (Mfume beat Conway).
   No LOCAL_RACES yet.
-- **6 marquee states (STATE_RACES):** AL (Tuberville–Jones
+- **DE (full, added July 6, 2026):** ⚠ primary is SEPT 15, 2026 (filing deadline July 14) — all
+  contested fields are provisional placeholder cards. Statewide: Senate (Coons, Solid/Safe D; GOP
+  field Katz/Shulli), AG (Jennings faces a primary from ACLU-DE's Bensing; NO GOP filer — Murray
+  declined the convention draft), OPEN Treasurer (3-way Dem primary vs. Mike Ramone, the 2024
+  gubernatorial nominee), Auditor (York unopposed so far). House at-large: McBride (Solid D) vs. a
+  4-way GOP field. NO Governor race (presidential-year office; Meyer through 2028). 2024
+  Gov/Senate/House included as past races. No LOCAL_RACES yet.
+- **5 marquee states (STATE_RACES):** AL (Tuberville–Jones
   rematch; Senate open seat nominees Moore–Wess), FL
   (pre-primary: Donalds/Jolly/Pizzo + Moody special — **Aug 18 primaries pending**), NY
   (Hochul–Stefanik [Verify] primary), VA (Warner, GOP [Verify]), MD (Moore, GOP [Verify]),
@@ -269,9 +277,11 @@ Notes for future edits:
 3. **Cape Fear expansion (the moat):** Brunswick, Pender, Columbus county local races at New
    Hanover depth (Brunswick sheriff/commission primary results already partially known: Chism won
    sheriff primary; Thompson and Hewett won commission primaries; Somers won DA-15 primary).
-3b. **East-coast full buildout (in progress):** SC + GA + VA + MD done July 6, 2026 (statewide +
-   House; county LOCAL_RACES still to do for all four). Next per the owner: DE, NJ, NY
+3b. **East-coast full buildout (in progress):** SC + GA + VA + MD + DE done July 6, 2026
+   (statewide + House; county LOCAL_RACES still to do for all five). Next per the owner: NJ, NY
    (FL after its Aug 18 primaries; DC needs a different page model — no counties).
+   - **DE time-sensitive:** July 14 filing deadline, then Sept 15 primary — refresh de.html after
+     both.
    - **MD follow-up:** June 23 primary figures are unofficial — swap in certified numbers when
      the state canvass completes (mid-July).
    - **GA time-sensitive:** GA-13 special election July 28, 2026 (runoff Aug 25 if needed) —

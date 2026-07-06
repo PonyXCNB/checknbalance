@@ -273,6 +273,7 @@ if (abbr === "SC") { window.location.replace("sc.html"); }
 if (abbr === "GA") { window.location.replace("ga.html"); }
 if (abbr === "VA") { window.location.replace("va.html"); }
 if (abbr === "MD") { window.location.replace("md.html"); }
+if (abbr === "DE") { window.location.replace("de.html"); }
 
 const STATE = STATES[abbr];
 const FIPS = STATE.f;
@@ -462,20 +463,6 @@ const STATE_RACES = {
           positions:["[Verify after primary certification]"], differentiators:["[Verify]"], supporters:[], opponents:[] }
       ]}
   ],
-  DE: [
-    { key:"senate", date:"Nov 3, 2026", type:"upcoming", scope:"Federal · Statewide · Nov 3, 2026",
-      office:"U.S. Senate — Delaware",
-      note:"Chris Coons (D) announced his re-election campaign June 12, 2026. Delaware's primary is in September; GOP field TBD.",
-      candidates:[
-        { name:"Chris Coons (incumbent)", party:"D", winner:false,
-          positions:["Foreign policy and democracy promotion","Bipartisan judiciary and appropriations work","Delaware's corporate-law economy"],
-          differentiators:["Three-term senator; holds Biden's old seat","Announced re-election June 12, 2026","Senate's leading faith-and-diplomacy Democrat"],
-          supporters:["Respected across the aisle; delivers quietly","Deep foreign-policy chops"],
-          opponents:["Establishment fixture in an anti-establishment era","Delaware deserves a competitive race for once"] },
-        { name:"[Republican nominee — TBD]", party:"R", winner:false,
-          positions:["[September primary]"], differentiators:["[TBD]"], supporters:[], opponents:[] }
-      ]}
-  ]
 };
 // Offices covered by full races (suppress the generic entry)
 function coveredKeys(abbr) {
