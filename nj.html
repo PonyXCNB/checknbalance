@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>New Jersey Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every NJ election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 2.2 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #ncmap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">NJ</div>
+      <div class="brand-text">
+        <span class="brand-name">New Jersey Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every New Jersey <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 21 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">21</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>12</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>4</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of New Jersey…</div>
+      <svg id="njmap" viewBox="0 0 1000 450" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>NJ Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">May 2026</span><br>
+      Sources: NJ Division of Elections, Ballotpedia, Wikipedia, AP, New Jersey Globe, NJ Monitor, WHYY.
+    </div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every NJ county + its primary US House district
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- (1) Counties + primary 2024 US House district -----
+// NOTE: 14 of the 21 NJ counties are split across districts (Union is split 4 ways). The number below is
+// the PRIMARY district by population. Verify against your local board of elections.
+const COUNTIES = {
+  "34001":{n:"Atlantic",d:2},   "34003":{n:"Bergen",d:5},     "34005":{n:"Burlington",d:3},
+  "34007":{n:"Camden",d:1},     "34009":{n:"Cape May",d:2},   "34011":{n:"Cumberland",d:2},
+  "34013":{n:"Essex",d:10},     "34015":{n:"Gloucester",d:1}, "34017":{n:"Hudson",d:8},
+  "34019":{n:"Hunterdon",d:7},  "34021":{n:"Mercer",d:12},    "34023":{n:"Middlesex",d:6},
+  "34025":{n:"Monmouth",d:4},   "34027":{n:"Morris",d:11},    "34029":{n:"Ocean",d:4},
+  "34031":{n:"Passaic",d:9},    "34033":{n:"Salem",d:2},      "34035":{n:"Somerset",d:12},
+  "34037":{n:"Sussex",d:5},     "34039":{n:"Union",d:7},      "34041":{n:"Warren",d:7}
+};
+
+// ----- (2) Statewide elections every county votes in -----
+const STATEWIDE = [
+  // UPCOMING — 2026 General Election (Nov 3, 2026)
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — New Jersey",
+    note: "Cory Booker (D) seeks a third full term against attorney and Navy veteran Justin Murphy (R). Rated Solid Democratic (Cook). Republicans haven't won a New Jersey Senate race since 1972. No governor's race in 2026 (Sherrill's term runs to January 2030).",
+    candidates: [
+      {
+        name: "Cory Booker (incumbent)",
+        party: "D",
+        winner: false,
+        positions: [
+          "Healthcare costs: protect and expand the ACA, fight Medicaid cuts, lower prescription prices",
+          "Affordability: eliminate federal income tax on roughly the first $75,000 of income; expand tax credits; raise taxes on the wealthy [Verify plan details]",
+          "Opposition to Trump-administration policies, including the DOGE cuts"
+        ],
+        differentiators: [
+          "Held the Senate floor for 25 hours 5 minutes in 2025 — the longest speech in Senate history, breaking Strom Thurmond's record",
+          "Massive fundraising: $10M in one quarter after the speech; $19.6M cash on hand",
+          "Unopposed in the June 2 primary (587,161 votes)"
+        ],
+        supporters: [
+          "A national leader who literally stood up to the administration",
+          "Longtime criminal-justice-reform advocate with a fighter's profile",
+          "Turned the marathon speech into a movement (and a book, 'Stand')"
+        ],
+        opponents: [
+          "National ambition and performative gestures over New Jersey retail concerns",
+          "Tied to Democratic governance of one of America's most expensive states",
+          "Three terms in — the definition of the establishment he once challenged"
+        ]
+      },
+      {
+        name: "Justin Murphy",
+        party: "R",
+        winner: false,
+        positions: [
+          "Tax cuts, federal spending reductions, and private-sector growth",
+          "Oppose offshore wind — keep the Jersey Shore 'windmill free'; coastal cleanup",
+          "Parental rights, 'medical freedom,' Medicare protection, border security"
+        ],
+        differentiators: [
+          "Navy veteran (served aboard USS Comte De Grasse, including a Persian Gulf deployment)",
+          "Attorney; former deputy mayor of Tabernacle Township",
+          "Won the four-way June 2 primary with ~33.3% [Verify losing-candidate percentages]"
+        ],
+        supporters: [
+          "A veteran outsider focused on cost-of-living and coastal issues Democrats take for granted"
+        ],
+        opponents: [
+          "A little-known perennial candidate who won a fractured primary with a third of the vote",
+          "Republicans haven't won this seat in more than 50 years"
+        ]
+      }
+    ]
+  },
+
+  // PAST — 2026 primary and recent statewide results
+  {
+    date: "Jun 2, 2026",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "GOP Primary — U.S. Senate",
+    note: "Justin Murphy won a four-way primary with ~33.3% over Robert Lebovics, state trooper Richard Tabor, and journalist Alex Zdan. [Verify certified percentages.] Booker was unopposed on the Democratic side.",
+    candidates: [
+      { name: "Justin Murphy", party: "R", winner: false,
+        positions: ["Tax cuts","Anti-offshore-wind","Parental rights"],
+        differentiators: ["Third-place finisher in the 2024 GOP Senate primary, back to win in 2026"],
+        supporters: ["Persistence rewarded"], opponents: ["A third of the vote in a thin field"] },
+      { name: "Richard Tabor", party: "R", winner: false,
+        positions: ["Law-and-order platform [Verify]","[Verify]","[Verify]"],
+        differentiators: ["New Jersey state trooper [Verify percentage]"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 4, 2025",
+    type: "past",
+    scope: "State · Statewide",
+    office: "Governor of New Jersey (2025)",
+    note: "Mikie Sherrill (D) beat Jack Ciattarelli (R) 56.9% to 42.5% — a ~14-point win that outperformed the polls, in a race dominated by affordability. New Jersey's next governor's race is November 2029.",
+    candidates: [
+      { name: "Mikie Sherrill", party: "D", winner: true,
+        positions: ["Affordability — pledged a day-one freeze on utility rate hikes","Reproductive freedom","Standing up to the Trump administration"],
+        differentiators: ["Former Navy helicopter pilot and four-term congresswoman (NJ-11)","Won by ~14, slightly exceeding Murphy's 2017 margin"],
+        supporters: ["Pragmatic veteran-moderate who'd protect New Jersey from Washington"],
+        opponents: ["A continuation of high-tax Democratic rule in Trenton"] },
+      { name: "Jack Ciattarelli", party: "R", winner: false,
+        positions: ["No-new-taxes pledge; downsize state government","Senior tax relief — tax-free retirement income, property-tax freeze at 70","Pro-choice with parental notification; Trump-endorsed"],
+        differentiators: ["Third gubernatorial bid — came within 3 points in 2021, lost by 14 in 2025"],
+        supporters: ["The businessman who'd finally tackle the tax burden"],
+        opponents: ["Tied himself to Trump to win the primary and paid for it in November"] }
+    ]
+  },
+  {
+    date: "Nov 5, 2024",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — New Jersey (2024)",
+    note: "Andy Kim (D) beat Curtis Bashaw (R) 53.6% to 44.0% for the seat vacated by Bob Menendez's corruption conviction — becoming the first Korean American U.S. senator.",
+    candidates: [
+      { name: "Andy Kim", party: "D", winner: true,
+        positions: ["Universal healthcare and lower drug prices","Restore Roe protections by federal law","Anti-corruption reform after the Menendez scandal"],
+        differentiators: ["Sued to abolish New Jersey's 'county line' ballot design — and won [Verify detail]","First Korean American U.S. senator"],
+        supporters: ["The integrity candidate who took on his own party's machine"],
+        opponents: ["Progressive votes out of step on the economy and border"] },
+      { name: "Curtis Bashaw", party: "R", winner: false,
+        positions: ["Lower taxes and deregulation; reduce reliance on China","Abortion 'decided by a woman and her doctor' — opposed a national ban","Tougher border security"],
+        differentiators: ["Cape May hotel developer","Socially moderate profile unusual for a 2024 Republican"],
+        supporters: ["A moderate job creator who could finally win statewide"],
+        opponents: ["His vote for GOP Senate control would threaten abortion rights regardless of his views"] }
+    ]
+  }
+];
+
+// ----- (3) US House races by district -----
+// Each district object holds: 2024 race + 2026 race
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — NJ District 1",
+    region: "South Jersey suburbs of Philadelphia — Camden County, parts of Gloucester",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Donald Norcross (D) seeks a seventh term after recovering from a serious 2025 sepsis hospitalization; third-time candidate Damon Galdo (R) challenges. Rated Solid/Safe Democratic. Primary figures unofficial pending state certification.",
+        candidates: [
+          { name: "Donald Norcross (incumbent)", party: "D", winner: false,
+            positions: ["Pro-labor and union rights — former IBEW electrician and union leader","Healthcare access and worker wages","Voted against the 'One Big Beautiful Bill Act' — returning overnight from the hospital to cast it"],
+            differentiators: ["In Congress since 2014; Congressional Progressive Caucus member","Recovered from an April 2025 gallbladder infection that progressed to sepsis (ICU, rehab, full schedule by June 2025)","Unopposed in the June 2 primary — a progressive challenger missed the filing deadline"],
+            supporters: ["A reliable pro-labor liberal and champion for South Jersey"],
+            opponents: ["Local progressives fault his ties to the Norcross political machine (his brother is powerbroker George Norcross)"] },
+          { name: "Damon Galdo", party: "R", winner: false,
+            positions: ["Affordability","Public safety and border security","'Restoring accountability in government'"],
+            differentiators: ["Conservative podcaster who works in construction; West Deptford","Third run (took 15% in the 2024 primary); first time with county GOP backing","Survived a Democratic petition challenge to stay on the ballot"],
+            supporters: ["Persistent grassroots outsider taking on a machine-backed incumbent"],
+            opponents: ["A perennial candidate with little traction in a D+10 district"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Norcross won 57.8% to 40.0%.",
+        candidates: [
+          { name: "Donald Norcross", party: "D", winner: true,
+            positions: ["Labor rights","Healthcare","Working-family economics"],
+            differentiators: ["Six-term incumbent; union electrician"],
+            supporters: ["Labor's man in South Jersey"], opponents: ["Machine politics personified"] },
+          { name: "Teddy Liddell", party: "R", winner: false,
+            positions: ["Conservative economics","Public safety","Small business"],
+            differentiators: ["2024 nominee"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  2: {
+    name: "U.S. House — NJ District 2",
+    region: "Southernmost New Jersey — Atlantic City, Cape May, Vineland, Salem",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Jeff Van Drew (R) — the Democrat-turned-Republican — faces Cape May Mayor Zack Mullock (D). Rated Solid/Safe Republican (R+5).",
+        candidates: [
+          { name: "Jeff Van Drew (incumbent)", party: "R", winner: false,
+            positions: ["Close Trump ally since his 2019 party switch","Opposes offshore wind development off the South Jersey coast [Verify specifics]","Border security"],
+            differentiators: ["Switched from Democrat to Republican in December 2019 over Trump's first impeachment","Four House terms plus a long state legislative career","Unopposed in the June 2 primary"],
+            supporters: ["Fights the offshore wind projects shore communities oppose","Delivers for South Jersey with an independent streak"],
+            opponents: ["Loyalty to Trump over the district","Challengers ran on affordability and healthcare failures"] },
+          { name: "Zack Mullock", party: "D", winner: false,
+            positions: ["Medicare for All, funded by corporate and top-5% taxes; Medicare drug-price negotiation with dental/vision/hearing expansion","Lowering costs for working families","Gun safety; ban congressional stock trading"],
+            differentiators: ["Mayor of Cape May since 2021 — five years without tax increases while building a firehouse, police station, and library","Won the four-way June 2 primary with 39.5% over Tim Alexander and Bayly Winder","Early backing from top South Jersey Democrats"],
+            supporters: ["A pragmatic, fiscally careful mayor who can compete in a red shore district"],
+            opponents: ["Republicans will cast Medicare-for-All as too far left for NJ-2 [Verify]"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Van Drew won 58.1% to 41.2%.",
+        candidates: [
+          { name: "Jeff Van Drew", party: "R", winner: true,
+            positions: ["Trump-aligned conservatism","Anti-offshore-wind","Border security"],
+            differentiators: ["Fourth term; the House's best-known party switcher"],
+            supporters: ["South Jersey's shore-issues fighter"], opponents: ["Switched parties to save his career"] },
+          { name: "Joe Salerno", party: "D", winner: false,
+            positions: ["Working-family economics","Healthcare","Coastal economy"],
+            differentiators: ["2024 nominee"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  3: {
+    name: "U.S. House — NJ District 3",
+    region: "Burlington County plus parts of Mercer and Monmouth — the Philadelphia–New York corridor",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Physician Herb Conaway (D) seeks a second term against Marine veteran and attorney Michael McGuire (R). Rated Solid/Safe Democratic.",
+        candidates: [
+          { name: "Herb Conaway (incumbent)", party: "D", winner: false,
+            positions: ["Healthcare access and public health — career physician-legislator","Defending the ACA","Affordability [Verify 2026 planks]"],
+            differentiators: ["M.D. and Air Force veteran; 26 years in the NJ Assembly (longtime Health Committee chair)","Succeeded Andy Kim in 2024","Unopposed in the June 2 primary"],
+            supporters: ["An experienced doctor-lawmaker suited to lead on health policy"],
+            opponents: ["A career politician of nearly three decades — part of an unaffordable status quo"] },
+          { name: "Michael McGuire", party: "R", winner: false,
+            positions: ["Affordability","Veterans' issues","Congressional term limits"],
+            differentiators: ["Family-law attorney, Marine Corps veteran, former NYPD officer, Navy reservist","Launched his bid after he and fellow reservists missed paychecks in the federal shutdown","Won the three-way June 2 primary with 57.9%"],
+            supporters: ["A service-driven outsider motivated by real harm from Washington dysfunction"],
+            opponents: ["First-time candidate with limited funding in a D+5 district"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Open seat (Andy Kim ran for Senate); Conaway won 53.2% to 44.7%.",
+        candidates: [
+          { name: "Herb Conaway", party: "D", winner: true,
+            positions: ["Healthcare","Public health","Suburban economics"],
+            differentiators: ["Physician; won Kim's old seat by 8.5"],
+            supporters: ["Deep legislative experience"], opponents: [] },
+          { name: "Rajesh Mohan", party: "R", winner: false,
+            positions: ["Fiscal conservatism","Healthcare from a physician's view","Small business"],
+            differentiators: ["Cardiologist; 2024 nominee"],
+            supporters: ["Doctor-vs-doctor race"], opponents: [] }
+        ]
+      }
+    ]
+  },
+  4: {
+    name: "U.S. House — NJ District 4",
+    region: "Jersey Shore — Monmouth and Ocean counties (Toms River, Brick, Wall)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Chris Smith (R), in Congress since 1981 — the longest-serving current House Republican — faces Rachel Peace (D) in New Jersey's most Republican district (R+14).",
+        candidates: [
+          { name: "Chris Smith (incumbent)", party: "R", winner: false,
+            positions: ["Leading anti-abortion voice in the House","Author of landmark anti-human-trafficking laws (TVPA)","Human-rights work (Helsinki Commission); periodically breaks with his party [Verify current planks]"],
+            differentiators: ["45+ years of incumbency","Deep constituent-service brand on the Shore","Unopposed in the primary (a challenger failed to qualify)"],
+            supporters: ["An institution with unmatched seniority and a genuine human-rights record"],
+            opponents: ["A 'career politician who still believes in trickle-down economics' (his opponent's framing)"] },
+          { name: "Rachel Peace", party: "D", winner: false,
+            positions: ["Healthcare — her campaign's core focus","Economic fairness","[Verify] — fuller platform pending coverage"],
+            differentiators: ["Won her primary 72%–28% over John Blake","Fresh face against a 45-year incumbent","[Verify occupation/bio — low coverage]"],
+            supporters: ["Time for a change after four decades of one congressman"],
+            opponents: ["An R+14 district and a beloved incumbent"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Smith won 67.4% to 31.6%.",
+        candidates: [
+          { name: "Chris Smith", party: "R", winner: true,
+            positions: ["Anti-abortion leadership","Human trafficking laws","Constituent service"],
+            differentiators: ["In Congress since 1981"],
+            supporters: ["The Shore's institution"], opponents: [] },
+          { name: "Matthew Jenkins", party: "D", winner: false,
+            positions: ["Healthcare","Working families","Environment"],
+            differentiators: ["2024 nominee"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  5: {
+    name: "U.S. House — NJ District 5",
+    region: "Northern border — most of Bergen County, parts of Passaic and Sussex",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Josh Gottheimer (D) — back in the House race after losing the 2025 gubernatorial primary to Sherrill — faces first-time candidate Sean Kirrane (R). Cook moved the race to Solid Democratic once Gottheimer chose re-election.",
+        candidates: [
+          { name: "Josh Gottheimer (incumbent)", party: "D", winner: false,
+            positions: ["Restore the SALT deduction; 'lower taxes, lower costs' affordability","Problem Solvers Caucus centrism","Strongly pro-Israel [Verify 2026 planks]"],
+            differentiators: ["Five-term incumbent with one of the House's biggest war chests","Statewide name recognition from his 2025 governor run","Uncontested in the June 2 primary"],
+            supporters: ["A proven moderate who delivers on taxes — exactly matched to a D+2 district"],
+            opponents: ["Progressives fault his corporate ties; Republicans call him a career politician"] },
+          { name: "Sean Kirrane", party: "R", winner: false,
+            positions: ["'Socially moderate, fiscally responsible'","Sweeping affordable-housing legislation","Free-market universal healthcare funded through the tax system (explicitly not single-payer)"],
+            differentiators: ["Corporate consultant and AI entrepreneur from River Vale; first-time candidate","Uncontested for the nomination (his rival missed the signature threshold)","Social moderation unusual for a GOP nominee"],
+            supporters: ["A non-politician problem-solver with fresh eyes"],
+            opponents: ["Untested and underfunded against one of the House's best-funded members"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Gottheimer won 54.6% to 43.3%.",
+        candidates: [
+          { name: "Josh Gottheimer", party: "D", winner: true,
+            positions: ["SALT restoration","Bipartisan dealmaking","Affordability"],
+            differentiators: ["Problem Solvers co-chair"],
+            supporters: ["North Jersey's tax warrior"], opponents: [] },
+          { name: "Mary Jo-Ann Guinchard", party: "R", winner: false,
+            positions: ["Conservative economics","Parental rights","Public safety"],
+            differentiators: ["2024 nominee"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  6: {
+    name: "U.S. House — NJ District 6",
+    region: "Central Jersey — New Brunswick, Perth Amboy, and the bayshore to Asbury Park",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Frank Pallone (D), 74 and seeking a 20th term, took just ~66% in his primary — his weakest since 1992. First-time candidate Hillary Herzig (R) awaits.",
+        candidates: [
+          { name: "Frank Pallone (incumbent)", party: "D", winner: false,
+            positions: ["Healthcare — principal author and defender of the ACA; drug-pricing measures","Environmental protection: drinking water, Superfund, shore protection","Energy & Commerce seniority [Verify 2026 planks]"],
+            differentiators: ["In the House since 1988; top Democrat on Energy & Commerce","Won his primary ~66%–27%–8% — his weakest showing since 1992","Primary challengers pressed him on age and boldness, especially on Gaza"],
+            supporters: ["Seniority that translates into real clout on health and the environment"],
+            opponents: ["At 74 and 38 years in, the softening primary margin signals restlessness"] },
+          { name: "Hillary Herzig", party: "R", winner: false,
+            positions: ["[Verify] — genuinely low coverage","[Verify]","[Verify]"],
+            differentiators: ["First-time candidate; had the GOP primary to herself","[Verify occupation]","[Verify]"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Pallone won 56.1% to 40.3%.",
+        candidates: [
+          { name: "Frank Pallone", party: "D", winner: true,
+            positions: ["ACA defense","Environment","Consumer protection"],
+            differentiators: ["19-term incumbent"],
+            supporters: ["Central Jersey's health-policy heavyweight"], opponents: [] },
+          { name: "Scott Fegler", party: "R", winner: false,
+            positions: ["Fiscal conservatism","Public safety","Small business"],
+            differentiators: ["2024 nominee"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  7: {
+    name: "U.S. House — NJ District 7",
+    region: "Western and central NJ — Hunterdon, Warren, parts of Morris, Somerset, Sussex, Union",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "New Jersey's marquee race — the state's only Cook Toss Up (PVI EVEN). Tom Kean Jr. (R), back after a four-month absence he attributed to a depression diagnosis, faces Navy test pilot Rebecca Bennett (D).",
+        candidates: [
+          { name: "Tom Kean Jr. (incumbent)", party: "R", winner: false,
+            positions: ["Republican Main Street / Problem Solvers Caucus positioning","Voted for the 2025 tax-and-spending law (the 'One Big Beautiful Bill')","Trump gave him a 'complete and total endorsement'"],
+            differentiators: ["Son of former Gov. Tom Kean — the most famous name in NJ politics","Absent from Congress March–June 2026; disclosed a depression diagnosis and hospitalization on June 30","Unopposed in the primary; twice won this even-PVI seat"],
+            supporters: ["A mainstream, bipartisan-branded Republican who fits the district","Deserves grace, not attacks, on a disclosed mental-health condition"],
+            opponents: ["Missed 100+ votes with months of secrecy about why","Rubber-stamped the Trump agenda, including health-coverage cuts"] },
+          { name: "Rebecca Bennett", party: "D", winner: false,
+            positions: ["Affordability: cap childcare costs at 7% of family income, funded by repealing the 2025 tax cuts for the top 1%","Reverse the Medicaid cuts; lower patient costs","Veterans' services and transition support"],
+            differentiators: ["39-year-old former Navy/Air National Guard helicopter and experimental test pilot; healthcare executive","Won the four-way primary decisively (~47%) despite a GOP-linked super PAC spending against her","EMILY's List and DCCC backing; fundraising leader"],
+            supporters: ["A moderate veteran-outsider profile that wins districts exactly like this"],
+            opponents: ["A first-time candidate powered by national Democratic money","Her plan means reversing tax cuts"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Kean won 51.8% to 46.4% over Sue Altman.",
+        candidates: [
+          { name: "Tom Kean Jr.", party: "R", winner: true,
+            positions: ["Bipartisan branding","Tax relief","Suburban pragmatism"],
+            differentiators: ["Held the seat by 5.4 in a razor-thin district"],
+            supporters: ["The name that wins NJ swing seats"], opponents: [] },
+          { name: "Sue Altman", party: "D", winner: false,
+            positions: ["Anti-machine reform politics","Abortion rights","Affordability"],
+            differentiators: ["Working Families leader; ran again in the 2026 NJ-12 primary and lost"],
+            supporters: ["Fearless reformer"], opponents: ["Too progressive for the district"] }
+        ]
+      }
+    ]
+  },
+  8: {
+    name: "U.S. House — NJ District 8",
+    region: "Hudson County — Jersey City, Hoboken, Bayonne — plus parts of Newark and Elizabeth",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Rob Menendez (D) is effectively unopposed — no Republican filed for the first time since 2008. [Verify independent filers]",
+        candidates: [
+          { name: "Rob Menendez (incumbent)", party: "D", winner: false,
+            positions: ["Delivery for Hudson County [Verify specifics]","Transit and infrastructure","Mainstream Democratic health and labor positions"],
+            differentiators: ["Son of former Sen. Bob Menendez","Beat progressive Mussab Ali 69.8%–30.2% in the primary with backing from Gov. Sherrill, Sen. Kim, and major unions","No Republican on the November ballot — the GOP's prospective candidate failed to qualify"],
+            supporters: ["Effective, well-connected representative with broad institutional backing"],
+            opponents: ["A dynastic politician propped up by the county machine, said his primary challenger"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Menendez won 59.2% to 34.6%.",
+        candidates: [
+          { name: "Rob Menendez", party: "D", winner: true,
+            positions: ["Transit","Immigration","Urban investment"],
+            differentiators: ["Second term; survived his father's scandal politically"],
+            supporters: ["His own record, not his father's"], opponents: ["The name still carries baggage"] },
+          { name: "Anthony Valdes", party: "R", winner: false,
+            positions: ["Public safety","Small business","Conservative economics"],
+            differentiators: ["2024 nominee"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  9: {
+    name: "U.S. House — NJ District 9",
+    region: "North Jersey — Paterson, Clifton, Passaic, and southern Bergen",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "A watched race: this plurality-Hispanic district swung from Biden +19 to Trump +1. Nellie Pou (D) faces Clifton councilwoman Rosie Pino (R). Rated Leans Democratic (Sabato).",
+        candidates: [
+          { name: "Nellie Pou (incumbent)", party: "D", winner: false,
+            positions: ["Mainstream Democratic healthcare and labor positions [Verify specifics]","Paterson-area federal investment","Immigrant-community advocacy"],
+            differentiators: ["First Latina to represent New Jersey in Congress","Unopposed in the primary; ~$1.5M war chest vs. opponents' under $40k","Longtime state senator who became the consensus choice after Bill Pascrell's death"],
+            supporters: ["Experienced, historic representative — and Democrats still win here downballot (Sherrill took the district 59–40)"],
+            opponents: ["A machine politician who won't work with Trump and 'voted for the largest tax increase' (Pino's framing)"] },
+          { name: "Rosie Pino", party: "R", winner: false,
+            positions: ["Lower cost of living and good-paying jobs","Public safety and border security","Pro-Trump alignment"],
+            differentiators: ["Clifton councilwoman since 2018 — first minority member of that council; educator; cancer survivor; Ecuadorian-immigrant family; former Democrat","Won the primary by 366 votes (51.4%–48.6%) over Tiffany Burress","A group she leads endorsed Pou in 2024 — an awkward footnote"],
+            supporters: ["Exactly the profile to flip a Trump-won, plurality-Hispanic district"],
+            opponents: ["Underfunded, and the district just backed Sherrill by 19"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Open seat after Rep. Bill Pascrell's death; Pou won 50.8% to 45.9% as the district voted for Trump.",
+        candidates: [
+          { name: "Nellie Pou", party: "D", winner: true,
+            positions: ["Healthcare","Labor","Urban investment"],
+            differentiators: ["Won by under 5 in a district Trump carried"],
+            supporters: ["Held the line in a realigning district"], opponents: [] },
+          { name: "Billy Prempeh", party: "R", winner: false,
+            positions: ["MAGA platform","Veterans","Public safety"],
+            differentiators: ["Third run; came within 5; dropped his 2026 bid alleging party leaders blocked him"],
+            supporters: ["Proved the district is winnable"], opponents: [] }
+        ]
+      }
+    ]
+  },
+  10: {
+    name: "U.S. House — NJ District 10",
+    region: "Urban north Jersey — Newark, East Orange, Orange, parts of Jersey City",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "LaMonica McIver (D) runs while fighting a three-count federal indictment from the May 2025 Delaney Hall ICE-facility incident — case pending at the Third Circuit, no trial date, no conviction. New Jersey's most Democratic district (D+27).",
+        candidates: [
+          { name: "LaMonica McIver (incumbent)", party: "D", winner: false,
+            positions: ["Aggressive congressional oversight of ICE and immigration detention","Affordable housing and urban investment","Opposition to Trump-administration immigration enforcement"],
+            differentiators: ["Former Newark City Council president; won the seat in a 2024 special after Donald Payne Jr.'s death","Indicted June 2025 on three federal counts of impeding officers at Delaney Hall; motion to dismiss denied Jan 2026; interlocutory appeal argued June 2026 — decision pending [Verify status]","Won her primary ~84.7% — the indictment drew no serious challenge"],
+            supporters: ["The prosecution is political intimidation of congressional oversight by the Trump DOJ"],
+            opponents: ["Video shows she initiated contact with federal officers — members of Congress are not above the law (the DOJ's position)"] },
+          { name: "Carmen Bucco", party: "R", winner: false,
+            positions: ["[Verify] — low coverage","[Verify]","[Verify]"],
+            differentiators: ["Repeat nominee (15.8% in 2024)","Unopposed in the primary","[Verify]"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "McIver won 81.2% to 15.8%. [Verify raw totals — district turnout figure appears anomalous in some sources.]",
+        candidates: [
+          { name: "LaMonica McIver", party: "D", winner: true,
+            positions: ["Urban investment","Housing","Civil rights"],
+            differentiators: ["Won the special and general in 2024"],
+            supporters: ["Newark's new generation"], opponents: [] },
+          { name: "Carmen Bucco", party: "R", winner: false,
+            positions: ["Public safety","Business","Family values"],
+            differentiators: ["2024 nominee; renominated for 2026"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  11: {
+    name: "U.S. House — NJ District 11",
+    region: "Suburban north Jersey — Morris County core, Montclair, Livingston, Millburn",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "A November rematch: Analilia Mejia (D), who won Gov. Sherrill's old seat in the April special by 20 points, vs. Randolph councilman Joe Hathaway (R). [Verify fall rating — likely Lean/Likely D.]",
+        candidates: [
+          { name: "Analilia Mejia (incumbent)", party: "D", winner: false,
+            positions: ["Medicare for All / single-payer healthcare","Higher taxes on the wealthy; cancel student debt; national paid sick days","Abolish ICE and replace it with a judge-based system"],
+            differentiators: ["Progressive labor organizer; Bernie Sanders 2020 political director — not a machine candidate","Won the Feb special primary by ~900 votes over former Rep. Tom Malinowski, then the April 16 special 60.2%–39.4% — the district's best Democratic showing since 1982","Won the June regular primary ~82%, though Gaza-position tensions showed in Millburn and Livingston"],
+            supporters: ["Proof of progressive energy in the suburbs — a fighter against billionaire-dominated economics"],
+            opponents: ["Abolish-ICE and single-payer are far left of a D+5 suburban district"] },
+          { name: "Joe Hathaway", party: "R", winner: false,
+            positions: ["Eliminate taxes for first-time homebuyers","Lower healthcare costs; transportation investment — criticized Trump's Gateway tunnel funding cancellation","Supports ICE with better training and de-escalation"],
+            differentiators: ["Randolph councilman and former mayor","Occasionally breaks with Trump — a moderate, pragmatic lane","Lost the April special by 20; unopposed for the regular nomination"],
+            supporters: ["A pragmatic, independent-minded Republican fit for suburban swing turf"],
+            opponents: ["However he positions himself, he'd back the Trump-era agenda in Washington"] }
+        ]
+      },
+      {
+        date: "Apr 16, 2026", type: "past",
+        note: "SPECIAL ELECTION for Mikie Sherrill's seat (she resigned Nov 20, 2025 after winning the governorship): Mejia beat Hathaway 60.2% to 39.4%.",
+        candidates: [
+          { name: "Analilia Mejia", party: "D", winner: true,
+            positions: ["Medicare for All","Economic populism","Anti-Trump resistance"],
+            differentiators: ["Beat former Rep. Tom Malinowski and former Lt. Gov. Tahesha Way in an 11-way special primary"],
+            supporters: ["The upset of the cycle"], opponents: ["Won the primary with under 30%"] },
+          { name: "Joe Hathaway", party: "R", winner: false,
+            positions: ["Homebuyer tax relief","Healthcare costs","Transit"],
+            differentiators: ["Unopposed special-primary nominee"],
+            supporters: ["Kept it respectable"], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Mikie Sherrill won her final House term 56.5% to 41.8%; she was elected governor in November 2025.",
+        candidates: [
+          { name: "Mikie Sherrill", party: "D", winner: true,
+            positions: ["National security","Affordability","Suburban pragmatism"],
+            differentiators: ["Navy pilot; left the seat to become governor"],
+            supporters: ["The model suburban Democrat"], opponents: [] },
+          { name: "Joseph Belnome", party: "R", winner: false,
+            positions: ["Conservative economics","Public safety","Parental rights"],
+            differentiators: ["2024 nominee"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  12: {
+    name: "U.S. House — NJ District 12",
+    region: "Central Jersey — Trenton, Princeton, Plainfield, the pharma corridor",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "OPEN SEAT — Bonnie Watson Coleman, 81, retired. Combat trauma surgeon Adam Hamawy (D) won a 13-way primary with 27.4%; attorney Gregg Mele (R) is the GOP nominee. Safe Democratic (D+13).",
+        candidates: [
+          { name: "Adam Hamawy", party: "D", winner: false,
+            positions: ["Medicare for All plus Medicare drug-price negotiation","Abolish ICE; hold immigration officials accountable; dismantle DHS","Oppose military aid to Israel; housing and education affordability"],
+            differentiators: ["Plastic/reconstructive surgeon; Army lieutenant colonel and combat trauma surgeon (Iraq, Haiti) — credited with helping save Sen. Tammy Duckworth's life","Volunteered as a surgeon in Gaza; among the cycle's most prominent pro-Palestinian nominees (~$2M in aligned super-PAC support)","Beat a 13-candidate field including Sue Altman, three mayors, and an assemblywoman"],
+            supporters: ["A service-driven combat doctor untainted by machine politics"],
+            opponents: ["Won with barely a quarter of the primary vote; abolishing DHS and ending Israel aid sit well left of the median voter"] },
+          { name: "Gregg Mele", party: "R", winner: false,
+            positions: ["[Verify] — low coverage","[Verify]","[Verify]"],
+            differentiators: ["Attorney; prior minor-party candidacies [Verify]","Unopposed in the primary","[Verify]"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Bonnie Watson Coleman won her final term 61.2% to 36.4%; she announced her retirement in November 2025.",
+        candidates: [
+          { name: "Bonnie Watson Coleman", party: "D", winner: true,
+            positions: ["Civil rights","Progressive economics","Criminal-justice reform"],
+            differentiators: ["First Black woman to represent NJ in Congress; retired at 81 after six terms"],
+            supporters: ["A trailblazer's career"], opponents: [] },
+          { name: "Darius Mayfield", party: "R", winner: false,
+            positions: ["Conservative economics","School choice","Public safety"],
+            differentiators: ["Repeat nominee"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  }
+};
+
+const SITE_META = { name: "New Jersey Elections Hub", lastUpdated: "July 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — NJ county-level down-ballot research is the next phase).
+const LOCAL_RACES = {
+  // County-level down-ballot research for New Jersey has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = district
+    ? district.races.map(r => ({
+        ...r,
+        office: r.office || district.name,
+        scope: r.scope || `Federal · District ${county.d}`
+      }))
+    : [];
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const NJ_STATE_FIPS = "34";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#njmap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(NJ_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 450;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Trenton ----
+  drawCapital(g, projection, { name: "Trenton", lng: -74.7429, lat: 40.2206 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in NJ";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our New Jersey dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">Candidates not yet announced.</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>

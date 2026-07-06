@@ -274,6 +274,7 @@ if (abbr === "GA") { window.location.replace("ga.html"); }
 if (abbr === "VA") { window.location.replace("va.html"); }
 if (abbr === "MD") { window.location.replace("md.html"); }
 if (abbr === "DE") { window.location.replace("de.html"); }
+if (abbr === "NJ") { window.location.replace("nj.html"); }
 
 const STATE = STATES[abbr];
 const FIPS = STATE.f;
@@ -448,20 +449,6 @@ const STATE_RACES = {
       office:"Delegate to the U.S. House",
       note:"[Verify] Eleanor Holmes Norton's retirement decision after 30+ years, and the Democratic primary outcome.",
       candidates:[] }
-  ],
-  NJ: [
-    { key:"senate", date:"Nov 3, 2026", type:"upcoming", scope:"Federal · Statewide · Nov 3, 2026",
-      office:"U.S. Senate — New Jersey",
-      note:"Cory Booker (D) defends in a state that swung sharply right in 2024. [Verify] GOP nominee (June primary).",
-      candidates:[
-        { name:"Cory Booker (incumbent)", party:"D", winner:false,
-          positions:["Criminal-justice reform","Housing affordability","Food policy and child nutrition"],
-          differentiators:["Two-term senator; former Newark mayor","Set the all-time Senate floor-speech record in 2025 protesting Trump policies","2020 presidential candidate"],
-          supporters:["National voice with genuine star power","The marathon floor speech showed real conviction"],
-          opponents:["Performative politics over Jersey results","NJ's rightward swing makes him beatable"] },
-        { name:"[Republican nominee — verify]", party:"R", winner:false,
-          positions:["[Verify after primary certification]"], differentiators:["[Verify]"], supporters:[], opponents:[] }
-      ]}
   ],
 };
 // Offices covered by full races (suppress the generic entry)
