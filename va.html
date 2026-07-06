@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Virginia Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every VA election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 2.2 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #ncmap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">VA</div>
+      <div class="brand-text">
+        <span class="brand-name">Virginia Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Virginia <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 133 counties and independent cities to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">133</div><div class="stat-label">Counties &amp; Cities</div></div>
+    <div class="stat"><div class="stat-num"><em>11</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>6</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Virginia…</div>
+      <svg id="vamap" viewBox="0 0 1000 450" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>VA Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">May 2026</span><br>
+      Sources: Virginia Department of Elections, Ballotpedia, Wikipedia, AP, Virginia Mercury, Cardinal News, VPM.
+    </div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every VA county-equivalent + its primary US House district
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- (1) Counties + primary 2024 US House district -----
+// NOTE: 10 VA county-equivalents are split across multiple districts. The number below is
+// the PRIMARY district by population. Verify against your local board of elections.
+const COUNTIES = {
+  "51001":{n:"Accomack",d:2},        "51003":{n:"Albemarle",d:5},       "51005":{n:"Alleghany",d:6},
+  "51007":{n:"Amelia",d:5},          "51009":{n:"Amherst",d:5},         "51011":{n:"Appomattox",d:5},
+  "51013":{n:"Arlington",d:8},       "51015":{n:"Augusta",d:6},         "51017":{n:"Bath",d:6},
+  "51019":{n:"Bedford",d:9},         "51021":{n:"Bland",d:9},           "51023":{n:"Botetourt",d:6},
+  "51025":{n:"Brunswick",d:4},       "51027":{n:"Buchanan",d:9},        "51029":{n:"Buckingham",d:5},
+  "51031":{n:"Campbell",d:5},        "51033":{n:"Caroline",d:7},        "51035":{n:"Carroll",d:9},
+  "51036":{n:"Charles City",d:4},    "51037":{n:"Charlotte",d:5},       "51041":{n:"Chesterfield",d:4},
+  "51043":{n:"Clarke",d:6},          "51045":{n:"Craig",d:9},           "51047":{n:"Culpeper",d:7},
+  "51049":{n:"Cumberland",d:5},      "51051":{n:"Dickenson",d:9},       "51053":{n:"Dinwiddie",d:4},
+  "51057":{n:"Essex",d:1},           "51059":{n:"Fairfax",d:11},        "51061":{n:"Fauquier",d:10},
+  "51063":{n:"Floyd",d:9},           "51065":{n:"Fluvanna",d:5},        "51067":{n:"Franklin",d:9},
+  "51069":{n:"Frederick",d:6},       "51071":{n:"Giles",d:9},           "51073":{n:"Gloucester",d:1},
+  "51075":{n:"Goochland",d:5},       "51077":{n:"Grayson",d:9},         "51079":{n:"Greene",d:7},
+  "51081":{n:"Greensville",d:4},     "51083":{n:"Halifax",d:5},         "51085":{n:"Hanover",d:1},
+  "51087":{n:"Henrico",d:1},         "51089":{n:"Henry",d:9},           "51091":{n:"Highland",d:6},
+  "51093":{n:"Isle of Wight",d:2},   "51095":{n:"James City",d:1},      "51097":{n:"King and Queen",d:1},
+  "51099":{n:"King George",d:7},     "51101":{n:"King William",d:1},    "51103":{n:"Lancaster",d:1},
+  "51105":{n:"Lee",d:9},             "51107":{n:"Loudoun",d:10},        "51109":{n:"Louisa",d:5},
+  "51111":{n:"Lunenburg",d:5},       "51113":{n:"Madison",d:7},         "51115":{n:"Mathews",d:1},
+  "51117":{n:"Mecklenburg",d:5},     "51119":{n:"Middlesex",d:1},       "51121":{n:"Montgomery",d:9},
+  "51125":{n:"Nelson",d:5},          "51127":{n:"New Kent",d:1},        "51131":{n:"Northampton",d:2},
+  "51133":{n:"Northumberland",d:1},  "51135":{n:"Nottoway",d:5},        "51137":{n:"Orange",d:7},
+  "51139":{n:"Page",d:6},            "51141":{n:"Patrick",d:9},         "51143":{n:"Pittsylvania",d:5},
+  "51145":{n:"Powhatan",d:5},        "51147":{n:"Prince Edward",d:5},   "51149":{n:"Prince George",d:4},
+  "51153":{n:"Prince William",d:7},  "51155":{n:"Pulaski",d:9},         "51157":{n:"Rappahannock",d:10},
+  "51159":{n:"Richmond",d:1},        "51161":{n:"Roanoke",d:6},         "51163":{n:"Rockbridge",d:6},
+  "51165":{n:"Rockingham",d:6},      "51167":{n:"Russell",d:9},         "51169":{n:"Scott",d:9},
+  "51171":{n:"Shenandoah",d:6},      "51173":{n:"Smyth",d:9},           "51175":{n:"Southampton",d:2},
+  "51177":{n:"Spotsylvania",d:7},    "51179":{n:"Stafford",d:7},        "51181":{n:"Surry",d:4},
+  "51183":{n:"Sussex",d:4},          "51185":{n:"Tazewell",d:9},        "51187":{n:"Warren",d:6},
+  "51191":{n:"Washington",d:9},      "51193":{n:"Westmoreland",d:1},    "51195":{n:"Wise",d:9},
+  "51197":{n:"Wythe",d:9},           "51199":{n:"York",d:1},
+  "51510":{n:"Alexandria City",d:8}, "51520":{n:"Bristol City",d:9},    "51530":{n:"Buena Vista City",d:6},
+  "51540":{n:"Charlottesville City",d:5}, "51550":{n:"Chesapeake City",d:2}, "51570":{n:"Colonial Heights City",d:4},
+  "51580":{n:"Covington City",d:6},  "51590":{n:"Danville City",d:5},   "51595":{n:"Emporia City",d:4},
+  "51600":{n:"Fairfax City",d:11},   "51610":{n:"Falls Church City",d:8}, "51620":{n:"Franklin City",d:2},
+  "51630":{n:"Fredericksburg City",d:7}, "51640":{n:"Galax City",d:9},  "51650":{n:"Hampton City",d:3},
+  "51660":{n:"Harrisonburg City",d:6}, "51670":{n:"Hopewell City",d:4}, "51678":{n:"Lexington City",d:6},
+  "51680":{n:"Lynchburg City",d:5},  "51683":{n:"Manassas City",d:10},  "51685":{n:"Manassas Park City",d:10},
+  "51690":{n:"Martinsville City",d:9}, "51700":{n:"Newport News City",d:3}, "51710":{n:"Norfolk City",d:3},
+  "51720":{n:"Norton City",d:9},     "51730":{n:"Petersburg City",d:4}, "51735":{n:"Poquoson City",d:1},
+  "51740":{n:"Portsmouth City",d:3}, "51750":{n:"Radford City",d:9},    "51760":{n:"Richmond City",d:4},
+  "51770":{n:"Roanoke City",d:6},    "51775":{n:"Salem City",d:6},      "51790":{n:"Staunton City",d:6},
+  "51800":{n:"Suffolk City",d:2},    "51810":{n:"Virginia Beach City",d:2}, "51820":{n:"Waynesboro City",d:6},
+  "51830":{n:"Williamsburg City",d:1}, "51840":{n:"Winchester City",d:6}
+};
+
+// ----- (2) Statewide elections every county votes in -----
+const STATEWIDE = [
+  // UPCOMING — 2026 General Election (Nov 3, 2026)
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Virginia",
+    note: "Mark Warner (D) seeks a fourth term. Virginia moved its 2026 primary to August 4 (HB 29), so the Republican nominee is NOT yet decided. Rated Solid/Safe Democratic (Cook, Sabato). No Republican has won a Virginia Senate race since 2002.",
+    candidates: [
+      {
+        name: "Mark Warner (incumbent)",
+        party: "D",
+        winner: false,
+        positions: [
+          "Affordability: housing costs and a childcare-system overhaul",
+          "Healthcare: opposed ending the 2025 shutdown without an ACA-subsidy fix",
+          "AI and jobs: tech companies displacing workers with AI should help fund the transition; defend Virginia's federal workforce"
+        ],
+        differentiators: [
+          "Senate Intelligence Committee vice chair; national-security and tech-policy profile",
+          "Former governor (2002–06) and telecom businessman — 'radical centrist' brand",
+          "Only Democrat to file by the April 2 deadline — no primary needed"
+        ],
+        supporters: [
+          "Bipartisan dealmaker on broadband and tech policy",
+          "Strong defender of Virginia's federal employees and defense economy",
+          "Six statewide wins across two decades"
+        ],
+        opponents: [
+          "In Washington since 2009 — a career politician",
+          "Votes with his party and hasn't stopped rising costs",
+          "Part of the spending and regulatory status quo [Verify GOP framing after Aug 4]"
+        ]
+      },
+      {
+        name: "[Republican nominee — decided in the Aug 4, 2026 primary]",
+        party: "R",
+        winner: false,
+        positions: ["[Decided Aug 4] Leading themes in the field: government waste and fraud elimination","Border security and immigration enforcement","Data-center siting limits and utility-cost concerns"],
+        differentiators: [
+          "Field includes Kim Farington (CPA, ex-OPM chief accountant), Bert Mizusawa (retired Army major general), David Williams (Marine Reserve lt. colonel, ex-CIA), Chuck Smith (attorney; ballot status [Verify])",
+          "No notable public primary polling as of July 2026",
+          "Early voting for the primary began June 19"
+        ],
+        supporters: ["Every candidate offers an outsider contrast to an 18-year Washington incumbent"],
+        opponents: ["No high-profile Republican entered after Spanberger's 15-point 2025 win — Youngkin passed on the race"]
+      }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide · Ballot Measures",
+    office: "Constitutional Amendments — Statewide Referenda",
+    note: "Virginia's Nov 2026 ballot is expected to carry statewide constitutional amendments on abortion rights, same-sex marriage, and restoration of felon voting rights. [Verify the final certified list at elections.virginia.gov before the election.]",
+    candidates: []
+  },
+
+  // PAST — recent statewide results for context
+  {
+    date: "Nov 4, 2025",
+    type: "past",
+    scope: "State · Statewide",
+    office: "Governor of Virginia (2025)",
+    note: "Abigail Spanberger (D) beat Winsome Earle-Sears (R) 57.6% to 42.2% — the first woman elected governor of Virginia and the largest Democratic margin since 2009, leading a sweep of all three statewide offices.",
+    candidates: [
+      { name: "Abigail Spanberger", party: "D", winner: true,
+        positions: ["Affordability and cost of living","Healthcare access","Pushback on federal layoffs hitting Virginia's federal workers"],
+        differentiators: ["Former CIA officer and VA-7 congresswoman","Centrist Democratic brand","Won by 15.4 points"],
+        supporters: ["Pragmatic and disciplined; protected the federal-worker economy"],
+        opponents: ["Too aligned with national Democrats; vague on state-level specifics [Verify]"] },
+      { name: "Winsome Earle-Sears", party: "R", winner: false,
+        positions: ["Economy and affordability","Parental rights","Continuing the Youngkin agenda"],
+        differentiators: ["Sitting Lt. Governor; Marine veteran","Historic candidacy as a Black woman Republican nominee"],
+        supporters: ["Conservative record and a groundbreaking biography"],
+        opponents: ["Underfunded, disorganized campaign hurt by Trump backlash in Northern Virginia"] }
+    ]
+  },
+  {
+    date: "Nov 4, 2025",
+    type: "past",
+    scope: "State · Statewide",
+    office: "Lieutenant Governor of Virginia (2025)",
+    note: "Ghazala Hashmi (D) beat John Reid (R) 55.7% to 44.1% — the largest Democratic Lt. Gov. margin since 1965. Hashmi is the first Muslim woman elected statewide in the U.S.",
+    candidates: [
+      { name: "Ghazala Hashmi", party: "D", winner: true,
+        positions: ["Education","Reproductive rights","Opposing Trump-administration policies"],
+        differentiators: ["State senator from the Richmond area","First Muslim woman elected statewide in America"],
+        supporters: ["Educator's perspective in the Senate's presiding chair"],
+        opponents: ["Reliable progressive rather than a bridge-builder [Verify]"] },
+      { name: "John Reid", party: "R", winner: false,
+        positions: ["Education","Economy","Conservative media-honed messaging"],
+        differentiators: ["Radio host; first openly gay man nominated statewide in Virginia","Stayed in the race after Gov. Youngkin asked him to withdraw over a disputed explicit social-media account he denied owning"],
+        supporters: ["Communicator who refused to be pushed out"],
+        opponents: ["The April 2025 controversy shadowed the whole campaign"] }
+    ]
+  },
+  {
+    date: "Nov 4, 2025",
+    type: "past",
+    scope: "State · Statewide",
+    office: "Attorney General of Virginia (2025)",
+    note: "Jay Jones (D) beat incumbent Jason Miyares (R) 53.1% to 46.5% despite the October scandal over his 2022 texts about a Republican legislator — becoming Virginia's first Black attorney general. He ran ~4 points behind Spanberger.",
+    candidates: [
+      { name: "Jay Jones", party: "D", winner: true,
+        positions: ["Consumer protection","Opposing federal overreach","Gun safety [Verify specifics]"],
+        differentiators: ["Former state delegate from Norfolk","Won despite bipartisan condemnation of his 2022 'two bullets' texts — 4 in 10 voters called them disqualifying, but most who were merely 'concerned' voted for him anyway"],
+        supporters: ["Kept the focus on policy over personality"],
+        opponents: ["The texts showed a temperament unfit for the state's top lawyer"] },
+      { name: "Jason Miyares", party: "R", winner: false,
+        positions: ["Crime and public safety record as incumbent AG","Made Jones's texts the centerpiece of his campaign","Law-enforcement partnerships"],
+        differentiators: ["One-term incumbent; the GOP's strongest 2025 performer"],
+        supporters: ["Competent incumbent with a real character contrast"],
+        opponents: ["Tied to an unpopular national GOP in a blue-trending year"] }
+    ]
+  },
+  {
+    date: "Nov 5, 2024",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Virginia (2024)",
+    note: "Tim Kaine (D) won a third term over Hung Cao (R) 54.4% to 45.4% — his narrowest win since 2012, but ~3 points ahead of the top of the ticket.",
+    candidates: [
+      { name: "Tim Kaine", party: "D", winner: true,
+        positions: ["Healthcare access","Military families and veterans (Armed Services)","Abortion rights"],
+        differentiators: ["Former governor and 2016 VP nominee","Consistently outperforms other Democrats statewide"],
+        supporters: ["Popular workhorse with deep Virginia roots"],
+        opponents: ["Reliable party-line vote; Washington insider"] },
+      { name: "Hung Cao", party: "R", winner: false,
+        positions: ["Border security","Veterans' issues","Anti-'woke' military themes"],
+        differentiators: ["Trump-endorsed Navy veteran","Refugee-to-captain biography"],
+        supporters: ["Compelling American-dream story"],
+        opponents: ["Ran a national campaign for a state that wanted a local one"] }
+    ]
+  }
+];
+
+// ----- (3) US House races by district -----
+// Each district object holds: 2024 race + 2026 race
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — VA District 1",
+    region: "Eastern Virginia — Fredericksburg area, Northern Neck, Richmond exurbs",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Rob Wittman (R) is unopposed for his nomination; seven Democrats compete in the Aug 4 primary. Rated Lean Republican.",
+        candidates: [
+          { name: "Rob Wittman (incumbent)", party: "R", winner: false,
+            positions: ["Navy shipbuilding and defense (Armed Services vice chair)","Defended Medicaid work requirements in the 2025 reconciliation vote","Rural infrastructure"],
+            differentiators: ["In Congress since 2007","Co-chairs the Shipbuilding Caucus","Unopposed for the 2026 GOP nomination"],
+            supporters: ["Reliable deliverer for shipyard jobs and rural broadband"],
+            opponents: ["Broke a written pledge not to cut Medicaid, endangering rural hospitals"] },
+          { name: "[Democratic nominee — decided in the Aug 4, 2026 primary]", party: "D", winner: false,
+            positions: ["[Decided Aug 4] Frontrunner Shannon Taylor's themes: protect Medicaid, lower health costs","Abortion rights","Accountability for the Medicaid vote"],
+            differentiators: ["Seven-way primary; frontrunner Shannon Taylor is Henrico Commonwealth's Attorney (since 2011) with DCCC Red-to-Blue, Kaine, Spanberger, and EMILYs List backing","Field includes poverty-law attorney Salaam Bhatti and retired Navy fighter pilot Jason Knapp","[Verify final ballot list]"],
+            supporters: ["A battle-tested prosecutor tops a deep field"], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Wittman won 56.3% to 43.5%.",
+        candidates: [
+          { name: "Rob Wittman", party: "R", winner: true,
+            positions: ["Defense and shipbuilding","Rural broadband","Conservative fiscal policy"],
+            differentiators: ["Incumbent since 2007"],
+            supporters: ["Defense clout for a Navy district"], opponents: ["Party-line record when it counts"] },
+          { name: "Leslie Mehta", party: "D", winner: false,
+            positions: ["Civil rights","Healthcare access","Economic fairness"],
+            differentiators: ["Former ACLU of Virginia legal director"],
+            supporters: ["Serious legal résumé"], opponents: ["Couldn't break the district's lean"] }
+        ]
+      }
+    ]
+  },
+  2: {
+    name: "U.S. House — VA District 2",
+    region: "Hampton Roads coast — Virginia Beach, parts of Chesapeake and Suffolk, Eastern Shore",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Virginia's marquee swing seat — a true Toss Up (Cook, Sabato). Jen Kiggans (R) likely faces former Rep. Elaine Luria (D) in a 2022 rematch if Luria wins the Aug 4 primary.",
+        candidates: [
+          { name: "Jen Kiggans (incumbent)", party: "R", winner: false,
+            positions: ["Veterans' and servicemember healthcare (Rx ACCESS Act)","Sponsored a one-year ACA-subsidy extension","Hampton Roads defense funding"],
+            differentiators: ["Navy helicopter pilot and geriatric nurse practitioner","Ranked among the House's most bipartisan members","Voted for the May 2025 reconciliation bill with Medicaid cuts after signing a letter opposing benefit cuts"],
+            supporters: ["Independent-minded veteran who delivers for the military community","Nurse-pilot profile fits the district perfectly"],
+            opponents: ["Promises one thing at home, votes the party line in Washington","Her Medicaid and ACA votes are the campaign's centerpiece"] },
+          { name: "[Democratic nominee — decided in the Aug 4, 2026 primary]", party: "D", winner: false,
+            positions: ["[Decided Aug 4] Frontrunner Elaine Luria's themes: cost of living","Cutting healthcare costs","Strengthening the military"],
+            differentiators: ["Frontrunner Elaine Luria held this seat 2019–23: 20-year Navy commander, Jan 6 committee member [Verify], raised $1.75M in Q1 2026","Four-way primary: Luria, physician Nila Devanath, Bill Fleming, Patrick Mosolf","DCCC Red-to-Blue target"],
+            supporters: ["Luria matches Kiggans's Navy profile and has won here before"],
+            opponents: ["A Luria nomination is a rerun — she lost this seat to Kiggans in 2022"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Kiggans held the seat 50.7% to 46.9% over Missy Cotter Smasal.",
+        candidates: [
+          { name: "Jen Kiggans", party: "R", winner: true,
+            positions: ["Military and veterans' issues","Defense funding","Healthcare costs"],
+            differentiators: ["Won a second term by under 4 points"],
+            supporters: ["Held a genuine toss-up seat"], opponents: ["Underperformed in a district Trump barely carried"] },
+          { name: "Missy Cotter Smasal", party: "D", winner: false,
+            positions: ["Abortion rights","Veterans' economy","Coastal resilience"],
+            differentiators: ["Navy veteran and small-business owner"],
+            supporters: ["Strong veteran profile"], opponents: ["Second straight Democratic loss here"] }
+        ]
+      }
+    ]
+  },
+  3: {
+    name: "U.S. House — VA District 3",
+    region: "Urban Hampton Roads — Norfolk, Newport News, Hampton, Portsmouth",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Bobby Scott (D), in Congress since 1993, faces Army veteran Edwin Rivera (R) in a safely Democratic district. [Verify final ballot]",
+        candidates: [
+          { name: "Bobby Scott (incumbent)", party: "D", winner: false,
+            positions: ["Education funding — top Democrat on Education & Workforce [Verify title]","Workers' rights and wages","Criminal-justice reform"],
+            differentiators: ["33 years of seniority","First Black Virginian in Congress since Reconstruction","No qualified primary opponent"],
+            supporters: ["Seniority that delivers for Hampton Roads"],
+            opponents: ["[Verify] — no substantive opposition coverage found"] },
+          { name: "Edwin Rivera", party: "R", winner: false,
+            positions: ["[Verify] — minimal coverage","[Verify]","[Verify]"],
+            differentiators: ["U.S. Army veteran","[Verify final ballot status]","[Verify]"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Scott won 70.0% to 29.8%.",
+        candidates: [
+          { name: "Bobby Scott", party: "D", winner: true,
+            positions: ["Education","Labor rights","Justice reform"],
+            differentiators: ["Incumbent since 1993"],
+            supporters: ["Institutional pillar of Virginia politics"], opponents: ["Three decades — the tenure question"] },
+          { name: "John Sitka III", party: "R", winner: false,
+            positions: ["Conservative economics","Military support","Public safety"],
+            differentiators: ["2024 nominee"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  4: {
+    name: "U.S. House — VA District 4",
+    region: "Richmond, Petersburg, and the Southside suburbs",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Jennifer McClellan (D) is the nominee; no Republican filed by the May deadline. [Verify whether the GOP names a candidate]",
+        candidates: [
+          { name: "Jennifer McClellan (incumbent)", party: "D", winner: false,
+            positions: ["Voting rights","Abortion rights","Climate and clean energy (Energy & Commerce) [Verify current emphases]"],
+            differentiators: ["First Black woman elected to Congress from Virginia (2023 special)","Deep General Assembly experience before Congress","No primary; no GOP filer by the deadline"],
+            supporters: ["Effective legislator with a historic profile"],
+            opponents: ["[Verify] — no active opponent yet"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "McClellan won 67.3% to 32.4%.",
+        candidates: [
+          { name: "Jennifer McClellan", party: "D", winner: true,
+            positions: ["Voting rights","Climate","Healthcare"],
+            differentiators: ["First full term after the 2023 special"],
+            supporters: ["Richmond's institutional Democrat"], opponents: [] },
+          { name: "Bill Moher III", party: "R", winner: false,
+            positions: ["Conservative economics","Public safety","Parental rights"],
+            differentiators: ["2024 nominee"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  5: {
+    name: "U.S. House — VA District 5",
+    region: "Southside and central Virginia — Charlottesville, Lynchburg area, Danville",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Both parties have Aug 4 primaries: John McGuire (R) faces Marine veteran Melanie Lucero, while former Rep. Tom Perriello leads a three-way Democratic field.",
+        candidates: [
+          { name: "John McGuire (incumbent)", party: "R", winner: false,
+            positions: ["Staunch Trump-agenda alignment","Spending restraint [Verify specifics]","Border security"],
+            differentiators: ["Former Navy SEAL and state legislator","Won the seat by unseating Rep. Bob Good in a ~370-vote 2024 primary","Faces a primary challenge from broker and Marine veteran Melanie Lucero"],
+            supporters: ["Veteran with an unwavering conservative record"],
+            opponents: ["His own primary challenger cites weak constituent services and thin accomplishments","Critics say he failed to defend UVA from DOJ pressure and let rural broadband money lapse"] },
+          { name: "[Democratic nominee — decided in the Aug 4, 2026 primary]", party: "D", winner: false,
+            positions: ["[Decided Aug 4] Frontrunner Tom Perriello's themes: rural economy — broadband and energy jobs","Defending UVA and public institutions","Affordability"],
+            differentiators: ["Frontrunner Perriello held this seat 2009–11 — the only Democrat to win it this century; endorsed by Kaine and Warner; $1.4M+ raised","Field also includes writer Robert Tracinski and Suzanne Krzyzanowski [Verify]","Three earlier rivals dropped out and endorsed Perriello"],
+            supporters: ["Perriello brings proven crossover appeal in a red district"],
+            opponents: ["Too liberal for Southside [Verify GOP framing]"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "McGuire won 57.3% to 42.3% after his razor-thin primary win over incumbent Bob Good.",
+        candidates: [
+          { name: "John McGuire", party: "R", winner: true,
+            positions: ["Trump agenda","Border security","Spending cuts"],
+            differentiators: ["Navy SEAL; beat a sitting congressman of his own party to get here"],
+            supporters: ["Loyalty rewarded by a red district"], opponents: ["Divisive path to the seat"] },
+          { name: "Gloria Witt", party: "D", winner: false,
+            positions: ["Rural healthcare","Economic opportunity","Education"],
+            differentiators: ["2024 nominee"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  6: {
+    name: "U.S. House — VA District 6",
+    region: "Shenandoah Valley and Roanoke — Harrisonburg, Staunton, Lynchburg",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Ben Cline (R) faces 'Dopesick' author Beth Macy (D) — a national-profile challenger in a district no Democrat has won since 1990.",
+        candidates: [
+          { name: "Ben Cline (incumbent)", party: "R", winner: false,
+            positions: ["Fiscal conservatism and spending cuts","Border security","Judiciary oversight [Verify current platform]"],
+            differentiators: ["In Congress since 2019; Freedom Caucus member","Unopposed for the nomination","Fourth-term incumbent"],
+            supporters: ["Consistent conservative for a conservative district"],
+            opponents: ["Prioritizes national ideological fights over the district's health and economic needs"] },
+          { name: "Beth Macy", party: "D", winner: false,
+            positions: ["The opioid and addiction crisis — her signature subject","Rural healthcare","Rural economic revitalization"],
+            differentiators: ["Journalist and bestselling author of 'Dopesick' (Roanoke)","National profile chronicling the region's opioid epidemic","Rivals withdrew, making her the nominee without a primary [Verify mechanism]"],
+            supporters: ["Gives the district's overlooked communities a national voice"],
+            opponents: ["An author-activist with no legislative experience in a deep-red district [Verify]"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Cline won 63.1% to 34.8%.",
+        candidates: [
+          { name: "Ben Cline", party: "R", winner: true,
+            positions: ["Spending cuts","Border security","Conservative social policy"],
+            differentiators: ["Incumbent since 2019"],
+            supporters: ["Valley's dependable conservative"], opponents: ["Freedom Caucus obstructionism"] },
+          { name: "Ken Mitchell", party: "D", winner: false,
+            positions: ["Healthcare","Veterans","Rural economy"],
+            differentiators: ["2024 nominee"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  7: {
+    name: "U.S. House — VA District 7",
+    region: "I-95 corridor — eastern Prince William, Fredericksburg, Stafford, Spotsylvania, Culpeper",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Swing seat, rated Lean Democratic (Cook). Eugene Vindman (D) is renominated without a primary; three Republicans compete Aug 4 after frontrunner Tara Durant suspended her bid.",
+        candidates: [
+          { name: "Eugene Vindman (incumbent)", party: "D", winner: false,
+            positions: ["Lower utility, grocery, and diesel costs (Diesel Prices Relief Act)","Protect federal workers and military families","Anti-corruption and rule-of-law accountability"],
+            differentiators: ["Retired Army colonel and JAG known from the first Trump impeachment","$5.2M war chest [Verify] — one of the House's largest","Sole qualifying Democrat after the redistricting reversal reshuffled the field"],
+            supporters: ["Proven fighter who flipped and held a swing seat","Delivers for the district's federal and military households"],
+            opponents: ["An anti-Trump celebrity who rode national money into the seat [Verify framing]","Insufficiently focused on affordability, say GOP rivals"] },
+          { name: "[Republican nominee — decided in the Aug 4, 2026 primary]", party: "R", winner: false,
+            positions: ["[Decided Aug 4] Field themes: deregulation for business and housing","Energy: natural gas and small modular nuclear","Election integrity (voter ID, roll maintenance)"],
+            differentiators: ["Three-way field: Doug Ollivant (retired Army lt. colonel, ex-NSC director), Philip Harding (Prince William entrepreneur), Rick Smithers (pastor/builder — lives outside the district and pledges to move)","Early frontrunner state Sen. Tara Durant suspended her campaign in May","[Verify final ballot]"],
+            supporters: ["Ollivant's national-security résumé could match Vindman's military brand"],
+            opponents: ["A late-forming, underfunded field against a $5M incumbent"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Vindman won the open seat 51.2% to 48.5% over Derrick Anderson — one of the closest House races in Virginia.",
+        candidates: [
+          { name: "Eugene Vindman", party: "D", winner: true,
+            positions: ["Democracy and accountability","Federal workforce","Affordability"],
+            differentiators: ["First-time candidate; national fundraising phenomenon"],
+            supporters: ["Turned a national moment into local service"], opponents: ["Won by under 3 in a Lean-D year"] },
+          { name: "Derrick Anderson", party: "R", winner: false,
+            positions: ["Public safety","Economy","Veterans"],
+            differentiators: ["Green Beret veteran and attorney"],
+            supporters: ["Strong profile, close race"], opponents: ["Couldn't overcome the money gap"] }
+        ]
+      }
+    ]
+  },
+  8: {
+    name: "U.S. House — VA District 8",
+    region: "Inner Northern Virginia — Arlington, Alexandria, Falls Church, eastern Fairfax",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Virginia's most Democratic district (~76,000 federal workers live here). Don Beyer (D), 76, faces four Aug 4 primary challengers running on generational change.",
+        candidates: [
+          { name: "Don Beyer (incumbent)", party: "D", winner: false,
+            positions: ["Defending federal workers against layoffs","Climate policy","AI policy and gun safety [Verify current planks]"],
+            differentiators: ["In Congress since 2015; former lieutenant governor and ambassador","Endorsed by Sens. Warner and Kaine","Faces four primary challengers — several former federal workers — making his age (76) the central issue"],
+            supporters: ["Deeply experienced and effective for a federal-worker district","Wrong moment to surrender seniority"],
+            opponents: ["Challengers say he has 'stayed too long' and the party needs new fighters","A July primary forum turned contentious over the generational question"] },
+          { name: "[GOP candidate — Tony Sabio, pending confirmation]", party: "R", winner: false,
+            positions: ["[Verify] — negligible coverage","[Verify]","[Verify]"],
+            differentiators: ["Cardinal News lists Tony Sabio as the Republican; earlier reporting described a three-way primary [Verify final ballot]","District is Safe Democratic","[Verify]"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Beyer won 71.5% to 24.7%.",
+        candidates: [
+          { name: "Don Beyer", party: "D", winner: true,
+            positions: ["Federal workforce","Climate","Economy"],
+            differentiators: ["Incumbent since 2015"],
+            supporters: ["Reliable, thoughtful legislator"], opponents: ["The age question loomed even then"] },
+          { name: "Jerry Torres", party: "R", winner: false,
+            positions: ["Veterans","Small business","Security"],
+            differentiators: ["2024 nominee"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  9: {
+    name: "U.S. House — VA District 9",
+    region: "Southwest Virginia — the coalfields, Bristol, Blacksburg ('the Fightin' Ninth')",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Morgan Griffith (R) seeks a ninth term in Virginia's reddest district (R+22); three Democrats compete Aug 4.",
+        candidates: [
+          { name: "Morgan Griffith (incumbent)", party: "R", winner: false,
+            positions: ["Coal and natural-gas energy production","Fighting EPA regulatory burdens","Senior Energy & Commerce role"],
+            differentiators: ["In Congress since 2011","No GOP primary [Verify]","Constituent-service reputation"],
+            supporters: ["Workhorse defender of the region's energy economy"],
+            opponents: ["The region has lost hospitals, jobs, and young people under one-party representation"] },
+          { name: "[Democratic nominee — decided in the Aug 4, 2026 primary]", party: "D", winner: false,
+            positions: ["[Decided Aug 4] Field themes: rural healthcare and reversing Medicaid cuts","Broadband and economic opportunity","Farm Bill reform"],
+            differentiators: ["Three-way field: software developer Adam Murphy (Medicare for All, no corporate PACs), cattle farmer Joy Powers ('H.O.M.E. Plan'), retired attorney-pastor Douglas Crockett ('Prosperity Platform')","[Verify final ballot — a fourth candidate appeared on earlier lists]","District is R+22"],
+            supporters: ["An unusually substantive field for a long-shot district"], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Griffith won 72.5% to 27.3%.",
+        candidates: [
+          { name: "Morgan Griffith", party: "R", winner: true,
+            positions: ["Energy production","Deregulation","Rural issues"],
+            differentiators: ["Incumbent since 2011"],
+            supporters: ["Coal country's steadfast voice"], opponents: ["Prosperity hasn't followed"] },
+          { name: "Karen Baker", party: "D", winner: false,
+            positions: ["Healthcare","Education","Rural economy"],
+            differentiators: ["2024 nominee"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  10: {
+    name: "U.S. House — VA District 10",
+    region: "Outer Northern Virginia — Loudoun County anchor, Fauquier, Prince William fringes",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Suhas Subramanyam (D) is renominated without a primary; three low-dollar Republicans compete Aug 4 after fundraising leader Sam Wong withdrew.",
+        candidates: [
+          { name: "Suhas Subramanyam (incumbent)", party: "D", winner: false,
+            positions: ["Lowering family costs","Abortion rights","Tech and AI accountability [Verify 2026 emphases]"],
+            differentiators: ["Former Obama White House tech-policy advisor; ex-state senator","Overwhelming fundraising edge over the GOP field","First term after winning the open seat in 2024"],
+            supporters: ["Pragmatic and constituent-focused"],
+            opponents: ["Tied to federal spending, cost-of-living failures, and Loudoun education controversies"] },
+          { name: "[Republican nominee — decided in the Aug 4, 2026 primary]", party: "R", winner: false,
+            positions: ["[Decided Aug 4] Field themes: national security","Cutting wasteful spending","Education and parental rights"],
+            differentiators: ["Three-way field: Dave Beckwith (30-yr Air Force veteran, ex-deputy assistant secretary of defense, $25.7k raised), teacher Julie Perry ($8.1k), Anthony Suttles (no FEC reports)","Fundraising leader Sam Wong withdrew","[Verify final ballot]"],
+            supporters: [], opponents: ["A low-dollar field against a well-funded incumbent"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Subramanyam won the open seat (Jennifer Wexton retired) 52.1% to 47.5%.",
+        candidates: [
+          { name: "Suhas Subramanyam", party: "D", winner: true,
+            positions: ["Technology policy","Healthcare","Cost of living"],
+            differentiators: ["Won a crowded primary, then a 4.5-point general"],
+            supporters: ["New generation of NoVa leadership"], opponents: ["Narrow win in a changing district"] },
+          { name: "Mike Clancy", party: "R", winner: false,
+            positions: ["Economy","Parental rights","Public safety"],
+            differentiators: ["Business attorney; repeat candidate"],
+            supporters: ["Best GOP showing here in years"], opponents: [] }
+        ]
+      }
+    ]
+  },
+  11: {
+    name: "U.S. House — VA District 11",
+    region: "Inner Northern Virginia — most of Fairfax County plus Fairfax City",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "James Walkinshaw (D), who won the 2025 special after Gerry Connolly's death, seeks a full term. The GOP side is unsettled. [Verify final Republican ballot]",
+        candidates: [
+          { name: "James Walkinshaw (incumbent)", party: "D", winner: false,
+            positions: ["Protecting the district's federal workers from administration cuts","Connolly-style constituent service","Core Democratic health and democracy positions [Verify 2026 planks]"],
+            differentiators: ["Connolly's longtime chief of staff, then Fairfax County supervisor","Won the Sept 2025 special with 75.1% after taking a 9-way firehouse primary with ~59%","No 2026 primary opponent"],
+            supporters: ["Ready-on-day-one defender of federal employees","Institutional continuity for the district"],
+            opponents: ["A machine-politics insider who owes his seat to the party establishment"] },
+          { name: "[Republican candidate — unsettled]", party: "R", winner: false,
+            positions: ["[Verify] — sources conflict on the GOP ballot","[Verify]","[Verify]"],
+            differentiators: ["Possible candidates: banking executive Nathan Headrick (pledged $2M self-funding), 2024 nominee Michael Van Meter (20-year FBI veteran), or perennial candidate Arthur Purves [Verify final ballot]","District is D+18","[Verify]"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Sep 9, 2025", type: "past",
+        note: "SPECIAL ELECTION after Rep. Gerry Connolly's death (May 21, 2025): James Walkinshaw (D) beat Stewart Whitson (R) 75.1% to 24.7%.",
+        candidates: [
+          { name: "James Walkinshaw", party: "D", winner: true,
+            positions: ["Federal workforce","Constituent service","Continuity of Connolly's agenda"],
+            differentiators: ["Won the largest party-run nomination contest in Virginia Democratic history (~39,000 votes)"],
+            supporters: ["Overwhelming mandate"], opponents: ["Inherited rather than earned, said critics"] },
+          { name: "Stewart Whitson", party: "R", winner: false,
+            positions: ["Public safety","Federal accountability","Economy"],
+            differentiators: ["Army veteran and former FBI agent"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Gerry Connolly won his final term 66.7% to 32.9%; he died May 21, 2025.",
+        candidates: [
+          { name: "Gerry Connolly", party: "D", winner: true,
+            positions: ["Federal employee advocacy","Government oversight","NoVa infrastructure"],
+            differentiators: ["In Congress 2009–2025; died in office"],
+            supporters: ["A giant of federal-workforce policy"], opponents: [] },
+          { name: "Mike Van Meter", party: "R", winner: false,
+            positions: ["Public safety","Aviation security","Veterans"],
+            differentiators: ["20-year FBI veteran; may run again in 2026 [Verify]"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  }
+};
+
+const SITE_META = { name: "Virginia Elections Hub", lastUpdated: "July 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — VA county-level down-ballot research is the next phase).
+const LOCAL_RACES = {
+  // County-level down-ballot research for Virginia has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = district
+    ? district.races.map(r => ({
+        ...r,
+        office: r.office || district.name,
+        scope: r.scope || `Federal · District ${county.d}`
+      }))
+    : [];
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const VA_STATE_FIPS = "51";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#vamap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(VA_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 450;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Richmond ----
+  drawCapital(g, projection, { name: "Richmond", lng: -77.4360, lat: 37.5407 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in VA";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our Virginia dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">Candidates not yet announced.</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>

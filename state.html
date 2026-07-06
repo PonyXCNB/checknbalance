@@ -271,6 +271,7 @@ if (!STATES[abbr]) abbr = "CA";
 if (abbr === "NC") { window.location.replace("nc.html"); }
 if (abbr === "SC") { window.location.replace("sc.html"); }
 if (abbr === "GA") { window.location.replace("ga.html"); }
+if (abbr === "VA") { window.location.replace("va.html"); }
 
 const STATE = STATES[abbr];
 const FIPS = STATE.f;
@@ -434,20 +435,6 @@ const STATE_RACES = {
           differentiators:["Nassau County Executive; re-elected in 2025 by ~12 points in a Democratic-leaning county","Became the GOP nominee after Elise Stefanik exited in Dec 2025; Trump-endorsed","Running mate: Madison County Sheriff Todd Hood"],
           supporters:["Won twice in a blue county on a public-safety, low-tax message","Trump's pick, with a Conservative Party endorsement too"],
           opponents:["Nassau County wins don't obviously scale to a state Harris carried comfortably","[Verify] Untested in a statewide race"] }
-      ]}
-  ],
-  VA: [
-    { key:"senate", date:"Nov 3, 2026", type:"upcoming", scope:"Federal · Statewide · Nov 3, 2026",
-      office:"U.S. Senate — Virginia",
-      note:"Mark Warner (D) seeks a fourth term in a state Harris won single-digits. [Verify] GOP nominee from the June primary.",
-      candidates:[
-        { name:"Mark Warner (incumbent)", party:"D", winner:false,
-          positions:["Intelligence and national-security oversight (SSCI vice chair)","Bipartisan tech regulation","Federal-workforce protection — a top VA issue"],
-          differentiators:["Three-term senator and former governor","One of the Senate's leading centrists","Deep NoVa tech-economy ties"],
-          supporters:["Serious, bipartisan operator with real influence","Defends Virginia's federal workers"],
-          opponents:["Two decades in Washington is enough","Centrist brand masks party-line votes"] },
-        { name:"[Republican nominee — verify]", party:"R", winner:false,
-          positions:["[Verify after primary certification]"], differentiators:["[Verify]"], supporters:[], opponents:[] }
       ]}
   ],
   MD: [
