@@ -26,6 +26,7 @@ const STATE_PAGES = [
   { page: "sc.html", countyCount: 46,  sampleFips: "45019", sampleName: "Charleston",  expectedRaces: 15 },
   { page: "ga.html", countyCount: 159, sampleFips: "13121", sampleName: "Fulton",      expectedRaces: 18 },
   { page: "va.html", countyCount: 133, sampleFips: "51059", sampleName: "Fairfax",     expectedRaces: 9 },
+  { page: "md.html", countyCount: 24,  sampleFips: "24031", sampleName: "Montgomery",  expectedRaces: 10 },
 ];
 
 for (const cfg of STATE_PAGES) {
@@ -108,8 +109,8 @@ function officeKind(seat) {
   return null;
 }
 
-// NC, SC, GA, and VA redirect to their own pages, so they are not tested here.
-const FEATURED_ABBRS = ["AL", "FL", "NY", "MD", "DC", "NJ", "DE"];
+// NC, SC, GA, VA, and MD redirect to their own pages, so they are not tested here.
+const FEATURED_ABBRS = ["AL", "FL", "NY", "DC", "NJ", "DE"];
 const ALL_TESTED = [...new Set([...FEATURED_ABBRS, "TX", "CA", "OH", "WA"])];
 
 for (const abbr of ALL_TESTED) {
@@ -156,7 +157,7 @@ for (const abbr of ALL_TESTED) {
 // makes a race silently vanish from the grouped drawer)
 // ---------------------------------------------------------------
 console.log("\n— type-value audit —");
-for (const page of ["index.html", "nc.html", "sc.html", "ga.html", "va.html", "state.html"]) {
+for (const page of ["index.html", "nc.html", "sc.html", "ga.html", "va.html", "md.html", "state.html"]) {
   const bad = [];
   for (const code of extractInlineScripts(page)) {
     for (const m of code.matchAll(/type\s*:\s*"([a-z]+)"/g)) {
