@@ -404,8 +404,19 @@ const STATE_RACES = {
       ]},
     { key:"senate", date:"Nov 3, 2026", type:"upcoming", scope:"Federal · Statewide · Nov 3, 2026",
       office:"U.S. Senate — Alabama (open seat)",
-      note:"Open because Tuberville is running for governor. [Verify] Nominees pending final primary/runoff certification — check AL Secretary of State.",
-      candidates:[] }
+      note:"Open because Tuberville is running for governor. Barry Moore (R) won the June 16 GOP runoff (55.8%) and Everett Wess (D) won the Democratic runoff (54.6%). (Sources: Alabama Reflector, NBC News, Ballotpedia.)",
+      candidates:[
+        { name:"Barry Moore", party:"R", winner:false,
+          positions:["Ban congressional stock trading","Hard-line border enforcement","Lower inflation by cutting the national debt"],
+          differentiators:["U.S. Representative (AL-01; previously AL-02, 2021–2025)","Won the June 16 GOP runoff with 55.8% over Jared Hudson","Trump-endorsed; former Alabama National Guard and business owner"],
+          supporters:["Trump's pick in a deep-red state","Consistent conservative record in the House"],
+          opponents:["[Verify] A divisive runoff left the party split","Safe-seat favorite under little general-election pressure"] },
+        { name:"Everett Wess", party:"D", winner:false,
+          positions:["Raise the federal minimum wage","Expand rural healthcare access","Better-paying jobs and educational opportunity"],
+          differentiators:["Managing partner of the Wess Law Firm; former municipal judge, city prosecutor, and public defender","Won the Democratic runoff with 54.6% over Dakarai Larriett","First run for federal office"],
+          supporters:["Deep legal and community-safety background","Kitchen-table economic message"],
+          opponents:["No Democrat has won statewide in Alabama since 2017","[Verify] Limited campaign resources in a red state"] }
+      ] }
   ],
   FL: [
     { key:"governor", date:"Nov 3, 2026", type:"upcoming", scope:"State · Statewide · Nov 3, 2026",
@@ -442,18 +453,18 @@ const STATE_RACES = {
   NY: [
     { key:"governor", date:"Nov 3, 2026", type:"upcoming", scope:"State · Statewide · Nov 3, 2026",
       office:"Governor of New York",
-      note:"[Verify] June 23 primary results; Stefanik has been the presumptive GOP nominee since entering in late 2025.",
+      note:"Hochul (D) was unopposed in the June 23 Democratic primary. Bruce Blakeman became the GOP nominee after Elise Stefanik exited the race in December 2025; he was unopposed in the Republican primary. Forecasters shifted the race toward Democrats after Stefanik's exit. (Sources: NBC News, Cook Political Report, Ballotpedia.)",
       candidates:[
         { name:"Kathy Hochul (incumbent)", party:"D", winner:false,
           positions:["Affordability agenda: housing supply, childcare credits","Public-safety funding with subway policing surge","Abortion-rights protection"],
-          differentiators:["Incumbent since 2021; first woman elected NY governor (2022)","[Verify] primary margin","Won 2022 by ~6 points — closest NY race in decades"],
+          differentiators:["Incumbent since 2021; first woman elected NY governor (2022)","Unopposed in the June 23 Democratic primary","Won 2022 by ~6 points — closest NY race in decades"],
           supporters:["Steady executive who's moved to the center on crime","Enormous fundraising advantage"],
           opponents:["Deeply underwater approval ratings for an NY Democrat","Blamed for affordability crisis and outmigration"] },
-        { name:"Elise Stefanik", party:"R", winner:false,
-          positions:["Crime and bail-reform rollback","Tax cuts to stem outmigration","Anti-congestion-pricing, anti-mandate agenda"],
-          differentiators:["U.S. Representative (NY-21) and former House GOP conference chair","Trump's strongest NY ally; briefly his UN ambassador nominee","Best-funded GOP challenger since Pataki"],
-          supporters:["Toughest test Hochul could face","National profile brings national money"],
-          opponents:["Too MAGA for a state Harris won comfortably","Traded moderate reputation for Trump loyalty"] }
+        { name:"Bruce Blakeman", party:"R", winner:false,
+          positions:["Public safety — expand policing, oppose sanctuary policies","Cut taxes and cost of living to stem outmigration","Roll back Albany mandates (opposed mask mandates as county executive)"],
+          differentiators:["Nassau County Executive; re-elected in 2025 by ~12 points in a Democratic-leaning county","Became the GOP nominee after Elise Stefanik exited in Dec 2025; Trump-endorsed","Running mate: Madison County Sheriff Todd Hood"],
+          supporters:["Won twice in a blue county on a public-safety, low-tax message","Trump's pick, with a Conservative Party endorsement too"],
+          opponents:["Nassau County wins don't obviously scale to a state Harris carried comfortably","[Verify] Untested in a statewide race"] }
       ]}
   ],
   VA: [
