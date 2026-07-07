@@ -12,3 +12,8 @@ node_modules/
 .env
 *.key
 .xai-api-key
+*api key*
+*api-key*
+*apikey*
+*secret*
+*token*
