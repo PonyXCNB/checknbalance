@@ -7,3 +7,8 @@ desktop.ini
 
 # Node (the site has no dependencies, but keep this just in case)
 node_modules/
+
+# Secrets — API keys must NEVER enter this public repo
+.env
+*.key
+.xai-api-key

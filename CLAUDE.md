@@ -156,6 +156,12 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
    push without waiting for review — the owner reviews on the live site and would rather catch an
    error there than gate every publish. The [Verify] discipline is what makes this safe: uncertain
    claims must be visibly marked, never silently asserted.
+   - **Grok/X sourcing rule (owner-added July 6, 2026):** `tools/grok-research.js` calls xAI's
+     Grok with live web + X search to generate LEADS for resolving [Verify] markers (key setup
+     documented in the script header; the key lives outside this public repo). Grok output is
+     never citable and X chatter is never a source. A candidate's OWN campaign site or verified
+     X account IS a legitimate source for their self-described positions — attribute as such.
+     Remove a [Verify] only when a real source confirms the claim.
 2. **Voices blocks are sourced synthesis**, not invented quotes: paraphrase widely reported praise
    and criticism, evenhandedly, for both parties' candidates.
 3. **Sources used so far:** NC State Board of Elections filings, SC Election Commission
