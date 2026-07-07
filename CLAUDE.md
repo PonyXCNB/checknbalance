@@ -276,6 +276,9 @@ node tests/run-all.js
 | `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config: nc.html + sc.html): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly. Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
 | `tests/lib.js` | Shared helpers: inline-script extraction, the d3 cut, DOM stubs, vm sandbox runner |
 | `tests/run-all.js` | Runs all three suites; exits non-zero if anything fails |
+| `tools/verify-report.js` | Compact inventory of every [Verify] marker + time-sensitive race dates across all built pages. **Weekly refreshes work from this report, not full page reads** (~10× cheaper) |
+| `tools/grok-research.js` | Grok lead generator (web + X search) — see editorial policy for sourcing rules |
+| `tools/research-ledger.md` | Dead-end tracker: markers researched with no findings + retry dates, so they aren't re-researched weekly |
 
 Notes for future edits:
 - `getCountyElections` returns `{ county, district, elections }` — the race list is `.elections`.
