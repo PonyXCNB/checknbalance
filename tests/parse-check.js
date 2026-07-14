@@ -6,7 +6,7 @@
 "use strict";
 const { extractInlineScripts, makeChecker } = require("./lib");
 
-const PAGES = ["index.html", "nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html", "state.html"];
+const PAGES = ["index.html", "nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html", "ny.html", "state.html"];
 const { check, summary } = makeChecker();
 
 for (const page of PAGES) {

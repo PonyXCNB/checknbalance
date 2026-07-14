@@ -1,0 +1,3076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>New York Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every NY election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 2.2 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #ncmap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">NY</div>
+      <div class="brand-text">
+        <span class="brand-name">New York Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every New York <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 62 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">62</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>26</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>3</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of New York…</div>
+      <svg id="nymap" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>NY Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">July 2026</span><br>
+      Sources: New York State Board of Elections, Ballotpedia, Wikipedia, AP, The New York Times, Times Union, City & State NY, Spectrum News NY1.
+    </div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every NY county + its primary US House district
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- (1) Counties + primary 2024 US House district -----
+// NOTE: several NY counties are split across multiple districts. The number below is
+// the PRIMARY district by population. Verify against your local board of elections.
+const COUNTIES = {
+  "36001": {
+    "n": "Albany",
+    "d": 20
+  },
+  "36003": {
+    "n": "Allegany",
+    "d": 23
+  },
+  "36005": {
+    "n": "Bronx",
+    "d": 15
+  },
+  "36007": {
+    "n": "Broome",
+    "d": 19
+  },
+  "36009": {
+    "n": "Cattaraugus",
+    "d": 23
+  },
+  "36011": {
+    "n": "Cayuga",
+    "d": 22
+  },
+  "36013": {
+    "n": "Chautauqua",
+    "d": 23
+  },
+  "36015": {
+    "n": "Chemung",
+    "d": 23
+  },
+  "36017": {
+    "n": "Chenango",
+    "d": 19
+  },
+  "36019": {
+    "n": "Clinton",
+    "d": 21
+  },
+  "36021": {
+    "n": "Columbia",
+    "d": 19
+  },
+  "36023": {
+    "n": "Cortland",
+    "d": 22
+  },
+  "36025": {
+    "n": "Delaware",
+    "d": 19
+  },
+  "36027": {
+    "n": "Dutchess",
+    "d": 18
+  },
+  "36029": {
+    "n": "Erie",
+    "d": 26
+  },
+  "36031": {
+    "n": "Essex",
+    "d": 21
+  },
+  "36033": {
+    "n": "Franklin",
+    "d": 21
+  },
+  "36035": {
+    "n": "Fulton",
+    "d": 21
+  },
+  "36037": {
+    "n": "Genesee",
+    "d": 24
+  },
+  "36039": {
+    "n": "Greene",
+    "d": 19
+  },
+  "36041": {
+    "n": "Hamilton",
+    "d": 21
+  },
+  "36043": {
+    "n": "Herkimer",
+    "d": 21
+  },
+  "36045": {
+    "n": "Jefferson",
+    "d": 24
+  },
+  "36047": {
+    "n": "Kings",
+    "d": 8
+  },
+  "36049": {
+    "n": "Lewis",
+    "d": 21
+  },
+  "36051": {
+    "n": "Livingston",
+    "d": 24
+  },
+  "36053": {
+    "n": "Madison",
+    "d": 22
+  },
+  "36055": {
+    "n": "Monroe",
+    "d": 25
+  },
+  "36057": {
+    "n": "Montgomery",
+    "d": 20
+  },
+  "36059": {
+    "n": "Nassau",
+    "d": 4
+  },
+  "36061": {
+    "n": "New York",
+    "d": 12
+  },
+  "36063": {
+    "n": "Niagara",
+    "d": 26
+  },
+  "36065": {
+    "n": "Oneida",
+    "d": 22
+  },
+  "36067": {
+    "n": "Onondaga",
+    "d": 22
+  },
+  "36069": {
+    "n": "Ontario",
+    "d": 24
+  },
+  "36071": {
+    "n": "Orange",
+    "d": 18
+  },
+  "36073": {
+    "n": "Orleans",
+    "d": 24
+  },
+  "36075": {
+    "n": "Oswego",
+    "d": 24
+  },
+  "36077": {
+    "n": "Otsego",
+    "d": 19
+  },
+  "36079": {
+    "n": "Putnam",
+    "d": 17
+  },
+  "36081": {
+    "n": "Queens",
+    "d": 6
+  },
+  "36083": {
+    "n": "Rensselaer",
+    "d": 20
+  },
+  "36085": {
+    "n": "Richmond",
+    "d": 11
+  },
+  "36087": {
+    "n": "Rockland",
+    "d": 17
+  },
+  "36089": {
+    "n": "St. Lawrence",
+    "d": 21
+  },
+  "36091": {
+    "n": "Saratoga",
+    "d": 20
+  },
+  "36093": {
+    "n": "Schenectady",
+    "d": 20
+  },
+  "36095": {
+    "n": "Schoharie",
+    "d": 21
+  },
+  "36097": {
+    "n": "Schuyler",
+    "d": 23
+  },
+  "36099": {
+    "n": "Seneca",
+    "d": 24
+  },
+  "36101": {
+    "n": "Steuben",
+    "d": 23
+  },
+  "36103": {
+    "n": "Suffolk",
+    "d": 1
+  },
+  "36105": {
+    "n": "Sullivan",
+    "d": 19
+  },
+  "36107": {
+    "n": "Tioga",
+    "d": 23
+  },
+  "36109": {
+    "n": "Tompkins",
+    "d": 19
+  },
+  "36111": {
+    "n": "Ulster",
+    "d": 18
+  },
+  "36113": {
+    "n": "Warren",
+    "d": 21
+  },
+  "36115": {
+    "n": "Washington",
+    "d": 21
+  },
+  "36117": {
+    "n": "Wayne",
+    "d": 24
+  },
+  "36119": {
+    "n": "Westchester",
+    "d": 16
+  },
+  "36121": {
+    "n": "Wyoming",
+    "d": 24
+  },
+  "36123": {
+    "n": "Yates",
+    "d": 24
+  }
+};
+
+// ----- (2) Statewide races (every county votes in these) -----
+const STATEWIDE = [
+  {
+    "date": "Nov 3, 2026",
+    "type": "upcoming",
+    "scope": "State · Statewide",
+    "office": "Governor of New York",
+    "note": "Incumbent Gov. Kathy Hochul (D), seeking her first full term (she won 2022 over Lee Zeldin 53.1%-46.7%), was UNOPPOSED in the June 23, 2026 Democratic primary. The premise of a Delgado challenge did not materialize: Lt. Gov. Antonio Delgado launched a primary bid (June 2025) but withdrew before the ballot; under NY's new joint-ticket law, Hochul now runs with Lt. Governor nominee Adrienne Adams (former NYC Council Speaker), not Delgado. On the GOP side, Rep. Elise Stefanik announced a run but DROPPED OUT Dec 19-20, 2025 (also declining House re-election); she is NOT the nominee. The Republican nominee is Nassau County Executive Bruce Blakeman (running mate: Madison County Sheriff Todd Hood), who was also unopposed in the June 23, 2026 GOP primary, was Trump-endorsed after Stefanik's exit, formally designated by the NY GOP Feb 11, 2026, and cross-endorsed by the Conservative Party. Competitiveness: rated Solid/Safe Democratic by Cook Political Report and Likely Democratic by Sabato's Crystal Ball; a May 2026 Siena/Spectrum poll had Hochul leading Blakeman 49%-33%. General election is Nov 3, 2026 (winner not yet decided).",
+    "candidates": [
+      {
+        "name": "Kathy Hochul",
+        "party": "D",
+        "winner": false,
+        "positions": [
+          "Affordability agenda: 'inflation refund' checks of $300-$500, middle-class tax cuts, an expanded Child Tax Credit, universal child care, and eliminating state income tax on tips up to $25K (per 2026 State of the State / FY2026 budget, governor.ny.gov)",
+          "Abortion rights: state-law protections for out-of-state patients and providers, telehealth medication abortion, and a state fund to pay for abortion for those who cannot afford it",
+          "Gun safety: record gun-violence-prevention funding and first-in-the-nation legislation cracking down on 3D-printed 'ghost' guns"
+        ],
+        "differentiators": [
+          "Incumbent seeking her first full term; won 2022 over Zeldin 53.1%-46.7%",
+          "Runs on a joint ticket with Lt. Governor nominee Adrienne Adams (former NYC Council Speaker) under NY's new joint-primary law",
+          "Avoided a Democratic primary after Lt. Gov. Antonio Delgado launched, then abandoned, a challenge"
+        ],
+        "supporters": [],
+        "opponents": []
+      },
+      {
+        "name": "Bruce Blakeman",
+        "party": "R",
+        "winner": false,
+        "positions": [
+          "Public safety: expand police hiring and funding (created a Nassau counterterrorism unit modeled on NYPD 'Hercules'), citing Nassau as America's 'safest county'; opposes new gun restrictions (blakemanfornewyork.com; WGRZ interview)",
+          "Taxes/affordability: oppose state tax increases, hold property taxes flat, and limit corporate tax hikes he says drive businesses and jobs out of New York",
+          "Immigration & energy: fought sanctuary policies and migrant-housing programs; opposes large offshore wind projects and lithium-ion battery storage, favoring natural gas and pausing parts of NY's electrification mandates"
+        ],
+        "differentiators": [
+          "Nassau County Executive, re-elected in 2025 by ~12 points in a Democratic-leaning county",
+          "Became GOP frontrunner/nominee after Rep. Elise Stefanik exited the race in Dec. 2025; endorsed by President Trump",
+          "Cross-endorsed by the NY Conservative Party; running mate is Madison County Sheriff Todd Hood"
+        ],
+        "supporters": [],
+        "opponents": []
+      }
+    ]
+  },
+  {
+    "date": "Nov 3, 2026",
+    "type": "upcoming",
+    "scope": "State · Statewide",
+    "office": "Attorney General — New York",
+    "note": "Incumbent Democrat Letitia James is running for a third term. She advanced from the June 23, 2026 Democratic primary unopposed (no contested Democratic primary; she also holds the Working Families Party line). The Republican nominee is Saritha Komatireddy, a former federal prosecutor (Eastern District of NY, now a partner at Holtzman Vogel) who was designated by the state GOP without a contested Republican primary and also carries the Conservative Party line. General election is Nov 3, 2026. Competitiveness: New York is a strongly Democratic state (Democratic trifecta) and James has a large financial edge ($5.3M raised as of May 2026 vs. ~$557K for Komatireddy per City & State reporting); a March 2026 Siena Research Institute poll had James at 46% vs. 37% preferring someone else, indicating a lead but under 50% amid legal troubles (James was federally indicted in Oct. 2025 on bank fraud/false-statement counts; a judge dismissed the case without prejudice on Nov. 24, 2025). No formal Cook Political Report or Sabato's Crystal Ball rating for this specific race was located this run; based on state fundamentals and polling the race best characterizes as Lean/Likely Democratic (analyst characterization, not an official rating).",
+    "candidates": [
+      {
+        "name": "Letitia James",
+        "party": "D",
+        "winner": false,
+        "positions": [
+          "Confronting the Trump administration — has sued it 50+ times to protect New York's rights and federal funding for healthcare, public education, and jobs (per her campaign site and ag.ny.gov)",
+          "Consumer protection and lowering costs for working families — highlights the April 2026 antitrust jury win against Live Nation/Ticketmaster and affordability enforcement",
+          "Defending health care and reproductive rights — protecting Medicaid and ACA coverage and access to reproductive and gender-affirming care"
+        ],
+        "differentiators": [
+          "Two-term incumbent seeking a third term; also holds the Working Families Party line",
+          "Nationally known for anti-Trump litigation; campaigning alongside allies like Rep. Ocasio-Cortez",
+          "Running under a legal cloud — Oct. 2025 federal indictment dismissed without prejudice Nov. 2025"
+        ],
+        "supporters": [],
+        "opponents": []
+      },
+      {
+        "name": "Saritha Komatireddy",
+        "party": "R",
+        "winner": false,
+        "positions": [
+          "Law-and-order / public safety — a former terrorism and national-security prosecutor pledging to prioritize violent crime, subway safety, drug trafficking, and terrorism prosecutions, and criticizing bail laws",
+          "Cracking down on Medicaid fraud — pledges to recover roughly $1 billion in 'stolen' Medicaid dollars and faults the current Medicaid Fraud Unit",
+          "Government accountability / depoliticizing the AG office — calls for systemic oversight of New York nonprofits and says the office should put public safety and crime victims ahead of high-profile political fights"
+        ],
+        "differentiators": [
+          "First-time candidate; career federal prosecutor (EDNY), now partner at Holtzman Vogel",
+          "GOP-designated without a contested Republican primary; also carries the Conservative Party line",
+          "Sharp financial and name-recognition underdog against a two-term incumbent"
+        ],
+        "supporters": [],
+        "opponents": []
+      }
+    ]
+  },
+  {
+    "date": "Nov 3, 2026",
+    "type": "upcoming",
+    "scope": "State · Statewide",
+    "office": "Comptroller — New York",
+    "note": "Incumbent Thomas P. DiNapoli (D), state comptroller since 2007 and seeking a 5th full term, won the June 23, 2026 Democratic primary — his first competitive primary in the office. The Wikipedia results table shows DiNapoli ~65.7%, former Port Authority/housing-nonprofit executive Drew Warshaw ~20.1%, and entrepreneur/ex-Kansas legislator Raj Goyle ~13.8% (some earlier partial counts showed DiNapoli near 60%). The Republican nominee is Joseph Hernandez, a Cuban-American biotech and Wall Street entrepreneur (Blue Water Venture Partners) and political newcomer, unanimously nominated at the NY GOP convention and also carrying the Conservative Party line. Notably, the Working Families Party did NOT cross-endorse DiNapoli this cycle; it nominated its own candidate, civil-legal-aid attorney Sienna Fontaine (co-executive director of Make the Road New York), making the Nov. 3, 2026 general a three-way race (DiNapoli/D, Hernandez/R+Conservative, Fontaine/WFP). Competitiveness: rated Solid/Safe Democratic — analyst framing grounded in New York's Democratic statewide lean and DiNapoli's 57.3%-42.7% (about 14.6-point) 2022 win over Paul Rodriguez; the WFP breakaway signals progressive dissatisfaction on the left but does not seriously threaten the incumbent. (No formal 2026 race-rating from a named forecaster was located this run.)",
+    "candidates": [
+      {
+        "name": "Thomas P. DiNapoli",
+        "party": "D",
+        "winner": false,
+        "positions": [
+          "Runs as a prudent steward of the ~$300B state pension fund, stressing that investment decisions are governed by fiduciary duty 'not politics' and touting fund growth during his tenure",
+          "On responsible investing, committed in 2020 to divest the pension fund from fossil-fuel producers by roughly 2040 while treating divestment as a 'last resort,' a more measured approach than his primary challengers wanted",
+          "Uses the office's oversight powers to audit state agencies and local governments and pursue pension-fraud and public-corruption investigations, campaigning explicitly on that record"
+        ],
+        "differentiators": [
+          "Longtime incumbent (since 2007), seeking a 5th full term with backing from Gov. Hochul, major labor unions and the state Democratic machine",
+          "Faced his first competitive Democratic primary in the office in 2026, winning by a wide margin",
+          "Lost the Working Families Party ballot line this cycle, which ran its own candidate instead of cross-endorsing him"
+        ],
+        "supporters": [],
+        "opponents": []
+      },
+      {
+        "name": "Joseph Hernandez",
+        "party": "R",
+        "winner": false,
+        "positions": [
+          "Pledges to grow and protect the pension fund through market-driven, performance-based investing, cutting Wall Street fees and taking politics out of investment decisions",
+          "Would conduct real-time audits of every state agency and 'anything that touches a state dollar,' cracking down on waste, corruption and Medicaid fraud",
+          "Argues Albany has neglected upstate and Western New York and would direct more state attention and investment there"
+        ],
+        "differentiators": [
+          "Political newcomer and biotech/Wall Street entrepreneur (founder of Blue Water Venture Partners), Cuban-American immigrant",
+          "Unanimously nominated at the NY Republican State Convention and also runs on the Conservative Party line",
+          "Threatened to sue Gov. Hochul over state budget language during the campaign"
+        ],
+        "supporters": [],
+        "opponents": []
+      }
+    ]
+  },
+  {
+    "date": "Nov 8, 2022",
+    "type": "past",
+    "scope": "State · Statewide",
+    "office": "Governor of New York (2022)",
+    "note": "Kathy Hochul (D) defeated Lee Zeldin (R) 53.1%–46.7% — the closest New York governor's race since 1994. No U.S. Senate seat is on New York's 2026 ballot (Gillibrand won re-election in 2024; Schumer is up in 2028).",
+    "candidates": [
+      {
+        "name": "Kathy Hochul",
+        "party": "D",
+        "winner": true,
+        "positions": [],
+        "differentiators": [
+          "First woman elected Governor of New York"
+        ],
+        "supporters": [],
+        "opponents": []
+      },
+      {
+        "name": "Lee Zeldin",
+        "party": "R",
+        "winner": false,
+        "positions": [],
+        "differentiators": [
+          "Former U.S. Representative (NY-1); later U.S. EPA Administrator"
+        ],
+        "supporters": [],
+        "opponents": []
+      }
+    ]
+  }
+];
+
+// ----- (3) US House races by district (2026 + 2024) -----
+const HOUSE_RACES = {
+  "1": {
+    "name": "U.S. House — NY District 1",
+    "region": "Eastern two-thirds of Suffolk County on Long Island — Huntington, Smithtown, Brookhaven (eastern), Riverhead, and the North Fork/South Fork (Southold, Southampton, East Hampton, Shelter Island), spanning the Hamptons, middle-class suburbs, and North Fork farm country.",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "Not open and not a rematch: incumbent Nick LaLota (R) is running for reelection and ran unopposed in the June 23, 2026 GOP primary. Democrat Christopher Gallant won a contested June 23 Democratic primary (63% to 37% over Lukas Ventouras; also on the ballot earlier were Christopher Gallant, Luca Nascimbene, Jonathan Schneider, and Lukas Ventouras). Gallant is a first-time candidate, not LaLota's 2024 opponent (John Avlon). General election is November 3, 2026 and has not yet been held, so neither candidate is marked winner. No notable third-party nominee confirmed. Working Families Party cross-endorsement of Gallant not confirmed.",
+        "candidates": [
+          {
+            "name": "Nick LaLota",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "SALT relief: touts helping quadruple the state-and-local-tax deduction cap from $10,000 to $40,000 and wants to extend/expand it before it reverts (lalota.house.gov press release; Bloomberg, Apr 2026)",
+              "Border security and immigration: backed H.R.2 'Secure the Border Act' (border wall, end catch-and-release) while also cosponsoring the bipartisan DIGNIDAD Act pairing a legal-status pathway with stricter enforcement",
+              "Affordability/anti-outmigration: frames high New York taxes and cost of living as driving families out, centers cost-of-living relief for Long Island (nicklalota.com issues; lalota.house.gov)"
+            ],
+            "differentiators": [
+              "Two-term Republican incumbent",
+              "U.S. Navy veteran and former Suffolk County Board of Elections commissioner",
+              "Won 2024 by ~11.5 points; district is R+4"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Christopher Gallant",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Affordability: making Long Island more affordable and lowering cost of living for working families (gallantny.com; Patch)",
+              "Protecting Medicare and Social Security, expanding affordable housing, and addressing climate change (27east.com; Patch)",
+              "Campaign finance reform and 'restoring accountability in Washington'; on immigration, says the citizenship process is broken and needs a clear, revamped pathway (gallantny.com; Suffolk Times)"
+            ],
+            "differentiators": [
+              "First-time candidate / new Democratic face for CD-1",
+              "Army National Guard Black Hawk pilot, volunteer firefighter, former air traffic controller and local union president, VFW post leader; of Amity Harbor",
+              "Won the Democratic primary by a wide margin (63%-37%)"
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Nick LaLota (R) defeated John Avlon (D) approximately 55.7% to 44.2%, a margin of about 11.5 points (~44,761 votes). Called Nov 5, 2024; certified Dec 9, 2024.",
+        "candidates": [
+          {
+            "name": "Nick LaLota",
+            "party": "R",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "2": {
+    "name": "U.S. House — NY District 2",
+    "region": "Southern Suffolk County on Long Island's South Shore — including the towns of Islip and Babylon and parts of Brookhaven, plus a small piece of southeastern Nassau/Oyster Bay. A suburban, historically Republican-leaning district (Garbarino is from Sayville).",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "Incumbent Republican re-running; NOT an open seat and NOT a rematch (2024 Democrat was Rob Lubin). Garbarino was unopposed in the GOP primary. On the Democratic side, Patrick 'Pat' Halpin became the nominee after his primary rival Jess Murphy was disqualified over petition signatures (following weeks of litigation) and candidates Garrett Petersen and Joshua Taveras withdrew — so the June 23, 2026 Democratic primary was effectively uncontested. No notable third-party challenger surfaced in sources reviewed. Race rated Solid/Safe Republican.",
+        "candidates": [
+          {
+            "name": "Andrew Garbarino",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "Chairs the House Homeland Security Committee (assumed July 2025, succeeding Mark Green); focus on homeland security and cybersecurity",
+              "Positions himself as a moderate Republican with crossover votes — e.g., bipartisan background checks, the bipartisan infrastructure law, and marriage-equality protections",
+              "Led efforts to protect state and local agricultural/animal-welfare laws, opposing federal preemption via the EATS Act and 'Save Our Bacon Act'"
+            ],
+            "differentiators": [
+              "Four-term incumbent and sitting full-committee chairman with strong fundraising",
+              "Cultivates a moderate, occasionally party-breaking brand in a suburban swing region",
+              "Heavily favored — every major forecaster rates the seat Solid/Safe R"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Patrick Halpin",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Economic fairness and affordability — campaigns against 'billionaire tax breaks' and special interests, and on lowering costs like rent, childcare, and medical bills",
+              "Environmental and drinking-water protection — touts open-space/parks/beaches preservation and aquifer/drinking-water safeguards from his Suffolk County Water Authority tenure",
+              "Housing — expanding housing options to 'keep people on Long Island,' citing his creation of the Long Island Housing Partnership for families, seniors, and veterans"
+            ],
+            "differentiators": [
+              "Former Suffolk County Executive (1988–1991) and ex-chair of the Suffolk County Water Authority — significant local name recognition",
+              "Campaign brand 'People, not Politics,' framed around affordability and results",
+              "Became nominee via petition-challenge litigation rather than a contested primary vote"
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Andrew Garbarino (R, also on the Conservative line) defeated Rob Lubin (D) — combined party-line total ~59.8% to ~40.2%, a margin of roughly 19.6 points (Republican-line-only figures reported as 56.26% vs 37.22%). Certified by the NY State Board of Elections (approved Dec. 9, 2024).",
+        "candidates": [
+          {
+            "name": "Andrew Garbarino",
+            "party": "R",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "3": {
+    "name": "U.S. House — NY District 3",
+    "region": "Long Island / northeast Queens suburbs: parts of Nassau County (North Hempstead, Glen Cove, Oyster Bay), northeastern Queens (Douglaston–Little Neck, Whitestone, Flushing), and a portion of Suffolk County (town of Huntington).",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "Rematch of the 2024 general election. Nominees were set by the June 23, 2026 primaries. Democratic primary: incumbent Tom Suozzi defeated challenger Danielle Welch (~79.6% to ~20.1%). Republican primary: former state Assemblyman Michael LiPetri Jr. defeated attorney/Air Force veteran Greg Hach (~81.9% to ~17.2%); Michael Lavery had also been in the GOP field. This is NOT an open seat — Suozzi is running for re-election. The November 3, 2026 general election has not yet been held, so neither nominee is marked as a winner.",
+        "candidates": [
+          {
+            "name": "Tom Suozzi",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Lowering costs and affordability; making health care more affordable and protecting Medicare and Medicaid",
+              "Opposing the White House's tariffs; supporting the expanded child/newborn tax credit",
+              "Constituent-service record: secured cleanup funding for Navy-Grumman groundwater contamination and pushed VA service improvements"
+            ],
+            "differentiators": [
+              "Incumbent since Jan 3, 2025; won the Feb 2024 special election and the Nov 2024 general",
+              "Moderate, bipartisan ('Problem Solvers') brand in an EVEN-PVI swing district"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Michael LiPetri Jr.",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "Affordability and healthcare; eliminating taxes on tips and overtime and raising the state-and-local-tax (SALT) deduction cap",
+              "Public safety and standing with law enforcement",
+              "Border security and reducing regulations"
+            ],
+            "differentiators": [
+              "Trump-endorsed conservative with House GOP leadership/NRCC backing",
+              "Former New York State Assemblyman from Farmingdale; 2024 nominee running a rematch after losing by ~2.5 points"
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Tom Suozzi (D) won re-election ~48.7% to Michael LiPetri Jr. (R) ~46.3% (177,188 to 168,165 — a ~9,000-vote, ~2.5-point margin).",
+        "candidates": [
+          {
+            "name": "Tom Suozzi",
+            "party": "D",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "4": {
+    "name": "U.S. House — NY District 4",
+    "region": "Long Island — central and southern Nassau County, including Rockville Centre, Long Beach, Freeport, Valley Stream, Hempstead, and Garden City.",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "NOT an open seat and NOT a D'Esposito rematch: incumbent Laura Gillen (D) is running for re-election, and former Rep. Anthony D'Esposito declined to run (he endorsed the GOP nominee instead). The Democratic primary was effectively canceled — all of Gillen's announced challengers (former Assemblymember Taylor Darling, Gian Jones, Nicholas Sciretta, and Kiana Bierria-Anderson) withdrew or were disqualified from the ballot, so Gillen was nominated uncontested. Republican primary, June 23, 2026: Jeanine Driscoll won decisively with 90.77% (12,892 votes) over retired Air Force Lt. Col. Marvin (Suber) Williams, 8.86% (1,258 votes). Driscoll reached the primary ballot through a Nassau GOP maneuver ('switcheroo'): former Valley Stream Mayor John DeGrace was nominally placed on the ballot in April 2026, then withdrew so county chair Joe Cairo could substitute Driscoll. General election is Nov 3, 2026: Gillen (D) vs Driscoll (R).",
+        "candidates": [
+          {
+            "name": "Laura Gillen",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Restoring the full SALT (state and local tax) deduction — introduced an amendment to repeal the $10,000 cap and testified before the House Rules Committee that it would lower tax bills and mortgage costs for Long Island homeowners (gillen.house.gov)",
+              "Lowering the cost of living for Nassau families — extending healthcare tax credits, addressing utility rate hikes, and cutting taxes (gillen.house.gov/lowercosts)",
+              "Border/immigration enforcement from the center — was one of only about seven House Democrats to vote for increased Department of Homeland Security funding in Jan 2026, which triggered a primary challenge from her left (City & State)"
+            ],
+            "differentiators": [
+              "Moderate, self-described 'common-sense' Democrat holding a swing seat; former Town of Hempstead Supervisor who flipped NY-4 in 2024",
+              "Won the Democratic nomination uncontested after every primary challenger withdrew or was disqualified",
+              "Runs on bipartisanship and delivering federal investment to Nassau County"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Jeanine Driscoll",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "Lower taxes and cost-of-living relief / fiscal responsibility — as Town of Hempstead Receiver of Taxes she has run taxpayer seminars and promoted spending cuts (Long Island Press)",
+              "Public safety and 'securing the southern border' (Long Island Press)",
+              "[Verify] Broader federal policy platform is thinly documented beyond taxes and public safety"
+            ],
+            "differentiators": [
+              "Town of Hempstead Receiver of Taxes (elected 2023); mother of four from Baldwin — first run for federal office",
+              "Reached the ballot via the Nassau GOP 'switcheroo': John DeGrace was placed then withdrew so the party could substitute her",
+              "Endorsed by former Rep. Anthony D'Esposito, whose year of indecision had stalled GOP recruitment before he declined a rematch"
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Laura Gillen (D) unseated first-term Rep. Anthony D'Esposito (R) in a rematch of their 2022 race (which D'Esposito won 51.8%-48.2%). Long Island Press reported Gillen 182,771 (48.69%) to D'Esposito 176,623 (47.05%) on the top ballot lines, roughly a 1.6-point margin (~6,100 votes); Cook Political Report and other outlets characterized the final certified margin as about 2.3 points (~8,600 votes) once all party lines and late ballots were counted. Gillen also carried the Working Families line; D'Esposito the Conservative line.",
+        "candidates": [
+          {
+            "name": "Laura Gillen",
+            "party": "D",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "5": {
+    "name": "U.S. House — NY District 5",
+    "region": "Southeastern Queens, New York City — the Rockaway Peninsula plus Jamaica, South Jamaica, St. Albans, Springfield Gardens, Laurelton, Rosedale, Cambria Heights, Queens Village, Hollis, Howard Beach, Richmond Hill, South Ozone Park, Kew Gardens and Briarwood. Entirely urban; plurality African-American (~40%), with large Hispanic, Asian and Caribbean-American communities.",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "Not an open seat and not a rematch: nine-term incumbent Gregory Meeks (D, in office since 1998) is seeking re-election. Meeks won renomination in the June 23, 2026 Democratic primary; challenger Salvatore Padellaro filed and Frank Lozada was disqualified / did not make the ballot (Wikipedia lists a 'Disqualified' subsection for the D primary). George Marsh is the Republican nominee. The general election is Nov. 3, 2026 and has NOT yet been held, so neither candidate is a general-election winner — Meeks is heavily favored in this D+24 seat. Exact primary vote percentages could not be retrieved this run (Ballotpedia, NBC News, NY State BOE results pages all returned 403/empty).",
+        "candidates": [
+          {
+            "name": "Gregory Meeks",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Ranking Member of the House Foreign Affairs Committee; internationalist foreign policy, strong supporter of U.S. alliances and continued aid to Ukraine (Wikipedia)",
+              "Senior member of the House Financial Services Committee, focused on capital markets and financial institutions (Wikipedia)",
+              "Advocated raising/removing the cap on the SALT (state and local tax) deduction (Wikipedia, 2021); near-100% alignment with the Biden legislative agenda in the 117th Congress (Wikipedia/FiveThirtyEight)"
+            ],
+            "differentiators": [
+              "Long-tenured incumbent (since 1998) and senior Democratic leader on foreign policy",
+              "Won renomination in the June 23, 2026 Democratic primary"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "George Marsh",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "[Verify] — Republican nominee; specific policy platform is thinly covered and no issue statements were found in sourced material this run"
+            ],
+            "differentiators": [
+              "Little-known first-time challenger in a Solid-Democratic (D+24) district; the seat is not rated competitive by Cook"
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Gregory Meeks (D) won re-election 72.9% to ~27.1% over Paul King (R). Meeks 168,425 votes; King ~62,529 (56,689 on the Republican line + 5,840 on the Conservative line). Margin roughly 45.8 points. (Wikipedia district page; corroborated by NBC News, which reported ~72.68% Meeks / ~26.98% King.)",
+        "candidates": [
+          {
+            "name": "Gregory Meeks",
+            "party": "D",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "6": {
+    "name": "U.S. House — NY District 6",
+    "region": "Central and northeastern Queens, New York City — including Flushing, Bayside, Auburndale, Elmhurst, Forest Hills, Fresh Meadows, Kew Gardens Hills, Rego Park, Maspeth, Middle Village, Glendale, and Jackson Heights. Densely urban with an Asian-American plurality (~45%); Cook PVI D+6.",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "Not an open seat and not a rematch: incumbent Grace Meng (D) is running for an eighth term. In the June 23, 2026 Democratic primary she won renomination with roughly 57% (18,080 votes) over challenger Chuck Park (~43%). The Republican nominee for the Nov 3, 2026 general election is not confirmed in available sourcing (marked [Verify] below). Given the Solid-D rating and Meng's 23-point 2024 win, she is heavily favored.",
+        "candidates": [
+          {
+            "name": "Grace Meng",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Protecting reproductive rights and access to reproductive care (per FOX 5 NY candidate profile)",
+              "Expanding healthcare access (FOX 5 NY)",
+              "Combating telefraud/scams and pursuing comprehensive immigration reform (FOX 5 NY / Yahoo News)"
+            ],
+            "differentiators": [
+              "Eight-term incumbent; first and only Asian American member of Congress from New York",
+              "Chairs the Congressional Asian Pacific American Caucus and co-chairs the House Bipartisan Task Force for Combating Antisemitism",
+              "Won the June 23, 2026 Democratic primary ~57% (18,080) over Chuck Park ~43% (13,625)"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "[Republican nominee — 2026 · Verify]",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "[Verify] — GOP nominee not confirmed in sourced reporting this cycle"
+            ],
+            "differentiators": [
+              "[Verify final Republican nominee]"
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Grace Meng (D) won 60.7% (120,205 votes), defeating Thomas Zmich (Republican/Conservative) 37.6% (74,559 votes) and Joseph Chou (Truth Party) 1.7% (3,272 votes); margin ~23.1 points. Figures from the NY State Board of Elections certification as reported in the Wikipedia district results table.",
+        "candidates": [
+          {
+            "name": "Grace Meng",
+            "party": "D",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "7": {
+    "name": "U.S. House — NY District 7",
+    "region": "Brooklyn-Queens, NYC. Brooklyn: Williamsburg, Greenpoint, Bushwick, Fort Greene, Clinton Hill, East New York. Queens: Long Island City, Astoria, Sunnyside, Woodside, Ridgewood, Maspeth, Woodhaven. Heavily Democratic (Cook PVI D+25; Harris ~72%-26% in 2024).",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "OPEN SEAT, not a rematch. Velazquez (in the House since 1993) announced in Nov. 2025 she would not seek re-election. Democrat Claire Valdez won the June 23, 2026 primary (~58%, part of a DSA/progressive sweep tied to Mayor Zohran Mamdani) and is the heavy favorite in this D+25 district. The Nov. 3, 2026 general election has not yet occurred, so no general-election winner is recorded.",
+        "candidates": [
+          {
+            "name": "Claire Valdez",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Medicare for All: pledges to co-sponsor on day one, funded by taxing billionaires and corporations (clairevaldezforcongress.com)",
+              "Housing: universal rent control and a rent freeze, repeal of the Faircloth Amendment, more NYCHA funding, and AOC's Homes Act public-housing option (City & State NY, May 2026; campaign site)",
+              "Pro-labor union champion; calls to abolish ICE and to end U.S. complicity in what she terms genocide and apartheid in Gaza (campaign site; Ballotpedia News)"
+            ],
+            "differentiators": [
+              "Sitting NY Assembly member (AD-37, elected 2024) and NYC-DSA democratic socialist / former UAW Local 2110 union organizer",
+              "Endorsed by Mayor Zohran Mamdani; won as part of the DSA 'clean sweep' on primary night",
+              "Defeated the party-establishment favorite, Brooklyn Borough President Antonio Reynoso, who was endorsed by retiring Rep. Velazquez"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Melvin Rivera",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "Housing reform and tenant protection, drawing on 30+ years as a tenant organizer defending rent-stabilized tenants and homeowners (self-described, melvinforcongress.com)",
+              "Public safety, workforce development, and 'community ownership' to 'empower people and break dependency' (self-described campaign site)",
+              "Transparent, accountable government and free enterprise; frames platform as 'lived experience' over party loyalty (self-described)"
+            ],
+            "differentiators": [
+              "Republican nominee; ran uncontested in the June 23, 2026 GOP primary",
+              "Bushwick-born community activist emphasizing local, non-ideological 'tailored solutions'"
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Nydia Velazquez (D) won 172,795 votes (78.1%; 145,141 Democratic + 27,654 Working Families) to William Kregler (R) 48,435 (21.9%; 43,052 Republican + 5,383 Conservative) - a 124,360-vote / 56.2-point margin (compiled NY State BOE certified results via Wikipedia).",
+        "candidates": [
+          {
+            "name": "Nydia M. Velazquez",
+            "party": "D",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "8": {
+    "name": "U.S. House — NY District 8",
+    "region": "Entirely within Brooklyn, NYC: central, eastern and southern Brooklyn — Bedford-Stuyvesant, Brownsville, East New York, Canarsie, East Flatbush, plus Coney Island, Brighton Beach and Mill Basin. Majority African-American and Caribbean-American; Cook PVI about D+24.",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "Settled June 23, 2026 primary. DEMOCRATIC: Incumbent Hakeem Jeffries (House Minority Leader) won the nomination; his lone filed primary challenger, Vance Bostic, was disqualified, and earlier prospective challenger Chi Osse (NYC Councilmember, democratic socialist) ended his bid in Nov. 2025 after DSA declined to endorse him. REPUBLICAN: Lewis Mizrahi won the GOP nomination unopposed (also won the Conservative Party primary unopposed). Soyoung Kim filed on the Communist Party line. The Nov. 3, 2026 GENERAL ELECTION has NOT yet occurred (today is July 14, 2026), so no winner is set below. Not a rematch (2024 GOP nominee was John Delaney); seat is NOT open — Jeffries is running for re-election. Exact June 23 primary vote totals/percentages were not available in accessible sources this run.",
+        "candidates": [
+          {
+            "name": "Hakeem Jeffries",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "House Democratic Leader (Minority Leader) since Jan. 2023; leads the House Democratic Caucus, the most powerful Democrat in the chamber",
+              "Protecting and expanding the Affordable Care Act — filed a discharge petition in late 2025 to force a House vote extending ACA premium tax credits",
+              "Supports gun control, including universal background checks and an assault weapons ban",
+              "Supports abortion rights; co-sponsored legislation to codify nationwide access and condemned the Dobbs decision overturning Roe v. Wade"
+            ],
+            "differentiators": [
+              "Incumbent since 2013 and sitting House Minority Leader / Democratic Leader",
+              "Runs in a heavily Democratic, majority-Black/Caribbean-American Brooklyn district (PVI ~D+24)"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Lewis Mizrahi",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "[Verify] — detailed policy platform not documented in accessible sources this run"
+            ],
+            "differentiators": [
+              "Self-described Criminal Justice Data Analyst and Wildfire Firefighter",
+              "Won both the Republican and the Conservative Party primaries unopposed on June 23, 2026"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Soyoung Kim",
+            "party": "I",
+            "winner": false,
+            "positions": [
+              "[Verify] — no platform documented; running on the Communist Party USA line (coded G as nearest available minor-party code; NOT the Green Party)"
+            ],
+            "differentiators": [
+              "Minor third-party (Communist Party) general-election candidate, sourced only to Wikipedia's District 8 section"
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Hakeem Jeffries (D) won 168,036 votes (75.4%) to John Delaney's 54,863 (24.6%) — a ~50.8-point margin. Delaney's total was Republican line 48,369 (21.7%) plus Conservative Party line 6,494 (2.9%). Total ~222,899 votes. Figures per Wikipedia's 2024 NY U.S. House elections page (District 8 results table).",
+        "candidates": [
+          {
+            "name": "Hakeem Jeffries",
+            "party": "D",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "9": {
+    "name": "U.S. House — NY District 9",
+    "region": "Entirely within Brooklyn, NYC — Central and southern Brooklyn neighborhoods including Crown Heights, Flatbush, East Flatbush, Prospect Lefferts Gardens, Brownsville, Kensington, Midwood, Sheepshead Bay, Marine Park and Gerritsen Beach.",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "Not an open seat and not a rematch. Incumbent Yvette Clarke (D) is re-running for a 10th term. She won the June 23, 2026 Democratic primary with 66.46%, defeating Mike Goldfarb (14.88%) and Joshua A. Bristol (14.27%) (a fourth Democrat, Joshua Kaitan Lucas, drew the remaining ~4%). On the Republican side, Joel B. Anabilah-Azumah won the GOP primary (rival Jean Depalis withdrew) and is also the Conservative Party nominee; he is a perennial NY-9 challenger (prior runs in 2018 and 2022). The 2024 GOP nominee was Menachem Raitport, so the general is a new matchup, not a rematch. Working Families Party typically cross-endorses Clarke. General election is Nov. 3, 2026 in a D+22 district.",
+        "candidates": [
+          {
+            "name": "Yvette D. Clarke",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Supports Medicare for All / universal health coverage; co-chair of the Medicare for All Caucus",
+              "Leading voice on AI regulation — introduced the AI Civil Rights Act and legislation targeting deepfakes and algorithmic discrimination",
+              "Backs strong gun-violence prevention (assault-weapon and high-capacity-magazine restrictions, expanded background checks); 2026 priorities also include immigration reform and NYC affordability"
+            ],
+            "differentiators": [
+              "Incumbent since 2013; Chair of the Congressional Black Caucus",
+              "Senior member of the House Energy and Commerce Committee",
+              "Won June 23, 2026 Democratic primary with 66.46%"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Joel B. Anabilah-Azumah",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "Advocates 'medical freedom' [Verify — thin platform coverage]",
+              "Emphasizes nutrition education [Verify]",
+              "Supports increased access to and expansion of public transportation [Verify]"
+            ],
+            "differentiators": [
+              "Small-business owner — founder of bus service TransportAzumah",
+              "Head coach of Brooklyn College men's volleyball; civil engineering degree (Union College)",
+              "Also the Conservative Party nominee; perennial NY-9 candidate (2018, 2022)"
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Yvette Clarke (D) won 74.3%–25.7% (173,207 to 60,064), a ~48.6-point margin.",
+        "candidates": [
+          {
+            "name": "Yvette D. Clarke",
+            "party": "D",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "10": {
+    "name": "U.S. House — NY District 10",
+    "region": "Lower Manhattan and western Brooklyn — Manhattan neighborhoods (Battery Park City, Financial District, Chinatown, Lower East Side, East/West Village, SoHo, Tribeca, Greenwich Village, Chelsea) plus Brooklyn (Brooklyn Heights, DUMBO, Red Hook, Park Slope, Sunset Park, parts of Borough Park/Bay Ridge) and Governors/Liberty Islands (Statue of Liberty). One of the most Democratic districts in the U.S.",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "NOT an open seat and NOT a rematch — this is an incumbent losing renomination. Two-term Democratic Rep. Dan Goldman lost the June 23, 2026 Democratic primary to former NYC Comptroller Brad Lander, 65.8% (55,060) to 34.0% (28,445); Nickie Kane also filed as a minor Democratic candidate. General election is Nov 3, 2026: Brad Lander (Democratic / Working Families lines) vs Jennifer Moore (Republican / Conservative lines). In this D+32 district the Democratic nomination is considered tantamount to election, so Lander is overwhelmingly favored. No general-election winner has been decided as of July 14, 2026, so 'winner' is false for both.",
+        "candidates": [
+          {
+            "name": "Brad Lander",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Economic affordability: pledges to raise taxes on the rich, fund public transit, and build much-needed affordable housing (bkreader).",
+              "Israel/Gaza: sharp critic of Israeli military aid who has described the treatment of Palestinians as 'genocide and apartheid,' pledges to refuse pro-Israel lobby donations, and vowed to speak up 'loud' for Palestinians in Congress (bkreader; JTA).",
+              "Immigration / opposing Trump: calls for House Oversight hearings on ICE killings and says he is willing to engage in civil disobedience; ran explicitly as a progressive alternative to Goldman the 'corporate Democrat' (bkreader)."
+            ],
+            "differentiators": [
+              "Former NYC Comptroller, ex-City Councilmember and 2025 NYC mayoral candidate; progressive lane aligned with Mayor Zohran Mamdani.",
+              "Won the primary in a ~32-point landslide over a sitting incumbent."
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Jennifer Moore",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "[Verify] — no documented policy platform found; described only as a 'GOP activist' (politics1.com) and reportedly has no active campaign website."
+            ],
+            "differentiators": [
+              "Republican who also holds the Conservative Party line; effectively unopposed for the GOP nomination in a district where Republicans are heavily outnumbered."
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Dan Goldman (D) won re-election 81.0% (206,206 votes) to Republican Alexander Dodenhoff's 14.8% (37,555); Conservative Paul Briscoe took 2.7% (6,747) — a ~66-point margin. Goldman also carried the Working Families line (combined ~82-83%).",
+        "candidates": [
+          {
+            "name": "Dan Goldman",
+            "party": "D",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "11": {
+    "name": "U.S. House — NY District 11",
+    "region": "All of Staten Island plus a slice of southern Brooklyn (Bay Ridge, Bath Beach, Dyker Heights, parts of Bensonhurst, Gravesend, and western Sheepshead Bay). It is the only NYC-area district represented by a Republican; Cook PVI R+10.",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "NOT an open seat and NOT a rematch. Two-term GOP incumbent Nicole Malliotakis is running for re-election; she was unopposed in the June 23, 2026 Republican primary. On the Democratic side, Michael DeCillis won the June 23, 2026 primary with about 61.05% (10,001 votes), defeating county/party-backed Allison Ziogas at about 37.48% (6,140 votes) per amny (99% of scanners). The Democratic field had also included Troy McGhie (withdrew and endorsed Ziogas) and Umar Usman. General election is Nov 3, 2026 and has not yet occurred, so no winner is set. No notable third-party/independent general-election candidate has been confirmed.",
+        "candidates": [
+          {
+            "name": "Nicole Malliotakis",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "Champions the 2025 GOP tax law she calls the 'Working Families Tax Cut' (One Big Beautiful Bill), touting middle-class relief and the higher SALT deduction cap that benefits her high-tax district (malliotakis.house.gov press release).",
+              "Opposes NYC/Manhattan congestion pricing, saying she is pursuing 'any legislative and legal option' to stop it (Wikipedia/Malliotakis).",
+              "Border-security hawk who has repeatedly called for stronger U.S.-Mexico border enforcement and opposes NYC sanctuary-city policies (Wikipedia/Malliotakis)."
+            ],
+            "differentiators": [
+              "Only Republican representing any part of New York City in Congress",
+              "Two-term incumbent, first elected 2020 (beat Max Rose), re-elected 2022 and 2024",
+              "Won a March 2026 Supreme Court ruling that rejected a Democratic attempt to redraw her district"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Michael DeCillis",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Runs as a check on Trump and Malliotakis, calling for 'congressional resistance' to executive overreach and to 'restore and strengthen democracy,' casting Malliotakis as a MAGA loyalist (Fox News).",
+              "Focuses on affordability: tackling inflation and tariffs and cost-of-living crises in healthcare, groceries, education, and housing (Brooklyn Paper).",
+              "Opposes Trump's nationwide ICE enforcement operations and opposed U.S. military action against Iran (Brooklyn Paper)."
+            ],
+            "differentiators": [
+              "Fourth-generation Staten Islander (now in Bay Ridge); 10-year NYPD officer, paramedic and 9/11 first responder at Ground Zero, and special-education teacher",
+              "Former chief of staff to ex-Assemblymember Mathylde Frontus; had two prior NY-11 congressional runs that ended before Election Day",
+              "Won the primary despite the Democratic party apparatus backing rival Allison Ziogas"
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Nicole Malliotakis (R) defeated Andrea Morse (D) by roughly 64%-36% (Fox News reported 63.8% for Malliotakis), a margin of about 28 points. Exact certified vote counts could not be retrieved (NY State Board of Elections results page returned HTTP 403).",
+        "candidates": [
+          {
+            "name": "Nicole Malliotakis",
+            "party": "R",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "12": {
+    "name": "U.S. House — NY District 12",
+    "region": "Entirely within Manhattan, New York City — running roughly from 14th Street to 110th Street and covering both the East and West sides: Upper West Side, Upper East Side, Midtown, Chelsea, Hell's Kitchen, plus Roosevelt Island.",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "OPEN SEAT — Rep. Jerry Nadler (D) is retiring and did not seek re-election, so this is not a rematch. General election is Nov 3, 2026; it has not yet occurred (today is July 14, 2026), so no winner is set. In the June 23, 2026 Democratic primary, Assemblymember Micah Lasher won ~39% over Assemblymember Alex Bores ~35%, with Jack Schlossberg ~10.8% (AP call); George Conway and Nina Schwalbe also ran. Caroline Shinkle won the Republican primary essentially unopposed. Lasher is Nadler-endorsed and heavily favored in this D+33 district. Several independents (e.g., Lucian Wintrich, Robb Huhn, Wilneida Negron, Karen Ortiz) appeared on candidate-filing lists, but their ballot qualification for the general could not be verified this run.",
+        "candidates": [
+          {
+            "name": "Micah Lasher",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Affordability/housing: wants to massively expand federal investment in affordable housing and child care and expand housing tax credits; touts his role enacting New York's ~$4.5B affordable housing capital program",
+              "Healthcare: supports Medicare for All or a similar universal-care plan and strengthening the Affordable Care Act",
+              "Trump/oversight: favors impeaching Trump, pledges aggressive oversight to curtail ICE abuses, and vows to use 'every procedural tool' to obstruct the GOP agenda"
+            ],
+            "differentiators": [
+              "Nadler-endorsed front-runner and longtime Democratic operative (policy director for Gov. Hochul; earlier roles under Mayor Bloomberg and AG Schneiderman)",
+              "Sitting State Assemblymember (District 69, elected 2024); ran as the affordability-plus-anti-Trump candidate"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Caroline Shinkle",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "Economy/taxes: signature proposal to eliminate federal income tax on W-2 wages; runs on a free-market 'Manhattan-first' agenda targeting crime, cost of living and antisemitism",
+              "Government reform: backs a balanced-budget amendment and zero-based budgeting to shrink the federal government",
+              "Security/immigration & foreign policy: supports ICE enforcement and opposes defunding DHS; says Iran must never obtain nuclear weapons and backed recent U.S. military action"
+            ],
+            "differentiators": [
+              "First-time candidate; corporate M&A lawyer at Cravath, Swaine & Moore with a Harvard Law degree",
+              "Won the GOP nomination effectively unopposed; a longshot in a D+33 Manhattan seat"
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Jerry Nadler (D, also on the Working Families line) won ~80.5% (260,165 votes) to Mike Zumbluskas (R) 19.5% (61,989) — a ~61-point margin.",
+        "candidates": [
+          {
+            "name": "Jerrold Nadler",
+            "party": "D",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "13": {
+    "name": "U.S. House — NY District 13",
+    "region": "Upper Manhattan and the northwest/west Bronx. Manhattan: Harlem, East (Spanish) Harlem, Washington Heights, Inwood, Marble Hill, Hamilton Heights, and parts of Morningside Heights/Upper West Side. Bronx: Fordham, Kingsbridge, Bedford Park, Norwood, University Heights, and Morris Heights.",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "NOT an open seat and NOT a rematch — it is an intra-party upset. Five-term incumbent Adriano Espaillat (D) RAN for re-election but LOST the June 23, 2026 Democratic primary to democratic-socialist challenger Darializa Avila Chevalier (roughly 49.4% to 45.9%/46%; other primary candidates were Oscar Romero and Theo Chino-Tavarez). So the 2026 Democratic nominee is the CHALLENGER, not the incumbent. General election is Nov 3, 2026 (still upcoming as of this research on July 14, 2026 — no winner yet). Given Cook PVI D+32, Avila Chevalier is the overwhelming favorite. Republican Manual 'Jomo' Williams advanced with the GOP primary uncontested/canceled. Two minor-party lines reportedly also on the ballot: Working Families Party (Bob Cohen) and Voice Party (Candace Niles) — notable because the WFP line did NOT cross-endorse the Democrat here; these minor-party names come from a secondary outlet (DR1) plus search fragments and are flagged in unresolved.",
+        "candidates": [
+          {
+            "name": "Darializa Avila Chevalier",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Housing: supports universal/social housing, stronger tenant protections, federal funding for social housing and rent caps (backs the Homes Act and Tenants' Right to Organize Act); centered her campaign on the affordability/rent crisis (Wikipedia bio; NY1).",
+              "Israel/Gaza: condemns Israel as an apartheid state committing genocide, opposes U.S. military aid to Israel, and supports the Block the Bombs Act to halt weapons transfers (Wikipedia bio).",
+              "Immigration: advocates abolishing ICE, opposes all deportations ('rooted in deeply racist ideology'), and would expand pathways to citizenship (Wikipedia bio).",
+              "Healthcare/anti-corruption: supports Medicare for All; wants to ban super PACs and congressional stock trading and redirect military spending to schools/social programs; rejected corporate/AIPAC money (Wikipedia bio; Ballotpedia News)."
+            ],
+            "differentiators": [
+              "Member of the Democratic Socialists of America (DSA); democratic socialist",
+              "Would be the first Dominican woman to represent the district if elected",
+              "Defeated a five-term incumbent (Espaillat) in a grassroots upset",
+              "Columbia grad and CUNY sociology doctoral candidate; community organizer, teacher, and union member",
+              "Ran a small-dollar campaign rejecting AIPAC and corporate real estate donations"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Manual \"Jomo\" Williams",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "[Verify] — no detailed 2026 congressional platform was found in sourced pages; had not completed candidate policy surveys. In his 2025 NYC Council run he emphasized constituent-first representation and his veteran background.",
+              "[Verify]"
+            ],
+            "differentiators": [
+              "U.S. Army veteran (serving since 2020); says he comes from 5+ generations of military veterans",
+              "Former Harlem storefront small-business owner, internet-service provider, ex-Verizon technician, and paralegal (background via Ballotpedia, not directly fetchable this run)",
+              "Previously ran for NYC Council District 7 as a Republican in 2025",
+              "Advanced to the general election with the GOP primary uncontested/canceled"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Bob Cohen",
+            "party": "I",
+            "winner": false,
+            "positions": [
+              "[Verify] — running on the Working Families Party line; no platform sourced. Note: unusual that the WFP line here did not cross-endorse the Democratic nominee. Name/line sourced only to DR1 plus a search fragment; treat as tentative."
+            ],
+            "differentiators": [
+              "Working Families Party ballot line (coded I pending confirmation of main-party affiliation)"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Candace Niles",
+            "party": "I",
+            "winner": false,
+            "positions": [
+              "[Verify] — running on the Voice Party line; no platform sourced. Name/line sourced only to DR1 plus a search reference; treat as tentative."
+            ],
+            "differentiators": [
+              "Voice Party ballot line (minor party)"
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Certified 2024 general election: incumbent Adriano Espaillat (D, also Working Families line) won re-election, defeating Ruben D. Vargas (R, also Conservative line) by roughly 83% to 16% — a margin of about 67 points. Per Wikipedia's figures, Espaillat took about 83.5% (~181,800 votes) versus Vargas's 14.7% (~32,071) on the Republican line, with the Conservative line adding ~1.7% (Vargas ~16.4% combined). Exact line-by-line certified totals from the NY State Board of Elections contest page (results.elections.ny.gov/contest/5611) could not be directly retrieved (403/JS-rendered) this run.",
+        "candidates": [
+          {
+            "name": "Adriano Espaillat",
+            "party": "D",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "14": {
+    "name": "U.S. House — NY District 14",
+    "region": "Split-borough NYC seat spanning the eastern/northern Bronx (City Island, Country Club, Morris Park, Parkchester, Pelham Bay, Throggs Neck, Hunts Point, Mott Haven) and north-central/western Queens (Astoria, College Point, Corona, East Elmhurst, Elmhurst, Jackson Heights, Woodside). 100% urban, majority Hispanic/Latino (~52%).",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "Democratic-held seat; NOT open and NOT a rematch (2024 GOP nominee Tina Forte is not the 2026 nominee). Incumbent AOC is re-running. June 23, 2026 Democratic primary: Ocasio-Cortez won 86.94%, def. Felipe Garcia (6.73%) and Marty Dolan (5.93%) [Bronx Times]. Republican nominee is Diamant Hysenaj (NYGOP-endorsed). General election is Nov 3, 2026 and has NOT yet been held (today is July 14, 2026), so no general-election winner is set — both nominees below are marked winner=false. Sources conflict on whether the GOP primary was contested: Ballotpedia listed four filed Republicans (Arcabascio, Forte, Hysenaj, Rivera-Diaz) while at least one news summary described Hysenaj as effectively unopposed and Wikipedia's structure referenced 'disqualified' GOP candidates; the certified GOP primary tally could not be fetched (see unresolved).",
+        "candidates": [
+          {
+            "name": "Alexandria Ocasio-Cortez",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Medicare for All — frames healthcare as a right and aims to curb costs (ocasiocortez.com/issues)",
+              "Green New Deal, including the Green New Deal for Public Housing to rehab/decarbonize public housing (ocasiocortez.com/issues; reintroduced with Sen. Sanders)",
+              "Housing as a human right — expand affordable housing, repair public housing, protect renters from displacement (ocasiocortez.com/issues)"
+            ],
+            "differentiators": [
+              "Progressive incumbent since 2019 with a large national profile; DSA-aligned",
+              "Dominated the June 23, 2026 Democratic primary with 86.94% over Felipe Garcia and former Wall Street executive Marty Dolan"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Diamant Hysenaj",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "Cut taxes and lower the cost of living for working families; support small businesses and cut regulatory red tape (votefordiamant.com; NYGOP)",
+              "Restore public safety — 'safe streets and strong neighborhoods' (votefordiamant.com)",
+              "Immigration reform 'that works for the community' and secure more federal funding/infrastructure investment for the district (votefordiamant.com)"
+            ],
+            "differentiators": [
+              "Kosovo-born Albanian-American real estate developer/businessman (founder of DCG New York); first-time candidate",
+              "Runs on an affordability/cost-of-living message: 'Has your life gotten better over the last seven and a half years?'"
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Alexandria Ocasio-Cortez (D, also Working Families Party) won 132,714 votes (69.2%) — 118,477 on the Democratic line (61.8%) plus 14,237 on the WFP line (7.4%) — defeating Tina Forte (R, also Conservative Party) 59,078 (30.8%) — 54,157 Republican (28.2%) plus 4,921 Conservative (2.6%). Margin ~38.4 points. Certified totals per Wikipedia's district results table; the NY State BOE certified results page (results.elections.ny.gov/contest/5612) returned HTTP 403 and could not be fetched directly this run.",
+        "candidates": [
+          {
+            "name": "Alexandria Ocasio-Cortez",
+            "party": "D",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "15": {
+    "name": "U.S. House — NY District 15",
+    "region": "Entirely within the Bronx (NYC) — the South Bronx and southern West Bronx, roughly 20 neighborhoods including Mott Haven, Melrose, Morrisania, and Belmont. One of the most Democratic districts in the nation (Cook PVI reported as D+27).",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "NOT an open seat — Democratic incumbent Ritchie Torres is running for a fourth term and won renomination. It is partly a rematch: Gonzalo Duran was the 2024 Republican/Conservative nominee (running on the Conservative line only in 2026), and Republican nominee Stylo Sapaskis was the 2022 GOP nominee against Torres. June 23, 2026 DEMOCRATIC PRIMARY (certified per Wikipedia): Ritchie Torres 23,531 (71.9%) def. Michael Blake 7,132 (21.8%), Jose Vega 1,824 (5.6%), write-in 218 (0.7%); ~32,705 votes cast. Torres out-raised Blake roughly $6.7M to ~$412K; NYC Mayor Zohran Mamdani did not endorse Blake despite backing progressive challengers elsewhere. There was no contested Republican primary listed — Sapaskis is the GOP nominee (per search, unopposed). General election Nov 3, 2026.",
+        "candidates": [
+          {
+            "name": "Ritchie Torres",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Pro-Israel; formally left the Congressional Progressive Caucus in Feb. 2024 over the Israel-Hamas war (eciks/Ballotpedia News)",
+              "Housing focus — touts pressing NYCHA to complete public-housing repairs and affordable-housing work (Ballotpedia News, quoting his ads)",
+              "Pragmatic/establishment Democrat who ran as a progressive in 2020 but has since moved toward the party's center (eciks)"
+            ],
+            "differentiators": [
+              "Incumbent since 2021 (first elected 2020); seeking a fourth term",
+              "Overwhelming financial advantage: ~$6.68M raised, ~$14.57M cash on hand as of June 3, 2026 (Wikipedia)",
+              "Won the June 23 primary with 71.9%"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Stylo Sapaskis",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "[Verify] — no documented platform found in sources fetched this run; running as the Republican nominee"
+            ],
+            "differentiators": [
+              "Republican nominee for 2026 (per Wikipedia general-election candidate list); previously the GOP nominee in 2022 against Torres (per search)",
+              "Reported zero campaign fundraising as of June 3, 2026 (Wikipedia)"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Gonzalo Duran",
+            "party": "I",
+            "winner": false,
+            "positions": [
+              "Anti-socialism — calls it \"the greatest challenge facing the Bronx\" (Bronx Times)",
+              "Restoring accountability and personal responsibility; economic opportunity and reversing middle-class decline (Bronx Times)",
+              "Opposed a 2025 South Bronx migrant shelter (Bronx Times)"
+            ],
+            "differentiators": [
+              "Running on the Conservative Party of New York line (NOT the GOP line this cycle); use code note: Conservative Party",
+              "The 2024 Republican/Conservative nominee against Torres — a rematch on the Conservative line",
+              "Vice chair of the Bronx Conservative Party; military veteran and founder of veterans group Devil Dog USA; former Democrat who switched to Conservative in 2023"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Andre Easton",
+            "party": "I",
+            "winner": false,
+            "positions": [
+              "Lowering rent (bxtimes/City & State)",
+              "Raising wages (bxtimes/City & State)",
+              "Expanding social programs (bxtimes/City & State)"
+            ],
+            "differentiators": [
+              "Independent ballot line; Bronx public school teacher and member of the Party for Socialism and Liberation (PSL) running a grassroots socialist campaign",
+              "Minor fundraising: ~$27,245 raised as of Dec. 31, 2025 (Wikipedia)"
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Ritchie Torres (D) won 76.5% (130,392 votes) over Gonzalo Duran (R/Conservative) 21.1% (36,010 combined: 32,494 R + 3,516 Conservative) and Jose Vega (I) 2.4% (4,086); ~170,488 total votes; margin ~55.4 points. Certified NY BOE totals as reported by Wikipedia.",
+        "candidates": [
+          {
+            "name": "Ritchie Torres",
+            "party": "D",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "16": {
+    "name": "U.S. House — NY District 16",
+    "region": "Southern Westchester County (Yonkers, New Rochelle, Mount Vernon, White Plains, Rye, Scarsdale, Pelham, Eastchester and ~26 municipalities) plus a small slice of the northern Bronx, including Co-op City.",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "Incumbent-held, NOT open and NOT a rematch (2024 GOP nominee Miriam Flisser is not on the 2026 ballot). Rep. George Latimer (D) was renominated for a second term without a contested Democratic primary — per Yonkers Times, no other Democrats filed petitions, so there was no June 23 Democratic primary contest. Republican Joseph Cinquemani won his party's nomination unopposed. Independent John Franklin Wilson IV also qualified for the November 3, 2026 general ballot (three candidates total). The general election has NOT yet occurred (today is 2026-07-14); Latimer is heavily favored in this D+18 district. NOTE: GoodParty.org lists Cinquemani under an 'Independent/outside-the-two-party' framing, but NY election sources (Ballotpedia, localcandidates.org, NY State BOE certification) treat him as the Republican nominee who won the GOP primary line — coded R here.",
+        "candidates": [
+          {
+            "name": "George Latimer",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Ran and governs as a pro-Israel Democrat, emphasizing a strong U.S.-Israel alliance (the central contrast in his 2024 defeat of progressive Jamaal Bowman) [Wikipedia]",
+              "Gun control: as Westchester County Executive banned gun shows on county/public property [Wikipedia]",
+              "Immigrant protections: signed the county's Immigration Protection Act limiting cooperation with federal immigration enforcement and accepted asylum seekers (2023) [Wikipedia]",
+              "LGBTQ+ rights: outlawed conversion therapy locally; member of the Congressional Equality Caucus [Wikipedia]"
+            ],
+            "differentiators": [
+              "First-term incumbent and former Westchester County Executive; establishment/moderate Democrat who ousted progressive Jamaal Bowman in the 2024 primary",
+              "Renominated unopposed (submitted ~9,500 signatures, far above the 1,250 required), avoiding any June 2026 primary",
+              "Dominant fundraising and institutional support in a D+18 district"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Joseph Cinquemani",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "Fiscal: extend the federal income-tax exemption to cover earnings up to the poverty line; 10% across-the-board federal agency budget cuts; rules-based/audited Federal Reserve [self-described, cinquemaniforcongress2026.com]",
+              "Energy: recommission the Indian Point site as a Small Modular Reactor (SMR) clean-baseload hub and back natural-gas drilling in NY's Marcellus Shale ('Drill, baby, drill') [self-described, campaign site]",
+              "Labor: promote union apprenticeships and vocational/technical training as debt-free alternatives to four-year college, tied to large infrastructure projects [self-described, campaign site]",
+              "Foreign/social: praised Trump's Middle East strategy (incl. 2025 strikes on Iranian nuclear sites) and opposes DEI mandates and 'identity politics' [self-described, campaign site]"
+            ],
+            "differentiators": [
+              "Republican nominee; attorney and real-estate broker, and a former (2004) congressional nominee",
+              "Runs a Trump-aligned economic/energy platform in a heavily Democratic district",
+              "Won the GOP line unopposed; minimal reported fundraising"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "John Franklin Wilson IV",
+            "party": "I",
+            "winner": false,
+            "positions": [
+              "[Verify] - stated platform not sourced; candidate profile pages (localcandidates.org) returned access errors this run"
+            ],
+            "differentiators": [
+              "Independent candidate who qualified for the November 2026 general ballot; no reported campaign fundraising"
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "George Latimer (D) defeated Miriam Flisser (R) in the certified 2024 general election, 71.6%–28.4% (217,668 to 86,408; ~43-point margin), per Wikipedia's certified result table combining ballot lines (Latimer on Democratic + Working Families; Flisser on Republican + Conservative). Some election-night tallies showed ~69.8%–30.2% on the major-party lines alone.",
+        "candidates": [
+          {
+            "name": "George Latimer",
+            "party": "D",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "17": {
+    "name": "U.S. House — NY District 17",
+    "region": "Lower Hudson Valley of southern New York: all of Rockland and Putnam counties, most of northern Westchester County, and a portion of southern Dutchess County.",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "Not open and not a rematch. Incumbent Mike Lawler (R) is seeking a third term after declining the 2026 governor's race (announced July 2025, kicked off reelection April 2026). The June 23, 2026 Democratic primary was won by Cait Conley with ~49%, over Beth Davidson (~30%, Rockland County Legislator), Effie Phillips-Staley (~15%, Tarrytown trustee), Mike Sacks, and John Cappello (5-candidate field; AP called it election night). NY-17 is one of only three GOP-held districts nationally that Kamala Harris carried in 2024, making it a top national target. Lawler runs on Republican/Conservative lines; Conley is the Democratic (and Working Families-aligned) nominee. Lawler primary vote totals not separately reported this run (uncontested/dominant).",
+        "candidates": [
+          {
+            "name": "Mike Lawler",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "Tax relief for the Hudson Valley: raised the SALT deduction cap and voted for the 'Working Families Tax Cut' he says saves the average local family ~$4,000, plus an expanded Child Tax Credit and cuts to taxes on tips/overtime (per lawlerforcongress.com/issues).",
+              "Strong, vocal support for Israel; chairs the House Foreign Affairs Subcommittee on the Middle East and North Africa.",
+              "Border security and enforcement first, paired with legal-immigration reform via his bipartisan 'Dignity Act' (legal status without citizenship for some undocumented immigrants); casts himself as a bipartisan, independent Republican (e.g., voted to extend TPS for Haitian immigrants in April 2026)."
+            ],
+            "differentiators": [
+              "Incumbent seeking a third term; one of the few Republicans holding a Harris-won district, running as a moderate/bipartisan dealmaker",
+              "Attacks Conley over her role in the 2021 U.S. withdrawal from Afghanistan while on the National Security Council",
+              "Trump-endorsed for reelection despite the swing-district profile"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Cait Conley",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Lower health-care costs: a public insurance option open to all ages, defending the ACA and Medicaid, expanding Medicare to vision/dental/hearing, capping insulin at $35, and letting Medicare negotiate drug prices (per caitconley.com/policy).",
+              "Reproductive freedom: codify Roe v. Wade into federal law, protect abortion, contraception and IVF access, and restore federal funding for Planned Parenthood.",
+              "Affordability/cost of living: lower housing costs (homeownership help for essential workers, cracking down on corporate landlords), eliminate the SALT deduction cap, expand affordable child care, and treat climate change as a national-security priority with clean-energy investment."
+            ],
+            "differentiators": [
+              "West Point graduate, decorated Army combat veteran, and former Biden National Security Council official; runs as an outsider ('the people who got us into this mess aren't going to get us out of it')",
+              "Uses military/national-security credentials to blunt GOP 'soft on crime/defund' attacks",
+              "Won a crowded, ~$8M primary with ~49%"
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Mike Lawler (R, also on Conservative line) won 52.2%–45.9% (197,845 to 173,899), a margin of ~23,946 votes / ~6.3 points, over Mondaire Jones (D); minor Working Families line candidate Anthony Frascone drew the remainder.",
+        "candidates": [
+          {
+            "name": "Mike Lawler",
+            "party": "R",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "18": {
+    "name": "U.S. House — NY District 18",
+    "region": "Mid-Hudson Valley: all of Orange County and most of Dutchess and Ulster counties. Population centers include Newburgh, Middletown, Poughkeepsie, and Kingston. A mix of older industrial river towns, growing suburbs, and exurban commuter communities.",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "Not a rematch and not an open seat. Democratic incumbent Pat Ryan is seeking re-election and was the Democratic nominee out of the June 23, 2026 primary. On the Republican side, the original candidate Sharanjit 'Sunny' Thind withdrew on April 13, 2026 after Ulster County Clerk Taylor Bruck filed a challenge alleging Thind actually lived on Long Island (not in the district) and that his nominating petitions had procedural defects. Thind endorsed Jackie Auringer, and the NY GOP filed a Certificate of Substitution to place her on the ballot using Thind's petition line. Democrats/officials challenged the petitions in court, but a State Supreme Court judge dismissed the case in early May 2026 and Bruck declined to appeal, so Auringer secured the ballot spot as the Republican nominee against Ryan. The general election is Nov. 3, 2026. Exact June 23 primary vote totals could not be retrieved (results pages returned 403); both primaries appear to have been effectively uncontested given the substitution timeline.",
+        "candidates": [
+          {
+            "name": "Pat Ryan",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "'Leveling the Playing Field' - economic relief for working families and small businesses; touts cutting taxes and fighting large corporations (campaign site, self-described)",
+              "'Protecting Foundational Freedoms' - defends democracy and 'women's right to healthcare' / reproductive rights (campaign site, self-described)",
+              "'Keeping Communities Safe' - frames public safety as a core role of government and backs measures to 'keep guns off our streets' (campaign site, self-described)"
+            ],
+            "differentiators": [
+              "Incumbent since 2022; West Point graduate and U.S. Army combat veteran; former Ulster County Executive",
+              "Cross-endorsed by the Working Families Party (ran on its line in 2024)",
+              "Won 2024 by 14.4 points in a district Cook rates Solid Democratic"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Jackie Auringer",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "Affordability / cost-of-living in the Hudson Valley is her central campaign theme (Mid Hudson News / iHeartMedia)",
+              "Says she will leverage her construction/business experience to 'cut through the noise and get results'; cites sustainability concerns (iHeartMedia)",
+              "[Verify] - detailed policy platform beyond affordability and criticism of Ryan is thinly covered in available sources"
+            ],
+            "differentiators": [
+              "29-year-old political newcomer; project manager/accountant at her family's construction firm, Urban Precast, in Kingston",
+              "Became the GOP nominee by substitution after Sharanjit 'Sunny' Thind withdrew over a residency/petition challenge; her ballot spot was upheld by a court in May 2026",
+              "Previously lived in Florida and built GOP activist ties through Palm Beach Conservatives and Palm Beach Federated Republican Women"
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Pat Ryan (D, with Working Families line) won re-election, 207,106 votes (57.2%) to Alison Esposito (R, with Conservative line) 155,129 (42.8%) - a margin of 51,977 votes (about 14.4 points). Breakdown: Ryan 189,345 (Democratic) + 17,761 (Working Families); Esposito 138,409 (Republican) + 16,720 (Conservative).",
+        "candidates": [
+          {
+            "name": "Pat Ryan",
+            "party": "D",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "19": {
+    "name": "U.S. House — NY District 19",
+    "region": "A large, mostly rural swing district spanning New York's Southern Tier, Catskills, and western Hudson Valley — running from Rensselaer and Columbia counties in the east across to Tompkins County in the west, and including the cities of Binghamton and Ithaca plus Otsego County.",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "NOT an open seat and NOT a Molinaro rematch: freshman Democratic incumbent Josh Riley is seeking re-election. Riley was the uncontested Democratic nominee in the June 23, 2026 primary; state Sen. Peter Oberacker won the Republican primary, defeating political newcomer Alexander Portelli with roughly 77% of the vote (unofficial election-night AP figures). The two face off in the November 2026 general election, which has not yet occurred — so neither candidate is marked as winner.",
+        "candidates": [
+          {
+            "name": "Josh Riley",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Utility/energy affordability: introduced the 'No Taxes on Utility Bills Act' and legislation to bar utility companies from funding CEO bonuses while raising customer rates",
+              "Rural agriculture and grocery costs: sponsored the 'Lowering Egg Prices Act' and bipartisan aid for poultry producers in avian-flu control zones; serves on the House Agriculture Committee",
+              "Introduced a bipartisan measure to expand the DOE Weatherization Assistance Program (higher funding caps, broader low-income eligibility); a former labor and civil-rights attorney focused on workers' rights, affordable healthcare and prescription-drug costs"
+            ],
+            "differentiators": [
+              "Freshman Democratic incumbent who flipped the seat in 2024 by unseating Republican Marc Molinaro",
+              "Runs as a bipartisan, affordability-focused rural advocate on the Agriculture and Science committees"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Peter Oberacker",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "Rural affordability / cost of living: highlights rising fuel, fertilizer, utility and energy costs squeezing farmers and families; called for a state investigation into utility companies such as NYSEG",
+              "Agriculture: seeks a seat on the House Agriculture Committee and criticizes New York's farm-labor overtime rules as a burden on producers",
+              "Rural healthcare and broadband: argues rural health care needs differ from urban (distance, weather, transportation) and supports school-based health centers; treats 'last-mile' broadband as a modern rural-electrification priority"
+            ],
+            "differentiators": [
+              "Five-year (three-term) state senator, former county legislator and business owner who campaigned on cross-the-aisle experience and legislative record",
+              "Won the GOP primary decisively (~77%) over political newcomer/entrepreneur Alex Portelli"
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Josh Riley (D, cross-endorsed by Working Families) defeated Republican incumbent Marc Molinaro (R, cross-endorsed by Conservative) 51.05%–48.84% — 192,647 votes to 184,290, a margin of 8,357 votes (about 2.2 points), in a rematch of their 2022 contest (per Wikipedia's certified totals).",
+        "candidates": [
+          {
+            "name": "Josh Riley",
+            "party": "D",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "20": {
+    "name": "U.S. House — NY District 20",
+    "region": "New York's Capital Region — all of Albany and Schenectady counties plus portions of Saratoga, Montgomery, and Rensselaer counties; includes the cities of Albany, Schenectady, Troy, Saratoga Springs, and Amsterdam.",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "Not an open seat and not a rematch: incumbent Paul Tonko (D) is running again against a new opponent (his 2024 challenger was Kevin Waltz). Both June 23, 2026 primaries were uncontested — Tonko was unopposed in the Democratic primary (and on the Working Families line) and Ralph Ambrosio was unopposed in the Republican primary (and on the Conservative line). The general election is Nov 3, 2026 and has NOT yet occurred as of the research date (2026-07-14), so no winner is recorded; the district is rated Solid Democratic and Tonko is heavily favored.",
+        "candidates": [
+          {
+            "name": "Paul Tonko",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Climate and clean energy: touts authoring historic climate legislation and expanding clean-energy 'green-collar' jobs; serves as a senior member on the House Energy & Commerce environment/energy subcommittees (paultonko.com).",
+              "Reproductive rights and health care: endorsed by Planned Parenthood for work to protect women's health care after the fall of Roe v. Wade (paultonko.com).",
+              "Mental health and the opioid/addiction crisis: longtime advocate for people facing mental illness and addiction, emphasizing treatment and reducing stigma (paultonko.com)."
+            ],
+            "differentiators": [
+              "Eight-term incumbent (in office since 2013) with deep Capital Region roots (Amsterdam) and senior committee standing on Energy & Commerce.",
+              "Also cross-endorsed on the Working Families Party line."
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Ralph Ambrosio",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "Lower the cost of living for upstate New York residents (Daily Gazette, 2026).",
+              "Restore public safety / strengthen law enforcement and secure the border (Daily Gazette; CBS6 Albany, 2026).",
+              "Government accountability — pledges to 'bring a clean broom to Washington to root out corruption' and challenge entrenched, establishment politicians (Daily Gazette, 2026)."
+            ],
+            "differentiators": [
+              "Navy veteran and attorney; former NY assistant attorney general under Dennis Vacco, former assistant counsel to the NY State Police, and former assistant district attorney in Greene and Columbia counties.",
+              "Ran unsuccessfully for Albany County District Attorney (lost to Democrat Lee Kindlon); running as an outsider/anti-incumbent challenger.",
+              "Also cross-endorsed on the Conservative Party line."
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Paul Tonko (D, also Working Families line) won a ninth term, defeating Kevin Waltz (R, also Conservative line) 61.1% to 38.9% (approx. 221,997 to 141,151 votes; margin ~22.2 points / ~80,846 votes). Election-night AP figures showed a wider ~68%-32% split with only partial vote counted; the certified final was 61.1%-38.9%.",
+        "candidates": [
+          {
+            "name": "Paul Tonko",
+            "party": "D",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "21": {
+    "name": "U.S. House — NY District 21",
+    "region": "Upstate New York's \"North Country\": most of the Adirondack Mountains and the Thousand Islands region, bordering Canada to the north and Vermont to the east. Includes Plattsburgh, Ogdensburg, Glens Falls, and Rome, and is home to the Fort Drum Army base. Largely rural and one of the most geographically expansive districts in the eastern U.S.",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "OPEN SEAT — Elise Stefanik is not seeking re-election to the House; she launched, then exited (Dec. 2025), a bid for New York Governor, leaving the seat open. Not a rematch. The June 23, 2026 primaries produced two nominees: Republican Anthony Constantino (Sticker Mule CEO, Trump-endorsed) beat Assemblyman Robert Smullen ~58%–39%; Democrat Blake Gendebien (dairy farmer) won by 30+ points. The Conservative Party left its NY-21 line blank rather than endorse Constantino, and there is no Working Families nominee — effectively a two-way race.",
+        "candidates": [
+          {
+            "name": "Anthony Constantino",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "Full support for President Trump's energy agenda ('drill, baby, drill') and reshoring American manufacturing, citing his own record pulling Sticker Mule production out of Asia and South America back to the U.S.",
+              "Backs Trump's immigration crackdown while acknowledging businesses' need for workers; wants immigration to be legal ('better for our country').",
+              "Expanding North Country cell service and broadband internet access, lowering utility prices, and 'fair treatment for farmers' as top local priorities."
+            ],
+            "differentiators": [
+              "Founder/CEO of Sticker Mule (Amsterdam, NY; 1,000+ employees); political outsider, self-funding, self-styled boxer.",
+              "Only NY-21 Republican endorsed by President Trump; also endorsed by Elise Stefanik after the primary.",
+              "Won a competitive GOP primary (~58-59%) over establishment-backed Assemblyman Robert Smullen; also on a self-created 'Taxpayer Rights' ballot line, though the Conservative Party pointedly left its own line blank rather than back him."
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Blake Gendebien",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Protect rural healthcare; opposes Medicaid cuts that threaten North Country rural hospitals (says roughly seven district hospitals are at risk), arguing there is no alternative when a rural hospital closes.",
+              "Opposes chaotic/broad tariff policy that spikes farmers' fuel and fertilizer costs (cited an $89 tariff charge on a tractor repair kit) while supporting targeted pressure on China to bring manufacturing jobs home.",
+              "Supports the Farm Workforce Modernization Act to create a stable, legal agricultural workforce; emphasizes lowering costs (gas, fuel, fertilizer) and border security."
+            ],
+            "differentiators": [
+              "Dairy farmer from Lisbon (St. Lawrence County) running roughly 500 cows on 1,200 acres; vice chair of the Agri-Mark board; casts himself as a pragmatic, 'dignity and respect' North Country voice.",
+              "Was the district Democrats' unanimous presumptive nominee (chosen by all 15 county chairs in Dec. 2024) and won the June primary by 30+ points.",
+              "Runs solely on the Democratic line after the Board of Elections invalidated signatures for his 'Lower Costs Now' independent line; no Working Families cross-endorsement in NY-21 this cycle."
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Elise Stefanik (R, also on the Conservative Party line) defeated Paula Collins (D / Working Families Party) by roughly 62.3% to 37.7% — about a 24-25 point margin. Reported near-final totals were approximately 208,787 votes for Stefanik to 126,345 for Collins; independent Scott Phillip Lewis also appeared on the ballot. It was Stefanik's sixth term.",
+        "candidates": [
+          {
+            "name": "Elise Stefanik",
+            "party": "R",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "22": {
+    "name": "U.S. House — NY District 22",
+    "region": "Central New York, anchored by Syracuse (all of Onondaga County), extending east through Madison County into the Mohawk Valley (Oneida County — Utica and Rome). A onetime perennial swing seat, redrawn in 2024 to be modestly more Democratic.",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "Not an open seat and not a 2024 rematch. First-term Democrat John Mannion is seeking re-election and was UNOPPOSED in the June 23, 2026 Democratic primary (no contest held). On the GOP side there was effectively no contested primary either: former USDA chief of staff Kailee Buller was the only Republican/Conservative candidate to qualify for the ballot after her announced rivals dropped out (Assemblyman John Lemondes Jr., former Assemblyman John Salka, and David Hollenbeck all withdrew). Independent Will Staton is also running for the November 3, 2026 general election. Buller and Mannion both carry fusion lines typical of NY: Mannion on Democratic + Working Families, Buller on Republican + Conservative.",
+        "candidates": [
+          {
+            "name": "John Mannion",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Affordability agenda: lowering costs for working families, including making groceries and utility bills more affordable (mannionforny.com; 2025 year-in-review via ucpublicaffairs.com)",
+              "Protecting Medicare, Medicaid and Social Security and expanding access to affordable healthcare; supports bipartisan immigration reform with a path to citizenship (mannionforny.com)",
+              "Jobs and manufacturing: as a state senator led the effort that brought Micron to Central New York; as a congressman filed FY26 NDAA amendments to support Mohawk Valley defense-industry jobs and supply chains (mannion.house.gov)"
+            ],
+            "differentiators": [
+              "Incumbent who flipped NY-22 in 2024, unseating GOP Rep. Brandon Williams",
+              "Nearly 30-year public-school science teacher and former teachers'-union president; sits on the House Agriculture and Education & Workforce committees"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Kailee Buller",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "Affordability/energy: cut energy bills by opposing New York's solar and wind mandates and backing the Energy Choice Act (HR 3699) to allow natural-gas extraction (WRVO Campbell Conversations, 6/27/2026)",
+              "Tax relief: supports 'no tax on tips,' no tax on Social Security benefits, and child-care tax credits, criticizing Mannion for voting against them in a district where median income is under $70k (WRVO)",
+              "Agriculture and government efficiency: champions dairy, apple and specialty-crop farmers and, drawing on her USDA experience, targets waste and fraud in programs like SNAP (WRVO; romesentinel.com)"
+            ],
+            "differentiators": [
+              "Auburn native and former chief of staff to U.S. Agriculture Secretary Brooke Rollins in the Trump administration; ex-CEO of the National Oilseed Processors Association",
+              "Only Republican/Conservative candidate to qualify for the ballot; endorsed by all NY-22 GOP county committee chairs"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Will Staton",
+            "party": "I",
+            "winner": false,
+            "positions": [
+              "Runs as an independent on the premise that the two-party system is 'irreparably broken,' emphasizing dialogue, common ground and rebuilding public trust over partisan competition (statonforcongress.com; dailyorange.com)",
+              "Says he favors policies that benefit families and small businesses, but detailed issue positions are thin [Verify]"
+            ],
+            "differentiators": [
+              "Independent, non-major-party candidate; former K-12 history teacher and school administrator who moved to Syracuse in 2021",
+              "Frames campaign around breaking two-party gridlock rather than a specific ideological platform"
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "John Mannion (D) won 54.6%–45.4% (194,450 to 161,939; margin ~32,500 votes / ~9.2 points), unseating first-term Republican Brandon Williams. Totals reflect New York fusion voting (Mannion on Democratic+Working Families lines; Williams on Republican+Conservative). Official certification: NY State Board of Elections, contest 5620.",
+        "candidates": [
+          {
+            "name": "John Mannion",
+            "party": "D",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "23": {
+    "name": "U.S. House — NY District 23",
+    "region": "Southern Tier and Western New York — all of Allegany, Cattaraugus, Chautauqua, Chemung, and Tioga counties, plus parts of Erie (Buffalo's Southtowns/Northtowns), Niagara, Schuyler, and Steuben. A rural, reliably Republican upstate district.",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "Not an open seat and not a rematch: two-term Republican incumbent Nick Langworthy is running for re-election, and his 2024 opponent (Thomas Carle) is not on the 2026 ballot. In the June 23, 2026 primaries, Langworthy was unopposed for the GOP nomination; Aaron Gies won the Democratic nomination decisively over Kevin Stocker, ~71.6% (13,462 votes) to ~28.1% (5,188), per WRFA/AP/Chautauqua Today. General election is Nov. 3, 2026 (no winner yet as of July 2026). Conservative Party and Working Families cross-endorsement ballot lines for 2026 were not confirmed this run [Verify].",
+        "candidates": [
+          {
+            "name": "Nick Langworthy",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "Border security: supports finishing the border wall and ending 'catch and release' (langworthy.house.gov/issues; WSKG)",
+              "Energy: 'unleash American energy' to lower gas prices; sits on House Energy and Commerce Committee (campaign site / house.gov)",
+              "Fiscal/law-and-order: fight federal spending he blames for inflation, cut taxes, and 'back the blue' (nicklangworthy.com)"
+            ],
+            "differentiators": [
+              "Two-term incumbent; NY Republican Party's former state chairman",
+              "Ran unopposed in the GOP primary",
+              "Heavily favored in an R+10 district Trump won by ~21 points",
+              "Criticized by challenger for not holding in-person town halls since taking office in 2023"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Aaron Gies",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Runs on 'the common good' and affordability — dependable healthcare, stable jobs, safe homes, and time with family for working families (WSKG; Spectrum News)",
+              "Accessibility and accountability — attended ~80 community events across the district, contrasting the incumbent's lack of in-person town halls (WSKG)",
+              "Rural/community investment framing focused on cost of living rather than partisan messaging (Spectrum News)"
+            ],
+            "differentiators": [
+              "St. Bonaventure University professor and political newcomer",
+              "Won the Democratic primary ~71.6% over Kevin Stocker",
+              "Endorsed by five county Democratic committees (Erie, Cattaraugus, Steuben, Niagara, Tioga)"
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Nick Langworthy (R, also on the Conservative line) won 65.8% (247,599) to Thomas Carle (D) 34.2% (128,651) — a ~31.6-point margin.",
+        "candidates": [
+          {
+            "name": "Nick Langworthy",
+            "party": "R",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "24": {
+    "name": "U.S. House — NY District 24",
+    "region": "Sprawling, largely rural upstate New York district running along the Lake Ontario shore and through the Finger Lakes, from the Niagara/Buffalo area in the west to Watertown and Jefferson County in the north/east. Covers all or parts of ~14 counties (Niagara, Orleans, Genesee, Wyoming, Livingston, Ontario, Wayne, Seneca, Yates, Schuyler, Cayuga, Oswego, Jefferson, plus a slice of Monroe). Agriculture-heavy; the most Republican district in New York (Cook PVI R+11; Trump ~61%-38% in 2024).",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "General election is November 3, 2026 (not yet held as of this research on 2026-07-14), so no winner is set. NOT an open seat and NOT a rematch: incumbent Claudia Tenney (R) is running for a third NY-24 term and was effectively uncontested for the GOP nomination (no Republican challenger emerged by the April 2026 filing deadline; an earlier Ballotpedia snapshot listed a 'John McDairmant' who does not appear to have made the ballot). On the June 23, 2026 Democratic primary, Alissa Ellman won ~61.7% to Diana Kastenbaum ~38.1% (Steven Holden also ran); Ellman is a new challenger (2024 nominee was David Wagenhauser). Tenney also carries the NY Conservative Party line. (Independent Ken Estes Jr. suspended his campaign in May 2026 and did not make the ballot; a couple of other minor independents were reported, ballot status unconfirmed [Verify].)",
+        "candidates": [
+          {
+            "name": "Claudia Tenney",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "Staunch Trump ally; in Feb. 2025 introduced legislation to make Donald Trump's birthday a federal holiday",
+              "Social conservative: sole member of NY's House delegation to vote against the Respect for Marriage Act and co-sponsor of the 'Protect Children's Innocence Act' restricting transgender care for minors",
+              "Voted for the Farm Workforce Modernization Act (legal status for agricultural workers), reflecting the district's heavy farm economy"
+            ],
+            "differentiators": [
+              "Incumbent representing NY-24 since 2023 (seeking a third term in the district)",
+              "Runs on both Republican and Conservative Party lines",
+              "Benefits from an R+11 district, the most Republican seat in New York"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Alissa Ellman",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Lowering energy costs (e.g., subsidies to help residents insulate their homes) as her stated first priority",
+              "Affordability of healthcare and childcare / cost-of-living relief",
+              "Reducing government corruption and improving constituent engagement; protecting veterans and federal workers"
+            ],
+            "differentiators": [
+              "Won the Democratic primary ~61.7% to ~38.1% over Diana Kastenbaum",
+              "U.S. Army veteran and former Buffalo VA employee whose job was cut under DOGE, running as a political outsider",
+              "Pitches herself to independent and conservative voters in a deep-red district"
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Certified: Claudia Tenney (R; also Conservative line) defeated David Wagenhauser (D) about 65.7%-34.3% (~235,900 to ~123,300 votes), a margin of roughly 112,600 votes, per NY State Board of Elections certified results (results.elections.ny.gov/contest/5622). Note: AP's election-night count had shown 62.8%-37.2% before all mail/absentee ballots were counted.",
+        "candidates": [
+          {
+            "name": "Claudia Tenney",
+            "party": "R",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "25": {
+    "name": "U.S. House — NY District 25",
+    "region": "Rochester-based Upstate New York: all of Monroe County plus a slice of northwestern Ontario County (Victor and East Bloomfield). Heavily urban (~95%).",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "Incumbent Democrat Joe Morelle is running for a fifth full term; the seat is NOT open. Morelle won the June 23, 2026 Democratic primary with ~63.6% over Robin Wilt (30.1%) and Sherita Traywick (6.0%). His Republican opponent is Monroe County Legislator Virginia McIntyre, who was effectively unopposed for the GOP nomination. This is NOT a rematch — McIntyre is a new challenger (Morelle beat Gregg Sadwick in 2024). Cross-endorsements: Morelle also holds the Working Families Party line; McIntyre also holds the Conservative Party line. The general election is Nov 3, 2026 (not yet held), so no winner is marked. In a D+10 seat, Morelle is the heavy favorite.",
+        "candidates": [
+          {
+            "name": "Joe Morelle",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Ban stock trading by members of Congress and the president and bar federal officials from prediction markets",
+              "Supreme Court reform, including a binding ethics code and term limits for justices"
+            ],
+            "differentiators": [
+              "Four-term incumbent; in the House since a November 2018 special election following Rep. Louise Slaughter's death",
+              "Won the June 23, 2026 Democratic primary with ~63.6% over Robin Wilt (30.1%) and Sherita Traywick (6.0%)",
+              "Ranking member of the Committee on House Administration and a member of House Appropriations",
+              "Also carries the Working Families Party ballot line"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Virginia McIntyre",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "Fiscal accountability and tax relief for working families and seniors",
+              "Restoring trust and accountability in government (\"people over politics\")",
+              "Safer communities, stronger schools, and affordable healthcare [Verify — from campaign-launch coverage]"
+            ],
+            "differentiators": [
+              "Monroe County Legislator (District 4, covering parts of Gates and Greece) since January 2024",
+              "Republican nominee, effectively uncontested in the primary; also holds the Conservative Party line",
+              "First-time congressional candidate; launched her campaign at the Susan B. Anthony House",
+              "Underdog challenging a well-established incumbent in a D+10 seat"
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Joseph Morelle (D, also Working Families) won 60.8% (219,175 votes) to Gregg Sadwick (R, also Conservative) 39.2% (141,195 votes) — a margin of about 21.6 points (certified totals per Wikipedia's district page; AP's election-night unofficial figure was ~65.1%–34.9%).",
+        "candidates": [
+          {
+            "name": "Joseph Morelle",
+            "party": "D",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  },
+  "26": {
+    "name": "U.S. House — NY District 26",
+    "region": "Western New York — the City of Buffalo, Niagara Falls, and surrounding parts of Erie and Niagara counties. A heavily Democratic, urban/inner-suburban Buffalo-anchored seat.",
+    "races": [
+      {
+        "date": "Nov 3, 2026",
+        "type": "upcoming",
+        "note": "Neither open nor a rematch. Democratic incumbent Tim Kennedy (in office since a May 2024 special election after Brian Higgins resigned) is running for a second full term. June 23, 2026 primary: Kennedy was the uncontested Democratic nominee (also holds the Working Families ballot line); Dennis E. Hannon was the uncontested Republican nominee (also on the Conservative line) — no contested primary on either side. General election is Nov. 3, 2026, so no 2026 winner is decided yet as of July 2026. This is a NEW matchup: Kennedy's 2024 GOP opponent was Anthony Marecki, not Hannon. Hannon is a first-time candidate (banking/fintech background, former VP-level engineering roles) who launched his campaign Apr. 12, 2026.",
+        "candidates": [
+          {
+            "name": "Tim Kennedy",
+            "party": "D",
+            "winner": false,
+            "positions": [
+              "Transportation and infrastructure funding — a signature focus; chaired the NY State Senate Transportation, Infrastructure & Capital Investment Committee before Congress (legisletter.org)",
+              "Expanding access to addiction treatment and mental-health services / combating the opioid crisis (legisletter.org)",
+              "Economic development and job creation in Western New York (helped secure Buffalo Billion state funding); serves on House Homeland Security and Veterans' Affairs committees (legisletter.org)"
+            ],
+            "differentiators": [
+              "Entrenched incumbent Democrat and longtime Buffalo-area officeholder in a strongly Democratic seat",
+              "Member of the centrist New Democrat Coalition",
+              "Won 2024 general by ~30 points; heavily favored"
+            ],
+            "supporters": [],
+            "opponents": []
+          },
+          {
+            "name": "Dennis Hannon",
+            "party": "R",
+            "winner": false,
+            "positions": [
+              "Lower costs for working families — tax rebates for working-class families, reducing prescription-drug and healthcare costs for seniors, expanding domestic energy production (hannonforcongress.com)",
+              "Safer communities — closer local-federal law-enforcement cooperation, stricter immigration enforcement targeting public-safety threats, disrupting fentanyl trafficking (hannonforcongress.com)",
+              "Protecting children / online safety — stronger online privacy safeguards and content limits for minors, barring commercial AI from generating content depicting children (hannonforcongress.com)"
+            ],
+            "differentiators": [
+              "First-time Republican challenger; blue-collar/'working families first' framing (banking and fintech career, former VP-level engineering roles)",
+              "Runs on 'safer communities, lower costs, protecting kids' and 'common sense and results'",
+              "Underdog challenging a well-established Democrat in a district Kennedy carried by ~30 points in 2024"
+            ],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      },
+      {
+        "date": "Nov 5, 2024",
+        "type": "past",
+        "note": "Tim Kennedy (D, Democratic + Working Families lines) won 209,131 votes (65.2%) to Republican Anthony Marecki's (Republican + Conservative lines) 111,772 (34.8%) — a ~30.4-point margin. Kennedy Democratic line 190,668 (59.4%) + Working Families 18,463 (5.8%); Marecki Republican 95,035 (29.6%) + Conservative 16,737 (5.2%). Total ~320,903 votes.",
+        "candidates": [
+          {
+            "name": "Tim Kennedy",
+            "party": "D",
+            "winner": true,
+            "positions": [],
+            "differentiators": [],
+            "supporters": [],
+            "opponents": []
+          }
+        ]
+      }
+    ]
+  }
+};
+
+const SITE_META = { name: "New York Elections Hub", lastUpdated: "July 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — GA county-level down-ballot research is the next phase).
+const LOCAL_RACES = {
+  // County-level down-ballot research for Georgia has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = district
+    ? district.races.map(r => ({
+        ...r,
+        office: r.office || district.name,
+        scope: r.scope || `Federal · District ${county.d}`
+      }))
+    : [];
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const NY_STATE_FIPS = "36";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#nymap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(NY_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 620;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Albany ----
+  drawCapital(g, projection, { name: "Albany", lng: -73.7562, lat: 42.6526 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in NY";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our New York dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">Candidates not yet announced.</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>

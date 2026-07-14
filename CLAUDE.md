@@ -38,7 +38,8 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 | `md.html` | Maryland — fifth fully built state (24 county-equivalents incl. Baltimore City, 8 districts, June 23 primary results — Moore–Cox rematch, Hoyer retirement). No LOCAL_RACES yet |
 | `de.html` | Delaware — sixth fully built state (3 counties, 1 at-large seat). ⚠ Primary is **Sept 15, 2026**, filing deadline July 14 — fields provisional; open Treasurer seat (Ramone). No LOCAL_RACES yet |
 | `nj.html` | New Jersey — seventh fully built state (21 counties, 12 districts, June 2 primary results, NJ-11 special history). Kean toss-up in NJ-7; no GOP candidate in NJ-8. No LOCAL_RACES yet |
-| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ redirect to their dedicated pages |
+| `ny.html` | New York — eighth fully built state (62 counties, all 26 districts, June 23 primary results). Added July 14, 2026. NO 2026 U.S. Senate; statewide = Gov (Hochul–Blakeman)/AG (James–Komatireddy)/Comptroller (DiNapoli–Hernandez). Marquee: NY-17 Lawler Toss Up; NY-3/4/19 Lean D. Upsets: Goldman lost NY-10 primary to Lander; Espaillat lost NY-13 to Avila Chevalier; open seats NY-7/12/21. Voices (supporters/opponents) not yet added; NY-6 GOP nominee is [Verify]. No LOCAL_RACES yet |
+| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY redirect to their dedicated pages |
 | `favicon.svg` | Gold-gradient circle + white checkmark (primary favicon, matches site crest) |
 | `favicon.png` | 32px PNG fallback |
 | `favicon.ico` | Multi-size ICO (16/32/48) at root for legacy auto-discovery |
@@ -136,8 +137,8 @@ must appear AFTER its declaration; a top-level TDZ error kills the whole script 
 ### index.html (national)
 ```
 ST / NAME     : fips → abbr / full name             CAP: capitals (currently unused on this page)
-BUILT         : { "37": nc, "45": sc, "13": ga, "51": va, "24": md, "10": de, "34": nj }
-PARTIAL       : Set of 4 fips (DC FL AL NY) → lighter gold tier
+BUILT         : { "37": nc, "45": sc, "13": ga, "51": va, "24": md, "10": de, "34": nj, "36": ny }
+PARTIAL       : Set of 3 fips (DC FL AL) → lighter gold tier
 CALLOUTS      : label anchor coords for 9 small states + DC
 destFor(fips) : BUILT[fips] if fully built, else state.html?state=XX
 
@@ -303,10 +304,10 @@ Notes for future edits:
    real sourced candidate data, NEVER rushed or fabricated (the no-fabrication rule always wins over
    throughput; a genuinely thin candidate keeps a `[Verify]`). Don't flip a state into `BUILT` / wire it live
    until it is actually complete — keep in-progress work off the published map.
-   **Next target: New York** (62 counties, 26 districts — the big one; note NY has NO 2026 U.S. Senate
-   race — Gillibrand/Schumer are 2024/2028 — so statewide = Governor/AG/Comptroller; likely ~2 runs).
-   After NY: FL (ONLY after its Aug 18 primaries) and DC (needs a different page model — no counties).
-   Follow the full-state clone checklist in "Data architecture → index.html" when adding each state.
+   **New York was COMPLETED July 14, 2026** (62 counties, all 26 districts + Gov/AG/Comptroller; 22 [Verify]
+   markers; voices not yet added). **Next target: Florida — but ONLY after its Aug 18, 2026 primaries** settle
+   the fields (building it pre-primary means placeholder-then-redo). After FL: DC (needs a different page model
+   — no counties). Follow the full-state clone checklist in "Data architecture → index.html" when adding each state.
    - **DE time-sensitive:** July 14 filing deadline, then Sept 15 primary — refresh de.html after
      both.
    - **MD follow-up:** June 23 primary figures are unofficial — swap in certified numbers when

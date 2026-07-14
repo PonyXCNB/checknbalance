@@ -6,7 +6,7 @@
 const path = require("path");
 const { extractInlineScripts, cutAtD3, runScript } = require(path.join(__dirname, "..", "tests", "lib.js"));
 
-const PAGES = ["nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html"];
+const PAGES = ["nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html", "ny.html"];
 
 function loadData(page) {
   const code = extractInlineScripts(page)[0];
