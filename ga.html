@@ -765,7 +765,7 @@ const STATEWIDE = [
         supporters: [
           "Steady, disciplined incumbent focused on kitchen-table health costs",
           "Backed by Warnock, organized labor, LCV, and Planned Parenthood",
-          "Early post-runoff polls show him leading by double digits [Verify latest]"
+          "Leads in early-July 2026 polling, though margins vary widely — up 13 in a Fox News poll but just 4 in a near-simultaneous Wick Research poll (per AJC)"
         ],
         opponents: [
           "Too liberal for Georgia — his voting record belies the moderate repositioning",
@@ -794,8 +794,8 @@ const STATEWIDE = [
         ],
         opponents: [
           "GOP strategists openly worry he is a weak general-election candidate with women voters",
-          "Faces a reported ethics/federal inquiry over alleged misuse of tax dollars [Verify status]",
-          "Trails Ossoff by double digits in early post-runoff polling [Verify latest]"
+          "Under a House Ethics Committee review (opened from a Jan. 2026 Office of Congressional Conduct report) over alleged misuse of official funds tied to his former chief of staff; Collins denies wrongdoing and calls it meritless (per AJC / House Ethics Committee)",
+          "Trails Ossoff in early post-runoff polling — by margins ranging from about 4 to 13 points depending on the pollster"
         ]
       }
     ]
@@ -829,7 +829,7 @@ const STATEWIDE = [
         opponents: [
           "Bought the nomination with personal wealth",
           "First-time candidate, untested in government",
-          "The primary featured lawsuits and defamation claims between camps; he hasn't committed to debates [Verify]"
+          "His GOP primary against Lt. Gov. Burt Jones was among the state's nastiest — Jackson sued Jones for defamation and a Jones company countersued for $100M; on debates he says 'Of course I'll debate' Bottoms but hasn't committed to specifics, and he skipped the primary-runoff debate (per AJC, Atlanta News First)"
         ]
       },
       {
@@ -854,7 +854,7 @@ const STATEWIDE = [
         opponents: [
           "One-term mayor who left amid rising crime and the 2020 unrest — 'she let Atlanta burn' (Jackson attack ads)",
           "City suffered a major cyberattack on her watch",
-          "Defendant in the pending Secoriea Turner wrongful-death suit [Verify status]"
+          "Named in the 2021 Secoriea Turner wrongful-death suit (filed against then-Mayor Bottoms, the City of Atlanta and others); still pending on appeal at the Georgia Court of Appeals as of late 2025"
         ]
       }
     ]
@@ -1547,20 +1547,27 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Jul 28, 2026", type: "upcoming",
-        note: "SPECIAL ELECTION for the remainder of the late Rep. David Scott's term (he died April 22, 2026). All-candidate ballot; runoff Aug 25 if no majority. Candidates include Jasmine Clark, Everton Blair, Emanuel Jones, and Scott's daughter Marcye Scott.",
+        note: "SPECIAL ELECTION (July 28, 2026) to finish the remainder of the late Rep. David Scott's term (he died April 22, 2026). All candidates run on a single ballot; the top two advance to an Aug 25, 2026 runoff if no one wins a majority. Field: Democrats Everton Blair, Carlos Moore, and Scott's daughter Marcye Scott, plus Republicans Caesar Gonzales and Fayth Park. State Rep. Jasmine Clark — the separate November full-term nominee — declined to run in the special, and a sixth qualifier, Democrat Tony Brown, was disqualified.",
         candidates: [
-          { name: "Jasmine Clark", party: "D", winner: false,
-            positions: ["'Prioritize science in Congress'","Public health","Standing up to the Trump administration"],
-            differentiators: ["State representative (Lilburn); microbiologist and Emory lecturer","Already won the regular-term primary outright with 56.1%","Frontrunner for the special"],
-            supporters: ["Scientist-legislator generational upgrade"],
-            opponents: ["Boosted by $2M+ in crypto-aligned outside spending she says she didn't court"] },
           { name: "Everton Blair", party: "D", winner: false,
-            positions: ["Public education — former school-board leadership","[Verify]","[Verify]"],
-            differentiators: ["Former Gwinnett school board chair","Took 11.6% in the May regular primary","[Verify]"],
+            positions: ["Economic-justice agenda — 'Because Change Can't Wait: Blair's Black Economic Agenda for GA-13,' centered on tax reform, addressing data centers, and 'putting more money in people's pockets' (priorities per AJC)","Self-described 'People-First Agenda' from a no-corporate-PAC campaign — healthcare, education, housing, workers' rights, reproductive freedom, LGBTQ+ rights, climate, and gun violence (per his campaign site)","[Verify plank-level detail]"],
+            differentiators: ["Former Gwinnett County Board of Education chair — at 26 its first Black and youngest-ever member","The only candidate running in both the special and the regular primary; lives in-district (Lilburn)","Finished third in the May 2026 full-term primary"],
             supporters: [], opponents: [] },
           { name: "Marcye Scott", party: "D", winner: false,
-            positions: ["[Verify] — continuing her father's legacy","[Verify]","[Verify]"],
-            differentiators: ["Daughter of the late Rep. David Scott","[Verify]","[Verify]"],
+            positions: ["Continuity agenda — pledges to finish her father's work, including delivering the ~$40M in federal funding he had requested for GA-13 and codifying the David Scott HBCU scholarship into law (self-described; reported by AJC)","Protecting Social Security and Medicare, lowering prescription-drug costs, and strengthening SNAP (per her campaign site)","Helping seniors and veterans stay in their homes, maintaining infrastructure, and supporting law enforcement and first responders (per her campaign site)"],
+            differentiators: ["Youngest of the late Rep. David Scott's two daughters, running to continue his work","User-experience/design consultant with 20+ years of community and campaign involvement; no prior elected office; lives in Atlanta, outside the district","Endorsed by Ambassador Andrew Young and U.S. Rep. Nikema Williams"],
+            supporters: [], opponents: [] },
+          { name: "Carlos Moore", party: "D", winner: false,
+            positions: ["[Verify] — limited coverage of platform","[Verify]","[Verify]"],
+            differentiators: ["Democratic candidate qualified for the July 28 special","[Verify background]","[Verify]"],
+            supporters: [], opponents: [] },
+          { name: "Caesar Gonzales", party: "R", winner: false,
+            positions: ["[Verify] — limited coverage of platform","[Verify]","[Verify]"],
+            differentiators: ["Republican candidate qualified for the July 28 special","[Verify background]","[Verify]"],
+            supporters: [], opponents: [] },
+          { name: "Fayth Park", party: "R", winner: false,
+            positions: ["[Verify] — limited coverage of platform","[Verify]","[Verify]"],
+            differentiators: ["Republican candidate qualified for the July 28 special","[Verify background]","[Verify]"],
             supporters: [], opponents: [] }
         ]
       },
@@ -1574,8 +1581,8 @@ const HOUSE_RACES = {
             supporters: ["Generational, credentialed successor for a district that wanted new energy"],
             opponents: ["Crypto-PAC outside money raises independence questions [Verify]"] },
           { name: "Jonathan Chavez", party: "R", winner: false,
-            positions: ["[Verify] — minimal coverage","[Verify]","[Verify]"],
-            differentiators: ["Former Rockdale County GOP chair","2024 nominee (28.2%)","Unopposed in the 2026 primary"],
+            positions: ["'Fair Tax For All' — replace the federal income tax with a 23% national sales tax and simplify the code (self-described, per his campaign site)","Return education 'to the hands of parents and local communities'; healthcare choices belonging to families 'not faceless agencies' (self-described)","'America First' foreign policy with secure borders (self-described)"],
+            differentiators: ["U.S. Air Force veteran with graduate degrees from Harvard and Johns Hopkins; former Rockdale County GOP chair","2024 nominee (28.2% against David Scott)","Unopposed in the 2026 GOP primary"],
             supporters: [], opponents: [] }
         ]
       },
@@ -1647,7 +1654,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Georgia Elections Hub", lastUpdated: "July 2026" };
+const SITE_META = { name: "Georgia Elections Hub", lastUpdated: "July 14, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — GA county-level down-ballot research is the next phase).
