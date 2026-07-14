@@ -297,10 +297,12 @@ Notes for future edits:
    sheriff primary; Thompson and Hewett won commission primaries; Somers won DA-15 primary).
 3b. **East-coast full buildout — RESUMED by owner July 14, 2026** (was paused July 6 after 7 states:
    NC SC GA VA MD DE NJ; statewide + House; county LOCAL_RACES still to do for all).
-   **Owner's standing directive (July 14, 2026): complete ONE NEW STATE FULLY PER WEEKLY RUN** —
-   verified statewide + U.S. House races, real sourced candidate data, NEVER rushed or fabricated
-   (the no-fabrication rule always wins over throughput; a genuinely thin candidate keeps a `[Verify]`).
-   A large state may span two runs — that is expected and fine; say so in the summary.
+   **Owner's standing directive (July 14, 2026): complete ONE NEW STATE roughly PER WEEK.** The task now
+   runs DAILY (changed July 14), so make real verified progress toward the current state each run and finish
+   about one state per week — a full state spans several daily runs. Verified statewide + U.S. House races,
+   real sourced candidate data, NEVER rushed or fabricated (the no-fabrication rule always wins over
+   throughput; a genuinely thin candidate keeps a `[Verify]`). Don't flip a state into `BUILT` / wire it live
+   until it is actually complete — keep in-progress work off the published map.
    **Next target: New York** (62 counties, 26 districts — the big one; note NY has NO 2026 U.S. Senate
    race — Gillibrand/Schumer are 2024/2028 — so statewide = Governor/AG/Comptroller; likely ~2 runs).
    After NY: FL (ONLY after its Aug 18 primaries) and DC (needs a different page model — no counties).
