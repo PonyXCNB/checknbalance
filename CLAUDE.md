@@ -295,10 +295,16 @@ Notes for future edits:
 3. **Cape Fear expansion (the moat):** Brunswick, Pender, Columbus county local races at New
    Hanover depth (Brunswick sheriff/commission primary results already partially known: Chism won
    sheriff primary; Thompson and Hewett won commission primaries; Somers won DA-15 primary).
-3b. **East-coast full buildout — PAUSED by owner July 6, 2026 after 7 states** (NC SC GA VA MD
-   DE NJ; statewide + House; county LOCAL_RACES still to do for all). Remaining when he resumes:
-   NY (62 counties, 26 districts — the big one), FL after its Aug 18 primaries, and DC (needs a
-   different page model — no counties). Do NOT start these without the owner asking.
+3b. **East-coast full buildout — RESUMED by owner July 14, 2026** (was paused July 6 after 7 states:
+   NC SC GA VA MD DE NJ; statewide + House; county LOCAL_RACES still to do for all).
+   **Owner's standing directive (July 14, 2026): complete ONE NEW STATE FULLY PER WEEKLY RUN** —
+   verified statewide + U.S. House races, real sourced candidate data, NEVER rushed or fabricated
+   (the no-fabrication rule always wins over throughput; a genuinely thin candidate keeps a `[Verify]`).
+   A large state may span two runs — that is expected and fine; say so in the summary.
+   **Next target: New York** (62 counties, 26 districts — the big one; note NY has NO 2026 U.S. Senate
+   race — Gillibrand/Schumer are 2024/2028 — so statewide = Governor/AG/Comptroller; likely ~2 runs).
+   After NY: FL (ONLY after its Aug 18 primaries) and DC (needs a different page model — no counties).
+   Follow the full-state clone checklist in "Data architecture → index.html" when adding each state.
    - **DE time-sensitive:** July 14 filing deadline, then Sept 15 primary — refresh de.html after
      both.
    - **MD follow-up:** June 23 primary figures are unofficial — swap in certified numbers when
