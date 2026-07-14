@@ -330,4 +330,13 @@ Notes for future edits:
   unverified with `[Verify]`.
 - After ANY change: run `node tests/run-all.js` (all three suites must pass), then commit and push
   to `main` — Netlify deploys automatically. Remind the owner to hard-refresh after deploys.
-- Update `SITE_META.lastUpdated` (nc.html footer) whenever NC data changes.
+- Update `SITE_META.lastUpdated` (the footer on each state page) whenever that state's data changes.
+- **Freshness — do this EVERY scheduled run (owner feedback, July 2026):** bump `SITE_META.lastUpdated`
+  on every page you change AND the static "Last updated: <month> 2026" line in `index.html`'s footer to
+  the current month. These dates must never go stale, even on a light week.
+- **Landing-page review — do this EVERY run, after your data edits (owner feedback, July 2026):** read
+  `index.html` end-to-end and reconcile its dependent facts with the current reality of the site — the
+  legend's built-state count, the "How you can help" / roadmap paragraph, the `BUILT` / `PARTIAL` tier
+  sets, and the footer. The prose must never contradict the map (e.g., NC is no longer the sole "proof of
+  concept" now that seven states are built). Whenever a state is added/promoted, sweep index.html for
+  every count and description that references it.
