@@ -287,6 +287,31 @@ Notes for future edits:
   and Charleston: 15 each). When races are legitimately added or removed, update the count in the
   same commit.
 
+## Owner to-do queue (work these each run, highest-impact first; check off when done)
+
+Site-wide polish/UX/standardization the owner requested (July 14, 2026) — not state-specific race data.
+Knock them out alongside the weekly state builds; several need VISUAL verification (render the page in a
+browser and look, e.g. via a local static server + the browser tools).
+
+1. **National-map (index.html) label alignment.** Several state abbreviation labels overlap or sit
+   off-center on the US map — e.g. **FL** and **LA** overlap their borders; **MI**, **HI**, **ID** are
+   off-center. Re-align placement so each two-letter label sits cleanly centered in (or properly offset
+   from) its state. Small states use hand-tuned leader-line callouts (see Design system → Small-state
+   callouts); larger states are labeled at/near their path centroid. Fix the offenders and re-verify
+   visually across ALL states, not just the named ones.
+2. **Home-state "glow" effect (index.html).** The home-state pulse currently cycles a FILL (light red →
+   cream → light blue → cream). Owner wants (a) NO blue, and (b) an *illumination* look — the state appears
+   to glow/brighten and throb (brightness eases up, then back to normal), like it is being lit up, rather
+   than cycling fill colors. Reimplement the `home` keyframe as a brightness/glow pulse (e.g. warm glow via
+   CSS `filter: brightness()` / `drop-shadow`, or lightening the state's own fill and back) in a single
+   non-blue hue; keep it subtle and looping. Keep the NC special-case (currently a stroke pulse) consistent
+   with the new look.
+3. **Standardize candidate text to NC's concise style (all states + counties).** Some descriptions are
+   bricks of text — e.g. New York's Governor and AG positions/notes. Cut them down HARD to short,
+   critical-info-only phrases, matching nc.html's terse style (scan nc.html as the model). Apply across
+   every built state and county; start with the worst offenders (NY statewide, then long district notes).
+   Preserve accuracy/sourcing and keep [Verify] markers — just tighten wording. Write concise from now on.
+
 ## Backlog / roadmap
 
 1. **Post-primary refresh (late Aug 2026):** FL primaries (Aug 18) → replace pre-primary fields;
@@ -298,12 +323,12 @@ Notes for future edits:
    sheriff primary; Thompson and Hewett won commission primaries; Somers won DA-15 primary).
 3b. **East-coast full buildout — RESUMED by owner July 14, 2026** (was paused July 6 after 7 states:
    NC SC GA VA MD DE NJ; statewide + House; county LOCAL_RACES still to do for all).
-   **Owner's standing directive (July 14, 2026): complete ONE NEW STATE roughly PER WEEK.** The task now
-   runs DAILY (changed July 14), so make real verified progress toward the current state each run and finish
-   about one state per week — a full state spans several daily runs. Verified statewide + U.S. House races,
-   real sourced candidate data, NEVER rushed or fabricated (the no-fabrication rule always wins over
-   throughput; a genuinely thin candidate keeps a `[Verify]`). Don't flip a state into `BUILT` / wire it live
-   until it is actually complete — keep in-progress work off the published map.
+   **Owner's standing directive (updated July 14, 2026): build MULTIPLE new states per WEEKLY run.** The task
+   runs weekly on Monday mornings; each run, complete as many full, verified states as you can — aim for 2–4,
+   sized to complexity. Verified statewide + U.S. House races, real sourced candidate data, NEVER rushed or
+   fabricated (the no-fabrication rule always wins over throughput; a genuinely thin candidate keeps a
+   `[Verify]`). Don't flip a state into `BUILT` / wire it live until it is actually complete — keep in-progress
+   work off the published map. Keep candidate text concise (NC-style) from the start (see the Owner to-do queue).
    **New York was COMPLETED July 14, 2026** (62 counties, all 26 districts + Gov/AG/Comptroller; 22 [Verify]
    markers; voices not yet added). **Next target: Florida — but ONLY after its Aug 18, 2026 primaries** settle
    the fields (building it pre-primary means placeholder-then-redo). After FL: DC (needs a different page model
