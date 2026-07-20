@@ -308,19 +308,22 @@ Notes for future edits:
 ## Owner to-do queue (work these each run, highest-impact first; check off when done)
 
 Site-wide polish/UX/standardization the owner requested (July 14, 2026) — not state-specific race data.
-Knock them out alongside the weekly state builds; several need VISUAL verification (render the page in a
+Knock them out alongside the daily state builds; several need VISUAL verification (render the page in a
 browser and look, e.g. via a local static server + the browser tools).
 
 **All three items below were completed July 20, 2026.** (Note: in that run the browser screenshot/zoom
 tools timed out in the environment, so map-label placement was verified geometrically instead — each
 label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside its own state path.)
 
-1. ~~**National-map (index.html) label alignment.**~~ DONE (July 20, 2026). Added a `LABEL_ADJ` override
-   table for states whose AREA centroid falls off the main landmass: **MI** → Lower Peninsula, **HI** →
-   Big Island, **FL** → peninsula interior (its centroid's left edge overflowed the Gulf coast — the
-   "overlaps border" complaint). Verified all 42 inline labels sit inside their own state paths (0 outside);
-   **ID** and **LA** were already fully enclosed at their centroids (checked ±6px), so left as-is. If the
-   owner still sees ID/LA as visually off, do a pixel-level pass once the screenshot tool works.
+1. ~~**National-map (index.html) label alignment.**~~ DONE (July 20, 2026). `LABEL_ADJ` override table in
+   index.html for states whose AREA centroid falls off/near the edge of the main landmass: **MI** → Lower
+   Peninsula, **HI** → Big Island, **FL** → peninsula interior, **LA** → nudged west. Verification method
+   (screenshot tool was timing out): measure each label's ACTUAL rendered text box via `getBBox()`, then
+   hit-test the full glyph box (corners + edge midpoints, ~4.2px glyph half-height ignoring font leading)
+   against the state path with SVG `isPointInFill`. Second pass (same day, after owner still saw FL
+   overlapping) tightened FL to [695,474] and added LA [528,431] — the earlier ±6px point test was too
+   loose and missed the wider real glyph. **Now 0 of 42 inline labels overflow their state boundary.** Re-run
+   that glyph-box test after any map-layout change; callout states (small NE + DC) use leader lines, not this.
 2. ~~**Home-state "glow" effect (index.html).**~~ DONE (July 20, 2026). Replaced the fill-cycling
    `homePulse` (which included blue) with `homeGlow` — a warm brightness + gold `drop-shadow` throb (no
    blue), and `homeGlowFeatured` for a built (gold) home state so it reads on gold.
@@ -341,9 +344,10 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
    sheriff primary; Thompson and Hewett won commission primaries; Somers won DA-15 primary).
 3b. **East-coast full buildout — RESUMED by owner July 14, 2026** (was paused July 6 after 7 states:
    NC SC GA VA MD DE NJ; statewide + House; county LOCAL_RACES still to do for all).
-   **Owner's standing directive (updated July 14, 2026): build MULTIPLE new states per WEEKLY run.** The task
-   runs weekly on Monday mornings; each run, complete as many full, verified states as you can — aim for 2–4,
-   sized to complexity. Verified statewide + U.S. House races, real sourced candidate data, NEVER rushed or
+   **Owner's standing directive (updated July 20, 2026): build MULTIPLE new states per run; the task now runs
+   DAILY at 8am** (switched from weekly on July 20, 2026 after the owner restocked Netlify credits). Each run,
+   complete as many full, verified states as you can — aim for 2–4, sized to complexity (on a daily cadence,
+   even 1 fully-verified state plus to-do/backlog work is a good run — quality always beats hitting a number). Verified statewide + U.S. House races, real sourced candidate data, NEVER rushed or
    fabricated (the no-fabrication rule always wins over throughput; a genuinely thin candidate keeps a
    `[Verify]`). Don't flip a state into `BUILT` / wire it live until it is actually complete — keep in-progress
    work off the published map. Keep candidate text concise (NC-style) from the start (see the Owner to-do queue).

@@ -352,7 +352,8 @@ const CALLOUT_FIPS = new Set(CALLOUTS.map(c => c.fips));
 const LABEL_ADJ = {
   "26": [621, 186], // MI -> Lower Peninsula (the "mitten" palm)
   "15": [314, 522], // HI -> largest island (Hawai'i / Big Island)
-  "12": [695, 478]  // FL -> peninsula interior (whole label fits; centroid overflowed the Gulf coast)
+  "12": [695, 474], // FL -> peninsula interior; whole "FL" glyph box clears both coasts
+  "22": [528, 431]  // LA -> nudged west so the label's right edge stays inside the boundary
 };
 
 const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
