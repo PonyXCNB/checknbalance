@@ -39,7 +39,9 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 | `de.html` | Delaware — sixth fully built state (3 counties, 1 at-large seat). ⚠ Primary is **Sept 15, 2026**, filing deadline July 14 — fields provisional; open Treasurer seat (Ramone). No LOCAL_RACES yet |
 | `nj.html` | New Jersey — seventh fully built state (21 counties, 12 districts, June 2 primary results, NJ-11 special history). Kean toss-up in NJ-7; no GOP candidate in NJ-8. No LOCAL_RACES yet |
 | `ny.html` | New York — eighth fully built state (62 counties, all 26 districts, June 23 primary results). Added July 14, 2026. NO 2026 U.S. Senate; statewide = Gov (Hochul–Blakeman)/AG (James–Komatireddy)/Comptroller (DiNapoli–Hernandez). Marquee: NY-17 Lawler Toss Up; NY-3/4/19 Lean D. Upsets: Goldman lost NY-10 primary to Lander; Espaillat lost NY-13 to Avila Chevalier; open seats NY-7/12/21. Voices (supporters/opponents) not yet added; NY-6 GOP nominee is [Verify]. No LOCAL_RACES yet |
-| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY redirect to their dedicated pages |
+| `ri.html` | Rhode Island — ninth fully built state (5 counties, 2 districts, Sept 9 primary pending). Statewide: Senate (Reed), Governor (McKee–Foulkes primary rematch), open AG (Neronha term-limited), Lt Gov/SoS/Treasurer; RI-1 Amo & RI-2 Magaziner both Solid D. Built July 20, 2026. No LOCAL_RACES yet |
+| `nh.html` | New Hampshire — tenth fully built state (10 counties incl. split Hillsborough/Merrimack, 2 districts, Sept 8 primary pending). OPEN Senate (Shaheen retiring — Pappas D vs. Sununu/Brown R, Lean D); Gov Ayotte (R); OPEN NH-1 (Pappas vacating, Likely D); NH-2 Goodlander (D, Likely D). Built July 20, 2026. No LOCAL_RACES yet |
+| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH redirect to their dedicated pages |
 | `favicon.svg` | Gold-gradient circle + white checkmark (primary favicon, matches site crest) |
 | `favicon.png` | 32px PNG fallback |
 | `favicon.ico` | Multi-size ICO (16/32/48) at root for legacy auto-discovery |
@@ -137,7 +139,7 @@ must appear AFTER its declaration; a top-level TDZ error kills the whole script 
 ### index.html (national)
 ```
 ST / NAME     : fips → abbr / full name             CAP: capitals (currently unused on this page)
-BUILT         : { "37": nc, "45": sc, "13": ga, "51": va, "24": md, "10": de, "34": nj, "36": ny }
+BUILT         : { "37": nc, "45": sc, "13": ga, "51": va, "24": md, "10": de, "34": nj, "36": ny, "44": ri, "33": nh }
 PARTIAL       : Set of 3 fips (DC FL AL) → lighter gold tier
 CALLOUTS      : label anchor coords for 9 small states + DC
 destFor(fips) : BUILT[fips] if fully built, else state.html?state=XX
@@ -230,6 +232,22 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
   NJ-8 has NO GOP candidate (first since 2008), NJ-9 Leans D (Pou–Pino), NJ-10 McIver runs under
   federal indictment (Third Circuit appeal pending — track it), NJ-11 Mejia–Hathaway rematch
   after the April special, NJ-12 OPEN (Watson Coleman retired; Hamawy vs. Mele). No LOCAL_RACES.
+- **RI (full, added July 20, 2026):** RI's 2026 state primary is SEPT 9, 2026 (moved off Sept 8 for
+   Labor Day — verified against RI Dept. of State; Ballotpedia's Sept 8 is stale), so contested fields
+   are provisional. Statewide: Senate (Reed, Solid D; GOP McKay/Waters primary), Governor (McKee vs.
+   2022 rematch challenger Foulkes — the state party declined to endorse; Solid/Likely D), OPEN Attorney
+   General (Neronha term-limited — 4-way Dem primary Ahern/Hoffmann/Knight/Solomon, GOP Gordon), Lt Gov
+   (Matos), SoS (Amore), General Treasurer (Diossa). Districts: RI-1 Amo and RI-2 Magaziner, both Solid D.
+   Past: 2024 President, 2022 Governor. County->district map: only Providence County is materially split
+   (majority RI-1). Down-ballot statewide platforms carry [Verify] markers. No LOCAL_RACES yet.
+- **NH (full, added July 20, 2026):** NH's 2026 state primary is SEPT 8, 2026 - contested fields
+   provisional. OPEN U.S. Senate (Shaheen retiring; Dem frontrunner Pappas vs. GOP contest between
+   former Sens. John E. Sununu (Trump-endorsed) and Scott Brown - rated Lean D). Governor Ayotte (R, 2-yr
+   term) vs. Democrat Warmington (Leans R). NH-1 OPEN (Pappas vacating to run for Senate - Dem field
+   Sullivan/Stefany Shaheen/Howard; Likely D). NH-2 Goodlander (D) vs. Lily Tang Williams (R) rematch
+   (Cook moved Lean->Likely D July 16). Past: 2024 Governor, 2022 Senate. County->district: NH-1 east
+   (Manchester/Seacoast), NH-2 west/north (Nashua/Concord); Hillsborough, Merrimack, Belknap, Rockingham,
+   Grafton are SPLIT (Manchester->NH-1, Nashua->NH-2) - stored by population-majority district. No LOCAL_RACES yet.
 - **4 marquee states (STATE_RACES):** AL (Tuberville–Jones
   rematch; Senate open seat nominees Moore–Wess), FL
   (pre-primary: Donalds/Jolly/Pizzo + Moody special — **Aug 18 primaries pending**), NY
@@ -293,24 +311,24 @@ Site-wide polish/UX/standardization the owner requested (July 14, 2026) — not 
 Knock them out alongside the weekly state builds; several need VISUAL verification (render the page in a
 browser and look, e.g. via a local static server + the browser tools).
 
-1. **National-map (index.html) label alignment.** Several state abbreviation labels overlap or sit
-   off-center on the US map — e.g. **FL** and **LA** overlap their borders; **MI**, **HI**, **ID** are
-   off-center. Re-align placement so each two-letter label sits cleanly centered in (or properly offset
-   from) its state. Small states use hand-tuned leader-line callouts (see Design system → Small-state
-   callouts); larger states are labeled at/near their path centroid. Fix the offenders and re-verify
-   visually across ALL states, not just the named ones.
-2. **Home-state "glow" effect (index.html).** The home-state pulse currently cycles a FILL (light red →
-   cream → light blue → cream). Owner wants (a) NO blue, and (b) an *illumination* look — the state appears
-   to glow/brighten and throb (brightness eases up, then back to normal), like it is being lit up, rather
-   than cycling fill colors. Reimplement the `home` keyframe as a brightness/glow pulse (e.g. warm glow via
-   CSS `filter: brightness()` / `drop-shadow`, or lightening the state's own fill and back) in a single
-   non-blue hue; keep it subtle and looping. Keep the NC special-case (currently a stroke pulse) consistent
-   with the new look.
-3. **Standardize candidate text to NC's concise style (all states + counties).** Some descriptions are
-   bricks of text — e.g. New York's Governor and AG positions/notes. Cut them down HARD to short,
-   critical-info-only phrases, matching nc.html's terse style (scan nc.html as the model). Apply across
-   every built state and county; start with the worst offenders (NY statewide, then long district notes).
-   Preserve accuracy/sourcing and keep [Verify] markers — just tighten wording. Write concise from now on.
+**All three items below were completed July 20, 2026.** (Note: in that run the browser screenshot/zoom
+tools timed out in the environment, so map-label placement was verified geometrically instead — each
+label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside its own state path.)
+
+1. ~~**National-map (index.html) label alignment.**~~ DONE (July 20, 2026). Added a `LABEL_ADJ` override
+   table for states whose AREA centroid falls off the main landmass: **MI** → Lower Peninsula, **HI** →
+   Big Island, **FL** → peninsula interior (its centroid's left edge overflowed the Gulf coast — the
+   "overlaps border" complaint). Verified all 42 inline labels sit inside their own state paths (0 outside);
+   **ID** and **LA** were already fully enclosed at their centroids (checked ±6px), so left as-is. If the
+   owner still sees ID/LA as visually off, do a pixel-level pass once the screenshot tool works.
+2. ~~**Home-state "glow" effect (index.html).**~~ DONE (July 20, 2026). Replaced the fill-cycling
+   `homePulse` (which included blue) with `homeGlow` — a warm brightness + gold `drop-shadow` throb (no
+   blue), and `homeGlowFeatured` for a built (gold) home state so it reads on gold.
+3. ~~**Standardize candidate text to NC's concise style.**~~ STARTED (July 20, 2026): trimmed the worst
+   offenders — NY Governor/AG/Comptroller notes + positions, and NY's three longest district notes
+   (NY-18 Ryan, NY-13 Espaillat, NY-4 Gillen). Preserved accuracy/sourcing/[Verify]. **Still to do:** sweep
+   remaining long district notes across other states; keep writing concise from the start (RI/NH were built
+   concise).
 
 ## Backlog / roadmap
 
@@ -329,10 +347,16 @@ browser and look, e.g. via a local static server + the browser tools).
    fabricated (the no-fabrication rule always wins over throughput; a genuinely thin candidate keeps a
    `[Verify]`). Don't flip a state into `BUILT` / wire it live until it is actually complete — keep in-progress
    work off the published map. Keep candidate text concise (NC-style) from the start (see the Owner to-do queue).
-   **New York was COMPLETED July 14, 2026** (62 counties, all 26 districts + Gov/AG/Comptroller; 22 [Verify]
-   markers; voices not yet added). **Next target: Florida — but ONLY after its Aug 18, 2026 primaries** settle
-   the fields (building it pre-primary means placeholder-then-redo). After FL: DC (needs a different page model
-   — no counties). Follow the full-state clone checklist in "Data architecture → index.html" when adding each state.
+   **New York was COMPLETED July 14, 2026** (62 counties, all 26 districts + Gov/AG/Comptroller; voices not yet
+   added). **Rhode Island and New Hampshire were COMPLETED July 20, 2026** (cloned from de.html; RI = 5 counties/
+   2 districts/6 statewide offices + RI-1/RI-2; NH = 10 counties/2 districts + OPEN Senate & OPEN NH-1 + NH-2;
+   both built pre-primary like DE, so contested fields are provisional [Verify] — RI primary Sept 9, NH primary
+   Sept 8; voices not yet added). That brings the built bloc to 10 (NC SC GA VA MD DE NJ NY RI NH). **Next
+   targets:** continue outward in New England — **CT** (Aug 11 primary; 8 counties, 5 districts, Gov Lamont),
+   **MA** (Sept 1 primary; Senate Markey, Gov Healey, 9 districts), **ME** (Senate Collins is a marquee race,
+   open Governor, 2 districts), **VT** (1 at-large district, no 2026 Senate). **Florida still ONLY after its Aug
+   18, 2026 primaries.** **DC** needs a different page model (no counties). Follow the full-state clone checklist
+   in "Data architecture → index.html" when adding each state. Refresh RI after Sept 9 and NH after Sept 8.
    - **DE time-sensitive:** July 14 filing deadline, then Sept 15 primary — refresh de.html after
      both.
    - **MD follow-up:** June 23 primary figures are unofficial — swap in certified numbers when

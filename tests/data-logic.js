@@ -30,6 +30,8 @@ const STATE_PAGES = [
   { page: "de.html", countyCount: 3,   sampleFips: "10003", sampleName: "New Castle",  expectedRaces: 8 },
   { page: "nj.html", countyCount: 21,  sampleFips: "34003", sampleName: "Bergen",      expectedRaces: 6 },
   { page: "ny.html", countyCount: 62,  sampleFips: "36001", sampleName: "Albany",      expectedRaces: 6 },
+  { page: "ri.html", countyCount: 5,   sampleFips: "44007", sampleName: "Providence",  expectedRaces: 10 },
+  { page: "nh.html", countyCount: 10,  sampleFips: "33011", sampleName: "Hillsborough", expectedRaces: 6 },
 ];
 
 for (const cfg of STATE_PAGES) {
@@ -160,7 +162,7 @@ for (const abbr of ALL_TESTED) {
 // makes a race silently vanish from the grouped drawer)
 // ---------------------------------------------------------------
 console.log("\n— type-value audit —");
-for (const page of ["index.html", "nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html", "ny.html", "state.html"]) {
+for (const page of ["index.html", "nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html", "ny.html", "ri.html", "nh.html", "state.html"]) {
   const bad = [];
   for (const code of extractInlineScripts(page)) {
     for (const m of code.matchAll(/type\s*:\s*"([a-z]+)"/g)) {

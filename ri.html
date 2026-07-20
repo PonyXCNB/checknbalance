@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rhode Island Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every DE election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1.5 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #rimap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">RI</div>
+      <div class="brand-text">
+        <span class="brand-name">Rhode Island Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Rhode Island <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 5 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">5</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>2</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>6</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Rhode Island…</div>
+      <svg id="rimap" viewBox="0 0 1000 667" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>RI Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">July 2026</span><br>
+      Sources: RI Department of State / Board of Elections, Ballotpedia, Wikipedia, Cook Political Report, AP, The Boston Globe, WPRI, Rhode Island Current.
+    </div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every DE county (all in the single at-large district)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- (1) Counties + primary US House district -----
+// NOTE: RI's two districts are drawn by town, so counties can split. Only Providence
+// County is materially split (RI-1 covers the city core + northern tier; RI-2 the
+// western/southern towns) — its population majority sits in RI-1. The number below is
+// each county's PRIMARY district by population. Source: RI 2022 congressional
+// redistricting (S.2162/H.7323); Census. [Verify] fine town-level splits with the RI BOE.
+const COUNTIES = {
+  "44001":{n:"Bristol",d:1},
+  "44003":{n:"Kent",d:2},
+  "44005":{n:"Newport",d:1},
+  "44007":{n:"Providence",d:1},
+  "44009":{n:"Washington",d:2}
+};
+
+// ----- (2) Statewide elections every county votes in -----
+// NOTE: RI's 2026 state primary is Sept 9, 2026 (moved off Sept 8 for Labor Day, per
+// the RI Dept. of State). Contested-primary nominees are NOT final until then — those
+// fields are marked [Verify — primary Sept 9]. Incumbents/open seats below are confirmed.
+const STATEWIDE = [
+  // UPCOMING — 2026 General Election (Nov 3, 2026)
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Rhode Island",
+    note: "Jack Reed (D), first elected 1996, seeks a 6th term; he chairs (ranking member of) Senate Armed Services. Rated Solid/Safe Democratic — no Republican has won a RI Senate race since 2000. The GOP nominee is decided in the Sept 9 primary (McKay vs. Waters).",
+    candidates: [
+      { name: "Jack Reed (incumbent)", party: "D", winner: false,
+        positions: ["Defense and the Rhode Island submarine industrial base (Armed Services leader)","Veterans' benefits and VA reform","Affordable housing and homelessness"],
+        differentiators: ["Senior Senate Armed Services leadership","Low-profile, bipartisan institutionalist","No serious Democratic primary challenger"],
+        supporters: ["Delivers for a small state through seniority and defense clout"],
+        opponents: ["A three-decade incumbent in an anti-incumbent era [Verify attack lines]"] },
+      { name: "[Republican nominee — decided in the Sept 9, 2026 primary]", party: "R", winner: false,
+        positions: ["[Decided Sept 9] platforms thin this early [Verify]","",""],
+        differentiators: ["GOP primary: Raymond McKay vs. Allen Waters (2024 RI-1 nominee)","Winner faces Reed in November","Sept 9 primary"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Governor of Rhode Island",
+    note: "Dan McKee (D) seeks a full second term but faces a serious Democratic primary rematch from 2022 runner-up Helena Foulkes; the RI Democratic Party declined to endorse for governor (a first since 1948). Rated Solid/Likely Democratic. GOP nominee decided Sept 9 (Guckian/Pelino/Raimondo).",
+    candidates: [
+      { name: "Dan McKee (incumbent)", party: "D", winner: false,
+        positions: ["'Affordability for All' tax cuts; repeal the 2¢ gas-tax hike","Clean energy — restarted the Revolution Wind offshore project","Housing ($120M affordable-housing fund) and education gains"],
+        differentiators: ["Governor since 2021 (succeeded Raimondo); elected 2022","Runs on a 'Rhode Island 2030' incumbent record","Not endorsed by his own state party at the June convention"],
+        supporters: ["A steady hand who cut taxes and drew down the housing crisis"],
+        opponents: ["Trails Foulkes in local endorsements and polling [Verify]","Ethics/'347 Federal Hill' contract questions dog the administration [Verify]"] },
+      { name: "Helena Foulkes", party: "D", winner: false,
+        positions: ["Housing — 'Rhode Home' fund to build 20,000 units, paid by a 3% tax on income over $1M","Healthcare — raise Medicaid rates, rebuild primary care","Jobs — 'Classroom-to-Career' $100M CTE bond; blue-economy/port investment"],
+        differentiators: ["Former CVS Health executive running as an outsider","2022 primary runner-up (lost to McKee by ~2,700 votes)","Endorsed by AG Peter Neronha and most local Democratic committees"],
+        supporters: ["Executive competence and urgency the incumbent lacks"],
+        opponents: ["A wealthy corporate executive, light on elected experience [Verify]"] },
+      { name: "[Republican nominee — decided in the Sept 9, 2026 primary]", party: "R", winner: false,
+        positions: ["[Decided Sept 9] field platforms thin [Verify]","",""],
+        differentiators: ["GOP primary: Aaron Guckian (2022 Lt. Gov. nominee), Elaine Pelino, Robert Raimondo","Winner faces the Democratic nominee in November","Sept 9 primary"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Attorney General — Rhode Island (open seat)",
+    note: "OPEN SEAT — Peter Neronha (D) is term-limited (and is not running for governor). A crowded Democratic primary Sept 9 will likely decide the office; Republican Alan Gordon is the lone GOP filer found. Gun policy and ICE/immigration enforcement are the defining fault lines. [Verify final ballot at the RI Dept. of State.]",
+    candidates: [
+      { name: "Kim Ahern", party: "D", winner: false,
+        positions: ["Keep guns from prohibited persons; ban 'weapons of war'","Opposes aggressive ICE tactics","Consumer and worker protection [Verify]"],
+        differentiators: ["Former chair, RI Cannabis Control Commission","Sept 9 Democratic primary","[Verify fuller platform]"],
+        supporters: [], opponents: [] },
+      { name: "Keith Hoffmann", party: "D", winner: false,
+        positions: ["Defend the assault-weapons ban and red-flag laws","ICE accountability","[Verify]"],
+        differentiators: ["Former chief of policy in the AG's office","Sept 9 Democratic primary","[Verify]"],
+        supporters: [], opponents: [] },
+      { name: "Jason Knight", party: "D", winner: false,
+        positions: ["Sponsored RI's assault-weapons ban","Courthouse-warrant requirements; opposes Trump immigration policy","[Verify]"],
+        differentiators: ["Navy veteran; 10-year state legislator","Sept 9 Democratic primary","[Verify]"],
+        supporters: [], opponents: [] },
+      { name: "Joseph Solomon Jr.", party: "D", winner: false,
+        positions: ["More moderate on guns — target 'bad actors,' protect lawful owners","Law-enforcement coordination","[Verify]"],
+        differentiators: ["The field's moderate lane on firearms","Sept 9 Democratic primary","[Verify]"],
+        supporters: [], opponents: [] },
+      { name: "Alan Gordon", party: "R", winner: false,
+        positions: ["Opposes firearm restrictions","Anti-abortion","[Verify — cannabis-legalization background]"],
+        differentiators: ["2018/2022 candidate; lone GOP filer found [Verify]","[Verify positions]",""],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Lieutenant Governor — Rhode Island",
+    note: "Sabina Matos (D) seeks a second full term against a crowded Democratic primary Sept 9. Republican John Loughlin and independent Mabel Martinez have filed. Candidate platforms are thinly covered this early [Verify — primary Sept 9].",
+    candidates: [
+      { name: "Sabina Matos (incumbent)", party: "D", winner: false,
+        positions: ["[Verify — primary Sept 9]","",""],
+        differentiators: ["Lt. Governor since 2021; former Providence City Council president","Crowded Dem primary: Anderbois, Armour Coyne, Khamsyvoravong, McCurdy","Sept 9 primary"],
+        supporters: [], opponents: [] },
+      { name: "John Loughlin", party: "R", winner: false,
+        positions: ["[Verify — primary Sept 9]","",""],
+        differentiators: ["Former state representative; past congressional candidate","[Verify]",""],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Secretary of State — Rhode Island",
+    note: "Gregg Amore (D) seeks a second term; he faces only a minor Democratic primary. Republican nominee and platforms [Verify — primary Sept 9].",
+    candidates: [
+      { name: "Gregg Amore (incumbent)", party: "D", winner: false,
+        positions: ["Elections administration and voter access [Verify]","Open government / public records [Verify]",""],
+        differentiators: ["Secretary of State since 2023; former state representative and teacher","[Verify]",""],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "General Treasurer — Rhode Island",
+    note: "James Diossa (D) seeks a second term; expected general vs. Republican Micholas Credle. Platforms [Verify — primary Sept 9].",
+    candidates: [
+      { name: "James Diossa (incumbent)", party: "D", winner: false,
+        positions: ["Pension-fund stewardship and financial empowerment [Verify]","Retirement security [Verify]",""],
+        differentiators: ["General Treasurer since 2023; former mayor of Central Falls","No serious primary noted","[Verify]"],
+        supporters: [], opponents: [] },
+      { name: "Micholas Credle", party: "R", winner: false,
+        positions: ["[Verify — primary Sept 9]","",""],
+        differentiators: ["Republican filer for General Treasurer [Verify]","",""],
+        supporters: [], opponents: [] }
+    ]
+  },
+
+  // PAST — recent statewide results for context
+  {
+    date: "Nov 5, 2024",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "President (Rhode Island, 2024)",
+    note: "Kamala Harris (D) carried Rhode Island ~58% to ~40% over Donald Trump — a ~13.8-point margin. RI has not voted Republican for president since 1984.",
+    candidates: [
+      { name: "Kamala Harris", party: "D", winner: true,
+        positions: ["Reproductive rights","Middle-class economics","Democracy protection"],
+        differentiators: ["Won all 5 RI counties","~314,982 votes (~58%)"],
+        supporters: [], opponents: [] },
+      { name: "Donald Trump", party: "R", winner: false,
+        positions: ["Immigration enforcement","Tax cuts","Deregulation"],
+        differentiators: ["~220,736 votes (~40%) — RI's best GOP presidential share in years [Verify]"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 8, 2022",
+    type: "past",
+    scope: "State · Statewide",
+    office: "Governor of Rhode Island (2022)",
+    note: "Dan McKee (D) won a full term 57.9% to 38.9% over Republican Ashley Kalus — a ~19-point margin. Helena Foulkes had pushed McKee to a narrow ~2,700-vote win in that year's Democratic primary; the two meet again in 2026.",
+    candidates: [
+      { name: "Dan McKee", party: "D", winner: true,
+        positions: ["Post-pandemic recovery","Housing and education","Tax relief"],
+        differentiators: ["Elevated from Lt. Governor when Raimondo joined the Biden Cabinet","Survived a competitive 5-way 2022 Democratic primary"],
+        supporters: [], opponents: [] },
+      { name: "Ashley Kalus", party: "R", winner: false,
+        positions: ["Small-business economics","Public safety","Education choice"],
+        differentiators: ["Businesswoman; 2022 GOP nominee","Lost by ~19 points"],
+        supporters: [], opponents: [] }
+    ]
+  }
+];
+
+// ----- (3) US House races by district -----
+// Each district object holds: 2026 race + 2024 race
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — RI District 1",
+    region: "East Bay + northern Providence County — Providence (east), Pawtucket, Woonsocket, Bristol & Newport counties",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Gabe Amo (D) seeks a second full term. Rated Solid/Safe Democratic (Cook). Republican Kellie Keenan and independent Pedro DeSouza have filed.",
+        candidates: [
+          { name: "Gabe Amo (incumbent)", party: "D", winner: false,
+            positions: ["Gun-violence prevention","Reproductive freedom","Climate resilience and environmental justice"],
+            differentiators: ["First Black Rhode Islander elected to Congress","Former Biden White House intergovernmental-affairs official","Won the seat in a 2023 special election"],
+            supporters: ["An effective, well-connected young member for a safe-D seat"],
+            opponents: ["[Verify GOP attack lines]"] },
+          { name: "Kellie Keenan", party: "R", winner: false,
+            positions: ["[Verify — primary Sept 9]","",""],
+            differentiators: ["Providence public-health consultant; Republican filer","[Verify]",""],
+            supporters: [], opponents: [] },
+          { name: "Pedro DeSouza", party: "I", winner: false,
+            positions: ["[Verify]","",""],
+            differentiators: ["Independent candidate from Woonsocket","[Verify]",""],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Gabe Amo (D) won his first full term 63.0% to 32.0% over Republican Allen Waters (independent C.D. Reynolds also ran).",
+        candidates: [
+          { name: "Gabe Amo", party: "D", winner: true,
+            positions: ["Reproductive rights","Gun safety","Climate action"],
+            differentiators: ["Won by ~31 points","~139,352 votes (63.0%)"],
+            supporters: [], opponents: [] },
+          { name: "Allen Waters", party: "R", winner: false,
+            positions: ["Fiscal conservatism","Border security","Small government"],
+            differentiators: ["2024 GOP nominee; now running for U.S. Senate in 2026","~70,742 votes (32.0%)"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  2: {
+    name: "U.S. House — RI District 2",
+    region: "Western & southern RI — Cranston, Warwick, West Bay, South County (Kent & Washington counties)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Seth Magaziner (D) seeks a third term. Rated Solid/Safe Democratic (Cook). He faces a minor Democratic primary from ex-state Rep. Spencer Dickinson; the GOP nominee is decided Sept 9 (Skoly vs. Mellor).",
+        candidates: [
+          { name: "Seth Magaziner (incumbent)", party: "D", winner: false,
+            positions: ["Protect Social Security and Medicare","Reproductive rights, ACA and gun safety","Government ethics — ban congressional stock trading, term limits"],
+            differentiators: ["Ranking Member, House Homeland Security counterterrorism subcommittee","Former RI General Treasurer","Faces only a minor primary challenge"],
+            supporters: ["A workmanlike member focused on kitchen-table security"],
+            opponents: ["[Verify GOP attack lines]"] },
+          { name: "[Republican nominee — decided in the Sept 9, 2026 primary]", party: "R", winner: false,
+            positions: ["[Decided Sept 9] platforms thin [Verify]","",""],
+            differentiators: ["GOP primary: Dr. Stephen Skoly (Cranston oral surgeon) vs. Vic Mellor","Winner faces Magaziner in November","Sept 9 primary"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Seth Magaziner (D) won re-election 55.8% to 39.8% over Republican Steven Corvi.",
+        candidates: [
+          { name: "Seth Magaziner", party: "D", winner: true,
+            positions: ["Social Security and Medicare","Reproductive rights","Public safety"],
+            differentiators: ["Won by ~16 points","~153,439 votes (55.84%)"],
+            supporters: [], opponents: [] },
+          { name: "Steven Corvi", party: "R", winner: false,
+            positions: ["Fiscal restraint","Border security","Veterans"],
+            differentiators: ["2024 GOP nominee","~109,381 votes (39.81%)"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  }
+};
+
+const SITE_META = { name: "Rhode Island Elections Hub", lastUpdated: "July 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — RI county-level down-ballot research is the next phase.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Rhode Island has not started yet.
+  // (RI runs municipal, not county, government — future depth is city/town races.)
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = district
+    ? district.races.map(r => ({
+        ...r,
+        office: r.office || district.name,
+        scope: r.scope || `Federal · District ${county.d}`
+      }))
+    : [];
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const RI_STATE_FIPS = "44";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#rimap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(RI_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 667;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Providence ----
+  drawCapital(g, projection, { name: "Providence", lng: -71.4128, lat: 41.8240 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in RI";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our Rhode Island dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">Candidates not yet announced.</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>
