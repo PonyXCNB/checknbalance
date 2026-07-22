@@ -41,7 +41,9 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 | `ny.html` | New York — eighth fully built state (62 counties, all 26 districts, June 23 primary results). Added July 14, 2026. NO 2026 U.S. Senate; statewide = Gov (Hochul–Blakeman)/AG (James–Komatireddy)/Comptroller (DiNapoli–Hernandez). Marquee: NY-17 Lawler Toss Up; NY-3/4/19 Lean D. Upsets: Goldman lost NY-10 primary to Lander; Espaillat lost NY-13 to Avila Chevalier; open seats NY-7/12/21. Voices (supporters/opponents) not yet added; NY-6 GOP nominee is [Verify]. No LOCAL_RACES yet |
 | `ri.html` | Rhode Island — ninth fully built state (5 counties, 2 districts, Sept 9 primary pending). Statewide: Senate (Reed), Governor (McKee–Foulkes primary rematch), open AG (Neronha term-limited), Lt Gov/SoS/Treasurer; RI-1 Amo & RI-2 Magaziner both Solid D. Built July 20, 2026. No LOCAL_RACES yet |
 | `nh.html` | New Hampshire — tenth fully built state (10 counties incl. split Hillsborough/Merrimack, 2 districts, Sept 8 primary pending). OPEN Senate (Shaheen retiring — Pappas D vs. Sununu/Brown R, Lean D); Gov Ayotte (R); OPEN NH-1 (Pappas vacating, Likely D); NH-2 Goodlander (D, Likely D). Built July 20, 2026. No LOCAL_RACES yet |
-| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH redirect to their dedicated pages |
+| `ct.html` | Connecticut — eleventh fully built state (8 traditional counties, 5 districts, Aug 11 primary pending). NO 2026 U.S. Senate; six statewide constitutional offices (Gov Lamont seeking a 3rd term vs. GOP nominee Ryan Fazio, Solid D; LG/AG/SoS/Treasurer/Comptroller). Marquee: CT-1, where 14-term John Larson LOST the convention endorsement to Luke Bronin. Built July 22, 2026. No LOCAL_RACES yet |
+| `vt.html` | Vermont — twelfth fully built state (14 counties, 1 at-large district, Aug 11 primary pending). NO 2026 U.S. Senate; Gov Phil Scott (R) seeking a 6th 2-yr term (Solid R), Lt Gov Rodgers (R), OPEN Auditor (Hoffer retiring), U.S. House at-large Balint (D, Solid D). Built July 22, 2026. No LOCAL_RACES yet |
+| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT redirect to their dedicated pages |
 | `favicon.svg` | Gold-gradient circle + white checkmark (primary favicon, matches site crest) |
 | `favicon.png` | 32px PNG fallback |
 | `favicon.ico` | Multi-size ICO (16/32/48) at root for legacy auto-discovery |
@@ -139,7 +141,7 @@ must appear AFTER its declaration; a top-level TDZ error kills the whole script 
 ### index.html (national)
 ```
 ST / NAME     : fips → abbr / full name             CAP: capitals (currently unused on this page)
-BUILT         : { "37": nc, "45": sc, "13": ga, "51": va, "24": md, "10": de, "34": nj, "36": ny, "44": ri, "33": nh }
+BUILT         : { "37": nc, "45": sc, "13": ga, "51": va, "24": md, "10": de, "34": nj, "36": ny, "44": ri, "33": nh, "09": ct, "50": vt }
 PARTIAL       : Set of 3 fips (DC FL AL) → lighter gold tier
 CALLOUTS      : label anchor coords for 9 small states + DC
 destFor(fips) : BUILT[fips] if fully built, else state.html?state=XX
@@ -173,7 +175,7 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of July 6, 2026)
+## Current state (as of July 22, 2026)
 
 - **NC (full):** 2024 statewide results (Gov, Lt Gov, AG, Supreme Court Seat 6) + all 14 US House
   districts (2024 + 2026) + 2026 US Senate (Cooper vs. Whatley vs. Bray, rated Lean D). NC primary
@@ -248,6 +250,28 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
    (Cook moved Lean->Likely D July 16). Past: 2024 Governor, 2022 Senate. County->district: NH-1 east
    (Manchester/Seacoast), NH-2 west/north (Nashua/Concord); Hillsborough, Merrimack, Belknap, Rockingham,
    Grafton are SPLIT (Manchester->NH-1, Nashua->NH-2) - stored by population-majority district. No LOCAL_RACES yet.
+- **CT (full, added July 22, 2026):** ⚠ CT's 2026 primary is **Aug 11** — contested fields are provisional.
+   The county map uses the 8 TRADITIONAL counties (the us-atlas geometry predates CT's 2022 switch to 9
+   planning regions) — county→district by population plurality: Fairfield→4, Hartford→1, Litchfield→5,
+   Middlesex→2 (a true 3-way split; shoreline plurality), New Haven→3, New London/Tolland/Windham→2.
+   NO 2026 U.S. Senate (Blumenthal 2028, Murphy 2030). Six statewide offices, all Solid/Likely D:
+   Governor (Lamont seeking a rare 3rd term; Rep. Josh Elliott forced an Aug 11 Dem primary; GOP nominee
+   Ryan Fazio settled at the May convention with ~92%), Lt Gov (Bysiewicz vs. Corey), AG (Tong vs. Bolton),
+   SoS (Thomas vs. Lumaj), Treasurer (Russell vs. Wilms — an explicit ESG-investing split), Comptroller
+   (Scanlon vs. Tooker). 2022 Gov (Lamont 56–43 Stefanowski) as history. Districts: all 5, all Democratic-held —
+   **CT-1 is the marquee**: 14-term John Larson LOST the May convention endorsement to former Hartford mayor
+   Luke Bronin 214–204, with state Rep. Jillian Gilchrest also on the Aug 11 ballot. CT-5 (Hayes) is the most
+   competitive seat, but 2022/2024 opponent George Logan is NOT running in 2026. Thin GOP primary fields
+   carry [Verify]. No LOCAL_RACES yet.
+- **VT (full, added July 22, 2026):** ⚠ VT's 2026 primary is **Aug 11**. All 14 counties sit in the single
+   AT-LARGE U.S. House district (no splits). NO 2026 U.S. Senate (Welch 2028, Sanders 2030). Vermont state
+   officers serve TWO-year terms, so all are up: Governor Phil Scott (R) filed May 28 for a 6th term and is
+   rated Solid/Likely R (won 2024 by ~50 points) — Democrats Aly Richards and Amanda Janoo contest the Aug 11
+   primary; Lt Gov John Rodgers (R, won 2024) vs. a crowded Dem field (Gray/Charlestin/McLaren); **OPEN
+   Auditor** — Doug Hoffer retiring after 2013, Dem primary Tim Ashe (Hoffer-endorsed) vs. Nick Graeter, with
+   Republican Joshua Bechhoefer. U.S. House at-large: Becca Balint (D, Solid D) vs. 2024 nominee Mark Coester (R).
+   2024 Gov as history. AG Clark / SoS Copeland Hanzas / Treasurer Pieciak (all D incumbents) are noted in
+   CLAUDE.md but NOT yet carded on the page — add them when platforms can be sourced. No LOCAL_RACES yet.
 - **4 marquee states (STATE_RACES):** AL (Tuberville–Jones
   rematch; Senate open seat nominees Moore–Wess), FL
   (pre-primary: Donalds/Jolly/Pizzo + Moody special — **Aug 18 primaries pending**), NY
@@ -327,11 +351,15 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
 2. ~~**Home-state "glow" effect (index.html).**~~ DONE (July 20, 2026). Replaced the fill-cycling
    `homePulse` (which included blue) with `homeGlow` — a warm brightness + gold `drop-shadow` throb (no
    blue), and `homeGlowFeatured` for a built (gold) home state so it reads on gold.
-3. ~~**Standardize candidate text to NC's concise style.**~~ STARTED (July 20, 2026): trimmed the worst
-   offenders — NY Governor/AG/Comptroller notes + positions, and NY's three longest district notes
-   (NY-18 Ryan, NY-13 Espaillat, NY-4 Gillen). Preserved accuracy/sourcing/[Verify]. **Still to do:** sweep
-   remaining long district notes across other states; keep writing concise from the start (RI/NH were built
-   concise).
+3. ~~**Standardize candidate text to NC's concise style.**~~ DONE (completed July 22, 2026). July 20 pass
+   trimmed NY Governor/AG/Comptroller + NY-18/NY-13/NY-4. July 22 pass swept the remaining offenders across
+   all 12 built pages via a length audit (`note:` fields >320 chars): trimmed **ga.html** GA-13 special
+   (532→303), **de.html** AG (412→269), **nh.html** open Senate (424→334). Only 4 notes now exceed 320 chars
+   (nc/ct/md/nh) and each is genuinely fact-dense (primary fields, certified ballot questions) — leave them.
+   Re-run the audit after big data additions; keep writing concise from the start (RI/NH/CT/VT were built concise).
+
+**The owner to-do queue is currently EMPTY** — all items requested July 14, 2026 are complete. Add new owner
+requests here as they come in; until then, runs should go to state builds + the [Verify] backlog.
 
 ## Backlog / roadmap
 
@@ -355,18 +383,27 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
    added). **Rhode Island and New Hampshire were COMPLETED July 20, 2026** (cloned from de.html; RI = 5 counties/
    2 districts/6 statewide offices + RI-1/RI-2; NH = 10 counties/2 districts + OPEN Senate & OPEN NH-1 + NH-2;
    both built pre-primary like DE, so contested fields are provisional [Verify] — RI primary Sept 9, NH primary
-   Sept 8; voices not yet added). That brings the built bloc to 10 (NC SC GA VA MD DE NJ NY RI NH). **Next
-   targets:** continue outward in New England — **CT** (Aug 11 primary; 8 counties, 5 districts, Gov Lamont),
-   **MA** (Sept 1 primary; Senate Markey, Gov Healey, 9 districts), **ME** (Senate Collins is a marquee race,
-   open Governor, 2 districts), **VT** (1 at-large district, no 2026 Senate). **Florida still ONLY after its Aug
-   18, 2026 primaries.** **DC** needs a different page model (no counties). Follow the full-state clone checklist
-   in "Data architecture → index.html" when adding each state. Refresh RI after Sept 9 and NH after Sept 8.
+   Sept 8; voices not yet added). **Connecticut and Vermont were COMPLETED July 22, 2026** (cloned from nh.html;
+   CT = 8 traditional counties/5 districts/6 statewide offices; VT = 14 counties/1 at-large seat/Gov+LtGov+open
+   Auditor; both built pre-primary, so contested fields are provisional [Verify] — both primaries are Aug 11;
+   voices not yet added). That brings the built bloc to **12 (NC SC GA VA MD DE NJ NY RI NH CT VT)**. **Next
+   targets:** finish New England — **MA** (Sept 1 primary; Senate Markey, Gov Healey, 14 counties, 9 districts —
+   the biggest remaining NE build), then **ME** (Senate Collins is a marquee race, open Governor after Mills is
+   term-limited, 16 counties, 2 districts; note ME uses ranked-choice voting for federal races — the page may
+   need a note for that). After New England, continue down/inland: **PA**, **OH**, **WV** or **NH-adjacent**
+   fill-ins. **Florida still ONLY after its Aug 18, 2026 primaries.** **DC** needs a different page model (no
+   counties). Follow the full-state clone checklist in "Data architecture → index.html" when adding each state.
+   **Post-primary refresh queue:** CT + VT the week of Aug 11, NH after Sept 8, RI after Sept 9, DE after Sept 15.
    - **DE time-sensitive:** July 14 filing deadline, then Sept 15 primary — refresh de.html after
      both.
    - **MD follow-up:** June 23 primary figures are unofficial — swap in certified numbers when
      the state canvass completes (mid-July).
    - **GA time-sensitive:** GA-13 special election July 28, 2026 (runoff Aug 25 if needed) —
-     update ga.html when results land.
+     update ga.html when results land. **This is the next event on the calendar.**
+   - **CT + VT time-sensitive:** both primaries are **Aug 11, 2026**. Replace every
+     "[nominee — decided Aug 11 primary]" placeholder and resolve the pre-primary [Verify] fields that
+     week. CT's headline result to watch: the CT-1 Larson–Bronin–Gilchrest Democratic primary. VT's:
+     the Dem gubernatorial primary (Richards vs. Janoo) and the open Auditor primary (Ashe vs. Graeter).
    - **VA time-sensitive:** Aug 4, 2026 primaries decide most VA nominees — replace every
      "[nominee — decided Aug 4]" placeholder in va.html that week; also verify the certified
      constitutional-amendment list and the unsettled VA-3/VA-8/VA-11 GOP ballots.

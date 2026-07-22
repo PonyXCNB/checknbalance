@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Delaware Elections Hub</title>
-<meta name="description" content="An interactive county-by-county guide to every DE election, past and upcoming." />
+<title>Connecticut Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every CT election, past and upcoming." />
 
 <!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -212,11 +212,11 @@
       radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
       var(--paper-pure);
     border-radius: 12px;
-    aspect-ratio: 2.2 / 1;
+    aspect-ratio: 1 / 1;
     width: 100%;
     position: relative;
   }
-  #ncmap { width: 100%; height: 100%; display: block; }
+  #ctmap { width: 100%; height: 100%; display: block; }
   .map-loading {
     position: absolute; inset: 0;
     display: grid; place-items: center;
@@ -573,9 +573,9 @@
       </a>
     </div>
     <a href="#" class="brand">
-      <div class="crest">DE</div>
+      <div class="crest">CT</div>
       <div class="brand-text">
-        <span class="brand-name">Delaware Elections Hub</span>
+        <span class="brand-name">Connecticut Elections Hub</span>
         <span class="brand-sub">An Independent Civic Project</span>
       </div>
     </a>
@@ -592,15 +592,15 @@
      ============================================= -->
 <section class="hero">
   <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
-  <h1 class="hero-title">Every Delaware <em>election</em>, in one place.</h1>
+  <h1 class="hero-title">Every Connecticut <em>election</em>, in one place.</h1>
   <p class="hero-lede">
     A county-by-county guide to the races that have shaped — and will shape — our state.
-    Click any of the 3 counties to see what's on the ballot, who's running, and what voters,
+    Click any of the 8 counties to see what's on the ballot, who's running, and what voters,
     supporters, and opponents are saying.
   </p>
   <div class="hero-stats">
-    <div class="stat"><div class="stat-num">3</div><div class="stat-label">Counties</div></div>
-    <div class="stat"><div class="stat-num"><em>1</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num">8</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>5</em></div><div class="stat-label">U.S. House Seats</div></div>
     <div class="stat"><div class="stat-num"><em>6</em></div><div class="stat-label">Statewide Races Tracked</div></div>
     <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
   </div>
@@ -626,8 +626,8 @@
 
   <div class="map-shell">
     <div class="map-frame">
-      <div class="map-loading" id="map-loading">Loading map of Delaware…</div>
-      <svg id="demap" viewBox="0 0 1000 450" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="map-loading" id="map-loading">Loading map of Connecticut…</div>
+      <svg id="ctmap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="tooltip" id="tooltip"></div>
     </div>
   </div>
@@ -655,11 +655,11 @@
 <footer class="footer" id="about">
   <div class="footer-inner">
     <div class="footer-crest">
-      <strong>DE Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+      <strong>CT Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta">
       Last updated: <span id="last-updated">July 22, 2026</span><br>
-      Sources: Delaware Department of Elections, Ballotpedia, Wikipedia, AP, Delaware Public Media, WDEL, WHYY.
+      Sources: CT Secretary of the State (portal.ct.gov), Ballotpedia, Wikipedia, Cook Political Report, CT Mirror, Hartford Courant, CT Public / WNPR, AP.
     </div>
   </div>
 </footer>
@@ -673,198 +673,350 @@
 <!-- =============================================
      DATA LAYER
      Three pieces feed the panel:
-       (1) COUNTIES       — every DE county (all in the single at-large district)
+       (1) COUNTIES       — every CT county + its primary US House district
        (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
        (3) HOUSE_RACES    — US House race per district
      Each county's election list is built by combining (2) + the right item from (3).
      ============================================= -->
 <script>
-// ----- (1) Counties + primary 2024 US House district -----
-// NOTE: Delaware has one at-large district — no county splits. The number below is
-// the PRIMARY district by population. Verify against your local board of elections.
+// ----- (1) Counties + primary US House district -----
+// NOTE: Connecticut has 5 U.S. House districts. This map uses the 8 traditional
+// counties (the geometry file predates CT's 2022 switch to 9 planning regions).
+// Each county is stored by the district covering the PLURALITY of its population
+// under the 2021/2022 court/legislative map. Split counties: Fairfield (coastal
+// CT-4 / northern CT-5), Hartford (CT-1 core / southwest CT-5), Litchfield (mostly
+// CT-5 / NE corner CT-1), Middlesex (3-way; shoreline plurality CT-2), New Haven
+// (CT-3 core / Naugatuck Valley CT-5). New London, Tolland & Windham are wholly CT-2.
+// Source: CT Secretary of the State congressional map; Census. [Verify] fine splits.
 const COUNTIES = {
-  "10001":{n:"Kent",d:1},
-  "10003":{n:"New Castle",d:1},
-  "10005":{n:"Sussex",d:1}
+  "09001":{n:"Fairfield",d:4},
+  "09003":{n:"Hartford",d:1},
+  "09005":{n:"Litchfield",d:5},
+  "09007":{n:"Middlesex",d:2},
+  "09009":{n:"New Haven",d:3},
+  "09011":{n:"New London",d:2},
+  "09013":{n:"Tolland",d:2},
+  "09015":{n:"Windham",d:2}
 };
 
 // ----- (2) Statewide elections every county votes in -----
+// NOTE: Connecticut's 2026 state primary is Aug 11, 2026. Contested-primary nominees
+// are NOT final until then — those fields are marked [Verify — primary Aug 11]. CT has
+// NO U.S. Senate race in 2026 (Blumenthal up 2028; Murphy up 2030). The six statewide
+// constitutional offices below are all up (4-year terms, last elected 2022).
 const STATEWIDE = [
   // UPCOMING — 2026 General Election (Nov 3, 2026)
-  // NOTE: Delaware's primary is Sept 15, 2026, and the filing deadline is July 14, 2026 —
-  // candidate fields below are FINAL as of the July 14, 2026 filing deadline.
   {
     date: "Nov 3, 2026",
     type: "upcoming",
-    scope: "Federal · Statewide",
-    office: "U.S. Senate — Delaware",
-    note: "Chris Coons (D) seeks another term. Delaware's primary is Sept 15, 2026 (filing deadline July 14) — the GOP nominee is NOT yet decided. Rated Solid/Safe Democratic (Cook, Sabato, Inside Elections). No Republican has won a Delaware Senate race since 1994.",
+    scope: "State · Statewide",
+    office: "Governor of Connecticut",
+    note: "Ned Lamont (D) seeks a rare third consecutive term. State Sen. Ryan Fazio is the settled Republican nominee (won ~92% at the May convention). Progressive Rep. Josh Elliott forced an Aug 11 Democratic primary but trails Lamont badly. Rated Solid Democratic. [Verify — primary Aug 11].",
     candidates: [
-      {
-        name: "Chris Coons (incumbent)",
-        party: "D",
-        winner: false,
-        positions: [
-          "'Opportunity, Security, and Justice' — cost of living and restoring U.S. international standing",
-          "Defending healthcare against Trump-administration cuts",
-          "Foreign Relations and Appropriations seniority; critic of Trump foreign policy"
-        ],
-        differentiators: [
-          "Senator since the 2010 special election; former New Castle County Executive",
-          "Endorsed by Gov. Meyer, Sen. Blunt Rochester, Rep. McBride, and AG Jennings",
-          "No Democratic primary challenger filed by the July 14, 2026 deadline — unopposed for renomination (Delaware Dept. of Elections candidate list)"
-        ],
-        supporters: [
-          "Seniority and appropriations clout deliver for a small state",
-          "Bipartisan dealmaker who defends healthcare and democratic institutions"
-        ],
-        opponents: [
-          "A career establishment politician — GOP challengers run explicitly as outsiders",
-          "Sixteen years in Washington in an anti-incumbent era"
-        ]
-      },
-      {
-        name: "[Republican nominee — decided in the Sept 15, 2026 primary]",
-        party: "R",
-        winner: false,
-        positions: ["[Decided Sept 15] Field themes: healthcare access and prescription costs","Border security and fentanyl","National security"],
-        differentiators: [
-          "Two-way GOP primary: Dr. Mike Katz (anesthesiologist; won the April GOP convention endorsement ~82%; former DEMOCRATIC state senator who ran for this seat in 2024 as an independent, taking 3.9%) vs. John Shulli (retired Army colonel, Army War College instructor)",
-          "No other Republican, independent, or minor-party candidate filed for the Senate seat by the July 14, 2026 deadline (Delaware Dept. of Elections candidate list)",
-          "Winner faces Coons in November"
-        ],
-        supporters: ["Katz's physician-outsider pitch targets downstate healthcare shortages"],
-        opponents: ["Katz's party journey (D → Independent → R) invites authenticity questions"]
-      }
+      { name: "Ned Lamont (incumbent)", party: "D", winner: false,
+        positions: ["Fiscal-moderate budgeting and statutory 'fiscal guardrails'","Protect and expand abortion access","Affordability and childcare investment"],
+        differentiators: ["Governor since 2019; seeking a rare third term","Former Greenwich entrepreneur; largely self-funds","Running mate: Lt. Gov. Susan Bysiewicz"],
+        supporters: ["Record budget surpluses and high approval"],
+        opponents: ["A third term breaks tradition; cost of living still high [Verify]"] },
+      { name: "Josh Elliott (D contender)", party: "D", winner: false,
+        positions: ["Reinstate highway tolls to fund transit","Higher taxes on the wealthy","Stronger climate and housing investment"],
+        differentiators: ["State Representative (Hamden); runs to Lamont's left","Cleared 15% at the Democratic convention","Trails badly in polling"],
+        supporters: ["A bolder progressive alternative [Verify]"],
+        opponents: ["Tolls and tax hikes are non-starters statewide [Verify]"] },
+      { name: "Ryan Fazio (R)", party: "R", winner: false,
+        positions: ["Cut the utility 'public benefits' surcharge; lower energy costs","Income-tax cuts and property-tax caps","Expand natural-gas and nuclear supply"],
+        differentiators: ["State Senator from Greenwich (won a 2021 special)","Former commodities trader; settled GOP nominee","Running mate: Matthew Corey"],
+        supporters: ["A young reformer focused on affordability and energy bills"],
+        opponents: ["Too conservative for blue Connecticut [Verify]"] }
     ]
   },
   {
     date: "Nov 3, 2026",
     type: "upcoming",
     scope: "State · Statewide",
-    office: "Attorney General — Delaware",
-    note: "Kathy Jennings (D) seeks a third term. NO Republican filed by the July 14 deadline (the GOP's draft of 2022 nominee Julianne Murray was declined), so the Sept 15 Democratic primary likely decides the office — Jennings vs. ACLU-DE legal director Dwayne Bensing.",
+    office: "Lieutenant Governor of Connecticut",
+    note: "Susan Bysiewicz (D), LG since 2019, seeks re-election (running for LG, not Governor). Matt Corey is the Republican nominee and Fazio's ticket-mate. In CT, Gov and LG run separately in primaries but together in November. Rated Solid Democratic. [Verify — primary Aug 11].",
     candidates: [
-      { name: "Kathy Jennings (incumbent)", party: "D", winner: false,
-        positions: ["Violent-crime reduction — touts all-time-low violent crime statewide","Litigation against Trump-administration actions; defending gun-safety laws and abortion access","White-collar, corruption, and trafficking enforcement; record environmental and opioid settlements"],
-        differentiators: ["AG since 2019; career prosecutor","Won 2022 with 53.8%","Faces a primary challenge from her left"],
-        supporters: ["Experienced prosecutor with results — crime down, major settlements won"],
-        opponents: ["Bensing calls her a 'joiner, not a leader' on multistate litigation","Conservative critics ask whether she's focused on Delaware or on fighting Trump"] },
-      { name: "Dwayne Bensing", party: "D", winner: false,
-        positions: ["Corporate accountability — 'tackling corporate greed'","Independent oversight of state government","Civil-rights leadership: Delaware should lead, not join, multistate suits"],
-        differentiators: ["Legal director, ACLU of Delaware; former Department of Education whistleblower","Would be Delaware's first openly gay attorney general","Slogan: 'It's time to pass the torch'"],
-        supporters: ["An independent whistleblower unafraid to call out the political elite"],
-        opponents: ["[Verify] — the Jennings camp counters implicitly by touting her record"] }
-    ]
-  },
-  {
-    date: "Nov 3, 2026",
-    type: "upcoming",
-    scope: "State · Statewide",
-    office: "State Treasurer — Delaware (open seat)",
-    note: "Colleen Davis (D) is not seeking a third term. Three Democrats face a Sept 15 primary; Mike Ramone — the 2024 gubernatorial nominee and the best-known Republican in the state — filed as the GOP candidate and is unopposed for the nomination (Delaware Dept. of Elections candidate list).",
-    candidates: [
-      { name: "[Democratic nominee — decided in the Sept 15, 2026 primary]", party: "D", winner: false,
-        positions: ["[Decided Sept 15] — three-way field, platforms thinly covered [Verify]","",""],
-        differentiators: ["Three-way Democratic primary (field set at the July 14, 2026 deadline, per the Delaware Dept. of Elections candidate list): Ted Lauzen (wealth-advisory partner, Iraq/Afghanistan veteran), Michael A. Smith (economist and nonprofit leader), and Mike Miller (Sussex County businessman)","Winner faces Republican Mike Ramone in November","Sept 15 primary"],
+      { name: "Susan Bysiewicz (incumbent)", party: "D", winner: false,
+        positions: ["Reproductive rights","Women's economic security","Access to state services [Verify]"],
+        differentiators: ["Two-term Lieutenant Governor","Former CT Secretary of the State (1999–2011)","Runs on Lamont's ticket"],
         supporters: [], opponents: [] },
-      { name: "Mike Ramone", party: "R", winner: false,
-        positions: ["Transparency and fiscal accountability","Scrutiny of the long-term economic impact of state policy","An 'independent voice' watchdog in an all-Democratic Dover"],
-        differentiators: ["2024 gubernatorial nominee (43.9% against Meyer) — the GOP's highest name recognition","16 years in the state House, including as Minority Leader","Filed with the Delaware Dept. of Elections; unopposed for the GOP nomination"],
-        supporters: ["Proven, pragmatic legislator who'd be a fiscal check on one-party control"],
-        opponents: ["[Verify] — Democratic response coverage not yet found"] }
+      { name: "Matt Corey (R)", party: "R", winner: false,
+        positions: ["[Verify — thin coverage]","",""],
+        differentiators: ["Businessman and HVAC contractor","Former U.S. Senate and U.S. House nominee","Fazio's Republican ticket-mate"],
+        supporters: [], opponents: [] }
     ]
   },
   {
     date: "Nov 3, 2026",
     type: "upcoming",
     scope: "State · Statewide",
-    office: "State Auditor — Delaware",
-    note: "Lydia York (D) seeks a second term. After the July 14, 2026 filing deadline she drew no primary challenger and no general-election opponent — she is unopposed on both ballots (Delaware Dept. of Elections candidate list).",
+    office: "Attorney General of Connecticut",
+    note: "William Tong (D), AG since 2019, seeks a third term. Westport attorney John Bolton is the leading Republican challenger. Rated Solid/Likely Democratic. [Verify — primary Aug 11].",
     candidates: [
-      { name: "Lydia York (incumbent)", party: "D", winner: false,
-        positions: ["Professionalizing the office after the McGuiness scandal","Routine, on-time audit delivery (statewide federal-awards audit, April 2026)","[Verify]"],
-        differentiators: ["Attorney and accountant; former DuPont finance","Won the office in 2022 by defeating indicted incumbent Kathy McGuiness in the primary","Unopposed — no challenger filed by the July 14, 2026 deadline"],
-        supporters: ["Restored credibility to a scandal-plagued office"],
-        opponents: ["No opponent filed"] }
+      { name: "William Tong (incumbent)", party: "D", winner: false,
+        positions: ["Consumer protection","Opioid and utility litigation","Challenges to Trump-administration policies"],
+        differentiators: ["Two-term AG; first Asian American elected statewide in CT","Former state representative and Judiciary co-chair","[Verify fuller platform]"],
+        supporters: [], opponents: ["Spends too much time on lawsuits against the Trump administration [Verify]"] },
+      { name: "John Bolton (R)", party: "R", winner: false,
+        positions: ["A less politically driven AG office [Verify]","Focus on the state's core legal duties [Verify]",""],
+        differentiators: ["Westport attorney (35+ years) and P&Z commissioner","Not the John Bolton of national politics","[Verify whether a GOP primary is contested]"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Secretary of the State of Connecticut",
+    note: "Stephanie Thomas (D), Secretary since 2023, seeks a second term. Fairfield attorney Peter Lumaj is the leading Republican. Rated Solid/Likely Democratic. [Verify — primary Aug 11].",
+    candidates: [
+      { name: "Stephanie Thomas (incumbent)", party: "D", winner: false,
+        positions: ["Election administration and integrity","Voter access","Small-business services"],
+        differentiators: ["First-term Secretary; CT's chief elections officer","Former state representative (Norwalk area)","[Verify]"],
+        supporters: [], opponents: [] },
+      { name: "Peter Lumaj (R)", party: "R", winner: false,
+        positions: ["Election security and integrity [Verify]","",""],
+        differentiators: ["Fairfield attorney; born in Albania","Repeat statewide candidate (2014 SoS, 2012 U.S. Senate)","[Verify whether a GOP primary is contested]"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "State Treasurer of Connecticut",
+    note: "Erick Russell (D), Treasurer since 2023, seeks a second term. Former state Rep. Fred Wilms is the Republican; the race splits sharply over ESG/values-based investing. Rated Solid/Likely Democratic. [Verify — primary Aug 11].",
+    candidates: [
+      { name: "Erick Russell (incumbent)", party: "D", winner: false,
+        positions: ["Pension-fund management","Values-based (ESG) investing","Financial-empowerment programs"],
+        differentiators: ["First-term Treasurer; public-finance attorney","First openly LGBTQ Black person elected statewide in the U.S.","New Haven"],
+        supporters: [], opponents: ["ESG investing distracts from returns [Verify — Wilms framing]"] },
+      { name: "Fred Wilms (R)", party: "R", winner: false,
+        positions: ["Fiscal discipline and transparency","Reform the underfunded pension system","Maximize pensioner returns (opposes ESG)"],
+        differentiators: ["Former two-term state representative","Webster Bank SVP; 20 years in finance","Norwalk"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "State Comptroller of Connecticut",
+    note: "Sean Scanlon (D), Comptroller since 2023, seeks a second term. Former Westport First Selectwoman Jen Tooker is the unopposed Republican nominee. Rated Solid/Likely Democratic. [Verify — primary Aug 11].",
+    candidates: [
+      { name: "Sean Scanlon (incumbent)", party: "D", winner: false,
+        positions: ["The 'CT Option' health-coverage plan","Health-care cost transparency","Child-tax-credit advocacy"],
+        differentiators: ["First-term Comptroller; former state House chair","Guilford","[Verify]"],
+        supporters: [], opponents: [] },
+      { name: "Jen Tooker (R)", party: "R", winner: false,
+        positions: ["Fiscal conservatism","Fund retiree and pension liabilities","Government accountability"],
+        differentiators: ["Former Westport First Selectwoman","~25 years as a reinsurance-industry executive","Unopposed for the GOP nomination"],
+        supporters: [], opponents: [] }
     ]
   },
 
-  // PAST — 2024 statewide results for context
+  // PAST — recent statewide result for context
   {
-    date: "Nov 5, 2024",
+    date: "Nov 8, 2022",
     type: "past",
     scope: "State · Statewide",
-    office: "Governor of Delaware (2024)",
-    note: "Matt Meyer (D) beat Mike Ramone (R) 56.1% to 43.9%. Delaware elects governors in presidential years — the next race is 2028, so no governor is on the 2026 ballot.",
+    office: "Governor of Connecticut (2022)",
+    note: "Ned Lamont (D) won re-election 56.0% to 43.0% over Republican Bob Stefanowski (~13 points) — a rematch of their closer 2018 race. Lamont is running for a third term in 2026.",
     candidates: [
-      { name: "Matt Meyer", party: "D", winner: true,
-        positions: ["Public education investment","Housing affordability","Government accountability"],
-        differentiators: ["Former New Castle County Executive; beat the sitting Lt. Gov. and House Speaker's preferred candidates in the primary"],
-        supporters: ["Fresh executive energy in Dover"], opponents: ["Fought his own party's establishment to get there"] },
-      { name: "Mike Ramone", party: "R", winner: false,
-        positions: ["Fiscal restraint","Small-business economics","Bipartisan pragmatism"],
-        differentiators: ["House Minority Leader; the GOP's strongest statewide performer — now running for Treasurer in 2026"],
-        supporters: ["The most electable Republican in a blue state"], opponents: ["Still lost by 12"] }
-    ]
-  },
-  {
-    date: "Nov 5, 2024",
-    type: "past",
-    scope: "Federal · Statewide",
-    office: "U.S. Senate — Delaware (2024)",
-    note: "Lisa Blunt Rochester (D) won the open seat 56.6% to 39.5% over Eric Hansen (R), with Michael Katz (I) taking 3.9% — the same Katz now seeking the 2026 GOP Senate nomination.",
-    candidates: [
-      { name: "Lisa Blunt Rochester", party: "D", winner: true,
-        positions: ["Healthcare access","Economic opportunity","Environmental protection"],
-        differentiators: ["First woman and first Black Delawarean elected to the Senate"],
-        supporters: ["Historic, well-earned promotion after four House terms"], opponents: [] },
-      { name: "Eric Hansen", party: "R", winner: false,
-        positions: ["Business economics","Fiscal restraint","Public safety"],
-        differentiators: ["Businessman; 2024 nominee"],
+      { name: "Ned Lamont", party: "D", winner: true,
+        positions: ["Fiscal-moderate budgeting","Abortion access","Affordability"],
+        differentiators: ["Won ~56% (710,191 votes)","Running for a third term in 2026"],
         supporters: [], opponents: [] },
-      { name: "Michael Katz", party: "I", winner: false,
-        positions: ["Healthcare reform","Independent politics","Fiscal moderation"],
-        differentiators: ["Ran as Independent Party of Delaware nominee (3.9%); now running in the 2026 GOP primary"],
+      { name: "Bob Stefanowski", party: "R", winner: false,
+        positions: ["Tax cuts","Cost of living","Public safety"],
+        differentiators: ["2018 and 2022 GOP nominee","Lost by ~13 points (43.0%)"],
         supporters: [], opponents: [] }
     ]
   }
 ];
 
 // ----- (3) US House races by district -----
-// Each district object holds: 2024 race + 2026 race
+// Each district object holds: 2026 race + 2024 race
 const HOUSE_RACES = {
   1: {
-    name: "U.S. House — Delaware At-Large",
-    region: "The entire state — Delaware's single House seat",
+    name: "U.S. House — CT District 1",
+    region: "Greater Hartford — Hartford, West Hartford, Manchester, East Hartford, New Britain, Bristol, Enfield (Hartford County core)",
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "Sarah McBride (D) seeks a second term after a '57 towns in 57 hours' launch tour. The GOP field is decided in the Sept 15 primary (filing deadline July 14). Rated Solid/Safe Democratic.",
+        note: "14-term incumbent John Larson (D) faces the first contested primary of his career: he LOST the party endorsement at the May 2026 convention to former Hartford Mayor Luke Bronin (214–204), and state Rep. Jillian Gilchrest also qualified. Safe Democratic seat — the real contest is the Aug 11 Democratic primary. [Verify — primary Aug 11].",
         candidates: [
-          { name: "Sarah McBride (incumbent)", party: "D", winner: false,
-            positions: ["Healthcare affordability — paid family leave was her signature state law","Cost-of-living and working-family economics","Opposing Trump-administration cuts [Verify emphases]"],
-            differentiators: ["First openly transgender member of Congress","Deliberate workhorse, local-service branding (the 57-stop tour)","Unopposed for the Democratic nomination — no challenger filed by the July 14, 2026 deadline"],
-            supporters: ["Focused, effective freshman who prioritizes Delaware constituents over celebrity"],
-            opponents: ["GOP field frames the race around cost of living, crime, and education [Verify specific attack lines]"] },
-          { name: "[Republican nominee — decided in the Sept 15, 2026 primary]", party: "R", winner: false,
-            positions: ["[Decided Sept 15] Field themes: workforce development and small-business deregulation","Lower costs and spending cuts","School choice and parental rights"],
-            differentiators: ["Three-way GOP primary (field set at the July 14, 2026 deadline, per the Delaware Dept. of Elections candidate list): Earl Cooper (Wilmington businessman/community activist and GOP convention endorsee — ran in the 2024 DEMOCRATIC primary against McBride), Lee Murphy (2020/2022 nominee), and John J. Whalen III (McBride's 2024 general-election opponent)","Winner faces McBride in November","Sept 15 primary"],
-            supporters: ["Cooper's community-development record is the field's strongest local résumé"],
-            opponents: ["Cooper's 2024-Democrat-to-2026-Republican switch invites questions [Verify]"] }
+          { name: "John Larson (incumbent)", party: "D", winner: false,
+            positions: ["Protect and expand Social Security (Social Security 2100)","Opposition to the Trump agenda","Seniority on Ways & Means"],
+            differentiators: ["14-term incumbent (since 1998)","Lost the 2026 convention endorsement (204–214)","First contested primary of his career"],
+            supporters: ["Seniority delivers for Hartford"],
+            opponents: ["Time for generational change (age 77) [Verify]"] },
+          { name: "Luke Bronin (D contender)", party: "D", winner: false,
+            positions: ["Expanded federal role in housing","Cost-of-living focus","Democratic effectiveness and reform"],
+            differentiators: ["Former Hartford mayor (2016–2024)","Won the convention endorsement; well-funded","~$1M outside boost from VoteVets [Verify]"],
+            supporters: [], opponents: [] },
+          { name: "Jillian Gilchrest (D contender)", party: "D", winner: false,
+            positions: ["Get corporate and billionaire money out of politics","Progressive social agenda","[Verify]"],
+            differentiators: ["State representative (West Hartford) since 2018","Social worker; qualified at the convention","Aug 11 Democratic primary"],
+            supporters: [], opponents: [] },
+          { name: "[Republican nominee — decided Aug 11 primary]", party: "R", winner: false,
+            positions: ["[Verify — thin field]","",""],
+            differentiators: ["GOP field includes Amy Chai [Verify]","Winner faces the Democratic nominee in November","Aug 11 primary"],
+            supporters: [], opponents: [] }
         ]
       },
       {
         date: "Nov 5, 2024", type: "past",
-        note: "Sarah McBride won the open seat 57.9% to 42.1% over John Whalen III.",
+        note: "John Larson (D) won re-election ~63% to ~35% over Republican Jim Griffin (~28 points).",
         candidates: [
-          { name: "Sarah McBride", party: "D", winner: true,
-            positions: ["Paid family leave","Healthcare access","Working-family economics"],
-            differentiators: ["Made history as the first openly transgender member of Congress","Former state senator"],
-            supporters: ["A skilled legislator, not just a milestone"], opponents: [] },
-          { name: "John Whalen III", party: "R", winner: false,
-            positions: ["Law enforcement background","Border security","Economic conservatism"],
-            differentiators: ["Retired police officer; 2024 nominee"],
+          { name: "John Larson", party: "D", winner: true,
+            positions: ["Social Security","Hartford priorities","Democratic agenda"],
+            differentiators: ["Won ~63.1%","14-term incumbent"],
+            supporters: [], opponents: [] },
+          { name: "Jim Griffin", party: "R", winner: false,
+            positions: ["Conservative priorities","",""],
+            differentiators: ["2024 GOP nominee","Lost with ~34.8%"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  2: {
+    name: "U.S. House — CT District 2",
+    region: "Eastern Connecticut ('the Quiet Corner') — Norwich, New London, Groton, Windham, Storrs; New London, Tolland, Windham & eastern Middlesex counties",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "10-term incumbent Joe Courtney (D) seeks an 11th term and was party-endorsed in May 2026. Suffield business owner George Austin (R) is the lone declared Republican. Rated Safe Democratic. [Verify — primary Aug 11].",
+        candidates: [
+          { name: "Joe Courtney (incumbent)", party: "D", winner: false,
+            positions: ["Submarine and defense manufacturing jobs (Electric Boat/Groton)","Health-care access","Agriculture and rural priorities"],
+            differentiators: ["In office since 2007; House Armed Services member","'Two-Sub Joe' for Navy shipbuilding","Party-endorsed in 2026"],
+            supporters: ["Brings defense jobs to eastern CT"],
+            opponents: ["A career incumbent since 2007 [Verify]"] },
+          { name: "George Austin (R contender)", party: "R", winner: false,
+            positions: ["Lower costs; cut taxes and mandates","Lower energy bills","Trade and apprenticeship education"],
+            differentiators: ["Suffield small-business owner (construction management)","Presumptive GOP nominee","[Verify — primary Aug 11]"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Joe Courtney (D) won re-election ~58% to ~42% over Republican Mike France (~16 points).",
+        candidates: [
+          { name: "Joe Courtney", party: "D", winner: true,
+            positions: ["Defense jobs","Health care","Rural priorities"],
+            differentiators: ["Won ~58%","Running for an 11th term"],
+            supporters: [], opponents: [] },
+          { name: "Mike France", party: "R", winner: false,
+            positions: ["Conservative priorities","",""],
+            differentiators: ["2022 and 2024 GOP nominee","Lost with ~42%"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  3: {
+    name: "U.S. House — CT District 3",
+    region: "South-central CT — New Haven, Milford, West Haven plus Waterbury and Middletown; New Haven County core & part of Middlesex",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "18-term incumbent Rosa DeLauro (D) is running again and was party-endorsed in May 2026. The GOP nomination is a contested Aug 11 primary. Rated Safe Democratic. [Verify — primary Aug 11].",
+        candidates: [
+          { name: "Rosa DeLauro (incumbent)", party: "D", winner: false,
+            positions: ["Food security, nutrition and the child tax credit","Appropriations clout (senior Approps Democrat)","Labor and manufacturing"],
+            differentiators: ["In office since 1991; former Appropriations chair/ranking member","New Haven native","Party-endorsed in 2026"],
+            supporters: ["Appropriations power for New Haven"],
+            opponents: ["In Congress since 1991 [Verify]"] },
+          { name: "[Republican nominee — decided Aug 11 primary]", party: "R", winner: false,
+            positions: ["[Verify — thin field]","",""],
+            differentiators: ["GOP primary: Christopher Lancia (Coast Guard veteran) vs. Rafael Irizarry [Verify]","Winner faces DeLauro in November","Aug 11 primary"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Rosa DeLauro (D) won re-election ~59% to ~41% over Republican Michael Massey (~18 points).",
+        candidates: [
+          { name: "Rosa DeLauro", party: "D", winner: true,
+            positions: ["Appropriations","Nutrition and child tax credit","Labor"],
+            differentiators: ["Won ~58.9%","In office since 1991"],
+            supporters: [], opponents: [] },
+          { name: "Michael Massey", party: "R", winner: false,
+            positions: ["Conservative priorities","",""],
+            differentiators: ["2024 GOP nominee","Lost with ~41.1%"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  4: {
+    name: "U.S. House — CT District 4",
+    region: "Southwestern CT / Gold Coast — Stamford, Norwalk, Bridgeport, Greenwich, Westport, Fairfield; coastal Fairfield County",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "9-term incumbent Jim Himes (D) is running for re-election. Once a swing seat, it has trended Solid Democratic. The GOP nominee is decided at the Aug 11 primary. [Verify — primary Aug 11].",
+        candidates: [
+          { name: "Jim Himes (incumbent)", party: "D", winner: false,
+            positions: ["Financial-services regulation and economic policy","Reproductive rights","Gun-safety legislation"],
+            differentiators: ["In office since 2009; ranking member, House Intelligence","Senior House Financial Services member","Former Goldman Sachs banker"],
+            supporters: ["Experienced, well-funded, deep policy record"],
+            opponents: ["Too long in Washington [Verify]"] },
+          { name: "[Republican nominee — decided Aug 11 primary]", party: "R", winner: false,
+            positions: ["[Verify — thin field]","",""],
+            differentiators: ["GOP primary: Michael Goldstein (2024 nominee) vs. Daniel Miressi [Verify]","Winner faces Himes in November","Aug 11 primary"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Jim Himes (D) won re-election ~61% to ~37% over Republican Michael Goldstein (~24 points).",
+        candidates: [
+          { name: "Jim Himes", party: "D", winner: true,
+            positions: ["Financial policy","Reproductive rights","Gun safety"],
+            differentiators: ["Won ~61.1%","9-term incumbent"],
+            supporters: [], opponents: [] },
+          { name: "Michael Goldstein", party: "R", winner: false,
+            positions: ["Conservative priorities","",""],
+            differentiators: ["2024 GOP nominee","Lost with ~37.3%"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  5: {
+    name: "U.S. House — CT District 5",
+    region: "Northwest & central CT — Danbury, Waterbury, New Britain, Meriden, Torrington; Litchfield County, northern Fairfield & parts of Hartford/New Haven",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Jahana Hayes (D), first elected 2018, seeks a fifth term in CT's most competitive House seat. Her 2022/2024 opponent George Logan (R) is NOT running in 2026. GOP and Democratic-primary nominees are decided Aug 11. Rated Likely Democratic [Verify exact rating]. [Verify — primary Aug 11].",
+        candidates: [
+          { name: "Jahana Hayes (incumbent)", party: "D", winner: false,
+            positions: ["Education and workforce","Agriculture and food assistance","Reproductive rights"],
+            differentiators: ["2016 National Teacher of the Year; former history teacher","First Black woman to represent CT in Congress","Faces a minor Democratic primary [Verify]"],
+            supporters: ["A proven vote-getter who has survived tough races"],
+            opponents: ["Repeatedly narrow winners suggest vulnerability [Verify]"] },
+          { name: "[Republican nominee — decided Aug 11 primary]", party: "R", winner: false,
+            positions: ["[Verify — thin field]","",""],
+            differentiators: ["GOP primary: Michele Botelho, Jonathan De Barros, Chris Shea [Verify]","Winner faces Hayes in November","Aug 11 primary"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Jahana Hayes (D) beat Republican George Logan ~53% to ~47% (~6 points) — wider than her ~2,000-vote 2022 squeaker.",
+        candidates: [
+          { name: "Jahana Hayes", party: "D", winner: true,
+            positions: ["Education","Agriculture","Reproductive rights"],
+            differentiators: ["Won ~53%","Seeking a fifth term"],
+            supporters: [], opponents: [] },
+          { name: "George Logan", party: "R", winner: false,
+            positions: ["Cost of living","Conservative priorities",""],
+            differentiators: ["2022 and 2024 GOP nominee","Lost by ~6 points; not running in 2026"],
             supporters: [], opponents: [] }
         ]
       }
@@ -872,12 +1024,12 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Delaware Elections Hub", lastUpdated: "July 22, 2026" };
+const SITE_META = { name: "Connecticut Elections Hub", lastUpdated: "July 22, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
-// Sources: (none yet — DE county-level down-ballot research is the next phase).
+// Sources: (none yet — Connecticut county-level down-ballot research is the next phase.)
 const LOCAL_RACES = {
-  // County-level down-ballot research for Delaware has not started yet.
+  // County-level down-ballot research for Connecticut has not started yet.
   // Follow the nc.html pattern (New Hanover, "37129") when it does.
 };
 
@@ -937,10 +1089,10 @@ function getCountyElections(fips) {
      RENDERING LOGIC
      ============================================= -->
 <script>
-const DE_STATE_FIPS = "10";
+const CT_STATE_FIPS = "09";
 const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
 
-const svg     = d3.select("#demap");
+const svg     = d3.select("#ctmap");
 const tooltip = document.getElementById("tooltip");
 const panel   = document.getElementById("panel");
 const overlay = document.getElementById("overlay");
@@ -950,10 +1102,10 @@ document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
 
 d3.json(TOPO_URL).then((us) => {
   const allCounties = topojson.feature(us, us.objects.counties).features;
-  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(DE_STATE_FIPS));
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(CT_STATE_FIPS));
 
   const width  = 1000;
-  const height = 450;
+  const height = 1000;
 
   const projection = d3.geoAlbers()
     .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
@@ -996,8 +1148,8 @@ d3.json(TOPO_URL).then((us) => {
         openPanel(fips);
       });
 
-  // ---- Capital marker: Dover ----
-  drawCapital(g, projection, { name: "Dover", lng: -75.5244, lat: 39.1582 });
+  // ---- Capital marker: Hartford ----
+  drawCapital(g, projection, { name: "Hartford", lng: -72.6851, lat: 41.7637 });
 
   loading.style.display = "none";
 }).catch((err) => {
@@ -1013,9 +1165,9 @@ function openPanel(fips) {
 
   if (!built) {
     eyebrow.textContent = "County FIPS " + fips;
-    title.textContent   = "Not in DE";
+    title.textContent   = "Not in CT";
     subtitle.textContent = "";
-    body.innerHTML = `<div class="empty-state"><p>This county isn't in our Delaware dataset.</p></div>`;
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our Connecticut dataset.</p></div>`;
   } else {
     eyebrow.textContent = `Congressional District ${built.county.d}`;
     title.textContent   = built.county.n + " County";
