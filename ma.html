@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Massachusetts Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every MA election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #mamap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">MA</div>
+      <div class="brand-text">
+        <span class="brand-name">Massachusetts Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Massachusetts <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 14 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">14</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>9</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>6</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Massachusetts…</div>
+      <svg id="mamap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>MA Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">July 22, 2026</span><br>
+      Sources: Massachusetts Secretary of the Commonwealth (sec.state.ma.us), Ballotpedia, Wikipedia, Cook Political Report, The Boston Globe, CommonWealth Beacon, WBUR, MassLive, State House News Service, AP.
+    </div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every CT county + its primary US House district
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- (1) Counties + primary US House district -----
+// NOTE: Massachusetts has 9 U.S. House districts under the map adopted after the 2020
+// census (in effect since 2023 — no mid-decade redraw). Eight MA counties abolished their
+// county GOVERNMENTS between 1997 and 2000, but the counties still exist as geographic
+// units in Census/us-atlas data and all 14 still elect sheriffs, DAs and registers.
+// NINE of the 14 counties are SPLIT across districts; each is stored under its
+// population-PLURALITY district. Wholly within one district: Barnstable, Berkshire,
+// Dukes, Hampden, Nantucket. [Verify] the closest calls — Hampshire (MA-2 ~85k vs
+// MA-1 ~78k) and Suffolk (Boston's internal 7/8 split is not published by municipality).
+const COUNTIES = {
+  "25001":{n:"Barnstable",d:9},
+  "25003":{n:"Berkshire",d:1},
+  "25005":{n:"Bristol",d:4},
+  "25007":{n:"Dukes",d:9},
+  "25009":{n:"Essex",d:6},
+  "25011":{n:"Franklin",d:2},
+  "25013":{n:"Hampden",d:1},
+  "25015":{n:"Hampshire",d:2},
+  "25017":{n:"Middlesex",d:5},
+  "25019":{n:"Nantucket",d:9},
+  "25021":{n:"Norfolk",d:8},
+  "25023":{n:"Plymouth",d:9},
+  "25025":{n:"Suffolk",d:7},
+  "25027":{n:"Worcester",d:2}
+};
+
+// ----- (2) Statewide elections every county votes in -----
+// NOTE: Massachusetts' state primary is SEPT 1, 2026. The PARTY primary fields are
+// already settled — nomination papers were filed with the Elections Division by June 2,
+// and both parties enforce a 15%-of-convention-delegates threshold for ballot access.
+// What is NOT settled is the unenrolled/independent field: those papers are due to
+// registrars July 28 and to the Elections Division Aug 25, 2026. Any independent named
+// below therefore carries a [Verify] on ballot status.
+const STATEWIDE = [
+  // UPCOMING — 2026 General Election (Nov 3, 2026)
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Massachusetts",
+    note: "Ed Markey (D), 80, seeks a third full term but first faces Rep. Seth Moulton in the Sept 1 Democratic primary — a generational-change challenge. Markey won the May party convention 73%–27%. John Deaton (R), the 2024 nominee against Elizabeth Warren, is unopposed for the Republican nomination. Rated Solid/Safe Democratic. Several independent and minor-party candidates have declared but must qualify by Aug 25 [Verify].",
+    candidates: [
+      { name: "Ed Markey (incumbent)", party: "D", winner: false,
+        positions: ["Green New Deal co-author; climate and clean-energy investment","Medicare for All; opposes private equity in healthcare","Opposes Trump-era immigration enforcement"],
+        differentiators: ["In Congress since 1976; senator since 2013","Won the state convention endorsement 73%–27%","Endorsed by Bernie Sanders, Elizabeth Warren and most state unions"],
+        supporters: ["Highest favorability of any figure tested in an April 2026 state poll"],
+        opponents: ["Age — he would be 86 at the end of another term","Moulton faults his votes to confirm Trump nominees"] },
+      { name: "Seth Moulton", party: "D", winner: false,
+        positions: ["Generational change over the Democratic establishment","Universal healthcare, climate action, assault-weapons ban","Backs expert-set restrictions on transgender athletes"],
+        differentiators: ["U.S. Rep (MA-6) since 2015; vacating his House seat to run","Out-raised Markey two straight quarters","Cleared the convention threshold at 27%"],
+        supporters: ["Among the first House Democrats to urge Biden to step aside in 2024"],
+        opponents: ["A 2024 comment on transgender athletes drew rebukes from his own party"] },
+      { name: "John Deaton", party: "R", winner: false,
+        positions: ["Cut waste and balance the budget","Lower energy and housing costs; 'smart development' over mandates","'Clean Hands Act' — term limits and a congressional stock-trading ban"],
+        differentiators: ["Won the MassGOP convention endorsement in April 2026","Cryptocurrency attorney; lost to Warren by ~20 points in 2024","Gave the state party ~$350,000 to retire its debts"],
+        supporters: ["A hardship biography — raised by a single mother of six in Detroit"],
+        opponents: ["The timing of his $350K party payment drew scrutiny","Long-standing ties to Rhode Island, where he built his practice"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Governor & Lieutenant Governor",
+    note: "Maura Healey (D) and Lt. Gov. Kim Driscoll seek a second term, unopposed in their primaries. The Republican primary is Mike Minogue (April convention endorsee, 70.4%) vs. Brian Shortsleeve (15.5%, just over the ballot threshold); Mike Kennealy fell short at 14.11% and suspended his campaign. Criminal-justice advocate Andrea James is pursuing an independent bid but must file signatures by July 28 [Verify]. Rated Solid/Safe Democratic. Governor and Lt. Governor are nominated separately in the primary, then grouped on a joint ticket in November by state law.",
+    candidates: [
+      { name: "Maura Healey (incumbent)", party: "D", winner: false,
+        positions: ["Lower costs and make life more affordable for families","Expand housing production and economic opportunity","Push back on Trump administration actions affecting the state"],
+        differentiators: ["Governor since 2023; former Massachusetts attorney general","Signed a ~$1B/year tax-cut package and a $5.2B housing bond bill","Made community college tuition-free"],
+        supporters: ["Credited with the MBTA turnaround and free community college"],
+        opponents: ["Billions in emergency shelter spending strained the state budget","A June 2026 poll found many voters could not name a signature achievement"] },
+      { name: "Mike Minogue", party: "R", winner: false,
+        positions: ["Cut taxes and spending by targeting waste and fraud","Cut utility fees; repeal net-zero mandates and expand natural gas","End free shelter and services for immigrants without legal status"],
+        differentiators: ["Former Abiomed CEO; won the GOP convention with 70.4%","Self-funded $12.5M — a state gubernatorial record","West Point graduate and Army veteran; Bronze Star for Iraq"],
+        supporters: ["Built Abiomed into a company sold for $16.6B in 2022"],
+        opponents: ["Healey's campaign accuses him of trying to buy the seat","Was unenrolled from 2007 until rejoining the GOP in 2025"] },
+      { name: "Brian Shortsleeve", party: "R", winner: false,
+        positions: ["Cut taxes and state-mandated charges on utility bills","Audit every state agency; cut waste and overregulation","Repeal the MBTA Communities Act as an unfunded mandate"],
+        differentiators: ["Former MBTA chief administrator under Gov. Baker","Survived the convention at 15.5%, just over the threshold","Marine Corps veteran; co-founded a venture firm"],
+        supporters: ["Says he cut waste, balanced the budget and modernized the T"],
+        opponents: ["Democrats nickname him 'Slowzone' over his MBTA record"] },
+      { name: "Kim Driscoll (Lt. Gov., incumbent)", party: "D", winner: false,
+        positions: ["Housing production as the administration's core agenda","Municipal partnership and local economic development","Free community college and education investment"],
+        differentiators: ["Former Salem mayor; the administration's municipal liaison","Unopposed in the Democratic Lt. Governor primary","Half of the first all-women executive team in state history"],
+        supporters: ["Credited with record housing investment"],
+        opponents: ["[Verify] — little Lt.-Gov.-specific criticism in reporting"] },
+      { name: "Shawn Oliver (Lt. Gov.)", party: "R", winner: false,
+        positions: ["Affordability for working families, seniors and young people","Send more state money down to cities and towns","Accountability, transparency and support for law enforcement"],
+        differentiators: ["New Bedford city councilor and state corrections officer","Only Republican on the Lt. Governor primary ballot","De facto running mate of Brian Shortsleeve; convention endorsee Anne Brensley fell short on signatures"],
+        supporters: [], opponents: ["[Verify] — coverage beyond his announcement is thin"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Attorney General",
+    note: "Andrea Campbell (D) seeks a second term against Republican Michael C. Walsh. Walsh's ballot access was contested: the State Ballot Law Commission struck him in June over signature-fraud allegations, but a Superior Court judge reinstated him and an SJC justice let that stand in July on a procedural ground — an objection not served by certified mail — rather than on the merits. No court has found that Walsh personally committed fraud; the evidence centered on a paid signature gatherer hired by several campaigns.",
+    candidates: [
+      { name: "Andrea Joy Campbell (incumbent)", party: "D", winner: false,
+        positions: ["Affordability and consumer protection","Child and family well-being; breaking cycles of poverty","Litigating federal actions on health, education and research funding"],
+        differentiators: ["First Black woman elected attorney general in Massachusetts","Her office has been party to roughly 40 suits against the Trump administration","Unopposed in the Democratic primary"],
+        supporters: ["Credited for the office's federal-litigation record"],
+        opponents: ["The SJC tossed ballot questions her office certified; she said 'we made a mistake'","Faulted for not forcing compliance with the voter-approved legislative audit"] },
+      { name: "Michael C. Walsh", party: "R", winner: false,
+        positions: ["Enforce the voter-approved audit of the Legislature","Repeal the MBTA Communities Act and restore local zoning control","Defend individuals against government overreach"],
+        differentiators: ["General-practice litigator — labor, criminal defense, appellate","2022 Governor's Council candidate","Restored to the ballot by the courts on July 10, upheld July 13"],
+        supporters: ["[Verify] — independent coverage is thin"],
+        opponents: ["The judge who reinstated him cited substantial evidence of fraud in the record"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Secretary of the Commonwealth",
+    note: "William Galvin (D), in office since 1995, seeks a record ninth term. For the first time since he was first elected in 1994 he faces neither a Democratic nor a Republican opponent — though independents can still qualify through Aug 25. He also has a personal stake on the ballot: Question 4, Election Day registration, is an initiative he backs.",
+    candidates: [
+      { name: "William F. Galvin (incumbent)", party: "D", winner: false,
+        positions: ["Election Day voter registration (Question 4 on this ballot)","Resist federal efforts to curb mail voting and registration","Protect the 2030 Census count as state liaison"],
+        differentiators: ["Longest-serving chief state elections official in the country","Roughly 50 years in Massachusetts public life","No major-party opponent filed; the GOP cited finite resources"],
+        supporters: ["His Election Day registration proposal polled 58–35 in March 2026"],
+        opponents: ["Municipal officials warn same-day registration would strain local clerks","Longevity and 'generational change' objections raised in past primaries"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Treasurer and Receiver-General",
+    note: "Deborah Goldberg (D) seeks a fourth term against Belmont Select Board member Elizabeth Dionne (R). Both are unopposed in their primaries. The treasurer oversees the state Lottery, which returns more than $1B a year to cities and towns.",
+    candidates: [
+      { name: "Deborah B. Goldberg (incumbent)", party: "D", winner: false,
+        positions: ["Economic security for working families and retirees","Mandate financial education in schools","Expand college-savings programs for children"],
+        differentiators: ["Longest-serving Massachusetts treasurer in decades","Oversees the Lottery and the state pension fund","Unopposed in the Democratic primary"],
+        supporters: ["Baby Steps college-savings has enrolled roughly 23,000 children"],
+        opponents: ["A judge found 'clear error' in her removal of the cannabis commission chair","Republicans faulted her legal bills and out-of-state travel spending"] },
+      { name: "Elizabeth Dionne", party: "R", winner: false,
+        positions: ["Audit all twelve Treasury departments as a first act","Return $1–2B more in local aid to cities and towns","Maximize pension returns and shield pensions from political use"],
+        differentiators: ["Attorney and ten-year Belmont town official","Frames the race around Goldberg's cannabis-commission and Lottery record","Unopposed in the Republican primary"],
+        supporters: ["[Verify] — coverage to date is largely announcement reporting"],
+        opponents: ["[Verify] — no substantive third-party criticism found"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Auditor",
+    note: "Diana DiZoglio (D) seeks a second term with no primary challenger and no Republican filed — the first cycle since 2006 in which the GOP has not fielded an auditor candidate. Her defining fight — enforcing the 2024 ballot question (passed with ~72%) authorizing an audit of the Legislature — is still unresolved and now proceeding in Suffolk Superior Court with private counsel. [Verify any ruling after May 2026].",
+    candidates: [
+      { name: "Diana DiZoglio (incumbent)", party: "D", winner: false,
+        positions: ["Force legislative compliance with the voter-approved audit","A permanent transportation-audit division for MBTA oversight","Audits of child welfare, elder affairs and the soldiers' homes"],
+        differentiators: ["No major-party opponent filed; independents may still qualify by Aug 25","Sued the House Speaker, Senate President and both clerks in Feb 2026","Retained outside counsel in May after the attorney general relented"],
+        supporters: ["Seen by supporters as a genuine check on Beacon Hill"],
+        opponents: ["The House Speaker says the audit advances her own political ambition","Democratic colleagues describe her as divisive"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide · Ballot Measures",
+    office: "Statewide Ballot Questions (nine)",
+    note: "Nine questions were certified — tying the 1994 record. 1: expanding the Public Records Law. 2: collective bargaining for public-defender agency employees. 3: changing the state primary system. 4: Election Day registration. 5: a state revenue limit and rebate. 6: a natural-resource conservation fund. 7: limits on single-family lot sizes. 8: prohibiting retail sale of recreational marijuana. 9: a veto referendum on the 2024 firearms law. Numbering was set to save ballot space, not by subject. [Verify final text at sec.state.ma.us before voting.]",
+    candidates: []
+  },
+
+  // PAST — recent statewide results for context
+  {
+    date: "Nov 8, 2022",
+    type: "past",
+    scope: "State · Statewide",
+    office: "Governor of Massachusetts (2022)",
+    note: "Maura Healey and Kim Driscoll (D) won the open seat 63.7% to 34.6% over Geoff Diehl and Leah Cole Allen (R) — a ~29-point margin — after Republican Charlie Baker declined to seek a third term.",
+    candidates: [
+      { name: "Maura Healey", party: "D", winner: true,
+        positions: ["Cost of living","Housing","Climate"],
+        differentiators: ["Won by ~29 points with ~1.58M votes","First woman and first openly gay person elected governor of the state"],
+        supporters: [], opponents: [] },
+      { name: "Geoff Diehl", party: "R", winner: false,
+        positions: ["Tax relief","Public safety","Parental rights"],
+        differentiators: ["Former state representative; Trump-endorsed 2022 nominee","Lost by ~29 points"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 5, 2024",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Massachusetts (2024)",
+    note: "Elizabeth Warren (D) won a third term 59.8% to 40.0% over Republican John Deaton — a ~20-point margin. Warren's seat is not up again until 2030; the 2026 race is for Ed Markey's seat, and Deaton is running again.",
+    candidates: [
+      { name: "Elizabeth Warren", party: "D", winner: true,
+        positions: ["Consumer protection","Housing costs","Corporate accountability"],
+        differentiators: ["Won by ~20 points with ~2.04M votes","Senator since 2013"],
+        supporters: [], opponents: [] },
+      { name: "John Deaton", party: "R", winner: false,
+        positions: ["Cost of living","Crypto regulation","Term limits"],
+        differentiators: ["2024 Republican nominee; ~1.37M votes (40.0%)","Running again in 2026, this time against Ed Markey"],
+        supporters: [], opponents: [] }
+    ]
+  }
+];
+
+// ----- (3) US House races by district -----
+// Each district object holds: 2026 race + 2024 race.
+// All 9 seats are currently held by Democrats. MA-6 is the state's only OPEN seat.
+// Ratings are Cook/Sabato where confirmable; several district ratings could not be read
+// directly (both raters publish behind paywalls or as images) and carry [Verify].
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — MA District 1",
+    region: "Western Massachusetts — Springfield, Chicopee, Pittsfield, Holyoke, Westfield; all of Berkshire and Hampden plus parts of Hampshire, Franklin and Worcester",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Richard Neal (D), a 36-year incumbent and the top Democrat on Ways & Means, faces teacher Jeromie Whalen in the Sept 1 primary. No Republican filed. Nadia Milleron, who took 37% as an unenrolled candidate in 2024, is running again [Verify independent ballot access — papers due Aug 25]. Rated Solid Democratic.",
+        candidates: [
+          { name: "Richard Neal (incumbent)", party: "D", winner: false,
+            positions: ["Federal rail investment for western Massachusetts","Tax-code policy from the Ways & Means perch","Defends the existing ACA framework over Medicare for All"],
+            differentiators: ["36-year incumbent; top Ways & Means Democrat","~$3.9M war chest, dwarfing his rivals","Secured roughly $150M for west–east rail over five years"],
+            supporters: ["Delivered the Springfield Union Station restoration"],
+            opponents: ["Led Congress in corporate campaign money while chairing Ways & Means"] },
+          { name: "Jeromie Whalen", party: "D", winner: false,
+            positions: ["Medicare for All and capped prescription drug prices","Raise the minimum wage and pass the PRO Act","Green New Deal; end fossil-fuel subsidies"],
+            differentiators: ["High school teacher from South Hadley","Rejects corporate PAC money","Leads the challengers on fundraising at roughly $150K"],
+            supporters: ["Endorsed by Massachusetts Peace Action"],
+            opponents: ["Vastly outraised; no prior elected office"] },
+          { name: "Nadia Milleron", party: "I", winner: false,
+            positions: ["Ban corporate participation in elections","Cut military spending to fund healthcare and housing","Reshore drug and essential-goods manufacturing"],
+            differentiators: ["Took 37.3% as an unenrolled candidate in 2024","Boeing 737 MAX safety advocate after her daughter's death","Pledges a self-imposed six-year term limit"],
+            supporters: [], opponents: ["[Verify] — little third-party reporting on her campaign"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Richard Neal (D) won 62.4% to 37.3% over unenrolled candidate Nadia Milleron, who is running again in 2026. No Republican appeared on the ballot.",
+        candidates: [
+          { name: "Richard Neal", party: "D", winner: true,
+            positions: ["Ways & Means priorities","Rail investment","Healthcare"],
+            differentiators: ["Won by ~25 points","~223,300 votes (62.4%)"],
+            supporters: [], opponents: [] },
+          { name: "Nadia Milleron", party: "I", winner: false,
+            positions: ["Corporate money in politics","Aviation safety","Healthcare"],
+            differentiators: ["Unenrolled candidate; ~133,600 votes (37.3%)","Running again in 2026"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  2: {
+    name: "U.S. House — MA District 2",
+    region: "Central & western Massachusetts — Worcester, Leominster, Amherst, Northampton; most of Worcester and Franklin counties",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Jim McGovern (D) seeks a 16th term with no major-party opponent — he is the only Democrat filed and no Republican filed. He has been unopposed in nearly every race since 1998. Independents can still qualify through Aug 25 [Verify]. [Verify rating — Cook and Sabato labels for this seat could not be read directly].",
+        candidates: [
+          { name: "Jim McGovern (incumbent)", party: "D", winner: false,
+            positions: ["Restore regular order and amendment rights in the House","Anti-hunger and food-policy leadership","Human rights and congressional oversight"],
+            differentiators: ["Top Democrat on the Rules Committee; its chair 2019–23","Unopposed in nearly every election since 1998","No major-party opponent filed for 2026"],
+            supporters: ["[Verify] — little 2026-specific coverage of a race with no opponent"],
+            opponents: ["[Verify] — no major-party opponent filed"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Jim McGovern (D) won 68.6% to 31.1% over unenrolled candidate Cornelius Shea.",
+        candidates: [
+          { name: "Jim McGovern", party: "D", winner: true,
+            positions: ["Hunger and nutrition","House rules","Human rights"],
+            differentiators: ["Won by ~37 points","~251,400 votes (68.6%)"],
+            supporters: [], opponents: [] },
+          { name: "Cornelius Shea", party: "I", winner: false,
+            positions: ["[Verify]","",""],
+            differentiators: ["Unenrolled candidate; ~114,100 votes (31.1%)"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  3: {
+    name: "U.S. House — MA District 3",
+    region: "North-central & northeastern Massachusetts — Lowell, Lawrence, Haverhill, Fitchburg, Marlborough",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Lori Trahan (D) is the only Democrat filed and faces retired Army colonel Gary Grossi (R). Trahan's lead role negotiating bipartisan federal AI rules has become the race's flashpoint. [Verify rating].",
+        candidates: [
+          { name: "Lori Trahan (incumbent)", party: "D", winner: false,
+            positions: ["Bipartisan federal AI regulation — transparency and audits","Opposes bundling a congressional stock-trading ban with voter ID","Technology and consumer protection"],
+            differentiators: ["Lead House Democrat negotiating AI rules with Republicans","No Democratic primary opponent","Lowell-area native"],
+            supporters: ["Advocates call most of her AI bill straightforward good-government policy"],
+            opponents: ["Its three-year preemption of state AI laws drew ads accusing her of siding with 'AI oligarchs'"] },
+          { name: "Gary Grossi", party: "R", winner: false,
+            positions: ["Combat the Merrimack Valley opioid crisis","[Verify] — no further platform planks found in any source",""],
+            differentiators: ["Retired Army colonel and Iraq War veteran","Only Republican filed in the district","[Verify]"],
+            supporters: [], opponents: ["[Verify] — no coverage located"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Lori Trahan (D) ran unopposed, taking 97.5% of the vote (the balance were write-ins and blanks).",
+        candidates: [
+          { name: "Lori Trahan", party: "D", winner: true,
+            positions: ["Technology policy","Childcare","Healthcare"],
+            differentiators: ["Ran unopposed; ~264,700 votes","No Republican on the 2024 ballot"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  4: {
+    name: "U.S. House — MA District 4",
+    region: "Southeastern Massachusetts plus Newton and Brookline — Fall River, Taunton, Attleboro",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Jake Auchincloss (D) faces his first primary challenge in six years, from AI researcher Jason Poulos; physicist Tom Stalcup is the only Republican filed. An internal Auchincloss poll showed a 64%–17% primary lead. Rated Solid Democratic.",
+        candidates: [
+          { name: "Jake Auchincloss (incumbent)", party: "D", winner: false,
+            positions: ["Lower prescription drug prices","Housing affordability","Regulating social media's effect on children"],
+            differentiators: ["Roughly $7M cash on hand","Internal poll shows a 64%–17% primary lead","Rejects the 'moderate' label despite party-line voting"],
+            supporters: ["Credited on drug pricing, housing and kids' online safety"],
+            opponents: ["AIPAC is his top career contributor","Progressives faulted his opposition to Maine's Graham Platner"] },
+          { name: "Jason Poulos", party: "D", winner: false,
+            positions: ["Medicare for All to decouple healthcare from employment","A $250/month basic income funded by a corporate automation tax","A federal AI authority to regulate algorithmic management"],
+            differentiators: ["AI and economic-policy researcher running on job displacement","Refuses corporate, crypto and lobby-group money","Qualified for the ballot on volunteer signatures"],
+            supporters: ["Credited with pressuring Auchincloss to cosponsor a Citizens United amendment"],
+            opponents: ["Raised roughly $9,000 against a $7M incumbent war chest"] },
+          { name: "Tom Stalcup", party: "R", winner: false,
+            positions: ["Broad Medicare drug-price negotiation with no drug-count limits","Affordability as the central crisis","Less U.S. military intervention abroad"],
+            differentiators: ["Physicist and software business owner","Runs on a 'science over politics' theme","Only Republican filed in the district"],
+            supporters: [], opponents: ["[Verify] — no substantive reporting found"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Jake Auchincloss (D) ran unopposed, taking 97.2% of the vote.",
+        candidates: [
+          { name: "Jake Auchincloss", party: "D", winner: true,
+            positions: ["Drug pricing","Housing","Online safety"],
+            differentiators: ["Ran unopposed; ~289,300 votes","No Republican on the 2024 ballot"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  5: {
+    name: "U.S. House — MA District 5",
+    region: "Inner Boston suburbs — Cambridge, Framingham, Waltham, Malden, Medford, Revere; the state's most Democratic seat",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Katherine Clark (D), the House Minority Whip and the #2 House Democrat, faces two challengers from her left in the Sept 1 primary — she is the highest-ranking Democrat in the country with an active intra-party challenge. No Republican filed. Rated Solid Democratic.",
+        candidates: [
+          { name: "Katherine Clark (incumbent)", party: "D", winner: false,
+            positions: ["Affordability and cost of living for working households","Affordable child care and healthcare access","Reproductive freedom, climate and voting rights"],
+            differentiators: ["House Minority Whip — the #2 House Democrat","Highest-ranking woman in House Democratic leadership","No Republican filed against her"],
+            supporters: ["Leads caucus floor strategy against Trump-era measures"],
+            opponents: ["Challengers say party leadership is out of step with working-class voters"] },
+          { name: "Jonathan Paz", party: "D", winner: false,
+            positions: ["Abolish ICE and redirect its budget to housing and healthcare","A $25 minimum wage and stronger union rights","Universal healthcare with no premiums or copays"],
+            differentiators: ["Former Waltham city councilor; immigrant-rights organizer","Founded a community network monitoring ICE in Waltham","The only challenger with elected experience"],
+            supporters: ["Endorsed by Massachusetts Peace Action"],
+            opponents: ["[Verify] — no substantive critical reporting found"] },
+          { name: "Tarik Samman", party: "D", winner: false,
+            positions: ["End 'endless wars' and redirect military spending home","Oppose weapons transfers to Israel; recognize a Palestinian state","Invest in housing, healthcare and child care"],
+            differentiators: ["Harvard Law researcher and union organizer, age 27","Born in Lowell to Syrian immigrants","100% grassroots-funded; no corporate PACs"],
+            supporters: [], opponents: ["[Verify] — no substantive reporting found"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Katherine Clark (D) ran unopposed, taking 98.2% of the vote.",
+        candidates: [
+          { name: "Katherine Clark", party: "D", winner: true,
+            positions: ["Child care","Cost of living","Reproductive rights"],
+            differentiators: ["Ran unopposed; ~286,700 votes","Re-elected House Democratic Whip in Nov 2024"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  6: {
+    name: "U.S. House — MA District 6 (open seat)",
+    region: "The North Shore and Merrimack Valley — Lynn, Salem, Peabody, Andover, Haverhill, north to the New Hampshire line",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "OPEN SEAT — Seth Moulton (D) is vacating it to run for U.S. Senate. Six Democrats are on the Sept 1 primary ballot in the state's marquee 2026 House race; attorney and Army veteran Micah Quinney Jones is the only Republican on the ballot. Rated Safe Democratic (Cook PVI D+11), so the primary is effectively the contest.",
+        candidates: [
+          { name: "Tram Nguyen", party: "D", winner: false,
+            positions: ["Housing affordability as the top federal priority","Take on corporate greed driving up consumer costs","Resist Trump administration policies in Congress"],
+            differentiators: ["State representative from Andover; former legal-services attorney","Came to the U.S. as a refugee","Led an internal primary poll at 28%"],
+            supporters: ["Strongest quarter of grassroots fundraising in the field"],
+            opponents: ["Transferred ~$200K from a state account to a super PAC before launching","Badly outraised — $711K to Koh's $4.5M"] },
+          { name: "Dan Koh", party: "D", winner: false,
+            positions: ["Clean-energy jobs for the Merrimack Valley and North Shore","Lower prescription drug costs","A more aggressive Democratic communications strategy"],
+            differentiators: ["Former Biden White House aide; chief of staff to Boston Mayor Walsh","Dominant fundraiser — $4.5M raised, $3.6M on hand","2018 candidate in MA-3"],
+            supporters: ["The best-funded campaign in the field, with senior federal experience"],
+            opponents: ["Posted a super-PAC 'red box' that a watchdog said undermines democracy","Took donations from defense- and surveillance-tech executives"] },
+          { name: "John Beccia III", party: "D", winner: false,
+            positions: ["Job creation and building the North Shore tech sector","Middle-class tax cuts and stronger consumer protection","Decouple health insurance from employment"],
+            differentiators: ["Fintech executive and lawyer from Lynnfield","Largely self-funded — ~$3M of $3.5M self-loaned","Business and financial-regulatory background"],
+            supporters: ["Resources to compete on air immediately"],
+            opponents: ["Drew minimal in-district donor support despite a large topline"] },
+          { name: "Jamie Belsito", party: "D", winner: false,
+            positions: ["Medicare for All","Expand union jobs and worker protections","Affordable public higher education"],
+            differentiators: ["Former state representative from Topsfield","Rejects super PAC money and pressed rivals to sign a pledge","Highest share of in-district donations at 38%"],
+            supporters: ["The only candidate with state legislative service plus a clean-money pledge"],
+            opponents: ["Just $253K raised in a multimillion-dollar race"] },
+          { name: "Bethany (Beth) Andres-Beck", party: "D", winner: false,
+            positions: ["Anti-corruption reform in Washington","Affordability as the central economic issue","Regulate artificial intelligence"],
+            differentiators: ["Software engineer and activist from Middleton","Political newcomer running a grassroots-only campaign","Transgender candidate"],
+            supporters: ["Technical fluency on AI policy"],
+            opponents: ["No prior elected experience; the smallest budget in the field"] },
+          { name: "Mariah Lancaster", party: "D", winner: false,
+            positions: ["Universal healthcare","Fight corruption; expand education access","Energy affordability"],
+            differentiators: ["Veterinarian from Salem; former State Department and congressional staff","Raised $310K despite a late entry","Non-binary candidate"],
+            supporters: [], opponents: ["[Verify] — no sourced criticism found"] },
+          { name: "Micah Quinney Jones", party: "R", winner: false,
+            positions: ["Lower costs via energy innovation, bigger deductions, a childcare credit","Congressional term limits and a stock-trading ban","Win the 'AI arms race' and counter foreign adversaries"],
+            differentiators: ["Attorney and Army veteran; Bronze Star in Afghanistan","Describes himself as a 'JFK Democrat to common-sense Republican'","Only Republican on the Sept 1 primary ballot"],
+            supporters: ["Cuts a veteran-moderate profile in the mold of the retiring incumbent"],
+            opponents: ["Voters question whether he would be absorbed by his party in a D+11 seat"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Seth Moulton (D) ran unopposed, taking 97.8% of the vote. He is now vacating the seat to challenge Ed Markey for the U.S. Senate.",
+        candidates: [
+          { name: "Seth Moulton", party: "D", winner: true,
+            positions: ["Veterans","National security","Transportation"],
+            differentiators: ["Ran unopposed; ~321,200 votes","Running for U.S. Senate in 2026 rather than re-election"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  7: {
+    name: "U.S. House — MA District 7",
+    region: "Most of Boston plus Cambridge (part), Somerville, Everett, Chelsea and Randolph — the state's most diverse district",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Ayanna Pressley (D) seeks re-election with no major-party opponent — no Democratic primary rival and no Republican filed; independents can still qualify by Aug 25. She declined a 2026 Senate bid in December 2025. Rated Safe Democratic.",
+        candidates: [
+          { name: "Ayanna Pressley (incumbent)", party: "D", winner: false,
+            positions: ["Housing as a human right; rein in corporate landlords","Healthcare access and affordability as a right","Criminal justice reform and reentry support"],
+            differentiators: ["Co-chaired a 2026 House hearing on housing affordability","Several of her bills were enacted in 2026's largest housing package in decades","No major-party opponent filed"],
+            supporters: ["Her Housing FIRST Act targets rental barriers for formerly incarcerated people"],
+            opponents: ["[Verify] — no sourced 2026 criticism found; she faces no major-party opponent"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Ayanna Pressley (D) ran unopposed, taking 97.1% of the vote.",
+        candidates: [
+          { name: "Ayanna Pressley", party: "D", winner: true,
+            positions: ["Housing","Healthcare","Criminal justice reform"],
+            differentiators: ["Ran unopposed; ~232,100 votes","No Republican on the 2024 ballot"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  8: {
+    name: "U.S. House — MA District 8",
+    region: "South Boston and the South Shore — Quincy, Brockton, Weymouth and southern Boston neighborhoods",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Stephen Lynch (D), seeking a 14th term after 25 years in office, faces voting-rights attorney Patrick Roath in the Sept 1 primary — the most serious challenge of his career. Robert Burke (R) is making a third run. Rated Safe Democratic.",
+        candidates: [
+          { name: "Stephen Lynch (incumbent)", party: "D", winner: false,
+            positions: ["Fair wages and protecting Social Security","Affordable housing investment","Experience countering the Trump administration"],
+            differentiators: ["Former ironworker and union president from South Boston public housing","25 years of seniority in the House","Runs on 'you need people who've been through the wars'"],
+            supporters: ["Union backing and a long constituent-service record"],
+            opponents: ["Critics call him out of touch; his challenger highlights his vote against the ACA"] },
+          { name: "Patrick Roath", party: "D", winner: false,
+            positions: ["Cut housing, healthcare and childcare costs","Congressional term limits and campaign-finance reform","Universal pre-K and full federal special-education funding"],
+            differentiators: ["Worked on state automatic voter registration and universal mail voting","Refuses corporate PAC money","Raised over $1M"],
+            supporters: ["Endorsed by former Gov. Deval Patrick and the Boston Teachers Union"],
+            opponents: ["Faces a 24-year name-recognition gap; no prior elected office"] },
+          { name: "Robert G. Burke", party: "R", winner: false,
+            positions: ["An 'American citizens first' platform","Cost of living — transportation, food and housing","[Verify] — policy detail is thin beyond his own site"],
+            differentiators: ["Two-time prior nominee (2022, 2024)","Videographer from Dedham","Won a contested 2024 GOP primary"],
+            supporters: [], opponents: ["[Verify] — no substantive independent reporting found"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Stephen Lynch (D) won 70.4% to 29.4% over Republican Robert Burke, who is running again in 2026.",
+        candidates: [
+          { name: "Stephen Lynch", party: "D", winner: true,
+            positions: ["Labor","Social Security","Housing"],
+            differentiators: ["Won by ~41 points","~265,400 votes (70.4%)"],
+            supporters: [], opponents: [] },
+          { name: "Robert Burke", party: "R", winner: false,
+            positions: ["Cost of living","Immigration","[Verify]"],
+            differentiators: ["2024 GOP nominee; ~110,600 votes (29.4%)","Running again in 2026"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  9: {
+    name: "U.S. House — MA District 9",
+    region: "Cape Cod, Martha's Vineyard and Nantucket, the South Coast (New Bedford) and the South Shore",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Bill Keating (D) faces community organizer Craig Swallow in the Sept 1 primary and, in November, Mattapoisett Select Board member and charter captain Tyler MacAllister (R). This was the closest of the state's nine districts in 2024. Rated Safe Democratic.",
+        candidates: [
+          { name: "Bill Keating (incumbent)", party: "D", winner: false,
+            positions: ["Lower drug prices via Medicare negotiation and an out-of-pocket cap","Climate and offshore-wind investment; veterans' health","Gun safety — expanded background checks"],
+            differentiators: ["Chairs a Foreign Affairs energy and environment subcommittee","Leading congressional backer of Vineyard Wind","Secured Plymouth Harbor dredging and New Bedford wind-institute funding"],
+            supporters: ["Large district-specific federal appropriations across the Cape and South Coast"],
+            opponents: ["A challenger calls long-tenured incumbents disconnected","His offshore-wind support puts him crosswise with parts of the fishing fleet"] },
+          { name: "Craig Swallow", party: "D", winner: false,
+            positions: ["Medicare for All — healthcare as a right","Congressional term limits and a 10-year lobbying ban","A full ban on stock ownership by members and senior staff"],
+            differentiators: ["Community organizer from New Bedford","Proposes a public dashboard tracking post-Congress employment","Endorsed by Massachusetts Peace Action"],
+            supporters: ["A detailed and specific anti-corruption package"],
+            opponents: ["[Verify] — no sourced criticism found; first-time candidate"] },
+          { name: "R. Tyler MacAllister", party: "R", winner: false,
+            positions: ["Restore representation for fishermen and the fisheries","Fiscal conservatism — scrutinize budgets and federal spending","Accessible representation for coastal communities"],
+            differentiators: ["Mattapoisett Select Board member and working charter captain","Marine biology degree and an MBA","The only candidate campaigning primarily on commercial fishing"],
+            supporters: ["Local elected experience and a genuine district-specific maritime niche"],
+            opponents: ["[Verify] — no sourced criticism found"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Bill Keating (D) won 56.4% to 43.4% over Republican Dan Sullivan — the closest of the state's nine districts.",
+        candidates: [
+          { name: "Bill Keating", party: "D", winner: true,
+            positions: ["Offshore wind","Veterans","Drug pricing"],
+            differentiators: ["Won by ~13 points — the state's closest House race","~251,900 votes (56.4%)"],
+            supporters: [], opponents: [] },
+          { name: "Dan Sullivan", party: "R", winner: false,
+            positions: ["Cost of living","Fisheries","Energy"],
+            differentiators: ["2024 GOP nominee; ~193,800 votes (43.4%)","Held Keating under 57% in a Safe D seat"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  }
+};
+
+const SITE_META = { name: "Massachusetts Elections Hub", lastUpdated: "July 23, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — Massachusetts county-level down-ballot research is the next phase.
+// Note that MA counties still elect sheriffs, DAs and registers of probate even where
+// county government was abolished — those are the natural first LOCAL_RACES targets.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Massachusetts has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = district
+    ? district.races.map(r => ({
+        ...r,
+        office: r.office || district.name,
+        scope: r.scope || `Federal · District ${county.d}`
+      }))
+    : [];
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const MA_STATE_FIPS = "25";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#mamap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(MA_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Hartford ----
+  drawCapital(g, projection, { name: "Boston", lng: -71.0636, lat: 42.3581 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in MA";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our Massachusetts dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>

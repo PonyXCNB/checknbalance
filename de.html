@@ -1057,7 +1057,7 @@ function renderElection(e) {
   const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
   const candidatesHtml = count
     ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
-    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">Candidates not yet announced.</div>`;
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
   const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
   return `
     <div class="election-card">

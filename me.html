@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>New Hampshire Elections Hub</title>
-<meta name="description" content="An interactive county-by-county guide to every NH election, past and upcoming." />
+<title>Maine Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every ME election, past and upcoming." />
 
 <!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -216,7 +216,7 @@
     width: 100%;
     position: relative;
   }
-  #nhmap { width: 100%; height: 100%; display: block; }
+  #memap { width: 100%; height: 100%; display: block; }
   .map-loading {
     position: absolute; inset: 0;
     display: grid; place-items: center;
@@ -573,9 +573,9 @@
       </a>
     </div>
     <a href="#" class="brand">
-      <div class="crest">NH</div>
+      <div class="crest">ME</div>
       <div class="brand-text">
-        <span class="brand-name">New Hampshire Elections Hub</span>
+        <span class="brand-name">Maine Elections Hub</span>
         <span class="brand-sub">An Independent Civic Project</span>
       </div>
     </a>
@@ -592,14 +592,14 @@
      ============================================= -->
 <section class="hero">
   <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
-  <h1 class="hero-title">Every New Hampshire <em>election</em>, in one place.</h1>
+  <h1 class="hero-title">Every Maine <em>election</em>, in one place.</h1>
   <p class="hero-lede">
     A county-by-county guide to the races that have shaped — and will shape — our state.
-    Click any of the 10 counties to see what's on the ballot, who's running, and what voters,
+    Click any of the 16 counties to see what's on the ballot, who's running, and what voters,
     supporters, and opponents are saying.
   </p>
   <div class="hero-stats">
-    <div class="stat"><div class="stat-num">10</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num">16</div><div class="stat-label">Counties</div></div>
     <div class="stat"><div class="stat-num"><em>2</em></div><div class="stat-label">U.S. House Seats</div></div>
     <div class="stat"><div class="stat-num"><em>2</em></div><div class="stat-label">Statewide Races Tracked</div></div>
     <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
@@ -626,8 +626,8 @@
 
   <div class="map-shell">
     <div class="map-frame">
-      <div class="map-loading" id="map-loading">Loading map of New Hampshire…</div>
-      <svg id="nhmap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="map-loading" id="map-loading">Loading map of Maine…</div>
+      <svg id="memap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="tooltip" id="tooltip"></div>
     </div>
   </div>
@@ -655,11 +655,11 @@
 <footer class="footer" id="about">
   <div class="footer-inner">
     <div class="footer-crest">
-      <strong>NH Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+      <strong>ME Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta">
       Last updated: <span id="last-updated">July 22, 2026</span><br>
-      Sources: NH Secretary of State (sos.nh.gov), Ballotpedia, Wikipedia, Cook Political Report, NHPR, NH Bulletin, WMUR, AP.
+      Sources: Maine Secretary of State / Bureau of Corporations, Elections &amp; Commissions (maine.gov/sos), Ballotpedia, Wikipedia, Cook Political Report, Bangor Daily News, Portland Press Herald, Maine Public, Maine Morning Star, AP.
     </div>
   </div>
 </footer>
@@ -680,107 +680,181 @@
      ============================================= -->
 <script>
 // ----- (1) Counties + primary US House district -----
-// NOTE: NH's two districts split several counties by town. NH-1 is the east
-// (Manchester, the Seacoast); NH-2 the west/north (Nashua, Concord, Upper Valley,
-// North Country). Split counties — Hillsborough (Manchester→NH-1, Nashua→NH-2),
-// Merrimack (Concord→NH-2, Hooksett→NH-1), Belknap, Rockingham, Grafton — are stored
-// by PRIMARY district by population. Source: NH 2022 court map; Census. [Verify] fine
-// town splits with the NH Secretary of State.
+// NOTE: Maine has 2 U.S. House districts under 21-A M.R.S. §1205-A (the 2021 map,
+// still in effect for 2026). ME-1 is the southern/coastal district (Portland);
+// ME-2 is the northern/rural district — the largest by area east of the Mississippi.
+// KENNEBEC is the ONLY split county: Augusta, Gardiner, Winthrop and Oakland sit in
+// ME-2 while Waterville, Winslow and Vassalboro sit in ME-1. It is stored under its
+// population-majority district, ME-2. [Verify the exact split share with the Maine
+// Secretary of State — the municipal list is statutory, the population share is computed.]
 const COUNTIES = {
-  "33001":{n:"Belknap",d:1},
-  "33003":{n:"Carroll",d:1},
-  "33005":{n:"Cheshire",d:2},
-  "33007":{n:"Coos",d:2},
-  "33009":{n:"Grafton",d:2},
-  "33011":{n:"Hillsborough",d:2},
-  "33013":{n:"Merrimack",d:2},
-  "33015":{n:"Rockingham",d:1},
-  "33017":{n:"Strafford",d:1},
-  "33019":{n:"Sullivan",d:2}
+  "23001":{n:"Androscoggin",d:2},
+  "23003":{n:"Aroostook",d:2},
+  "23005":{n:"Cumberland",d:1},
+  "23007":{n:"Franklin",d:2},
+  "23009":{n:"Hancock",d:2},
+  "23011":{n:"Kennebec",d:2},
+  "23013":{n:"Knox",d:1},
+  "23015":{n:"Lincoln",d:1},
+  "23017":{n:"Oxford",d:2},
+  "23019":{n:"Penobscot",d:2},
+  "23021":{n:"Piscataquis",d:2},
+  "23023":{n:"Sagadahoc",d:1},
+  "23025":{n:"Somerset",d:2},
+  "23027":{n:"Waldo",d:2},
+  "23029":{n:"Washington",d:2},
+  "23031":{n:"York",d:1}
 };
 
 // ----- (2) Statewide elections every county votes in -----
-// NOTE: NH's 2026 state primary is Sept 8, 2026. Contested-primary nominees are NOT
-// final until then — those fields are marked [Verify — primary Sept 8]. The open U.S.
-// Senate seat (Shaheen retiring) and open NH-1 (Pappas running for Senate) are confirmed.
+// NOTE ON RANKED-CHOICE VOTING: Maine uses RCV in ALL primaries and in general
+// elections for FEDERAL office only (President, U.S. Senate, U.S. House). The
+// GOVERNOR's general election is decided by plurality — the Maine Constitution
+// requires it, and on April 6, 2026 the Maine Supreme Judicial Court again struck
+// down an attempt (LD 1666) to extend RCV to state general elections.
+// Maine's AG, Secretary of State and Treasurer are NOT elected by the public — the
+// Legislature chooses them by joint ballot — so they are not on the November ballot.
 const STATEWIDE = [
   // UPCOMING — 2026 General Election (Nov 3, 2026)
   {
     date: "Nov 3, 2026",
     type: "upcoming",
     scope: "Federal · Statewide",
-    office: "U.S. Senate — New Hampshire (open seat)",
-    note: "OPEN SEAT — Jeanne Shaheen (D) is retiring; NH's first open Senate race since 2010. Rated Lean Democratic (Cook, Sabato). Pappas is the clear Democratic frontrunner; the GOP contest pits former Sens. John E. Sununu (Trump-endorsed) and Scott Brown. Those below are leading contenders, not nominees. [Verify — primary Sept 8].",
+    office: "U.S. Senate — Maine",
+    note: "Susan Collins (R) seeks a sixth term; rated Toss Up (Cook, Sabato). The Democratic slot was upended after the June 9 primary — winner Graham Platner withdrew July 10 and delegates must name a replacement by July 27. Former Maine Senate President Troy Jackson is the presumptive pick, pending a July 25 convention. [Verify after July 25].",
     candidates: [
-      { name: "Chris Pappas (D frontrunner)", party: "D", winner: false,
-        positions: ["Abortion rights and reproductive freedom","Lower prescription-drug and health costs","Protect pre-existing-condition coverage"],
-        differentiators: ["U.S. Rep (NH-1) since 2018; vacating the House to run","Endorsed by Shaheen and Hassan; leads Democratic field and fundraising","Faces Karishma Manzur in the Sept 8 primary [Verify]"],
-        supporters: ["A proven statewide vote-getter for a must-hold seat"],
-        opponents: ["A career politician, per GOP framing [Verify attack lines]"] },
-      { name: "John E. Sununu (R contender)", party: "R", winner: false,
-        positions: ["Work with the Trump administration","Fiscal conservatism and spending restraint","Opposed the $300B Iran reconstruction fund [Verify]"],
-        differentiators: ["Former U.S. Senator (2003–09)","Trump 'Complete and Total Endorsement' (Feb 2026)","Sept 8 GOP primary vs. Scott Brown"],
-        supporters: ["Establishment experience now aligned with Trump"],
-        opponents: ["Brown casts him as a late Trump convert [Verify]"] },
-      { name: "Scott Brown (R contender)", party: "R", winner: false,
-        positions: ["More independent of Trump ('not right all the time')","Border security","Opposed the Iran reconstruction fund [Verify]"],
-        differentiators: ["Former Massachusetts U.S. Senator; ex-Ambassador to New Zealand","Refused to drop out after Trump endorsed Sununu","Sept 8 GOP primary"],
-        supporters: ["Casts himself as the more independent voice"],
-        opponents: ["A former senator from another state [Verify]"] }
+      { name: "Susan Collins (incumbent)", party: "R", winner: false,
+        positions: ["Steer federal appropriations to Maine projects and shipyards","Protect Medicaid and food assistance from deep cuts","Bipartisan compromise; breaks with Trump case by case"],
+        differentiators: ["Chairs Senate Appropriations — first Maine senator to do so in 90+ years","Says she has secured ~$1.5B over five years for ~700 Maine projects","~$9.7M cash on hand as of the May 2026 filing"],
+        supporters: ["Her Appropriations gavel delivers money and jobs no freshman could match"],
+        opponents: ["Votes with Trump most of the time despite a moderate brand","One 2026 poll put her net favorability at −18"] },
+      { name: "Troy Jackson (D presumptive nominee)", party: "D", winner: false,
+        positions: ["Medicare for All","Pro-labor, working-family economics","Abolish ICE; opposes further U.S. military aid to Israel"],
+        differentiators: ["Fifth-generation logger and former Maine Senate President","Backers won ~481 of 500 county delegate slots — but delegates are unbound","Rivals Bellows, Shah, Wood and Kleban withdrew and endorsed him [Verify — convention July 25]"],
+        supporters: ["Logger and union roots aimed at working-class voters Democrats have lost"],
+        opponents: ["Republicans cast him as well left of Maine's median voter","Starts roughly $11M behind Collins in money"] }
     ]
   },
   {
     date: "Nov 3, 2026",
     type: "upcoming",
     scope: "State · Statewide",
-    office: "Governor of New Hampshire",
-    note: "Kelly Ayotte (R), elected 2024, runs for a second two-year term. Former Executive Councilor Cinde Warmington is the leading Democrat (also in the Sept 8 primary). Rated Leans Republican (Ayotte favored) [Verify exact rating].",
+    office: "Governor of Maine (open seat)",
+    note: "OPEN SEAT — Janet Mills (D) is term-limited. A three-way race: Hannah Pingree (D), Bobby Charles (R) and independent Rick Bennett, the only independent to qualify. Rated Solid/Likely Democratic. Note: the governor's general election is decided by PLURALITY, not ranked-choice voting.",
     candidates: [
-      { name: "Kelly Ayotte (incumbent)", party: "R", winner: false,
-        positions: ["Expand Education Freedom Account (school-choice) vouchers","'No income tax, no sales tax' pledge","Public safety"],
-        differentiators: ["Former U.S. Senator (2011–17); elected governor 2024","Small early polling lead","[Verify fuller platform]"],
-        supporters: ["A low-tax, business-friendly record"],
-        opponents: ["Democrats target voucher expansion's property-tax impact [Verify]"] },
-      { name: "Cinde Warmington", party: "D", winner: false,
-        positions: ["Opposes voucher expansion and its property-tax impact","Opposes new Medicaid premiums","Abortion rights"],
-        differentiators: ["Former Executive Councilor (2021–25) — the lone Democrat on the council","Leading declared Democrat; faces Jon Kiper in the Sept 8 primary [Verify]","Healthcare attorney"],
-        supporters: ["A check on one-party control in Concord"],
-        opponents: ["[Verify GOP attack lines]"] }
+      { name: "Hannah Pingree", party: "D", winner: false,
+        positions: ["$100M a year in state affordable-housing investment","A public health-insurance option at state-negotiated rates","Expand clean energy; shield ratepayers from data-center costs"],
+        differentiators: ["Former Speaker of the Maine House; led Mills' policy-innovation office","Endorsed by Gov. Janet Mills and EMILY's List","Fundraising leader — $3M+ raised as of July 2026"],
+        supporters: ["A deep policy record on climate, housing and economic development"],
+        opponents: ["Cast as a Mills-administration continuation and an Augusta insider"] },
+      { name: "Bobby Charles", party: "R", winner: false,
+        positions: ["Phase out the state personal income tax over four years","Cut crime; expand addiction and mental-health services","Government-wide audits, deregulation and waste referrals"],
+        differentiators: ["Reagan White House staffer and former Assistant Secretary of State","Won a seven-round ranked-choice primary with 60.3%","Endorsed by Newt Gingrich; Trump did not endorse in the primary"],
+        supporters: ["Won the nomination while badly outspent"],
+        opponents: ["Electability doubts inside his own party [Verify]"] },
+      { name: "Rick Bennett", party: "I", winner: false,
+        positions: ["Property-tax relief and a larger homestead exemption for seniors","Lower utility returns; expand weatherization to cut energy costs","Create an inspector general for whistleblower complaints"],
+        differentiators: ["Sitting state senator and former Maine Republican Party chair","Left the GOP in 2025; only independent to qualify (4,517 signatures)","Endorsed by the Forward Party"],
+        supporters: ["A bipartisan record on housing, broadband and the opioid crisis"],
+        opponents: ["Both parties call him a spoiler [Verify]"] }
     ]
   },
 
-  // PAST — recent statewide results for context
+  // PAST — the June 9, 2026 primaries and recent statewide results
   {
-    date: "Nov 5, 2024",
+    date: "Jun 9, 2026",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "Democratic Primary — U.S. Senate",
+    note: "Oyster farmer and Army veteran Graham Platner won with about 72% (156,084 votes), over Gov. Janet Mills (~19%) — who suspended her campaign April 30 but stayed on the ballot — and David Costello (~8%). Platner announced his exit July 8 and formally withdrew July 10, 2026. Figures are the certified state tabulation.",
+    candidates: [
+      { name: "Graham Platner", party: "D", winner: true,
+        positions: ["Populist, anti-corporate economics","Veterans and working-class priorities","[Verify fuller platform]"],
+        differentiators: ["Won the primary with about 72% — 156,084 votes","Announced his exit July 8 and formally withdrew July 10, 2026","His volunteer network largely moved to Troy Jackson"],
+        supporters: [], opponents: [] },
+      { name: "Janet Mills", party: "D", winner: false,
+        positions: ["Record as governor","[Verify]","[Verify]"],
+        differentiators: ["Governor of Maine; suspended her Senate campaign April 30, 2026","Took ~19% (41,644 votes) while off the campaign trail"],
+        supporters: [], opponents: [] },
+      { name: "David Costello", party: "D", winner: false,
+        positions: ["[Verify]","",""],
+        differentiators: ["2024 Democratic U.S. Senate nominee","Finished third with ~8% (17,560 votes)"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Jun 9, 2026",
     type: "past",
     scope: "State · Statewide",
-    office: "Governor of New Hampshire (2024)",
-    note: "Kelly Ayotte (R) won the open seat ~52% to ~46% over Democrat Joyce Craig (~9 points), succeeding term-limited Gov. Chris Sununu. NH elects governors to two-year terms, so the office is up again in 2026.",
+    office: "Democratic Primary — Governor",
+    note: "Hannah Pingree won the nomination in the fourth ranked-choice round, 56.2% to 43.8%, over former Maine CDC director Nirav Shah. Troy Jackson and Secretary of State Shenna Bellows were eliminated in earlier rounds.",
     candidates: [
-      { name: "Kelly Ayotte", party: "R", winner: true,
-        positions: ["Low-tax pledge","Public safety","School choice"],
-        differentiators: ["Former U.S. Senator; won an open-seat race","~52% of the vote"],
+      { name: "Hannah Pingree", party: "D", winner: true,
+        positions: ["Housing production","Public health-insurance option","Clean energy"],
+        differentiators: ["Trailed on first choices (23.3%) but won the final round with 56.2%","Former Speaker of the Maine House"],
         supporters: [], opponents: [] },
-      { name: "Joyce Craig", party: "D", winner: false,
-        positions: ["Abortion rights","Public education","Housing"],
-        differentiators: ["Former Manchester mayor; 2024 Democratic nominee","Lost by ~9 points"],
+      { name: "Nirav Shah", party: "D", winner: false,
+        positions: ["Public health","[Verify]","[Verify]"],
+        differentiators: ["Led first choices with 26.8%; lost the final round 43.8%","Former director of the Maine CDC"],
+        supporters: [], opponents: [] },
+      { name: "Troy Jackson", party: "D", winner: false,
+        positions: ["Labor and working families","[Verify]","[Verify]"],
+        differentiators: ["Finished third with 21.1% of first choices","Now the presumptive Democratic U.S. Senate nominee"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Jun 9, 2026",
+    type: "past",
+    scope: "State · Statewide",
+    office: "Republican Primary — Governor",
+    note: "Bobby Charles won a seven-round ranked-choice count, finishing at 60.3% over fitness executive Ben Midgley (39.8%). Jonathan Bush and former state Sen. Garrett Mason were eliminated in earlier rounds.",
+    candidates: [
+      { name: "Bobby Charles", party: "R", winner: true,
+        positions: ["Abolish the state income tax","Crime and addiction","Government audits"],
+        differentiators: ["Led from the first round (38.0%) and finished at 60.3%","Reagan White House and State Department veteran"],
+        supporters: [], opponents: [] },
+      { name: "Ben Midgley", party: "R", winner: false,
+        positions: ["[Verify]","",""],
+        differentiators: ["Fitness-industry executive; 20.0% of first choices","Runner-up at 39.8% in the final round"],
+        supporters: [], opponents: [] },
+      { name: "Jonathan Bush", party: "R", winner: false,
+        positions: ["[Verify]","",""],
+        differentiators: ["Health-technology entrepreneur; 19.7% of first choices","Eliminated in the sixth round"],
         supporters: [], opponents: [] }
     ]
   },
   {
     date: "Nov 8, 2022",
     type: "past",
-    scope: "Federal · Statewide",
-    office: "U.S. Senate — New Hampshire (2022)",
-    note: "Maggie Hassan (D) won re-election 53.5% to 44.4% over Republican Don Bolduc (~9 points). Hassan's seat is not up again until 2028; the 2026 Senate race is for Jeanne Shaheen's open seat.",
+    scope: "State · Statewide",
+    office: "Governor of Maine (2022)",
+    note: "Janet Mills (D) won a second term 55.4% to 42.5% over former Gov. Paul LePage (R) — a ~13-point margin. LePage is now the Republican nominee for the open ME-2 U.S. House seat.",
     candidates: [
-      { name: "Maggie Hassan", party: "D", winner: true,
-        positions: ["Lower costs","Reproductive rights","Bipartisan problem-solving"],
-        differentiators: ["Former governor; won by ~9 points","~332,193 votes (53.5%)"],
+      { name: "Janet Mills", party: "D", winner: true,
+        positions: ["Healthcare expansion","Education funding","Clean energy"],
+        differentiators: ["Won a second term by ~13 points","Term-limited in 2026"],
         supporters: [], opponents: [] },
-      { name: "Don Bolduc", party: "R", winner: false,
-        positions: ["Border security","Election integrity","Spending cuts"],
-        differentiators: ["Retired Army general; 2022 GOP nominee","~275,928 votes (44.4%)"],
+      { name: "Paul LePage", party: "R", winner: false,
+        positions: ["Tax cuts","Energy costs","Public safety"],
+        differentiators: ["Two-term former governor (2011–19)","Lost by ~13 points; running for ME-2 in 2026"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 3, 2020",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Maine (2020)",
+    note: "Susan Collins (R) won a fifth term 51.0% to 42.4% over Democrat Sara Gideon — an ~8.6-point win in a state Joe Biden carried the same night. Collins cleared 50% in the first round, so no ranked-choice rounds were needed.",
+    candidates: [
+      { name: "Susan Collins", party: "R", winner: true,
+        positions: ["Appropriations for Maine","Bipartisan brand","Healthcare access"],
+        differentiators: ["Won ~417,600 votes (51.0%) — a first-round majority","Outran the top of the ticket in a state Biden won"],
+        supporters: [], opponents: [] },
+      { name: "Sara Gideon", party: "D", winner: false,
+        positions: ["Healthcare costs","Campaign-finance reform","Climate"],
+        differentiators: ["Former Speaker of the Maine House","Lost by ~8.6 points despite record fundraising"],
         supporters: [], opponents: [] }
     ]
   }
@@ -788,79 +862,80 @@ const STATEWIDE = [
 
 // ----- (3) US House races by district -----
 // Each district object holds: 2026 race + 2024 race
+// NOTE: Maine uses ranked-choice voting in U.S. House GENERAL elections whenever
+// three or more candidates are on the ballot. For 2026, NO independent qualified in
+// either district by the May 25 signature deadline (Maine SoS general-candidate list,
+// 7/22/2026), so both are two-way races and RCV will not actually be triggered.
+// ⚠ Ballotpedia lists Maine independents who are NOT ballot-qualified — do not use it
+// for Maine ballot access; use the Secretary of State's candidate list.
 const HOUSE_RACES = {
   1: {
-    name: "U.S. House — NH District 1 (open seat)",
-    region: "Eastern NH — Manchester, Portsmouth, the Seacoast; Rockingham, Strafford, Carroll & Belknap counties",
+    name: "U.S. House — ME District 1",
+    region: "Southern & coastal Maine — Portland, Biddeford, Brunswick; Cumberland, York, Sagadahoc, Lincoln & Knox counties plus part of Kennebec",
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "OPEN SEAT — Chris Pappas (D) is vacating NH-1 to run for U.S. Senate. Rated Likely Democratic (Cook). A crowded Sept 8 Democratic primary (below are leading contenders, not the nominee); the GOP field is also unsettled. [Verify — primary Sept 8].",
+        note: "Chellie Pingree (D) seeks a 10th term against retired Army colonel Ron Russell (R), who won the June 9 GOP primary 53.5%–46.5% to set up a rematch of 2024. Rated Solid/Safe Democratic. [Verify Cook's current label].",
         candidates: [
-          { name: "Maura Sullivan (D contender)", party: "D", winner: false,
-            positions: ["Veterans and national service","Democratic 'fighter' message","[Verify fuller platform]"],
-            differentiators: ["Marine veteran and former Obama-administration official","2018 NH-1 candidate; strong fundraiser","Sept 8 Democratic primary"],
-            supporters: [], opponents: [] },
-          { name: "Stefany Shaheen (D contender)", party: "D", winner: false,
-            positions: ["Healthcare / diabetes-care advocacy","Reproductive rights","[Verify]"],
-            differentiators: ["Former Portsmouth city councilor; daughter of Sen. Jeanne Shaheen","Sept 8 Democratic primary","[Verify]"],
-            supporters: [], opponents: [] },
-          { name: "Heath Howard (D contender)", party: "D", winner: false,
-            positions: ["Populist/progressive economics","[Verify]",""],
-            differentiators: ["State representative (Strafford); led some early polls","Sept 8 Democratic primary","[Verify]"],
-            supporters: [], opponents: [] },
-          { name: "[Republican nominee — decided in the Sept 8, 2026 primary]", party: "R", winner: false,
-            positions: ["[Decided Sept 8] field platforms thin [Verify]","",""],
-            differentiators: ["GOP field includes steel-business owner Hollie Noveletsky and others [Verify]","Winner faces the Democratic nominee in November","Sept 8 primary"],
-            supporters: [], opponents: [] }
+          { name: "Chellie Pingree (incumbent)", party: "D", winner: false,
+            positions: ["Sustainable and organic farming; cutting food waste","Net-zero farm emissions via her Agriculture Resilience Act","Veterans' health and healthy-food access for children"],
+            differentiators: ["Senior House Appropriations member chairing three subcommittees","A working organic farmer turned legislator","Works across ideological lines with food-reform advocates"],
+            supporters: ["Appropriations seniority delivers federal dollars to Maine","A nationally recognized leader on farm and food policy"],
+            opponents: ["Critics say nearly 20 years in office warrants generational turnover"] },
+          { name: "Ron Russell", party: "R", winner: false,
+            positions: ["Cut energy costs and inflation to ease the housing crisis","Opposes government-run healthcare; move away from the ACA","Curb illegal border crossings and reassess immigration levels"],
+            differentiators: ["Retired Army colonel — 30 years, Green Beret and Ranger","West Point graduate and defense-industry executive","Second run against Pingree after losing by 22 points in 2024"],
+            supporters: ["A decorated combat record across Panama, Somalia and Afghanistan"],
+            opponents: ["Faces long odds in a heavily Democratic district"] }
         ]
       },
       {
         date: "Nov 5, 2024", type: "past",
-        note: "Chris Pappas (D) won re-election ~54% to ~44% over Republican Russell Prescott (~10 points).",
+        note: "Chellie Pingree (D) won re-election 58.7% to 36.4% over Ron Russell (R), with independent Ethan Alcorn at 4.9%.",
         candidates: [
-          { name: "Chris Pappas", party: "D", winner: true,
-            positions: ["Lower costs","Reproductive rights","Veterans"],
-            differentiators: ["Won by ~10 points","Now running for U.S. Senate in 2026"],
+          { name: "Chellie Pingree", party: "D", winner: true,
+            positions: ["Farm and food policy","Veterans","Appropriations for Maine"],
+            differentiators: ["Won by ~22 points","~249,800 votes (58.7%)"],
             supporters: [], opponents: [] },
-          { name: "Russell Prescott", party: "R", winner: false,
-            positions: ["Tax relief","Border security","Small business"],
-            differentiators: ["Former state senator; 2024 GOP nominee","Lost by ~10 points"],
+          { name: "Ron Russell", party: "R", winner: false,
+            positions: ["Energy costs","Border security","Small business"],
+            differentiators: ["2024 GOP nominee; retired Army colonel","Lost by ~22 points; running again in 2026"],
             supporters: [], opponents: [] }
         ]
       }
     ]
   },
   2: {
-    name: "U.S. House — NH District 2",
-    region: "Western & northern NH — Nashua, Concord, the Upper Valley, the North Country; Cheshire, Coos, Grafton, Sullivan & most of Hillsborough/Merrimack",
+    name: "U.S. House — ME District 2 (open seat)",
+    region: "Northern & rural Maine — Bangor, Lewiston, Aroostook and the North Woods; ten counties plus most of Kennebec (Augusta)",
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "Maggie Goodlander (D) seeks a second term. Cook moved the seat from Lean to Likely Democratic on July 16, 2026. Her 2024 opponent Lily Tang Williams (R) is seeking a rematch; the GOP nominee is decided Sept 8. [Verify — primary Sept 8].",
+        note: "OPEN SEAT — Jared Golden (D) announced in Nov 2025 he would not seek re-election. Former Gov. Paul LePage (R), Trump-endorsed, was unopposed; State Auditor Matt Dunlap (D) won a ranked-choice runoff 52%–48% over Joe Baldacci. Sabato moved the seat to Likely Republican on July 16, 2026.",
         candidates: [
-          { name: "Maggie Goodlander (incumbent)", party: "D", winner: false,
-            positions: ["Lower costs and affordability","Reproductive rights","Manufacturing, antitrust and competition"],
-            differentiators: ["Former DOJ / national-security attorney","Won the open seat in 2024","Faces a minor Democratic primary [Verify]"],
-            supporters: ["A substantive first-term member on competition and costs"],
-            opponents: ["[Verify GOP attack lines]"] },
-          { name: "Lily Tang Williams (R contender)", party: "R", winner: false,
-            positions: ["Limited government / free markets","Immigration enforcement","[Verify]"],
-            differentiators: ["2024 GOP nominee (lost ~52–47); Free State movement figure","Seeking a rematch; faces a Sept 8 GOP primary [Verify]","[Verify]"],
-            supporters: [], opponents: [] }
+          { name: "Matt Dunlap", party: "D", winner: false,
+            positions: ["Make billionaires and large corporations pay their fair share","Strengthen Social Security and enact Medicare for All","Universal childcare and affordable housing; opposes ICE raids in Maine"],
+            differentiators: ["Maine State Auditor and seven-term former Secretary of State","Helped get Trump's 2017 voter-fraud commission disbanded","Won on second-choice strength after finishing second on first choices"],
+            supporters: ["Decades of statewide experience and high name recognition"],
+            opponents: ["Opponents cast him as a longtime party insider"] },
+          { name: "Paul LePage", party: "R", winner: false,
+            positions: ["Finish the wall; end illegal immigration and restore law and order","Lower taxes, less red tape, more jobs for Maine families","Defend Second Amendment rights; protect Social Security and Medicare"],
+            differentiators: ["Two-term former governor with near-universal name recognition","Endorsed by President Trump (Dec 2025)","In the NRCC's 'MAGA Majority' program"],
+            supporters: ["As governor, repaid roughly $750M in state hospital Medicaid debt","Cut income taxes and overhauled the state pension system"],
+            opponents: ["A long record of racially charged and profane public remarks","Residency questioned over Florida homestead exemptions through 2025"] }
         ]
       },
       {
         date: "Nov 5, 2024", type: "past",
-        note: "Maggie Goodlander (D) won the open seat ~53% to ~47% over Republican Lily Tang Williams — a surprisingly close ~6 points for a Lean-D seat.",
+        note: "Jared Golden (D) held the seat by 0.6 points — 50.35% to 49.65% over Austin Theriault (R) — one of the closest House races in the country; confirmed by recount in December 2024.",
         candidates: [
-          { name: "Maggie Goodlander", party: "D", winner: true,
-            positions: ["Costs and competition","Reproductive rights","Manufacturing"],
-            differentiators: ["Won an open seat by ~6 points","Former DOJ attorney"],
+          { name: "Jared Golden", party: "D", winner: true,
+            positions: ["Working-class economics","Tariffs and trade","Veterans"],
+            differentiators: ["Won by ~0.6 points (about 2,700 votes)","Announced in Nov 2025 he would not seek re-election"],
             supporters: [], opponents: [] },
-          { name: "Lily Tang Williams", party: "R", winner: false,
-            positions: ["Limited government","Immigration enforcement","Parental rights"],
-            differentiators: ["2024 GOP nominee; naturalized citizen and activist","Lost by ~6 points; running again in 2026"],
+          { name: "Austin Theriault", party: "R", winner: false,
+            positions: ["Border security","Energy costs","Agriculture"],
+            differentiators: ["Former NASCAR driver and state representative","Lost by ~0.6 points after a December recount"],
             supporters: [], opponents: [] }
         ]
       }
@@ -868,12 +943,12 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "New Hampshire Elections Hub", lastUpdated: "July 22, 2026" };
+const SITE_META = { name: "Maine Elections Hub", lastUpdated: "July 23, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
-// Sources: (none yet — NH county-level down-ballot research is the next phase.)
+// Sources: (none yet — Maine county-level down-ballot research is the next phase.)
 const LOCAL_RACES = {
-  // County-level down-ballot research for New Hampshire has not started yet.
+  // County-level down-ballot research for Maine has not started yet.
   // Follow the nc.html pattern (New Hanover, "37129") when it does.
 };
 
@@ -933,10 +1008,10 @@ function getCountyElections(fips) {
      RENDERING LOGIC
      ============================================= -->
 <script>
-const NH_STATE_FIPS = "33";
+const ME_STATE_FIPS = "23";
 const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
 
-const svg     = d3.select("#nhmap");
+const svg     = d3.select("#memap");
 const tooltip = document.getElementById("tooltip");
 const panel   = document.getElementById("panel");
 const overlay = document.getElementById("overlay");
@@ -946,7 +1021,7 @@ document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
 
 d3.json(TOPO_URL).then((us) => {
   const allCounties = topojson.feature(us, us.objects.counties).features;
-  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(NH_STATE_FIPS));
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(ME_STATE_FIPS));
 
   const width  = 1000;
   const height = 1000;
@@ -993,7 +1068,7 @@ d3.json(TOPO_URL).then((us) => {
       });
 
   // ---- Capital marker: Concord ----
-  drawCapital(g, projection, { name: "Concord", lng: -71.5376, lat: 43.2081 });
+  drawCapital(g, projection, { name: "Augusta", lng: -69.7795, lat: 44.3106 });
 
   loading.style.display = "none";
 }).catch((err) => {
@@ -1009,9 +1084,9 @@ function openPanel(fips) {
 
   if (!built) {
     eyebrow.textContent = "County FIPS " + fips;
-    title.textContent   = "Not in NH";
+    title.textContent   = "Not in ME";
     subtitle.textContent = "";
-    body.innerHTML = `<div class="empty-state"><p>This county isn't in our New Hampshire dataset.</p></div>`;
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our Maine dataset.</p></div>`;
   } else {
     eyebrow.textContent = `Congressional District ${built.county.d}`;
     title.textContent   = built.county.n + " County";

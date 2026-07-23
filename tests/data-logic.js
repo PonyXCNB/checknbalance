@@ -10,6 +10,7 @@
 //
 // Run:  node tests/data-logic.js
 "use strict";
+const fs = require("fs");
 const { extractInlineScripts, cutAtD3, runScript, makeChecker } = require("./lib");
 
 const { check, summary } = makeChecker();
@@ -34,6 +35,8 @@ const STATE_PAGES = [
   { page: "nh.html", countyCount: 10,  sampleFips: "33011", sampleName: "Hillsborough", expectedRaces: 6 },
   { page: "ct.html", countyCount: 8,   sampleFips: "09011", sampleName: "New London",  expectedRaces: 9 },
   { page: "vt.html", countyCount: 14,  sampleFips: "50007", sampleName: "Chittenden",  expectedRaces: 6 },
+  { page: "me.html", countyCount: 16,  sampleFips: "23019", sampleName: "Penobscot",   expectedRaces: 9 },
+  { page: "ma.html", countyCount: 14,  sampleFips: "25025", sampleName: "Suffolk",     expectedRaces: 11 },
 ];
 
 for (const cfg of STATE_PAGES) {
@@ -53,6 +56,17 @@ for (const cfg of STATE_PAGES) {
     `${cfg.page}: COUNTIES has all ${cfg.countyCount} counties`);
   check(typeof x.SITE_META.lastUpdated === "string" && x.SITE_META.lastUpdated.length > 0,
     `${cfg.page}: SITE_META.lastUpdated is set`);
+
+  // Clone-bug guard (shipped once on ma.html, July 2026): a page cloned from another
+  // state keeps the donor's `<XX>_STATE_FIPS` value in the RENDERING script, so the map
+  // silently draws the WRONG STATE while every data test still passes. The smoke test
+  // cannot catch this — it cuts the script at the first `d3.` call. Compare the constant
+  // against the COUNTIES keys, which are the source of truth for which state this is.
+  const rawPage = fs.readFileSync(cfg.page, "utf8");
+  const fipsDecl = rawPage.match(/const\s+[A-Z]{2}_STATE_FIPS\s*=\s*"(\d{2})"/);
+  const countyPrefix = Object.keys(x.COUNTIES)[0].slice(0, 2);
+  check(!!fipsDecl && fipsDecl[1] === countyPrefix,
+    `${cfg.page}: map STATE_FIPS "${fipsDecl ? fipsDecl[1] : "MISSING"}" matches COUNTIES prefix "${countyPrefix}"`);
 
   const result = x.getCountyElections(cfg.sampleFips);
   const races = (result && result.elections) || [];
@@ -164,7 +178,7 @@ for (const abbr of ALL_TESTED) {
 // makes a race silently vanish from the grouped drawer)
 // ---------------------------------------------------------------
 console.log("\n— type-value audit —");
-for (const page of ["index.html", "nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html", "ny.html", "ri.html", "nh.html", "ct.html", "vt.html", "state.html"]) {
+for (const page of ["index.html", "nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html", "ny.html", "ri.html", "nh.html", "ct.html", "vt.html", "me.html", "ma.html", "state.html"]) {
   const bad = [];
   for (const code of extractInlineScripts(page)) {
     for (const m of code.matchAll(/type\s*:\s*"([a-z]+)"/g)) {

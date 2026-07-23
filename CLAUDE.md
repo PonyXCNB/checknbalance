@@ -43,7 +43,9 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 | `nh.html` | New Hampshire — tenth fully built state (10 counties incl. split Hillsborough/Merrimack, 2 districts, Sept 8 primary pending). OPEN Senate (Shaheen retiring — Pappas D vs. Sununu/Brown R, Lean D); Gov Ayotte (R); OPEN NH-1 (Pappas vacating, Likely D); NH-2 Goodlander (D, Likely D). Built July 20, 2026. No LOCAL_RACES yet |
 | `ct.html` | Connecticut — eleventh fully built state (8 traditional counties, 5 districts, Aug 11 primary pending). NO 2026 U.S. Senate; six statewide constitutional offices (Gov Lamont seeking a 3rd term vs. GOP nominee Ryan Fazio, Solid D; LG/AG/SoS/Treasurer/Comptroller). Marquee: CT-1, where 14-term John Larson LOST the convention endorsement to Luke Bronin. Built July 22, 2026. No LOCAL_RACES yet |
 | `vt.html` | Vermont — twelfth fully built state (14 counties, 1 at-large district, Aug 11 primary pending). NO 2026 U.S. Senate; Gov Phil Scott (R) seeking a 6th 2-yr term (Solid R), Lt Gov Rodgers (R), OPEN Auditor (Hoffer retiring), U.S. House at-large Balint (D, Solid D). Built July 22, 2026. No LOCAL_RACES yet |
-| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT redirect to their dedicated pages |
+| `me.html` | Maine — thirteenth fully built state (16 counties, 2 districts, June 9 primary results certified). Built July 23, 2026. RCV state: ranked choice applies to ALL primaries and to FEDERAL generals only — the GOVERNOR's general is plurality (SJC struck LD 1666 on Apr 6, 2026). AG/SoS/Treasurer are chosen by the Legislature, NOT elected. Marquee: Collins (R) Toss Up — the Democratic nominee CHANGED after the primary (Platner won, withdrew July 10; Troy Jackson presumptive pending a **July 25 convention** — refresh then). Open Governor (Mills term-limited): Pingree (D) / Charles (R) / Bennett (I). ME-2 OPEN (Golden retiring): Dunlap (D) vs. LePage (R), Sabato Likely R. No LOCAL_RACES yet |
+| `ma.html` | Massachusetts — fourteenth fully built state (14 counties, 9 districts, ⚠ primary **Sept 1, 2026** — party fields are SETTLED since the June 2 filing deadline, but independents can still file through Aug 25). Built July 23, 2026. Six statewide offices, all Solid/Safe D: Senate (Markey vs. Moulton primary; Deaton R), Gov (Healey/Driscoll; GOP primary Minogue vs. Shortsleeve — **Kennealy missed the 15% convention threshold and is OUT**), AG (Campbell vs. Walsh), SoS (Galvin — first time since his 1994 election with neither a Democratic nor a Republican opponent), Treasurer (Goldberg vs. Dionne), Auditor (DiZoglio, no GOP filed). Plus **nine certified statewide ballot questions**. Marquee: OPEN MA-6 (Moulton → Senate), a six-way Democratic primary. No LOCAL_RACES yet |
+| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA redirect to their dedicated pages |
 | `favicon.svg` | Gold-gradient circle + white checkmark (primary favicon, matches site crest) |
 | `favicon.png` | 32px PNG fallback |
 | `favicon.ico` | Multi-size ICO (16/32/48) at root for legacy auto-discovery |
@@ -141,7 +143,7 @@ must appear AFTER its declaration; a top-level TDZ error kills the whole script 
 ### index.html (national)
 ```
 ST / NAME     : fips → abbr / full name             CAP: capitals (currently unused on this page)
-BUILT         : { "37": nc, "45": sc, "13": ga, "51": va, "24": md, "10": de, "34": nj, "36": ny, "44": ri, "33": nh, "09": ct, "50": vt }
+BUILT         : { "37": nc, "45": sc, "13": ga, "51": va, "24": md, "10": de, "34": nj, "36": ny, "44": ri, "33": nh, "09": ct, "50": vt, "23": me, "25": ma }
 PARTIAL       : Set of 3 fips (DC FL AL) → lighter gold tier
 CALLOUTS      : label anchor coords for 9 small states + DC
 destFor(fips) : BUILT[fips] if fully built, else state.html?state=XX
@@ -175,7 +177,7 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of July 22, 2026)
+## Current state (as of July 23, 2026)
 
 - **NC (full):** 2024 statewide results (Gov, Lt Gov, AG, Supreme Court Seat 6) + all 14 US House
   districts (2024 + 2026) + 2026 US Senate (Cooper vs. Whatley vs. Bray, rated Lean D). NC primary
@@ -299,6 +301,18 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
    `grep -oE 'type:"[a-z]+"' *.html | sort | uniq -c`
 8. Development sandboxes may not reach jsdelivr; verify TopoJSON structure via `npm pack us-atlas@3`
    instead of fetching the CDN.
+10. **A cloned state page keeps the DONOR's map FIPS — and every data test still passes.**
+   Shipped once (caught before publish, July 23, 2026): `ma.html` was cloned from `ct.html`,
+   the constant was renamed `CT_STATE_FIPS` → `MA_STATE_FIPS` but its VALUE stayed `"09"`, so
+   Massachusetts rendered **Connecticut's county map**. `parse-check` and `data-logic` pass
+   (the data script is fine) and `smoke-test` can't see it — it cuts the script at the first
+   `d3.` call, and the FIPS constant lives in the RENDERING script below that cut.
+   `tests/data-logic.js` now compares each page's `<XX>_STATE_FIPS` against its `COUNTIES` key
+   prefix, which closes this hole. **Still open the new page in a browser and look at the map**
+   — a wrong-state map is invisible to every text-level check.
+   Clone checklist beyond the data: `<title>`, meta description, crest, brand name, hero title
+   + county count, map `id=`/`#xxmap` CSS selector + `d3.select`, `<XX>_STATE_FIPS` VALUE,
+   `drawCapital` coordinates, "Not in XX" empty state, footer sources line, `SITE_META`.
 9. **Every generic entry in `buildSeats` must be guarded by `covered.has(<key>)`.** The DC delegate
    branch originally wasn't, so DC's drawer showed the delegate race twice (fixed July 6, 2026 —
    found by `tests/data-logic.js` the first time it ran). If you add a new `key` value to
@@ -316,7 +330,7 @@ node tests/run-all.js
 |------|----------------|
 | `tests/parse-check.js` | Every inline `<script>` in every page must compile (syntax errors only) |
 | `tests/smoke-test.js` | Executes each page's scripts top-to-bottom with DOM stubs, cut at the first `d3.` usage; runs state.html for all 10 featured states + controls (TX, CA) + verifies the NC→nc.html redirect. **This is the test that catches declaration-order/TDZ bugs.** |
-| `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config: nc.html + sc.html): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly. Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
+| `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config, now 14 pages): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly, **and the map `<XX>_STATE_FIPS` constant matches the COUNTIES prefix** (quirk #10). Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
 | `tests/lib.js` | Shared helpers: inline-script extraction, the d3 cut, DOM stubs, vm sandbox runner |
 | `tests/run-all.js` | Runs all three suites; exits non-zero if anything fails |
 | `tools/verify-report.js` | Compact inventory of every [Verify] marker + time-sensitive race dates across all built pages. **Weekly refreshes work from this report, not full page reads** (~10× cheaper) |
@@ -386,14 +400,19 @@ requests here as they come in; until then, runs should go to state builds + the 
    Sept 8; voices not yet added). **Connecticut and Vermont were COMPLETED July 22, 2026** (cloned from nh.html;
    CT = 8 traditional counties/5 districts/6 statewide offices; VT = 14 counties/1 at-large seat/Gov+LtGov+open
    Auditor; both built pre-primary, so contested fields are provisional [Verify] — both primaries are Aug 11;
-   voices not yet added). That brings the built bloc to **12 (NC SC GA VA MD DE NJ NY RI NH CT VT)**. **Next
-   targets:** finish New England — **MA** (Sept 1 primary; Senate Markey, Gov Healey, 14 counties, 9 districts —
-   the biggest remaining NE build), then **ME** (Senate Collins is a marquee race, open Governor after Mills is
-   term-limited, 16 counties, 2 districts; note ME uses ranked-choice voting for federal races — the page may
-   need a note for that). After New England, continue down/inland: **PA**, **OH**, **WV** or **NH-adjacent**
-   fill-ins. **Florida still ONLY after its Aug 18, 2026 primaries.** **DC** needs a different page model (no
-   counties). Follow the full-state clone checklist in "Data architecture → index.html" when adding each state.
-   **Post-primary refresh queue:** CT + VT the week of Aug 11, NH after Sept 8, RI after Sept 9, DE after Sept 15.
+   voices not yet added). **Maine and Massachusetts were COMPLETED July 23, 2026** (ME cloned from nh.html, MA from
+   ct.html; ME = 16 counties/2 districts/Senate+open Governor, post-primary since ME voted June 9; MA = 14 counties/
+   9 districts/6 statewide offices + 9 certified ballot questions, pre-primary since MA votes Sept 1; voices not yet
+   added). That brings the built bloc to **14 (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA)** — an unbroken contiguous
+   run from Georgia to Maine, and **ALL SIX New England states are now done**. **Next targets:** the build front moves
+   inland/south-west of the existing bloc — **PA** (67 counties, 17 districts, May 19 primary already held — the
+   biggest remaining east-coast build and the highest-value one), then **OH** (88 counties, 15 districts, plus the
+   Brown–Husted Senate special already tracked in state.html) and **WV** (55 counties, 2 districts — small and quick).
+   **Florida still ONLY after its Aug 18, 2026 primaries.** **DC** needs a different page model (no counties).
+   Follow the full-state clone checklist in "Data architecture → index.html" when adding each state.
+   **Post-primary refresh queue:** **ME the week of July 25 (Democratic Senate nominating convention — the single
+   most time-sensitive item on the site)**, CT + VT the week of Aug 11, MA after Sept 1 (and again after Aug 25, when
+   the independent/unenrolled field closes), NH after Sept 8, RI after Sept 9, DE after Sept 15.
    - **DE time-sensitive:** July 14 filing deadline, then Sept 15 primary — refresh de.html after
      both.
    - **MD follow-up:** June 23 primary figures are unofficial — swap in certified numbers when
