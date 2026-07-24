@@ -45,7 +45,8 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 | `vt.html` | Vermont — twelfth fully built state (14 counties, 1 at-large district, Aug 11 primary pending). NO 2026 U.S. Senate; Gov Phil Scott (R) seeking a 6th 2-yr term (Solid R), Lt Gov Rodgers (R), OPEN Auditor (Hoffer retiring), U.S. House at-large Balint (D, Solid D). Built July 22, 2026. No LOCAL_RACES yet |
 | `me.html` | Maine — thirteenth fully built state (16 counties, 2 districts, June 9 primary results certified). Built July 23, 2026. RCV state: ranked choice applies to ALL primaries and to FEDERAL generals only — the GOVERNOR's general is plurality (SJC struck LD 1666 on Apr 6, 2026). AG/SoS/Treasurer are chosen by the Legislature, NOT elected. Marquee: Collins (R) Toss Up — the Democratic nominee CHANGED after the primary (Platner won, withdrew July 10; Troy Jackson presumptive pending a **July 25 convention** — refresh then). Open Governor (Mills term-limited): Pingree (D) / Charles (R) / Bennett (I). ME-2 OPEN (Golden retiring): Dunlap (D) vs. LePage (R), Sabato Likely R. No LOCAL_RACES yet |
 | `ma.html` | Massachusetts — fourteenth fully built state (14 counties, 9 districts, ⚠ primary **Sept 1, 2026** — party fields are SETTLED since the June 2 filing deadline, but independents can still file through Aug 25). Built July 23, 2026. Six statewide offices, all Solid/Safe D: Senate (Markey vs. Moulton primary; Deaton R), Gov (Healey/Driscoll; GOP primary Minogue vs. Shortsleeve — **Kennealy missed the 15% convention threshold and is OUT**), AG (Campbell vs. Walsh), SoS (Galvin — first time since his 1994 election with neither a Democratic nor a Republican opponent), Treasurer (Goldberg vs. Dionne), Auditor (DiZoglio, no GOP filed). Plus **nine certified statewide ballot questions**. Marquee: OPEN MA-6 (Moulton → Senate), a six-way Democratic primary. No LOCAL_RACES yet |
-| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA redirect to their dedicated pages |
+| `wv.html` | West Virginia — fifteenth fully built state (55 counties, 2 districts, May 12 primary results). Built July 24, 2026. ⚠ **DISTRICT NUMBERING IS REVERSED**: WV-1 is the SOUTHERN district (Charleston/Huntington, Carol Miller) and WV-2 the NORTHERN one + Eastern Panhandle (Morgantown/Wheeling/Martinsburg, Riley Moore). NO county is split. Short November ballot: Senate (Capito vs. Rachel Fetty Anderson, Solid R) is the ONLY statewide candidate race — governor and the whole Board of Public Works are presidential-year offices (next 2028). WV Supreme Court runs NONPARTISAN at the MAY primary, so both 2026 seats are already decided (Kirkpatrick, Flanigan — both beat Morrisey appointees) and appear as past races. No LOCAL_RACES yet |
+| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV redirect to their dedicated pages |
 | `favicon.svg` | Gold-gradient circle + white checkmark (primary favicon, matches site crest) |
 | `favicon.png` | 32px PNG fallback |
 | `favicon.ico` | Multi-size ICO (16/32/48) at root for legacy auto-discovery |
@@ -334,6 +335,8 @@ node tests/run-all.js
 | `tests/lib.js` | Shared helpers: inline-script extraction, the d3 cut, DOM stubs, vm sandbox runner |
 | `tests/run-all.js` | Runs all three suites; exits non-zero if anything fails |
 | `tools/verify-report.js` | Compact inventory of every [Verify] marker + time-sensitive race dates across all built pages. **Weekly refreshes work from this report, not full page reads** (~10× cheaper) |
+| `tools/voices-report.js` | Lists every candidate in an UPCOMING race that is missing supporters/opponents ("voices"), per page + a total. `--summary` for counts only, or pass a page name. Voices are a REQUIRED field (owner, July 24, 2026) — use this to find the gaps instead of reading pages |
+| `tools/apply-voices.js` | Injects researched voices into a page from a JSON file (`{office: {candidate: {supporters, opponents}}}`) without reflowing the rest of the file. Only fills EMPTY arrays in `upcoming` races, and reports any researched entry it could not place (so a name typo can't silently no-op). `--dry` to preview |
 | `tools/grok-research.js` | Grok lead generator (web + X search) — see editorial policy for sourcing rules |
 | `tools/research-ledger.md` | Dead-end tracker: markers researched with no findings + retry dates, so they aren't re-researched weekly |
 
@@ -372,8 +375,29 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
    (nc/ct/md/nh) and each is genuinely fact-dense (primary fields, certified ballot questions) — leave them.
    Re-run the audit after big data additions; keep writing concise from the start (RI/NH/CT/VT were built concise).
 
-**The owner to-do queue is currently EMPTY** — all items requested July 14, 2026 are complete. Add new owner
-requests here as they come in; until then, runs should go to state builds + the [Verify] backlog.
+4. **Voices ("Supporters say" / "Opponents say") for EVERY candidate in an upcoming race.** ⚠ ACTIVE — the
+   owner's highest-priority standing item, added July 24, 2026. His words: NC's voices blocks are what make the
+   site *useful*, and "without this data for every candidate, the website is not helpful."
+   - **The owner explicitly wants a marked, honest characterization rather than an empty section.** If a claim
+     can't be firmly sourced, still write the real argument that side makes and append `[Verify]` — readers can
+     research further. An empty voices block is now a defect, not a safe default.
+   - **This does NOT loosen the no-fabrication rule, and the two do not actually conflict.** Voices are
+     *paraphrased synthesis of arguments*, not assertions of fact. Permitted when thin: the honest structural
+     argument that is self-evident or reported (e.g. "faces long odds in a district the incumbent won by 40
+     points", "no campaign presence located") + `[Verify]`. STILL FORBIDDEN: inventing a specific factual claim —
+     a scandal, endorsement, poll number, vote, or quote that no source supports. Generic-but-true + `[Verify]`
+     is right; specific-but-unsourced is never right.
+   - Both sides get real content. Never a puff piece for one candidate and a hit piece on their opponent.
+   - **Past races keep empty voices** — that is nc.html's own convention and is correct; the requirement is about
+     races voters can still act on. `tools/voices-report.js` only counts upcoming/scheduled.
+   - **Workflow:** `node tools/voices-report.js` to find gaps → research per race → `node tools/apply-voices.js
+     <page> <json>` to inject them without reflowing the file.
+   - **Progress: 187 gaps → 122 (July 24, 2026).** DONE: **ny.html (65/65 — was the worst page at 100% empty)**,
+     me.html, wv.html. **Owner's requested order: New York first (done), then the remaining states on later runs.**
+     Worst remaining: ga.html 21, nc.html 17, ct.html 17, ri.html 15, sc.html 13.
+
+**Queue status:** items 1–3 (requested July 14, 2026) are complete. **Item 4 is ACTIVE and is the owner's top
+priority** — work it every run alongside the state builds until every page reports 0 missing.
 
 ## Backlog / roadmap
 
@@ -404,15 +428,92 @@ requests here as they come in; until then, runs should go to state builds + the 
    ct.html; ME = 16 counties/2 districts/Senate+open Governor, post-primary since ME voted June 9; MA = 14 counties/
    9 districts/6 statewide offices + 9 certified ballot questions, pre-primary since MA votes Sept 1; voices not yet
    added). That brings the built bloc to **14 (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA)** — an unbroken contiguous
-   run from Georgia to Maine, and **ALL SIX New England states are now done**. **Next targets:** the build front moves
-   inland/south-west of the existing bloc — **PA** (67 counties, 17 districts, May 19 primary already held — the
-   biggest remaining east-coast build and the highest-value one), then **OH** (88 counties, 15 districts, plus the
-   Brown–Husted Senate special already tracked in state.html) and **WV** (55 counties, 2 districts — small and quick).
-   **Florida still ONLY after its Aug 18, 2026 primaries.** **DC** needs a different page model (no counties).
+   run from Georgia to Maine, and **ALL SIX New England states are now done**. The build front then moved inland:
+   **WV was completed July 24, 2026** (see below), and **OH is fully researched and ready to build** (see the banked
+   section below). **DC** needs a different page model (no counties).
    Follow the full-state clone checklist in "Data architecture → index.html" when adding each state.
+   **West Virginia was COMPLETED July 24, 2026** (cloned from me.html; 55 counties / 2 districts / Senate + Amendment 1
+   + two already-decided nonpartisan Supreme Court seats; built WITH voices on every upcoming candidate from the start).
+   That brings the built bloc to **15 (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA WV)** — the coastal run from Georgia to
+   Maine plus the first state inland of it.
    **Post-primary refresh queue:** **ME the week of July 25 (Democratic Senate nominating convention — the single
    most time-sensitive item on the site)**, CT + VT the week of Aug 11, MA after Sept 1 (and again after Aug 25, when
    the independent/unenrolled field closes), NH after Sept 8, RI after Sept 9, DE after Sept 15.
+
+   ### ⚡ OHIO — research already banked (July 24, 2026), build is ready to execute
+   OH research was completed this run but the page was NOT built (the run went to WV + the owner's new voices
+   directive). **Do not re-research this — build from it.** Everything below is sourced; see the run's commit message.
+   - **⚠ OHIO USES A NEW CONGRESSIONAL MAP FOR 2026** — adopted **Oct 31, 2025**, unanimously/bipartisan (so it is a
+     full-term map, not another 4-year temporary one). The OH SoS district-maps page labels it "Federal Congressional
+     Districts (2026-2032)". **Building on the 2022 map would be wrong.** The county→district table was derived from the
+     state's official Block Equivalency File joined to Census 2020 PL 94-171 blocks and reconciled EXACTLY against the
+     Redistricting Commission's own county-population PDF (all 103 county×district pairs, 0 mismatches). **15 split
+     counties** (plurality call in parens): Cuyahoga→11, Franklin→3, Hamilton→1, Butler→8, Stark→13 (51.8%, closest but
+     one), Mahoning→6, Delaware→12, Portage→14, Clark→4, Wood→5, Wayne→7, Richland→5, Miami→8 (51.8%, the closest),
+     Holmes→12, Perry→12. **Lorain, Lucas, Montgomery and Summit are NOT split under the new map** (they were under the
+     old one) — CD5, CD9, CD10, CD13 respectively. CD3 sits entirely inside Franklin, CD11 entirely inside Cuyahoga.
+   - **U.S. Senate SPECIAL (Class 3, Vance's old seat, term runs to Jan 3 2029):** appointed incumbent **Jon Husted (R)**
+     (unopposed primary, 100%) vs. **Sherrod Brown (D)** (89.4% over Ron Kincaid), plus Bill Redpath (L) and Greg Levy (I),
+     both with NO sourceable positions — card them name-only with [Verify]. **Cook Toss Up (Apr 13), Sabato Toss Up
+     (Jun 11), Inside Elections Tilt R (Apr 23).** ⚠ Make explicit that this is a DIFFERENT seat from the Class 1 seat
+     Brown lost in 2024 to Moreno (50.09%–46.47%, +3.62) — it is not a rematch.
+   - **Governor (OPEN, DeWine term-limited):** **Vivek Ramaswamy (R)** + Lt Gov **Rob McColley**, won the primary ~82–83%
+     over Casey Putsch (~17%, a no-money protest vote read as a likability signal); Dave Yost quit the race May 2025 after
+     Trump endorsed Ramaswamy; Heather Hill was DISQUALIFIED (running mate dropped out) and ran as a write-in.
+     **Amy Acton (D)** + Lt Gov **David Pepper**, unopposed. ⚠ **Cook moved this to TOSS-UP on July 16, 2026** (was Lean R);
+     Sabato still Leans R. Polling shows Acton narrowly ahead within the margin. 2022 history: DeWine 62.41% – Whaley 37.38%.
+   - **ALL FIVE statewide executive offices are OPEN** (term-limit musical chairs): **AG** Keith Faber (R, the sitting
+     Auditor) vs. John Kulewicz (D); **SoS** Robert Sprague (R, the sitting Treasurer) vs. Allison Russo (D, House
+     Minority Leader) + Tom Pruss (L); **Treasurer** Jay Edwards (R) vs. Seth Walsh (D); **Auditor** Frank LaRose (R, the
+     sitting SoS) vs. Annette Blackwell (D, Maple Heights mayor). Yost resigned as AG ~June 7, 2026; DeWine appointed Andy
+     Wilson interim — **Wilson is NOT on the ballot.** Down-ballot platforms are genuinely thin → [Verify] is correct.
+   - **Ohio Supreme Court, 2 seats, now PARTISAN** (court is 6–1 R): Dan Hawkins (R, incumbent) vs. Marilyn Zayas (D);
+     Jennifer Brunner (D, incumbent — the lone Democrat) vs. Colleen O'Donnell (R), who won a 4-way primary.
+   - **House ratings (Cook Jul 16 / Sabato Jul 16 / Inside Elections Jun 12):** only FOUR Ohio seats are competitive on
+     Cook's sheet — **OH-1 Lean D, OH-7 Likely R, OH-9 TOSS UP, OH-13 Likely D**; every other seat is Solid/Safe.
+     OH-9 = Toss Up / Toss-up / Tilt R. OH-13 = Likely D / Likely D / Solid D. OH-10 and OH-15 are Baseline R+10
+     ("outer fringes" in a wave). The new map moved OH-9 from Baseline R+3 → **R+8** (sheds the Cleveland-ward arm,
+     adds Defiance/Williams/Fulton; Trump would have carried the new lines ~11) and OH-13 from D+2 → **D+4** (sheds
+     Republican Stark territory, picks up Kent). Statewide the map went from 10 to 12 safe-R seats.
+   - **OH-9 is THE marquee race:** Kaptur (D, in office since 1983, senior Appropriations) vs. **Derek Merrin (R)** —
+     a REMATCH of 2024, which Kaptur survived by **0.64 points** (48.27–47.63) with a Libertarian taking 4.10%.
+     Merrin won a 5-way primary with 44.08% and was Trump-endorsed May 22, 2026; ICE deputy director Madison Sheahan
+     resigned to run and finished third. Kaptur has ~$3.5M cash on hand to Merrin's ~$531K. The Libertarian line
+     (Matthew Althaus) matters here given the 2024 margin.
+   - **OH-13's competitiveness collapsed for a specific reason worth explaining on the page:** 2024 nominee **Kevin
+     Coughlin — who lost to Sykes by 2.22 points and was the presumed 2026 nominee — dropped out Nov 2, 2025, two days
+     after the new map passed.** Radio host Carey Coleman won the 5-way primary instead, and trails Sykes ~26-to-1 in cash.
+   - **OH-1 (Landsman D) is the other real race** and the district the new map changed most: it sheds Democratic
+     Hamilton County suburbs to OH-8 and absorbs deep-red Clinton County, moving from **Harris +6 to Trump +2.5**.
+     Cook and Sabato both moved it Toss Up → **Lean D** (Apr 7 / Mar 26, 2026); Inside Elections still Tossup.
+     Landsman (won primary 67.9%) vs. **Eric Conroy (R)** — Air Force Academy grad and former CIA case officer,
+     Trump-endorsed Apr 14, won the primary 71.9%. Landsman ~$3.6M cash to Conroy's ~$374K, but the Congressional
+     Leadership Fund reserved **$4M** in the Cincinnati market.
+   - **OH-7 (Max Miller R) is the sleeper — Likely R, downgraded twice** (Cook Solid→Likely Jun 18; Sabato Safe→Likely
+     May 6). Union ironworker **Brian Poindexter (D)** won an 8-way primary (~37%), endorsed by Sanders, Khanna, Ryan
+     and the Ohio AFL-CIO; a Democratic-sponsored June poll had it 44–43. ⚠ When writing Miller's card: his 2024 win
+     (51.08%) was a THREE-way race — Dennis Kucinich ran as an independent and took 12.8%; presenting it as a narrow
+     two-way finish would mislead. ⚠ Race raters cited allegations in his contested divorce, which he denies — the only
+     defensible framing is "raters cited it," never as established fact.
+   - **⚠ Publishing cautions carried over from research (resolve against the OH SoS certified list, not another web pass):**
+     OH-1's Libertarian line is unresolved (primary winner John Hancock suspended his campaign Feb 24, 2026 after an
+     indictment; the state LP lists Jason Stoops instead) — **the single biggest correction risk**. OH-4: **Tamie Wilson
+     is NOT on the ballot** (petitions rejected); the certified independent is **Tracey Tackett** (certified Jul 6, 2026,
+     note the spelling) — Wikipedia is stale here. OH-15: a source lists Samuel Ronan as eliminated but the certified
+     result shows Carey unopposed at 100%. Several Libertarian/independent lines (OH-5 Dalton Franklin, OH-7 Andrey
+     Martinichin / Brian Duvall-Gambino) are unconfirmed — omit rather than assert. Positions are missing for OH-2 Taylor
+     and Mazzuckelli, OH-4 Jordan, and OH-7 Miller (house.gov and campaign sites blocked automated fetch).
+     **Do NOT publish** the single-sourced claim about an Anthropic-funded PAC in the OH-7 primary — it was uncorroborated
+     against FEC filings, and the researching agent correctly noted it is not a neutral party on that item.
+   - **House:** OH-2 detail is fully researched:
+     David Taylor (R, incumbent, Trump-endorsed, won primary 74.2–25.8) vs. Jen Mazzuckelli (D, 53.2–46.8 over Todd
+     Wilson); Solid/Safe R by all four raters; Athens County moved from OH-12 into OH-2 under the new map; **no published
+     Cook PVI exists yet for the new OH-2 lines — do not print one.** Districts 1 and 3–15 still need the per-district pass.
+   - Recurring caveat: **ohiosos.gov returns 403 to automated fetch**, so certified vote TOTALS are news-sourced
+     (percentages are reliable and cross-agree); swap in official canvass numbers when the portal is reachable.
+
+   **Next targets after Ohio:** **PA** (67 counties, 17 districts, May 19 primary already held — still the biggest and
+   highest-value remaining east-coast build), then continue outward. **Florida still ONLY after its Aug 18, 2026 primaries.**
    - **DE time-sensitive:** July 14 filing deadline, then Sept 15 primary — refresh de.html after
      both.
    - **MD follow-up:** June 23 primary figures are unofficial — swap in certified numbers when

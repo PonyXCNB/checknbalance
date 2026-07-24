@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>West Virginia Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every WV election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #wvmap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">WV</div>
+      <div class="brand-text">
+        <span class="brand-name">West Virginia Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every West Virginia <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 55 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">55</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>2</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>2</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of West Virginia…</div>
+      <svg id="wvmap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>WV Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">July 24, 2026</span><br>
+      Sources: West Virginia Secretary of State (sos.wv.gov), Ballotpedia, Wikipedia, Cook Political Report, Sabato's Crystal Ball, WV MetroNews, West Virginia Watch, The Dominion Post, WV Gazette-Mail, WTRF, WHSV, AP/NBC.
+    </div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every DE county (all in the single at-large district)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- (1) Counties + primary US House district -----
+// ⚠ WEST VIRGINIA'S DISTRICT NUMBERING IS REVERSED from the intuitive north/south
+// reading. Under the enacted 2021 map (SB 3033, signed Oct 22, 2021 — the map used in
+// 2022 and 2024 and still in effect for 2026), WV-1 is the SOUTHERN district
+// (Charleston, Huntington, Beckley) and WV-2 is the NORTHERN district (Morgantown,
+// Wheeling, Parkersburg) plus the Eastern Panhandle (Martinsburg). Wikipedia's district
+// article states the reversal explicitly. Verified twice, independently, before build.
+// West Virginia draws WHOLE-COUNTY districts — NO county is split between WV-1 and WV-2.
+// District 1 = 28 counties, District 2 = 27 counties, total 55.
+const COUNTIES = {
+  "54001":{n:"Barbour",d:2},
+  "54003":{n:"Berkeley",d:2},
+  "54005":{n:"Boone",d:1},
+  "54007":{n:"Braxton",d:1},
+  "54009":{n:"Brooke",d:2},
+  "54011":{n:"Cabell",d:1},
+  "54013":{n:"Calhoun",d:1},
+  "54015":{n:"Clay",d:1},
+  "54017":{n:"Doddridge",d:2},
+  "54019":{n:"Fayette",d:1},
+  "54021":{n:"Gilmer",d:1},
+  "54023":{n:"Grant",d:2},
+  "54025":{n:"Greenbrier",d:1},
+  "54027":{n:"Hampshire",d:2},
+  "54029":{n:"Hancock",d:2},
+  "54031":{n:"Hardy",d:2},
+  "54033":{n:"Harrison",d:2},
+  "54035":{n:"Jackson",d:1},
+  "54037":{n:"Jefferson",d:2},
+  "54039":{n:"Kanawha",d:1},
+  "54041":{n:"Lewis",d:2},
+  "54043":{n:"Lincoln",d:1},
+  "54045":{n:"Logan",d:1},
+  "54047":{n:"McDowell",d:1},
+  "54049":{n:"Marion",d:2},
+  "54051":{n:"Marshall",d:2},
+  "54053":{n:"Mason",d:1},
+  "54055":{n:"Mercer",d:1},
+  "54057":{n:"Mineral",d:2},
+  "54059":{n:"Mingo",d:1},
+  "54061":{n:"Monongalia",d:2},
+  "54063":{n:"Monroe",d:1},
+  "54065":{n:"Morgan",d:2},
+  "54067":{n:"Nicholas",d:1},
+  "54069":{n:"Ohio",d:2},
+  "54071":{n:"Pendleton",d:1},
+  "54073":{n:"Pleasants",d:2},
+  "54075":{n:"Pocahontas",d:1},
+  "54077":{n:"Preston",d:2},
+  "54079":{n:"Putnam",d:1},
+  "54081":{n:"Raleigh",d:1},
+  "54083":{n:"Randolph",d:2},
+  "54085":{n:"Ritchie",d:2},
+  "54087":{n:"Roane",d:1},
+  "54089":{n:"Summers",d:1},
+  "54091":{n:"Taylor",d:2},
+  "54093":{n:"Tucker",d:2},
+  "54095":{n:"Tyler",d:2},
+  "54097":{n:"Upshur",d:2},
+  "54099":{n:"Wayne",d:1},
+  "54101":{n:"Webster",d:1},
+  "54103":{n:"Wetzel",d:2},
+  "54105":{n:"Wirt",d:1},
+  "54107":{n:"Wood",d:2},
+  "54109":{n:"Wyoming",d:1}
+};
+
+// ----- (2) Statewide elections every county votes in -----
+// WHY WEST VIRGINIA'S NOVEMBER BALLOT IS SHORT: WV elects its Governor and the rest of
+// the Board of Public Works (Secretary of State, Auditor, Treasurer, Attorney General,
+// Agriculture Commissioner) in PRESIDENTIAL years. All six were filled in Nov 2024 and
+// are next up in 2028, so NONE appear in 2026. Patrick Morrisey (R) is governor through
+// Jan 2029. That leaves U.S. Senate as the only statewide *candidate* race in November.
+// WV SUPREME COURT: justices run on a NONPARTISAN ballot at the MAY PRIMARY, not in
+// November — so the two 2026 seats were already decided on May 12 and appear here as
+// past races. Nonpartisan candidates are tagged "I" (the schema has no nonpartisan tag);
+// the race notes say so explicitly.
+const STATEWIDE = [
+  // UPCOMING — 2026 General Election (Nov 3, 2026)
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — West Virginia",
+    note: "Shelley Moore Capito (R) seeks a third term against Rachel Fetty Anderson (D), a public-interest attorney and former Morgantown city councilmember who won a five-way primary with 33%. Rated Solid R (Cook) / Safe R (Sabato). This is the only statewide candidate race on West Virginia's November ballot.",
+    candidates: [
+      { name: "Shelley Moore Capito (incumbent)", party: "R", winner: false,
+        positions: ["All-of-the-above energy; pro-coal and gas permitting reform","Border security and the Trump administration's agenda","Broadband, infrastructure and jobs for West Virginia"],
+        differentiators: ["Chairs the Senate Environment and Public Works Committee","Holds Trump's 'complete and total' endorsement","First woman to represent West Virginia in the U.S. Senate"],
+        supporters: ["A committee gavel that turns federal infrastructure money toward West Virginia","Seniority no newcomer could match — she is the state's most powerful elected official"],
+        opponents: ["Critics say she votes the national party line even when it costs West Virginia's safety net [Verify]","Democrats argue three terms is long enough for a state still near the bottom on health outcomes [Verify]"] },
+      { name: "Rachel Fetty Anderson", party: "D", winner: false,
+        positions: ["Medicare for All and expanded health coverage","Safe drinking water and restoring public utilities","Services for the homeless and the working poor"],
+        differentiators: ["Public-interest attorney; former Morgantown councilmember and deputy mayor","Won a crowded five-way primary over ex-Senate President Jeff Kessler","Grassroots campaign — about $22,000 raised to Capito's $6.5M"],
+        supporters: ["A water-and-healthcare campaign aimed squarely at what West Virginians tell pollsters they need [Verify]","Progressive advocates back her as a grassroots reform voice"],
+        opponents: ["Starts roughly $6.5M behind Capito in a state forecasters rate Safe Republican","Republicans cast her platform as far to the left of West Virginia's median voter [Verify]"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Ballot Measure",
+    office: "Amendment 1 — Citizenship Voting Requirement",
+    note: "A proposed amendment to the West Virginia Constitution on citizenship as a voting requirement. [Verify the certified ballot title and full text against the WV Secretary of State before relying on this summary — the measure is reported in 2026 election roundups but was not confirmed against the official certified ballot this pass.]",
+    candidates: []
+  },
+
+  // PAST — the May 12, 2026 primaries and recent statewide results
+  {
+    date: "May 12, 2026",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "Republican Primary — U.S. Senate",
+    note: "Shelley Moore Capito won renomination with about 66.5% over state Sen. Tom Willis (~19%), with Bryan McKinney and David Purkey also on the ballot. The Associated Press called the race shortly after polls closed. [Verify certified totals against the WV Secretary of State canvass.]",
+    candidates: [
+      { name: "Shelley Moore Capito", party: "R", winner: true,
+        positions: ["Energy production","Border security","Infrastructure for West Virginia"],
+        differentiators: ["Won renomination with roughly 66.5%","Chairs Senate Environment and Public Works"],
+        supporters: [], opponents: [] },
+      { name: "Tom Willis", party: "R", winner: false,
+        positions: ["[Verify]","",""],
+        differentiators: ["State senator; finished second with about 19%","Ran to Capito's right [Verify]"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "May 12, 2026",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "Democratic Primary — U.S. Senate",
+    note: "Rachel Fetty Anderson won a five-way race with about 33.2% (~30,930 votes) over former state Senate President Jeff Kessler (27.0%), Zach Shrewsbury (16.1%), Thornton Cooper (12.8%) and Rio Phillips (11%). [Verify certified totals against the WV Secretary of State canvass.]",
+    candidates: [
+      { name: "Rachel Fetty Anderson", party: "D", winner: true,
+        positions: ["Health coverage","Safe drinking water","Services for the working poor"],
+        differentiators: ["Won the nomination with about 33.2% in a five-way field","Public-interest attorney and former Morgantown deputy mayor"],
+        supporters: [], opponents: [] },
+      { name: "Jeff Kessler", party: "D", winner: false,
+        positions: ["[Verify]","",""],
+        differentiators: ["Former West Virginia Senate President","Finished second with about 27%"],
+        supporters: [], opponents: [] },
+      { name: "Zach Shrewsbury", party: "D", winner: false,
+        positions: ["[Verify]","",""],
+        differentiators: ["Marine veteran and organizer; 2024 Senate primary candidate","Finished third with about 16.1%"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "May 12, 2026",
+    type: "past",
+    scope: "State · Statewide · Nonpartisan",
+    office: "WV Supreme Court of Appeals — Division 1",
+    note: "West Virginia elects Supreme Court justices on a NONPARTISAN ballot at the May primary, not in November — so this seat was already filled. H.L. 'Kirk' Kirkpatrick III won a five-candidate field with about 31%, defeating Gov. Morrisey's appointee, Justice Gerald Titus III. Candidates are tagged 'I' because the schema has no nonpartisan tag. [Verify certified totals against the WV Secretary of State canvass.]",
+    candidates: [
+      { name: "H.L. \"Kirk\" Kirkpatrick III", party: "I", winner: true,
+        positions: ["[Verify — WV judicial candidates run nonpartisan and avoid policy positions]","",""],
+        differentiators: ["Won a five-candidate nonpartisan field with about 31%","Defeated a sitting appointed justice"],
+        supporters: [], opponents: [] },
+      { name: "Gerald Titus III", party: "I", winner: false,
+        positions: ["[Verify]","",""],
+        differentiators: ["Appointed to the court by Gov. Patrick Morrisey","Lost the seat at the May 12 election"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "May 12, 2026",
+    type: "past",
+    scope: "State · Statewide · Nonpartisan",
+    office: "WV Supreme Court of Appeals — Division 2",
+    note: "The second nonpartisan Supreme Court seat on the May primary ballot. Bill Flanigan won with about 58% over appointed incumbent Justice Tom Ewing (~42%). Both of Gov. Morrisey's appointees to the court lost on the same night. [Verify certified totals against the WV Secretary of State canvass.]",
+    candidates: [
+      { name: "Bill Flanigan", party: "I", winner: true,
+        positions: ["[Verify — nonpartisan judicial race]","",""],
+        differentiators: ["Won the seat with about 58%","Defeated a sitting appointed justice"],
+        supporters: [], opponents: [] },
+      { name: "Tom Ewing", party: "I", winner: false,
+        positions: ["[Verify]","",""],
+        differentiators: ["Appointed to the court by Gov. Patrick Morrisey","Lost with about 42%"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 5, 2024",
+    type: "past",
+    scope: "State · Statewide",
+    office: "Governor of West Virginia (2024)",
+    note: "Patrick Morrisey (R), then the state's Attorney General, won the governorship 62.0% to 31.6% over Democrat Steve Williams, the mayor of Huntington — a roughly 30-point margin. Morrisey's four-year term runs through January 2029, which is why there is NO governor's race in 2026.",
+    candidates: [
+      { name: "Patrick Morrisey", party: "R", winner: true,
+        positions: ["Deregulation and energy production","Tax cuts","Public safety"],
+        differentiators: ["Won by about 30 points","Was the sitting Attorney General when elected"],
+        supporters: [], opponents: [] },
+      { name: "Steve Williams", party: "D", winner: false,
+        positions: ["Economic development","Healthcare access","Opioid response"],
+        differentiators: ["Mayor of Huntington","Lost by about 30 points"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 3, 2020",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — West Virginia (2020)",
+    note: "Shelley Moore Capito (R) won a second term with about 70.3% to Paula Jean Swearengin's 27.0% — a ~43-point margin, and she carried all 55 counties. It was the weakest showing for a West Virginia Democratic Senate nominee in state history.",
+    candidates: [
+      { name: "Shelley Moore Capito", party: "R", winner: true,
+        positions: ["Energy production","Infrastructure","Opioid response"],
+        differentiators: ["Won about 70.3% and carried all 55 counties","Margin of roughly 43 points"],
+        supporters: [], opponents: [] },
+      { name: "Paula Jean Swearengin", party: "D", winner: false,
+        positions: ["Coalfield environmental justice","Healthcare","Working families"],
+        differentiators: ["Coal miner's daughter and activist from the southern coalfields","Took about 27% — a modern low for a WV Democratic Senate nominee"],
+        supporters: [], opponents: [] }
+    ]
+  }
+];
+
+// ----- (3) US House races by district -----
+// Each district object holds: 2026 race + 2024 race.
+// ⚠ REMINDER: WV-1 is the SOUTHERN district and WV-2 is the NORTHERN one — the numbering
+// is the reverse of what the geography suggests. Both seats are rated Solid/Safe
+// Republican; West Virginia has had an all-Republican House delegation since 2021.
+// Primary results below are from the May 12, 2026 primary.
+// [Verify certified primary totals against the WV Secretary of State canvass — the SoS
+// results portal was not reachable during research, so figures come from WV MetroNews,
+// West Virginia Watch and AP/NBC tabulations, which agree with each other.]
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — WV District 1",
+    region: "Southern West Virginia — Charleston, Huntington, Beckley, Bluefield and the southern coalfields; 28 counties including Kanawha, Cabell, Raleigh and Mercer",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Carol Miller (R) seeks a fifth term against Vince George (D), a retired public servant from South Charleston. Miller won the May 12 GOP primary 72%–28% over Larry Jackson; George won the Democratic primary 53%–47% over Brit Aguirre. Rated Solid R (Cook) / Safe R (Sabato).",
+        candidates: [
+          { name: "Carol Miller (incumbent)", party: "R", winner: false,
+            positions: ["Extend and cut taxes from her Ways and Means seat","Back coal, gas and the energy jobs tied to them","Support the Trump agenda; fight the opioid epidemic"],
+            differentiators: ["Senior Republican on the tax-writing Ways and Means Committee","A farmer and small-business owner before Congress","The only woman in West Virginia's congressional delegation"],
+            supporters: ["A seat on Ways and Means gives a small state real leverage over federal tax law","Reliable on coal and gas in a district those industries still anchor"],
+            opponents: ["Democrats say she backed SNAP and Medicaid cuts that hit the southern coalfields hardest [Verify]","Critics argue eight years in office have not reversed the district's population and job losses [Verify]"] },
+          { name: "Vince George", party: "D", winner: false,
+            positions: ["Raise the federal minimum wage to $15 or more","Expand Social Security eligibility and benefits","Rural healthcare access; clean water and air"],
+            differentiators: ["Retired public servant, former teacher and policy analyst","Decades administering SNAP, Medicaid and rural physician recruiting","From South Charleston; won the primary 53%–47%"],
+            supporters: ["Decades inside SNAP and Medicaid programs inform a health and poverty agenda [Verify]","Labor and working-family advocates back his minimum-wage push [Verify]"],
+            opponents: ["Faces long odds in a district Miller carried by roughly 40 points in 2024","Republicans say his platform matches the national party, not southern West Virginia [Verify]"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Carol Miller (R) won re-election with 66.4% to Chris Reed's (D) 26.2%, with independent Wes Holden at 7.4%.",
+        candidates: [
+          { name: "Carol Miller", party: "R", winner: true,
+            positions: ["Tax policy","Coal and energy","Opioid response"],
+            differentiators: ["Won with 66.4% — a roughly 40-point margin","Ways and Means Committee member"],
+            supporters: [], opponents: [] },
+          { name: "Chris Reed", party: "D", winner: false,
+            positions: ["[Verify]","",""],
+            differentiators: ["2024 Democratic nominee","Took 26.2%"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  2: {
+    name: "U.S. House — WV District 2",
+    region: "Northern West Virginia and the Eastern Panhandle — Morgantown, Wheeling, Clarksburg, Fairmont, Parkersburg and Martinsburg; 27 counties including Monongalia, Ohio, Wood, Harrison and Berkeley",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Freshman Riley Moore (R) seeks a second term against Ace Parsi (D), a Morgantown community organizer. Moore was unopposed in the May 12 GOP primary; Parsi won a three-way Democratic primary with 39.8% over Stephanie Spears Tomana (37.9%) and 2024 nominee Steven Wendelin (22.4%). Rated Solid R (Cook) / Safe R (Sabato).",
+        candidates: [
+          { name: "Riley Moore (incumbent)", party: "R", winner: false,
+            positions: ["Expand coal and gas production and energy exports","Border security; sponsored the HALT Fentanyl Act","Cut federal spending from his Appropriations seat"],
+            differentiators: ["Landed a seat on House Appropriations as a freshman","Former West Virginia State Treasurer and anti-ESG advocate","From a long-running West Virginia political family"],
+            supporters: ["A freshman on Appropriations, where federal money for the state is actually written","Delivered on energy and anti-ESG promises made as Treasurer"],
+            opponents: ["Democrats tie him to the reconciliation bill's SNAP and Medicaid reductions [Verify]","Critics say his family name, not his record, won him the seat [Verify]"] },
+          { name: "Ace Parsi", party: "D", winner: false,
+            positions: ["Reverse SNAP and Medicaid cuts; protect the safety net","Lower the cost of living; balanced energy to cut heating bills","End tariffs; invest in infrastructure"],
+            differentiators: ["Iranian immigrant and Morgantown community organizer","Former coalition-engagement director at the civics nonprofit iCivics","Won a three-way primary with 39.8%"],
+            supporters: ["A cost-of-living message aimed at voters feeling utility and grocery bills [Verify]","Grassroots volunteers powered an upset over a better-known field [Verify]"],
+            opponents: ["Faces long odds in a district Moore won by more than 40 points in 2024","Republicans cast him as out of step with a district that backs Trump heavily [Verify]"] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Riley Moore (R) won the open seat with 70.8% to Steven Wendelin's (D) 29.2%. Wendelin ran again in 2026 and finished third in the Democratic primary.",
+        candidates: [
+          { name: "Riley Moore", party: "R", winner: true,
+            positions: ["Energy production","Border security","Federal spending"],
+            differentiators: ["Won with 70.8% — a roughly 42-point margin","Was West Virginia State Treasurer at the time"],
+            supporters: [], opponents: [] },
+          { name: "Steven Wendelin", party: "D", winner: false,
+            positions: ["[Verify]","",""],
+            differentiators: ["2024 Democratic nominee","Took 29.2%; ran again and placed third in the 2026 primary"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  }
+};
+
+const SITE_META = { name: "West Virginia Elections Hub", lastUpdated: "July 24, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — West Virginia county-level down-ballot research is the next phase.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for West Virginia has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = district
+    ? district.races.map(r => ({
+        ...r,
+        office: r.office || district.name,
+        scope: r.scope || `Federal · District ${county.d}`
+      }))
+    : [];
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const WV_STATE_FIPS = "54";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#wvmap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(WV_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Charleston ----
+  drawCapital(g, projection, { name: "Charleston", lng: -81.6326, lat: 38.3498 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in WV";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our West Virginia dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>
