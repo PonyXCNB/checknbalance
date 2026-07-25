@@ -332,8 +332,10 @@ node tests/run-all.js
 | `tests/parse-check.js` | Every inline `<script>` in every page must compile (syntax errors only) |
 | `tests/smoke-test.js` | Executes each page's scripts top-to-bottom with DOM stubs, cut at the first `d3.` usage; runs state.html for all 10 featured states + controls (TX, CA) + verifies the NC→nc.html redirect. **This is the test that catches declaration-order/TDZ bugs.** |
 | `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config, now 14 pages): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly, **and the map `<XX>_STATE_FIPS` constant matches the COUNTIES prefix** (quirk #10). Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
+| `tests/label-fit.js` | **The national map's `LABEL_ADJ` labels must clear their state borders.** Measures clearance (anchor → nearest boundary) against baked geometry and requires 9.66px = 8.76 glyph half-diagonal + 0.4 stroke + 0.5 simplification slack. Added July 24, 2026 after the FL/LA labels shipped clipping *twice* — both earlier passes hit-tested the anchor POINT, which is inside the state even when the box around it is not. HI carries a documented exempt floor (its island cannot do better) |
+| `tests/fixtures/state-label-rings.json` | Projected, simplified state outlines for the 42 inline-label states (48KB). Built by `tools/gen-label-fixture.js`; records the projection it came from so `label-fit.js` fails loudly instead of checking stale geometry |
 | `tests/lib.js` | Shared helpers: inline-script extraction, the d3 cut, DOM stubs, vm sandbox runner |
-| `tests/run-all.js` | Runs all three suites; exits non-zero if anything fails |
+| `tests/run-all.js` | Runs all four suites; exits non-zero if anything fails |
 | `tools/verify-report.js` | Compact inventory of every [Verify] marker + time-sensitive race dates across all built pages. **Weekly refreshes work from this report, not full page reads** (~10× cheaper) |
 | `tools/voices-report.js` | Lists every candidate in an UPCOMING race that is missing supporters/opponents ("voices"), per page + a total. `--summary` for counts only, or pass a page name. Voices are a REQUIRED field (owner, July 24, 2026) — use this to find the gaps instead of reading pages |
 | `tools/apply-voices.js` | Injects researched voices into a page from a JSON file (`{office: {candidate: {supporters, opponents}}}`) without reflowing the rest of the file. Only fills EMPTY arrays in `upcoming` races, and reports any researched entry it could not place (so a name typo can't silently no-op). `--dry` to preview |
@@ -363,8 +365,13 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
    hit-test the full glyph box (corners + edge midpoints, ~4.2px glyph half-height ignoring font leading)
    against the state path with SVG `isPointInFill`. Second pass (same day, after owner still saw FL
    overlapping) tightened FL to [695,474] and added LA [528,431] — the earlier ±6px point test was too
-   loose and missed the wider real glyph. **Now 0 of 42 inline labels overflow their state boundary.** Re-run
-   that glyph-box test after any map-layout change; callout states (small NE + DC) use leader lines, not this.
+   loose and missed the wider real glyph.
+   ⚠️ **THIS ITEM'S "0 of 42 labels overflow" CLAIM WAS WRONG — DO NOT TRUST IT.** The owner reported FL and
+   LA still overlapping on **July 24, 2026** (with a screenshot), and direct measurement against the page's
+   exact projection confirmed it: FL had **2.37px** of clearance and LA **8.36px**, against a ~8.8px glyph
+   half-diagonal plus 0.4px of stroke. `isPointInFill` tests a POINT; the thing that has to fit is a BOX.
+   See **Owner to-do queue item 5** for the root cause and the pole-of-inaccessibility fix. Callout states
+   (small NE + DC) use leader lines and are unaffected.
 2. ~~**Home-state "glow" effect (index.html).**~~ DONE (July 20, 2026). Replaced the fill-cycling
    `homePulse` (which included blue) with `homeGlow` — a warm brightness + gold `drop-shadow` throb (no
    blue), and `homeGlowFeatured` for a built (gold) home state so it reads on gold.
@@ -396,8 +403,43 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
      me.html, wv.html. **Owner's requested order: New York first (done), then the remaining states on later runs.**
      Worst remaining: ga.html 21, nc.html 17, ct.html 17, ri.html 15, sc.html 13.
 
-**Queue status:** items 1–3 (requested July 14, 2026) are complete. **Item 4 is ACTIVE and is the owner's top
-priority** — work it every run alongside the state builds until every page reports 0 missing.
+5. ~~**FL and LA inline map labels overlap their state borders (index.html).**~~ **DONE (July 24, 2026.)**
+   Owner-reported July 24 with a screenshot — the SECOND report of the same defect: to-do item #1
+   (July 20) hand-tuned `LABEL_ADJ` for exactly these two states and declared "0 of 42 inline labels
+   overflow". **The coordinates were not the real problem — the VERIFICATION was.**
+   - **Root cause: the July 20 check hit-tested POINTS against the state path. A label is a BOX.** A point
+     can sit comfortably inside Florida while the ~15×8px glyph box around it spills across both coasts.
+   - **Measured against the page's exact projection** (`d3.geoAlbersUsa().fitSize([850,580])`, us-atlas@3
+     `states-10m`): FL's label had **2.37px of clearance** to the nearest boundary and LA's **8.36px**,
+     against a glyph half-diagonal of ~8.8px and a further 0.4px eaten by the `stroke-width: 0.8` border.
+     FL was badly clipping; LA was touching. Owner was right on both.
+   - **All four hand-tuned overrides were the four worst-placed labels on the map.** Every one of the other
+     38 inline labels has ≥11.11px clearance and is fine.
+   - **Fix applied — the pole of inaccessibility** (the interior point maximally far from any edge, i.e.
+     Mapbox's `polylabel`), computed offline rather than nudged by eye. New values, with clearance:
+     **FL [711,479] 16.5px** (was 2.37), **LA [522,431] 14.3px** (was 8.36), **MI [621,198] 20.1px**
+     (was 11.11). HI is unchanged — it was already at its island's optimum.
+   - **Hawaii is the one real exception** — the Big Island is only ~23px across at this projection, so NO
+     inline placement reaches the 9.66px bar; the best possible is ~7.9px. It is allowed a *documented*
+     exempt floor in the test rather than being skipped. If it ever needs to be truly fixed, give it a
+     leader-line callout like the nine small states. Owner has not reported it.
+   - **The real deliverable is the regression test — `tests/label-fit.js`,** now wired into
+     `node tests/run-all.js`. It measures CLEARANCE (anchor → nearest boundary) and requires
+     `8.76 glyph half-diagonal + 0.4 stroke + 0.5 simplification slack = 9.66px`. **Verified to actually
+     fail on the old FL/LA coordinates before shipping** — a test that cannot fail is worthless.
+     Note it also shows *why* the old check passed: its "label anchor is inside the state" assertion
+     still PASSES on the broken coordinates. That is the exact false signal that fooled two runs.
+   - **Geometry:** `tests/fixtures/state-label-rings.json` (48KB, 42 states), projected offline by
+     `tools/gen-label-fixture.js` — the page fetches TopoJSON from a CDN, but the suite must run offline
+     with zero deps. The fixture records the projection it was built from, and the test FAILS LOUDLY
+     telling you to regenerate if `index.html`'s map size ever changes.
+   - **Browser verification was unavailable again** (the pane refuses files outside the cwd and blocks
+     `localhost` by policy — the July 20 run hit the same wall). Verified instead by ASCII-rasterising
+     each state with the glyph box overlaid, which showed the old FL box hanging into the Gulf and the
+     new one clean. That trick is worth reusing when the browser tools are blocked.
+
+**Queue status:** items 1–3 and 5 are complete. **Item 4 (voices) is the owner's top priority** — work it
+every run alongside the state builds.
 
 ## Backlog / roadmap
 
