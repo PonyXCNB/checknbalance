@@ -43,8 +43,15 @@ const placed = new Set();
 // Scan for the structural tokens in document order. The page is JSON-ish: quoted keys,
 // one per line. A district's own "name" is what supplies the office for House races,
 // so we distinguish it from a candidate "name" by its shape.
-const TOKEN = /"(?:office|type|name)":\s*"((?:[^"\\]|\\.)*)"/g;
-const DISTRICT_NAME = /^U\.S\. House — [A-Z]{2} District \d+/;
+// ⚠ Pages come in TWO key styles. ny.html quotes its keys ("office": "...") but every
+// other built page uses plain JS keys (office: "..."). The original regex required the
+// quotes, so this tool silently matched nothing on 14 of 15 pages — caught Aug 3, 2026
+// only because the miss report made the no-op visible. Both styles are handled now, and
+// the replacement is emitted in whichever style the page already uses.
+const TOKEN = /(?<![A-Za-z0-9_$])(?:"(office|type|name)"|(office|type|name))\s*:\s*"((?:[^"\\]|\\.)*)"/g;
+// Broad on purpose: at-large districts are named "U.S. House — Vermont (at-large)",
+// which the old "— XX District N" pattern did not match.
+const DISTRICT_NAME = /^U\.S\. House — /;
 
 let office = null;    // current race office (statewide) or district name (House)
 let type = null;      // current race type
@@ -52,11 +59,11 @@ const jobs = [];      // { name, office, afterIndex }
 
 let m;
 while ((m = TOKEN.exec(text)) !== null) {
-  const key = m[0].slice(1, m[0].indexOf('"', 1));
+  const key = m[1] || m[2];
   // Unescape: names like  "Manual \"Jomo\" Williams"  must compare against the real
   // string, not the raw escaped source text.
   let value;
-  try { value = JSON.parse(`"${m[1]}"`); } catch { value = m[1]; }
+  try { value = JSON.parse(`"${m[3]}"`); } catch { value = m[3]; }
   if (key === "office") { office = value; continue; }
   if (key === "type") { type = value; continue; }
   // key === "name"
@@ -77,7 +84,9 @@ while ((m = TOKEN.exec(text)) !== null) {
 jobs.sort((a, b) => b.afterIndex - a.afterIndex);
 
 // Matches the empty voices pair that follows a candidate's differentiators.
-const EMPTY_PAIR = /(\n(\s*)"supporters":\s*\[\s*\],\s*\n\s*"opponents":\s*\[\s*\])/;
+// Handles both `supporters: [], opponents: []` on ONE line (most pages) and the
+// quoted, line-per-key style used by ny.html.
+const EMPTY_PAIR = /\n([ \t]*)("?)supporters\2:\s*\[\s*\],\s*("?)opponents\3:\s*\[\s*\]/;
 
 let applied = 0, skippedNonEmpty = 0, notFound = 0;
 for (const job of jobs) {
@@ -91,16 +100,17 @@ for (const job of jobs) {
     else notFound++;
     continue;
   }
-  const indent = hit[2];
+  const indent = hit[1];
+  const q = hit[2];   // "" on plain-JS pages, '"' on ny.html — match what's already there
   const fmt = (arr) => arr.length
-    ? "[\n" + arr.map(s => `${indent}  ${JSON.stringify(s)}`).join(",\n") + `\n${indent}]`
+    ? "[" + arr.map(s => JSON.stringify(s)).join(",") + "]"
     : "[]";
   const replacement =
-    `\n${indent}"supporters": ${fmt(job.voices.supporters || [])},` +
-    `\n${indent}"opponents": ${fmt(job.voices.opponents || [])}`;
+    `\n${indent}${q}supporters${q}: ${fmt(job.voices.supporters || [])},` +
+    `\n${indent}${q}opponents${q}: ${fmt(job.voices.opponents || [])}`;
 
   const start = job.afterIndex + hit.index;
-  text = text.slice(0, start) + replacement + text.slice(start + hit[1].length);
+  text = text.slice(0, start) + replacement + text.slice(start + hit[0].length);
   placed.add(`${job.office}||${job.name}`);
   applied++;
 }

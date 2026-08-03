@@ -746,7 +746,7 @@ const STATEWIDE = [
     type: "upcoming",
     scope: "Federal · Statewide",
     office: "U.S. Senate — Georgia",
-    note: "The marquee Senate race of 2026. Jon Ossoff (D) defends against Rep. Mike Collins (R). Moved from Toss-up to Lean/Leans Democratic (Cook; Sabato, June 2026). If no one clears 50%, a December runoff follows.",
+    note: "The marquee Senate race of 2026. Jon Ossoff (D) defends against Rep. Mike Collins (R). Sabato moved it Leans Democratic → LIKELY DEMOCRATIC on July 30, 2026, citing Ossoff's $42M cash on hand against Collins's ~$2M and an AARP poll showing Ossoff up 52–43. Cook still showed Toss Up as of late July [Verify]. If no one clears 50%, a December runoff follows.",
     candidates: [
       {
         name: "Jon Ossoff (incumbent)",
@@ -1546,28 +1546,44 @@ const HOUSE_RACES = {
     region: "Southern metro Atlanta suburbs — Clayton, Henry, Rockdale, Newton",
     races: [
       {
-        date: "Jul 28, 2026", type: "upcoming",
-        note: "SPECIAL ELECTION (July 28, 2026) for the rest of the late Rep. David Scott's term (died April 22, 2026). All candidates share one ballot; the top two advance to an Aug 25 runoff absent a majority. State Rep. Jasmine Clark, the separate November full-term nominee, is not running in the special.",
+        date: "Aug 25, 2026", type: "upcoming",
+        note: "RUNOFF for the remainder of the late Rep. David Scott's term, which ends Jan 3, 2027. No one cleared 50% on July 28, so the top two — both Democrats — advance; no Republican made the runoff. The winner serves only a few months. The full term is a SEPARATE race on the November ballot, where Jasmine Clark (D) is the nominee and neither runoff candidate is running.",
         candidates: [
-          { name: "Everton Blair", party: "D", winner: false,
-            positions: ["Economic-justice agenda — 'Because Change Can't Wait: Blair's Black Economic Agenda for GA-13,' centered on tax reform, addressing data centers, and 'putting more money in people's pockets' (priorities per AJC)","Self-described 'People-First Agenda' from a no-corporate-PAC campaign — healthcare, education, housing, workers' rights, reproductive freedom, LGBTQ+ rights, climate, and gun violence (per his campaign site)","[Verify plank-level detail]"],
-            differentiators: ["Former Gwinnett County Board of Education chair — at 26 its first Black and youngest-ever member","The only candidate running in both the special and the regular primary; lives in-district (Lilburn)","Finished third in the May 2026 full-term primary"],
-            supporters: [], opponents: [] },
           { name: "Marcye Scott", party: "D", winner: false,
-            positions: ["Continuity agenda — pledges to finish her father's work, including delivering the ~$40M in federal funding he had requested for GA-13 and codifying the David Scott HBCU scholarship into law (self-described; reported by AJC)","Protecting Social Security and Medicare, lowering prescription-drug costs, and strengthening SNAP (per her campaign site)","Helping seniors and veterans stay in their homes, maintaining infrastructure, and supporting law enforcement and first responders (per her campaign site)"],
-            differentiators: ["Youngest of the late Rep. David Scott's two daughters, running to continue his work","User-experience/design consultant with 20+ years of community and campaign involvement; no prior elected office; lives in Atlanta, outside the district","Endorsed by Ambassador Andrew Young and U.S. Rep. Nikema Williams"],
+            positions: ["Deliver the ~$40M in federal district projects already requested","Protect Social Security, Medicare and SNAP; lower drug costs","Infrastructure, plus support for seniors and veterans"],
+            differentiators: ["Daughter of the late Rep. David Scott, running to finish his term","UX consultant; no prior elected office; lives in Atlanta, outside the district","Endorsed by Amb. Andrew Young and Rep. Nikema Williams"],
+            supporters: ["Continuity keeps the pending federal district money from stalling","Already knows the six-county constituent-services operation","Carries forward a 24-year legacy in the seat"],
+            opponents: ["Rivals say a congressional seat is not an inheritance","No legislative record and no prior elected office","Blair casts himself as the one who has actually served the district"] },
+          { name: "Everton Blair Jr.", party: "D", winner: false,
+            positions: ["Medicare for All and expanded health coverage","Higher teacher pay and a higher minimum wage","Housing affordability and Black small-business ownership"],
+            differentiators: ["Former Gwinnett County school board chair and ex-math teacher","Nine-pillar 'Because Change Can't Wait' Black economic agenda","Would be the first openly gay Black man in Congress"],
+            supporters: ["Tested campaigner who flipped a Republican-held school board seat","A commanding, unscripted debater","Backers say the moment calls for fighters, not caution"],
+            opponents: ["District voters passed on him in May, when he finished third","Running for a seat he lost in a primary weeks earlier"] }
+        ]
+      },
+      {
+        date: "Jul 28, 2026", type: "past",
+        note: "SPECIAL ELECTION for the rest of David Scott's term. No one cleared 50%, so Marcye Scott (46.0%) and Everton Blair Jr. (37.4%) advanced to an Aug 25 runoff. Republicans Caesar Gonzales (8.7%) and Fayth Park (4.7%) and Democrat Carlos Moore (3.1%) were eliminated. A sixth qualifier, Tony Brown (D), was disqualified July 8 when his qualifying-fee check bounced. Figures are unofficial — the Georgia SoS results portal was unreachable [Verify against certified totals].",
+        candidates: [
+          { name: "Marcye Scott", party: "D", winner: false,
+            positions: ["Advanced to the Aug 25 runoff with 46.0% (~9,439 votes)","Continuity agenda built on her father's pending federal projects","Social Security, Medicare, SNAP and prescription-drug costs"],
+            differentiators: ["Led the five-candidate field but fell short of a majority","Daughter of the late Rep. David Scott"],
             supporters: [], opponents: [] },
-          { name: "Carlos Moore", party: "D", winner: false,
-            positions: ["[Verify] — limited coverage of platform","[Verify]","[Verify]"],
-            differentiators: ["Democratic candidate qualified for the July 28 special","[Verify background]","[Verify]"],
+          { name: "Everton Blair Jr.", party: "D", winner: false,
+            positions: ["Advanced to the Aug 25 runoff with 37.4% (~7,673 votes)","Medicare for All; teacher pay and minimum-wage increases","Housing affordability and Black small-business ownership"],
+            differentiators: ["Former Gwinnett County school board chair","Also ran in the May full-term primary, finishing third"],
             supporters: [], opponents: [] },
           { name: "Caesar Gonzales", party: "R", winner: false,
-            positions: ["[Verify] — limited coverage of platform","[Verify]","[Verify]"],
-            differentiators: ["Republican candidate qualified for the July 28 special","[Verify background]","[Verify]"],
+            positions: ["Eliminated with about 8.7% (~1,777 votes)","[Verify] — limited coverage of platform","[Verify]"],
+            differentiators: ["Top Republican finisher; no Republican reached the runoff","[Verify background]"],
             supporters: [], opponents: [] },
           { name: "Fayth Park", party: "R", winner: false,
-            positions: ["[Verify] — limited coverage of platform","[Verify]","[Verify]"],
-            differentiators: ["Republican candidate qualified for the July 28 special","[Verify background]","[Verify]"],
+            positions: ["Eliminated with about 4.7% (~971 votes)","[Verify] — limited coverage of platform","[Verify]"],
+            differentiators: ["Second Republican on the all-party special ballot","[Verify background]"],
+            supporters: [], opponents: [] },
+          { name: "Carlos Moore", party: "D", winner: false,
+            positions: ["Eliminated with about 3.1% (~639 votes)","[Verify] — limited coverage of platform","[Verify]"],
+            differentiators: ["Third Democrat on the all-party special ballot","[Verify background]"],
             supporters: [], opponents: [] }
         ]
       },
@@ -1654,7 +1670,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Georgia Elections Hub", lastUpdated: "July 22, 2026" };
+const SITE_META = { name: "Georgia Elections Hub", lastUpdated: "August 3, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — GA county-level down-ballot research is the next phase).

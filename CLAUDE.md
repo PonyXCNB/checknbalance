@@ -46,7 +46,8 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 | `me.html` | Maine — thirteenth fully built state (16 counties, 2 districts, June 9 primary results certified). Built July 23, 2026. RCV state: ranked choice applies to ALL primaries and to FEDERAL generals only — the GOVERNOR's general is plurality (SJC struck LD 1666 on Apr 6, 2026). AG/SoS/Treasurer are chosen by the Legislature, NOT elected. Marquee: Collins (R) Toss Up — the Democratic nominee CHANGED after the primary (Platner won, withdrew July 10; Troy Jackson presumptive pending a **July 25 convention** — refresh then). Open Governor (Mills term-limited): Pingree (D) / Charles (R) / Bennett (I). ME-2 OPEN (Golden retiring): Dunlap (D) vs. LePage (R), Sabato Likely R. No LOCAL_RACES yet |
 | `ma.html` | Massachusetts — fourteenth fully built state (14 counties, 9 districts, ⚠ primary **Sept 1, 2026** — party fields are SETTLED since the June 2 filing deadline, but independents can still file through Aug 25). Built July 23, 2026. Six statewide offices, all Solid/Safe D: Senate (Markey vs. Moulton primary; Deaton R), Gov (Healey/Driscoll; GOP primary Minogue vs. Shortsleeve — **Kennealy missed the 15% convention threshold and is OUT**), AG (Campbell vs. Walsh), SoS (Galvin — first time since his 1994 election with neither a Democratic nor a Republican opponent), Treasurer (Goldberg vs. Dionne), Auditor (DiZoglio, no GOP filed). Plus **nine certified statewide ballot questions**. Marquee: OPEN MA-6 (Moulton → Senate), a six-way Democratic primary. No LOCAL_RACES yet |
 | `wv.html` | West Virginia — fifteenth fully built state (55 counties, 2 districts, May 12 primary results). Built July 24, 2026. ⚠ **DISTRICT NUMBERING IS REVERSED**: WV-1 is the SOUTHERN district (Charleston/Huntington, Carol Miller) and WV-2 the NORTHERN one + Eastern Panhandle (Morgantown/Wheeling/Martinsburg, Riley Moore). NO county is split. Short November ballot: Senate (Capito vs. Rachel Fetty Anderson, Solid R) is the ONLY statewide candidate race — governor and the whole Board of Public Works are presidential-year offices (next 2028). WV Supreme Court runs NONPARTISAN at the MAY primary, so both 2026 seats are already decided (Kirkpatrick, Flanigan — both beat Morrisey appointees) and appear as past races. No LOCAL_RACES yet |
-| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV redirect to their dedicated pages |
+| `oh.html` | Ohio — sixteenth fully built state (88 counties, 15 districts, May 5 primary results). Built Aug 3, 2026 from the banked research. ⚠ **USES OHIO'S NEW 2026-2032 CONGRESSIONAL MAP** (adopted Oct 31, 2025) — 15 split counties, 103 county×district pairs, derived from the SoS's own county-population and legal-description PDFs by two independent agents that agreed exactly. CD3 sits wholly inside Franklin, CD11 wholly inside Cuyahoga; OH-3 and OH-11 are the only districts whose lines did NOT change. Senate SPECIAL (Husted vs. Brown, Toss Up) is a DIFFERENT seat from the one Brown lost in 2024. Open Governor (Ramaswamy vs. Acton, Cook Toss-Up Jul 16) + all five statewide executive offices open + two partisan Supreme Court seats + Issue 3 (voter photo ID). Marquee House: OH-9 Kaptur–Merrin rematch (Toss Up), OH-1 Lean D, OH-7 (Sabato moved to Leans R Jul 30), OH-13 Likely D. Built WITH voices from the start. No LOCAL_RACES yet |
+| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH redirect to their dedicated pages |
 | `favicon.svg` | Gold-gradient circle + white checkmark (primary favicon, matches site crest) |
 | `favicon.png` | 32px PNG fallback |
 | `favicon.ico` | Multi-size ICO (16/32/48) at root for legacy auto-discovery |
@@ -144,7 +145,7 @@ must appear AFTER its declaration; a top-level TDZ error kills the whole script 
 ### index.html (national)
 ```
 ST / NAME     : fips → abbr / full name             CAP: capitals (currently unused on this page)
-BUILT         : { "37": nc, "45": sc, "13": ga, "51": va, "24": md, "10": de, "34": nj, "36": ny, "44": ri, "33": nh, "09": ct, "50": vt, "23": me, "25": ma }
+BUILT         : { "37": nc, "45": sc, "13": ga, "51": va, "24": md, "10": de, "34": nj, "36": ny, "44": ri, "33": nh, "09": ct, "50": vt, "23": me, "25": ma, "54": wv, "39": oh }
 PARTIAL       : Set of 3 fips (DC FL AL) → lighter gold tier
 CALLOUTS      : label anchor coords for 9 small states + DC
 destFor(fips) : BUILT[fips] if fully built, else state.html?state=XX
@@ -178,7 +179,7 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of July 23, 2026)
+## Current state (as of August 3, 2026)
 
 - **NC (full):** 2024 statewide results (Gov, Lt Gov, AG, Supreme Court Seat 6) + all 14 US House
   districts (2024 + 2026) + 2026 US Senate (Cooper vs. Whatley vs. Bray, rated Lean D). NC primary
@@ -309,7 +310,13 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
    (the data script is fine) and `smoke-test` can't see it — it cuts the script at the first
    `d3.` call, and the FIPS constant lives in the RENDERING script below that cut.
    `tests/data-logic.js` now compares each page's `<XX>_STATE_FIPS` against its `COUNTIES` key
-   prefix, which closes this hole. **Still open the new page in a browser and look at the map**
+   prefix, which closes this hole. ✅ **THAT TEST EARNED ITS KEEP ON Aug 3, 2026:** oh.html was cloned from
+   wv.html and made this exact mistake again — the constant was renamed `WV_STATE_FIPS` → `OH_STATE_FIPS` but
+   its VALUE stayed `"54"`, so Ohio would have shipped West Virginia's map. Every other suite passed; only this
+   check failed. **When the browser pane is blocked** (it refuses local files — hit again this run), verify by
+   reading the FIPS constant back OUT of the page, filtering the real TopoJSON with it, and rasterising the
+   result to ASCII plus a bounding-box comparison against the state's true lat/lng extent. That is cheap and
+   catches a wrong-state map outright. **Otherwise still open the new page in a browser and look at the map**
    — a wrong-state map is invisible to every text-level check.
    Clone checklist beyond the data: `<title>`, meta description, crest, brand name, hero title
    + county count, map `id=`/`#xxmap` CSS selector + `d3.select`, `<XX>_STATE_FIPS` VALUE,
@@ -331,7 +338,7 @@ node tests/run-all.js
 |------|----------------|
 | `tests/parse-check.js` | Every inline `<script>` in every page must compile (syntax errors only) |
 | `tests/smoke-test.js` | Executes each page's scripts top-to-bottom with DOM stubs, cut at the first `d3.` usage; runs state.html for all 10 featured states + controls (TX, CA) + verifies the NC→nc.html redirect. **This is the test that catches declaration-order/TDZ bugs.** |
-| `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config, now 14 pages): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly, **and the map `<XX>_STATE_FIPS` constant matches the COUNTIES prefix** (quirk #10). Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
+| `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config, now 16 pages): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly, **and the map `<XX>_STATE_FIPS` constant matches the COUNTIES prefix** (quirk #10). Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
 | `tests/label-fit.js` | **The national map's `LABEL_ADJ` labels must clear their state borders.** Measures clearance (anchor → nearest boundary) against baked geometry and requires 9.66px = 8.76 glyph half-diagonal + 0.4 stroke + 0.5 simplification slack. Added July 24, 2026 after the FL/LA labels shipped clipping *twice* — both earlier passes hit-tested the anchor POINT, which is inside the state even when the box around it is not. HI carries a documented exempt floor (its island cannot do better) |
 | `tests/fixtures/state-label-rings.json` | Projected, simplified state outlines for the 42 inline-label states (48KB). Built by `tools/gen-label-fixture.js`; records the projection it came from so `label-fit.js` fails loudly instead of checking stale geometry |
 | `tests/lib.js` | Shared helpers: inline-script extraction, the d3 cut, DOM stubs, vm sandbox runner |
@@ -399,9 +406,17 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
      races voters can still act on. `tools/voices-report.js` only counts upcoming/scheduled.
    - **Workflow:** `node tools/voices-report.js` to find gaps → research per race → `node tools/apply-voices.js
      <page> <json>` to inject them without reflowing the file.
-   - **Progress: 187 gaps → 122 (July 24, 2026).** DONE: **ny.html (65/65 — was the worst page at 100% empty)**,
-     me.html, wv.html. **Owner's requested order: New York first (done), then the remaining states on later runs.**
-     Worst remaining: ga.html 21, nc.html 17, ct.html 17, ri.html 15, sc.html 13.
+   - **Progress: 187 → 122 (Jul 24) → 91 (Aug 3, 2026).** COMPLETE (0 gaps): **ny.html** (65/65, once the worst page),
+     me.html, wv.html, **vt.html**, **oh.html** (built with voices from the start), and ct.html/oh.html now at 0.
+     Worst remaining: **nc.html 17, ga.html 16, ri.html 15, sc.html 13, md.html 8, ma.html 7**.
+   - ⚠ **`tools/apply-voices.js` WAS BROKEN AND SILENTLY MATCHED NOTHING ON 14 OF 15 PAGES** — fixed Aug 3, 2026.
+     Its token regex required QUOTED JSON keys (`"office":`), but only ny.html is written that way; every other page
+     uses plain JS keys (`office:`). It worked on ny.html, so the bug went unnoticed. Its `DISTRICT_NAME` pattern also
+     required `— XX District N`, missing at-large names like `U.S. House — Vermont (at-large)`. Both are fixed, and it
+     now emits replacements in whichever key style the page already uses. **The only reason this was caught is that the
+     tool reports every key it could not place** — the "0 candidates filled" line is what exposed it. Keep that report.
+   - Note: the tool only fills arrays that are EMPTY. A candidate missing just ONE side (e.g. has opponents, needs
+     supporters) must be hand-edited — the report lists these as "did NOT match".
 
 5. ~~**FL and LA inline map labels overlap their state borders (index.html).**~~ **DONE (July 24, 2026.)**
    Owner-reported July 24 with a screenshot — the SECOND report of the same defect: to-do item #1
@@ -482,9 +497,19 @@ every run alongside the state builds.
    most time-sensitive item on the site)**, CT + VT the week of Aug 11, MA after Sept 1 (and again after Aug 25, when
    the independent/unenrolled field closes), NH after Sept 8, RI after Sept 9, DE after Sept 15.
 
-   ### ⚡ OHIO — research already banked (July 24, 2026), build is ready to execute
-   OH research was completed this run but the page was NOT built (the run went to WV + the owner's new voices
-   directive). **Do not re-research this — build from it.** Everything below is sourced; see the run's commit message.
+   ### ✅ OHIO — BUILT Aug 3, 2026 (16th state). The notes below are the build record; do not re-research.
+   Built from the July 24 banked research plus a fresh pass for the 10 districts it did not cover, voices for every
+   upcoming candidate, and an independent re-derivation of the county→district map.
+   - **The county map was rebuilt from primary sources, because the July 24 commit recorded the METHOD but not the
+     TABLE.** Two agents independently retrieved the Ohio SoS's own "County Populations and Filing Locations …
+     Adopted October 31, 2025" PDF and the enacted legal description (both 403 to normal fetch; a browser user-agent
+     got through) and agreed on all 103 county×district pairs, all 15 splits and every plurality. A local check then
+     confirmed all 88 county names match the us-atlas geometry and all 15 per-district county counts match the PDF's
+     own counts. **If Ohio ever needs re-verifying, start from those two PDFs, not from news coverage** — several
+     district agents' news-derived county lists appeared to contradict the map and were wrong.
+   - ⚠ **Wikipedia is STALE for Ohio's new lines** — its OH-10 page still shows Clark County and an R+3 PVI, its OH-12
+     page still lists Athens, and its OH-4 page still lists Tamie Wilson as a candidate. Do not use it for geography.
+   - The banked research below all held up on re-check and is preserved as the sourcing record.
    - **⚠ OHIO USES A NEW CONGRESSIONAL MAP FOR 2026** — adopted **Oct 31, 2025**, unanimously/bipartisan (so it is a
      full-term map, not another 4-year temporary one). The OH SoS district-maps page labels it "Federal Congressional
      Districts (2026-2032)". **Building on the 2022 map would be wrong.** The county→district table was derived from the
@@ -554,14 +579,36 @@ every run alongside the state builds.
    - Recurring caveat: **ohiosos.gov returns 403 to automated fetch**, so certified vote TOTALS are news-sourced
      (percentages are reliable and cross-agree); swap in official canvass numbers when the portal is reachable.
 
-   **Next targets after Ohio:** **PA** (67 counties, 17 districts, May 19 primary already held — still the biggest and
-   highest-value remaining east-coast build), then continue outward. **Florida still ONLY after its Aug 18, 2026 primaries.**
+   **Built bloc is now 16 (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA WV OH)** — the Georgia-to-Maine coastal run plus
+   West Virginia and Ohio reaching inland.
+   **Next targets:** **PA** (67 counties, 17 districts, May 19 primary already held — the biggest and highest-value
+   remaining build), then **IN**, **MI** or **KY**. **Florida still ONLY after its Aug 18, 2026 primaries.**
+   **DC** still needs a different page model (no counties).
    - **DE time-sensitive:** July 14 filing deadline, then Sept 15 primary — refresh de.html after
      both.
    - **MD follow-up:** June 23 primary figures are unofficial — swap in certified numbers when
      the state canvass completes (mid-July).
-   - **GA time-sensitive:** GA-13 special election July 28, 2026 (runoff Aug 25 if needed) —
-     update ga.html when results land. **This is the next event on the calendar.**
+   - **GA time-sensitive — DONE for July 28, NEXT IS AUG 25:** the GA-13 special happened. No one cleared 50%, so
+     **Marcye Scott (46.0%) vs. Everton Blair Jr. (37.4%) go to an Aug 25, 2026 RUNOFF** — no Republican advanced.
+     ⚠ The runoff winner serves only through Jan 3, 2027 and is **NOT** on the November ballot; the full term is a
+     separate race where Jasmine Clark (D) faces Jonathan Chavez (R). Refresh ga.html after Aug 25.
+   - **ME — RESOLVED Aug 3, 2026:** Troy Jackson won the July 25 replacement convention in Bangor **566–5** over
+     Saundra Pelletier and was certified by the Maine SoS on July 27 — Maine's first replacement U.S. Senate nominee
+     since 1918. The certified November field is **Collins vs. Jackson only**; no independents qualified (the
+     non-party petition deadline was June 1). A Republican legislator has asked the SoS to rule Jackson ineligible
+     for seeking two offices this cycle; he was certified anyway and it is carded as an opponents-say item [Verify].
+   - **CT — three placeholder cards were WRONG and were corrected Aug 3, 2026.** Per the Secretary of the State's
+     certified list only **18 primaries** are on the Aug 11 ballot, and the only congressional ones are **CT-1 (D),
+     CT-4 (R) and CT-5 (R)**. CT-1's Republican nominee (**Amy Chai**) and CT-3's (**Christopher Lancia**) were already
+     settled at the May conventions, and **every statewide constitutional-office primary was cancelled as uncontested**
+     — so Bysiewicz, Corey, Tong, Bolton, Thomas, Lumaj, Russell, Wilms, Scanlon and Tooker are all already nominees.
+     Also added: **Ruth Fortune**, a fourth CT-1 Democrat who took part in both televised debates and was missing.
+   - **VT — three data gaps flagged on the page Aug 3, 2026, all needing a Vermont SoS check** (the filing list was not
+     reachable): (a) **Ryan McLaren**, a third Lt Gov Democrat and reportedly the field's TOP fundraiser, is not carded;
+     (b) the Auditor Republican line is disputed — VTDigger and Seven Days both show **H. Brooke Paige** unopposed for
+     Auditor, AG, SoS and Treasurer, NOT the carded Joshua Bechhoefer; (c) **Gerald Malloy** contests the U.S. House
+     Republican primary and reportedly LEADS Mark Coester, who the page treats as presumptive. Also: Auditor Democrat
+     **Dan Towle** ended his campaign but stays on the ballot. Resolve all four the week of Aug 11.
    - **CT + VT time-sensitive:** both primaries are **Aug 11, 2026**. Replace every
      "[nominee — decided Aug 11 primary]" placeholder and resolve the pre-primary [Verify] fields that
      week. CT's headline result to watch: the CT-1 Larson–Bronin–Gilchrest Democratic primary. VT's:
