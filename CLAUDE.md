@@ -406,9 +406,15 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
      races voters can still act on. `tools/voices-report.js` only counts upcoming/scheduled.
    - **Workflow:** `node tools/voices-report.js` to find gaps → research per race → `node tools/apply-voices.js
      <page> <json>` to inject them without reflowing the file.
-   - **Progress: 187 → 122 (Jul 24) → 91 (Aug 3, 2026).** COMPLETE (0 gaps): **ny.html** (65/65, once the worst page),
-     me.html, wv.html, **vt.html**, **oh.html** (built with voices from the start), and ct.html/oh.html now at 0.
-     Worst remaining: **nc.html 17, ga.html 16, ri.html 15, sc.html 13, md.html 8, ma.html 7**.
+   - **Progress: 187 → 122 (Jul 24) → 91 → 67 (Aug 3, 2026).** COMPLETE (0 gaps) on **10 of 16 pages**: ny.html
+     (65/65, once the worst page), me.html, wv.html, vt.html, ct.html, oh.html (built with voices from the start),
+     and — added Aug 3 — **de.html, nj.html, nh.html, md.html, ma.html**.
+     Worst remaining: **nc.html 17, ga.html 16, ri.html 15, sc.html 13, va.html 6**.
+     Note on **va.html**: its 6 gaps are mostly "[nominee — decided Aug 4]" placeholders, so do that page as part of
+     the post-primary VA refresh rather than as standalone voices work.
+     Note on **ri.html**: 15 of 20 — the worst ratio on the site, and the ledger says not to re-research its
+     pre-primary fields until the week of Sept 9. The voices themselves (structural arguments for down-ballot
+     statewide candidates) can still be written before then; that is the single biggest remaining chunk.
    - ⚠ **`tools/apply-voices.js` WAS BROKEN AND SILENTLY MATCHED NOTHING ON 14 OF 15 PAGES** — fixed Aug 3, 2026.
      Its token regex required QUOTED JSON keys (`"office":`), but only ny.html is written that way; every other page
      uses plain JS keys (`office:`). It worked on ny.html, so the bug went unnoticed. Its `DISTRICT_NAME` pattern also
@@ -581,9 +587,64 @@ every run alongside the state builds.
 
    **Built bloc is now 16 (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA WV OH)** — the Georgia-to-Maine coastal run plus
    West Virginia and Ohio reaching inland.
-   **Next targets:** **PA** (67 counties, 17 districts, May 19 primary already held — the biggest and highest-value
-   remaining build), then **IN**, **MI** or **KY**. **Florida still ONLY after its Aug 18, 2026 primaries.**
-   **DC** still needs a different page model (no counties).
+   **Next targets:** **PA** (see the banked research below — build it AFTER Aug 10, 2026), then **IN**, **MI** or **KY**.
+   **Florida still ONLY after its Aug 18, 2026 primaries.** **DC** still needs a different page model (no counties).
+
+   ### ⏸ PENNSYLVANIA — RESEARCH BANKED Aug 3, 2026; BUILD GATED TO AFTER AUG 10. Do not re-research what is here.
+   A PA build was started on Aug 3 (17th state) and deliberately **not shipped**. Two independent reasons:
+   - **The ballot field is not final.** Per the PA Dept. of State 2026 general-election calendar, **independent and
+     minor-party nomination papers were due Aug 3, 2026** (moved from Aug 1, a Saturday) and **objections and
+     withdrawals run through Aug 10**. Any PA page published before Aug 11 would be asserting a field that can still
+     change. **Build PA the week of Aug 11, off the DOS certified candidate list.**
+   - **The county→district map was never obtained.** This is the hard blocker — no map, no page. ⚠ **The obvious
+     Census Block Equivalency File that turned up is the OLD 18-DISTRICT map and is unusable.** PA has 17 districts
+     under the 2020 apportionment; the map used in 2022 and 2024 was adopted by the state Supreme Court in Feb 2022.
+     Start from the PA Dept. of State / redistricting.legis.state.pa.us legal description, or the Census 2020
+     congressional-district ↔ county relationship file (which also gives the populations needed for plurality calls).
+     Expect splits in Philadelphia, Allegheny, Montgomery, Bucks, Delaware, Chester, Lancaster, York, Berks,
+     Westmoreland, Luzerne, Lehigh, Northampton, Dauphin, Erie and Cumberland.
+   - The page scaffold is trivial to recreate: clone `oh.html` and apply the checklist replacements (title, meta,
+     crest `PA`, brand/hero text, 67 counties / 17 seats in the hero stats, `#pamap`, `PA_STATE_FIPS = "42"`,
+     Harrisburg capital marker at -76.8844/40.2732, "Not in PA", `SITE_META`, footer sources).
+
+   **Findings to reuse (sourced Aug 3, 2026).** ⚠ These are LEADS banked from a research pass that was cut short —
+   they are good starting points, not publish-ready copy. Re-confirm every candidate and every number against the
+   **PA Dept. of State certified candidate list** (after Aug 10) and FEC filings before any of it goes on the page.
+   - **Statewide:** **NO U.S. Senate race in PA in 2026.** Governor **Josh Shapiro (D)** and Republican **Stacy
+     Garrity** (the sitting state Treasurer) both took their nominations **unopposed** on May 19. An F&M poll had
+     Shapiro leading ~50–28. Still to confirm: whether PA's row offices (AG/Auditor General/Treasurer) or any
+     appellate-court seats or retention questions are on the 2026 ballot (PA normally elects judges in ODD years —
+     verify, do not assume), plus any constitutional-amendment questions and the Lt. Gov nominees.
+   - **PA-3 is an OPEN seat and effectively already decided:** Dwight Evans retired; **Chris Rabb** (state rep,
+     democratic socialist) won the May 19 Democratic primary with ~44.2% over Sharif Street (~29.5%) and Ala
+     Stanford (~24.1%) — and **NO Republican filed in PA-3 at all**. Cook PVI D+40, the most Democratic district in
+     the country. An independent filing is the single most likely thing to change this field.
+   - **PA-2** Brendan Boyle (D, D+19, won 71.1% in 2024) vs. **Jessica Arriaga** (R, unopposed; OR technician and
+     Philadelphia 37th Ward GOP leader, runs on spending, taxes, public safety).
+   - **PA-5** Mary Gay Scanlon (D, D+15, 65.1% in 2024, unopposed for renomination) vs. **Nick Manganaro** (R,
+     Haverford finance professional, beat Joshua Brown in the primary). ⚠ **The 2026 PA-5 Republican is NOT David
+     Galluch** — a PoliticsPA page still in search results is from the **2022** cycle and names him. Live trap.
+   - **PA-4** Madeleine Dean (D, D+8, 59.1%–40.9% in 2024, unopposed) vs. **Aurora Stuski** (R, unopposed; appraisal
+     business owner from West Norriton, campaign site aurora4pa.com — spending, small business, law enforcement,
+     immigration enforcement, and opposition to a large Plymouth Township data center). A second Republican,
+     **Ismaine Ayouaz, failed to qualify** (Ballotpedia text on this is stale). **Milan Patel (I)** filed paperwork
+     but his ballot qualification is NOT confirmed — do not card him without the DOS list.
+   - **PA-6** Chrissy Houlahan (D) IS running (unopposed, 100%); Republican nominee is **Marty Young** (Army veteran,
+     West Point '93, restructuring consultant). ⚠ **He is NOT the 2024 nominee Neil Young Jr.** — different people,
+     do not frame it as a rematch. 2024: Houlahan 56.2%–43.8%. Cook/Inside Elections Solid D (Sept 11, 2025 per
+     Wikipedia's table — the shared date looks like a table artifact, verify at source), Sabato Safe D (Apr 10, 2025).
+     No published Cook PVI for PA-6 was found — do not print one. District composition is disputed between sources
+     (all of Chester + the city of Reading, vs. "most of Chester and part of Berks") — resolve officially.
+   - **PA-7 / PA-8 are the marquee races.** PA-7: Ryan Mackenzie (R) vs. **Bob Brooks** (D, firefighter, added to the
+     DCCC's Red to Blue **May 4, 2026**). PA-8: Rob Bresnahan (R) vs. **Paige Cognetti** (D, also Red to Blue).
+     **Cognetti $3.4M cash on hand to Bresnahan's $2.6M as of June 30, 2026** — the first report where she led.
+     Mackenzie's newest confirmed figure is pre-primary: $2.59M COH at ~Apr 30, $3.82M raised cycle-to-date; Brooks
+     ~$1.04M raised since entering Aug 26, 2025. **Mackenzie and Bresnahan are both on the NRCC's April 2026 Patriot
+     Program list**, along with Fitzpatrick (PA-1) and Perry (PA-10). Cook's PA competitive set: PA-7 and PA-10 Toss
+     Up, PA-8 Lean R → later Toss Up; Inside Elections moved PA-8 to Toss-up June 11 and PA-17 to Safe D.
+     PA-10's Democrat is **Janelle Stelson** (Red to Blue).
+   - **Districts 1, 9–17 were never researched** — the agents were cut off. PA-9's Dan Meuser was weighing a
+     governor run, so **verify whether PA-9 is an open seat** rather than assuming he filed.
    - **DE time-sensitive:** July 14 filing deadline, then Sept 15 primary — refresh de.html after
      both.
    - **MD follow-up:** June 23 primary figures are unofficial — swap in certified numbers when
