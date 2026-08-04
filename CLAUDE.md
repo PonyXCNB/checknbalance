@@ -48,7 +48,8 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 | `wv.html` | West Virginia — fifteenth fully built state (55 counties, 2 districts, May 12 primary results). Built July 24, 2026. ⚠ **DISTRICT NUMBERING IS REVERSED**: WV-1 is the SOUTHERN district (Charleston/Huntington, Carol Miller) and WV-2 the NORTHERN one + Eastern Panhandle (Morgantown/Wheeling/Martinsburg, Riley Moore). NO county is split. Short November ballot: Senate (Capito vs. Rachel Fetty Anderson, Solid R) is the ONLY statewide candidate race — governor and the whole Board of Public Works are presidential-year offices (next 2028). WV Supreme Court runs NONPARTISAN at the MAY primary, so both 2026 seats are already decided (Kirkpatrick, Flanigan — both beat Morrisey appointees) and appear as past races. No LOCAL_RACES yet |
 | `oh.html` | Ohio — sixteenth fully built state (88 counties, 15 districts, May 5 primary results). Built Aug 3, 2026 from the banked research. ⚠ **USES OHIO'S NEW 2026-2032 CONGRESSIONAL MAP** (adopted Oct 31, 2025) — 15 split counties, 103 county×district pairs, derived from the SoS's own county-population and legal-description PDFs by two independent agents that agreed exactly. CD3 sits wholly inside Franklin, CD11 wholly inside Cuyahoga; OH-3 and OH-11 are the only districts whose lines did NOT change. Senate SPECIAL (Husted vs. Brown, Toss Up) is a DIFFERENT seat from the one Brown lost in 2024. Open Governor (Ramaswamy vs. Acton, Cook Toss-Up Jul 16) + all five statewide executive offices open + two partisan Supreme Court seats + Issue 3 (voter photo ID). Marquee House: OH-9 Kaptur–Merrin rematch (Toss Up), OH-1 Lean D, OH-7 (Sabato moved to Leans R Jul 30), OH-13 Likely D. Built WITH voices from the start. No LOCAL_RACES yet |
 | `ky.html` | Kentucky — seventeenth fully built state (120 counties, 6 districts, May 19 primary results). Built Aug 4, 2026 by cloning oh.html. NO 2026 governor or constitutional officers — Kentucky elects those in ODD years (next 2027); the statewide ballot is the OPEN U.S. Senate seat plus Amendment 1 and three nonpartisan judicial races. Senate: McConnell retiring, **Barr (R) vs. Booker (D)**, Solid R. ⚠ **THOMAS MASSIE LOST** the KY-4 primary to Trump-recruited Ed Gallrein 54.9–45.1 in the most expensive U.S. House primary in history (~$37M, >$25M of it anti-Massie PAC money); Kentucky's sore-loser law (KRS 118.345) keeps Massie off the November ballot. ⚠ KY-5's Hal Rogers did **NOT** retire — he is running at 88 as Dean of the House. KY-6 is **OPEN** (Barr vacated it for the Senate) and is the marquee: Cook moved it to Likely R Jul 16. ⚠ **Frankfort is in KY-1, NOT KY-6.** Built WITH voices on every upcoming candidate from the start. No LOCAL_RACES yet |
-| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH/KY redirect to their dedicated pages |
+| `in.html` | Indiana — eighteenth fully built state (92 counties, 9 districts, May 5 primary results). Built Aug 4, 2026 from ky.html. ⚠ **INDIANA DID NOT REDISTRICT** — the state SENATE killed the proposed 9R-0D map 31–19 on Dec 11, 2025, with 21 Republicans defecting; 2026 uses the Oct 2021 HEA 1581 map, verified by the Census 118th/119th county files being byte-identical. NO U.S. Senate race (no Class 2 seat) and NO governor (Braun to 2028). Statewide = SoS + Comptroller + Treasurer, all nominated at PARTY CONVENTIONS not the primary, plus 3 Court of Appeals retentions and 2 constitutional amendments. ⚠ Incumbent SoS **Diego Morales was thrown OFF the ballot by his own party's June 20 convention**, finishing third; Beau Bayh (D) holds ~15× the GOP nominee's cash and ex-Indianapolis mayor Greg Ballard runs as an independent. Marquee House seat is **IN-1 (D+1)**, Indiana's only competitive district — and raters moved it AWAY from Republicans after the primary. Built WITH voices from the start. No LOCAL_RACES yet |
+| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH/KY/IN redirect to their dedicated pages |
 | `favicon.svg` | Gold-gradient circle + white checkmark (primary favicon, matches site crest) |
 | `favicon.png` | 32px PNG fallback |
 | `favicon.ico` | Multi-size ICO (16/32/48) at root for legacy auto-discovery |
@@ -146,7 +147,7 @@ must appear AFTER its declaration; a top-level TDZ error kills the whole script 
 ### index.html (national)
 ```
 ST / NAME     : fips → abbr / full name             CAP: capitals (currently unused on this page)
-BUILT         : { "37": nc, "45": sc, "13": ga, "51": va, "24": md, "10": de, "34": nj, "36": ny, "44": ri, "33": nh, "09": ct, "50": vt, "23": me, "25": ma, "54": wv, "39": oh, "21": ky }
+BUILT         : { "37": nc, "45": sc, "13": ga, "51": va, "24": md, "10": de, "34": nj, "36": ny, "44": ri, "33": nh, "09": ct, "50": vt, "23": me, "25": ma, "54": wv, "39": oh, "21": ky, "18": in }
 PARTIAL       : Set of 3 fips (DC FL AL) → lighter gold tier
 CALLOUTS      : label anchor coords for 9 small states + DC
 destFor(fips) : BUILT[fips] if fully built, else state.html?state=XX
@@ -341,6 +342,22 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
    thirteen NC House slots still read "[nominee — TBD]" five months after the March 3 primary. Same blind spot —
    stale-but-unmarked content is invisible to the tooling.
 
+12. **`COUNTIES` stores ONE district per county — and in dense metros that silently HIDES districts.**
+   Found and fixed Aug 4, 2026 by an audit, not by any test. **8 of New York's 26 districts (2, 3, 5, 7, 9,
+   10, 13, 14 — every NYC-area seat) and Massachusetts' MA-3 were UNREACHABLE**: no county had them as its
+   plurality district, so a voter in Brooklyn or Lowell could click their county and never see their own
+   U.S. House race. It had been live since those pages were built.
+   ➤ **Fix:** split counties now carry an optional `ds: [...]` array listing EVERY overlapping district, and
+   `getCountyElections` merges races from all of them (falling back to `[county.d]`). `d` is still the
+   population plurality and still drives map shading — `ds` only controls which races the drawer shows.
+   NY has 21 such counties, MA 9. Data came from the Census CD119↔county relationship file plus MCDC
+   Geocorr population weights, cross-checked to a per-person arithmetic match on every district.
+   ➤ **The regression test is `tests/data-logic.js`'s "every House district is reachable from a county"** —
+   verified to actually FAIL on the pre-fix data, naming the exact eight NY districts.
+   ➤ ⚠ **This is why ILLINOIS is not built yet.** IL districts 1, 3, 4, 5 and 9 sit entirely inside Cook
+   County, so an IL page needs the `ds` model from the start. Any future dense-metro state (IL, MI, PA
+   around Philadelphia, TX, CA, FL) must be built with `ds` — check the reachability test before shipping.
+
 ## Testing (`tests/` — plain Node.js, zero dependencies)
 
 Requires Node.js (any recent LTS). Run the whole suite from the site root:
@@ -353,7 +370,7 @@ node tests/run-all.js
 |------|----------------|
 | `tests/parse-check.js` | Every inline `<script>` in every page must compile (syntax errors only) |
 | `tests/smoke-test.js` | Executes each page's scripts top-to-bottom with DOM stubs, cut at the first `d3.` usage; runs state.html for all 10 featured states + controls (TX, CA) + verifies the NC→nc.html redirect. **This is the test that catches declaration-order/TDZ bugs.** |
-| `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config, now 17 pages): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly, **and the map `<XX>_STATE_FIPS` constant matches the COUNTIES prefix** (quirk #10). Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
+| `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config, now 18 pages): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly, **and the map `<XX>_STATE_FIPS` constant matches the COUNTIES prefix** (quirk #10). Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
 | `tests/label-fit.js` | **The national map's `LABEL_ADJ` labels must clear their state borders.** Measures clearance (anchor → nearest boundary) against baked geometry and requires 9.66px = 8.76 glyph half-diagonal + 0.4 stroke + 0.5 simplification slack. Added July 24, 2026 after the FL/LA labels shipped clipping *twice* — both earlier passes hit-tested the anchor POINT, which is inside the state even when the box around it is not. HI carries a documented exempt floor (its island cannot do better) |
 | `tests/fixtures/state-label-rings.json` | Projected, simplified state outlines for the 42 inline-label states (48KB). Built by `tools/gen-label-fixture.js`; records the projection it came from so `label-fit.js` fails loudly instead of checking stale geometry |
 | `tests/lib.js` | Shared helpers: inline-script extraction, the d3 cut, DOM stubs, vm sandbox runner |
@@ -612,21 +629,27 @@ every run alongside the state builds.
    Kentucky's map was taken VERBATIM from the operative statute (KRS 118B.110–.160) — the 2022 SB 3 plan, unchanged
    for 2026 — and the transcription was proved exact by arithmetic: district populations summed to 750,973/750,972/
    750,973/750,973/750,973/750,972 against an ideal of 750,973, totalling Kentucky's 4,505,836 precisely.
-   **Built bloc is now 17 (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA WV OH KY)** — the Georgia-to-Maine coastal run
+   **Built bloc is now 18 (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA WV OH KY IN)** — the Georgia-to-Maine coastal run
    plus West Virginia, Ohio and Kentucky reaching inland.
-   **Next targets:** **IN** (fully researched and ready except the 9 district passes — see the banked section below;
-   by far the cheapest next state), then **PA** (banked below — build it AFTER Aug 10, 2026), then **MI**.
+   **Next targets:** **IL** (fully researched — see the banked section below — but it MUST be built with the `ds`
+   multi-district field, because five Chicago-area districts sit entirely inside Cook County), then **PA** (banked
+   below — build it AFTER Aug 10, 2026), then **MI**.
    ⚠ **MI's primary was Aug 4, 2026** — build Michigan only once those results are certified.
    **Florida still ONLY after its Aug 18, 2026 primaries.** **DC** still needs a different page model (no counties).
 
-   ### ⏸ INDIANA — RESEARCH BANKED Aug 4, 2026; PAGE NOT SHIPPED. Do not re-research what is here.
-   An IN build was started Aug 4 (as the 18th state) and deliberately **not shipped**. The county map and the statewide
-   ballot are fully resolved, but **NO per-district research was done for any of the 9 U.S. House districts** — the
-   session's web-research quota was exhausted first. A page with a correct map and no district data is a half-built page,
-   so `in.html` was deleted rather than published. Recreate it by cloning `ky.html` (or `oh.html`) and applying the
-   clone checklist: title/meta, crest `IN`, brand/hero text, 92 counties / 9 seats in the hero stats, `#inmap`,
-   `IN_STATE_FIPS = "18"`, Indianapolis capital marker at -86.1581/39.7684, "Not in IN", `SITE_META`, footer sources.
-   **What remains is the 9 district passes, and nothing else.**
+   ### ✅ INDIANA — BUILT Aug 4, 2026 (18th state). The notes below are the build record; do not re-research.
+   Built in two passes on Aug 4: the map and statewide ballot first, then all nine districts. Shipped with voices on
+   every upcoming candidate. ⚠ **The Indiana Election Division's certified general-election candidate list was still
+   INCOMPLETE for federal offices** when this was built — its own header says federal lists stay incomplete until the
+   Recount Commission finishes three state-legislative recounts. Libertarian and write-in ballot status IS certified;
+   the D/R nominees are AP-called. **Re-verify the D/R nominees against the certified list once it is complete.**
+   ⚠ **Ballotpedia was wrong four times** on Indiana alone: a Republican in the IN-8 primary who never made the ballot
+   (Daniel George), an independent in the IN-8 general who is not certified (James Burke), an "independent" in IN-2 who
+   actually filed for a LaPorte County school board seat (Eric Beebe), and a phantom fourth IN-9 name. None are carded.
+   ⚠ **One unresolved geography conflict:** the county map derives **Randolph County** as 72.6% in IN-3 from the Census
+   relationship file, but district-level reporting places Randolph in IN-6. The county is genuinely split; the page keeps
+   the Census-derived assignment and flags the disagreement in the IN-3 region line. Resolve against the Indiana
+   General Assembly's legal description.
 
    - **⚠ INDIANA DID NOT REDISTRICT — this was the gating question and it is SETTLED.** Indiana was one of the states
      pressed hardest in the 2025 national mid-decade redistricting push. Gov. Braun called a special session; the Indiana
@@ -715,6 +738,63 @@ every run alongside the state builds.
      certified canvass PDFs and campaignfinance.in.gov could not be fetched; Indiana Capital Chronicle, IndyStar and
      Ballotpedia article pages all blocked automated fetch. Re-pull exact vote totals and the state-level campaign-finance
      figures from in.gov in a browser before publishing them.
+
+   ### ⏸ ILLINOIS — RESEARCH BANKED Aug 4, 2026; BUILD BLOCKED ON THE `ds` MODEL. Do not re-research what is here.
+   The county map and the full statewide ballot are resolved. **The blocker is structural, not research:** Illinois
+   districts **1, 3, 4, 5 and 9 sit entirely inside Cook County**, so under a one-district-per-county model they are
+   unreachable — the exact bug fixed on ny.html/ma.html this same day (lessons-learned #12). **Build Illinois using the
+   `ds: [...]` multi-district field from the start**, and let `tests/data-logic.js`'s reachability check gate the ship.
+   Cook overlaps **11 districts**; DuPage 5; Will and Lake and McHenry 4 each; Kane 3. Those `ds` lists must be derived
+   before the page goes live — the plurality table below is NOT sufficient on its own for those counties.
+
+   - **Map in force:** the 17-district plan enacted as HB 1291 / **Public Act 102-0663**, signed Nov 23, 2021. **NO
+     mid-decade redraw.** Democratic leaders declined to call the Jeffries-backed remap in the Oct 2025 veto session,
+     and candidate filing then proceeded under the existing map. Verified structurally: the Census `tab20_cd11820` and
+     `tab20_cd11920` county relationship files for Illinois are **byte-identical (25,679 bytes, 157 identical rows)**.
+   - ⚠ **TRAP:** `BlockAssign_ST17_IL.zip` is dated 2021-02-08 — nine months BEFORE the map was drawn — and encodes the
+     old 2011 lines. Do not use it.
+   - **Arithmetic check passed exactly:** per-district populations come to 753,677 for CD1–CD16 and 753,676 for CD17
+     against an ideal of 753,677.0, totalling Illinois' 12,812,508 — a zero-person deviation across all 17 districts.
+   - **32 of 102 counties are split.** Plurality assignments are recorded in
+     `scratchpad/il-counties.js` from this run; the low-margin ones worth showing as two districts are **Boone**
+     (CD16 over CD11 by 556 people), **Mercer** (CD15 over CD17 by 603), **McLean** (CD16 over CD17 by 1,260),
+     **McDonough** (CD17 over CD15 by 1,834), **Macon** (CD13 over CD15 by 2,706) and **Kane** (CD8 over CD11 by 15,359).
+   - **Primary was March 17, 2026;** ISBE certified results April 17. Nominees are settled. ⚠ As of Aug 4 ISBE was still
+     finalizing the general-election ballot — the two-party lineup is firm, the independent lineup is not.
+   - **U.S. SENATE — OPEN, the marquee.** Dick Durbin announced his retirement April 23, 2025.
+     **Juliana Stratton (D)**, the sitting Lt. Governor, won the primary with **40.4%** over Rep. Raja Krishnamoorthi
+     (32.7%) and Rep. Robin Kelly (18.3%) — Pritzker's super PAC spent **$10M** boosting her. **Don Tracy (R)**, former
+     Illinois GOP chair and Gaming Board chair, won with 40.0%; he self-funded a $2M loan and holds ~$1.5M on hand
+     against Stratton's ~$1.1M, but his Q2 fundraising collapsed to $132K. Rated Solid/Safe Democratic by all three
+     raters. ⚠ Third-party Senate candidates are **UNRESOLVED** — Wikipedia lists none, Ballotpedia lists two,
+     Politics1 lists a third. Settle against ISBE before carding anyone.
+   - **GOVERNOR.** **JB Pritzker (D)** is seeking a THIRD term — the first Illinois governor to try since the 1980s —
+     unopposed in the primary, with new running mate **Christian Mitchell** (Stratton vacated the slot). **Darren
+     Bailey (R)** won renomination with 53.3%, setting up the **first Illinois gubernatorial rematch since 1986**;
+     his running mate is Cook County GOP chair Aaron Del Mar. Bailey lost 2022 by 12.5 points and ended Q2 with just
+     $128K on hand against Pritzker's $3.1M (after Pritzker spent $11M+ in the quarter). ⚠ **Independent Collin
+     Corbett / Carolyn Schofield ARE on the ballot** — 27,323 signatures validated against 25,000 required, and the
+     Bailey camp's objection was withdrawn at ISBE's July 14 meeting. Corbett is a former Republican consultant.
+     ⚠ The **Green Party ticket FAILED** ballot access (~3,000 of 25,000 signatures) and is pursuing a write-in —
+     Ballotpedia listing Griselda Romero as a general-election candidate is WRONG.
+   - **FOUR other constitutional offices,** all on the ballot: **AG** Kwame Raoul (D, 3rd term) vs. Bob Fioretti (R);
+     **SoS** Alexi Giannoulias (D) vs. Diane Harris (R); **Comptroller — OPEN** (Susana Mendoza retiring) Margaret
+     Croke (D, won the primary with 34.6%) vs. Bryan Drew (R); **Treasurer** Mike Frerichs (D) vs. Max Solomon (R).
+     ⚠ **Giannoulias is running for TWO offices at once** — he launched a campaign for Chicago mayor on Aug 2, 2026
+     (Feb 2027 election) while staying on the November SoS ballot. That is the single most newsworthy down-ballot fact.
+     ⚠ **Treasurer sourcing conflict RESOLVED:** reporting said no Republican filed — the first time in ~90 years for
+     an Illinois statewide office — but **Max Solomon won the GOP nomination as a WRITE-IN with 22,990 votes** and was
+     certified in the April 17 canvass. Frerichs IS opposed; the "unopposed" stories predate certification.
+   - **NO ballot measures.** The deadline to place an amendment was May 3, 2026 and both live proposals died — the
+     redistricting amendment passed the House 74–38 but Senate President Harmon declined to call it, and the
+     millionaires-tax amendment lacked the votes. **There is no certified ballot title to report.**
+   - **NO Illinois Supreme Court** seats or retention questions in 2026 [Verify — sourced via Ballotpedia only].
+     Five appellate retentions and three partisan appellate seats do appear.
+   - **HISTORY:** 2020 Senate Durbin 54.93%–38.87%; 2022 Governor Pritzker 54.91%–42.37% (12.5 pts);
+     2022 Senate Duckworth 56.82%–41.50%. ⚠ There was **no 2024 Illinois Senate race** — Duckworth v. Salvi was 2022.
+   - **Access notes:** elections.il.gov returns 403 to automated fetch on every path, so all "certified" claims route
+     through reporting that cites ISBE. Cook, Sabato and Inside Elections all 403 as well. Pull the ISBE Vote Totals
+     Book and the certified general-election candidate list manually before publishing.
 
    ### ⏸ PENNSYLVANIA — RESEARCH BANKED Aug 3, 2026; BUILD GATED TO AFTER AUG 10. Do not re-research what is here.
    A PA build was started on Aug 3 (17th state) and deliberately **not shipped**. Two independent reasons:

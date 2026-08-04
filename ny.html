@@ -693,7 +693,8 @@ const COUNTIES = {
   },
   "36005": {
     "n": "Bronx",
-    "d": 15
+    "d": 15,
+    "ds": [13,14,15,16]
   },
   "36007": {
     "n": "Broome",
@@ -705,7 +706,8 @@ const COUNTIES = {
   },
   "36011": {
     "n": "Cayuga",
-    "d": 22
+    "d": 22,
+    "ds": [22,24]
   },
   "36013": {
     "n": "Chautauqua",
@@ -729,7 +731,8 @@ const COUNTIES = {
   },
   "36023": {
     "n": "Cortland",
-    "d": 22
+    "d": 22,
+    "ds": [19,22]
   },
   "36025": {
     "n": "Delaware",
@@ -737,11 +740,13 @@ const COUNTIES = {
   },
   "36027": {
     "n": "Dutchess",
-    "d": 18
+    "d": 18,
+    "ds": [17,18]
   },
   "36029": {
     "n": "Erie",
-    "d": 26
+    "d": 26,
+    "ds": [23,26]
   },
   "36031": {
     "n": "Essex",
@@ -773,11 +778,13 @@ const COUNTIES = {
   },
   "36045": {
     "n": "Jefferson",
-    "d": 24
+    "d": 24,
+    "ds": [21,24]
   },
   "36047": {
     "n": "Kings",
-    "d": 8
+    "d": 8,
+    "ds": [7,8,9,10,11]
   },
   "36049": {
     "n": "Lewis",
@@ -797,23 +804,28 @@ const COUNTIES = {
   },
   "36057": {
     "n": "Montgomery",
-    "d": 20
+    "d": 20,
+    "ds": [20,21]
   },
   "36059": {
     "n": "Nassau",
-    "d": 4
+    "d": 4,
+    "ds": [2,3,4]
   },
   "36061": {
     "n": "New York",
-    "d": 12
+    "d": 12,
+    "ds": [10,12,13]
   },
   "36063": {
     "n": "Niagara",
-    "d": 26
+    "d": 26,
+    "ds": [23,24,26]
   },
   "36065": {
     "n": "Oneida",
-    "d": 22
+    "d": 22,
+    "ds": [21,22]
   },
   "36067": {
     "n": "Onondaga",
@@ -821,7 +833,8 @@ const COUNTIES = {
   },
   "36069": {
     "n": "Ontario",
-    "d": 24
+    "d": 24,
+    "ds": [24,25]
   },
   "36071": {
     "n": "Orange",
@@ -845,11 +858,13 @@ const COUNTIES = {
   },
   "36081": {
     "n": "Queens",
-    "d": 6
+    "d": 6,
+    "ds": [3,5,6,7,14]
   },
   "36083": {
     "n": "Rensselaer",
-    "d": 20
+    "d": 20,
+    "ds": [19,20]
   },
   "36085": {
     "n": "Richmond",
@@ -865,7 +880,8 @@ const COUNTIES = {
   },
   "36091": {
     "n": "Saratoga",
-    "d": 20
+    "d": 20,
+    "ds": [20,21]
   },
   "36093": {
     "n": "Schenectady",
@@ -877,7 +893,8 @@ const COUNTIES = {
   },
   "36097": {
     "n": "Schuyler",
-    "d": 23
+    "d": 23,
+    "ds": [23,24]
   },
   "36099": {
     "n": "Seneca",
@@ -885,11 +902,13 @@ const COUNTIES = {
   },
   "36101": {
     "n": "Steuben",
-    "d": 23
+    "d": 23,
+    "ds": [23,24]
   },
   "36103": {
     "n": "Suffolk",
-    "d": 1
+    "d": 1,
+    "ds": [1,2,3]
   },
   "36105": {
     "n": "Sullivan",
@@ -905,7 +924,8 @@ const COUNTIES = {
   },
   "36111": {
     "n": "Ulster",
-    "d": 18
+    "d": 18,
+    "ds": [18,19]
   },
   "36113": {
     "n": "Warren",
@@ -921,7 +941,8 @@ const COUNTIES = {
   },
   "36119": {
     "n": "Westchester",
-    "d": 16
+    "d": 16,
+    "ds": [16,17]
   },
   "36121": {
     "n": "Wyoming",
@@ -3201,7 +3222,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "New York Elections Hub", lastUpdated: "July 24, 2026" };
+const SITE_META = { name: "New York Elections Hub", lastUpdated: "August 4, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — GA county-level down-ballot research is the next phase).
@@ -3238,15 +3259,20 @@ function getCountyElections(fips) {
   const county = COUNTIES[fips];
   if (!county) return null;
   const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them,
+  // otherwise a district with no plurality county is unreachable from the map.
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
   // House race entries store their office name on the parent district object,
   // so attach it (plus a scope label) to every race so each seat renders with a clear title.
-  const houseRaces = district
-    ? district.races.map(r => ({
-        ...r,
-        office: r.office || district.name,
-        scope: r.scope || `Federal · District ${county.d}`
-      }))
-    : [];
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
   const localRaces = LOCAL_RACES[fips] || [];
   // Combine statewide + this county's House races + local races
   const all = [...STATEWIDE, ...houseRaces, ...localRaces];

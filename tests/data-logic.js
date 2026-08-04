@@ -36,10 +36,11 @@ const STATE_PAGES = [
   { page: "ct.html", countyCount: 8,   sampleFips: "09011", sampleName: "New London",  expectedRaces: 9 },
   { page: "vt.html", countyCount: 14,  sampleFips: "50007", sampleName: "Chittenden",  expectedRaces: 6 },
   { page: "me.html", countyCount: 16,  sampleFips: "23019", sampleName: "Penobscot",   expectedRaces: 9 },
-  { page: "ma.html", countyCount: 14,  sampleFips: "25025", sampleName: "Suffolk",     expectedRaces: 11 },
+  { page: "ma.html", countyCount: 14,  sampleFips: "25025", sampleName: "Suffolk",     expectedRaces: 15 },
   { page: "wv.html", countyCount: 55,  sampleFips: "54039", sampleName: "Kanawha",     expectedRaces: 10 },
   { page: "oh.html", countyCount: 88,  sampleFips: "39035", sampleName: "Cuyahoga",    expectedRaces: 17 },
   { page: "ky.html", countyCount: 120, sampleFips: "21111", sampleName: "Jefferson",   expectedRaces: 12 },
+  { page: "in.html", countyCount: 92,  sampleFips: "18097", sampleName: "Marion",      expectedRaces: 12 },
 ];
 
 for (const cfg of STATE_PAGES) {
@@ -49,6 +50,7 @@ for (const cfg of STATE_PAGES) {
     __exports.getCountyElections = getCountyElections;
     __exports.COUNTIES = COUNTIES;
     __exports.SITE_META = SITE_META;
+    __exports.HOUSE_RACES = HOUSE_RACES;
   `;
   const { sandbox, error } = runScript(cutAtD3(code), { extra });
   check(!error, `${cfg.page} data script runs${error ? ` — ${error.message}` : ""}`);
@@ -96,6 +98,22 @@ for (const cfg of STATE_PAGES) {
   }
   check(badCounty === null,
     `${cfg.page}: all ${cfg.countyCount} counties merge cleanly with titled, valid-type races${badCounty ? ` (bad: ${badCounty})` : ""}`);
+
+  // EVERY U.S. House district must be reachable from at least one county.
+  // Counties shared by several districts store the full list in `ds`; a district that
+  // is the plurality of NO county is invisible on the map, so a voter who lives in it
+  // clicks their county and never sees their own House race. That shipped live on
+  // ny.html (8 of 26 districts — the NYC seats) and ma.html (MA-3) and no test caught
+  // it, because every other check only ever asked about ONE district per county.
+  const reachable = new Set();
+  for (const c of Object.values(x.COUNTIES)) {
+    (c.ds && c.ds.length ? c.ds : [c.d]).forEach(d => reachable.add(d));
+  }
+  const unreachable = Object.keys(x.HOUSE_RACES).map(Number)
+    .filter(d => !reachable.has(d)).sort((a, b) => a - b);
+  check(unreachable.length === 0,
+    `${cfg.page}: every one of the ${Object.keys(x.HOUSE_RACES).length} House districts is reachable from a county${unreachable.length ? ` (unreachable: ${unreachable.join(",")})` : ""}`);
+
   console.log("");
 }
 
@@ -181,7 +199,7 @@ for (const abbr of ALL_TESTED) {
 // makes a race silently vanish from the grouped drawer)
 // ---------------------------------------------------------------
 console.log("\n— type-value audit —");
-for (const page of ["index.html", "nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html", "ny.html", "ri.html", "nh.html", "ct.html", "vt.html", "me.html", "ma.html", "wv.html", "oh.html", "ky.html", "state.html"]) {
+for (const page of ["index.html", "nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html", "ny.html", "ri.html", "nh.html", "ct.html", "vt.html", "me.html", "ma.html", "wv.html", "oh.html", "ky.html", "in.html", "state.html"]) {
   const bad = [];
   for (const code of extractInlineScripts(page)) {
     for (const m of code.matchAll(/type\s*:\s*"([a-z]+)"/g)) {

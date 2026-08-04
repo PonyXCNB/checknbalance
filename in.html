@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Indiana Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every IN election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #inmap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">IN</div>
+      <div class="brand-text">
+        <span class="brand-name">Indiana Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Indiana <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 92 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">92</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>9</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>6</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Indiana…</div>
+      <svg id="inmap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>Indiana Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">August 3, 2026</span><br>
+      Sources: Ohio Secretary of State, Ohio Redistricting Commission, Ballotpedia, Wikipedia, Cook Political Report, Sabato's Crystal Ball, Inside Elections, Ohio Capital Journal, Cleveland.com / The Plain Dealer, The Columbus Dispatch, Cincinnati Enquirer, Signal Ohio, WOSU, Spectrum News 1, AP/NBC.
+    </div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every DE county (all in the single at-large district)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- (1) Counties + primary US House district -----
+// ⚠ INDIANA DID NOT REDISTRICT MID-DECADE. Indiana was one of the states pressed hardest in
+// the 2025 national redistricting push. Gov. Mike Braun called a special session; the Indiana
+// House passed a 9R-0D map (HB 1032) 57-41 on Dec 5, 2025 that would have split Marion County
+// four ways -- and on Dec 11, 2025 the Indiana SENATE voted it down 31-19, with 21 Republicans
+// joining all 10 Democrats. The bill died and was never revived, so there is no new map.
+// THE 2026 ELECTION USES THE MAP ENACTED OCTOBER 4, 2021 (HEA 1581), UNCHANGED.
+// Verified structurally, not only from news: the Census Bureau's 118th- and 119th-Congress
+// county relationship files for Indiana are byte-identical, so the boundaries did not move.
+//
+// ⚠ TRAP: the Census 2020 Block Assignment File BlockAssign_ST18_IN_CD.txt encodes the OLD
+// 2011 CD116 map, not this one. Using it produces wrong splits (Marion 7/5, Boone and Morgan
+// split). It was detected and discarded.
+//
+// EIGHT counties are SPLIT; as elsewhere on this site, COUNTIES stores the POPULATION-
+// PLURALITY district (2020 Census P.L. 94-171). The splits, with the plurality share:
+//   Marion (Indianapolis) -> 7 (77.2%)   Bartholomew -> 6 (88.5%)   Kosciusko -> 2 (77.4%)
+//   LaPorte -> 1 (73.4%)                 Randolph    -> 3 (72.6%)   Cass      -> 4 (64.6%)
+//   Fountain -> 8 (61.7%)                Howard      -> 5 (>=97.8%)
+// CD7 lies ENTIRELY inside Marion County -- its population equals Indiana's ideal district
+// size (753,948), which independently pins the Marion split. Fountain, at 62/38, is the
+// closest call on the map and still not in doubt.
+// 92 counties, 100 county x district pairs.
+const COUNTIES = {
+  "18001": { n: "Adams", d: 3 },
+  "18003": { n: "Allen", d: 3 },
+  "18005": { n: "Bartholomew", d: 6 },
+  "18007": { n: "Benton", d: 4 },
+  "18009": { n: "Blackford", d: 3 },
+  "18011": { n: "Boone", d: 4 },
+  "18013": { n: "Brown", d: 9 },
+  "18015": { n: "Carroll", d: 4 },
+  "18017": { n: "Cass", d: 4 },
+  "18019": { n: "Clark", d: 9 },
+  "18021": { n: "Clay", d: 8 },
+  "18023": { n: "Clinton", d: 4 },
+  "18025": { n: "Crawford", d: 8 },
+  "18027": { n: "Daviess", d: 8 },
+  "18029": { n: "Dearborn", d: 9 },
+  "18031": { n: "Decatur", d: 9 },
+  "18033": { n: "DeKalb", d: 3 },
+  "18035": { n: "Delaware", d: 5 },
+  "18037": { n: "Dubois", d: 8 },
+  "18039": { n: "Elkhart", d: 2 },
+  "18041": { n: "Fayette", d: 6 },
+  "18043": { n: "Floyd", d: 9 },
+  "18045": { n: "Fountain", d: 8 },
+  "18047": { n: "Franklin", d: 9 },
+  "18049": { n: "Fulton", d: 2 },
+  "18051": { n: "Gibson", d: 8 },
+  "18053": { n: "Grant", d: 5 },
+  "18055": { n: "Greene", d: 8 },
+  "18057": { n: "Hamilton", d: 5 },
+  "18059": { n: "Hancock", d: 6 },
+  "18061": { n: "Harrison", d: 9 },
+  "18063": { n: "Hendricks", d: 4 },
+  "18065": { n: "Henry", d: 6 },
+  "18067": { n: "Howard", d: 5 },
+  "18069": { n: "Huntington", d: 3 },
+  "18071": { n: "Jackson", d: 9 },
+  "18073": { n: "Jasper", d: 4 },
+  "18075": { n: "Jay", d: 3 },
+  "18077": { n: "Jefferson", d: 9 },
+  "18079": { n: "Jennings", d: 9 },
+  "18081": { n: "Johnson", d: 6 },
+  "18083": { n: "Knox", d: 8 },
+  "18085": { n: "Kosciusko", d: 2 },
+  "18087": { n: "LaGrange", d: 3 },
+  "18089": { n: "Lake", d: 1 },
+  "18091": { n: "LaPorte", d: 1 },
+  "18093": { n: "Lawrence", d: 9 },
+  "18095": { n: "Madison", d: 5 },
+  "18097": { n: "Marion", d: 7 },
+  "18099": { n: "Marshall", d: 2 },
+  "18101": { n: "Martin", d: 8 },
+  "18103": { n: "Miami", d: 2 },
+  "18105": { n: "Monroe", d: 9 },
+  "18107": { n: "Montgomery", d: 4 },
+  "18109": { n: "Morgan", d: 4 },
+  "18111": { n: "Newton", d: 4 },
+  "18113": { n: "Noble", d: 3 },
+  "18115": { n: "Ohio", d: 9 },
+  "18117": { n: "Orange", d: 8 },
+  "18119": { n: "Owen", d: 8 },
+  "18121": { n: "Parke", d: 8 },
+  "18123": { n: "Perry", d: 8 },
+  "18125": { n: "Pike", d: 8 },
+  "18127": { n: "Porter", d: 1 },
+  "18129": { n: "Posey", d: 8 },
+  "18131": { n: "Pulaski", d: 2 },
+  "18133": { n: "Putnam", d: 4 },
+  "18135": { n: "Randolph", d: 3 },
+  "18137": { n: "Ripley", d: 9 },
+  "18139": { n: "Rush", d: 6 },
+  "18141": { n: "St. Joseph", d: 2 },
+  "18143": { n: "Scott", d: 9 },
+  "18145": { n: "Shelby", d: 6 },
+  "18147": { n: "Spencer", d: 8 },
+  "18149": { n: "Starke", d: 2 },
+  "18151": { n: "Steuben", d: 3 },
+  "18153": { n: "Sullivan", d: 8 },
+  "18155": { n: "Switzerland", d: 9 },
+  "18157": { n: "Tippecanoe", d: 4 },
+  "18159": { n: "Tipton", d: 5 },
+  "18161": { n: "Union", d: 6 },
+  "18163": { n: "Vanderburgh", d: 8 },
+  "18165": { n: "Vermillion", d: 8 },
+  "18167": { n: "Vigo", d: 8 },
+  "18169": { n: "Wabash", d: 2 },
+  "18171": { n: "Warren", d: 4 },
+  "18173": { n: "Warrick", d: 8 },
+  "18175": { n: "Washington", d: 9 },
+  "18177": { n: "Wayne", d: 6 },
+  "18179": { n: "Wells", d: 3 },
+  "18181": { n: "White", d: 4 },
+  "18183": { n: "Whitley", d: 3 },
+};
+
+const STATEWIDE = [
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Secretary of State of Indiana",
+    note: "⚠ INDIANA'S MARQUEE 2026 RACE, and a genuine FOUR-WAY contest. The incumbent is not on the ballot: Diego Morales (R) was thrown off it by his OWN PARTY, finishing third at the June 20 Republican convention (Engling 53.3%, Shelton 38.5%, Morales 8.2% on the second ballot). Reported causes included a non-citizen former chief of staff who was illegally registered to vote, a $90,000 taxpayer-funded SUV, no-bid contracts to campaign donors and a League of Women Voters ethics complaint over $35,070 in self-branded election guides; Sen. Jim Banks and AG Todd Rokita both rescinded endorsements. Note that Indiana picks this office at PARTY CONVENTIONS, not at the May primary. The only public poll is stale — it was taken in Oct–Nov 2025, before Morales was removed, and was commissioned by a group supporting Ballard.",
+    candidates: [
+      { name: "Max Engling", party: "R", winner: false,
+        positions: ["Citizen-only voting; verify that voter rolls exclude non-citizens","Close Republican primaries to registered Republicans only","Screen business filings for shell companies; build a public transparency portal"],
+        differentiators: ["About 20 years as a congressional staffer, including five with Speaker McCarthy","Regional director and adviser to Sen. Jim Banks since early 2025","Went from unknown staffer to statewide nominee in a 31-day campaign"],
+        supporters: ["Banks says he has real experience standing up for election integrity","Endorsed by Reps. Baird, Houchin and Spartz and by Treasurer Daniel Elliott","Won a two-ballot convention fight against a sitting officeholder"],
+        opponents: ["Rival David Shelton argued he has never actually administered an election","His campaign could not articulate a position on voting-machine security [Verify]","Bayh calls him a vehicle for insiders pulling his strings","Trails Bayh roughly 15-to-1 on cash on hand — $150K to $2.31M"] },
+      { name: "Beau Bayh", party: "D", winner: false,
+        positions: ["Expand early voting — Indiana turnout ranks at the bottom of the 50 states","Clean up corruption, wasteful spending and insider dealing in the office","Opposes mid-decade redistricting; backs citizen ballot referendums"],
+        differentiators: ["Son of Evan Bayh and grandson of Birch Bayh — a third-generation candidate","U.S. Marine Corps captain deployed to Europe after Russia's 2022 invasion","$2.31M cash on hand, roughly 15 times the Republican nominee's"],
+        supporters: ["Democrats' best shot at ending a statewide losing streak running since 2014","Endorsed by VoteVets and by carpenters, laborers and sheet-metal locals","Harvard law degree and a 7th Circuit clerkship behind the reform message"],
+        opponents: ["State GOP chair Lana Keesling calls him an unqualified Washington insider","Engling calls him a prep-school kid trading on a familiar name","His positions on mail voting and roll maintenance are not spelled out [Verify — his site blocked retrieval]"] },
+      { name: "Greg Ballard", party: "I", winner: false,
+        positions: ["[Verify — no policy platform for this office could be sourced; coverage to date is about fundraising and ballot mechanics]","",""],
+        differentiators: ["Two-term Republican mayor of Indianapolis, 2008–2016, now running outside the party","Created the \"Lincoln Party\" as a vehicle to bypass signature requirements","Raised $876,267 — about four times the Republican nominee — but reported only $26,477 on hand"],
+        supporters: ["A former big-city executive offering an alternative to both parties","At 2% of the vote the Lincoln Party gains convention ballot access going forward"],
+        opponents: ["No sourceable policy platform for the office he is seeking [Verify]","More than 90% of his spending is funded by a single PAC","Independent statewide bids have not been competitive in Indiana [Verify]"] },
+      { name: "Lauri Shillings", party: "L", winner: false,
+        positions: ["\"Election administration is not a partisan job. I will not run it like one.\"","Opposes sharing Hoosier voter data with the federal government on privacy grounds","Calls low turnout a failure of voter education, not a failure of the voters"],
+        differentiators: ["Creative director at the University of Indianapolis; small-business owner","Libertarian Party Hamilton County chair since 2021","Was the 2024 Libertarian nominee in Indiana's 5th Congressional District"],
+        supporters: ["Argues the office belongs to the people of Indiana, not to political parties","A nonpartisan pitch for a job that administers elections for everyone"],
+        opponents: ["No published criticism of her candidacy could be located [Verify]","Must clear 2% just to preserve the party's automatic ballot access","Reported $28,678 raised and $7,791 on hand — far behind the field"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "State Comptroller (Auditor of State) — Indiana",
+    note: "⚠ THE BALLOT TITLE IS DELIBERATELY DOUBLE-BARRELED. The office was renamed Auditor of State → State Comptroller by HEA 1001-2023, but the Indiana Constitution still says \"Auditor of State,\" so SEA 221 (2025) requires it appear on the 2026 ballot as \"State Comptroller (Auditor of State).\" ⚠ Elise Nieshalla was APPOINTED in December 2023 after Tera Klutz resigned and has never won a statewide election — some coverage has wrongly described her as elected in 2022. Nominated at party conventions, not the May primary; both major-party nominees were chosen without reported opposition.",
+    candidates: [
+      { name: "Elise Nieshalla (incumbent)", party: "R", winner: false,
+        positions: ["Divest state assets from Chinese entities and ESG-driven funds","Run a Federal Funding Expenditures Dashboard tracking $22.6B in federal grants","Automate state financial reporting; chairs a national debt-crisis task force"],
+        differentiators: ["Appointed Dec 1, 2023 after Tera Klutz resigned — never elected statewide","About 20 years in real estate and property acquisition; adjunct faculty at IU","Former President of the Boone County Council; 2018 County Councilor of the Year"],
+        supporters: ["Points to Indiana's AAA credit rating and balanced budgets","Gov. Braun praised her federal-funding dashboard as real transparency","Named Indiana County Councilor of the Year before moving up"],
+        opponents: ["Watchdogs describe her State Financial Officers Foundation ties as an industry network","Joined AG Rokita in demanding IU prove it had defunded the Kinsey Institute","Has never faced Indiana voters statewide and runs on an appointed record [Verify]"] },
+      { name: "Jessica Bailey", party: "D", winner: false,
+        positions: ["Rebuild the transparency portal — vendor payments, contracts and salaries in plain language","Real review rather than rubber-stamping of State Board of Finance transfers","Timely, accurate distribution of state money to schools, counties and cities"],
+        differentiators: ["Porter County Clerk, elected 2018 and re-elected 2022","Six years on the Portage Township School Board before that","Association of Indiana Counties Clerk of the Year 2023; a national EAC award"],
+        supporters: ["An elected administrator who already runs county finance and elections","Delegate Judy Fisher cited her drive, ambition and background","A northwest Indiana base offering regional contrast with a donut-county ticket"],
+        opponents: ["Porter County election administration drew a Statehouse reform review [Verify]","A four-day vote count in her first cycle as clerk [Verify]","No Democrat has won this office in Indiana in decades [Verify]"] },
+      { name: "John Schick", party: "L", winner: false,
+        positions: ["[Verify — no campaign site or policy statement could be located]","",""],
+        differentiators: ["Nominated at the Libertarian state convention in March 2026","Has sought this office in previous cycles"],
+        supporters: ["Gives voters a third option for a technical office usually uncontested [Verify]"],
+        opponents: ["No campaign platform, fundraising or public presence could be located [Verify]","Libertarians have not been competitive for Indiana statewide office [Verify]"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Treasurer of State — Indiana",
+    note: "Nominated at party conventions rather than at the May primary. The treasurer manages roughly $16 billion in daily state funds and chairs the Indiana529 and ABLE authorities. The Libertarian Party's reported 2026 slate names no treasurer candidate [Verify — the absence was not affirmatively confirmed].",
+    candidates: [
+      { name: "Daniel Elliott (incumbent)", party: "R", winner: false,
+        positions: ["Anti-ESG enforcement — put BlackRock on Indiana's ESG watchlist in June 2024","Cites $1.24 billion in investment revenue over two years without raising taxes","School choice; chairs the Indiana529 and ABLE authorities"],
+        differentiators: ["Founded a Martinsville software company; business and computer science degree","First member of the LDS church elected statewide in Indiana","Former Morgan County Council member and county Republican chair"],
+        supporters: ["Points to investment returns and $166.4M in FY25 interest paid to local units","Manages roughly $16 billion in daily state funds without incident","Expanded awareness of the state's college and disability savings programs"],
+        opponents: ["The Legislative Services Agency estimated his 2023 anti-ESG pension bill would cut returns $6.7B over a decade","He and his wife sued three Morgan County nonprofits over a disputed Martinsville building; the case cycled through six judges without a hearing [Verify — the nonprofits' response could not be sourced]","Critics say ESG screening substitutes politics for fiduciary duty [Verify]"] },
+      { name: "Coumba Kebe", party: "D", winner: false,
+        positions: ["\"Hoosiers deserve to understand where their taxpayer dollars are going\"","Long-term planning rather than budget-cycle thinking","Expand awareness of the 529 and ABLE savings programs"],
+        differentiators: ["First-generation American; IU Bloomington degree plus an MPH in health policy","Founded Scope Consulting LLC in 2023, advising home-care agencies","Built her public profile making TikTok videos explaining Medicaid policy"],
+        supporters: ["Hamilton County chair Josh Lowry cited the reach of her policy explainers","A communicator for an office most voters never hear from","Came to the ticket through grassroots visibility rather than party ladder-climbing"],
+        opponents: ["No published criticism of her candidacy could be located [Verify]","Lost a May 2026 primary for Indiana House District 29 before taking this nomination","No institutional investment or public-finance background [Verify]"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Judicial",
+    office: "Indiana Court of Appeals — Retention (3 judges)",
+    note: "Indiana judges face YES/NO retention votes, not opponents. Three Court of Appeals judges are up in 2026, all appointed by Gov. Eric Holcomb and all facing their FIRST retention. NO Indiana Supreme Court justice is on the 2026 ballot — Rush, Massa and Molter were retained in 2024 and are not due again until 2034. Judge Stephen Scheele, appointed in January 2025, has not served two full years and is therefore not on this ballot.",
+    candidates: [
+      { name: "Dana J. Kenworthy (retention)", party: "I", winner: false,
+        positions: ["[Verify — Indiana judges do not campaign on policy positions]","",""],
+        differentiators: ["Court of Appeals, 2nd District; took office Jan 16, 2023","Appointed by Gov. Eric Holcomb; facing her first retention vote"],
+        supporters: ["Retention votes are the public's regular check on appointed judges [Verify]"],
+        opponents: ["No organized opposition to her retention was located [Verify]"] },
+      { name: "Mary A. DeBoer (retention)", party: "I", winner: false,
+        positions: ["[Verify — Indiana judges do not campaign on policy positions]","",""],
+        differentiators: ["Court of Appeals, 4th District; took office Oct 15, 2024","Appointed by Gov. Eric Holcomb; facing her first retention vote"],
+        supporters: ["Retention votes are the public's regular check on appointed judges [Verify]"],
+        opponents: ["No organized opposition to her retention was located [Verify]"] },
+      { name: "Paul A. Felix (retention)", party: "I", winner: false,
+        positions: ["[Verify — Indiana judges do not campaign on policy positions]","",""],
+        differentiators: ["Court of Appeals, 5th District; took office Jul 28, 2023","Appointed by Gov. Eric Holcomb; facing his first retention vote"],
+        supporters: ["Retention votes are the public's regular check on appointed judges [Verify]"],
+        opponents: ["No organized opposition to his retention was located [Verify]"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Public Question #1 — Bail and \"Substantial Risk\" Detention",
+    note: "A proposed amendment to Article 1, Section 17 of the Indiana Constitution. Certified ballot text: \"Currently, under the Constitution of the State of Indiana, a person charged with murder or treason is not entitled to be released on bail if the proof is evident or the presumption strong. Shall the Constitution of the State of Indiana be amended to provide that a person charged with an offense other than murder or treason is not entitled to bail if: (1) the proof is evident or the presumption strong; and (2) the state proves by clear and convincing evidence that no release conditions will reasonably protect the safety of any other person or the community?\" It began as S.J.R. 1 and cleared its second passage in the Senate 43–2 on Jan 23, 2026 and the House 75–11 on Feb 17, 2026. Supporters frame it as public safety and alignment with federal practice. Opponents, including legislative Democrats and civil-liberties groups, argue it shifts detention from the charge to a judgment about the person — Sen. Greg Taylor's objection was that \"it's not based on the charge, it's based on the person\" — and warn of disparate impact.",
+    candidates: []
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Public Question — City and Town Court Judge Residency",
+    note: "A proposed amendment to Article 6, Section 6 of the Indiana Constitution. Certified ballot text: \"Shall the Constitution of the State of Indiana be amended to permit the judge of a city or town court to reside in: (1) the county in which the court is located; or (2) the bordering county closest to the city or town in which the court is located?\" It cleared its second passage as H.J.R. 1 — House 81–7 on Jan 30, 2025 and Senate 43–3 on Mar 17, 2025 — and affects 38 city and 14 town courts. Author Rep. Michael Aylesworth argued that lawyers who could serve as judges have become increasingly scarce in rural areas; Chief Justice Loretta Rush was supportive and there is no organized opposition. [Verify this measure's official public-question NUMBER against the Secretary of State's certified ballot — it is widely assumed to be #2 but no source confirmed it.]",
+    candidates: []
+  },
+
+  // PAST — recent statewide results for context
+  {
+    date: "Nov 5, 2024",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Indiana (2024)",
+    note: "Jim Banks won the seat Mike Braun vacated to run for governor. ⚠ NEITHER of Indiana's Senate seats is on the 2026 ballot — Banks holds a Class 1 seat through 2030 and Todd Young a Class 3 seat through 2028, and there is no vacancy or special election.",
+    candidates: [
+      { name: "Jim Banks", party: "R", winner: true,
+        positions: ["Won 58.64%","",""],
+        differentiators: ["Next up for re-election in 2030"],
+        supporters: [], opponents: [] },
+      { name: "Valerie McCray", party: "D", winner: false,
+        positions: ["Won 38.77%","",""],
+        differentiators: ["A 19.9-point margin"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 5, 2024",
+    type: "past",
+    scope: "State · Statewide",
+    office: "Governor of Indiana (2024)",
+    note: "Mike Braun won a four-year term, so there is NO governor's race in Indiana in 2026 — the office is next up in 2028. Lt. Gov. Micah Beckwith runs on the same ticket and is likewise not up.",
+    candidates: [
+      { name: "Mike Braun", party: "R", winner: true,
+        positions: ["Won 54.38%","",""],
+        differentiators: ["Called the Nov 2025 special session on redistricting that his own party's Senate rejected"],
+        supporters: [], opponents: [] },
+      { name: "Jennifer McCormick", party: "D", winner: false,
+        positions: ["Won 41.11%","",""],
+        differentiators: ["A 13.3-point margin"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 8, 2022",
+    type: "past",
+    scope: "State · Statewide",
+    office: "Secretary of State — Indiana (2022)",
+    note: "Diego Morales won the office 54.13%–40.21% over Destiny Wells, with Libertarian Jeff Maurer at 5.66%. He was denied renomination by his own party's convention four years later.",
+    candidates: [
+      { name: "Diego Morales", party: "R", winner: true,
+        positions: ["Won 54.13%","",""],
+        differentiators: ["Finished third at the June 2026 Republican convention and is not on the 2026 ballot"],
+        supporters: [], opponents: [] },
+      { name: "Destiny Wells", party: "D", winner: false,
+        positions: ["Won 40.21%","",""],
+        differentiators: ["A 13.9-point margin"],
+        supporters: [], opponents: [] }
+    ]
+  }
+];
+
+// ----- (3) US House races by district -----
+// Sources: AP-called May 5, 2026 primary results (WFYI, WNDU, WBOI, The Hill), the Indiana
+// Election Division's certified ENR results feed, the Indiana SoS 2026 General Election
+// Candidate List (7-22-26), and FEC bulk filings through 6/30/2026.
+// ⚠ The SoS certified list was still INCOMPLETE for federal offices as of Aug 4, 2026 — its own
+// header says federal lists stay incomplete until the Recount Commission finishes three state
+// legislative recounts. It DOES carry minor-party and write-in filers, so Libertarian and
+// write-in ballot status below is certified; the D/R nominees are AP-called instead.
+// ⚠ Ballotpedia was wrong at least three times here: it listed a Republican (Daniel George) in
+// the IN-8 primary who never made the ballot, an independent (James Burke) in the IN-8 general
+// who is not certified, and an independent (Eric Beebe) in IN-2 who actually filed for a
+// LaPorte County school board seat. None are carded.
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — IN District 1",
+    region: "The northwest corner along Lake Michigan — Lake County (Gary, Hammond, East Chicago), Porter County, and six townships of LaPorte County (Center, Coolspring, Michigan, New Durham, Scipio and Springfield)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ INDIANA'S ONLY COMPETITIVE SEAT and the only one decided by under 10 points in 2024. Cook PVI D+1. Notably, the forecasters moved AWAY from Republicans after the primary, not toward them: Sabato shifted Leans D → LIKELY D on about May 6, and Inside Elections shifted Lean D → Likely D on June 12; Cook also has it Likely Democratic. Sabato's Kyle Kondik called it \"the wrong year for Republicans to really put this race in play.\" Mrvan is on the DCCC's Frontline list; Regnitz has Trump's endorsement and NRCC backing. No Libertarian filed.",
+        candidates: [
+          { name: "Frank Mrvan (incumbent)", party: "D", winner: false,
+            positions: ["Grow the northwest Indiana economy through earmarks, the Hydrogen Hub and South Shore rail","Codify abortion rights into federal law and protect reproductive care access","Lower healthcare and prescription costs; \"humane\" border security"],
+            differentiators: ["Three terms; 15 years as North Township trustee; son of a former state senator","A union-heavy endorsement list: USW, UAW, Teamsters, IBEW, NEA and AFT","$512,623 raised in Q2 with $1,336,696 cash on hand as of June 30, 2026 [Verify]"],
+            supporters: ["Says he delivered more than $100M in Community Project Funding to the district","Won by 8.5 points in 2024 while the presidential race here was nearly tied","Organized labor is unified behind him in a steel-and-trades district"],
+            opponents: ["The NRCC calls him a \"free-loader\" who \"sold out his constituents\"","Trump faults his opposition to steel tariffs and his votes against no-tax-on-tips","The district has shifted roughly 12 points right since 2016"] },
+          { name: "Barb Regnitz", party: "R", winner: false,
+            positions: ["Back law enforcement, end catch-and-release, secure the border","Cut federal spending and the national debt","\"100% election integrity\" — in-person voting and watermarked paper ballots"],
+            differentiators: ["Porter County commissioner, in her third year — her first office above county level","A former United Airlines software engineer and certified financial planner","$735,656 raised in Q2 2026 — she outraised Mrvan [Verify]; earlier totals included a ~$1.5M self-loan"],
+            supporters: ["Won the primary outright with 45.8% in a three-way field","Holds Trump's \"Complete and Total Endorsement\" and NRCC MAGA Majority backing","Porter County is the Republican base of the district, and Trump grew his margin there past 10 points"],
+            opponents: ["Self-funded much of her war chest rather than building grassroots support [Verify]","Has never held office above the county level and has no federal record [Verify]","Forecasters moved this race AWAY from her after the primary, not toward her"] }
+        ]
+      },
+      {
+        date: "May 5, 2026", type: "past",
+        note: "Mrvan won renomination 80.2% over LaVetta Sparks-Wade. Barb Regnitz won a three-way Republican primary with 45.8% over Jim Schenke (30.1%) and Ben Ruiz (24.1%); 2022 nominee Jennifer-Ruth Green withdrew before the primary. [Verify exact totals — the Indiana ENR portal had no working public endpoint this pass, so figures are from compiled tables rather than the official canvass.]",
+        candidates: [
+          { name: "Frank Mrvan", party: "D", winner: true,
+            positions: ["Won renomination with 80.2%","",""],
+            differentiators: ["Faced one primary challenger"],
+            supporters: [], opponents: [] },
+          { name: "Barb Regnitz", party: "R", winner: true,
+            positions: ["Won the Republican nomination with 45.8% in a three-way field","",""],
+            differentiators: ["Won without a runoff; Indiana holds no primary runoffs"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Mrvan held the seat 53.4%–44.9% over Randy Niemeyer — an 8.5-point margin, the closest U.S. House result in Indiana that year.",
+        candidates: [
+          { name: "Frank Mrvan", party: "D", winner: true,
+            positions: ["Won 53.4% — 172,467 votes","",""],
+            differentiators: ["The only Indiana House race decided by under 10 points"],
+            supporters: [], opponents: [] },
+          { name: "Randy Niemeyer", party: "R", winner: false,
+            positions: ["Won 44.9% — 145,056 votes","",""],
+            differentiators: ["Did not run again in 2026"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  2: {
+    name: "U.S. House — IN District 2",
+    region: "North-central Indiana — St. Joseph (South Bend), Elkhart, Marshall, Kosciusko, Miami, Wabash, Fulton, Pulaski and Starke counties, plus part of Cass and part of LaPorte",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Cook PVI R+13; rated Solid Republican (Inside Elections, Dec 5) and safe for the incumbent party by Cook and Sabato. Rudy Yakym, who took the seat in a 2022 special election after Rep. Jackie Walorski's death, sits on Ways and Means and helped write the tax title of the \"One Big Beautiful Bill.\" This is one of only three Indiana districts where Libertarians fielded a candidate. [Verify exact rater labels — Cook's and Sabato's own tables were not machine-readable.]",
+        candidates: [
+          { name: "Rudy Yakym (incumbent)", party: "R", winner: false,
+            positions: ["Shrink the bloated federal bureaucracy","Restore fiscal responsibility","Ensure veterans get their earned care and benefits"],
+            differentiators: ["Elected in a Nov 2022 special election after Rep. Jackie Walorski's death","Sits on House Ways and Means; helped write the tax title of the One Big Beautiful Bill","$2.94M raised with $1.49M cash on hand as of Dec 31, 2025"],
+            supporters: ["Won 2024 by 28.1 points in an R+13 seat","A Ways and Means seat gives Michiana outsized influence on tax law","Points to the permanent 2017 tax-cut extension and no tax on tips"],
+            opponents: ["Hundreds protested outside his Mishawaka office over his refusal to hold town halls","Backed a bill cutting Medicaid and food assistance to pay for tax cuts","Local senior-services providers publicly lobbied him against related cuts"] },
+          { name: "Jamee Decio", party: "D", winner: false,
+            positions: ["Affordability — lower costs for groceries, healthcare and housing","Strengthen local industry and regional jobs in the RV and manufacturing corridor","Opposes using ICE to deport working, tax-paying immigrants"],
+            differentiators: ["Elkhart native; among the first women admitted to Notre Dame, and a Notre Dame law graduate","Former Elkhart County deputy prosecutor, later a screenwriter and WGA union member","$86,563 raised with $5,924 cash on hand as of Dec 31, 2025"],
+            supporters: ["Won the primary by 44 points, 72.1%–27.9%","Deep local roots and a recognized Elkhart family name","A prosecutor-and-union-member profile that fits a manufacturing district"],
+            opponents: ["Moved back from Los Angeles only in 2025 specifically to run [Verify — opponent framing]","Faces an R+13 seat the incumbent carried by 28 points","Ended 2025 with under $6,000 against a $1.5M incumbent war chest"] },
+          { name: "William Eric Henry", party: "L", winner: false,
+            positions: ["Government transparency, accountability and public engagement","Tax reform and veterans' care","Privacy protections, constitutional liberties and federal cannabis reform"],
+            differentiators: ["U.S. Army 2005–2015; exposed fraud at the Indiana Dept. of Veterans Affairs in 2018","Libertarian Party of Elkhart County treasurer; a Goshen resident","His third consecutive run — also the 2022 and 2024 IN-2 Libertarian nominee"],
+            supporters: ["Took 2.6% in 2024, the strongest third-party showing in northern Indiana","A veteran with a documented whistleblower record","Gives voters a ballot option rejecting both major parties"],
+            opponents: ["Has never cleared 3% in two prior tries [Verify]","Minimal fundraising and organization relative to both major parties [Verify]","Functions chiefly as a protest vote in a safe Republican seat [Verify]"] }
+        ]
+      },
+      {
+        date: "May 5, 2026", type: "past",
+        note: "Yakym was unopposed for renomination. Jamee Decio won the Democratic primary with 72.1% over Shaun Maeyens. [Verify exact totals against the official canvass.]",
+        candidates: [
+          { name: "Rudy Yakym", party: "R", winner: true,
+            positions: ["Renominated unopposed","",""],
+            differentiators: ["Drew no primary challenger"],
+            supporters: [], opponents: [] },
+          { name: "Jamee Decio", party: "D", winner: true,
+            positions: ["Won the Democratic nomination with 72.1%","",""],
+            differentiators: ["A 44-point primary margin"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Yakym held the seat 62.7%–34.6% over Lori Camp, with Libertarian William Henry at 2.6% — Henry is on the ballot again in 2026.",
+        candidates: [
+          { name: "Rudy Yakym", party: "R", winner: true,
+            positions: ["Won 62.7% — 184,848 votes","",""],
+            differentiators: ["A 28.1-point margin"],
+            supporters: [], opponents: [] },
+          { name: "Lori Camp", party: "D", winner: false,
+            positions: ["Won 34.6% — 101,962 votes","",""],
+            differentiators: ["Did not run again in 2026"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  3: {
+    name: "U.S. House — IN District 3",
+    region: "The northeast — Allen County (Fort Wayne), DeKalb, Noble, Steuben, LaGrange, Whitley, Wells, Adams and Huntington, plus parts of Jay and Kosciusko. [Verify Randolph County: this site's county map derives it 72.6% in IN-3 from the Census district-to-county relationship file, but district-level reporting places Randolph in IN-6 — the two sources disagree and it is genuinely split]",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Cook PVI R+16; rated Solid Republican (Inside Elections, Dec 5) and safe for the incumbent party by Cook and Sabato. Marlin Stutzman held this seat from 2010 to 2017, lost the 2016 Senate primary to Todd Young, and won it back in 2024. He drew a notable 32% protest vote in the primary despite Trump's endorsement, and carries the weakest war chest of Indiana's three northern incumbents. No Libertarian filed here in 2026, though one took 3.5% in 2024.",
+        candidates: [
+          { name: "Marlin Stutzman (incumbent)", party: "R", winner: false,
+            positions: ["\"Eliminate inflation\" through a tax-code overhaul and spending cuts","Finish the border wall; border and national security","\"Hands off our kids\" — treat education as a state and parental responsibility"],
+            differentiators: ["Held this seat 2010–2017, lost the 2016 Senate primary, then won it back in 2024","Fourth-generation farmer and co-owner of farming, RV and trucking businesses","$618,303 raised with $221,320 cash on hand as of Dec 31, 2025"],
+            supporters: ["Won the primary 68%–32% with Trump's endorsement","Carried the 2024 general by 33.6 points in an R+16 seat","A farm-and-small-business background matching a heavily agricultural district"],
+            opponents: ["The weakest incumbent war chest of Indiana's northern seats — $221K on hand","Drew a 32% primary protest vote against a Trump-endorsed sitting member","Has missed 3.9% of lifetime roll-call votes against a 2.1% median","His primary rival campaigned on campaign-finance transparency and Epstein-records accountability"] },
+          { name: "Kelly Thompson", party: "D", winner: false,
+            positions: ["Protect farmland — farming is the lead page of her platform","Lower healthcare costs and expand affordable housing","Fair wages and a better tax structure"],
+            differentiators: ["Co-owner of a concrete contracting company and a nonprofit founder","Voted Republican until 2016 and switched parties after that election","$56,687 raised with $13,054 cash on hand as of Dec 31, 2025"],
+            supporters: ["Cleared the primary field unopposed and has been organizing for more than a year","An ex-Republican small-business owner who may reach ticket-splitters","Runs on kitchen-table costs rather than national fights"],
+            opponents: ["Faces an R+16 district Stutzman carried by 33.6 points","Ended 2025 with $13K on hand — no path to competitive paid media","No prior office and no locatable major institutional endorsements [Verify]"] }
+        ]
+      },
+      {
+        date: "May 5, 2026", type: "past",
+        note: "Stutzman won renomination 68.2% over Jon Kenworthy at 31.8%, in Kenworthy's second attempt — a sizeable protest vote against a Trump-endorsed incumbent. Kelly Thompson was unopposed for the Democratic nomination. [Verify exact totals against the official canvass.]",
+        candidates: [
+          { name: "Marlin Stutzman", party: "R", winner: true,
+            positions: ["Won renomination with 68.2%","",""],
+            differentiators: ["Held off a second challenge from Jon Kenworthy"],
+            supporters: [], opponents: [] },
+          { name: "Kelly Thompson", party: "D", winner: true,
+            positions: ["Won the Democratic nomination unopposed","",""],
+            differentiators: ["Has been campaigning since early 2025"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Stutzman reclaimed the seat 65.0%–31.4% over Kiley Adolph, with Libertarian Jarrad Lancaster at 3.5%. No Libertarian filed in 2026.",
+        candidates: [
+          { name: "Marlin Stutzman", party: "R", winner: true,
+            positions: ["Won 65.0% — 202,653 votes","",""],
+            differentiators: ["Returned to a seat he had held until 2017"],
+            supporters: [], opponents: [] },
+          { name: "Kiley Adolph", party: "D", winner: false,
+            positions: ["Won 31.4% — 97,871 votes","",""],
+            differentiators: ["Did not run again in 2026"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  4: {
+    name: "U.S. House — IN District 4",
+    region: "West-central Indiana — Tippecanoe (Lafayette and West Lafayette), Boone, Hendricks, Montgomery, Clinton, Jasper, Newton, White, Carroll, Cass, Warren, Benton, Putnam and Morgan counties",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Cook PVI R+15. Jim Baird, a Vietnam veteran and two-time Purple Heart recipient, is seeking a fifth term at 80 — the oldest candidate in the primary field. Marine veteran and Purdue instructor Drew Cox emerged from an eight-way Democratic field with 30.4%. [Verify ratings: no dated POST-primary Cook, Sabato or Inside Elections rating could be obtained — Cook's pages return 403 and Sabato publishes House ratings only as an image. The \"safely Republican\" label traces to pre-primary reporting citing Cook.]",
+        candidates: [
+          { name: "Jim Baird (incumbent)", party: "R", winner: false,
+            positions: ["Protect family farms and prioritize farm programs from the House Ag Committee","Cut federal spending, make tax relief permanent, expand U.S. energy production","Border security and funding for ICE"],
+            differentiators: ["Vietnam veteran and two-time Purple Heart recipient; a Greencastle farmer","Endorsed by Trump, Indiana Right to Life, the Indiana Farm Bureau and the NRA","Won renomination 60.5% over a sitting state representative"],
+            supporters: ["A Purple Heart veteran and working farmer in a genuinely agricultural district","His Agriculture Committee seat converts into real money for Indiana growers","Beat a sitting state rep by 30 points with Trump's endorsement"],
+            opponents: ["Would be 81 or older at swearing-in; critics say he has held the seat long enough","The FEC fined his campaign $7,475 in March 2025 for hiding a $160,500 loan repayment","A second such fine — the campaign paid $6,538 in 2019 for similar disclosure failures","Backed the mid-decade redistricting push Indiana's own Senate then killed"] },
+          { name: "Drew Cox", party: "D", winner: false,
+            positions: ["Healthcare access and restoring Medicaid — cites 70% of rural hospital costs","Regulate large-scale data centers and rein in energy cost increases","Overturn Citizens United; refuses all corporate PAC money"],
+            differentiators: ["U.S. Marine Corps veteran and visiting instructor at Purdue","Degrees in music plus an associate's in energy technology","Won an eight-way primary by about 7.5 points with no establishment backing"],
+            supporters: ["A veteran and Purdue instructor with a real Tippecanoe County base","His refusal of corporate PAC money is a clean contrast with a four-term incumbent","Data centers and energy costs are locally salient in west-central Indiana"],
+            opponents: ["Baird carried this district by roughly 34 points in 2024","An R+15 seat, and only 30.4% of his own primary voters chose him","No FEC fundraising totals could be sourced for his campaign [Verify]"] },
+          { name: "David E. Bokash", party: "I", winner: false,
+            positions: ["[Verify — no campaign platform could be located]","",""],
+            differentiators: ["A certified declared WRITE-IN candidate, filed July 6, 2026","Appears on the Indiana Election Division's certified list but not on the printed ballot"],
+            supporters: ["Gives IN-4 voters a write-in option outside both parties [Verify]"],
+            opponents: ["No campaign platform, fundraising or news coverage could be located [Verify]","Write-in candidacies almost never register measurably in Indiana House races [Verify]"] }
+        ]
+      },
+      {
+        date: "May 5, 2026", type: "past",
+        note: "Baird won renomination 60.5% (37,855) over state Rep. Craig Haggard at 30.5% and John Piper at 8.9%. Drew Cox won an eight-way Democratic primary with 30.4% (7,550) over Joe Mackey at 22.8%. [Verify certified totals against the Indiana Secretary of State canvass — the Election Division's July 22 certified list is still incomplete for federal offices.]",
+        candidates: [
+          { name: "Jim Baird", party: "R", winner: true,
+            positions: ["Won renomination with 60.5%","",""],
+            differentiators: ["Defeated a sitting state representative"],
+            supporters: [], opponents: [] },
+          { name: "Drew Cox", party: "D", winner: true,
+            positions: ["Won the Democratic nomination with 30.4% in an eight-way field","",""],
+            differentiators: ["Beat runner-up Joe Mackey by about 7.5 points"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Baird held the seat 64.8%–30.9% over Derrick Holder, with Libertarian Ashley Groff at 4.2%. No Libertarian filed here in 2026.",
+        candidates: [
+          { name: "Jim Baird", party: "R", winner: true,
+            positions: ["Won 64.8% — 209,794 votes","",""],
+            differentiators: ["A roughly 34-point margin"],
+            supporters: [], opponents: [] },
+          { name: "Derrick Holder", party: "D", winner: false,
+            positions: ["Won 30.9% — 100,091 votes","",""],
+            differentiators: ["Did not run again in 2026"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  5: {
+    name: "U.S. House — IN District 5",
+    region: "The northern Indianapolis suburbs and east-central Indiana — Hamilton (Carmel, Fishers, Noblesville), Madison (Anderson), Grant, Howard (Kokomo), Delaware (Muncie) and Tipton counties",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ INDIANA'S MOST COMPETITIVE SEAT, at Cook PVI R+8 — the least Republican of the state's nine. Victoria Spartz IS on the ballot: her repeated retirement announcements and reversals applied to the 2024 cycle, and she won renomination 59.9%–40.1%. She enters the general in unusual financial shape for an incumbent — roughly $56K cash on hand against about $200K in debt as of April 15, 2026 — while facing a House Ethics Committee preliminary inquiry. Her opponent is a sitting state senator. [Verify ratings: no dated post-primary Cook/Sabato/Inside Elections rating could be obtained. An aggregator surfaced a \"Lean R\" label that could NOT be traced to a named rater or date, so it is deliberately not printed here.]",
+        candidates: [
+          { name: "Victoria Spartz (incumbent)", party: "R", winner: false,
+            positions: ["Cut federal spending, balance the budget and attack the national debt","Healthcare transparency and competition rather than mandates","Reform legal immigration to serve the national interest; border security"],
+            differentiators: ["Ukrainian-born CPA from Carmel and a former state senator, seeking a fourth term","Repeatedly announced retirement and then reversed — a defining storyline","About $1.09M raised, but roughly $56K cash on hand against $200K debt"],
+            supporters: ["A three-term incumbent in a seat Republicans have held for 34 straight years","CPA credentials give her standing on debt and fiscal policy","Turned back a serious primary challenge 59.9%–40.1%"],
+            opponents: ["A House Ethics Committee preliminary inquiry is examining staff-treatment complaints","LegiStorm ranks her office with the highest staff turnover in the House","Reversed her position on Ukraine aid despite being Ukrainian-born","Enters the general nearly broke — about $56K cash against $200K of debt"] },
+          { name: "J.D. Ford", party: "D", winner: false,
+            positions: ["Lower grocery and housing costs and cap healthcare expenses","Codify LGBTQ+ rights; protect Social Security without benefit cuts","Attach accountability conditions to corporate subsidies"],
+            differentiators: ["Indiana state senator for District 29 since 2018 — his district sits inside Hamilton County","The first openly gay member of the Indiana General Assembly","Reports $365,000+ raised in Q2 2026, 90%+ from Indiana donors [Verify — self-reported]"],
+            supporters: ["A sitting state senator whose own district lies inside the congressional district","Outraised the incumbent in Q2 while she carries campaign debt","Consolidated a seven-way field with 42.5% — more than double the runner-up"],
+            opponents: ["An R+8 seat that Spartz carried by 18.6 points in 2024","57.5% of Democratic primary voters picked someone other than him","Indiana Democrats have not won this seat in 34 years","Launching over redistricting may not reach cost-of-living voters [Verify]"] }
+        ]
+      },
+      {
+        date: "May 5, 2026", type: "past",
+        note: "Spartz won renomination 59.9% (33,691) over Scott King at 40.1% — a closer call than an incumbent usually faces. J.D. Ford won a seven-way Democratic primary with 42.5% (17,608). [Verify certified totals against the Indiana Secretary of State canvass.]",
+        candidates: [
+          { name: "Victoria Spartz", party: "R", winner: true,
+            positions: ["Won renomination with 59.9%","",""],
+            differentiators: ["Held off a challenger who took 40.1%"],
+            supporters: [], opponents: [] },
+          { name: "J.D. Ford", party: "D", winner: true,
+            positions: ["Won the Democratic nomination with 42.5% in a seven-way field","",""],
+            differentiators: ["More than doubled the runner-up's share"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Spartz held the seat 56.6%–38.0% over Deborah Pickett, an 18.6-point margin, with independent Robby Slaughter and Libertarian Lauri Shillings each near 2.7%. Shillings is the Libertarian nominee for Secretary of State in 2026, and no Libertarian filed in IN-5.",
+        candidates: [
+          { name: "Victoria Spartz", party: "R", winner: true,
+            positions: ["Won 56.6% — 203,293 votes","",""],
+            differentiators: ["An 18.6-point margin"],
+            supporters: [], opponents: [] },
+          { name: "Deborah Pickett", party: "D", winner: false,
+            positions: ["Won 38.0% — 136,554 votes","",""],
+            differentiators: ["Ran again in the 2026 primary and finished third"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  6: {
+    name: "U.S. House — IN District 6",
+    region: "East-central Indiana and the southeastern Indianapolis suburbs — Johnson (Greenwood), Hancock, Shelby, Bartholomew (Columbus), Henry, Wayne (Richmond), Rush, Fayette and Union counties",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "A REMATCH of 2024, which Jefferson Shreve won by roughly 32 points. Cook PVI R+16 — the most Republican of these three seats. The notable result was on the Republican side: Shreve held renomination by only about 6 points against Sarah Janisse Brown, an unfunded first-time candidate, though he carried all 11 counties. [Verify ratings: no dated post-primary rating could be obtained; \"safely Republican\" traces to pre-primary reporting citing Cook.]",
+        candidates: [
+          { name: "Jefferson Shreve (incumbent)", party: "R", winner: false,
+            positions: ["Affordability and cost of living; lower energy costs and domestic energy independence","Border security and support for law enforcement","Healthcare and veterans affairs"],
+            differentiators: ["Founder and former owner of Storage Express; a wealthy self-funder","Former Indianapolis City-County Council member; lost the 2023 Indianapolis mayoral race","About $1.8M cash on hand after Q1 2026 [Verify]"],
+            supporters: ["Won an R+16 seat by roughly 32 points as a first-time congressional candidate","Roughly $1.8M banked plus personal wealth — he will not be outspent","Seats on Transportation and Infrastructure and on Foreign Affairs"],
+            opponents: ["Held renomination by only about 6 points against an unfunded first-time candidate","In 2023 he backed an assault-weapon sales ban and repealing permitless carry; the NRA graded him F","Could not name a single Black person hired or promoted in 30 years at Storage Express","Spent $14.4M of mostly his own money on a losing mayoral race, inviting a bought-the-seat critique"] },
+          { name: "Cinde Wirth", party: "D", winner: false,
+            positions: ["Raise the minimum wage — no full-time worker should live in poverty","Normalize and expand paid family leave","Highest-quality healthcare for veterans; strengthen public school funding"],
+            differentiators: ["Doctorate in cultural and educational policy from Ball State","Former public high school teacher, field scientist and Columbus small-business owner","Won this primary outright with 58.7% in her second run against Shreve"],
+            supporters: ["The only IN-6 Democrat to clear a majority in the primary","A science-and-classroom résumé that fits her education and environment message","Name recognition carried over from the 2024 run"],
+            opponents: ["Lost this exact matchup by roughly 32 points in 2024","An R+16 district, with no sourceable 2026 fundraising against a self-funder [Verify]","Republicans have held this seat continuously through Pence, Messer and Pence"] }
+        ]
+      },
+      {
+        date: "May 5, 2026", type: "past",
+        note: "Shreve held renomination 53.1% (27,814) to 46.9% for Sarah Janisse Brown, carrying all 11 counties but by a narrow overall margin. Cinde Wirth won the Democratic nomination outright with 58.7% (13,656). [Verify certified totals against the Indiana Secretary of State canvass.]",
+        candidates: [
+          { name: "Jefferson Shreve", party: "R", winner: true,
+            positions: ["Won renomination with 53.1%","",""],
+            differentiators: ["Carried all 11 counties but by only about 6 points overall"],
+            supporters: [], opponents: [] },
+          { name: "Cinde Wirth", party: "D", winner: true,
+            positions: ["Won the Democratic nomination with 58.7%","",""],
+            differentiators: ["Her second consecutive nomination against Shreve"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Shreve took the seat 63.9%–31.7% over Cinde Wirth, with Libertarian James Sceniak at 4.4%. Sceniak is the Libertarian nominee in IN-7 in 2026, and no Libertarian filed in IN-6.",
+        candidates: [
+          { name: "Jefferson Shreve", party: "R", winner: true,
+            positions: ["Won 63.9% — 201,357 votes","",""],
+            differentiators: ["A roughly 32-point margin in his first congressional run"],
+            supporters: [], opponents: [] },
+          { name: "Cinde Wirth", party: "D", winner: false,
+            positions: ["Won 31.7% — 99,841 votes","",""],
+            differentiators: ["Won the nomination again in 2026 for a rematch"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  7: {
+    name: "U.S. House — IN District 7",
+    region: "The Indianapolis urban core — this district lies ENTIRELY inside Marion County, and is Indiana's only Democratic-held seat",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Indiana's only Democratic seat, at Cook PVI D+21. Rated Solid/Safe Democratic (Cook, July 16) and Solid Democratic (Inside Elections, June 25). André Carson, in his tenth term, drew a real primary challenge from two-time statewide nominee Destiny Wells and took 62.4%. [Verify: no Sabato rating could be obtained — Sabato publishes House ratings only as an image. Cook PVI is the 2025 edition; Cook blocks automated access to the 2026 edition.]",
+        candidates: [
+          { name: "André Carson (incumbent)", party: "D", winner: false,
+            positions: ["Grow the economy and build a stronger middle class","Strengthen national security","Affordability — voted for the $35-a-month insulin cap"],
+            differentiators: ["Tenth term; took the seat in a 2008 special election for Julia Carson's seat","House Intelligence Committee; ranking member of the Aviation Subcommittee","$1,006,177 raised with $621,351 cash on hand through June 30, 2026"],
+            supporters: ["Says he has secured more than $1B for Indianapolis, including IndyGo and lead-line replacement","Seniority on Intelligence gives Indianapolis a rare national-security seat","His casework office draws requests from outside the district"],
+            opponents: ["The Center for Effective Lawmaking ranked him 197th of 220 Democrats","Takes corporate PAC money; both primary challengers pledged not to","Critics say he was slow to commit on AI data-center limits while taking utility money"] },
+          { name: "Patrick McAuley", party: "R", winner: false,
+            positions: ["Public safety — stronger community-police ties and officers living in their precincts","Housing and homelessness — expand supply and repurpose vacant properties","Career pathways through trades, apprenticeships and skilled jobs"],
+            differentiators: ["North Central High School graduate and Wabash College All-American","Master's in international economics and finance; former U.S. Senate intern","FEC-registered but no financial summary appears in the FEC's bulk file [Verify]"],
+            supporters: ["Frames the race around local quality of life rather than national culture-war themes","Won the Republican primary decisively, 84%–16%","A lifelong Indianapolis resident actually living in the district"],
+            opponents: ["No prior elected office beyond precinct committeeman","No reported fundraising against a $621K incumbent war chest","Carson carried this seat by 39 points in 2024"] },
+          { name: "James M. Sceniak", party: "L", winner: false,
+            positions: ["[Verify — no 2026 platform could be sourced. His 2022 Senate positions were: cut spending and balance the budget]","Let veterans choose their own doctors [Verify — 2022 platform]","Divert Social Security contributions to personal accounts [Verify — 2022 platform]"],
+            differentiators: ["Libertarian Party of Indiana vice chair; 2022 U.S. Senate and 2024 IN-6 nominee","An autism behavioral technician by profession","Lives in Greenwood, outside IN-7; no 2026 FEC registration located"],
+            supporters: ["The most-tested Libertarian on Indiana's 2026 ballot","Offers a protest option in a seat with no real two-party contest","A consistent anti-spending, civil-liberties message across three cycles"],
+            opponents: ["Runs in a different district each cycle and has no IN-7 roots","No 2026 platform, no FEC committee and no visible campaign [Verify]","Indiana Libertarian House nominees have polled around 2–3% [Verify]"] }
+        ]
+      },
+      {
+        date: "May 5, 2026", type: "past",
+        note: "Carson won renomination with 62.4% (44,849) over Destiny Wells at 23.4% and George Hornedo at 10.5%. Wells was the Democratic nominee for Secretary of State in 2022 and Attorney General in 2024, so this was a genuine challenge. On the Republican side Patrick McAuley beat Felipe Rios 84.4%–15.6% — several outlets wrongly reported that primary as uncontested. Certified results from the Indiana Election Division.",
+        candidates: [
+          { name: "André Carson", party: "D", winner: true,
+            positions: ["Won renomination with 62.4%","",""],
+            differentiators: ["Turned back a two-time statewide nominee"],
+            supporters: [], opponents: [] },
+          { name: "Patrick McAuley", party: "R", winner: true,
+            positions: ["Won the Republican nomination with 84.4%","",""],
+            differentiators: ["The primary was contested, not uncontested as widely reported"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Carson held the seat 68.3%–29.0% over John Schmitz, with Libertarian Rusty Johnson at 2.7%.",
+        candidates: [
+          { name: "André Carson", party: "D", winner: true,
+            positions: ["Won 68.3% — 185,987 votes","",""],
+            differentiators: ["A 39-point margin"],
+            supporters: [], opponents: [] },
+          { name: "John Schmitz", party: "R", winner: false,
+            positions: ["Won 29.0% — 78,792 votes","",""],
+            differentiators: ["Did not run again in 2026"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  8: {
+    name: "U.S. House — IN District 8",
+    region: "Southwestern Indiana — the historic \"Bloody Eighth,\" 21 counties including Vanderburgh (Evansville), Vigo (Terre Haute), Knox, Gibson, Warrick, Posey, Dubois and Sullivan. It contains more counties than any other Indiana district",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Cook PVI R+18. Rated Solid/Safe Republican (Cook, July 16) and Solid Republican (Inside Elections, June 25). Despite the district's \"Bloody Eighth\" nickname — earned in decades when it swung repeatedly — it is not currently competitive. A straight two-way race: no Libertarian filed, and a declared independent, James Burke, does NOT appear on the Secretary of State's certified list and is therefore not carded here. [Verify: no Sabato rating could be obtained.]",
+        candidates: [
+          { name: "Mark Messmer (incumbent)", party: "R", winner: false,
+            positions: ["\"Pro-life, pro-gun, and pro-Trump\"; border security and the rule of law","Jobs and economic growth through his Working Family Tax Cuts bill","Reducing government overreach on small business"],
+            differentiators: ["A freshman sworn in Jan 2025, after service in both chambers of the Indiana legislature","Armed Services, Agriculture, and Education and Workforce committees","$1,171,366 raised with $713,500 cash on hand through June 30, 2026"],
+            supporters: ["His committee seats map directly onto a farm-and-defense district","A small-business owner with a long Statehouse record on jobs bills","Cleared his primary without any opposition"],
+            opponents: ["Protesters picketed his downtown Evansville office over his refusal to hold a town hall","Repeatedly declined interview requests from reporters covering the race","Democrats tie Republican Medicaid changes to rural-hospital strain in the district [Verify his vote]"] },
+          { name: "Mary Allen", party: "D", winner: false,
+            positions: ["Universal healthcare; protect Medicaid and fund rural hospitals","Affordability — wage increases that keep pace with inflation, plus housing investment","Treat childcare as infrastructure: fully fund vouchers and raise childcare-worker pay"],
+            differentiators: ["Evansville at-large City Councilor, elected 2023; Army Reserve veteran","An occupational therapist of 15 years and a small-business owner","$294,502 raised with $179,308 cash on hand through June 30, 2026"],
+            supporters: ["Signed a no-PAC-money pledge as part of a congressional reform coalition","Endorsed by the 8th District Indiana Democrats","Campaigned in all 21 counties rather than only Evansville"],
+            opponents: ["Her only elected experience is two-plus years on a city council","Outraised and out-cashed roughly four-to-one by the incumbent","Messmer carried this seat by 38.5 points in 2024"] }
+        ]
+      },
+      {
+        date: "May 5, 2026", type: "past",
+        note: "Messmer was unopposed for renomination. Mary Allen won a four-way Democratic primary with 66.7% (18,816) over Tabitha Zeigler at 15.3%. Certified results from the Indiana Election Division. ⚠ Ballotpedia listed a Republican challenger, Daniel George, who did not appear on the certified ballot.",
+        candidates: [
+          { name: "Mark Messmer", party: "R", winner: true,
+            positions: ["Renominated unopposed","",""],
+            differentiators: ["Drew no primary challenger in his first re-election cycle"],
+            supporters: [], opponents: [] },
+          { name: "Mary Allen", party: "D", winner: true,
+            positions: ["Won the Democratic nomination with 66.7%","",""],
+            differentiators: ["Won two-thirds of a four-way field"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Messmer took the open seat 68.0%–29.5% over Erik Hurt, with Libertarian Richard Fitzlaff at 2.6%.",
+        candidates: [
+          { name: "Mark Messmer", party: "R", winner: true,
+            positions: ["Won 68.0% — 219,941 votes","",""],
+            differentiators: ["A 38.5-point margin in his first House race"],
+            supporters: [], opponents: [] },
+          { name: "Erik Hurt", party: "D", winner: false,
+            positions: ["Won 29.5% — 95,311 votes","",""],
+            differentiators: ["Did not run again in 2026"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  9: {
+    name: "U.S. House — IN District 9",
+    region: "Southeastern Indiana — Clark and Floyd counties across the river from Louisville (Jeffersonville, New Albany), plus Monroe (Bloomington), Jackson, Jefferson, Dearborn, Harrison and Lawrence. [Verify the exact county count — the page's map assigns 17, but some local coverage describes it as 18]",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Cook PVI R+15. Rated Solid/Safe Republican (Cook, July 16) and Solid Republican (Inside Elections, June 25). Erin Houchin was unopposed for renomination for the second cycle running. ⚠ Note the ballot mechanics: Libertarian Tonya Hudson IS printed on the ballot, while independent Floyd Michael Taylor is a certified WRITE-IN whose name will NOT appear — voters would have to spell it. Several outlets list the two together without that distinction. [Verify: no Sabato rating could be obtained.]",
+        candidates: [
+          { name: "Erin Houchin (incumbent)", party: "R", winner: false,
+            positions: ["Backed the One Big Beautiful Bill — permanent tax cuts, no tax on tips or overtime","Says that bill protects and preserves Medicaid, Medicare and Social Security","Border security and domestic energy production"],
+            differentiators: ["Second term, with seats on Rules, Budget, and Energy and Commerce — unusual for a sophomore","Eight years in the Indiana Senate; former regional director for Sen. Dan Coats","$1,856,572 raised with $1,183,066 cash on hand through June 30, 2026"],
+            supporters: ["Three high-value committees give a rural district outsized leverage","A native of the district who still lives in Washington County","Drew no primary opposition at all, in either 2024 or 2026"],
+            opponents: ["Constituents held a \"canceled town hall\" event after she pulled out","Publicly backed the 2025 mid-decade redistricting push that Indiana's Senate then killed","Democrats say her Medicaid reassurances conflict with rural-hospital warnings"] },
+          { name: "Brad A. Meyer", party: "D", winner: false,
+            positions: ["\"Medicare for All because no one should have to go broke just trying to stay alive\"","A $20 federal minimum wage and overtime protections for salaried workers under $100K","Redirect farm subsidies to small family farms; eliminate tariffs"],
+            differentiators: ["Purdue-trained electrical engineer with 20+ years in manufacturing","Left a Navy civilian engineering job to run","$105,510 raised with $17,840 cash on hand through June 30, 2026"],
+            supporters: ["Beat the party's 2024 nominee in a four-way primary despite being the least-funded major entrant","Says he held 17 town halls and five roundtables before the primary — in a district whose incumbent skipped them","An engineering and manufacturing background rather than a political résumé"],
+            opponents: ["No prior public office of any kind","Outraised roughly 18-to-1 — $17.8K cash on hand against $1.18M","Won the primary with only 37.9%; a majority of Democrats picked someone else"] },
+          { name: "Tonya L. Hudson", party: "L", winner: false,
+            positions: ["Abolish the IRS and replace the income tax with a consumption-tax model","Defund the federal Department of Education and return schooling to the states","Only Congress can declare war — calls the 2026 Iran operations unconstitutional"],
+            differentiators: ["A real estate broker of 21 years and former Libertarian Party of Indiana vice chair","Third IN-9 run, after 2020 and 2022; was the 2024 Libertarian nominee for Lt. Governor","$1,719 raised with $246 cash on hand through June 30, 2026"],
+            supporters: ["The most-tested third-party name in the district; held her own town halls","Anti-surveillance and anti-tariff planks that cut across both parties","The only ballot candidate not tied to a national party leadership"],
+            opponents: ["Under $2,000 raised for a 17-county district","Her two prior IN-9 runs did not break single digits [Verify]","Abolishing the IRS and the Education Department sits far outside district consensus [Verify]"] },
+          { name: "Floyd Michael Taylor", party: "I", winner: false,
+            positions: ["[Verify — no campaign site or coverage could be located]","",""],
+            differentiators: ["A certified WRITE-IN candidate — his name will not be printed on the ballot","Reported $0 in receipts against $9,586 in disbursements through June 30, 2026"],
+            supporters: ["Gives IN-9 voters a write-in option outside all three ballot lines [Verify]"],
+            opponents: ["No platform, campaign presence or fundraising could be located [Verify]","As a write-in, voters must spell his name correctly for the vote to count"] }
+        ]
+      },
+      {
+        date: "May 5, 2026", type: "past",
+        note: "Houchin was unopposed for renomination. Brad Meyer won a four-way Democratic primary with 37.9% (12,788) over Tim Peck at 33.1% — Peck was the district's 2024 nominee, so this was an upset of the presumed frontrunner. Certified results from the Indiana Election Division.",
+        candidates: [
+          { name: "Erin Houchin", party: "R", winner: true,
+            positions: ["Renominated unopposed","",""],
+            differentiators: ["Unopposed for the nomination in both 2024 and 2026"],
+            supporters: [], opponents: [] },
+          { name: "Brad A. Meyer", party: "D", winner: true,
+            positions: ["Won the Democratic nomination with 37.9%","",""],
+            differentiators: ["Beat the party's 2024 nominee by 4.8 points"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Houchin held the seat 64.5%–32.8% over Timothy Peck, with Libertarian Russell Brooksbank at 2.7%. Peck sought the nomination again in 2026 and lost the primary.",
+        candidates: [
+          { name: "Erin Houchin", party: "R", winner: true,
+            positions: ["Won 64.5% — 222,884 votes","",""],
+            differentiators: ["A 31.7-point margin"],
+            supporters: [], opponents: [] },
+          { name: "Timothy Peck", party: "D", winner: false,
+            positions: ["Won 32.8% — 113,400 votes","",""],
+            differentiators: ["Lost the 2026 primary to Brad Meyer"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  }
+};
+
+const SITE_META = { name: "Indiana Elections Hub", lastUpdated: "August 4, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — Ohio county-level down-ballot research is the next phase.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Ohio has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = district
+    ? district.races.map(r => ({
+        ...r,
+        office: r.office || district.name,
+        scope: r.scope || `Federal · District ${county.d}`
+      }))
+    : [];
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const IN_STATE_FIPS = "18";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#inmap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(IN_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Columbus ----
+  drawCapital(g, projection, { name: "Indianapolis", lng: -86.1581, lat: 39.7684 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in IN";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our West Virginia dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>

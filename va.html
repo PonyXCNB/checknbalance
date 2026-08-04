@@ -771,7 +771,7 @@ const STATEWIDE = [
         winner: false,
         positions: ["[Decided Aug 4] Leading themes in the field: government waste and fraud elimination","Border security and immigration enforcement","Data-center siting limits and utility-cost concerns"],
         differentiators: [
-          "Field includes Kim Farington (CPA, ex-OPM chief accountant), Bert Mizusawa (retired Army major general), David Williams (Marine Reserve lt. colonel, ex-CIA), Chuck Smith (attorney; ballot status [Verify])",
+          "Exactly three qualified per the Dept. of Elections: Kim Farington (CPA, ex-OPM chief accountant), Bert Mizusawa (retired Army major general), David Williams (Marine Reserve lt. colonel, ex-CIA). Chuck Smith did NOT qualify",
           "No notable public primary polling as of July 2026",
           "Early voting for the primary began June 19"
         ],
@@ -785,7 +785,7 @@ const STATEWIDE = [
     type: "upcoming",
     scope: "State · Statewide · Ballot Measures",
     office: "Constitutional Amendments — Statewide Referenda",
-    note: "Virginia's Nov 2026 ballot is expected to carry statewide constitutional amendments on abortion rights, same-sex marriage, and restoration of felon voting rights. [Verify the final certified list at elections.virginia.gov before the election.]",
+    note: "CONFIRMED against the Department of Elections' referenda pages: Virginia's Nov 3, 2026 ballot carries EXACTLY THREE constitutional amendments, and the ballot order is the reverse of how most coverage lists them. QUESTION 1 — REPRODUCTIVE FREEDOM: whether to amend the constitution to protect the freedom to make personal decisions about prenatal care, childbirth, postpartum care, birth control, abortion, miscarriage management and fertility care; to protect doctors, nurses and patients from punishment for those decisions; and to allow restrictions on third-trimester abortion except where the patient's health is at risk or the pregnancy cannot survive (new Art. I §11-A). QUESTION 2 — MARRIAGE: whether to remove the constitutional ban on same-sex marriage, affirm that two adults may marry regardless of sex, gender or race, and require all legally valid marriages to be treated equally (Art. I §15-A). QUESTION 3 — VOTING RIGHTS: whether to provide a fundamental right to vote and to automatically restore voting rights on release from incarceration rather than requiring individual gubernatorial action (Art. II §1). All three cleared the required two sessions and were signed by Gov. Spanberger in Feb 2026; they take effect Jan 1, 2027 if approved. Note that the resolutions were RENUMBERED between sessions, which is why sources conflict on their numbers. Virginia holds no separate certification vote, so there is no certification date to cite.",
     candidates: []
   },
 
@@ -886,8 +886,9 @@ const HOUSE_RACES = {
             opponents: ["Broke a written pledge not to cut Medicaid, endangering rural hospitals"] },
           { name: "[Democratic nominee — decided in the Aug 4, 2026 primary]", party: "D", winner: false,
             positions: ["[Decided Aug 4] Frontrunner Shannon Taylor's themes: protect Medicaid, lower health costs","Abortion rights","Accountability for the Medicaid vote"],
-            differentiators: ["Seven-way primary; frontrunner Shannon Taylor is Henrico Commonwealth's Attorney (since 2011) with DCCC Red-to-Blue, Kaine, Spanberger, and EMILYs List backing","Field includes poverty-law attorney Salaam Bhatti and retired Navy fighter pilot Jason Knapp","[Verify final ballot list]"],
-            supporters: ["A battle-tested prosecutor tops a deep field"], opponents: [] }
+            differentiators: ["Seven-way primary; frontrunner Shannon Taylor is Henrico Commonwealth's Attorney (since 2012) with DCCC Red-to-Blue, Kaine and Spanberger backing","Field includes poverty-law attorney Salaam Bhatti and retired Navy fighter pilot Jason Knapp","Seven qualified per the Dept. of Elections: Bhatti, Taylor, Knapp, Tull, Beggs, Kopp, Cywinski"],
+            supporters: ["A battle-tested prosecutor tops a deep field","Rob Wittman drew no primary challenge, so Democrats pick the only contested nominee here"],
+            opponents: ["Four rivals asked the state party to reaffirm neutrality after the DCCC backed Taylor","Wittman has held this seat since 2007 and was unopposed for renomination","A seven-way split means the nominee may emerge with well under half the vote"] }
         ]
       },
       {
@@ -921,7 +922,7 @@ const HOUSE_RACES = {
             opponents: ["Promises one thing at home, votes the party line in Washington","Her Medicaid and ACA votes are the campaign's centerpiece"] },
           { name: "[Democratic nominee — decided in the Aug 4, 2026 primary]", party: "D", winner: false,
             positions: ["[Decided Aug 4] Frontrunner Elaine Luria's themes: cost of living","Cutting healthcare costs","Strengthening the military"],
-            differentiators: ["Frontrunner Elaine Luria held this seat 2019–23: 20-year Navy commander, Jan 6 committee member [Verify], raised $1.75M in Q1 2026","Four-way primary: Luria, physician Nila Devanath, Bill Fleming, Patrick Mosolf","DCCC Red-to-Blue target"],
+            differentiators: ["Elaine Luria is CONFIRMED on the ballot: held this seat 2019–23, 20-year Navy commander, Jan. 6 Committee member","Raised about $1.6M in Q2 2026 and holds more than $3.5M cash on hand — roughly $4.5M since launching in Nov 2025","Four qualified: Luria, physician Nila Devanath, Patrick Mosolf, Bill Fleming; DCCC Red to Blue"],
             supporters: ["Luria matches Kiggans's Navy profile and has won here before"],
             opponents: ["A Luria nomination is a rerun — she lost this seat to Kiggans in 2022"] }
         ]
@@ -1023,7 +1024,7 @@ const HOUSE_RACES = {
             opponents: ["His own primary challenger cites weak constituent services and thin accomplishments","Critics say he failed to defend UVA from DOJ pressure and let rural broadband money lapse"] },
           { name: "[Democratic nominee — decided in the Aug 4, 2026 primary]", party: "D", winner: false,
             positions: ["[Decided Aug 4] Frontrunner Tom Perriello's themes: rural economy — broadband and energy jobs","Defending UVA and public institutions","Affordability"],
-            differentiators: ["Frontrunner Perriello held this seat 2009–11 — the only Democrat to win it this century; endorsed by Kaine and Warner; $1.4M+ raised","Field also includes writer Robert Tracinski and Suzanne Krzyzanowski [Verify]","Three earlier rivals dropped out and endorsed Perriello"],
+            differentiators: ["Perriello held this seat 2009–11 — the only Democrat to win it this century; cast a deciding ACA vote","Three qualified: Perriello, writer Robert Tracinski and Suzanne Krzyzanowski","Money as of July 31: Perriello $2.1M, Tracinski $54,102, Krzyzanowski $16,897"],
             supporters: ["Perriello brings proven crossover appeal in a red district"],
             opponents: ["Too liberal for Southside [Verify GOP framing]"] }
         ]
@@ -1166,8 +1167,9 @@ const HOUSE_RACES = {
             opponents: ["The region has lost hospitals, jobs, and young people under one-party representation"] },
           { name: "[Democratic nominee — decided in the Aug 4, 2026 primary]", party: "D", winner: false,
             positions: ["[Decided Aug 4] Field themes: rural healthcare and reversing Medicaid cuts","Broadband and economic opportunity","Farm Bill reform"],
-            differentiators: ["Three-way field: software developer Adam Murphy (Medicare for All, no corporate PACs), cattle farmer Joy Powers ('H.O.M.E. Plan'), retired attorney-pastor Douglas Crockett ('Prosperity Platform')","[Verify final ballot — a fourth candidate appeared on earlier lists]","District is R+22"],
-            supporters: ["An unusually substantive field for a long-shot district"], opponents: [] }
+            differentiators: ["Three-way field: software developer Adam Murphy (Medicare for All, no corporate PACs), cattle farmer Joy Powers ('H.O.M.E. Plan'), retired attorney-pastor Douglas Crockett ('Prosperity Platform')","Exactly three qualified per the Dept. of Elections — a widely-listed fourth name, Brandi Hall, is NOT on the qualified list","District is R+22"],
+            supporters: ["An unusually substantive field for a long-shot district","All three ran on written, named policy platforms rather than slogans"],
+            opponents: ["An R+22 district Morgan Griffith has held since 2011","Griffith was unopposed for renomination and starts with every structural advantage","None of the three has held elected office [Verify]"] }
         ]
       },
       {
@@ -1201,8 +1203,9 @@ const HOUSE_RACES = {
             opponents: ["Tied to federal spending, cost-of-living failures, and Loudoun education controversies"] },
           { name: "[Republican nominee — decided in the Aug 4, 2026 primary]", party: "R", winner: false,
             positions: ["[Decided Aug 4] Field themes: national security","Cutting wasteful spending","Education and parental rights"],
-            differentiators: ["Three-way field: Dave Beckwith (30-yr Air Force veteran, ex-deputy assistant secretary of defense, $25.7k raised), teacher Julie Perry ($8.1k), Anthony Suttles (no FEC reports)","Fundraising leader Sam Wong withdrew","[Verify final ballot]"],
-            supporters: [], opponents: ["A low-dollar field against a well-funded incumbent"] }
+            differentiators: ["Three active candidates: Dave Beckwith (30-yr Air Force veteran, ex-deputy assistant secretary of defense, $25,665 raised), teacher Julie Perry ($8,146), Anthony Suttles (no FEC reports)","⚠ Fundraising leader Sam Wong WITHDREW after ballots were printed — his name still appears and votes for him still count","A plurality primary this cycle, unlike the ranked-choice contest VA-10 Republicans used in 2022"],
+            supporters: ["Beckwith brings a 30-year Air Force career and senior Pentagon experience to a national-security-heavy district","An open, low-cost primary let candidates without party backing compete"],
+            opponents: ["A low-dollar field against a well-funded incumbent","Subramanyam was unopposed for renomination and the seat is rated Solid/Safe Democratic","A withdrawn candidate still on the ballot could scramble the result and delay a clear nominee"] }
         ]
       },
       {
@@ -1272,7 +1275,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Virginia Elections Hub", lastUpdated: "July 14, 2026" };
+const SITE_META = { name: "Virginia Elections Hub", lastUpdated: "August 4, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — VA county-level down-ballot research is the next phase).
