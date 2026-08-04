@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kentucky Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every KY election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #kymap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">KY</div>
+      <div class="brand-text">
+        <span class="brand-name">Kentucky Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Kentucky <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 120 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">120</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>6</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>5</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Kentucky…</div>
+      <svg id="kymap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>Kentucky Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">August 3, 2026</span><br>
+      Sources: Ohio Secretary of State, Ohio Redistricting Commission, Ballotpedia, Wikipedia, Cook Political Report, Sabato's Crystal Ball, Inside Elections, Ohio Capital Journal, Cleveland.com / The Plain Dealer, The Columbus Dispatch, Cincinnati Enquirer, Signal Ohio, WOSU, Spectrum News 1, AP/NBC.
+    </div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every DE county (all in the single at-large district)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- (1) Counties + primary US House district -----
+// Kentucky did NOT redistrict mid-decade. The 2026 election uses the SAME congressional map
+// used in 2022 and 2024: 2022 Ky. Acts ch. 8 (Senate Bill 3), enacted Jan 20, 2022 over the
+// governor's veto and codified at KRS 118B.110-118B.160. (SB 3 was the CONGRESSIONAL plan;
+// HB 2 that year was the state House plan.) The statutes still read "Effective: January 20,
+// 2022" with no later amendment, and the 2026 Regular Session enacted no congressional
+// redistricting bill. Source: the live statute text for each district from the Kentucky
+// Legislative Research Commission, corroborated by Loyola's All About Redistricting.
+//
+// County->district assignments below are taken VERBATIM from that statutory text, not from
+// Ballotpedia or Wikipedia. 114 of the 120 counties sit wholly inside one district.
+// SIX counties are SPLIT; as elsewhere on this site, COUNTIES stores the POPULATION-PLURALITY
+// district (2020 Census blocks). The splits, with the plurality share:
+//   Jefferson (Louisville) -> 3 (95.9% KY-3 / 4.1% KY-2)
+//   Logan     -> 1 (91.2% / 8.8% KY-2)      Carter -> 5 (89.7% / 10.3% KY-4)
+//   Anderson  -> 6 (81.8% / 18.2% KY-1)     Bath   -> 5 (66.0% / 34.0% KY-6)
+//   Nelson    -> 4 (53.5% / 46.5% KY-2) <- the closest call on the map
+// Two traps worth recording: Jefferson is split KY-3/KY-2, NOT KY-3/KY-4 (that was the old
+// 2012 map); and Nelson County goes to KY-4 even though its county seat, Bardstown, sits in
+// the KY-2 portion. Cross-check: summing whole counties plus computed split shares yields
+// district populations of 750,973/750,972/750,973/750,973/750,973/750,972 -- within 1 of the
+// ideal 750,973 and totaling exactly Kentucky's 4,505,836.
+// 120 counties, 126 county x district pairs.
+const COUNTIES = {
+  "21001": { n: "Adair", d: 1 },
+  "21003": { n: "Allen", d: 1 },
+  "21005": { n: "Anderson", d: 6 },
+  "21007": { n: "Ballard", d: 1 },
+  "21009": { n: "Barren", d: 2 },
+  "21011": { n: "Bath", d: 5 },
+  "21013": { n: "Bell", d: 5 },
+  "21015": { n: "Boone", d: 4 },
+  "21017": { n: "Bourbon", d: 6 },
+  "21019": { n: "Boyd", d: 5 },
+  "21021": { n: "Boyle", d: 1 },
+  "21023": { n: "Bracken", d: 4 },
+  "21025": { n: "Breathitt", d: 5 },
+  "21027": { n: "Breckinridge", d: 2 },
+  "21029": { n: "Bullitt", d: 2 },
+  "21031": { n: "Butler", d: 2 },
+  "21033": { n: "Caldwell", d: 1 },
+  "21035": { n: "Calloway", d: 1 },
+  "21037": { n: "Campbell", d: 4 },
+  "21039": { n: "Carlisle", d: 1 },
+  "21041": { n: "Carroll", d: 4 },
+  "21043": { n: "Carter", d: 5 },
+  "21045": { n: "Casey", d: 1 },
+  "21047": { n: "Christian", d: 1 },
+  "21049": { n: "Clark", d: 6 },
+  "21051": { n: "Clay", d: 5 },
+  "21053": { n: "Clinton", d: 1 },
+  "21055": { n: "Crittenden", d: 1 },
+  "21057": { n: "Cumberland", d: 1 },
+  "21059": { n: "Daviess", d: 2 },
+  "21061": { n: "Edmonson", d: 2 },
+  "21063": { n: "Elliott", d: 5 },
+  "21065": { n: "Estill", d: 6 },
+  "21067": { n: "Fayette", d: 6 },
+  "21069": { n: "Fleming", d: 6 },
+  "21071": { n: "Floyd", d: 5 },
+  "21073": { n: "Franklin", d: 1 },
+  "21075": { n: "Fulton", d: 1 },
+  "21077": { n: "Gallatin", d: 4 },
+  "21079": { n: "Garrard", d: 6 },
+  "21081": { n: "Grant", d: 4 },
+  "21083": { n: "Graves", d: 1 },
+  "21085": { n: "Grayson", d: 2 },
+  "21087": { n: "Green", d: 2 },
+  "21089": { n: "Greenup", d: 4 },
+  "21091": { n: "Hancock", d: 2 },
+  "21093": { n: "Hardin", d: 2 },
+  "21095": { n: "Harlan", d: 5 },
+  "21097": { n: "Harrison", d: 4 },
+  "21099": { n: "Hart", d: 2 },
+  "21101": { n: "Henderson", d: 1 },
+  "21103": { n: "Henry", d: 4 },
+  "21105": { n: "Hickman", d: 1 },
+  "21107": { n: "Hopkins", d: 1 },
+  "21109": { n: "Jackson", d: 5 },
+  "21111": { n: "Jefferson", d: 3 },
+  "21113": { n: "Jessamine", d: 6 },
+  "21115": { n: "Johnson", d: 5 },
+  "21117": { n: "Kenton", d: 4 },
+  "21119": { n: "Knott", d: 5 },
+  "21121": { n: "Knox", d: 5 },
+  "21123": { n: "Larue", d: 2 },
+  "21125": { n: "Laurel", d: 5 },
+  "21127": { n: "Lawrence", d: 5 },
+  "21129": { n: "Lee", d: 5 },
+  "21131": { n: "Leslie", d: 5 },
+  "21133": { n: "Letcher", d: 5 },
+  "21135": { n: "Lewis", d: 4 },
+  "21137": { n: "Lincoln", d: 5 },
+  "21139": { n: "Livingston", d: 1 },
+  "21141": { n: "Logan", d: 1 },
+  "21143": { n: "Lyon", d: 1 },
+  "21145": { n: "McCracken", d: 1 },
+  "21147": { n: "McCreary", d: 5 },
+  "21149": { n: "McLean", d: 2 },
+  "21151": { n: "Madison", d: 6 },
+  "21153": { n: "Magoffin", d: 5 },
+  "21155": { n: "Marion", d: 1 },
+  "21157": { n: "Marshall", d: 1 },
+  "21159": { n: "Martin", d: 5 },
+  "21161": { n: "Mason", d: 4 },
+  "21163": { n: "Meade", d: 2 },
+  "21165": { n: "Menifee", d: 5 },
+  "21167": { n: "Mercer", d: 6 },
+  "21169": { n: "Metcalfe", d: 1 },
+  "21171": { n: "Monroe", d: 1 },
+  "21173": { n: "Montgomery", d: 6 },
+  "21175": { n: "Morgan", d: 5 },
+  "21177": { n: "Muhlenberg", d: 2 },
+  "21179": { n: "Nelson", d: 4 },
+  "21181": { n: "Nicholas", d: 6 },
+  "21183": { n: "Ohio", d: 2 },
+  "21185": { n: "Oldham", d: 4 },
+  "21187": { n: "Owen", d: 4 },
+  "21189": { n: "Owsley", d: 5 },
+  "21191": { n: "Pendleton", d: 4 },
+  "21193": { n: "Perry", d: 5 },
+  "21195": { n: "Pike", d: 5 },
+  "21197": { n: "Powell", d: 6 },
+  "21199": { n: "Pulaski", d: 5 },
+  "21201": { n: "Robertson", d: 4 },
+  "21203": { n: "Rockcastle", d: 5 },
+  "21205": { n: "Rowan", d: 5 },
+  "21207": { n: "Russell", d: 1 },
+  "21209": { n: "Scott", d: 6 },
+  "21211": { n: "Shelby", d: 4 },
+  "21213": { n: "Simpson", d: 1 },
+  "21215": { n: "Spencer", d: 4 },
+  "21217": { n: "Taylor", d: 1 },
+  "21219": { n: "Todd", d: 1 },
+  "21221": { n: "Trigg", d: 1 },
+  "21223": { n: "Trimble", d: 4 },
+  "21225": { n: "Union", d: 1 },
+  "21227": { n: "Warren", d: 2 },
+  "21229": { n: "Washington", d: 1 },
+  "21231": { n: "Wayne", d: 5 },
+  "21233": { n: "Webster", d: 1 },
+  "21235": { n: "Whitley", d: 5 },
+  "21237": { n: "Wolfe", d: 5 },
+  "21239": { n: "Woodford", d: 6 },
+};
+
+const STATEWIDE = [
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Kentucky (open seat)",
+    note: "OPEN SEAT — Mitch McConnell is retiring after seven terms, ending the longest Senate leadership tenure in U.S. history. Rated Solid R (Cook, Apr 13; Inside Elections, Apr 23) and Safe R (Sabato, Mar 4). Kentucky last elected a Democrat to the Senate in 1992, though Democrats have won the governorship as recently as 2023. Republican Nate Morris withdrew May 1, 2026 after Trump asked him to step aside, and endorsed Barr.",
+    candidates: [
+      { name: "Andy Barr", party: "R", winner: false,
+        positions: ["Deport criminal illegal immigrants and secure the border","Extend the Trump tax cuts; touts $4,200 in family savings","Revive coal production; opposes environmental and ESG mandates"],
+        differentiators: ["U.S. Rep. for KY-6 since 2013; chairs a Financial Services subcommittee","Trump gave a \"Complete and Total Endorsement\"; also Thune and the NRSC","$9.92M raised and $2.25M cash on hand through June 30, 2026"],
+        supporters: ["A Trump-endorsed conservative the party trusts to hold the seat","Helped deliver the 2017 tax law that cut rates for Kentucky families","Runs on coal, gun rights and law enforcement in a state that rewards all three"],
+        opponents: ["Booker calls him \"a slimier version of McConnell, a phonier version of Trump\"","Skipped a March 2025 Lexington town hall that drew 900 people without him","Called the attendees liberal activists; critics tie him to Medicaid cuts in his district","Kentucky Lantern flagged heavy PAC funding behind his Senate bid [Verify]"] },
+      { name: "Charles Booker", party: "D", winner: false,
+        positions: ["Medicare for All, universal income and tuition-free public college","\"40x40x45\" — 40 hours of paid sick leave and a $45,000 minimum wage","Moratorium on new data centers until environmental rules exist"],
+        differentiators: ["First Black major-party U.S. Senate nominee in Kentucky history","Former state representative; ran Gov. Beshear's faith-based office 2023–25","$1.10M raised and $310K cash on hand through June 30, 2026"],
+        supporters: ["Elizabeth Warren calls him a fighter for working families","Backed by the Kentucky AFL-CIO and CWA locals","Says he is standing for Kentuckians the political system has written off"],
+        opponents: ["Barr frames the choice as Kentucky common sense against the far left","Lost the 2022 Senate race to Rand Paul by about 23 points; this is his third run","Outraised roughly 9-to-1 — $310K on hand against Barr's $2.25M"] },
+      { name: "Christopher Campbell", party: "I", winner: false,
+        positions: ["Pro-union; quality medical care [Verify — no fuller platform could be sourced]","",""],
+        differentiators: ["Filed with the Secretary of State June 1, 2026 under the \"Kentucky Party\" label","Healthcare worker and National Guard veteran [Verify]","Member of Carpenters Local 1076 and runs as a pro-union candidate [Verify]"],
+        supporters: ["Offers a union-first option outside both major parties [Verify]"],
+        opponents: ["No campaign platform, fundraising or press coverage could be located [Verify]","Minor-party bids have not been competitive in Kentucky Senate races [Verify]"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Constitutional Amendment 1 — Limits on Gubernatorial Pardons",
+    note: "The only measure on Kentucky's 2026 ballot. Certified title: \"Are you in favor of limiting a Governor's ability to grant pardons or commute sentences by prohibiting him or her from granting pardons or commuting sentences during the time period beginning 60 days prior to the general election at which the Governor is elected, and ending when the Governor is sworn in for that term…\" It began as Senate Bill 10 (Sen. Chris McDaniel, R-Ryland Heights) and passed both chambers with bipartisan support. The trigger was Gov. Matt Bevin's end-of-term 2019 pardons, which included people convicted of rape, murder and child abuse. Supporters say one person's discretion should not override an entire justice system; the ACLU of Kentucky says the change would erode a safety valve in an imperfect system, and Gov. Beshear's office argues the answer is electing good governors rather than shrinking the power. [Verify the SB 10 roll-call vote counts.]",
+    candidates: []
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Judicial",
+    office: "Kentucky Supreme Court — 3rd District",
+    note: "Kentucky elects its judges in NONPARTISAN races. This is the only Supreme Court district on the 2026 ballot, and Chief Justice Debra Hembree Lambert drew no challenger, so the May 19 primary was cancelled. The term is eight years.",
+    candidates: [
+      { name: "Debra Hembree Lambert (incumbent)", party: "I", winner: false,
+        positions: ["[Verify — Kentucky judicial candidates do not campaign on policy positions]","",""],
+        differentiators: ["Sitting Chief Justice of the Supreme Court of Kentucky","Filed Nov 10, 2025 and is unopposed for an eight-year term"],
+        supporters: ["Drew no challenger, which is generally read as broad bar and public confidence [Verify]"],
+        opponents: ["An unopposed judicial race gives voters no comparison to weigh [Verify]"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Judicial",
+    office: "Kentucky Court of Appeals — 5th District, 1st Division (special)",
+    note: "A SPECIAL election to fill the vacancy created when Judge Pamela Goodwine was elevated to the Supreme Court in 2024. Nonpartisan. Two candidates filed, so this is the only genuinely contested appellate race on Kentucky's 2026 ballot.",
+    candidates: [
+      { name: "Lucy Ferguson VanMeter", party: "I", winner: false,
+        positions: ["[Verify — no campaign platform could be sourced]","",""],
+        differentiators: ["Filed Nov 5, 2025 for the 5th District, 1st Division seat"],
+        supporters: ["Offers voters an actual choice in a race that is often uncontested [Verify]"],
+        opponents: ["No sourceable platform, endorsements or fundraising located [Verify]"] },
+      { name: "Will Moynahan", party: "I", winner: false,
+        positions: ["[Verify — no campaign platform could be sourced]","",""],
+        differentiators: ["Filed Dec 4, 2025 for the 5th District, 1st Division seat"],
+        supporters: ["Offers voters an actual choice in a race that is often uncontested [Verify]"],
+        opponents: ["No sourceable platform, endorsements or fundraising located [Verify]"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Judicial",
+    office: "Kentucky Court of Appeals — 3rd District, 2nd Division (special)",
+    note: "A SPECIAL election to fill the vacancy left by Judge James Lambert's 2026 resignation. Nonpartisan. Greg Lay was the only candidate to file and is effectively unopposed.",
+    candidates: [
+      { name: "Greg Lay", party: "I", winner: false,
+        positions: ["[Verify — no campaign platform could be sourced]","",""],
+        differentiators: ["Filed Feb 2, 2026; the sole filer for the seat"],
+        supporters: ["Drew no opposition for the vacancy [Verify]"],
+        opponents: ["No sourceable platform, endorsements or fundraising located [Verify]"] }
+    ]
+  },
+
+  // PAST — the May 19, 2026 primaries and recent statewide results
+  {
+    date: "May 19, 2026",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "Republican Primary — U.S. Senate",
+    note: "Andy Barr won the nomination with 60.5% (283,833 votes) over former Attorney General Daniel Cameron at 30.8% (144,592) in an 11-candidate field. Nate Morris, who had a reported $10M from a Musk-linked PAC, withdrew May 1 after Trump asked him to step aside for an ambassadorship, and endorsed Barr. [Verify certified totals against the Kentucky Secretary of State canvass — results here are AP/Secretary-of-State figures reported through secondary sources.]",
+    candidates: [
+      { name: "Andy Barr", party: "R", winner: true,
+        positions: ["Won the nomination with 60.5% of 469,172 votes cast","",""],
+        differentiators: ["Consolidated the Trump endorsement after Morris withdrew"],
+        supporters: [], opponents: [] },
+      { name: "Daniel Cameron", party: "R", winner: false,
+        positions: ["Finished second with 30.8%","",""],
+        differentiators: ["Former Kentucky Attorney General and 2023 nominee for governor"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "May 19, 2026",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "Democratic Primary — U.S. Senate",
+    note: "Charles Booker won the nomination with 46.8% (155,577 votes) over 2020 nominee Amy McGrath at 35.9% (119,296), with state Rep. Pamela Stevenson third at 6.2% in a seven-candidate field. [Verify certified totals against the Kentucky Secretary of State canvass.]",
+    candidates: [
+      { name: "Charles Booker", party: "D", winner: true,
+        positions: ["Won the nomination with 46.8% of 332,737 votes cast","",""],
+        differentiators: ["Becomes the first Black major-party Senate nominee in Kentucky history"],
+        supporters: [], opponents: [] },
+      { name: "Amy McGrath", party: "D", winner: false,
+        positions: ["Finished second with 35.9%","",""],
+        differentiators: ["Retired Marine pilot; the party's 2020 nominee against McConnell"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 3, 2020",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Kentucky (2020)",
+    note: "The last election for this same seat. Mitch McConnell won a seventh term by 19.6 points over Amy McGrath, who raised roughly $90M — at the time one of the most expensive Senate campaigns ever run.",
+    candidates: [
+      { name: "Mitch McConnell", party: "R", winner: true,
+        positions: ["Won 57.8% — a seventh and final term","",""],
+        differentiators: ["Then Senate Majority Leader; retiring at the end of this term"],
+        supporters: [], opponents: [] },
+      { name: "Amy McGrath", party: "D", winner: false,
+        positions: ["Won 38.2%","",""],
+        differentiators: ["Ran again in the 2026 primary and lost to Booker"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 8, 2022",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Kentucky (2022)",
+    note: "Kentucky's OTHER Senate seat, not the one on the ballot in 2026. Rand Paul beat Charles Booker by 23.6 points — useful context for Booker's second statewide run.",
+    candidates: [
+      { name: "Rand Paul", party: "R", winner: true,
+        positions: ["Won 61.8% for a third term","",""],
+        differentiators: ["Next up for re-election in 2028"],
+        supporters: [], opponents: [] },
+      { name: "Charles Booker", party: "D", winner: false,
+        positions: ["Won 38.2%","",""],
+        differentiators: ["The 2026 Democratic Senate nominee"],
+        supporters: [], opponents: [] }
+    ]
+  }
+];
+
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — KY District 1",
+    region: "35 counties spanning roughly 300 miles — from the Mississippi River at Fulton and Ballard across western Kentucky's lakes and farmland into central Kentucky: Paducah, Hopkinsville (Fort Campbell), Henderson, Madisonville, Murray, Danville and the state capital, Frankfort",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Cook PVI R+23 and rated Solid Republican (Cook; Inside Elections) and Safe Republican (Sabato). Comer, who chairs the House Oversight Committee, said in May 2026 that he intends to run for governor of Kentucky in 2027 — so voters are choosing a member who may seek another office mid-term. [Verify: the R+23 figure is Cook's 2025 PVI for the current lines; Cook's 2026 edition is subscriber-gated and was not read directly.]",
+        candidates: [
+          { name: "James Comer (incumbent)", party: "R", winner: false,
+            positions: ["Support and modernize federal farm programs","Cut regulatory red tape, waste, fraud and abuse","Reduce taxes and rein in government regulation"],
+            differentiators: ["Chairs the House Oversight and Government Reform Committee","The only former elected state Agriculture Commissioner in Congress","$1.90M raised with $3.04M cash on hand through June 30, 2026"],
+            supporters: ["The House passed seven bipartisan Oversight efficiency and transparency bills this session","Advanced a pharmacy-benefit-manager reform markup aimed at drug prices","Asked the GAO to probe Army Corps marina rates that hit Kentucky Lake operators"],
+            opponents: ["The Washington Post reported his Biden investigation \"sputtered out\" without the promised criminal referrals","Oversight Democrats are pressing him to subpoena witnesses over the Epstein files","His opponent says long tenure costs a member their connection to the district","Seeking re-election while openly eyeing the 2027 governor's race"] },
+          { name: "John \"Drew\" Williams", party: "D", winner: false,
+            positions: ["Get money out of politics — debates and endorsements \"shouldn't be bought\"","End insurance denials, hidden costs and corporate interference in health care","Nuclear energy only with independent oversight and community benefits"],
+            differentiators: ["Has built boat docks on Kentucky Lake and Lake Barkley since he was 14","Murray State, 2016; the only Democrat to speak at the 2025 Fancy Farm picnic","$118,755 raised with $20,182 cash on hand through June 30, 2026"],
+            supporters: ["Republicans at Fancy Farm said his approach takes most people's opinions into account","Running town halls across the district's small towns","Refuses corporate money and runs a small-dollar, grassroots campaign"],
+            opponents: ["He himself calls the effort a \"Hail Mary\" financially","Trails Comer roughly 150-to-1 on cash on hand","No elected office; lost his only prior primary, for the state House in 2018"] }
+        ]
+      },
+      {
+        date: "May 19, 2026", type: "past",
+        note: "Comer won renomination with 88.1% over David Sims, Robert Sutherby and Penny Arcos. No Democratic primary was held — Drew Williams advanced unopposed. [Verify certified totals against the Kentucky Secretary of State canvass.]",
+        candidates: [
+          { name: "James Comer", party: "R", winner: true,
+            positions: ["Won renomination with 88.1%","",""],
+            differentiators: ["Faced three minor challengers"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Comer held the seat 74.7%–25.3% over Erin Marshall — a nearly 50-point margin that sets the baseline for 2026.",
+        candidates: [
+          { name: "James Comer", party: "R", winner: true,
+            positions: ["Won 74.7%","",""],
+            differentiators: ["Became Oversight chairman in the following Congress"],
+            supporters: [], opponents: [] },
+          { name: "Erin Marshall", party: "D", winner: false,
+            positions: ["Won 25.3%","",""],
+            differentiators: ["Did not run again in 2026"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  2: {
+    name: "U.S. House — KY District 2",
+    region: "West-central and south-central Kentucky — Bowling Green (Warren), Owensboro (Daviess), Elizabethtown and Radcliff (Hardin), Bullitt, Glasgow (Barren), plus part of Nelson County and a small eastern slice of Jefferson",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Cook PVI R+20 and rated Solid Republican (Cook; Inside Elections). A genuine three-way ballot: Guthrie, who chairs the powerful House Energy and Commerce Committee, faces Democrat Megan Wingfield and independent Thomas Loecken, who qualified by nominating petition. [Verify: the R+20 figure is Cook's PVI for the current lines, read through secondary sources rather than off Cook's own page.]",
+        candidates: [
+          { name: "Brett Guthrie (incumbent)", party: "R", winner: false,
+            positions: ["Lower health-care costs while protecting access to life-saving treatments","Secure the drug supply chain and expand the response to the opioid crisis","Energy permitting reform; repeal EV mandates; legislate on data-center power demand"],
+            differentiators: ["Chairs the House Energy and Commerce Committee in the 119th Congress","In the House since 2009; won renomination with 85.4%","West Point graduate and Army veteran [Verify]"],
+            supporters: ["One of the most powerful committee gavels in Congress, held by a Kentuckian","Has pushed rural health resources and disease-prevention bills through his committee","Backers cite drug-supply-chain security and opioid work as concrete deliverables"],
+            opponents: ["Democrats tie him to the Medicaid reductions in the budget reconciliation bill his committee wrote [Verify]","Critics say repealing EV mandates favors incumbent energy industries [Verify]","Nearly two decades in Washington in a seat that has not been competitive [Verify]"] },
+          { name: "Megan Wingfield", party: "D", winner: false,
+            positions: ["A \"People-First Economy\" where one job is enough to support a family","Crack down on corporate price gouging","Medicare for All"],
+            differentiators: ["A mechanic; automotive technology degree from SKYCTC","Born and raised in Bowling Green; ran for this seat in 2024","Won a four-way primary with 40.7%, beating 2024 nominee Hank Linderman"],
+            supporters: ["A working mechanic rather than a lawyer or career politician","Beat the party's own 2024 nominee in a contested primary","A concrete economic message aimed at wages and prices"],
+            opponents: ["Faces a district Guthrie carried by 46 points in 2024","Medicare for All is a hard sell in an R+20 district [Verify]","No sourceable fundraising comparable to a committee chairman's [Verify]"] },
+          { name: "Thomas A. Loecken", party: "I", winner: false,
+            positions: ["[Verify — no campaign platform could be located]","",""],
+            differentiators: ["Qualified for the ballot by nominating petition, filing May 1, 2026","The Secretary of State's filing lists only an email address — no committee or website"],
+            supporters: ["Gives KY-2 voters an option outside both major parties [Verify]"],
+            opponents: ["No campaign website, platform or fundraising could be located [Verify]","Independents have not been competitive in this district [Verify]"] }
+        ]
+      },
+      {
+        date: "May 19, 2026", type: "past",
+        note: "Guthrie won renomination with 85.4% over Joshua Ferguson (9.4%) and Shay Perry-Adelmann (5.2%). Megan Wingfield won a four-way Democratic primary with 40.7%, ahead of 2024 nominee Hank Linderman (20.9%), David Hatfield (20.6%) and William Compton (17.8%). [Verify certified totals against the Kentucky Secretary of State canvass.]",
+        candidates: [
+          { name: "Brett Guthrie", party: "R", winner: true,
+            positions: ["Won renomination with 85.4%","",""],
+            differentiators: ["Faced two minor challengers"],
+            supporters: [], opponents: [] },
+          { name: "Megan Wingfield", party: "D", winner: true,
+            positions: ["Won the Democratic nomination with 40.7%","",""],
+            differentiators: ["Defeated the party's 2024 nominee, Hank Linderman"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Guthrie held the seat 73.1%–26.9% over Hank Linderman, who then lost the 2026 Democratic primary to Wingfield.",
+        candidates: [
+          { name: "Brett Guthrie", party: "R", winner: true,
+            positions: ["Won 73.1%","",""],
+            differentiators: ["Took the Energy and Commerce gavel in the following Congress"],
+            supporters: [], opponents: [] },
+          { name: "Hank Linderman", party: "D", winner: false,
+            positions: ["Won 26.9%","",""],
+            differentiators: ["Ran again in 2026 and lost the primary"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  3: {
+    name: "U.S. House — KY District 3",
+    region: "The Louisville urban core — the district sits wholly inside Jefferson County, and covers only part of it; a small eastern slice of the county belongs to KY-2",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Kentucky's only Democratic-held seat. Cook PVI D+10 and rated Solid Democratic (Cook; Inside Elections). McGarvey drew no primary opponent; Maria Teresa Rodriguez emerged from a four-way Republican field with 48.2%. [Verify: the D+10 figure is Cook's PVI for the current lines, read through secondary sources.]",
+        candidates: [
+          { name: "Morgan McGarvey (incumbent)", party: "D", winner: false,
+            positions: ["Strengthen public education and expand access to affordable health care","Address gun violence and rising grocery and housing costs","Protect Social Security — nearly 150,000 Jefferson County residents rely on it"],
+            differentiators: ["In the House since 2023; former Kentucky Senate Minority Leader","Secured $12.35M for 15 local community projects in February 2026","Introduced the Child Safety and Well-Being Act of 2026"],
+            supporters: ["Opposed the Camp Ground Road data center, demanding Louisville families not absorb the cost","Delivered more than $12M in named local project funding this year","Ran unopposed for renomination — no intraparty challenge"],
+            opponents: ["Republicans argue a safe seat produces little accountability [Verify]","Critics say a minority-party member has limited ability to deliver [Verify]","No sourceable criticism of his record from a named opponent was located this pass [Verify]"] },
+          { name: "Maria Teresa Rodriguez", party: "R", winner: false,
+            positions: ["\"Defending capitalism\" and lower taxes","A safer Louisville and legal immigration","Protecting the unborn and protecting women's sports"],
+            differentiators: ["Trauma nurse and small-business owner in Louisville","Fled Cuba, arrived in the U.S. at 21 after an 11-year asylum process, and became a citizen","Raised two children as a single mother while earning her nursing degree"],
+            supporters: ["A first-hand account of life under a communist regime informs her economic message","A working trauma nurse rather than a career politician","Won a four-way Republican primary with 48.2% on her first run"],
+            opponents: ["KY-3 is D+10 — the only district in Kentucky Democrats reliably win","McGarvey won by nearly 24 points in 2024","No sourceable fundraising or endorsements were located this pass [Verify]"] }
+        ]
+      },
+      {
+        date: "May 19, 2026", type: "past",
+        note: "Maria Teresa Rodriguez won the Republican nomination with 48.2% over David Nichter (20.7%), Daniel Cobble (17.9%) and Donald Pay (13.1%). No Democratic primary was held — McGarvey was unopposed. [Verify certified totals against the Kentucky Secretary of State canvass.]",
+        candidates: [
+          { name: "Maria Teresa Rodriguez", party: "R", winner: true,
+            positions: ["Won the Republican nomination with 48.2% in a four-way field","",""],
+            differentiators: ["A first-time nominee"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "McGarvey held the seat 62.0%–38.0% over Mike Craven.",
+        candidates: [
+          { name: "Morgan McGarvey", party: "D", winner: true,
+            positions: ["Won 62.0%","",""],
+            differentiators: ["Kentucky's only Democratic member of Congress"],
+            supporters: [], opponents: [] },
+          { name: "Mike Craven", party: "R", winner: false,
+            positions: ["Won 38.0%","",""],
+            differentiators: ["Did not run again in 2026"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  4: {
+    name: "U.S. House — KY District 4",
+    region: "The Ohio River corridor — Cincinnati's Kentucky suburbs (Boone, Kenton, Campbell) east and west to Louisville's northeastern exurbs; Kentucky's wealthiest district",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ THOMAS MASSIE IS NOT ON THIS BALLOT. The eight-term incumbent LOST the May 19 Republican primary to Trump-recruited Ed Gallrein, 54.9%–45.1%, after roughly $37 MILLION was spent — the most expensive U.S. House primary in American history. More than $25M of it came from PACs opposing Massie, who had broken with Trump on spending bills and on Israel. Kentucky's sore-loser law (KRS 118.345) bars him from the November ballot. The seat itself is not competitive: Cook PVI R+18, rated Solid R (Cook, Inside Elections) and Safe R (Sabato). Kentucky's write-in deadline is Aug 24, 2026, so the field can still grow.",
+        candidates: [
+          { name: "Ed Gallrein", party: "R", winner: false,
+            positions: ["Cut taxes and federal spending; all-of-the-above energy including coal","Finish the border wall and fund Border Patrol and ICE","Anti-abortion, pro-Second Amendment, and \"I fully Back the Blue\""],
+            differentiators: ["Retired Navy SEAL officer, 1984–2014; fifth-generation Shelby County farmer","Trump personally recruited him in Oct 2025; Pete Hegseth campaigned for him","$3.57M raised and $179K cash on hand through June 30, 2026"],
+            supporters: ["Backers say he will actually advance Trump's agenda where Massie blocked it","Endorsed by Trump, Hegseth, Andy Barr and the U.S. Chamber of Commerce","Beat a well-known eight-term incumbent by nearly 10 points"],
+            opponents: ["Refused to debate Massie, including on KET","Registered as an independent in 2016 before returning to the GOP in 2021","Massie's supporters say the seat was bought by out-of-state billionaires","The Campaign Legal Center filed an FEC complaint alleging a straw-donor scheme [Verify — disputed]"] },
+          { name: "Melissa Claire Strange", party: "D", winner: false,
+            positions: ["Affordability — good jobs and support for local business and workers","Accessible, affordable healthcare and federal protection for reproductive rights","Education — universal pre-K and more resources for teachers"],
+            differentiators: ["Nearly 30 years as a supply-chain strategy director in global agribusiness","Villa Hills native; NKU international studies degree and a Thomas More MBA","Won the Democratic primary 72.4%; $94K raised to Gallrein's $3.57M"],
+            supporters: ["Runs on \"people over politics\" and reports outreach from some Massie voters","A first-time candidate with three decades of private-sector management behind her"],
+            opponents: ["Only one Democrat has held this seat since 1967 — Ken Lucas, 1999–2005","Faces roughly a 38-to-1 cash disadvantage","As of March 2026 had taken no stated position on public safety, immigration or energy"] },
+          { name: "Jeremy Todd", party: "L", winner: false,
+            positions: ["Bring U.S. troops home from foreign wars","Cut government spending and the national debt","Oppose special-interest money — \"Kentucky is not for sale\""],
+            differentiators: ["Northern Kentucky salesman and Libertarian activist","Gathered 750+ petition signatures against a 400 requirement","Entered the race only after Massie lost the primary"],
+            supporters: ["Positions himself as the inheritor of Massie's anti-war, anti-outside-money lane"],
+            opponents: ["No FEC filing could be located [Verify]","No critical commentary on his candidacy could be sourced [Verify]"] },
+          { name: "Mohammad Wael Ahmad", party: "I", winner: false,
+            positions: ["End U.S. military intervention abroad","Stop the destabilization of the Middle East; resolve disputes by diplomacy","\"America first means Israel last\""],
+            differentiators: ["Attorney and Northern Kentucky pro-Palestinian activist","Petitioned onto the Kentucky Party ballot line by the June 2 deadline","No FEC filing could be located [Verify]"],
+            supporters: ["Offers the district's clearest anti-interventionist foreign-policy alternative [Verify]"],
+            opponents: ["No campaign fundraising or organized support could be located [Verify]","Minor-party candidates have not been competitive in this district [Verify]"] }
+        ]
+      },
+      {
+        date: "May 19, 2026", type: "past",
+        note: "The primary that ended Thomas Massie's congressional career. Gallrein 57,822 (54.9%) to Massie 47,539 (45.1%) — a 10,283-vote margin. Massie carried only two of the district's counties, Lewis (his home) and Mason. Anti-Massie spending included MAGA KY at $7.4M, America 21 PAC at $4.4M, AIPAC's United Democracy Project at $4.1M and the Republican Jewish Coalition Victory Fund at $3.9M; pro-Massie groups spent roughly $9M. [Verify certified totals against the Kentucky Secretary of State canvass.]",
+        candidates: [
+          { name: "Ed Gallrein", party: "R", winner: true,
+            positions: ["Won the Republican nomination with 54.9%","",""],
+            differentiators: ["Defeated an eight-term incumbent Trump had campaigned against"],
+            supporters: [], opponents: [] },
+          { name: "Thomas Massie", party: "R", winner: false,
+            positions: ["Lost renomination with 45.1% after eight terms","",""],
+            differentiators: ["Barred from the November ballot by Kentucky's sore-loser law"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Massie ran unopposed — no Democrat filed. He took 278,386 votes (99.6%) against write-ins.",
+        candidates: [
+          { name: "Thomas Massie", party: "R", winner: true,
+            positions: ["Won 99.6% unopposed","",""],
+            differentiators: ["Lost renomination 18 months later"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  5: {
+    name: "U.S. House — KY District 5",
+    region: "Eastern Kentucky's Appalachian coalfields — Somerset, Pikeville, Hazard, London, Ashland and Middlesboro",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Hal Rogers, the DEAN OF THE HOUSE, is seeking another term at 88. He has held this seat since 1981 and did not retire, despite widespread expectation. This is the second-most Republican district in the country at Cook PVI R+32, rated Solid R (Cook, Inside Elections) and Safe R (Sabato). Democrats did field a nominee here, which they did not do in 2024.",
+        candidates: [
+          { name: "Hal Rogers (incumbent)", party: "R", winner: false,
+            positions: ["An America First agenda on jobs and energy independence","Secure federal infrastructure and rural broadband funding","Expand rural healthcare and tourism access"],
+            differentiators: ["Dean of the House — in office since 1981, with 23 consecutive nominations","Appropriations Committee chair 2011–2017 and still a senior appropriator [Verify]","Won his primary with 77.4%; endorsed by Trump"],
+            supporters: ["Seniority delivers federal dollars no freshman member could","Points to roughly $40M in recent eastern Kentucky project funding","Deep personal familiarity across a district he has represented for 45 years"],
+            opponents: ["Carries a long-running \"Prince of Pork\" label dating to a 2005 Herald-Leader series","Roll Call reported $30M+ since 2021 to three nonprofits he helped launch","At 88 he is older than any other member seeking another term","Backed budget-bill Medicaid cuts that critics say threaten rural hospitals"] },
+          { name: "Ned Pillersdorf", party: "D", winner: false,
+            positions: ["Defend Medicaid, Medicare, SNAP and utility assistance","Oppose deficit-busting tax breaks for billionaires","Rural healthcare, broadband, education and clean drinking water"],
+            differentiators: ["Prestonsburg attorney with a 44-year poverty-law practice","2023 ABA Pro Bono Publico Award for representing ~4,000 Eric Conn fraud victims","$182K raised including $63K of his own money; endorsed by Martin O'Malley"],
+            supporters: ["Fought for eastern Kentucky disability claimants when almost no one else would","Gives Democrats a real nominee in a district they conceded entirely in 2024","Husband of former Kentucky Supreme Court justice Janet Stumbo"],
+            opponents: ["No Democrat has won this seat in its current form [Verify]","Faces a roughly R+32 district — one of the most Republican in the nation","Ran here once before, in 1992, and lost"] },
+          { name: "Gerardo Serrano", party: "I", winner: false,
+            positions: ["Constitutional and libertarian governance","Civil asset forfeiture reform — his signature issue, from his own seizure case","Lower taxes, deregulation, gun rights and veterans' support"],
+            differentiators: ["Farmer from Tyner and a nationally known anti-forfeiture litigant","Ran in 2018, 2020 and 2022 — this is his first run as an independent","No 2026 FEC financial data could be located [Verify]"],
+            supporters: ["Brings a genuine, personally-lived civil-liberties cause to the race [Verify]"],
+            opponents: ["No sourceable commentary for or against his 2026 candidacy could be found [Verify]","Prior runs in this district did not come close [Verify]"] },
+          { name: "Mikel Wein", party: "I", winner: false,
+            positions: ["Pass the Medicare for All Act of 2025 to save rural hospitals","An FDR-style Economic Bill of Rights with guaranteed employment","Ban PACs and campaign donations; restore congressional war powers"],
+            differentiators: ["Archaeologist who cites his great-grandfather's miner's union card","Proposes a \"Resilient Community Corps\" for eastern Kentucky","No FEC data or endorsements could be located [Verify]"],
+            supporters: ["Offers the most explicitly left-populist platform on the ballot here [Verify]"],
+            opponents: ["No sourceable commentary for or against his candidacy could be found [Verify]","A platform far outside the district's electorate [Verify]"] }
+        ]
+      },
+      {
+        date: "May 19, 2026", type: "past",
+        note: "Hal Rogers won renomination with 77.4% (81,554 votes) over Kevin Smith (11.7%), Benjamin Hurley (5.3%), Brandon Monhollen (3.3%) and Jerry Lee Shelton (2.3%). Ned Pillersdorf advanced unopposed on the Democratic side — no primary was held. [Verify certified totals against the Kentucky Secretary of State canvass.]",
+        candidates: [
+          { name: "Hal Rogers", party: "R", winner: true,
+            positions: ["Won renomination with 77.4% in a five-way field","",""],
+            differentiators: ["His 23rd consecutive Republican nomination"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Rogers ran unopposed — no Democrat filed. He took 261,407 votes (100%).",
+        candidates: [
+          { name: "Hal Rogers", party: "R", winner: true,
+            positions: ["Won 100% unopposed","",""],
+            differentiators: ["Democrats did field a nominee in 2026"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  6: {
+    name: "U.S. House — KY District 6",
+    region: "The Lexington-anchored Bluegrass — Fayette (Lexington), Madison (Richmond), Scott (Georgetown) plus Bourbon, Woodford, Clark and Jessamine horse country. Note: Frankfort is NOT in this district — Franklin County sits in KY-1",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ OPEN SEAT and Kentucky's marquee House race — Andy Barr vacated it to run for the Senate. At Cook PVI R+7 this is by far the most competitive of Kentucky's six seats, and raters have been moving it: Cook to LIKELY R on July 16, 2026 (off Safe/Solid R) and Sabato to Likely R. Trump carried the district by about 15 points in 2024, but Gov. Andy Beshear carried it by about 20 in 2023 — the split that makes Democrats hopeful. Dembo leads on cash on hand. Both public polls are Democratic-sponsored; no independent poll has been released.",
+        candidates: [
+          { name: "Ralph Alvarado", party: "R", winner: false,
+            positions: ["Support Trump's America First agenda","Keep the border secured and stop the flow of fentanyl","\"Make America Healthy Again\" — runs explicitly as a MAHA physician"],
+            differentiators: ["Physician of ~30 years; Kentucky state senator 2015–2023","First Hispanic member of the Kentucky General Assembly; 2019 Lt. Gov. nominee","Tennessee Health Commissioner 2023–2025; won the primary 56.5%, carrying all 16 counties"],
+            supporters: ["Trump gave a \"Complete and Total Endorsement\"; Speaker Johnson and Jim Jordan followed","The physician credential gives the MAHA health message a credential to stand on","Swept every county in the primary, leaving no intraparty weakness to exploit","Unites the Trump lane and the U.S. Chamber establishment lane"],
+            opponents: ["Rivals attack him for leaving Kentucky for a Tennessee post — a residency line","Opposed Kentucky's Medicaid expansion and backs cuts hitting rural hospitals","Backs tariffs he concedes hurt bourbon and farm exports","His campaign site lists five issue headers with no body text behind them"] },
+          { name: "Zach Dembo", party: "D", winner: false,
+            positions: ["End the trade war and bring costs down for Kentucky families","Stop endless wars in the Middle East while strengthening NATO and alliances","Root out corruption — ban congressional stock trading and end dark money"],
+            differentiators: ["Navy JAG officer, then federal prosecutor in the DOJ Civil Rights Division","Resigned as an Assistant U.S. Attorney in protest over DOJ politicization","$1.46M raised and $491K cash on hand — about $93K MORE than Alvarado"],
+            supporters: ["Ben Chandler, the last Democrat to hold the seat, calls him the party's best shot","Endorsed by Gov. Andy Beshear, who carried this district by roughly 20 points","A prosecutor-and-Navy résumé blunts the usual soft-on-crime attacks","Out-raising a Trump-endorsed opponent in a district Democrats rarely fund"],
+            opponents: ["GOP strategist Tres Watson calls the district \"a mirage for national Democrats\"","Watson says a Democrat needs a perfect campaign plus Republican mistakes and luck","Alvarado says voters have rejected the radical agenda of Washington Democrats","Has never held elected office; this is his first campaign"] },
+          { name: "Jay J. Bowman", party: "I", winner: false,
+            positions: ["A \"Zero-One-Hundred Tax Plan\" — the centerpiece of his campaign","\"Responsible capitalism\" and a living wage; tax firms whose workers need benefits","Reverse tariffs to avert a collapse of American agriculture"],
+            differentiators: ["Small-business owner since age 24; runs under the slogan \"NO PARTY / NO BULL\"","Filed as a 2024 presidential candidate in Kentucky","$3,050 raised with $19 cash on hand through Dec 31, 2025"],
+            supporters: ["Offers voters a route outside a two-party system he calls broken [Verify]"],
+            opponents: ["The mechanics of his signature tax plan are not spelled out anywhere on his site","Essentially no campaign funds — $19 on hand at the last report","No sourceable commentary for or against his candidacy could be found [Verify]"] },
+          { name: "Pete Lynch", party: "I", winner: false,
+            positions: ["Pass Medicare for All","Lower taxes on the middle and lower classes and raise them at the top","Housing affordability and energy-use accountability for data centers"],
+            differentiators: ["PhD in American politics, University of Kentucky, 2022; UK law and justice lecturer","Runs on the Kentucky Party line as a self-described economic populist","Campaign finance reform is his central plank; no FEC disclosure located [Verify]"],
+            supporters: ["Says government works for billionaires rather than average Americans"],
+            opponents: ["No campaign fundraising disclosure could be located [Verify]","No sourceable commentary for or against his candidacy could be found [Verify]"] }
+        ]
+      },
+      {
+        date: "May 19, 2026", type: "past",
+        note: "Ralph Alvarado won the Republican nomination with 56.5% (36,217 votes) over state Rep. Ryan Dotson at 26.4%, carrying all 16 counties. Zach Dembo won the seven-way Democratic primary with 39.6% (26,858) over former state Rep. Cherlynn Stevenson at 31.5% and Erin Petrey at 15.8%, winning every county except Scott — where he still took about 35%. [Verify certified totals against the Kentucky Secretary of State canvass; election-night unofficial figures ran about 1,700 lower for Dembo.]",
+        candidates: [
+          { name: "Ralph Alvarado", party: "R", winner: true,
+            positions: ["Won the Republican nomination with 56.5%","",""],
+            differentiators: ["Carried all 16 counties in the district"],
+            supporters: [], opponents: [] },
+          { name: "Zach Dembo", party: "D", winner: true,
+            positions: ["Won the Democratic nomination with 39.6% in a seven-way field","",""],
+            differentiators: ["Won every county except Scott"],
+            supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Andy Barr held the seat 63.0%–37.0% over Randy Cravens, a 26-point margin — the baseline both 2026 campaigns are measured against.",
+        candidates: [
+          { name: "Andy Barr", party: "R", winner: true,
+            positions: ["Won 63.0% — 222,293 votes","",""],
+            differentiators: ["Vacated the seat in 2026 to run for the U.S. Senate"],
+            supporters: [], opponents: [] },
+          { name: "Randy Cravens", party: "D", winner: false,
+            positions: ["Won 37.0% — 130,345 votes","",""],
+            differentiators: ["Did not run again in 2026"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  }
+};
+
+const SITE_META = { name: "Kentucky Elections Hub", lastUpdated: "August 4, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — Ohio county-level down-ballot research is the next phase.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Ohio has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = district
+    ? district.races.map(r => ({
+        ...r,
+        office: r.office || district.name,
+        scope: r.scope || `Federal · District ${county.d}`
+      }))
+    : [];
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const KY_STATE_FIPS = "21";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#kymap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(KY_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Columbus ----
+  drawCapital(g, projection, { name: "Frankfort", lng: -84.8733, lat: 38.1867 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in KY";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our West Virginia dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>

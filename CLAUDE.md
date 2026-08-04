@@ -47,7 +47,8 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 | `ma.html` | Massachusetts — fourteenth fully built state (14 counties, 9 districts, ⚠ primary **Sept 1, 2026** — party fields are SETTLED since the June 2 filing deadline, but independents can still file through Aug 25). Built July 23, 2026. Six statewide offices, all Solid/Safe D: Senate (Markey vs. Moulton primary; Deaton R), Gov (Healey/Driscoll; GOP primary Minogue vs. Shortsleeve — **Kennealy missed the 15% convention threshold and is OUT**), AG (Campbell vs. Walsh), SoS (Galvin — first time since his 1994 election with neither a Democratic nor a Republican opponent), Treasurer (Goldberg vs. Dionne), Auditor (DiZoglio, no GOP filed). Plus **nine certified statewide ballot questions**. Marquee: OPEN MA-6 (Moulton → Senate), a six-way Democratic primary. No LOCAL_RACES yet |
 | `wv.html` | West Virginia — fifteenth fully built state (55 counties, 2 districts, May 12 primary results). Built July 24, 2026. ⚠ **DISTRICT NUMBERING IS REVERSED**: WV-1 is the SOUTHERN district (Charleston/Huntington, Carol Miller) and WV-2 the NORTHERN one + Eastern Panhandle (Morgantown/Wheeling/Martinsburg, Riley Moore). NO county is split. Short November ballot: Senate (Capito vs. Rachel Fetty Anderson, Solid R) is the ONLY statewide candidate race — governor and the whole Board of Public Works are presidential-year offices (next 2028). WV Supreme Court runs NONPARTISAN at the MAY primary, so both 2026 seats are already decided (Kirkpatrick, Flanigan — both beat Morrisey appointees) and appear as past races. No LOCAL_RACES yet |
 | `oh.html` | Ohio — sixteenth fully built state (88 counties, 15 districts, May 5 primary results). Built Aug 3, 2026 from the banked research. ⚠ **USES OHIO'S NEW 2026-2032 CONGRESSIONAL MAP** (adopted Oct 31, 2025) — 15 split counties, 103 county×district pairs, derived from the SoS's own county-population and legal-description PDFs by two independent agents that agreed exactly. CD3 sits wholly inside Franklin, CD11 wholly inside Cuyahoga; OH-3 and OH-11 are the only districts whose lines did NOT change. Senate SPECIAL (Husted vs. Brown, Toss Up) is a DIFFERENT seat from the one Brown lost in 2024. Open Governor (Ramaswamy vs. Acton, Cook Toss-Up Jul 16) + all five statewide executive offices open + two partisan Supreme Court seats + Issue 3 (voter photo ID). Marquee House: OH-9 Kaptur–Merrin rematch (Toss Up), OH-1 Lean D, OH-7 (Sabato moved to Leans R Jul 30), OH-13 Likely D. Built WITH voices from the start. No LOCAL_RACES yet |
-| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH redirect to their dedicated pages |
+| `ky.html` | Kentucky — seventeenth fully built state (120 counties, 6 districts, May 19 primary results). Built Aug 4, 2026 by cloning oh.html. NO 2026 governor or constitutional officers — Kentucky elects those in ODD years (next 2027); the statewide ballot is the OPEN U.S. Senate seat plus Amendment 1 and three nonpartisan judicial races. Senate: McConnell retiring, **Barr (R) vs. Booker (D)**, Solid R. ⚠ **THOMAS MASSIE LOST** the KY-4 primary to Trump-recruited Ed Gallrein 54.9–45.1 in the most expensive U.S. House primary in history (~$37M, >$25M of it anti-Massie PAC money); Kentucky's sore-loser law (KRS 118.345) keeps Massie off the November ballot. ⚠ KY-5's Hal Rogers did **NOT** retire — he is running at 88 as Dean of the House. KY-6 is **OPEN** (Barr vacated it for the Senate) and is the marquee: Cook moved it to Likely R Jul 16. ⚠ **Frankfort is in KY-1, NOT KY-6.** Built WITH voices on every upcoming candidate from the start. No LOCAL_RACES yet |
+| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH/KY redirect to their dedicated pages |
 | `favicon.svg` | Gold-gradient circle + white checkmark (primary favicon, matches site crest) |
 | `favicon.png` | 32px PNG fallback |
 | `favicon.ico` | Multi-size ICO (16/32/48) at root for legacy auto-discovery |
@@ -145,7 +146,7 @@ must appear AFTER its declaration; a top-level TDZ error kills the whole script 
 ### index.html (national)
 ```
 ST / NAME     : fips → abbr / full name             CAP: capitals (currently unused on this page)
-BUILT         : { "37": nc, "45": sc, "13": ga, "51": va, "24": md, "10": de, "34": nj, "36": ny, "44": ri, "33": nh, "09": ct, "50": vt, "23": me, "25": ma, "54": wv, "39": oh }
+BUILT         : { "37": nc, "45": sc, "13": ga, "51": va, "24": md, "10": de, "34": nj, "36": ny, "44": ri, "33": nh, "09": ct, "50": vt, "23": me, "25": ma, "54": wv, "39": oh, "21": ky }
 PARTIAL       : Set of 3 fips (DC FL AL) → lighter gold tier
 CALLOUTS      : label anchor coords for 9 small states + DC
 destFor(fips) : BUILT[fips] if fully built, else state.html?state=XX
@@ -179,7 +180,7 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of August 3, 2026)
+## Current state (as of August 4, 2026)
 
 - **NC (full):** 2024 statewide results (Gov, Lt Gov, AG, Supreme Court Seat 6) + all 14 US House
   districts (2024 + 2026) + 2026 US Senate (Cooper vs. Whatley vs. Bray, rated Lean D). NC primary
@@ -326,6 +327,20 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
    found by `tests/data-logic.js` the first time it ran). If you add a new `key` value to
    STATE_RACES races, add the matching guard in `buildSeats`.
 
+11. **A [Verify] sweep CANNOT catch a fact that changed under an UNMARKED claim.** Shipped and caught Aug 4, 2026:
+   **Sen. Lindsey Graham died July 11, 2026**, and sc.html carried him as a live 2026 candidate for three weeks.
+   Nothing on that card was ever marked `[Verify]` — it was a confident, correct-when-written statement — so
+   `tools/verify-report.js`, which only lists existing markers, had nothing to report. The weekly workflow is built
+   around shrinking the marker backlog, and that workflow is structurally blind to this entire class of error.
+   It surfaced only because a voices-research agent mentioned it in passing, and it was then verified against the
+   governor's own announcement before anything was edited.
+   ➤ **Therefore: every run, do an explicit INCUMBENT-STATUS check on the marquee races** — is each named incumbent
+   and each named nominee still alive, still in the race, and still holding the office the page says they hold?
+   Deaths, resignations, withdrawals and appointments do not announce themselves through the marker report.
+   ➤ A related instance the same day: nc.html still carded **Rick Southerland**, who withdrew March 5, 2026, and
+   thirteen NC House slots still read "[nominee — TBD]" five months after the March 3 primary. Same blind spot —
+   stale-but-unmarked content is invisible to the tooling.
+
 ## Testing (`tests/` — plain Node.js, zero dependencies)
 
 Requires Node.js (any recent LTS). Run the whole suite from the site root:
@@ -338,7 +353,7 @@ node tests/run-all.js
 |------|----------------|
 | `tests/parse-check.js` | Every inline `<script>` in every page must compile (syntax errors only) |
 | `tests/smoke-test.js` | Executes each page's scripts top-to-bottom with DOM stubs, cut at the first `d3.` usage; runs state.html for all 10 featured states + controls (TX, CA) + verifies the NC→nc.html redirect. **This is the test that catches declaration-order/TDZ bugs.** |
-| `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config, now 16 pages): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly, **and the map `<XX>_STATE_FIPS` constant matches the COUNTIES prefix** (quirk #10). Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
+| `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config, now 17 pages): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly, **and the map `<XX>_STATE_FIPS` constant matches the COUNTIES prefix** (quirk #10). Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
 | `tests/label-fit.js` | **The national map's `LABEL_ADJ` labels must clear their state borders.** Measures clearance (anchor → nearest boundary) against baked geometry and requires 9.66px = 8.76 glyph half-diagonal + 0.4 stroke + 0.5 simplification slack. Added July 24, 2026 after the FL/LA labels shipped clipping *twice* — both earlier passes hit-tested the anchor POINT, which is inside the state even when the box around it is not. HI carries a documented exempt floor (its island cannot do better) |
 | `tests/fixtures/state-label-rings.json` | Projected, simplified state outlines for the 42 inline-label states (48KB). Built by `tools/gen-label-fixture.js`; records the projection it came from so `label-fit.js` fails loudly instead of checking stale geometry |
 | `tests/lib.js` | Shared helpers: inline-script extraction, the d3 cut, DOM stubs, vm sandbox runner |
@@ -406,7 +421,14 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
      races voters can still act on. `tools/voices-report.js` only counts upcoming/scheduled.
    - **Workflow:** `node tools/voices-report.js` to find gaps → research per race → `node tools/apply-voices.js
      <page> <json>` to inject them without reflowing the file.
-   - **Progress: 187 → 122 (Jul 24) → 91 → 67 (Aug 3, 2026).** COMPLETE (0 gaps) on **10 of 16 pages**: ny.html
+   - **Progress: 187 → 122 (Jul 24) → 91 → 67 (Aug 3) → 6 (Aug 4, 2026).** COMPLETE (0 gaps) on **16 of 17 pages** — everything
+     except va.html. On Aug 4 the last big blocks fell: ri.html (15), sc.html (13), ga.html (16) and nc.html (17), and the newly
+     built ky.html shipped with 0 gaps. **The only remaining 6 are va.html's "[nominee — decided Aug 4]" placeholders**, which are
+     deliberately deferred to the post-Aug-4 Virginia refresh — writing voices for a card whose candidate is unknown is not useful.
+     ⚠ Note the honest tradeoff this creates: the site-wide [Verify] count ROSE from 896 to ~1046, because thin candidates now carry
+     marked structural arguments instead of empty sections. That is the owner's stated preference — a marked characterization beats
+     a blank block. Do not "fix" the rising [Verify] count by deleting voices.
+     Superseded historical note: ny.html
      (65/65, once the worst page), me.html, wv.html, vt.html, ct.html, oh.html (built with voices from the start),
      and — added Aug 3 — **de.html, nj.html, nh.html, md.html, ma.html**.
      Worst remaining: **nc.html 17, ga.html 16, ri.html 15, sc.html 13, va.html 6**.
@@ -585,10 +607,114 @@ every run alongside the state builds.
    - Recurring caveat: **ohiosos.gov returns 403 to automated fetch**, so certified vote TOTALS are news-sourced
      (percentages are reliable and cross-agree); swap in official canvass numbers when the portal is reachable.
 
-   **Built bloc is now 16 (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA WV OH)** — the Georgia-to-Maine coastal run plus
-   West Virginia and Ohio reaching inland.
-   **Next targets:** **PA** (see the banked research below — build it AFTER Aug 10, 2026), then **IN**, **MI** or **KY**.
+   **KENTUCKY was COMPLETED Aug 4, 2026** (cloned from oh.html; 120 counties / 6 districts / open U.S. Senate +
+   Amendment 1 + three nonpartisan judicial races; built WITH voices on every upcoming candidate from the start).
+   Kentucky's map was taken VERBATIM from the operative statute (KRS 118B.110–.160) — the 2022 SB 3 plan, unchanged
+   for 2026 — and the transcription was proved exact by arithmetic: district populations summed to 750,973/750,972/
+   750,973/750,973/750,973/750,972 against an ideal of 750,973, totalling Kentucky's 4,505,836 precisely.
+   **Built bloc is now 17 (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA WV OH KY)** — the Georgia-to-Maine coastal run
+   plus West Virginia, Ohio and Kentucky reaching inland.
+   **Next targets:** **IN** (fully researched and ready except the 9 district passes — see the banked section below;
+   by far the cheapest next state), then **PA** (banked below — build it AFTER Aug 10, 2026), then **MI**.
+   ⚠ **MI's primary was Aug 4, 2026** — build Michigan only once those results are certified.
    **Florida still ONLY after its Aug 18, 2026 primaries.** **DC** still needs a different page model (no counties).
+
+   ### ⏸ INDIANA — RESEARCH BANKED Aug 4, 2026; PAGE NOT SHIPPED. Do not re-research what is here.
+   An IN build was started Aug 4 (as the 18th state) and deliberately **not shipped**. The county map and the statewide
+   ballot are fully resolved, but **NO per-district research was done for any of the 9 U.S. House districts** — the
+   session's web-research quota was exhausted first. A page with a correct map and no district data is a half-built page,
+   so `in.html` was deleted rather than published. Recreate it by cloning `ky.html` (or `oh.html`) and applying the
+   clone checklist: title/meta, crest `IN`, brand/hero text, 92 counties / 9 seats in the hero stats, `#inmap`,
+   `IN_STATE_FIPS = "18"`, Indianapolis capital marker at -86.1581/39.7684, "Not in IN", `SITE_META`, footer sources.
+   **What remains is the 9 district passes, and nothing else.**
+
+   - **⚠ INDIANA DID NOT REDISTRICT — this was the gating question and it is SETTLED.** Indiana was one of the states
+     pressed hardest in the 2025 national mid-decade redistricting push. Gov. Braun called a special session; the Indiana
+     House passed a 9R-0D map (HB 1032) 57–41 on Dec 5, 2025 that would have split Marion County four ways; and on
+     **Dec 11, 2025 the Indiana SENATE voted it down 31–19**, with 21 Republicans joining all 10 Democrats — the first
+     time the national redistricting push was defeated by the president's own party. No revival, no enacted map, and
+     therefore no litigation over one. **2026 uses the map enacted Oct 4, 2021 (HEA 1581), unchanged.** Verified
+     structurally rather than only from news: the Census Bureau's 118th- and 119th-Congress county relationship files
+     for Indiana are **byte-identical**, so the boundaries did not move.
+   - ⚠ **TRAP:** the Census 2020 Block Assignment File `BlockAssign_ST18_IN_CD.txt` encodes the OLD 2011 CD116 map.
+     Using it yields wrong splits (Marion 7/5; Boone and Morgan split). It was detected and discarded.
+   - **EIGHT split counties** (plurality in parens): Marion→7 (77.2%), Bartholomew→6 (88.5%), Kosciusko→2 (77.4%),
+     LaPorte→1 (73.4%), Randolph→3 (72.6%), Cass→4 (64.6%), Fountain→8 (61.7%), Howard→5 (≥97.8%). **CD7 lies ENTIRELY
+     inside Marion County**, so its population equals Indiana's ideal district size (753,948) — which independently pins
+     the Marion split. Fountain, at 62/38, is the closest call and still not in doubt.
+   - **THE FULL COUNTY→DISTRICT TABLE (all 92, `FIPS|County|District`).** Recorded here deliberately: the Ohio build lost
+     time because an earlier commit recorded the METHOD but not the TABLE. These county names already match the us-atlas
+     geometry exactly (checked against `counties-10m.json`), and the per-district counts are
+     CD1=3, CD2=9, CD3=12, CD4=14, CD5=6, CD6=9, CD7=1, CD8=21, CD9=17 (92 total).
+```
+   18001|Adams|3           18003|Allen|3           18005|Bartholomew|6     18007|Benton|4
+   18009|Blackford|3       18011|Boone|4           18013|Brown|9           18015|Carroll|4
+   18017|Cass|4            18019|Clark|9           18021|Clay|8            18023|Clinton|4
+   18025|Crawford|8        18027|Daviess|8         18029|Dearborn|9        18031|Decatur|9
+   18033|DeKalb|3          18035|Delaware|5        18037|Dubois|8          18039|Elkhart|2
+   18041|Fayette|6         18043|Floyd|9           18045|Fountain|8        18047|Franklin|9
+   18049|Fulton|2          18051|Gibson|8          18053|Grant|5           18055|Greene|8
+   18057|Hamilton|5        18059|Hancock|6         18061|Harrison|9        18063|Hendricks|4
+   18065|Henry|6           18067|Howard|5          18069|Huntington|3      18071|Jackson|9
+   18073|Jasper|4          18075|Jay|3             18077|Jefferson|9       18079|Jennings|9
+   18081|Johnson|6         18083|Knox|8            18085|Kosciusko|2       18087|LaGrange|3
+   18089|Lake|1            18091|LaPorte|1         18093|Lawrence|9        18095|Madison|5
+   18097|Marion|7          18099|Marshall|2        18101|Martin|8          18103|Miami|2
+   18105|Monroe|9          18107|Montgomery|4      18109|Morgan|4          18111|Newton|4
+   18113|Noble|3           18115|Ohio|9            18117|Orange|8          18119|Owen|8
+   18121|Parke|8           18123|Perry|8           18125|Pike|8            18127|Porter|1
+   18129|Posey|8           18131|Pulaski|2         18133|Putnam|4          18135|Randolph|3
+   18137|Ripley|9          18139|Rush|6            18141|St. Joseph|2      18143|Scott|9
+   18145|Shelby|6          18147|Spencer|8         18149|Starke|2          18151|Steuben|3
+   18153|Sullivan|8        18155|Switzerland|9     18157|Tippecanoe|4      18159|Tipton|5
+   18161|Union|6           18163|Vanderburgh|8     18165|Vermillion|8      18167|Vigo|8
+   18169|Wabash|2          18171|Warren|4          18173|Warrick|8         18175|Washington|9
+   18177|Wayne|6           18179|Wells|3           18181|White|4           18183|Whitley|3
+```
+   - **STATEWIDE BALLOT — what is and is not on it (all verified):**
+     **NOT on the 2026 ballot:** U.S. Senate (Indiana has no Class 2 seat — Young is Class 3 through 2028, Banks Class 1
+     through 2030; no vacancy, no special), Governor (Braun elected 2024 to 2028), Attorney General (a presidential-year
+     office; Rokita next up 2028), and Supreme Court retention (Rush/Massa/Molter retained 2024, next due 2034).
+     **ON the ballot:** Secretary of State, State Comptroller (Auditor of State), Treasurer of State, three Court of
+     Appeals retention questions, and two constitutional amendments.
+   - ⚠ **Those three executive offices are nominated at PARTY CONVENTIONS, not at the May 5 primary** (IC 3-10-2-7).
+     Libertarian convention Mar 20–22; Democratic June 6; Republican June 19–20, 2026.
+   - ⚠ **Ballot-title quirk:** the office was renamed Auditor of State → State Comptroller by HEA 1001-2023, but the
+     Indiana Constitution still says "Auditor of State", so SEA 221 (2025) requires it appear on the 2026 ballot as
+     **"State Comptroller (Auditor of State)"**. Use that dual designation.
+   - **SECRETARY OF STATE is the marquee, and it is a FOUR-WAY race.** ⚠ **Incumbent Diego Morales (R) was thrown off the
+     ballot by his own party**, finishing THIRD at the June 20 GOP convention (2nd ballot: Engling 867/53.3%, Shelton
+     627/38.5%, Morales 134/8.2%). Reported causes: a non-citizen former chief of staff illegally registered to vote, a
+     $90,000 taxpayer-funded SUV, no-bid contracts to campaign donors, roughly $500K in staff raises, and a League of
+     Women Voters ethics complaint over $35,070 in self-branded election guides; Sen. Banks and AG Rokita rescinded
+     endorsements. [Verify the older 2022 "resume embellishment" allegation before publishing it — it could not be
+     re-confirmed this pass.] The November field: **Max Engling (R)** (~20 years a congressional staffer, most recently
+     an aide to Sen. Banks); **Beau Bayh (D)** (son of Evan, grandson of Birch; Marine Corps captain; Harvard BA/JD) —
+     won the June 6 convention 61%–39% and holds **$2.31M cash on hand, roughly 15× Engling's $150K**; **Greg Ballard
+     (Independent, "Lincoln Party")**, the former two-term Republican mayor of Indianapolis, who raised $876K with about
+     90% of his spending funded by one PAC — ⚠ **his policy positions are NOT SOURCEABLE; do not invent a platform for
+     him**; and **Lauri Shillings (L)**. Also on the ballot: Harrison Jacobo (Socialist, $0 raised) and Andrew Delano
+     (write-in). The only public poll is stale — Oct–Nov 2025, before Morales was removed, commissioned by a pro-Ballard
+     group.
+   - **COMPTROLLER:** Elise Nieshalla (R, incumbent) vs. Jessica Bailey (D, Porter County Clerk), plus John Schick (L,
+     no platform sourceable). ⚠ **Nieshalla was APPOINTED in Dec 2023 after Tera Klutz resigned and has NEVER won a
+     statewide election** — WFYI wrongly reported she was "elected in 2022". Do not repeat that framing.
+   - **TREASURER:** Daniel Elliott (R, incumbent) vs. Coumba Kebe (D), who built her profile explaining Medicaid policy
+     on TikTok. A well-sourced criticism of Elliott: the Legislative Services Agency estimated his 2023 anti-ESG pension
+     bill would cut state pension returns by **$6.7B over a decade**.
+   - **COURT OF APPEALS RETENTION (3, all first retentions, all Holcomb appointees):** Dana Kenworthy (2nd District),
+     Mary DeBoer (4th), Paul Felix (5th). Judge Stephen Scheele has not served two full years and is NOT on the ballot.
+   - **BALLOT MEASURES (2), certified text obtained for both:** Public Question #1 is the **bail / "substantial risk"
+     detention** amendment (S.J.R. 1; Senate 43–2 on Jan 23, House 75–11 on Feb 17, 2026) — supporters frame it as public
+     safety, while Sen. Greg Taylor and civil-liberties groups object that it turns on the person rather than the charge.
+     The second is **city/town court judge residency** (H.J.R. 1; House 81–7, Senate 43–3), with no organized opposition.
+     ⚠ **The second measure's public-question NUMBER is not sourced** — do not label it "PQ#2" without the SoS list.
+   - **HISTORY:** 2022 SoS Morales 54.13%–40.21%; 2022 Auditor Klutz 60.07%–36.44%; 2022 Treasurer Elliott 60.87%–39.13%
+     (⚠ that race was TWO-WAY — no Libertarian ran); 2024 Senate Banks 58.64%–38.77%; 2024 Governor Braun 54.38%–41.11%.
+   - **Access notes for the next pass:** iga.in.gov is a JavaScript app with no server-rendered content; the Indiana SoS
+     certified canvass PDFs and campaignfinance.in.gov could not be fetched; Indiana Capital Chronicle, IndyStar and
+     Ballotpedia article pages all blocked automated fetch. Re-pull exact vote totals and the state-level campaign-finance
+     figures from in.gov in a browser before publishing them.
 
    ### ⏸ PENNSYLVANIA — RESEARCH BANKED Aug 3, 2026; BUILD GATED TO AFTER AUG 10. Do not re-research what is here.
    A PA build was started on Aug 3 (17th state) and deliberately **not shipped**. Two independent reasons:
@@ -645,6 +771,14 @@ every run alongside the state builds.
      PA-10's Democrat is **Janelle Stelson** (Red to Blue).
    - **Districts 1, 9–17 were never researched** — the agents were cut off. PA-9's Dan Meuser was weighing a
      governor run, so **verify whether PA-9 is an open seat** rather than assuming he filed.
+   - **⚠ SC TIME-SENSITIVE — THE MOST URGENT ITEM ON THE SITE: the Republican SPECIAL PRIMARY for the late Lindsey
+     Graham's Senate seat is AUG 11, 2026, with a runoff Aug 25 if no one clears 50%.** sc.html currently carries a
+     placeholder GOP nominee card. Replace it with the actual nominee the week of Aug 11 (or after Aug 25 if it goes
+     to a runoff), and re-verify the field against the SC Election Commission certified list — two sources gave
+     conflicting filer lists (Bauer/Lynch vs. Fry/Norman/Sanford), so the page names only Bauer and Lynch, marked.
+   - **VA time-sensitive — DUE NOW:** Virginia's primaries were **Aug 4, 2026**, the day this run executed, so results
+     were not yet available. va.html still holds six "[nominee — decided Aug 4]" placeholder cards, and those six are
+     also the site's ONLY remaining voices gaps. **Refresh va.html first thing on the next run.**
    - **DE time-sensitive:** July 14 filing deadline, then Sept 15 primary — refresh de.html after
      both.
    - **MD follow-up:** June 23 primary figures are unofficial — swap in certified numbers when
