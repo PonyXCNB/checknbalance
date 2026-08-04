@@ -73,6 +73,19 @@ Format (one line each):
 
 2026-08-04 | va.html | Two VA races the page does not yet carry | VA-5 has a REPUBLICAN primary too (McGuire vs. Lucero) — the only Virginia district with primaries in both parties — and VA-8 has a Democratic primary (Beyer + 4). Neither is carded. Also note Bob Good is NOT on the VA-5 ballot despite Ballotpedia listing him, and VA-10's fundraising leader Sam Wong WITHDREW after ballots were printed, so his name still appears and votes still count | 2026-08-05
 
+
+2026-08-04 | ia.html | ⚠ IOWA'S NOVEMBER BALLOT IS NOT FINAL UNTIL AUG 31 | Non-party and no-party candidates filed by June 2, but the Iowa Secretary of State does not CERTIFY them until **Aug 31, 2026**. Three are carded as filed/objection-cleared rather than certified: Michael Bridgford (I, IA-1), Rick Stewart (L, IA-2) and Dave Bushaw (I, IA-2). Jermaine Decker (I, IA-4) is listed by directories but his certification could NOT be confirmed against the SoS at all. **Re-check the whole non-party field after Aug 31** | 2026-09-01
+
+2026-08-04 | ia.html | Two Iowa candidates were REMOVED from the ballot — do not re-add them | (a) **Nicholas Gluba (L)** — search results persistently surface him as a 2026 IA-1 Libertarian; that is 2024 data. In 2026 he was the Libertarian nominee for GOVERNOR and the State Objections Panel struck the ticket on June 16 over defective lieutenant-governor paperwork, upheld in court July 29. **There is no Libertarian on the IA-1 ballot and no third-party governor candidate.** (b) **Marco Battaglia (L, IA-3)** — removed by the Objections Panel in June for filing under a name other than his legal name; a Polk County judge upheld it July 31 and an appeal was announced. ⚠ The Iowa SoS's own July PDF and Ballotpedia BOTH still list Battaglia — they are stale. IA-3 is carded as a two-way race | standing
+
+2026-08-04 | ia.html | Iowa judicial retention list for 2026 is NOT PUBLISHED | The Iowa Secretary of State's "Judges Standing for Retention" PDF at its canonical URL still serves the **November 5, 2024** list. No Iowa Supreme Court seat is up in 2026 (next 2028), but the Court of Appeals and district judge retention list could not be obtained, so the page carries NO judicial retention race rather than a guess | 2026-09-01
+
+2026-08-04 | ia.html | SJR 11's ballot NUMBER and condensed summary are unpublished | The enrolled resolution text WAS obtained from the Iowa General Assembly and is quoted on the page, along with both chamber votes (Senate 32-15 on 4/10/2025, House 57-21 on 5/2/2026). What is missing is the Secretary of State's assigned designation (e.g. "Amendment 1") and the condensed ballot summary. ⚠ Also note a trap: a lieutenant-governor succession amendment surfaces in searches for 2026 — that was the **2024** ballot and is NOT on this one | 2026-09-01
+
+2026-08-04 | ia.html | Thin or conflicting Iowa figures | (a) Zach Lahn's cash on hand is reported as **$636,189** by Little Village and **~$1M** by Iowa Public Radio from the same filing — the page gives the range and marks it. (b) Exact percentages for the Republican Auditor primary and the Democratic Agriculture Secretary primary are NOT SOURCEABLE. (c) No fundraising or polling could be sourced for Thomas Laehn (L, Senate). (d) **Treasurer Roby Smith has NO sourced attack line at all** — his opponents block is an honest structural argument plus [Verify], which is the correct output rather than an invented criticism | 2026-09-01
+
+2026-08-04 | ia.html | A GOP claim about Sarah Trone Garriott (IA-3) was DEBUNKED and deliberately not carded | A viral Republican claim that she officiated a "Satanic wedding" was debunked. It is NOT on the page. Recording it here so a future run does not "discover" it in search results and add it uncritically | standing
+
 ## Permanently thin (check monthly at most)
 
 Candidates with no campaign site, no press, and no active social presence.
