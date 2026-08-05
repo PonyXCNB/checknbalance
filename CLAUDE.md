@@ -50,7 +50,8 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 | `ky.html` | Kentucky — seventeenth fully built state (120 counties, 6 districts, May 19 primary results). Built Aug 4, 2026 by cloning oh.html. NO 2026 governor or constitutional officers — Kentucky elects those in ODD years (next 2027); the statewide ballot is the OPEN U.S. Senate seat plus Amendment 1 and three nonpartisan judicial races. Senate: McConnell retiring, **Barr (R) vs. Booker (D)**, Solid R. ⚠ **THOMAS MASSIE LOST** the KY-4 primary to Trump-recruited Ed Gallrein 54.9–45.1 in the most expensive U.S. House primary in history (~$37M, >$25M of it anti-Massie PAC money); Kentucky's sore-loser law (KRS 118.345) keeps Massie off the November ballot. ⚠ KY-5's Hal Rogers did **NOT** retire — he is running at 88 as Dean of the House. KY-6 is **OPEN** (Barr vacated it for the Senate) and is the marquee: Cook moved it to Likely R Jul 16. ⚠ **Frankfort is in KY-1, NOT KY-6.** Built WITH voices on every upcoming candidate from the start. No LOCAL_RACES yet |
 | `in.html` | Indiana — eighteenth fully built state (92 counties, 9 districts, May 5 primary results). Built Aug 4, 2026 from ky.html. ⚠ **INDIANA DID NOT REDISTRICT** — the state SENATE killed the proposed 9R-0D map 31–19 on Dec 11, 2025, with 21 Republicans defecting; 2026 uses the Oct 2021 HEA 1581 map, verified by the Census 118th/119th county files being byte-identical. NO U.S. Senate race (no Class 2 seat) and NO governor (Braun to 2028). Statewide = SoS + Comptroller + Treasurer, all nominated at PARTY CONVENTIONS not the primary, plus 3 Court of Appeals retentions and 2 constitutional amendments. ⚠ Incumbent SoS **Diego Morales was thrown OFF the ballot by his own party's June 20 convention**, finishing third; Beau Bayh (D) holds ~15× the GOP nominee's cash and ex-Indianapolis mayor Greg Ballard runs as an independent. Marquee House seat is **IN-1 (D+1)**, Indiana's only competitive district — and raters moved it AWAY from Republicans after the primary. Built WITH voices from the start. No LOCAL_RACES yet |
 | `ia.html` | Iowa — nineteenth fully built state (99 counties, 4 districts, June 2 primary results). Built Aug 4, 2026 from in.html. ⚠ **THE MOST ELECTORALLY EVENTFUL STATE ON THE SITE.** For the FIRST TIME SINCE 1968 both the U.S. Senate seat and the governorship are OPEN (Ernst and Reynolds both retiring), and the Auditor's office is open too (Sand vacated it) — three open statewide seats. **Senate:** Hinson (R) vs. Turek (D), moved by all three raters Solid R → Likely R → **Lean R**. **Governor: TOSS-UP by all three raters** — and the primary produced the cycle's biggest upset, businessman Zach Lahn beating Rep. Randy Feenstra by 1,652 votes DESPITE Trump's endorsement, reported as the first Trump-backed primary loss of the 2026 midterms. **Districts: three of four are open or competitive** — IA-1 is a TOSS-UP and a THIRD consecutive Miller-Meeks–Bohannan rematch (decided by 799 votes in 2024, and by SIX votes in the predecessor seat in 2020); IA-2 is OPEN (Hinson vacated) and moved to Lean R; IA-3 is a TOSS-UP; IA-4 is OPEN (Feenstra vacated) but Solid R. Iowa has **three of its four districts on the DCCC's Red to Blue list**. ⚠ **UNIQUE ON THIS SITE: NO IOWA COUNTY IS SPLIT** — state law forbids it, so every `d` value is exact rather than a plurality call. Built WITH voices from the start. No LOCAL_RACES yet |
-| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH/KY/IN/IA redirect to their dedicated pages |
+| `il.html` | Illinois — twentieth fully built state (102 counties, 17 districts, March 17 primary results). Built Aug 5, 2026 from ma.html — **the first build to use the `ds` multi-district model from the start**, because IL districts 1, 3, 4, 5 and 9 sit ENTIRELY inside Cook County and would otherwise be unreachable (lessons #12). Cook overlaps 11 districts; 32 of 102 counties are split. Map proved exact by arithmetic (CD1–16 = 753,677 each, CD17 = 753,676, totalling 12,812,508 — zero deviation). ⚠ **FIVE OPEN U.S. House seats** — IL-2 (Kelly ran for Senate), IL-4 (García retired), IL-7 (Davis retired), IL-8 (Krishnamoorthi ran for Senate), IL-9 (Schakowsky retired). OPEN U.S. Senate (Durbin retiring): Stratton vs. Tracy, Solid D. Governor: Pritzker seeking a THIRD term vs. Bailey in the first IL gubernatorial rematch since 1986, plus ballot-qualified independent Corbett. ⚠ **NO Illinois district is rated competitive by any rater** — IL-17 is closest by margin but all three say Solid/Safe D. ⚠ **Giannoulias is running for TWO offices at once** (SoS on the Nov ballot + Chicago mayor Feb 2027). NO statewide ballot questions. Built WITH voices from the start. No LOCAL_RACES yet |
+| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH/KY/IN/IA/IL redirect to their dedicated pages |
 | `favicon.svg` | Gold-gradient circle + white checkmark (primary favicon, matches site crest) |
 | `favicon.png` | 32px PNG fallback |
 | `favicon.ico` | Multi-size ICO (16/32/48) at root for legacy auto-discovery |
@@ -182,7 +183,7 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of August 4, 2026)
+## Current state (as of August 5, 2026)
 
 - **NC (full):** 2024 statewide results (Gov, Lt Gov, AG, Supreme Court Seat 6) + all 14 US House
   districts (2024 + 2026) + 2026 US Senate (Cooper vs. Whatley vs. Bray, rated Lean D). NC primary
@@ -439,7 +440,13 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
      races voters can still act on. `tools/voices-report.js` only counts upcoming/scheduled.
    - **Workflow:** `node tools/voices-report.js` to find gaps → research per race → `node tools/apply-voices.js
      <page> <json>` to inject them without reflowing the file.
-   - **Progress: 187 → 122 (Jul 24) → 91 → 67 (Aug 3) → 6 (Aug 4, 2026).** COMPLETE (0 gaps) on **16 of 17 pages** — everything
+   - ✅ **COMPLETE SITE-WIDE AS OF AUG 5, 2026 — 0 gaps on ALL 20 pages (600 candidates).** The last six were va.html's
+     "[nominee — decided Aug 4]" placeholders, which resolved when the Aug 4 primary results were published, plus two
+     genuinely thin cards (VA-3 Edwin Rivera, the unsettled VA-11 Republican line) that were given honest structural
+     arguments + [Verify] per the rule below. Illinois shipped the same day with 49 candidates and 0 gaps.
+     **Keep it at 0:** every new state must be built WITH voices, and `node tools/voices-report.js --summary` should
+     read 0 at the end of every run. Historical progress: 187 → 122 (Jul 24) → 91 → 67 (Aug 3) → 6 (Aug 4) → **0 (Aug 5)**.
+   - Superseded historical note: **Progress: 187 → 122 (Jul 24) → 91 → 67 (Aug 3) → 6 (Aug 4, 2026).** COMPLETE (0 gaps) on **16 of 17 pages** — everything
      except va.html. On Aug 4 the last big blocks fell: ri.html (15), sc.html (13), ga.html (16) and nc.html (17), and the newly
      built ky.html shipped with 0 gaps. **The only remaining 6 are va.html's "[nominee — decided Aug 4]" placeholders**, which are
      deliberately deferred to the post-Aug-4 Virginia refresh — writing voices for a card whose candidate is unknown is not useful.
@@ -636,12 +643,16 @@ every run alongside the state builds.
    Its map is the cleanest on the site: state law forbids splitting counties, so all 99 sit wholly in one district,
    and the four districts land within 94 people of each other (797,584 / 797,589 / 797,551 / 797,645 against an
    ideal of 797,592), which independently validates every assignment.
-   **Built bloc is now 19 (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA WV OH KY IN IA)** — the Georgia-to-Maine coastal run
-   plus West Virginia, Ohio and Kentucky reaching inland.
-   **Next targets:** **IL** (fully researched — see the banked section below — but it MUST be built with the `ds`
-   multi-district field, because five Chicago-area districts sit entirely inside Cook County), then **PA** (banked
-   below — build it AFTER Aug 10, 2026), then **MI**.
-   ⚠ **MI's primary was Aug 4, 2026** — build Michigan only once those results are certified.
+   **ILLINOIS was COMPLETED Aug 5, 2026** (see the build record below) — 102 counties / 17 districts, the first build
+   to use the `ds` multi-district model from the start.
+   **Built bloc is now 20 (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA WV OH KY IN IL IA)** — with Illinois in place the
+   run from Georgia to Maine and west to Iowa is CONTIGUOUS again (index.html's prose was updated to say so).
+   **Next targets:** **PA** (banked below — build it AFTER Aug 10, 2026, off the DOS certified list; the county→district
+   map is still the hard blocker), then **MI**, then **WI/MN/MO**.
+   ⚠ **MI is NOT ready.** Its primary was Aug 4, 2026 and as of Aug 5 the **Democratic U.S. Senate primary was still
+   too close to call** (Wikipedia showed El-Sayed at 48.6% over Stevens; Bridge Michigan and the Washington Post both
+   called it uncalled), with no certification — county canvasses run for weeks. Governor IS set: Benson (D) vs. James
+   (R). **Do not build Michigan until the Senate race is called and certified.**
    **Florida still ONLY after its Aug 18, 2026 primaries.** **DC** still needs a different page model (no counties).
 
    ### ✅ INDIANA — BUILT Aug 4, 2026 (18th state). The notes below are the build record; do not re-research.
@@ -746,13 +757,65 @@ every run alongside the state builds.
      Ballotpedia article pages all blocked automated fetch. Re-pull exact vote totals and the state-level campaign-finance
      figures from in.gov in a browser before publishing them.
 
-   ### ⏸ ILLINOIS — RESEARCH BANKED Aug 4, 2026; BUILD BLOCKED ON THE `ds` MODEL. Do not re-research what is here.
-   The county map and the full statewide ballot are resolved. **The blocker is structural, not research:** Illinois
-   districts **1, 3, 4, 5 and 9 sit entirely inside Cook County**, so under a one-district-per-county model they are
-   unreachable — the exact bug fixed on ny.html/ma.html this same day (lessons-learned #12). **Build Illinois using the
-   `ds: [...]` multi-district field from the start**, and let `tests/data-logic.js`'s reachability check gate the ship.
-   Cook overlaps **11 districts**; DuPage 5; Will and Lake and McHenry 4 each; Kane 3. Those `ds` lists must be derived
-   before the page goes live — the plurality table below is NOT sufficient on its own for those counties.
+   ### ✅ ILLINOIS — BUILT Aug 5, 2026 (20th state). The notes below are the build record; do not re-research.
+   Cloned from **ma.html** (chosen deliberately: it already had the `ds` merge logic in `getCountyElections` AND uses
+   plain JS keys, unlike ny.html). Shipped with voices on every upcoming candidate.
+   - **THE `ds` MODEL WAS USED FROM THE START AND IT MATTERED.** Illinois districts **1, 3, 4, 5 and 9 sit entirely
+     inside Cook County**; under a one-district-per-county model all five would have been unreachable from the map.
+     Cook's `ds` is `[7,4,5,9,3,1,2,6,8,10,11]` — 11 districts. **32 of 102 counties are split.** DuPage 5 districts;
+     Will, Lake and McHenry 4 each; Kane 3. `tests/data-logic.js`'s reachability check passes with all 17 reachable.
+   - **The map was proved exact by arithmetic, not asserted.** Derived from the Census 2020 CD↔county relationship
+     file with MCDC Geocorr block-population weights, then cross-checked against the area-based Census file — identical
+     district sets for all 102 counties, zero discrepancies. Per-district populations come to **753,677 for CD1–CD16
+     and 753,676 for CD17, totalling 12,812,508 — zero deviation.** All six low-margin plurality calls reproduced to
+     the person: Boone 16-over-11 by 556; Mercer 15-over-17 by 603; McLean 16-over-17 by 1,260; McDonough 17-over-15
+     by 1,834; Macon 13-over-15 by 2,706; Kane 8-over-11 by 15,359.
+   - ⚠ **County-name trap:** us-atlas spells 17039 **`De Witt` with a space** (not "DeWitt"), and 17099 **`LaSalle`
+     without one** (Geocorr says "La Salle"). Both are correct in the page.
+   - **Map in force:** the 17-district plan, **Public Act 102-0663** (HB 1291), signed Nov 23, 2021. NO mid-decade
+     redraw. Verified structurally: the Census `tab20_cd11820` and `tab20_cd11920` county relationship files for
+     Illinois are **byte-identical**. ⚠ **TRAP: `BlockAssign_ST17_IL.zip` is dated 2021-02-08 — nine months BEFORE
+     the map was drawn — and encodes the old 2011 lines. Do not use it.**
+   - ⚠ **BALLOT CERTIFICATION IS AUG 21, 2026.** The ISBE 2026 Election Calendar sets that as the last day for the
+     State Board to certify general-election candidate names to election authorities. The substantive deadlines have
+     PASSED (independent/new-party filing May 18–26; objections June 2; primary certified Apr 17), so the D/R fields
+     are firm — but **minor-party and independent lines are not**. Three directories gave three non-overlapping,
+     zero-agreement names for the Senate; **none was carded.** Re-check Aug 21–22 and add any certified third lines.
+   - **FIVE OPEN U.S. HOUSE SEATS** — IL-2 (Robin Kelly ran for Senate), IL-4 (Chuy García retired), IL-7 (Danny Davis
+     retired), IL-8 (Krishnamoorthi ran for Senate), IL-9 (Schakowsky retired). IL-9's primary drew SIXTEEN Democrats
+     (Biss won with 29.4%), IL-7 thirteen (Ford, ~24%), IL-2 eleven (Donna Miller, 40.4%).
+   - ⚠ **IL-4 carries a real controversy, carded evenhandedly:** García announced retirement TWO DAYS AFTER the filing
+     deadline, leaving his former chief of staff Patty Garcia the only Democrat able to file; the House later voted to
+     rebuke him with 23 Democrats breaking ranks. **The rebuke VOTE COUNT conflicts across sources (236–183 vs.
+     286–183) — the page states the rebuke without printing a number.** García's stated reason was his wife's MS.
+   - ⚠ **NO Illinois district is rated competitive in 2026.** Cook, Sabato and Inside Elections all rate IL-17
+     Solid/Safe D — Cook had it Toss Up in 2022, so this is a two-step downgrade. IL-17 is still the closest by
+     recent margin (Sorensen +8.9 in 2024) and the page says exactly that. **Do not card IL-17 as a battleground.**
+   - ⚠ **The GOVERNOR ratings are stale** — Cook, Sabato and Inside Elections all last rated it Aug–Sept 2025, BEFORE
+     the primary that chose Bailey. The Senate ratings are current (Cook Apr 13, Sabato Mar 4, IE Apr 23). The page
+     says so rather than implying they were refreshed.
+   - **Statewide:** OPEN Senate (Stratton 40.4% over Krishnamoorthi 32.7% and Kelly 18.3%; Tracy 40.0%), Governor
+     (Pritzker third term vs. Bailey rematch, plus **ballot-qualified independent Collin Corbett** — 27,323 signatures
+     validated vs. 25,000, Bailey's objection withdrawn July 14; the **Green ticket FAILED** at ~12,500 and is not
+     carded), AG (Raoul vs. Fioretti), **SoS — Giannoulias is running for TWO OFFICES AT ONCE**, having launched a
+     Chicago mayoral bid Aug 2, 2026; if he wins both, the GOVERNOR APPOINTS his replacement through 2028 with no
+     special election, Comptroller (OPEN, Mendoza retiring — and *she* is also running for mayor, which is why she is
+     his loudest critic; Croke ~35% vs. Drew), Treasurer (Frerichs vs. Solomon).
+   - ⚠ **TREASURER SOURCING TRAP, resolved:** Nov 2025 stories reported NO Republican filed — which would have been a
+     ~90-year first. **Max Solomon won the nomination as a WRITE-IN** (reported 22,990 votes, ISBE canvass) and
+     Frerichs IS opposed. Never write "unopposed." Also: **do NOT write "no Republican has won this office in 90
+     years"** — Dan Rutherford held it 2011–2015; the 90-year stat is about *filing*, not winning.
+   - **Corrections to earlier banked research:** appellate retentions are **THREE, not five** (Lampkin, Knecht,
+     Barberis); three partisan appellate seats, only the 3rd District contested. **NO statewide ballot questions** —
+     confirmed; the May 3 deadline passed and both the redistricting and millionaires-tax amendments died. ⚠ Cook
+     County alone has a *county* advisory referendum on a millionaire's tax — it sounds statewide and is not.
+   - **Genuinely unsourceable platforms, carded name-only with [Verify]** (a finding, not a research gap): Chad Koppie
+     (R, IL-7), Carl Lambrecht (R, IL-10, reported $0 raised/$0 spent), Jeff Wilson (R, IL-13, site says "Launching
+     Soon"), Max Solomon (R, Treasurer). Budzinski's positions are record-derived, not from a candidate issues page.
+   - **Access notes:** elections.il.gov 403s to automated fetch on every path; Cook/Sabato/Inside Elections 403 as
+     well (ratings routed through reporting that cites them). **The two workarounds that carried this build:**
+     Wikipedia **raw wikitext** via `?action=raw&section=N` (the rendered fetch silently truncates before the General
+     election section), and extracting the **ISBE calendar PDF locally with pypdf**, which is what pinned Aug 21.
 
    - **Map in force:** the 17-district plan enacted as HB 1291 / **Public Act 102-0663**, signed Nov 23, 2021. **NO
      mid-decade redraw.** Democratic leaders declined to call the Jeffries-backed remap in the Oct 2025 veto session,
@@ -863,9 +926,38 @@ every run alongside the state builds.
      placeholder GOP nominee card. Replace it with the actual nominee the week of Aug 11 (or after Aug 25 if it goes
      to a runoff), and re-verify the field against the SC Election Commission certified list — two sources gave
      conflicting filer lists (Bauer/Lynch vs. Fry/Norman/Sanford), so the page names only Bauer and Lynch, marked.
-   - **VA time-sensitive — DUE NOW:** Virginia's primaries were **Aug 4, 2026**, the day this run executed, so results
-     were not yet available. va.html still holds six "[nominee — decided Aug 4]" placeholder cards, and those six are
-     also the site's ONLY remaining voices gaps. **Refresh va.html first thing on the next run.**
+   - ✅ **VA — DONE Aug 5, 2026.** All seven "[nominee — decided Aug 4]" placeholders were replaced with the actual
+     Aug 4 primary winners: **Senate** Bert Mizusawa (R) ~50.7% over Williams and Farington (Chuck Smith never
+     qualified); **VA-1** Shannon Taylor 53.1% of a seven-way field; **VA-2** Elaine Luria ~80% — the Kiggans rematch
+     is ON; **VA-5** McGuire held renomination ~84% and Perriello won the Democratic side ~80% (the only district with
+     both parties voting); **VA-7** Doug Ollivant ~56%; **VA-9** Joy Powers ~52%; **VA-10** Dave Beckwith ~72.5%.
+     **VA-8: Beyer SURVIVED with ~67%** against four challengers running on generational change.
+     ⚠ **All figures are UNOFFICIAL pending State Board certification** — the ENR portal is JS-rendered and returned
+     nothing to automated fetch, so every number is AP/newsroom-sourced at 100% precincts. **Swap in certified totals
+     when the canvass completes.** Also: an independent, **Mark Moran**, is reported on the November Senate ballot but
+     is only noted in the race text with a [Verify], not carded. The **three constitutional amendments were already
+     confirmed verbatim** against the Dept. of Elections' own referenda pages — no work needed there.
+     ⚠ Unresolved: **Cook rates VA-7 Lean D in some sources and Likely D in others** — the page states both.
+   - ⚠⚠ **NC-11 TIME-SENSITIVE — DUE NEXT RUN. Rep. Chuck Edwards (R) ENDED his re-election campaign on Aug 5, 2026**
+     amid a threatened House censure, reported the same day by the Asheville Citizen Times, ABC News, KATU and WBMA.
+     nc.html was updated immediately (card renamed "WITHDREW Aug 5, 2026", race note rewritten), but **how Republicans
+     fill the ballot line and who replaces him is UNRESOLVED** — resolve against the NC State Board of Elections.
+     Jamie Ager (D) is the DCCC Red to Blue nominee. **This was caught by the incumbent-status sweep, NOT by the
+     [Verify] report — exactly the Graham failure mode (lessons #11). The sweep earned its keep on its second run.**
+     ⚠ The underlying ethics findings are sourced only via news aggregation so far; the page says "threatened censure"
+     and marks the detail [Verify]. Do not publish specific allegations without a primary source.
+   - ⚠ **OH-7 VOLATILE — recheck within days. Rep. Max Miller (R)** faces domestic-abuse allegations; Sen. Bernie
+     Moreno (his former father-in-law) called him unfit for office and Trump allies pressed him to quit. **As of Aug 5
+     he REFUSED — "I'm not dropping out" — and remains the nominee**, but Ohio's nominee-replacement window closes in
+     early August (**sources conflict: Aug 6 vs. Aug 7 vs. Aug 9 — unresolved, ohiosos.gov 403s**). This card can flip
+     without warning. Also confirmed Aug 5: **OH-1's Libertarian line did NOT change** — John Hancock won that primary
+     with 91.3% and is the nominee; no replacement occurred.
+   - ⚠ **OH-9 health event, deliberately NOT carded:** Rep. Marcy Kaptur (80) was hospitalized after a **hit-and-run
+     crash in Toledo on Aug 2, 2026**; reported "active, alert" and recovering by Aug 4, still an active candidate.
+     It is NOT a status change and is aggregation-sourced only, so it was logged rather than published. **Confirm
+     against a primary source next run** before adding anything to the marquee OH-9 card.
+   - ⚠ **IL follow-up — Aug 21, 2026:** the ISBE certifies the general-election ballot. Add any certified minor-party
+     or independent lines then (the Senate especially, where three directories disagreed completely).
    - **DE time-sensitive:** July 14 filing deadline, then Sept 15 primary — refresh de.html after
      both.
    - **MD follow-up:** June 23 primary figures are unofficial — swap in certified numbers when

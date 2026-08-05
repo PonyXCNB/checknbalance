@@ -1,0 +1,2639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Illinois Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every IL election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #ilmap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">IL</div>
+      <div class="brand-text">
+        <span class="brand-name">Illinois Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Illinois <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 102 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">102</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>17</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>6</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Illinois…</div>
+      <svg id="ilmap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>IL Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">July 22, 2026</span><br>
+      Sources: Illinois State Board of Elections (elections.il.gov), U.S. Census Bureau congressional-district relationship files, FEC, Ballotpedia, Wikipedia, Cook Political Report, Capitol News Illinois, Chicago Tribune, Chicago Sun-Times, WBEZ, Crain's Chicago Business, AP.
+    </div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every IL county + its primary US House district(s)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- (1) Counties + primary US House district -----
+// NOTE: Illinois has 17 U.S. House districts under Public Act 102-0663 (HB 1291),
+// signed Nov 23, 2021. There was NO mid-decade redraw — Democratic leaders declined to
+// call the proposed remap in the October 2025 veto session, and candidate filing then
+// proceeded under this map. Verified structurally: the Census 118th- and 119th-Congress
+// county relationship files for Illinois are byte-identical.
+// 32 of the 102 counties are SPLIT. Each carries `d` (its population-PLURALITY district,
+// which drives map shading) plus `ds` — EVERY district overlapping it, so no district is
+// unreachable from the map. Cook County alone overlaps 11 districts, and districts 1, 3,
+// 4, 5 and 9 sit ENTIRELY inside Cook, so without `ds` a Chicago voter could never reach
+// their own U.S. House race. Derived from the Census 2020 CD<->county relationship file
+// with MCDC Geocorr block-population weights; proved exact by arithmetic — the per-district
+// populations come to 753,677 for CD1-CD16 and 753,676 for CD17, totalling Illinois'
+// 12,812,508 with zero deviation.
+const COUNTIES = {
+  "17001":{n:"Adams",d:15},
+  "17003":{n:"Alexander",d:12},
+  "17005":{n:"Bond",d:15},
+  "17007":{n:"Boone",d:16,ds:[16,11]},
+  "17009":{n:"Brown",d:15},
+  "17011":{n:"Bureau",d:16,ds:[16,14]},
+  "17013":{n:"Calhoun",d:15},
+  "17015":{n:"Carroll",d:17},
+  "17017":{n:"Cass",d:15},
+  "17019":{n:"Champaign",d:13,ds:[13,15,2]},
+  "17021":{n:"Christian",d:15},
+  "17023":{n:"Clark",d:12},
+  "17025":{n:"Clay",d:12},
+  "17027":{n:"Clinton",d:12},
+  "17029":{n:"Coles",d:15,ds:[15,12]},
+  "17031":{n:"Cook",d:7,ds:[7,4,5,9,3,1,2,6,8,10,11]},
+  "17033":{n:"Crawford",d:12},
+  "17035":{n:"Cumberland",d:12},
+  "17037":{n:"DeKalb",d:14,ds:[14,11,16]},
+  "17039":{n:"De Witt",d:15},
+  "17041":{n:"Douglas",d:15},
+  "17043":{n:"DuPage",d:6,ds:[6,11,3,8,4]},
+  "17045":{n:"Edgar",d:15},
+  "17047":{n:"Edwards",d:12},
+  "17049":{n:"Effingham",d:12},
+  "17051":{n:"Fayette",d:15},
+  "17053":{n:"Ford",d:2,ds:[2,16]},
+  "17055":{n:"Franklin",d:12},
+  "17057":{n:"Fulton",d:17,ds:[17,15]},
+  "17059":{n:"Gallatin",d:12},
+  "17061":{n:"Greene",d:15},
+  "17063":{n:"Grundy",d:16},
+  "17065":{n:"Hamilton",d:12},
+  "17067":{n:"Hancock",d:15},
+  "17069":{n:"Hardin",d:12},
+  "17071":{n:"Henderson",d:15},
+  "17073":{n:"Henry",d:16,ds:[16,17]},
+  "17075":{n:"Iroquois",d:2},
+  "17077":{n:"Jackson",d:12},
+  "17079":{n:"Jasper",d:12},
+  "17081":{n:"Jefferson",d:12},
+  "17083":{n:"Jersey",d:15},
+  "17085":{n:"Jo Daviess",d:16},
+  "17087":{n:"Johnson",d:12},
+  "17089":{n:"Kane",d:8,ds:[8,11,14]},
+  "17091":{n:"Kankakee",d:2,ds:[2,1]},
+  "17093":{n:"Kendall",d:14},
+  "17095":{n:"Knox",d:17},
+  "17097":{n:"Lake",d:10,ds:[10,9,5,11]},
+  "17099":{n:"LaSalle",d:14,ds:[14,16]},
+  "17101":{n:"Lawrence",d:12},
+  "17103":{n:"Lee",d:16},
+  "17105":{n:"Livingston",d:2,ds:[2,16]},
+  "17107":{n:"Logan",d:15},
+  "17109":{n:"McDonough",d:17,ds:[17,15]},
+  "17111":{n:"McHenry",d:11,ds:[11,9,10,16]},
+  "17113":{n:"McLean",d:16,ds:[16,17]},
+  "17115":{n:"Macon",d:13,ds:[13,15]},
+  "17117":{n:"Macoupin",d:13},
+  "17119":{n:"Madison",d:13,ds:[13,15]},
+  "17121":{n:"Marion",d:12},
+  "17123":{n:"Marshall",d:16},
+  "17125":{n:"Mason",d:15},
+  "17127":{n:"Massac",d:12},
+  "17129":{n:"Menard",d:15},
+  "17131":{n:"Mercer",d:15,ds:[15,17]},
+  "17133":{n:"Monroe",d:12},
+  "17135":{n:"Montgomery",d:15},
+  "17137":{n:"Morgan",d:15},
+  "17139":{n:"Moultrie",d:15},
+  "17141":{n:"Ogle",d:16},
+  "17143":{n:"Peoria",d:17,ds:[17,16]},
+  "17145":{n:"Perry",d:12},
+  "17147":{n:"Piatt",d:13,ds:[13,15]},
+  "17149":{n:"Pike",d:15},
+  "17151":{n:"Pope",d:12},
+  "17153":{n:"Pulaski",d:12},
+  "17155":{n:"Putnam",d:14,ds:[14,16]},
+  "17157":{n:"Randolph",d:12},
+  "17159":{n:"Richland",d:12},
+  "17161":{n:"Rock Island",d:17},
+  "17163":{n:"St. Clair",d:13,ds:[13,12]},
+  "17165":{n:"Saline",d:12},
+  "17167":{n:"Sangamon",d:13,ds:[13,15]},
+  "17169":{n:"Schuyler",d:15},
+  "17171":{n:"Scott",d:15},
+  "17173":{n:"Shelby",d:15},
+  "17175":{n:"Stark",d:16},
+  "17177":{n:"Stephenson",d:17,ds:[17,16]},
+  "17179":{n:"Tazewell",d:16,ds:[16,17]},
+  "17181":{n:"Union",d:12},
+  "17183":{n:"Vermilion",d:2,ds:[2,15]},
+  "17185":{n:"Wabash",d:12},
+  "17187":{n:"Warren",d:17,ds:[17,15]},
+  "17189":{n:"Washington",d:12},
+  "17191":{n:"Wayne",d:12},
+  "17193":{n:"White",d:12},
+  "17195":{n:"Whiteside",d:17},
+  "17197":{n:"Will",d:14,ds:[14,1,11,2]},
+  "17199":{n:"Williamson",d:12},
+  "17201":{n:"Winnebago",d:17,ds:[17,16]},
+  "17203":{n:"Woodford",d:16},
+};
+
+// ----- (2) Statewide races -----
+// Illinois' primary was MARCH 17, 2026 and the ISBE certified those results on April 17,
+// so both major parties' nominees are settled. The independent / new-party filing window
+// (May 18-26) and the objection deadline (June 2) have also passed.
+// ⚠ What is NOT yet done is FORMAL BALLOT CERTIFICATION: the State Board of Elections
+// certifies the general-election candidate list on AUG 21, 2026. Minor-party and
+// independent lines that could not be confirmed are therefore OMITTED rather than asserted,
+// and are noted in the race text. Six statewide offices are on the ballot; there are NO
+// statewide ballot questions (the May 3 deadline passed and both live amendments died).
+const STATEWIDE = [
+  // UPCOMING — 2026 General Election (Nov 3, 2026)
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Illinois (open seat)",
+    note: "OPEN SEAT — Dick Durbin announced in April 2025 that he would not seek a sixth term. Lt. Gov. Juliana Stratton won the March 17 Democratic primary with 40.4% over Rep. Raja Krishnamoorthi (32.7%) and Rep. Robin Kelly (18.3%); Pritzker's allied super PAC spent about $10M boosting her. Former Illinois GOP chair Don Tracy won the Republican nomination with 40.0%. Rated Solid or Safe Democratic by Cook (Apr 13), Sabato (Mar 4) and Inside Elections (Apr 23); of eight forecasters only The Economist is weaker, at Likely D. ⚠ Third-party and independent Senate lines are UNRESOLVED — three candidate directories give three different, non-overlapping names, and the Illinois State Board of Elections does not certify the general-election ballot until Aug 21, 2026. None is carded here rather than assert one.",
+    candidates: [
+      {
+        name: "Juliana Stratton",
+        party: "D",
+        winner: false,
+        positions: [
+          "Raise the federal minimum wage [Verify the figure — her own answers give $15 and $25 in different places]",
+          "Codify abortion, IVF and contraception protections into federal law (campaign statements)",
+          "Tax incentives for starter homes; penalize hedge funds buying single-family houses (campaign statements)"
+        ],
+        differentiators: [
+          "The only statewide officeholder in the race — Lieutenant Governor since January 2019, and a former state representative",
+          "$5,906,599 raised with $1,107,958 on hand as of June 30, 2026 (FEC)",
+          "Pledged to refuse corporate PAC contributions; endorsed by Sen. Tammy Duckworth and Gov. Pritzker"
+        ],
+        supporters: [
+          "Says she would take a proven state record national — Illinois raised the minimum wage, capped insulin costs and cut prescription drug prices",
+          "Refusing corporate PAC money makes her answerable to voters rather than industry",
+          "The only candidate who has already won statewide, and she has consolidated the party behind her"
+        ],
+        opponents: [
+          "Tracy characterises her platform as 'open borders, open jails and open checkbooks' and puts her spending commitments at $30 trillion — his own arithmetic, not an independent estimate",
+          "Tracy says she is dodging debates; her campaign says she welcomes the opportunity and is seeking future ones",
+          "Her nomination was underwritten by the governor's allied super PAC, and she took 40.4% — a plurality, not a majority [Verify — the independence framing is fair comment, not a named critic's quote]"
+        ]
+      },
+      {
+        name: "Don Tracy",
+        party: "R",
+        winner: false,
+        positions: [
+          "Rein in inflation by cutting waste and excess government spending (his own framing)",
+          "An all-of-the-above energy strategy protecting American energy independence (his own framing)",
+          "Cut excess regulation to back Illinois small businesses, manufacturers and farmers (his own framing)"
+        ],
+        differentiators: [
+          "Chaired the Illinois Gaming Board 2015–2019 and the Illinois Republican Party 2021–2024; attorney and part of the Dot Foods ownership group",
+          "$2,459,890 raised with $1,512,424 on hand as of June 30, 2026 — a cash lead over Stratton built on a $2M loan to himself, with Q2 fundraising down to $132K",
+          "Explicitly not running as a Trump proxy — 'I'm running my own race. I'm not a proxy for anybody' — and calls himself the underdog"
+        ],
+        supporters: [
+          "Argues 2026 is a cost-of-living election, the ground Republicans most want to fight on",
+          "Has actually run things — a state regulatory board and a state party — rather than being a first-time candidate",
+          "His distance from Trump is a genuine asset in a state Harris carried by about 11 points"
+        ],
+        opponents: [
+          "Stratton's campaign ties him to Trump on tariffs, trade wars and Middle East policy, saying Illinois deserves a fighter, not another mouthpiece",
+          "He raised $132K in Q2 against Stratton's $5.9M cycle total, and his cash lead is borrowed money rather than donor support",
+          "Republicans have not won an Illinois U.S. Senate race since 2010, and all eight forecasters rate the seat Safe, Solid or Likely Democratic"
+        ]
+      }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Governor of Illinois",
+    note: "JB Pritzker (D) seeks a THIRD term — no Illinois governor has been elected to three since Jim Thompson in 1982, and no Democrat ever. He was unopposed for renomination, with new running mate Christian Mitchell after Stratton vacated the slot. Darren Bailey (R) won renomination with 53.3%, setting up the first Illinois gubernatorial rematch since 1986; his running mate is Cook County GOP chair Aaron Del Mar. Independents Collin Corbett and Carolyn Schofield ARE on the ballot — 27,323 signatures validated against 25,000 required, with Bailey's objection withdrawn at the Board of Elections' July 14 meeting. ⚠ The Green Party ticket FAILED ballot access with roughly 12,500 signatures and is pursuing a write-in, so it is not carded. ⚠ Cook, Sabato and Inside Elections all rate this Solid or Safe Democratic, but their ratings date from August and September 2025 — BEFORE the primary that chose Bailey — and have not been refreshed.",
+    candidates: [
+      {
+        name: "JB Pritzker (incumbent)",
+        party: "D",
+        winner: false,
+        positions: [
+          "Make life more affordable for working families (campaign launch)",
+          "Protect abortion rights and personal freedoms (campaign launch)",
+          "Fight tariffs and health-care cuts he says are hurting farmers and small businesses (campaign launch)"
+        ],
+        differentiators: [
+          "His campaign claims seven consecutive balanced budgets and nine credit upgrades, after Illinois' pre-2019 downgrade spiral",
+          "Would be the first Illinois governor elected to three terms since 1982",
+          "$3.1M on hand against Bailey's $128K"
+        ],
+        supporters: [
+          "Delivered on fiscal management where predecessors failed — seven balanced budgets and nine credit upgrades, by his campaign's count",
+          "Has used the office as a national counterweight on abortion, criminal justice, immigration and LGBTQ+ rights",
+          "Concrete affordability wins voters can feel — an insulin cap, the grocery-tax repeal and a higher minimum wage"
+        ],
+        opponents: [
+          "The Republican Governors Association argues people are leaving Illinois by the hundreds of thousands, citing his tax increases",
+          "Bailey argues state spending has never been independently examined — 'It needs to be audited. It needs to be opened up'",
+          "Critics say a third term is a launchpad rather than a plan, given his open moves toward a 2028 presidential bid"
+        ]
+      },
+      {
+        name: "Darren Bailey",
+        party: "R",
+        winner: false,
+        positions: [
+          "Create an 'Illinois DOGE' to audit state spending and find waste (policy rollout)",
+          "Cap annual property-tax increases to match mortgage rates (policy rollout)",
+          "Repeal the 2021 Climate and Equitable Jobs Act to cut utility bills (policy rollout)"
+        ],
+        differentiators: [
+          "Third-generation farmer from Louisville, Illinois; former state representative and state senator",
+          "Won renomination with 53.3% over Ted Dabrowski and DuPage County Sheriff James Mendrick — the first Illinois gubernatorial rematch since 1986",
+          "Picked Cook County GOP chair Aaron Del Mar as running mate, a deliberate suburban pivot from his 2022 campaign"
+        ],
+        supporters: [
+          "Has tightened his message to pocketbook issues that cut across geography — property taxes and utility bills — rather than 2022's culture-war framing",
+          "His running mate says the audit plan would use an X-Acto knife rather than a chainsaw, with no large-scale layoffs",
+          "Won the nomination outright against two credible opponents"
+        ],
+        opponents: [
+          "Pritzker's campaign says he echoes and copies Trump's ideas and would bring that chaos to Illinois",
+          "Even the independent in the race claims a better chance of beating Pritzker than the Republican nominee has",
+          "The arithmetic has not moved — he lost by 12.5 points in 2022 and holds $128K against $3.1M; the only public poll on file, from November 2025, had it 54–34"
+        ]
+      },
+      {
+        name: "Collin Corbett",
+        party: "I",
+        winner: false,
+        positions: [
+          "Government should not be involved in women's medical decisions (his own words)",
+          "Make life more affordable and get Illinois growing again (campaign site)",
+          "Reform a system run by party bosses and special interests (campaign site)"
+        ],
+        differentiators: [
+          "Founded the Republican consulting firm Cor Strategies, then left it after the primary over the party's support for violent immigration raids",
+          "Earned ballot access the hard way — 27,323 signatures validated against a 25,000 bar, five times what an established party needs; the Green ticket managed about 12,500 and failed",
+          "Running mate Carolyn Schofield is a former McHenry County Board member and 2022 Republican Lt. Gov. candidate"
+        ],
+        supporters: [
+          "Argues the two-party frame does not match an electorate where far more voters identify as independent than with either party",
+          "Occupies a lane neither major candidate does — protective of abortion rights while fiscally critical of Pritzker",
+          "Cleared a signature bar and survived an objection that the Green Party could not"
+        ],
+        opponents: [
+          "A Bailey spokesman calls him a failed political consultant running a vanity project that only helps Pritzker",
+          "Reporting notes his entry followed polling showing Bailey performing badly, implying strategic rather than purely ideological motives",
+          "He claimed about $1M in fundraising commitments in April but had raised roughly $40,000 since May 1 [Verify — no later figure located]",
+          "No independent has won an Illinois governor's race in modern history [Verify]"
+        ]
+      }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Attorney General of Illinois",
+    note: "Kwame Raoul (D) seeks a third term after an unopposed primary; former Chicago alderman Bob Fioretti is the Republican nominee. No forecaster rating for this race could be sourced.",
+    candidates: [
+      {
+        name: "Kwame Raoul (incumbent)",
+        party: "D",
+        winner: false,
+        positions: [
+          "Suing the federal administration over tariffs he calls illegal — a third such suit, with 23 attorneys general (office record)",
+          "Pursuing consumer settlements against e-cigarette makers (office record)",
+          "Blocking federal access to the personal data of public-benefit recipients (office record)"
+        ],
+        differentiators: [
+          "Attorney General since January 2019, seeking a third term; won a federal ruling against a demand for unredacted Illinois voter data",
+          "About $1.7M on hand in Q2 2026 against Fioretti's $28,303",
+          "Unopposed in the Democratic primary"
+        ],
+        supporters: [
+          "A front-line litigator against federal overreach with court wins to show for it",
+          "The consumer bureau produces concrete recoveries for Illinois residents",
+          "Chose to stay and litigate rather than seek higher office in a cycle full of open seats"
+        ],
+        opponents: [
+          "Fioretti argues the lawsuits demand that Illinois spend untold millions",
+          "Fioretti says he has been silent on the indicted Champaign County Clerk",
+          "Reported spending on outside counsel has drawn criticism [Verify — headline-level sourcing only]"
+        ]
+      },
+      {
+        name: "Bob Fioretti",
+        party: "R",
+        winner: false,
+        positions: [
+          "Root out corruption and restore integrity to state government (launch remarks)",
+          "End costly state lawsuits against the federal administration (launch remarks)",
+          "Seek federal oversight of Champaign County's election (press conference, July 2026)"
+        ],
+        differentiators: [
+          "Chicago alderman for the 2nd Ward 2007–2015 and a civil-rights attorney",
+          "Raised about $31,000 and spent about $39,000 in Q2 2026, ending with $28,303 on hand and roughly $15,000 in debt",
+          "Represented the family in the 2005 'Baby Tamia' case, which prompted changes to Illinois adoption law"
+        ],
+        supporters: [
+          "Argues Illinois needs an attorney general focused on in-state corruption rather than federal litigation",
+          "Says clean elections are not a partisan issue",
+          "Decades of courtroom experience plus two terms in city government"
+        ],
+        opponents: [
+          "A long record of unsuccessful runs across many offices and both parties — fourth place with 7.4% for mayor in 2015, under 1% in 2019, and losses for Cook County Board President and State's Attorney",
+          "A former Democrat who switched parties",
+          "Spent more than he raised in Q2; the last Republican to hold this office left in 2003 [Verify election years]"
+        ]
+      }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Secretary of State — Illinois",
+    note: "⚠ THE MOST NEWSWORTHY DOWN-BALLOT RACE IN ILLINOIS. Incumbent Alexi Giannoulias (D) announced a campaign for MAYOR OF CHICAGO on Aug 2, 2026 — for a February 2027 election — while staying on the November Secretary of State ballot. If he wins both, he resigns and the GOVERNOR APPOINTS a replacement who serves until November 2028, with no special election. Diane Harris is the Republican nominee, having won her primary 53%–47%. No forecaster rating for this race could be sourced.",
+    candidates: [
+      {
+        name: "Alexi Giannoulias (incumbent)",
+        party: "D",
+        winner: false,
+        positions: [
+          "The Skip-the-Line DMV appointment system, used by about 5 million residents (office record)",
+          "Opposes book bans in Illinois libraries (office record)",
+          "Modernizing decades-old office technology to move services online (office record)"
+        ],
+        differentiators: [
+          "Secretary of State since January 2023; previously State Treasurer 2007–2011",
+          "Won the Democratic primary unopposed with 1,171,435 votes",
+          "$21.8M cash on hand as of July 1, 2026 — money reporting notes he could direct toward a mayoral run"
+        ],
+        supporters: [
+          "Skip-the-Line delivered measurably shorter DMV waits at scale",
+          "Modernized a technologically obsolete office and moved services online",
+          "Staked out a civil-liberties position by opposing book bans"
+        ],
+        opponents: [
+          "Comptroller Susana Mendoza — herself a mayoral rival — called it not 'super ethical' to ask voters statewide for a four-year term he may not serve, saying he is hedging his bets",
+          "Harris alleges he is hollowing out government staff to populate his campaign office and calls it an ethics issue — an allegation, not an established fact",
+          "If he wins both races Illinois gets an APPOINTED Secretary of State until 2028, with no special election",
+          "His own defence is that running for mayor is like interviewing for a job and you do not quit the one you have while interviewing"
+        ]
+      },
+      {
+        name: "Diane Harris",
+        party: "R",
+        winner: false,
+        positions: [
+          "Expand DMV kiosks to underserved and rural areas (campaign site)",
+          "Clean up the voter rolls and promote election integrity (campaign site)",
+          "Reduce driver's license and ID fees for seniors and veterans (candidate questionnaire)"
+        ],
+        differentiators: [
+          "Retired from ComEd after 32 years and served as an IBEW steward; elected trustee of Joliet Junior College and the Joliet Public Library",
+          "Beat Walter Adamczyk in the Republican primary 53%–47%; endorsed by the Daily Herald",
+          "$1,816 cash on hand in Q2 2026 against Giannoulias' $21.8M"
+        ],
+        supporters: [
+          "The Daily Herald judged her the more credible of the two Republican contenders, citing multiple leadership roles",
+          "A concrete, service-focused agenda — kiosks and senior and veteran walk-in lines",
+          "Argues that with her opponent openly seeking another job, voters deserve someone who will serve the full term"
+        ],
+        opponents: [
+          "She has never held partisan state office, and the paper endorsing her said neither Republican had the résumé one would typically expect statewide",
+          "Out-resourced by roughly twelve thousand to one in cash on hand",
+          "The last Republican to hold this office left in 1999 [Verify election years]"
+        ]
+      }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Comptroller of Illinois (open seat)",
+    note: "OPEN SEAT — Susana Mendoza is not seeking re-election and launched her own Chicago mayoral campaign on June 3, 2026. State Rep. Margaret Croke won a four-way Democratic primary with about 35%, ahead of state Sen. Karina Villa (32.3%). Attorney Bryan Drew was unopposed for the Republican nomination and is the best-funded statewide Republican on the ballot. Note for voters: the COMPTROLLER pays the state's bills, more than 15 million transactions a year; the TREASURER is the state's investment arm.",
+    candidates: [
+      {
+        name: "Margaret Croke",
+        party: "D",
+        winner: false,
+        positions: [
+          "A 'Budget to Bill' system letting the public track every dollar's lifecycle (candidate questionnaire)",
+          "Withhold payment from employers who underpay prevailing wages (candidate questionnaire)",
+          "Revive the vendor program so small nonprofits get paid on time (interview)"
+        ],
+        differentiators: [
+          "State Representative for the 12th District since 2021; chairs the House Financial Institutions Committee",
+          "Endorsed by Gov. Pritzker, Speaker Welch, AG Raoul and the Cook County Democratic Party, plus 30-odd legislators",
+          "About $109,000 on hand in Q2 2026; sponsored the 2021 law expanding IVF and infertility insurance coverage"
+        ],
+        supporters: [
+          "The deepest state-government experience in the race — five years in the legislature plus a deputy-director role distributing billions",
+          "Pritzker praised her commitment to responsible fiscal management",
+          "Her transparency pitch is a concrete product rather than a slogan"
+        ],
+        opponents: [
+          "Drew calls her the governor's hand-picked candidate and says her endorsements are a conflict of interest for a watchdog office",
+          "She won with under 35% of the vote, about 2.3 points clear of the runner-up",
+          "The outgoing comptroller endorsed a different candidate in the primary"
+        ]
+      },
+      {
+        name: "Bryan Drew",
+        party: "R",
+        winner: false,
+        positions: [
+          "Stop government waste so we can lower costs for working families (campaign site)",
+          "Increase transparency so you know where every dollar is spent (campaign site)",
+          "Hold politicians accountable for how they spend our tax dollars (campaign site)"
+        ],
+        differentiators: [
+          "Attorney of 25-plus years in Benton, southern Illinois; past chairman of the Rend Lake College Board and a café co-owner",
+          "Filed in November 2025 with more than 10,000 signatures and was unopposed in the primary",
+          "Raised $30,000 plus $47,000 in kind, ending Q2 with about $54,000 on hand — the best-funded statewide Republican"
+        ],
+        supporters: [
+          "More than 25 years of trial practice, including an Illinois Supreme Court win",
+          "A small-business owner who says Illinois families are tired of being treated like ATMs",
+          "Argues the comptroller's job should be about accountability, not politics"
+        ],
+        opponents: [
+          "No Republican has won this office since Judy Baar Topinka's re-election in 2014 [Verify]",
+          "Out-resourced roughly two-to-one in cash on hand",
+          "Has held no elected government office beyond a community-college board"
+        ]
+      }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Treasurer of Illinois",
+    note: "⚠ A SOURCING TRAP WORTH KNOWING: widely-read November 2025 stories reported that NO Republican had filed for this office — which would have been the first time in roughly 90 years. Those stories predate certification. Max Solomon won the Republican nomination as a WRITE-IN, clearing the 5,000-vote statutory bar with a reported 22,990 votes in the April 17 canvass [Verify against the ISBE canvass directly]. Mike Frerichs IS opposed. Note also that a Republican, Dan Rutherford, held this office from 2011 to 2015 — the 90-year statistic concerns filing, not winning.",
+    candidates: [
+      {
+        name: "Mike Frerichs (incumbent)",
+        party: "D",
+        winner: false,
+        positions: [
+          "Cutting fees on the state auto-IRA so workers keep more of what they save (office record)",
+          "Expanding outreach to return more unclaimed property (office record)",
+          "Broadening 529 college-savings participation among underserved families (office record)"
+        ],
+        differentiators: [
+          "Treasurer since January 2015, seeking a fourth term; unopposed in the Democratic primary",
+          "$1,849,569 on hand as of June 30, 2026, with no debt",
+          "Record FY2026 unclaimed-property return of $307.8M to more than 567,000 recipients"
+        ],
+        supporters: [
+          "A record $307.8M returned in FY2026, up from $303.8M the year before",
+          "Cut fees on the state auto-IRA rather than resting on it; the program now covers 170,000-plus workers across all 102 counties",
+          "The state's 529 plan is Morningstar Gold-rated with more than $24B saved"
+        ],
+        opponents: [
+          "Twelve years in one office, now seeking a fourth term",
+          "Has never been dominant at the ballot box — he won his first statewide race in 2014 by fewer than 10,000 votes",
+          "A $1.85M war chest against a challenger with under $8,000 [Verify]"
+        ]
+      },
+      {
+        name: "Max Solomon",
+        party: "R",
+        winner: false,
+        positions: [
+          "[Verify] — no 2026 platform for this office could be sourced; his campaign site returns no readable policy content",
+          "[Verify] — his only self-stated positions come from a 2024 state Senate questionnaire and are not presented here as a treasurer platform",
+          "[Verify]"
+        ],
+        differentiators: [
+          "Won the Republican nomination as a WRITE-IN, clearing the 5,000-vote statutory bar — the load-bearing fact of his candidacy",
+          "Attorney, adjunct political-science instructor, ordained minister and former Grande Prairie Public Library District trustee",
+          "Endorsed by Illinois Family Action in February 2026; raised under $3,000 in Q2 with under $8,000 on hand"
+        ],
+        supporters: [
+          "Single-handedly restored Republican ballot access for an office no one had filed for, clearing a bar rarely even attempted",
+          "Organized conservative groups backed the write-in as a matter of keeping the election contested",
+          "Offers legal training as a fit for a fiduciary office [Verify — no platform statement available]"
+        ],
+        opponents: [
+          "Repeated unsuccessful runs for different offices",
+          "A nominee chosen by roughly 23,000 write-ins carries a thinner mandate than one from a contested primary",
+          "No published platform for the office he seeks [Verify]"
+        ]
+      }
+    ]
+  },
+  // PAST — history
+  {
+    date: "Nov 3, 2020",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Illinois (2020)",
+    note: "Dick Durbin won a fifth term 54.93% to 38.87%. He announced in April 2025 that he would not seek a sixth, opening the 2026 seat. Note there was NO 2024 Illinois Senate race — Durbin's class votes in presidential years.",
+    candidates: [
+      { name: "Dick Durbin", party: "D", winner: true,
+        positions: ["Judiciary Committee leadership","Immigration reform","Healthcare access"],
+        differentiators: ["Senate Democratic whip; in office since 1997"],
+        supporters: [], opponents: [] },
+      { name: "Mark Curran", party: "R", winner: false,
+        positions: ["Conservative fiscal policy","Law enforcement","Social conservatism"],
+        differentiators: ["Former Lake County sheriff"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 8, 2022",
+    type: "past",
+    scope: "State · Statewide",
+    office: "Governor of Illinois (2022)",
+    note: "Pritzker beat Darren Bailey 54.91% to 42.37% — a 12.5-point margin. The two meet again in 2026, the first Illinois gubernatorial rematch since 1986.",
+    candidates: [
+      { name: "JB Pritzker", party: "D", winner: true,
+        positions: ["Abortion rights","Infrastructure investment","Fiscal stabilization"],
+        differentiators: ["Won a second term by 12.5 points"],
+        supporters: [], opponents: [] },
+      { name: "Darren Bailey", party: "R", winner: false,
+        positions: ["Crime and public safety","Tax reduction","Social conservatism"],
+        differentiators: ["Won the nomination with Trump's endorsement, then lost by 12.5 points"],
+        supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 8, 2022",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Illinois (2022)",
+    note: "Tammy Duckworth won a second term 56.82% to 41.50%. Her seat is next up in 2028.",
+    candidates: [
+      { name: "Tammy Duckworth", party: "D", winner: true,
+        positions: ["Veterans' affairs","Disability rights","Infrastructure"],
+        differentiators: ["Won a second term by more than 15 points"],
+        supporters: [], opponents: [] },
+      { name: "Kathy Salvi", party: "R", winner: false,
+        positions: ["Crime and public safety","Economic policy","Border security"],
+        differentiators: ["Won a seven-way primary, then lost by 15 points"],
+        supporters: [], opponents: [] }
+    ]
+  }
+];
+
+// ----- (3) US House races by district -----
+// Each district object holds: the 2026 race + the 2024 race.
+// Illinois has 17 seats: 14 Democratic-held, 3 Republican-held (IL-12, IL-15, IL-16).
+// ⚠ FIVE seats are OPEN in 2026 — IL-2 (Kelly ran for Senate), IL-4 (Garcia retired),
+// IL-7 (Davis retired), IL-8 (Krishnamoorthi ran for Senate) and IL-9 (Schakowsky retired).
+// ⚠ NO Illinois district is rated competitive by Cook, Sabato or Inside Elections this
+// cycle — IL-17 is the closest by recent margin but all three rate it Solid/Safe D.
+// Ratings routed through reporting that cites the raters; their own pages return 403.
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — IL District 1",
+    region: "Chicago's South Side out to Joliet — Ashburn, Auburn Gresham, Chatham, Hyde Park, Woodlawn (Cook PVI D+18)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Jonathan Jackson (D) seeks a third term. He was unopposed for renomination; Christian Maxwell won the Republican primary 64.5%–35.5% over Marcus Lewis. Rated Solid/Safe Democratic by Cook, Sabato and Inside Elections. A third name, Je'Rico Brown, ran only as a write-in and is not on the November ballot.",
+        candidates: [
+          { name: "Jonathan Jackson (incumbent)", party: "D", winner: false,
+            positions: [
+              "Medicare for All plus expanded mental-health services (campaign site)",
+              "Free community college, student-debt relief, more HBCU funding (campaign site)",
+              "End qualified immunity; alternatives to incarceration for nonviolent offenders (campaign site)"
+            ],
+            differentiators: [
+              "In office since January 2023; Progressive Caucus and Congressional Black Caucus member",
+              "Son of Rev. Jesse Jackson — the family name also appeared on the IL-2 primary ballot this cycle",
+              "Raised $311,224 with $95,017 on hand (FEC, Feb 25, 2026) — modest for a safe-seat incumbent"
+            ],
+            supporters: [
+              "Directs federal dollars to youth anti-violence programming and minority-owned small business",
+              "Progressive Caucus membership matches a D+18 district's politics",
+              "Unopposed renomination signals no organized intra-party discontent"
+            ],
+            opponents: [
+              "Under $312K raised through February is thin for a third-term incumbent [Verify whether critics made this argument]",
+              "The only challenge to him came as a write-in, so no substantive critique was put on the record [Verify]"
+            ] },
+          { name: "Christian Maxwell", party: "R", winner: false,
+            positions: [
+              "Cut the federal tax burden on homeowners already paying high property taxes (candidate questionnaire)",
+              "Expand school choice and parental control over underperforming schools (candidate questionnaire)",
+              "Reduce dependence on China and rebuild domestic manufacturing (candidate questionnaire)"
+            ],
+            differentiators: [
+              "E-commerce growth-marketing consultant from Chicago; UIC graduate",
+              "No prior elected office",
+              "Won a contested primary 64.5%–35.5% over Marcus Lewis"
+            ],
+            supporters: [
+              "A Black woman small-business owner is a different Republican profile for a South Side district",
+              "Won her primary decisively without any prior officeholding",
+              "Her focus on literacy rates, property crime and taxes targets real South Side grievances"
+            ],
+            opponents: [
+              "A D+18 seat Jackson carried with 65.8% in 2024",
+              "No elected experience of any kind",
+              "Her roughly 12,500 primary votes were dwarfed by Jackson's roughly 89,700 in the same district"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Jackson won 65.8% [Verify opponent share].",
+        candidates: [
+          { name: "Jonathan Jackson", party: "D", winner: true,
+            positions: ["Healthcare access","Economic development","Criminal-justice reform"],
+            differentiators: ["Won a second term in a safely Democratic seat"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  2: {
+    name: "U.S. House — IL District 2",
+    region: "South Side and south suburbs stretching downstate to Kankakee and Vermilion (Cook PVI D+18)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "OPEN SEAT — Robin Kelly vacated it to run for the U.S. Senate. Cook County Commissioner Donna Miller won an eleven-way Democratic primary with 40.4%, beating former Rep. Jesse Jackson Jr. (28.9%) and state Sen. Robert Peters (12.4%). Mike Noack was unopposed for the Republican nomination. Rated Solid/Safe Democratic by all three raters. Nearly two-thirds of the district's residents live in Cook County.",
+        candidates: [
+          { name: "Donna Miller", party: "D", winner: false,
+            positions: [
+              "A Medicare for All framework; cap insulin and cut prescription drug costs (candidate questionnaire)",
+              "Codify Roe v. Wade; maternal health and reproductive justice (candidate questionnaire)",
+              "A humane path to citizenship with due process and agency accountability (candidate questionnaire)"
+            ],
+            differentiators: [
+              "Cook County Commissioner for the 6th District since December 2018; former Planned Parenthood of Illinois board member",
+              "Raised $1,971,084 — the largest war chest in the field (FEC, Feb 25, 2026)",
+              "Beat a former seventeen-year incumbent of this seat by 11.5 points"
+            ],
+            supporters: [
+              "Ran on ethics and transparency and, in her words, won it 'the old fashioned way'",
+              "Health-policy fluency matched to a district with acute maternal-health and pollution burdens",
+              "Beat the Jackson family name outright in its own base"
+            ],
+            opponents: [
+              "A primary rival alleged she accepted money from Trump donors, which she denied",
+              "Reporting scrutinized roughly $875,000 from AIPAC-affiliated donors since 2023 [Verify figure]",
+              "Won with about 40% of a fragmented eleven-way field, so most primary voters chose someone else"
+            ] },
+          { name: "Mike Noack", party: "R", winner: false,
+            positions: [
+              "Cut wasteful federal spending and lower taxes on working families (campaign site)",
+              "A citizenship path for immigrants here five or more years, with enforcement aimed at violent criminals (campaign site)",
+              "Second Amendment protections and investment in clean renewable energy (campaign site)"
+            ],
+            differentiators: [
+              "CDL truck driver and 32-year resident of Bonfield in Kankakee County",
+              "Unopposed for the nomination with 20,598 primary votes",
+              "Heterodox for a Republican — pairs a citizenship pathway and clean-energy investment with fiscal conservatism"
+            ],
+            supporters: [
+              "A working truck driver rather than a career politician",
+              "His immigration and clean-energy positions may travel further here than a standard GOP platform",
+              "Says his wife's experience of the legal immigration system informs his reform position"
+            ],
+            opponents: [
+              "A D+18 open seat Democrats carried with 67.6% in 2024",
+              "A Kankakee County base is a poor fit where two-thirds of voters live in Cook County",
+              "No FEC fundraising total could be located against a nominee who has raised nearly $2 million [Verify]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Robin Kelly won 67.6% [Verify opponent share]. She did not seek re-election in 2026, running instead for the U.S. Senate.",
+        candidates: [
+          { name: "Robin Kelly", party: "D", winner: true,
+            positions: ["Gun-violence prevention","Health equity","Economic development"],
+            differentiators: ["Held the seat from 2013 until vacating it for a Senate run"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  3: {
+    name: "U.S. House — IL District 3",
+    region: "Chicago's Northwest Side and western DuPage suburbs — Logan Square, Belmont Cragin, Wheaton, Naperville (Cook PVI D+17)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Delia Ramirez (D) seeks a third term. Both nominees were unopposed in the March 17 primary. Rated Solid/Safe Democratic by Cook, Sabato and Inside Elections.",
+        candidates: [
+          { name: "Delia Ramirez (incumbent)", party: "D", winner: false,
+            positions: [
+              "Universal health care; housing justice and tenant organizing rights (campaign site)",
+              "Co-leads the Dream and Promise Act — a citizenship path for DACA recipients",
+              "Refuses corporate contributions; runs a self-described people-funded campaign (campaign site)"
+            ],
+            differentiators: [
+              "Illinois House 2018–2022; first Guatemalan American in the General Assembly and the Midwest's only Latina member of Congress",
+              "Ranking Member of the Veterans' Affairs Subcommittee on Oversight and Investigations",
+              "Raised $1,200,156 with $949,745 on hand (FEC, Feb 25, 2026) — the strongest position of Illinois' Chicago-area seats"
+            ],
+            supporters: [
+              "A Progressive Caucus voice who refuses corporate money and still banks nearly $1M",
+              "Ranking-member status delivers real veterans-oversight leverage for a second-term member",
+              "Introduced the Tenants Right to Organize Act, a concrete housing-policy deliverable"
+            ],
+            opponents: [
+              "Her votes against 2023 resolutions supporting Israel drew criticism as out of step [Verify specific critics]",
+              "Republicans attack her Homeland Security posture as anti-enforcement [Verify]",
+              "A district running from Logan Square to Naperville leaves suburban DuPage voters represented by a Chicago progressive"
+            ] },
+          { name: "Angel Oakley", party: "R", winner: false,
+            positions: [
+              "A free-market economy empowering small business; keep taxes low (campaign site)",
+              "Decentralized local control over schools, energy and food production (campaign site)",
+              "Sensible immigration reform to secure the borders (campaign site)"
+            ],
+            differentiators: [
+              "Former Winfield Village Trustee and Village Communications Commission member",
+              "Owns a marketing and communications firm serving hundreds of businesses and nonprofits",
+              "Self-describes as a 'conservative moderate' — pairs anti-pollution and bodily-autonomy language with fiscal conservatism"
+            ],
+            supporters: [
+              "A moderate suburban profile with actual local governing experience, aimed at the DuPage half of the district",
+              "Anti-pollution and pharma-skeptic themes reach voters outside the usual GOP coalition",
+              "Small-business ownership is a credential in a district full of them"
+            ],
+            opponents: [
+              "D+17 terrain where Democrats won 67.3% in 2024",
+              "About 14,000 GOP primary votes against Ramirez's roughly 72,400 shows the turnout gap",
+              "A village trusteeship is a thin résumé against a ranking member with roughly $950K on hand"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Ramirez won 67.3% [Verify opponent share].",
+        candidates: [
+          { name: "Delia Ramirez", party: "D", winner: true,
+            positions: ["Universal healthcare","Housing justice","Immigration reform"],
+            differentiators: ["Won a second term in a safely Democratic seat"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  4: {
+    name: "U.S. House — IL District 4",
+    region: "Chicago's Mexican-American 'earmuff' district — Pilsen, Little Village, Brighton Park, Berwyn, Cicero (Cook PVI D+17)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "OPEN SEAT, and the most contested ballot line in Illinois. Rep. Chuy García announced his retirement TWO DAYS AFTER the filing deadline, which left his former chief of staff Patty Garcia the only Democrat able to file; she and Republican Lupe Castillo were both unopposed. The House later voted to formally rebuke García over the timing, with 23 Democrats breaking with their leadership [Verify the vote count — sources conflict]. García said his wife, who has multiple sclerosis, asked him not to run. Rated Solid/Safe Democratic. Two names widely covered in the press — Mayra Macías and Byron Sigcho-Lopez — did NOT qualify and ran only as write-ins. A further independent, Lindsay Church, appears in some listings but her ballot qualification could not be confirmed [Verify against the ISBE certified list].",
+        candidates: [
+          { name: "Patty Garcia", party: "D", winner: false,
+            positions: [
+              "Medicare for All — 'nobody should be made to declare bankruptcy after becoming ill' (campaign site)",
+              "Citizenship pathways, Dreamer protections and abolishing ICE (campaign site)",
+              "Raise the federal minimum wage, pass the PRO Act, expand the Child Tax Credit (campaign site)"
+            ],
+            differentiators: [
+              "Holds a Ph.D. in education policy; served on Chuy García's staff from 2019, rising to chief of staff",
+              "Raised $192,292 with $162,086 on hand (FEC, Feb 25, 2026) — low, but she faced no primary",
+              "Endorsed by Our Revolution, Citizen Action Illinois, Progressive Democrats of America and the Latino Leadership Council"
+            ],
+            supporters: [
+              "A substantive progressive platform and a doctorate in education policy, not merely an inherited seat",
+              "Consolidated the organized progressive movement's endorsements",
+              "García's stated reason was his wife's illness, a family circumstance critics discounted"
+            ],
+            opponents: [
+              "Ald. Ray Lopez called the maneuver 'hypocritical' for a politician who claimed to stand above machine politics",
+              "Analyst Laura Washington said García 'gamed the system' to install his protégé with no opposition",
+              "The House formally rebuked the arrangement, with 23 Democrats breaking ranks to vote for it"
+            ] },
+          { name: "Lupe Castillo", party: "R", winner: false,
+            positions: [
+              "Voter ID for elections and registration, and border security (campaign site)",
+              "School choice to extend options beyond wealthy families (campaign site)",
+              "Cut government spending and debt; back law enforcement (campaign site)"
+            ],
+            differentiators: [
+              "A 43-year resident of the district",
+              "Second run for this seat — she was the 2024 nominee and lost to Chuy García by about 40 points",
+              "Unopposed nomination with 8,336 votes, the smallest primary total of Illinois' Chicago-area seats"
+            ],
+            supporters: [
+              "A Latina Republican with four decades of roots contesting a heavily Mexican-American district",
+              "A second run builds name recognition",
+              "The Democratic nominee's uncontested selection is an unusually good opening for a challenger"
+            ],
+            opponents: [
+              "Lost this same seat by about 40 points in 2024 with no evident change in the fundamentals",
+              "8,336 primary votes against Garcia's 52,616 is a six-to-one gap",
+              "Her bathroom-and-sports messaging is a hard sell in a D+17 immigrant-majority district [Verify whether opponents made this argument]"
+            ] },
+          { name: "Ed Hershey", party: "I", winner: false,
+            positions: [
+              "Opposes closing and defunding schools while subsidizing corporations and developers (party material)",
+              "Build an independent working-class political organization (party material)",
+              "Workers in one workplace or industry cannot take on the whole system alone (party material)"
+            ],
+            differentiators: [
+              "Runs on the Working Class Party line — a 16-year Lindblom High School teacher and union representative who took part in the 2012 Chicago teachers' strike",
+              "Third consecutive run here; his 2024 showing of just over 5% is what secured the party automatic ballot access this year",
+              "No FEC fundraising total could be located [Verify]"
+            ],
+            supporters: [
+              "A genuine rank-and-file union teacher rather than a party operative",
+              "Cleared 5% in 2024 and earned his party's ballot line outright — a rare feat for a minor party",
+              "Offers a left alternative in a race where the Democratic nomination was effectively uncontested"
+            ],
+            opponents: [
+              "Has never approached winning across 2022 and 2024 [Verify prior percentages]",
+              "A minor-party line risks pulling votes from the Democratic nominee without a path to victory [Verify]",
+              "No reported fundraising [Verify]"
+            ] },
+          { name: "Chris Getty", party: "I", winner: false,
+            positions: [
+              "[Verify] Cost of living named as his top priority, without published specifics",
+              "[Verify] Describes himself as an advocate for responsible immigration solutions and public safety",
+              "[Verify] Restore trust in government and protect election integrity"
+            ],
+            differentiators: [
+              "Sitting mayor of Lyons, Illinois — the most substantial officeholding of any non-major-party candidate in the race",
+              "A registered Democrat running on an independent line",
+              "No FEC fundraising total could be located [Verify]"
+            ],
+            supporters: [
+              "A sitting suburban mayor with executive experience, unusual for an independent line",
+              "His bid gives IL-4 voters a choice the uncontested Democratic primary denied them",
+              "A Lyons base speaks to the district's suburban half"
+            ],
+            opponents: [
+              "A registered Democrat on an independent line invites spoiler and opportunism criticism [Verify]",
+              "Published almost no policy detail — three issue headings without specifics",
+              "Independents have no recent history of competing in a D+17 Chicago-area seat [Verify]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Chuy García won 67.5%; Lupe Castillo, the Republican nominee again in 2026, lost by about 40 points [Verify exact shares].",
+        candidates: [
+          { name: "Jesús \"Chuy\" García", party: "D", winner: true,
+            positions: ["Immigration reform","Transit investment","Working-family economics"],
+            differentiators: ["Held the seat from 2019 until retiring at the end of this term"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  5: {
+    name: "U.S. House — IL District 5",
+    region: "Chicago's North Side and northwest suburbs — Lincoln Park, Lake View, Arlington Heights, Des Plaines (Cook PVI D+19)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Mike Quigley (D) won renomination with 64.8% over Matt Conroy (24.9%) and two others; Tommy Hanson took the Republican primary with 72%. Rated Solid/Safe Democratic by Cook, Sabato and Inside Elections. ⚠ Quigley launched a campaign for MAYOR OF CHICAGO on June 27, 2026 (February 2027 election) while running for this two-year term, and has signalled this is his last congressional term.",
+        candidates: [
+          { name: "Mike Quigley (incumbent)", party: "D", winner: false,
+            positions: [
+              "Build five million affordable homes through a bipartisan housing bill (candidate questionnaire)",
+              "Restrict presidential tariff authority via the Congressional Trade Authority Act (candidate questionnaire)",
+              "End 287(g) local immigration enforcement and pursue comprehensive reform (candidate questionnaire)"
+            ],
+            differentiators: [
+              "In office since April 2009; Cook County Board 1998–2009; sits on Appropriations and Intelligence",
+              "$725,695 raised with $1,187,818 on hand through June 30, 2026 (FEC)",
+              "Won the primary by about 40 points"
+            ],
+            supporters: [
+              "A senior appropriator and Intelligence member who delivers federal dollars and oversight clout",
+              "A long environmental record in a district that rewards it",
+              "Took two-thirds of a four-way primary"
+            ],
+            opponents: [
+              "Is seeking a two-year term while simultaneously running for mayor of Chicago — a seat he would likely vacate early",
+              "About 35% of primary voters chose someone else after seventeen years in the seat [Verify]"
+            ] },
+          { name: "Tommy Hanson", party: "R", winner: false,
+            positions: [
+              "Crime is the district's top issue — fully fund police (campaign site)",
+              "Cut taxes on food, gas and real estate (campaign site)",
+              "Close the border and defund sanctuary cities (campaign site)"
+            ],
+            differentiators: [
+              "Commercial real-estate broker; fourth consecutive run for this seat; no prior elected office",
+              "Lost to Quigley 69.0%–31.0% in 2024",
+              "Won the Republican primary with 72%; no 2026 FEC total could be located [Verify]"
+            ],
+            supporters: [
+              "Self-describes as fiscally conservative and socially liberal, pitched at moderate suburbanites",
+              "Runs on concrete affordability items rather than national culture-war fights",
+              "Won his primary decisively after three prior attempts built name recognition"
+            ],
+            opponents: [
+              "A perennial candidate who lost this seat by 38 points in 2024",
+              "No 2026 fundraising disclosure or endorsement could be located [Verify]",
+              "A D+19 lean makes a flip implausible [Verify]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Quigley won 68.97% to Hanson's 31.03% — the same matchup as 2026.",
+        candidates: [
+          { name: "Mike Quigley", party: "D", winner: true,
+            positions: ["Appropriations priorities","Environmental protection","Government oversight"],
+            differentiators: ["Won a ninth term"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  6: {
+    name: "U.S. House — IL District 6",
+    region: "Western and southwest Chicago suburbs — Downers Grove, Wheaton, Elmhurst, Orland Park, Tinley Park (Cook PVI D+3)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "A 2024 REMATCH and, at D+3, the most closely divided district in Illinois on paper. Sean Casten (D) won renomination with 76% over Joseph Ruzevich; Niki Conforti took the Republican primary with 82%. ⚠ No Cook, Sabato or Inside Elections rating for IL-6 could be sourced this pass [Verify].",
+        candidates: [
+          { name: "Sean Casten (incumbent)", party: "D", winner: false,
+            positions: [
+              "Repeal Trump tariffs as inflationary — he says they add about $10,000 to a new home (candidate questionnaire)",
+              "Expand the ACA to lower health costs (candidate questionnaire)",
+              "Treat climate as the top threat; he wrote parts of the Inflation Reduction Act (campaign site)"
+            ],
+            differentiators: [
+              "Fourth-term incumbent since 2019; unseated Republican Rep. Peter Roskam in 2018",
+              "$2,108,919 raised with $1,285,018 on hand through June 30, 2026 (FEC) — roughly 57 times Conforti's",
+              "Won the primary by about 52 points"
+            ],
+            supporters: [
+              "Helped write the largest climate law ever passed and brings federal dollars home",
+              "An active oversight voice — led scrutiny of a Trump-linked coal-plant loan in July 2026",
+              "An engineering and energy background that is credible on utility costs"
+            ],
+            opponents: [
+              "Conforti argues he prioritizes climate policy over felt affordability and that his energy agenda raises bills",
+              "From his left, his primary challenger argued he is too close to pro-Israel donors",
+              "About a quarter of primary voters backed a first-time challenger [Verify as to cause]"
+            ] },
+          { name: "Niki Conforti", party: "R", winner: false,
+            positions: [
+              "Cut energy regulations and limit renewable mandates to lower bills (candidate questionnaire)",
+              "Expand ICE operations and deport violent criminals (candidate questionnaire)",
+              "Require medical-billing transparency and competition (candidate questionnaire)"
+            ],
+            differentiators: [
+              "Energy consultant from Glen Ellyn; UChicago BA and GWU MBA; no prior public office",
+              "Third run for this seat — third place in the 2022 primary, then nominee in 2024 and 2026",
+              "$313,038 raised but only $22,661 on hand through June 30, 2026 (FEC)"
+            ],
+            supporters: [
+              "An energy-industry background that speaks directly to utility-bill anxiety",
+              "Consolidated the party at 82% after two prior runs built name recognition",
+              "Frames the race on affordability rather than culture war"
+            ],
+            opponents: [
+              "Lost this district by more than 8 points in 2024 and trails badly on money again",
+              "$22,661 on hand cannot buy Chicago-market television [Verify]",
+              "ACA opposition fits poorly in a college-educated D+3 suburban seat [Verify]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Casten won 54.20% to Conforti's 45.78% — the same matchup as 2026.",
+        candidates: [
+          { name: "Sean Casten", party: "D", winner: true,
+            positions: ["Climate and clean energy","Healthcare costs","Financial regulation"],
+            differentiators: ["Held a competitive suburban seat by 8.4 points"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  7: {
+    name: "U.S. House — IL District 7",
+    region: "Chicago's West Side, the Loop and near west suburbs — Austin, Garfield Park, Oak Park, Maywood (Cook PVI D+34)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "OPEN SEAT — Danny K. Davis, in office since 1997, announced on July 31, 2025 that he would not seek re-election, opening the seat for the first time in thirty years. State Rep. La Shawn Ford won a THIRTEEN-candidate Democratic primary with about 24%, edging City Treasurer Melissa Conyears-Ervin (~20%). Chad Koppie won the Republican primary with 66.1%. Exact primary percentages differ across sources [Verify against the ISBE certified canvass]. At D+34 this is one of the most Democratic districts in the country.",
+        candidates: [
+          { name: "La Shawn Ford", party: "D", winner: false,
+            positions: [
+              "Enforce antitrust law against corporate price gouging; expand the child and earned income tax credits (candidate questionnaire)",
+              "Opposes Operation Midway Blitz; demands accountability for federal law enforcement (candidate questionnaire)",
+              "Affordability first — healthcare, housing and child care; raise the minimum wage (campaign site)"
+            ],
+            differentiators: [
+              "Illinois State Representative for the 8th district; insurance agent and former teacher",
+              "Won a thirteen-way primary by roughly three to four points",
+              "Reported to hold retiring Rep. Danny Davis's endorsement [Verify — sourced via a search summary]"
+            ],
+            supporters: [
+              "Nearly two decades in Springfield brings legislative experience to a seat losing enormous seniority",
+              "The retiring incumbent's reported backing signals continuity on the West Side",
+              "Emerged from the largest field this seat has seen since 1996"
+            ],
+            opponents: [
+              "Won with under a quarter of the vote in a fragmented field — no majority mandate [Verify]",
+              "A nineteen-year state legislator is an insider pick for a seat open for the first time in thirty years [Verify]"
+            ] },
+          { name: "Chad Koppie", party: "R", winner: false,
+            positions: [
+              "[Verify] — no 2026 campaign platform or issues page could be located",
+              "[Verify]",
+              "[Verify]"
+            ],
+            differentiators: [
+              "Kane County school board president and retired Delta pilot; described in candidate directories as a frequent candidate",
+              "Was the 2024 nominee in this seat, losing to Davis 83.25%–16.69%",
+              "Won the 2026 Republican primary with 66.1%; no FEC total could be located [Verify]"
+            ],
+            supporters: [
+              "Gives West Side Republicans a name they recognize and an alternative on the ballot [Verify]",
+              "Took two-thirds of the Republican primary"
+            ],
+            opponents: [
+              "A repeat nominee who lost this seat by 66 points in 2024",
+              "No published 2026 platform or fundraising could be located [Verify]",
+              "At D+34 a flip is implausible [Verify]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Danny K. Davis won 83.25% to Chad Koppie's 16.69%. Davis retired rather than seek a sixteenth term.",
+        candidates: [
+          { name: "Danny K. Davis", party: "D", winner: true,
+            positions: ["Ways and Means priorities","Anti-poverty programs","Criminal-justice reform"],
+            differentiators: ["Held the seat from 1997 to 2027"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  8: {
+    name: "U.S. House — IL District 8",
+    region: "Northwest Chicago suburbs — Schaumburg, Arlington Heights, Elgin, Palatine (Cook PVI D+5)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "OPEN SEAT — Raja Krishnamoorthi vacated it to run for the U.S. Senate and lost that primary to Juliana Stratton, 32.7% to 40.4%. Melissa Bean, who held this seat from 2005 to 2011, won an eight-way Democratic primary with 31.8% over Junaid Ahmed (26.7%). Jennifer Davis won the Republican primary with 51.5%, beating 2024 nominee Mark Rice. ⚠ No Cook, Sabato or Inside Elections rating for IL-8 could be sourced this pass [Verify].",
+        candidates: [
+          { name: "Melissa Bean", party: "D", winner: false,
+            positions: [
+              "Restrict presidential tariff authority and restore congressional budget authority (candidate questionnaire)",
+              "Require ICE body cameras and enforcement limits near schools, hospitals and places of worship (candidate questionnaire)",
+              "Restore ACA tax credits; expand community college and workforce funding (candidate questionnaire)"
+            ],
+            differentiators: [
+              "Held this seat 2005–2011, serving on Financial Services and chairing a Small Business subcommittee; lost in the 2010 wave by under half a point",
+              "Backed by more than $7M in super PAC support, including a reported $3.4M from pro-Israel groups",
+              "Endorsed by Sen. Tammy Duckworth, Nancy Pelosi and Reps. Bill Foster and Brad Schneider; now CEO of Mesirow Wealth Advisors"
+            ],
+            supporters: [
+              "Has already won this swing seat three times and knows how to hold it",
+              "Financial-services and small-business experience matched to an affordability-focused electorate",
+              "Broad establishment backing plus a money advantage makes her the strongest general-election bet"
+            ],
+            opponents: [
+              "A primary rival argued her reliance on major donors and super PACs compromises independence",
+              "Another argued she had been less vocal than even her 2010 opponent on constitutional protections",
+              "About 68% of primary voters chose someone else, and her corporate-finance career sits awkwardly with the party's populist turn [Verify]"
+            ] },
+          { name: "Jennifer Davis", party: "R", winner: false,
+            positions: [
+              "Cut federal spending and regulation; lower taxes on families and businesses (candidate questionnaire)",
+              "Supports Operation Midway Blitz and law-and-order immigration enforcement (candidate questionnaire)",
+              "Backs term limits and independent redistricting commissions (candidate questionnaire)"
+            ],
+            differentiators: [
+              "Co-founded the Davisware technology firm with her husband; author; never held office",
+              "Endorsed by the Chicago Tribune in the primary",
+              "Beat Mark Rice, the party's 2024 nominee, 51.5%–40.3%; no FEC total could be located [Verify]"
+            ],
+            supporters: [
+              "A job-creating outsider running on affordability against a member returning after fifteen years",
+              "Defeated the prior nominee outright, showing GOP voters wanted a new face",
+              "A Chicago Tribune endorsement signals possible crossover appeal in a D+5 seat"
+            ],
+            opponents: [
+              "No governing record at all for a competitive open seat",
+              "Backing Operation Midway Blitz is a hard sell in suburbs where the campaign is contested [Verify]",
+              "Democrats have carried this seat every cycle since 2012 and she faces a large money gap [Verify]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Krishnamoorthi won 57.06% to Mark Rice's 42.94%. He vacated the seat for a Senate run in 2026.",
+        candidates: [
+          { name: "Raja Krishnamoorthi", party: "D", winner: true,
+            positions: ["Manufacturing and jobs","Intelligence oversight","Education access"],
+            differentiators: ["Held the seat from 2017 until running for Senate"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  9: {
+    name: "U.S. House — IL District 9",
+    region: "Chicago's lakefront North Side and north suburbs — Rogers Park, Edgewater, Evanston, Skokie, Glenview (Cook PVI D+19)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "OPEN SEAT — Jan Schakowsky, in office since 1999, announced on May 5, 2025 that she would not seek re-election, opening IL-9 for the first time since 1998. Evanston Mayor Daniel Biss won a SIXTEEN-candidate Democratic primary — the largest field in Illinois — with 29.4%, over Kat Abughazaleh (26.1%) and state Sen. Laura Fine (20.3%). John Elleson took the Republican primary with about 50%. The seat is reported as Solid Democratic [Verify — the only rating source located was one the site treats as unreliable].",
+        candidates: [
+          { name: "Daniel Biss", party: "D", winner: false,
+            positions: [
+              "Restore antitrust enforcement, crack down on private equity, raise the minimum wage (campaign site)",
+              "Abolish ICE, ban mass raids, create a citizenship pathway (campaign site)",
+              "Medicare for All; ban congressional stock trading and overturn Citizens United (campaign site)"
+            ],
+            differentiators: [
+              "Mayor of Evanston since 2021; former Illinois state representative and senator; finished second to J.B. Pritzker in the 2018 governor's primary",
+              "Spent about $1.9M in one of the most expensive U.S. House primaries in the country",
+              "Pro-Israel super PACs campaigned AGAINST him, promoting a rival"
+            ],
+            supporters: [
+              "Rare in combining a governing record across two legislative chambers and a mayoralty with street-level activism",
+              "Beat millions in outside spending, which his campaign framed as proof an election cannot be bought",
+              "An anti-corruption message that fits a district weary of dark money"
+            ],
+            opponents: [
+              "Won under 30% of a sixteen-way field, so most Democrats preferred someone else [Verify]",
+              "The runner-up attributed her loss to institutional power and dark-money smear campaigns",
+              "Republicans will target his abolish-ICE and Medicare for All positions in the suburban half of the district [Verify]"
+            ] },
+          { name: "John Elleson", party: "R", winner: false,
+            positions: [
+              "Pro-growth tax relief, deregulation and expanded domestic energy production (candidate questionnaire)",
+              "Supports Operation Midway Blitz but demands transparency and due process (candidate questionnaire)",
+              "Opposes Justice Department weaponization; wants stronger congressional oversight (candidate questionnaire)"
+            ],
+            differentiators: [
+              "Pastor at Lakewood Chapel in Arlington Heights; no prior political experience",
+              "A prior nominee against Schakowsky, reported as 2018 and lost 73%–27% [Verify — candidate directories give a different year]",
+              "Won the 2026 primary with about 50%; Republican candidates here reported minimal fundraising"
+            ],
+            supporters: [
+              "Runs on a service-over-division framing aimed at voters tired of confrontation",
+              "Pairs immigration enforcement with an explicit due-process demand, unlike harder-line Republicans",
+              "Consolidated a four-way primary field on the first ballot"
+            ],
+            opponents: [
+              "Lost this seat by a reported 46 points in his prior run",
+              "Near-zero fundraising against a candidate who spent about $1.9M in the primary alone",
+              "At D+19 the seat is effectively out of reach [Verify]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Schakowsky won 68.39% to Seth Cohen's 31.61%. She retired rather than seek a fifteenth term.",
+        candidates: [
+          { name: "Jan Schakowsky", party: "D", winner: true,
+            positions: ["Consumer protection","Medicare expansion","Reproductive rights"],
+            differentiators: ["Held the seat from 1999 to 2027"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  10: {
+    name: "U.S. House — IL District 10",
+    region: "North Shore and eastern Lake County — Highland Park, Lake Forest, Evanston, Wilmette, Waukegan (Cook PVI D+12)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Brad Schneider (D) seeks a seventh term. He won renomination 78.8% over progressive challenger Morgan Coghill; Carl Lambrecht was unopposed for the Republican nomination. Rated Solid/Safe Democratic by Cook, Sabato and Inside Elections.",
+        candidates: [
+          { name: "Brad Schneider (incumbent)", party: "D", winner: false,
+            positions: [
+              "Protect Social Security and Medicare from cuts (campaign site)",
+              "Defend a woman's right to choose (campaign site)",
+              "Lower the cost of living, housing and health care (campaign site)"
+            ],
+            differentiators: [
+              "Chairs the New Democrat Coalition, the largest House Democratic caucus, since January 2025",
+              "$2,681,267 raised with $1,762,728 on hand (FEC, April 25, 2026)",
+              "Won the primary by 57.6 points; lost this seat in 2014 and won it back in 2016"
+            ],
+            supporters: [
+              "Seniority and a caucus chairmanship give the North Shore real legislative leverage",
+              "Focused on cost-of-living work rather than symbolic fights",
+              "A nearly eight-to-one primary margin suggests a satisfied district"
+            ],
+            opponents: [
+              "His primary challenger ran to his left on Medicare for All, abolishing ICE and Palestinian rights, arguing the seat should be bolder",
+              "That challenger attributed his loss to a funding gap rather than to rejection of those ideas",
+              "Republicans argue a D+12 seat produces little accountability [Verify — no organized GOP critique located]"
+            ] },
+          { name: "Carl Lambrecht", party: "R", winner: false,
+            positions: [
+              "[Verify] — no campaign website, issues page or questionnaire could be located",
+              "[Verify]",
+              "[Verify]"
+            ],
+            differentiators: [
+              "Was the Republican nominee for Illinois' 58th state House district in 2024",
+              "Unopposed in the Republican primary with 18,857 votes",
+              "Reported $0 raised, $0 spent and $0 cash on hand (FEC, April 25, 2026)"
+            ],
+            supporters: [
+              "Gives 10th District Republicans a name on the ballot in a seat the party has otherwise conceded [Verify]"
+            ],
+            opponents: [
+              "A campaign reporting zero dollars months after the primary is not a functioning challenge in a D+12 seat",
+              "No platform of any kind could be located for voters to evaluate [Verify]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Schneider won 59.93% to Jim Carris' 39.99%.",
+        candidates: [
+          { name: "Brad Schneider", party: "D", winner: true,
+            positions: ["Cost of living","Reproductive rights","Gun-violence prevention"],
+            differentiators: ["Won a sixth term"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  11: {
+    name: "U.S. House — IL District 11",
+    region: "Aurora, Naperville and Joliet suburbs, reaching northwest to Belvidere (Cook PVI D+6)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Bill Foster (D) faced no primary opponent. Elburn Village President Jeff Walter won a four-way Republican primary with 42.6%, edging Michael Pierce (38.8%) by 3.8 points. Rated Solid/Safe Democratic by Cook, Sabato and Inside Elections.",
+        candidates: [
+          { name: "Bill Foster (incumbent)", party: "D", winner: false,
+            positions: [
+              "Health care is a basic human right — move toward universal coverage (campaign site)",
+              "Reform Wall Street to prevent another 2008-style collapse (campaign site)",
+              "Revive American manufacturing and invest in scientific research (campaign site)"
+            ],
+            differentiators: [
+              "The only PhD physicist in Congress — 22 years at Fermilab, part of the top-quark discovery team",
+              "Ranking member of the Financial Services Subcommittee on Financial Institutions",
+              "$1,769,713 raised with $2,276,627 on hand (FEC, April 25, 2026)"
+            ],
+            supporters: [
+              "A working scientist is a rare and useful asset on technology and financial-regulation policy",
+              "Helped write Dodd-Frank after a career analysing financial risk",
+              "Faced no primary challenge at all, signalling party unity"
+            ],
+            opponents: [
+              "Walter argues Washington policy is driving up local costs and imposing unfunded mandates on towns",
+              "Republicans point to his tenure — in office since 2008 across two districts"
+            ] },
+          { name: "Jeff Walter", party: "R", winner: false,
+            positions: [
+              "Middle-class tax relief and lowering the cost of living (campaign site)",
+              "Push back on federal unfunded mandates to local governments (campaign site)",
+              "Cut regulations that raise housing and energy costs (campaign site)"
+            ],
+            differentiators: [
+              "Retired U.S. Navy Master Chief Petty Officer with over 20 years' service; Elburn trustee then village president",
+              "Endorsed in the primary by BOTH the Chicago Tribune and the Daily Herald",
+              "$186,262 raised but only $9,075 on hand (FEC, April 25, 2026)"
+            ],
+            supporters: [
+              "A rare Republican recruit with executive governing experience — he has run a village budget and infrastructure",
+              "Two major regional papers picked him over three rivals",
+              "A 20-year military career that reads as discipline over ideology"
+            ],
+            opponents: [
+              "A sub-43% plurality win leaves most primary Republicans having backed someone else",
+              "$9,075 on hand against Foster's $2.28M is not a competitive posture in a D+6 seat"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Foster won 55.56% to Jerry Evans' 44.38%.",
+        candidates: [
+          { name: "Bill Foster", party: "D", winner: true,
+            positions: ["Financial regulation","Scientific research","Healthcare access"],
+            differentiators: ["Held a suburban seat by 11 points"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  12: {
+    name: "U.S. House — IL District 12",
+    region: "Deep southern Illinois — Carbondale, Marion, Effingham and Metro East down to Cairo (Cook PVI R+22)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "ILLINOIS' MOST REPUBLICAN DISTRICT at R+22. Mike Bost (R) was unopposed for renomination — unlike 2024, there was no Darren Bailey rematch — and Julie Fortier was unopposed for the Democratic nomination. Rated Solid/Safe Republican by every forecaster. The district spans roughly 31 counties [the Fortier campaign says 34 — unresolved].",
+        candidates: [
+          { name: "Mike Bost (incumbent)", party: "R", winner: false,
+            positions: [
+              "Secure the border and expand interior enforcement (campaign site)",
+              "Protect life and defend Second Amendment rights (campaign site)",
+              "Deliver quality care for veterans through VA reform (campaign site)"
+            ],
+            differentiators: [
+              "Chairs the House Veterans' Affairs Committee since January 2023",
+              "Endorsed by Donald Trump, the Illinois Fraternal Order of Police and AIPAC",
+              "Named plaintiff in Bost v. Illinois State Board of Elections, challenging the state's 14-day mail-ballot grace period"
+            ],
+            supporters: [
+              "A committee gavel is real clout for a rural district",
+              "Local roots as a Murphysboro firefighter and Marine read as authentic",
+              "Trump's endorsement plus an uncontested primary shows the party consolidated after 2024's bruising Bailey fight"
+            ],
+            opponents: [
+              "Fortier's central charge is constituent unresponsiveness — she says she received a form letter after writing to object to a major bill, and later learned the same letter went to many constituents",
+              "Critics link his vote for that bill to rural health-care and benefit impacts"
+            ] },
+          { name: "Julie Fortier", party: "D", winner: false,
+            positions: [
+              "Universal health care — she says medical care should not be a luxury (interview)",
+              "Make daily costs affordable for working southern Illinoisans (interview)",
+              "More federal emphasis on agriculture and farming interests (interview)"
+            ],
+            differentiators: [
+              "U.S. Air Force veteran including a Desert Shield deployment to Qatar; stationed at Scott AFB",
+              "Cancer researcher with a PhD in biomedical sciences from Saint Louis University",
+              "$40,820 raised with $27,307 on hand (FEC, April 25, 2026)"
+            ],
+            supporters: [
+              "A veteran-and-scientist profile that fits a district with Scott AFB and a large veteran population",
+              "Entered the race over a specific constituent-service grievance rather than ambition",
+              "Contesting an R+22 seat at all keeps voters with a choice — the seat drew a 48-point margin in 2024"
+            ],
+            opponents: [
+              "R+22 and a 48-point 2024 margin make the seat effectively out of reach",
+              "A roughly $41,000 campaign cannot cover more than thirty counties [Verify — no reported GOP attack located]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Bost won 74.19% to Brian Roberts' 25.81%, after surviving a bruising primary against Darren Bailey.",
+        candidates: [
+          { name: "Mike Bost", party: "R", winner: true,
+            positions: ["Veterans' affairs","Border security","Agriculture"],
+            differentiators: ["Won by 48 points"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  13: {
+    name: "U.S. House — IL District 13",
+    region: "A snake-shaped seat linking Champaign-Urbana, Decatur, Springfield and Metro East — Alton, Granite City, East St. Louis (Cook PVI D+5)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Nikki Budzinski (D) won renomination with 75.1% over Dylan Blaha. Champaign County Board member Jeff Wilson won the Republican primary with 67.5%, DEFEATING Joshua Loyd, the party's own 2024 nominee, by 35 points. Despite a D+5 lean, no forecaster rates this competitive — Cook, Sabato and Inside Elections all have it Solid/Safe Democratic.",
+        candidates: [
+          { name: "Nikki Budzinski (incumbent)", party: "D", winner: false,
+            positions: [
+              "[Verify — from committee record, not a candidate-authored issues page] Agriculture and farm-bill priorities",
+              "[Verify] Veterans' benefits and VA technology modernization",
+              "[Verify] Union labor and worker organizing rights"
+            ],
+            differentiators: [
+              "Chief of staff at the federal Office of Management and Budget under Biden; senior adviser to Gov. Pritzker; national political director for the UFCW",
+              "An unusually broad labor slate — Illinois AFL-CIO, AFSCME Council 31, UAW, United Mine Workers, Operating Engineers — plus the Chicago Tribune",
+              "$2,458,602 raised with $2,609,951 on hand (FEC, April 25, 2026); won her primary by 50.2 points"
+            ],
+            supporters: [
+              "The labor coalition behind her is deep and includes mine workers and building trades, unusual for a downstate Democrat",
+              "Agriculture and Veterans' Affairs committee seats match a farm-and-veterans district",
+              "New Democrat Coalition membership signals a moderate posture in a swing-leaning seat"
+            ],
+            opponents: [
+              "Her primary challenger ran to her left with backing from anti-AIPAC groups, targeting her foreign-policy alignment",
+              "Republicans argue an OMB-and-union-staff résumé is Washington-grown rather than downstate [Verify]"
+            ] },
+          { name: "Jeff Wilson", party: "R", winner: false,
+            positions: [
+              "[Verify] — his campaign site displays only 'Launching Soon'; no issues page could be located",
+              "[Verify]",
+              "[Verify]"
+            ],
+            differentiators: [
+              "Champaign County Board member; announced his candidacy in August 2025",
+              "Beat 2024 nominee Joshua Loyd 67.5%–32.5% — the party replaced its own prior nominee by 35 points",
+              "$218,883 raised but only $26,538 on hand (FEC, April 25, 2026)"
+            ],
+            supporters: [
+              "Republicans wanted a new face after Loyd's 16-point 2024 loss and gave Wilson a 35-point mandate to be it",
+              "County-board service is local governing experience the prior nominee lacked"
+            ],
+            opponents: [
+              "Ended April with under $27,000 against Budzinski's $2.6M",
+              "Did not carry the Chicago Tribune's primary endorsement — the paper backed Loyd",
+              "No published platform this late in the cycle gives voters little to evaluate"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Budzinski won 58.07% to Joshua Loyd's 41.86%. Loyd sought the nomination again in 2026 and lost the primary.",
+        candidates: [
+          { name: "Nikki Budzinski", party: "D", winner: true,
+            positions: ["Agriculture policy","Veterans' services","Labor rights"],
+            differentiators: ["Won a second term by 16 points"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  14: {
+    name: "U.S. House — IL District 14",
+    region: "Far western Chicago exurbs — Aurora, DeKalb, Kendall County and the Joliet fringe (Cook PVI D+3 [Verify])",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "A 2024 REMATCH. Lauren Underwood (D) was unopposed for renomination; James Marter won the Republican primary 74.9% over Gary Vician. Rated Solid/Safe Democratic by Cook, Sabato and Inside Elections.",
+        candidates: [
+          { name: "Lauren Underwood (incumbent)", party: "D", winner: false,
+            positions: [
+              "Lower out-of-pocket health costs and remove cost barriers to care (campaign site)",
+              "Cut U.S. maternal mortality — she notes 80% of maternal deaths are preventable (Momnibus)",
+              "Protect maternal health access during public-health emergencies (H.R. 8807, May 2026)"
+            ],
+            differentiators: [
+              "A registered nurse; in Congress since 2019 and co-founder of the Black Maternal Health Caucus",
+              "$1,960,791 raised with $1,325,871 on hand (FEC, April 25, 2026) — roughly 20 times Marter's",
+              "Endorsed by the Illinois AFL-CIO, SEIU Healthcare, Planned Parenthood Action Fund and the Sierra Club"
+            ],
+            supporters: [
+              "A nursing background makes her health-cost work credible rather than theoretical",
+              "The Momnibus package is a concrete national legislative achievement",
+              "Has held this seat through three straight competitive cycles"
+            ],
+            opponents: [
+              "Marter publicly frames her as a far-left extremist and faults her on immigration enforcement and gun rights",
+              "Local reporting notes she rarely engages her challenger directly"
+            ] },
+          { name: "James Marter", party: "R", winner: false,
+            positions: [
+              "Enforce existing law and secure the border (campaign site)",
+              "Repeal the Affordable Care Act over cost and choice (campaign site)",
+              "Return to energy independence as a national-security priority (campaign site)"
+            ],
+            differentiators: [
+              "Oswego Republican with unsuccessful congressional runs in 2018, 2020 and 2022, and the 2024 nomination",
+              "$99,287 raised with $13,613 on hand (FEC, April 25, 2026) — roughly a 20-to-1 cash deficit",
+              "Won the primary by about 50 points; says his strategy is finding the voters who stayed home in 2024"
+            ],
+            supporters: [
+              "The most persistent grassroots conservative in the district, campaigning door-to-door and on local radio",
+              "Argues Underwood is out of step with an exurban electorate that has trended right",
+              "Frames 2026 as a turnout problem rather than a persuasion problem"
+            ],
+            opponents: [
+              "A four-time losing nominee with no elected office",
+              "Local reporting characterises his messaging as relentless and increasingly caustic [Verify — the outlet leans partisan]",
+              "A roughly 20-to-1 cash gap makes a competitive race unlikely"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Underwood won 55.10% to James Marter's 44.89% — the same matchup as 2026.",
+        candidates: [
+          { name: "Lauren Underwood", party: "D", winner: true,
+            positions: ["Maternal health","Healthcare costs","Rural broadband"],
+            differentiators: ["Won a fourth term by 10 points"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  15: {
+    name: "U.S. House — IL District 15",
+    region: "Rural central and southeastern Illinois — roughly 35 counties from Decatur and Springfield to the Indiana line (Cook PVI R+20)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Mary Miller (R) won renomination with 73.6% over two challengers. Nurse Jennifer Todd won a four-way Democratic primary with 45.7%, beating veterinarian Paul Davis, who had the Chicago Tribune's endorsement. Rated Solid/Safe Republican by every forecaster. ⚠ Miller ran UNOPPOSED in 2024 — this is the district's first contested general election since redistricting.",
+        candidates: [
+          { name: "Mary Miller (incumbent)", party: "R", winner: false,
+            positions: [
+              "[Verify — drawn from her committee record, not a 2026 campaign platform] Farm-state agriculture policy",
+              "[Verify] Firm Second Amendment protection with no new federal gun restrictions",
+              "[Verify] Reduce the federal role in education and expand parental rights in schools"
+            ],
+            differentiators: [
+              "House Freedom Caucus member serving on Agriculture, Education & Workforce, and House Administration",
+              "$1,104,319 raised with $833,236 on hand (FEC, April 25, 2026) — roughly a 90-to-1 advantage",
+              "Held 73.6% against two primary challengers"
+            ],
+            supporters: [
+              "A farm background that matches a heavily agricultural district",
+              "Freedom Caucus membership delivers the confrontational conservatism a district that votes R+20 asked for",
+              "An overwhelming primary win shows the base is not looking for an alternative"
+            ],
+            opponents: [
+              "Both primary challengers ran explicitly as alternatives, and the Chicago Tribune endorsed one of them over her",
+              "Todd argues rural health-care access and out-of-pocket costs have gone unaddressed [Verify — opposition reporting on her record is thin]"
+            ] },
+          { name: "Jennifer Todd", party: "D", winner: false,
+            positions: [
+              "Lower out-of-pocket health costs and protect rural health-care access (campaign site)",
+              "Protect democracy and equal protection under the law (campaign site)",
+              "Bring federal resources back to downstate Illinois (campaign site)"
+            ],
+            differentiators: [
+              "Registered nurse with ICU, hospice and school-nursing experience; a first-time candidate with no prior elected office",
+              "$57,553 raised with $9,224 on hand (FEC, April 25, 2026)",
+              "Won a four-way primary with 45.7%, beating the Chicago Tribune's endorsed candidate by 12 points"
+            ],
+            supporters: [
+              "Clinical experience directly relevant to a district losing rural hospital capacity",
+              "Endorsed by the Illinois Federation of Teachers and Citizen Action Illinois for her focus on lowering costs",
+              "Gives IL-15 voters a choice after an entirely uncontested 2024"
+            ],
+            opponents: [
+              "No elected experience and negligible funding in an R+20 district",
+              "Won under 46% in her own primary",
+              "No rater gives Democrats a path here [Verify — no candidate-specific criticism was reported]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Mary Miller ran UNOPPOSED, taking 308,825 votes against write-ins only.",
+        candidates: [
+          { name: "Mary Miller", party: "R", winner: true,
+            positions: ["Agriculture policy","Second Amendment","Parental rights"],
+            differentiators: ["Faced no general-election opponent"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  16: {
+    name: "U.S. House — IL District 16",
+    region: "North-central Illinois — Rockford suburbs south through Peoria and Bloomington, across 21 counties (Cook PVI R+11)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Darin LaHood (R) and Paul Nolley (D) were BOTH unopposed in the March 17 primary. Rated Solid/Safe Republican by every forecaster. ⚠ LaHood ran UNOPPOSED in 2024 — this is his first contested general election in this seat. He publicly passed on both the governor's race and the open U.S. Senate seat on Aug 4, 2025.",
+        candidates: [
+          { name: "Darin LaHood (incumbent)", party: "R", winner: false,
+            positions: [
+              "Make the Trump tax cuts permanent (re-election announcement)",
+              "Cut the regulatory burden on small businesses and farmers (re-election announcement)",
+              "Counter Chinese Communist Party economic and security competition (committee record)"
+            ],
+            differentiators: [
+              "In Congress since a 2015 special election; sits on Ways and Means, House Intelligence, and the Select Committee on the CCP",
+              "$3.67M raised since January 2025 with $6.75M on hand as of June 30, 2026 — roughly 16 times Nolley's",
+              "Endorsed by the Illinois Fraternal Order of Police and AIPAC"
+            ],
+            supporters: [
+              "Seniority on Ways and Means gives a downstate district unusual leverage on tax and trade policy",
+              "A Fraternal Order of Police endorsement signals law-enforcement confidence",
+              "Staying in the House rather than chasing statewide office keeps district influence intact"
+            ],
+            opponents: [
+              "Nolley argues the district's working-class voters have been left behind and campaigns on protecting Social Security, Medicare and Medicaid",
+              "Critics point to a $6.75M war chest as evidence of donor-driven rather than district-driven politics [Verify]",
+              "He voted against a House measure to end the Iran conflict, drawing criticism from those who backed the bipartisan rebuke [Verify the bill and date]"
+            ] },
+          { name: "Paul Nolley", party: "D", winner: false,
+            positions: [
+              "Fully fund and rebuild VA care for veterans (campaign site)",
+              "Restore civil liberties and protect human rights (campaign site)",
+              "Protect Social Security, Medicare and Medicaid; defend union rights (campaign site)"
+            ],
+            differentiators: [
+              "Nonprofit executive from Loves Park, Rockford-born; no prior elected office",
+              "$230,140 on hand as of June 30, 2026 — a notable haul for a challenger in a Safe R seat",
+              "Endorsed by Rep. Ro Khanna, the Illinois AFL-CIO, IUOE Local 399 and the UAW"
+            ],
+            supporters: [
+              "Has drawn cross-partisan crowds to open town halls in a district where the incumbent is less visible",
+              "Broad labor backing across a manufacturing region",
+              "A citizen-candidate framing aimed at paycheck-to-paycheck voters"
+            ],
+            opponents: [
+              "He has acknowledged himself that winning here will be a challenge",
+              "No governing or elected experience",
+              "An R+11 seat that went uncontested in 2024 offers little evidence of Democratic viability"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "LaHood ran UNOPPOSED, taking 310,925 votes.",
+        candidates: [
+          { name: "Darin LaHood", party: "R", winner: true,
+            positions: ["Tax policy","Intelligence oversight","Agriculture"],
+            differentiators: ["Faced no general-election opponent"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  17: {
+    name: "U.S. House — IL District 17",
+    region: "A C-shaped seat across 14 counties — the Quad Cities, Rockford, Peoria, Bloomington-Normal, Galesburg and Freeport (Cook PVI D+3 [Verify])",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Illinois' closest seat by recent margin, though NO major rater treats it as competitive in 2026 — Cook, Sabato and Inside Elections all have it Solid/Safe Democratic, a downgrade from the Toss Up Cook gave it in 2022. Eric Sorensen (D) was unopposed for renomination; coffee-chain owner Dillan Vancil won the Republican primary 58.4% over Carroll County Board Chair Julie Bickelhaupt.",
+        candidates: [
+          { name: "Eric Sorensen (incumbent)", party: "D", winner: false,
+            positions: [
+              "Tackle inflation and lower costs from the grocery store to the gas pump (campaign site)",
+              "All-of-the-above energy — wind, solar and nuclear (reported)",
+              "Data centers should have to produce their own power and contribute to the grid (reported)"
+            ],
+            differentiators: [
+              "A former TV meteorologist and the first openly gay member of Congress from Illinois; sits on House Agriculture",
+              "$2.23M raised since January 2025 with $1.33M on hand as of June 30, 2026 — roughly 23 times Vancil's",
+              "Endorsed by the Illinois AFL-CIO, SEIU, Giffords, Planned Parenthood Action Fund, and both AIPAC and J Street"
+            ],
+            supporters: [
+              "A science-credentialed communicator on weather, energy and farm policy — all kitchen-table issues here",
+              "Grew his margin from a 2022 toss-up to nearly 9 points in 2024",
+              "Holding endorsements from AIPAC and J Street simultaneously indicates unusually wide coalition reach"
+            ],
+            opponents: [
+              "Vancil says his leadership has failed Illinois, pointing to rising electricity costs and a broken health-care system",
+              "Republicans criticised his vote against a DHS funding bill containing ICE resources as soft on enforcement [Verify the bill and date]",
+              "His roll-call attendance is slightly below the House median [Verify]"
+            ] },
+          { name: "Dillan Vancil", party: "R", winner: false,
+            positions: [
+              "Main Street over Wall Street — rising costs in central Illinois (campaign site)",
+              "Standardize state regulations to lower barriers for entrepreneurs (reported)",
+              "Health-care price transparency — patients should know the price up front (reported)"
+            ],
+            differentiators: [
+              "Owns Dame Fine Coffee, a six-shop chain based in Monmouth employing about 30 people; former railroad worker",
+              "Five years on the West Central school board — his only elected experience",
+              "Raised $308,000 but holds only $56,700 on hand after spending $272,464 winning the primary (FEC, June 30, 2026)"
+            ],
+            supporters: [
+              "An actual small-business payroll-meeter rather than a career politician",
+              "His regulatory-cost example — a $250,000 variance to build identical coffee kiosks — is concrete and locally legible",
+              "Beat a sitting county board chair, showing outsider appeal survives contact with party regulars"
+            ],
+            opponents: [
+              "His primary rival argued county-government executive experience beats a business résumé for Congress",
+              "Emerged from the primary nearly broke — about $57,000 against Sorensen's $1.33M",
+              "His coal-and-gas-first energy platform runs against a district Sorensen has cultivated on wind, solar and nuclear"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Sorensen won 54.43% to Joe McGraw's 45.57% — a margin of 8.9 points, up from a 2022 toss-up.",
+        candidates: [
+          { name: "Eric Sorensen", party: "D", winner: true,
+            positions: ["Cost of living","Clean energy","Agriculture"],
+            differentiators: ["Grew his margin in the state's closest seat"],
+            supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  }
+};
+
+const SITE_META = { name: "Illinois Elections Hub", lastUpdated: "August 5, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — Illinois county-level down-ballot research is the next phase.
+// Note that MA counties still elect sheriffs, DAs and registers of probate even where
+// county government was abolished — those are the natural first LOCAL_RACES targets.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Illinois has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them,
+  // otherwise a district with no plurality county is unreachable from the map.
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const IL_STATE_FIPS = "17";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#ilmap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(IL_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Hartford ----
+  drawCapital(g, projection, { name: "Springfield", lng: -89.6501, lat: 39.7817 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in IL";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our Illinois dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>

@@ -42,6 +42,9 @@ const STATE_PAGES = [
   { page: "ky.html", countyCount: 120, sampleFips: "21111", sampleName: "Jefferson",   expectedRaces: 12 },
   { page: "in.html", countyCount: 92,  sampleFips: "18097", sampleName: "Marion",      expectedRaces: 12 },
   { page: "ia.html", countyCount: 99,  sampleFips: "19153", sampleName: "Polk",        expectedRaces: 15 },
+  // Cook is deliberately the IL sample: it overlaps 11 districts via `ds`, so this count
+  // (9 statewide + 11 districts x 2 races) is the regression guard on the multi-district merge.
+  { page: "il.html", countyCount: 102, sampleFips: "17031", sampleName: "Cook",        expectedRaces: 31 },
 ];
 
 for (const cfg of STATE_PAGES) {
@@ -200,7 +203,7 @@ for (const abbr of ALL_TESTED) {
 // makes a race silently vanish from the grouped drawer)
 // ---------------------------------------------------------------
 console.log("\n— type-value audit —");
-for (const page of ["index.html", "nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html", "ny.html", "ri.html", "nh.html", "ct.html", "vt.html", "me.html", "ma.html", "wv.html", "oh.html", "ky.html", "in.html", "ia.html", "state.html"]) {
+for (const page of ["index.html", "nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html", "ny.html", "ri.html", "nh.html", "ct.html", "vt.html", "me.html", "ma.html", "wv.html", "oh.html", "ky.html", "in.html", "ia.html", "il.html", "state.html"]) {
   const bad = [];
   for (const code of extractInlineScripts(page)) {
     for (const m of code.matchAll(/type\s*:\s*"([a-z]+)"/g)) {

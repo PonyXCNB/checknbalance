@@ -738,7 +738,7 @@ const STATEWIDE = [
     type: "upcoming",
     scope: "Federal · Statewide",
     office: "U.S. Senate — Virginia",
-    note: "Mark Warner (D) seeks a fourth term. Virginia moved its 2026 primary to August 4 (HB 29), so the Republican nominee is NOT yet decided. Rated Solid/Safe Democratic (Cook, Sabato). No Republican has won a Virginia Senate race since 2002.",
+    note: "Mark Warner (D) seeks a fourth term and has said this is his last campaign. Retired Army Maj. Gen. Bert Mizusawa won the Aug 4 Republican primary outright with ~50.7%, over David Williams (~29.5%) and Kim Farington (~19.8%); Chuck Smith did not qualify for the ballot. Figures are UNOFFICIAL pending State Board of Elections certification. Rated Solid/Safe Democratic (Cook, Sabato) — no rating change after the primary. No Republican has won a Virginia Senate race since 2002. Independent Mark Moran is also reported to be on the November ballot [Verify against the certified list].",
     candidates: [
       {
         name: "Mark Warner (incumbent)",
@@ -762,21 +762,34 @@ const STATEWIDE = [
         opponents: [
           "In Washington since 2009 — a career politician",
           "Votes with his party and hasn't stopped rising costs",
-          "Part of the spending and regulatory status quo [Verify GOP framing after Aug 4]"
+          "Mizusawa says the national debt has roughly tripled since Warner entered the Senate"
         ]
       },
       {
-        name: "[Republican nominee — decided in the Aug 4, 2026 primary]",
+        name: "Bert Mizusawa",
         party: "R",
         winner: false,
-        positions: ["[Decided Aug 4] Leading themes in the field: government waste and fraud elimination","Border security and immigration enforcement","Data-center siting limits and utility-cost concerns"],
-        differentiators: [
-          "Exactly three qualified per the Dept. of Elections: Kim Farington (CPA, ex-OPM chief accountant), Bert Mizusawa (retired Army major general), David Williams (Marine Reserve lt. colonel, ex-CIA). Chuck Smith did NOT qualify",
-          "No notable public primary polling as of July 2026",
-          "Early voting for the primary began June 19"
+        positions: [
+          "Simplify the tax code — fewer brackets, larger standard deductions (campaign site)",
+          "Expand nuclear power to cut household energy costs (campaign site)",
+          "Secure the border while streamlining legal immigration (campaign site)"
         ],
-        supporters: ["Every candidate offers an outsider contrast to an 18-year Washington incumbent"],
-        opponents: ["No high-profile Republican entered after Spanberger's 15-point 2025 win — Youngkin passed on the race"]
+        differentiators: [
+          "Retired Army major general — first in his 1979 West Point class, Silver Star at the Korean DMZ, later Deputy Under Secretary of the Army",
+          "Won the Aug 4 primary outright with ~50.7%, a ~21-point margin over David Williams",
+          "$52,964 cash on hand through July 15 (FEC) against Warner's roughly $16.1M"
+        ],
+        supporters: [
+          "An unusually deep national-security résumé for a first-time Senate candidate",
+          "Argues Congress must reclaim its constitutional role on spending regardless of who holds the White House",
+          "Consolidated a three-way field with an outright majority rather than a plurality"
+        ],
+        opponents: [
+          "No Republican has won a Virginia Senate race since 2002; Warner won by about 12 points in 2020",
+          "About $53K on hand against Warner's ~$16.1M, with no reported national party investment",
+          "Has never held elected office; a 2018 Senate bid was disqualified for insufficient signatures",
+          "Democrats point to June debate remarks floating a constitutional path to a third Trump term [Verify — documented by a partisan Virginia blog that posted the audio, not yet confirmed by a neutral outlet]"
+        ]
       }
     ]
   },
@@ -785,7 +798,7 @@ const STATEWIDE = [
     type: "upcoming",
     scope: "State · Statewide · Ballot Measures",
     office: "Constitutional Amendments — Statewide Referenda",
-    note: "CONFIRMED against the Department of Elections' referenda pages: Virginia's Nov 3, 2026 ballot carries EXACTLY THREE constitutional amendments, and the ballot order is the reverse of how most coverage lists them. QUESTION 1 — REPRODUCTIVE FREEDOM: whether to amend the constitution to protect the freedom to make personal decisions about prenatal care, childbirth, postpartum care, birth control, abortion, miscarriage management and fertility care; to protect doctors, nurses and patients from punishment for those decisions; and to allow restrictions on third-trimester abortion except where the patient's health is at risk or the pregnancy cannot survive (new Art. I §11-A). QUESTION 2 — MARRIAGE: whether to remove the constitutional ban on same-sex marriage, affirm that two adults may marry regardless of sex, gender or race, and require all legally valid marriages to be treated equally (Art. I §15-A). QUESTION 3 — VOTING RIGHTS: whether to provide a fundamental right to vote and to automatically restore voting rights on release from incarceration rather than requiring individual gubernatorial action (Art. II §1). All three cleared the required two sessions and were signed by Gov. Spanberger in Feb 2026; they take effect Jan 1, 2027 if approved. Note that the resolutions were RENUMBERED between sessions, which is why sources conflict on their numbers. Virginia holds no separate certification vote, so there is no certification date to cite.",
+    note: "CONFIRMED against the Department of Elections' referenda pages: Virginia's Nov 3, 2026 ballot carries EXACTLY THREE constitutional amendments, and the ballot order is the reverse of how most coverage lists them. QUESTION 1 — REPRODUCTIVE FREEDOM: whether to amend the constitution to protect the freedom to make personal decisions about prenatal care, childbirth, postpartum care, birth control, abortion, miscarriage management and fertility care; to protect doctors, nurses and patients from punishment for those decisions; and to allow restrictions on third-trimester abortion except where the patient's health is at risk or the pregnancy cannot survive (new Art. I §11-A). QUESTION 2 — MARRIAGE: whether to remove the constitutional ban on same-sex marriage, affirm that two adults may marry regardless of sex, gender or race, and require all legally valid marriages to be treated equally (Art. I §15-A). QUESTION 3 — VOTING RIGHTS: whether to provide a fundamental right to vote and to automatically restore voting rights on release from incarceration rather than requiring individual gubernatorial action (Art. II §1). All three cleared the required two sessions and were signed by Gov. Spanberger in Feb 2026; they take effect Jan 1, 2027 if approved.",
     candidates: []
   },
 
@@ -884,11 +897,28 @@ const HOUSE_RACES = {
             differentiators: ["In Congress since 2007","Co-chairs the Shipbuilding Caucus","Unopposed for the 2026 GOP nomination"],
             supporters: ["Reliable deliverer for shipyard jobs and rural broadband"],
             opponents: ["Broke a written pledge not to cut Medicaid, endangering rural hospitals"] },
-          { name: "[Democratic nominee — decided in the Aug 4, 2026 primary]", party: "D", winner: false,
-            positions: ["[Decided Aug 4] Frontrunner Shannon Taylor's themes: protect Medicaid, lower health costs","Abortion rights","Accountability for the Medicaid vote"],
-            differentiators: ["Seven-way primary; frontrunner Shannon Taylor is Henrico Commonwealth's Attorney (since 2012) with DCCC Red-to-Blue, Kaine and Spanberger backing","Field includes poverty-law attorney Salaam Bhatti and retired Navy fighter pilot Jason Knapp","Seven qualified per the Dept. of Elections: Bhatti, Taylor, Knapp, Tull, Beggs, Kopp, Cywinski"],
-            supporters: ["A battle-tested prosecutor tops a deep field","Rob Wittman drew no primary challenge, so Democrats pick the only contested nominee here"],
-            opponents: ["Four rivals asked the state party to reaffirm neutrality after the DCCC backed Taylor","Wittman has held this seat since 2007 and was unopposed for renomination","A seven-way split means the nominee may emerge with well under half the vote"] }
+          { name: "Shannon Taylor", party: "D", winner: false,
+            positions: [
+              "Ban congressional stock trading; lifetime lobbying ban for ex-members; 12-year term limits (campaign site)",
+              "Restore ACA premium tax credits and rural hospital funding (campaign site)",
+              "Oppose utility rate hikes and stop data-center buildout raising energy costs (campaign site)"
+            ],
+            differentiators: [
+              "Henrico County Commonwealth's Attorney since 2011 — first woman and first Democrat in the role in nearly 40 years",
+              "A DCCC Red to Blue designee since February 2026, endorsed by Gov. Spanberger, both senators and 25 law-enforcement leaders",
+              "Won the seven-way primary outright with 53.1%, 33 points clear; $1,004,179 on hand to Wittman's $4,292,789"
+            ],
+            supporters: [
+              "The only candidate who consolidated the party's institutional weight — governor, both senators, the full delegation",
+              "The DCCC called her a battle-tested prosecutor local officials saw as strongest against Wittman",
+              "A prosecutor with law-enforcement endorsements blunts the usual soft-on-crime attack"
+            ],
+            opponents: [
+              "Six of the seven VA-1 Democrats asked the state party to reaffirm neutrality after the DCCC backed her mid-primary",
+              "Critics flagged a victory fund listing the state party and $22,000 in consulting payments to its treasurer during the primary; the party chair called both standard practice",
+              "The NRCC attacks her as a soft-on-crime progressive prosecutor",
+              "The seat backed Trump by 5 in 2024 and Wittman has held it since 2007 with a roughly 4-to-1 cash edge [Verify]"
+            ] }
         ]
       },
       {
@@ -920,11 +950,27 @@ const HOUSE_RACES = {
             differentiators: ["Navy helicopter pilot and geriatric nurse practitioner","Ranked among the House's most bipartisan members","Voted for the May 2025 reconciliation bill with Medicaid cuts after signing a letter opposing benefit cuts"],
             supporters: ["Independent-minded veteran who delivers for the military community","Nurse-pilot profile fits the district perfectly"],
             opponents: ["Promises one thing at home, votes the party line in Washington","Her Medicaid and ACA votes are the campaign's centerpiece"] },
-          { name: "[Democratic nominee — decided in the Aug 4, 2026 primary]", party: "D", winner: false,
-            positions: ["[Decided Aug 4] Frontrunner Elaine Luria's themes: cost of living","Cutting healthcare costs","Strengthening the military"],
-            differentiators: ["Elaine Luria is CONFIRMED on the ballot: held this seat 2019–23, 20-year Navy commander, Jan. 6 Committee member","Raised about $1.6M in Q2 2026 and holds more than $3.5M cash on hand — roughly $4.5M since launching in Nov 2025","Four qualified: Luria, physician Nila Devanath, Patrick Mosolf, Bill Fleming; DCCC Red to Blue"],
-            supporters: ["Luria matches Kiggans's Navy profile and has won here before"],
-            opponents: ["A Luria nomination is a rerun — she lost this seat to Kiggans in 2022"] }
+          { name: "Elaine Luria", party: "D", winner: false,
+            positions: [
+              "Ban members of Congress and their families from trading stocks; overturn Citizens United (campaign site)",
+              "Strengthen the ACA, reinstate middle-class premium tax credits, cap insulin at $35 (campaign site)",
+              "Codify Roe v. Wade and protect reproductive care for servicemembers (campaign site)"
+            ],
+            differentiators: [
+              "Held this seat 2019–2023; a 1997 Naval Academy graduate who retired as a Navy commander after 20 years",
+              "Served on the House Select Committee investigating January 6",
+              "A DCCC Red to Blue designee; $3,582,723 on hand to Kiggans' $3,391,740 — a rare cash lead for a challenger"
+            ],
+            supporters: [
+              "A 20-year Navy commander is the right profile for a military-heavy Hampton Roads seat that has flipped four times since 2008",
+              "A delivery record on affordability — she backed the enhanced ACA premium tax credits and the 2022 IRA",
+              "Argues Kiggans put Trump over Hampton Roads, including voting for health-care cuts she had written letters opposing"
+            ],
+            opponents: [
+              "Kiggans calls her a self-serving politician who used public office to enrich herself, alleging $21 million in stock trades — an unverified campaign claim",
+              "She dismissed a congressional stock-trading ban as nonsense in 2022 and reversed to support it in 2026",
+              "Her primary rivals noted she signed a 2018 no-corporate-money pledge and then accepted $34,000 from corporate PACs in 2020"
+            ] }
         ]
       },
       {
@@ -959,7 +1005,13 @@ const HOUSE_RACES = {
           { name: "Edwin Rivera", party: "R", winner: false,
             positions: ["[Verify] — minimal coverage","[Verify]","[Verify]"],
             differentiators: ["U.S. Army veteran","[Verify final ballot status]","[Verify]"],
-            supporters: [], opponents: [] }
+            supporters: [
+              "An Army veteran giving VA-3 voters a choice in a district Republicans often leave uncontested [Verify]"
+            ],
+            opponents: [
+              "Bobby Scott has held this seat since 1993 in a safely Democratic district [Verify margin]",
+              "No campaign site, platform or fundraising could be located this pass [Verify]"
+            ] }
         ]
       },
       {
@@ -1015,18 +1067,34 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "Both parties have Aug 4 primaries: John McGuire (R) faces Marine veteran Melanie Lucero, while former Rep. Tom Perriello leads a three-way Democratic field.",
+        note: "The only Virginia district with BOTH parties holding an Aug 4 primary. John McGuire (R) held renomination with about 84% over Marine veteran Melanie Lucero; former Rep. Tom Perriello won the Democratic nomination with about 80%, over Suzanne Krzyzanowski (~14%) and Robert Tracinski (~6%). Figures are unofficial pending certification. Cook rates it Solidly Republican, but the DCCC lists VA-5 as in play.",
         candidates: [
           { name: "John McGuire (incumbent)", party: "R", winner: false,
             positions: ["Staunch Trump-agenda alignment","Spending restraint [Verify specifics]","Border security"],
-            differentiators: ["Former Navy SEAL and state legislator","Won the seat by unseating Rep. Bob Good in a ~370-vote 2024 primary","Faces a primary challenge from broker and Marine veteran Melanie Lucero"],
-            supporters: ["Veteran with an unwavering conservative record"],
-            opponents: ["His own primary challenger cites weak constituent services and thin accomplishments","Critics say he failed to defend UVA from DOJ pressure and let rural broadband money lapse"] },
-          { name: "[Democratic nominee — decided in the Aug 4, 2026 primary]", party: "D", winner: false,
-            positions: ["[Decided Aug 4] Frontrunner Tom Perriello's themes: rural economy — broadband and energy jobs","Defending UVA and public institutions","Affordability"],
-            differentiators: ["Perriello held this seat 2009–11 — the only Democrat to win it this century; cast a deciding ACA vote","Three qualified: Perriello, writer Robert Tracinski and Suzanne Krzyzanowski","Money as of July 31: Perriello $2.1M, Tracinski $54,102, Krzyzanowski $16,897"],
-            supporters: ["Perriello brings proven crossover appeal in a red district"],
-            opponents: ["Too liberal for Southside [Verify GOP framing]"] }
+            differentiators: ["Former Navy SEAL and state legislator","Won the seat by unseating Rep. Bob Good in a ~370-vote 2024 primary","Held renomination with about 84% and is endorsed by Trump and Speaker Mike Johnson"],
+            supporters: ["Veteran with an unwavering conservative record","Trump carried this district by 12 points and McGuire won it by 15 in 2024"],
+            opponents: ["His own primary challenger cited weak constituent services and thin accomplishments","Critics say he failed to defend UVA from DOJ pressure and let rural broadband money lapse","Trails Perriello roughly 3-to-1 in cash on hand — $524,403 to $1.5M"] },
+          { name: "Tom Perriello", party: "D", winner: false,
+            positions: [
+              "Cost of living — end tariffs he blames for higher grocery prices (campaign site)",
+              "Anti-corruption — ban dark money and congressional insider trading (campaign site)",
+              "Restore constitutional checks on the executive (campaign site)"
+            ],
+            differentiators: [
+              "Held this seat 2009–11 — the only Democrat to win it this century; cast a deciding ACA vote",
+              "Raised $2.1M to McGuire's $1.7M, with $1.5M on hand to McGuire's $524,403",
+              "Endorsed by Gov. Spanberger, Sens. Warner and Kaine, Planned Parenthood and SEIU"
+            ],
+            supporters: [
+              "The only Democrat who has actually won this district",
+              "Ties McGuire's support for tariffs directly to grocery and fuel prices",
+              "The DCCC lists VA-5 as in play, so national money should follow"
+            ],
+            opponents: [
+              "Trump carried the district by 12 points and McGuire won it by 15 in 2024",
+              "His last two races were losses — the 2010 general and the 2017 governor's primary by 11.8 points",
+              "McGuire notes far more Republicans than Democrats turned out on Aug 4"
+            ] }
         ]
       },
       {
@@ -1087,18 +1155,34 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "Swing seat, rated Lean Democratic (Cook). Eugene Vindman (D) is renominated without a primary; three Republicans compete Aug 4 after frontrunner Tara Durant suspended her bid.",
+        note: "Swing seat. Eugene Vindman (D) was renominated without a primary; retired Army Lt. Col. Doug Ollivant won the Aug 4 Republican primary with about 56%, over Philip Harding (~31%) and Rick Smithers (~13%). Early frontrunner state Sen. Tara Durant had suspended her campaign May 22 to defend her state Senate seat. Figures are unofficial pending certification. Cook's rating is reported as Lean Democratic in some sources and Likely Democratic in others [Verify].",
         candidates: [
           { name: "Eugene Vindman (incumbent)", party: "D", winner: false,
             positions: ["Lower utility, grocery, and diesel costs (Diesel Prices Relief Act)","Protect federal workers and military families","Anti-corruption and rule-of-law accountability"],
             differentiators: ["Retired Army colonel and JAG known from the first Trump impeachment","$6.6M cash on hand as of June 30, 2026 (Q2 FEC) — reported as a Virginia record for a House candidate at this stage","Sole qualifying Democrat after the redistricting reversal reshuffled the field"],
             supporters: ["Proven fighter who flipped and held a swing seat","Delivers for the district's federal and military households"],
             opponents: ["Critics cast him as a nationally famous impeachment figure who financed his 2024 campaign largely with out-of-state money (nearly 92% from outside Virginia, per NOTUS)","Insufficiently focused on affordability, say GOP rivals"] },
-          { name: "[Republican nominee — decided in the Aug 4, 2026 primary]", party: "R", winner: false,
-            positions: ["[Decided Aug 4] Field themes: deregulation for business and housing","Energy: natural gas and small modular nuclear","Election integrity (voter ID, roll maintenance)"],
-            differentiators: ["Three-way field: Doug Ollivant (retired Army lt. colonel, ex-NSC director), Philip Harding (Prince William entrepreneur), Rick Smithers (pastor/builder — lives outside the district and pledges to move)","Early frontrunner state Sen. Tara Durant suspended her campaign in May","[Verify final ballot]"],
-            supporters: ["Ollivant's national-security résumé could match Vindman's military brand"],
-            opponents: ["A late-forming, underfunded field against a $5M incumbent"] }
+          { name: "Doug Ollivant", party: "R", winner: false,
+            positions: [
+              "All-of-the-above energy with small modular nuclear and natural gas (campaign site)",
+              "Treat housing as a supply problem — cut zoning and development regulation (campaign site)",
+              "Strong enforcement against unlawful entry; fentanyl trafficking as a security priority (campaign site)"
+            ],
+            differentiators: [
+              "Retired Army lieutenant colonel who led the planning team behind the 2007 Baghdad 'Surge'",
+              "Director for Iraq at the National Security Council under both Bush and Obama",
+              "Raised $251,134 with $65,801 on hand through July 15 (FEC) against Vindman's $6.57M"
+            ],
+            supporters: [
+              "A substantive national-security record rather than a generic first-time candidate",
+              "Casts Vindman as a Washington insider defending the status quo while district costs rose",
+              "Argues affordability comes from cutting taxes and regulation, not adding programs"
+            ],
+            opponents: [
+              "Vindman's campaign says he spent months proving loyalty to his party's most extreme voices",
+              "Faces roughly a 50-to-1 money disadvantage against the incumbent",
+              "A local outlet reported his campaign repeatedly circulated pre-2021 district maps, including in a paid ad [Verify — single low-profile source]"
+            ] }
         ]
       },
       {
@@ -1123,17 +1207,18 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "Virginia's most Democratic district (~76,000 federal workers live here). Don Beyer (D), 76, faces four Aug 4 primary challengers running on generational change.",
+        note: "Virginia's most Democratic district (~76,000 federal workers live here). Don Beyer (D), 76, held renomination on Aug 4 with about 67%, over Mo Seifeldein (~18%), Adam Dunigan (~9%), Michael Duffin (~3%) and Lorena Bruner (~3%) — four challengers ran on generational change but none consolidated the roughly one-third anti-incumbent vote. Figures are unofficial pending certification.",
         candidates: [
           { name: "Don Beyer (incumbent)", party: "D", winner: false,
             positions: ["Defending federal workers against layoffs","Climate policy","AI policy and gun safety [Verify current planks]"],
-            differentiators: ["In Congress since 2015; former lieutenant governor and ambassador","Endorsed by Sens. Warner and Kaine","Faces four primary challengers — several former federal workers — making his age (76) the central issue"],
-            supporters: ["Deeply experienced and effective for a federal-worker district","Wrong moment to surrender seniority"],
-            opponents: ["Challengers say he has 'stayed too long' and the party needs new fighters","A July primary forum turned contentious over the generational question"] },
-          { name: "[GOP candidate — Tony Sabio, pending confirmation]", party: "R", winner: false,
-            positions: ["[Verify] — negligible coverage","[Verify]","[Verify]"],
-            differentiators: ["Cardinal News lists Tony Sabio as the Republican; earlier reporting described a three-way primary [Verify final ballot]","District is Safe Democratic","[Verify]"],
-            supporters: [], opponents: [] }
+            differentiators: ["In Congress since 2015; former lieutenant governor and ambassador","Endorsed by Sens. Warner and Kaine","Held renomination with about 67% against a four-way field that made his age the central issue"],
+            supporters: ["Deeply experienced and effective for a federal-worker district","Wrong moment to surrender seniority","Won an outright majority against four challengers rather than backing into a plurality"],
+            opponents: ["Challengers said he has 'stayed too long' and the party needs new fighters","A July primary forum turned contentious over the generational question","About a third of primary voters chose someone else"] },
+          { name: "Tony Sabio", party: "R", winner: false,
+            positions: ["[Verify] — negligible coverage of his platform could be located","[Verify]","[Verify]"],
+            differentiators: ["The only Republican to qualify for the VA-8 ballot","District is Safe Democratic","No FEC fundraising figure could be sourced this pass [Verify]"],
+            supporters: ["Gives VA-8 Republicans a name on the ballot in a district the party rarely contests [Verify]"],
+            opponents: ["Virginia's most Democratic district — Beyer has never won it with less than a landslide [Verify]","No sourceable campaign presence or platform was located [Verify]"] }
         ]
       },
       {
@@ -1158,18 +1243,35 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "Morgan Griffith (R) seeks a ninth term in Virginia's reddest district (R+22); three Democrats compete Aug 4.",
+        note: "Morgan Griffith (R) seeks a ninth term in Virginia's reddest district (R+22); he was unopposed for renomination. Cattle farmer Joy Powers won the Aug 4 Democratic primary outright with about 52%, over Adam Murphy (~36%) and Douglas Crockett (~12%). Figures are unofficial pending certification. Cook rates the seat Solidly Republican.",
         candidates: [
           { name: "Morgan Griffith (incumbent)", party: "R", winner: false,
             positions: ["Coal and natural-gas energy production","Fighting EPA regulatory burdens","Senior Energy & Commerce role"],
-            differentiators: ["In Congress since 2011","No GOP primary [Verify]","Constituent-service reputation"],
-            supporters: ["Workhorse defender of the region's energy economy"],
+            differentiators: ["In Congress since 2011 — winning in November would be a ninth term","Unopposed for renomination; no VA-9 Republican primary was held","$973,866 cash on hand, roughly 70 times Powers' total"],
+            supporters: ["Workhorse defender of the region's energy economy","His office notes the district spans 9,113 square miles and he has logged 356,000+ miles covering it"],
             opponents: ["The region has lost hospitals, jobs, and young people under one-party representation"] },
-          { name: "[Democratic nominee — decided in the Aug 4, 2026 primary]", party: "D", winner: false,
-            positions: ["[Decided Aug 4] Field themes: rural healthcare and reversing Medicaid cuts","Broadband and economic opportunity","Farm Bill reform"],
-            differentiators: ["Three-way field: software developer Adam Murphy (Medicare for All, no corporate PACs), cattle farmer Joy Powers ('H.O.M.E. Plan'), retired attorney-pastor Douglas Crockett ('Prosperity Platform')","Exactly three qualified per the Dept. of Elections — a widely-listed fourth name, Brandi Hall, is NOT on the qualified list","District is R+22"],
-            supporters: ["An unusually substantive field for a long-shot district","All three ran on written, named policy platforms rather than slogans"],
-            opponents: ["An R+22 district Morgan Griffith has held since 2011","Griffith was unopposed for renomination and starts with every structural advantage","None of the three has held elected office [Verify]"] }
+          { name: "Joy Powers", party: "D", winner: false,
+            positions: [
+              "Protect rural hospitals and grow the rural healthcare workforce (campaign site)",
+              "Hold corporations accountable on prices; lower power bills (campaign site)",
+              "Link schools to apprenticeships and local employers (campaign site)"
+            ],
+            differentiators: [
+              "Fourth-generation cattle farmer on a 350-acre Bedford County family farm; adoptive parent through foster care",
+              "Won a three-way primary outright with about 52%, 12.5 points clear of the runner-up",
+              "$13,940 cash on hand to Griffith's $973,866; says over 90% of it came from inside the district"
+            ],
+            supporters: [
+              "An authentic rural candidate with FFA, 4-H and Farm Bureau roots in a district Democrats have struggled to speak to",
+              "Populist framing built to cross party lines — 'the people at the top versus everybody down here'",
+              "Published a 40-page plan on hospital drive times, mine-land reclamation and local food processing"
+            ],
+            opponents: [
+              "Griffith has not fallen below 65% since 2012 and took 72.5% in 2024",
+              "Outspent roughly 70-to-1; a first-time congressional candidate who lost a House of Delegates race in 2025",
+              "A primary rival accused her of not engaging seriously with race and representation questions in the party",
+              "Her reported positions on abolishing ICE and on military aid to Israel sit far from an R+22 district's consensus [Verify — no Republican attack on them has been reported]"
+            ] }
         ]
       },
       {
@@ -1194,7 +1296,7 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "Suhas Subramanyam (D) is renominated without a primary; three low-dollar Republicans compete Aug 4 after fundraising leader Sam Wong withdrew.",
+        note: "Suhas Subramanyam (D) was renominated without a primary. Retired Air Force Col. Dave Beckwith won the Aug 4 Republican primary with about 72.5%, over Julie Anna Perry (~20.3%), Anthony Suttles (~5.5%) and Sam Wong (~1.6%) — Wong had withdrawn after ballots were printed, so his name still drew votes. Figures are unofficial pending certification. The seat is D+6 and Harris carried it by about 8 points.",
         candidates: [
           { name: "Suhas Subramanyam (incumbent)", party: "D", winner: false,
             positions: ["Lowering family costs","Abortion rights","Tech and AI accountability [Verify 2026 emphases]"],
@@ -1202,10 +1304,26 @@ const HOUSE_RACES = {
             supporters: ["Pragmatic and constituent-focused"],
             opponents: ["Tied to federal spending, cost-of-living failures, and Loudoun education controversies"] },
           { name: "[Republican nominee — decided in the Aug 4, 2026 primary]", party: "R", winner: false,
-            positions: ["[Decided Aug 4] Field themes: national security","Cutting wasteful spending","Education and parental rights"],
-            differentiators: ["Three active candidates: Dave Beckwith (30-yr Air Force veteran, ex-deputy assistant secretary of defense, $25,665 raised), teacher Julie Perry ($8,146), Anthony Suttles (no FEC reports)","⚠ Fundraising leader Sam Wong WITHDREW after ballots were printed — his name still appears and votes for him still count","A plurality primary this cycle, unlike the ranked-choice contest VA-10 Republicans used in 2022"],
-            supporters: ["Beckwith brings a 30-year Air Force career and senior Pentagon experience to a national-security-heavy district","An open, low-cost primary let candidates without party backing compete"],
-            opponents: ["A low-dollar field against a well-funded incumbent","Subramanyam was unopposed for renomination and the seat is rated Solid/Safe Democratic","A withdrawn candidate still on the ballot could scramble the result and delay a clear nominee"] }
+            positions: [
+              "Keep taxes low and cut regulation; recover improper federal payments (campaign site)",
+              "All-of-the-above energy strategy including reinvestment in nuclear (campaign site)",
+              "Apply a 30-year Pentagon acquisition career to oversight of federal programs (campaign site)"
+            ],
+            differentiators: [
+              "Retired Air Force colonel — 30 years, later a Defense Intelligence Senior Leader at the National Reconnaissance Office",
+              "Won the primary outright with about 72.5% in a four-name field",
+              "Raised $107,334 through July 15 (FEC), of which $50,000 was a loan to his own campaign"
+            ],
+            supporters: [
+              "Three decades running large Pentagon acquisition programs maps directly onto congressional oversight",
+              "Consolidated the base outright rather than backing into a plurality in a split field"
+            ],
+            opponents: [
+              "VA-10 is D+6, Harris carried it by about 8 points, and Subramanyam won it by 4.5 in 2024",
+              "No prior elected office; a second attempt after losing the 2022 VA-10 nomination",
+              "Nearly half his money is his own, which critics read as thin party investment in an expensive Northern Virginia media market [Verify]",
+              "No endorsement from the NRCC or any Virginia officeholder could be located [Verify]"
+            ] }
         ]
       },
       {
@@ -1240,7 +1358,13 @@ const HOUSE_RACES = {
           { name: "[Republican candidate — unsettled]", party: "R", winner: false,
             positions: ["[Verify] — sources conflict on the GOP ballot","[Verify]","[Verify]"],
             differentiators: ["Possible candidates: banking executive Nathan Headrick (pledged $2M self-funding), 2024 nominee Michael Van Meter (20-year FBI veteran), or perennial candidate Arthur Purves [Verify final ballot]","District is D+18","[Verify]"],
-            supporters: [], opponents: [] }
+            supporters: [
+              "Whoever holds the line gives VA-11 Republicans a name on the ballot in a district the party has not seriously contested in years [Verify]"
+            ],
+            opponents: [
+              "A D+18 district where the 2025 special was lost 75.1% to 24.7% [Verify]",
+              "The Republican ballot line was still unsettled at this update, so no campaign, platform or fundraising can be assessed [Verify]"
+            ] }
         ]
       },
       {
@@ -1275,7 +1399,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Virginia Elections Hub", lastUpdated: "August 4, 2026" };
+const SITE_META = { name: "Virginia Elections Hub", lastUpdated: "August 5, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — VA county-level down-ballot research is the next phase).
