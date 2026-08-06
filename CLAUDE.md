@@ -51,7 +51,8 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 | `in.html` | Indiana — eighteenth fully built state (92 counties, 9 districts, May 5 primary results). Built Aug 4, 2026 from ky.html. ⚠ **INDIANA DID NOT REDISTRICT** — the state SENATE killed the proposed 9R-0D map 31–19 on Dec 11, 2025, with 21 Republicans defecting; 2026 uses the Oct 2021 HEA 1581 map, verified by the Census 118th/119th county files being byte-identical. NO U.S. Senate race (no Class 2 seat) and NO governor (Braun to 2028). Statewide = SoS + Comptroller + Treasurer, all nominated at PARTY CONVENTIONS not the primary, plus 3 Court of Appeals retentions and 2 constitutional amendments. ⚠ Incumbent SoS **Diego Morales was thrown OFF the ballot by his own party's June 20 convention**, finishing third; Beau Bayh (D) holds ~15× the GOP nominee's cash and ex-Indianapolis mayor Greg Ballard runs as an independent. Marquee House seat is **IN-1 (D+1)**, Indiana's only competitive district — and raters moved it AWAY from Republicans after the primary. Built WITH voices from the start. No LOCAL_RACES yet |
 | `ia.html` | Iowa — nineteenth fully built state (99 counties, 4 districts, June 2 primary results). Built Aug 4, 2026 from in.html. ⚠ **THE MOST ELECTORALLY EVENTFUL STATE ON THE SITE.** For the FIRST TIME SINCE 1968 both the U.S. Senate seat and the governorship are OPEN (Ernst and Reynolds both retiring), and the Auditor's office is open too (Sand vacated it) — three open statewide seats. **Senate:** Hinson (R) vs. Turek (D), moved by all three raters Solid R → Likely R → **Lean R**. **Governor: TOSS-UP by all three raters** — and the primary produced the cycle's biggest upset, businessman Zach Lahn beating Rep. Randy Feenstra by 1,652 votes DESPITE Trump's endorsement, reported as the first Trump-backed primary loss of the 2026 midterms. **Districts: three of four are open or competitive** — IA-1 is a TOSS-UP and a THIRD consecutive Miller-Meeks–Bohannan rematch (decided by 799 votes in 2024, and by SIX votes in the predecessor seat in 2020); IA-2 is OPEN (Hinson vacated) and moved to Lean R; IA-3 is a TOSS-UP; IA-4 is OPEN (Feenstra vacated) but Solid R. Iowa has **three of its four districts on the DCCC's Red to Blue list**. ⚠ **UNIQUE ON THIS SITE: NO IOWA COUNTY IS SPLIT** — state law forbids it, so every `d` value is exact rather than a plurality call. Built WITH voices from the start. No LOCAL_RACES yet |
 | `il.html` | Illinois — twentieth fully built state (102 counties, 17 districts, March 17 primary results). Built Aug 5, 2026 from ma.html — **the first build to use the `ds` multi-district model from the start**, because IL districts 1, 3, 4, 5 and 9 sit ENTIRELY inside Cook County and would otherwise be unreachable (lessons #12). Cook overlaps 11 districts; 32 of 102 counties are split. Map proved exact by arithmetic (CD1–16 = 753,677 each, CD17 = 753,676, totalling 12,812,508 — zero deviation). ⚠ **FIVE OPEN U.S. House seats** — IL-2 (Kelly ran for Senate), IL-4 (García retired), IL-7 (Davis retired), IL-8 (Krishnamoorthi ran for Senate), IL-9 (Schakowsky retired). OPEN U.S. Senate (Durbin retiring): Stratton vs. Tracy, Solid D. Governor: Pritzker seeking a THIRD term vs. Bailey in the first IL gubernatorial rematch since 1986, plus ballot-qualified independent Corbett. ⚠ **NO Illinois district is rated competitive by any rater** — IL-17 is closest by margin but all three say Solid/Safe D. ⚠ **Giannoulias is running for TWO offices at once** (SoS on the Nov ballot + Chicago mayor Feb 2027). NO statewide ballot questions. Built WITH voices from the start. No LOCAL_RACES yet |
-| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH/KY/IN/IA/IL redirect to their dedicated pages |
+| `ms.html` | Mississippi — twenty-first fully built state (82 counties, 4 districts, March 10 primary results). Built Aug 6, 2026 from il.html. ⚠ **MISSISSIPPI ELECTS ITS STATE OFFICERS IN ODD YEARS** — Governor, Lt Gov, AG, SoS, Treasurer, Auditor and Ag Commissioner are NOT on the 2026 ballot (next 2027), so the statewide ballot is just U.S. Senate plus five nonpartisan Court of Appeals seats, four of them uncontested. NO Supreme Court seat and NO certified ballot measure (the citizen-initiative process has been dead since 2021). Senate: Hyde-Smith (R) vs. **Scott Colom (D)** — NOT Ty Pinkins, who left the party in July 2025 and is on the ballot as an INDEPENDENT. Only 4 counties are split; Jackson itself straddles MS-2/MS-3. No district is rated competitive by any rater. Built WITH voices from the start. No LOCAL_RACES yet |
+| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH/KY/IN/IA/IL/MS redirect to their dedicated pages |
 | `favicon.svg` | Gold-gradient circle + white checkmark (primary favicon, matches site crest) |
 | `favicon.png` | 32px PNG fallback |
 | `favicon.ico` | Multi-size ICO (16/32/48) at root for legacy auto-discovery |
@@ -149,7 +150,8 @@ must appear AFTER its declaration; a top-level TDZ error kills the whole script 
 ### index.html (national)
 ```
 ST / NAME     : fips → abbr / full name             CAP: capitals (currently unused on this page)
-BUILT         : { "37": nc, "45": sc, "13": ga, "51": va, "24": md, "10": de, "34": nj, "36": ny, "44": ri, "33": nh, "09": ct, "50": vt, "23": me, "25": ma, "54": wv, "39": oh, "21": ky, "18": in, "19": ia }
+BUILT         : 21 fips -> page (37 nc, 45 sc, 13 ga, 51 va, 24 md, 10 de, 34 nj, 36 ny, 44 ri, 33 nh,
+                09 ct, 50 vt, 23 me, 25 ma, 54 wv, 39 oh, 21 ky, 18 in, 19 ia, 17 il, 28 ms)
 PARTIAL       : Set of 3 fips (DC FL AL) → lighter gold tier
 CALLOUTS      : label anchor coords for 9 small states + DC
 destFor(fips) : BUILT[fips] if fully built, else state.html?state=XX
@@ -183,7 +185,7 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of August 5, 2026)
+## Current state (as of August 6, 2026)
 
 - **NC (full):** 2024 statewide results (Gov, Lt Gov, AG, Supreme Court Seat 6) + all 14 US House
   districts (2024 + 2026) + 2026 US Senate (Cooper vs. Whatley vs. Bray, rated Lean D). NC primary
@@ -280,6 +282,10 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
    Republican Joshua Bechhoefer. U.S. House at-large: Becca Balint (D, Solid D) vs. 2024 nominee Mark Coester (R).
    2024 Gov as history. AG Clark / SoS Copeland Hanzas / Treasurer Pieciak (all D incumbents) are noted in
    CLAUDE.md but NOT yet carded on the page — add them when platforms can be sourced. No LOCAL_RACES yet.
+- **MS (full, added Aug 6, 2026):** the shortest statewide ballot on the site, and deliberately so — Mississippi
+  elects its state officers in ODD years, so 2026 is just U.S. Senate (Hyde-Smith vs. Colom vs. Pinkins as an
+  independent) plus five nonpartisan Court of Appeals seats, four uncontested. No Supreme Court race, no ballot
+  measure. All 4 districts + 2024 general history; only 4 split counties, all carrying `ds`. See the build record.
 - **4 marquee states (STATE_RACES):** AL (Tuberville–Jones
   rematch; Senate open seat nominees Moore–Wess), FL
   (pre-primary: Donalds/Jolly/Pizzo + Moody special — **Aug 18 primaries pending**), NY
@@ -360,6 +366,26 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
    County, so an IL page needs the `ds` model from the start. Any future dense-metro state (IL, MI, PA
    around Philadelphia, TX, CA, FL) must be built with `ds` — check the reachability test before shipping.
 
+13. **⚠⚠ THE CENSUS CD119 RELATIONSHIP FILE DESCRIBES THE MAP THAT *ELECTED* THE CURRENT CONGRESS — NOT
+   NECESSARILY THE MAP IN FORCE FOR THE NEXT ELECTION.** Caught Aug 6, 2026, before shipping, and it would
+   have been invisible to every test. An Alabama county→district table was derived from
+   `tab20_cd11920_county20_natl.txt` plus MCDC Geocorr and **proved exact by arithmetic** — all 7 districts
+   at 717,754 against a 717,754.1 ideal, a total deviation of one person. It was still the **wrong map for
+   2026**: that file encodes the court-drawn *Allen v. Milligan* remedial plan used in **2024**, and after
+   *Louisiana v. Callais* the Supreme Court cleared Alabama on **May 11, 2026** to revert to its 2023
+   legislature-drawn map. Alabama's 2023 map was never used in an election, so it appears in **neither** the
+   CD118 nor the CD119 relationship file.
+   ➤ **The arithmetic proof proves TRANSCRIPTION, not CURRENCY.** A perfect population check tells you that
+   you copied a map correctly; it tells you nothing about *which* map you copied. The two are independent
+   questions and both must be answered.
+   ➤ **Therefore, for every state build, answer "which map governs THIS election?" from news and the state's
+   own sources BEFORE deriving any table** — and treat mid-decade litigation and post-*Callais* reversion as
+   live risks in any state with a VRA §2 case (AL, LA, GA, TX, FL, SC). The byte-identical CD118/CD119 check
+   is strong evidence of *no change through the 119th*, but it cannot see a change enacted for the 120th.
+   ➤ Related tell that would have caught it sooner: Alabama held a **special primary** on Aug 11, 2026 in the
+   four districts whose lines moved, and voided the May 19 results in those districts. **A state re-running
+   primaries mid-cycle is a redistricting change until proven otherwise.**
+
 ## Testing (`tests/` — plain Node.js, zero dependencies)
 
 Requires Node.js (any recent LTS). Run the whole suite from the site root:
@@ -372,7 +398,7 @@ node tests/run-all.js
 |------|----------------|
 | `tests/parse-check.js` | Every inline `<script>` in every page must compile (syntax errors only) |
 | `tests/smoke-test.js` | Executes each page's scripts top-to-bottom with DOM stubs, cut at the first `d3.` usage; runs state.html for all 10 featured states + controls (TX, CA) + verifies the NC→nc.html redirect. **This is the test that catches declaration-order/TDZ bugs.** |
-| `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config, now 19 pages): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly, **and the map `<XX>_STATE_FIPS` constant matches the COUNTIES prefix** (quirk #10). Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
+| `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config, now 21 pages): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly, **and the map `<XX>_STATE_FIPS` constant matches the COUNTIES prefix** (quirk #10). Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
 | `tests/label-fit.js` | **The national map's `LABEL_ADJ` labels must clear their state borders.** Measures clearance (anchor → nearest boundary) against baked geometry and requires 9.66px = 8.76 glyph half-diagonal + 0.4 stroke + 0.5 simplification slack. Added July 24, 2026 after the FL/LA labels shipped clipping *twice* — both earlier passes hit-tested the anchor POINT, which is inside the state even when the box around it is not. HI carries a documented exempt floor (its island cannot do better) |
 | `tests/fixtures/state-label-rings.json` | Projected, simplified state outlines for the 42 inline-label states (48KB). Built by `tools/gen-label-fixture.js`; records the projection it came from so `label-fit.js` fails loudly instead of checking stale geometry |
 | `tests/lib.js` | Shared helpers: inline-script extraction, the d3 cut, DOM stubs, vm sandbox runner |
@@ -506,8 +532,12 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
      each state with the glyph box overlaid, which showed the old FL box hanging into the Gulf and the
      new one clean. That trick is worth reusing when the browser tools are blocked.
 
-**Queue status:** items 1–3 and 5 are complete. **Item 4 (voices) is the owner's top priority** — work it
-every run alongside the state builds.
+**Queue status (as of Aug 6, 2026): items 1, 2, 3 and 5 are COMPLETE, and item 4 has been at ZERO gaps
+site-wide since Aug 5.** The queue is therefore empty of open work — what remains is *maintenance*: every new
+state must be built WITH voices, and `node tools/voices-report.js --summary` must read 0 at the end of every
+run. It read **0 missing / 622 candidates across 21 pages** at the end of the Aug 6 run (Mississippi shipped
+with 21 candidates and 0 gaps). If the owner adds nothing new, spend the freed time on state builds, the
+time-sensitive calendar, and the incumbent-status sweep.
 
 ## Backlog / roadmap
 
@@ -645,10 +675,14 @@ every run alongside the state builds.
    ideal of 797,592), which independently validates every assignment.
    **ILLINOIS was COMPLETED Aug 5, 2026** (see the build record below) — 102 counties / 17 districts, the first build
    to use the `ds` multi-district model from the start.
-   **Built bloc is now 20 (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA WV OH KY IN IL IA)** — with Illinois in place the
-   run from Georgia to Maine and west to Iowa is CONTIGUOUS again (index.html's prose was updated to say so).
+   **MISSISSIPPI was COMPLETED Aug 6, 2026** (cloned from il.html; 82 counties / 4 districts / U.S. Senate + five
+   nonpartisan Court of Appeals seats; built WITH voices from the start). See the build record below.
+   **Built bloc is now 21 (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA WV OH KY IN IL IA MS)** — the run from Georgia
+   to Maine and west to Iowa, plus Mississippi on the Gulf (index.html's prose says exactly this).
    **Next targets:** **PA** (banked below — build it AFTER Aug 10, 2026, off the DOS certified list; the county→district
-   map is still the hard blocker), then **MI**, then **WI/MN/MO**.
+   map is still the hard blocker), **AL** (fully researched and banked below — build it AFTER Aug 12, once the Aug 11
+   special primary and independent qualifying both close, and ONLY off the 2023 legislature map), then **MI**,
+   then **WI/MN/MO**.
    ⚠ **MI is NOT ready.** Its primary was Aug 4, 2026 and as of Aug 5 the **Democratic U.S. Senate primary was still
    too close to call** (Wikipedia showed El-Sayed at 48.6% over Stevens; Bridge Michigan and the Washington Post both
    called it uncalled), with no certification — county canvasses run for weeks. Governor IS set: Benson (D) vs. James
@@ -866,6 +900,274 @@ every run alongside the state builds.
      through reporting that cites ISBE. Cook, Sabato and Inside Elections all 403 as well. Pull the ISBE Vote Totals
      Book and the certified general-election candidate list manually before publishing.
 
+   ### ✅ MISSISSIPPI — BUILT Aug 6, 2026 (21st state). The notes below are the build record; do not re-research.
+   Cloned from **il.html** (chosen for its `ds` merge logic and plain JS keys). Shipped with voices on every upcoming
+   candidate — 21 candidates, 0 gaps.
+   - **The map was proved TWO independent ways and they agreed exactly.** Operative plan: **HB 384 (2022 Regular
+     Session)**, signed by Gov. Reeves **Jan 24, 2022**; NO mid-decade redraw. Verified structurally — the Census
+     `tab20_cd11820` and `tab20_cd11920` county relationship files for Mississippi are **byte-identical across all 86
+     rows**. The county→district table was derived (a) by MCDC Geocorr 2022 county→cd119 with pop20 weights and (b)
+     independently from the Census **tract-level** CD119 relationship file joined to 2020 PL 94-171 tract populations,
+     with area-proration inside the handful of CD-split tracts. **Zero mismatches on all 82 counties.** Arithmetic:
+     740,319 / 740,319 / 740,320 / 740,321 against an ideal of 740,319.75 — a **one-person** maximum deviation.
+   - ⚠ **Do NOT confuse the congressional map with *NAACP v. State Board of Election Commissioners*** — that case
+     redrew **state legislative** districts only. SCOTUS vacated the trial judgment May 18, 2026 in light of *Callais*,
+     restoring the March 2025 legislative plans. None of it touched these congressional lines.
+   - ⚠ **`BlockAssign_ST28_MS_CD.txt` is the 116th Congress map (pre-HB 384) and is unusable.** Same trap as IL/IN.
+   - **Only 4 counties are split:** Hinds (MS-2 over MS-3), Jones (MS-4 over MS-3), Madison (MS-3 over MS-2),
+     Oktibbeha (MS-3 over MS-1). All four carry `ds`. **Jackson, the capital, is itself split** — about 84% of the city
+     is in MS-2, and MS-3's share of Hinds County is essentially just the city's northeastern corner.
+   - ⚠ **County-name traps** (all correct in the page, checked against `counties-10m.json`): **DeSoto** (one word),
+     **Jefferson Davis** (distinct from plain **Jefferson**, 28063), **Pearl River**, **Leflore** (no space),
+     **Yalobusha**, **Tallahatchie**, **Itawamba**, **Issaquena**, **Oktibbeha**, **Noxubee**. Also note **Jackson
+     County** (28059) is a Gulf Coast county in MS-4 and is NOT the capital city.
+   - ⚠ **MISSISSIPPI ELECTS STATE OFFICERS IN ODD YEARS.** Governor, Lt Gov, AG, SoS, Treasurer, Auditor and
+     Agriculture Commissioner were elected Nov 2023 and are next up **Nov 2027** — they are NOT on this ballot, and the
+     page says so explicitly. Wicker's Class 1 Senate seat is not involved either (next 2030).
+   - **NO statewide ballot measure is certified**, and there is no Supreme Court race. The initiative process has been
+     defunct since the state Supreme Court struck it down in 2021; the SoS's 2026 elections calendar contains no
+     constitutional-amendment deadlines at all; Wikipedia's national ballot-measure roundup omits Mississippi entirely.
+   - ⚠ **THE SUPREME COURT SITUATION IS A SOURCE CONFLICT WITH A CLEAN OUTCOME.** The SoS calendar says the regularly
+     scheduled Supreme Court election is "enjoined" (Judge Aycock's Dec 19, 2025 VRA order in *White v. State Board of
+     Election Commissioners*); the Fifth Circuit **vacated that order May 12, 2026**, three months AFTER the Feb 2
+     qualifying deadline closed; and Wikipedia says no seats were due in 2026 at all. **Sources disagree on whether
+     anything was ever scheduled — but zero Supreme Court candidates qualified, so nothing is on the ballot.** ⚠ Two
+     seats changed hands after the deadline: Celeste Wilson appointed to District 3 Place 1 effective Aug 1, 2026, and
+     District 3 Place 2 is VACANT. Whether either triggers a special election is UNRESOLVED — worth an SoS check.
+   - ⚠ **CORRECTED PREMISE: the Democratic Senate nominee is SCOTT COLOM, not Ty Pinkins.** Colom, the elected DA for
+     the 16th Circuit, won the March 10 primary with 72.9%. **Pinkins left the Democratic Party in July 2025** and
+     qualified for November as an **INDEPENDENT** by petition. Both are on the SoS certified list.
+   - ⚠ **CORRECTED PREMISE: the primary runoff date was APRIL 7, 2026, not March 31** (SoS 2026 Elections Calendar),
+     and **no Mississippi congressional or Senate race actually required one** — every nomination was settled March 10.
+   - **U.S. Senate is the marquee.** Hyde-Smith (R) took 80.8% over Sarah Adlakha. Safe/Solid R by all four raters, but
+     an **April Impact Research poll had it 42–39–6** — the page carries it WITH the label that Impact Research is a
+     Democratic-aligned firm and it is the only public poll located. The defining backstory is the blue slip:
+     Biden nominated Colom to the federal bench in Oct 2022 and **Hyde-Smith refused to return her blue slip in April
+     2023**, killing it. ⚠ **ATTRIBUTION TRAP:** Wikipedia notes praise for Colom from Wicker, Bennie Thompson, Phil
+     Bryant and Haley Barbour — that attached to the **2022–23 judicial nomination**, NOT his Senate run. Wicker and
+     Bryant back Hyde-Smith now. Not published as endorsements.
+   - **Court of Appeals: 5 seats, only ONE contested** — District 1 Place 1, a SPECIAL election where appointed
+     incumbent John Weddle faces Derek Hopson Jr. (⚠ Weddle's appointment date conflicts: Jan 20, 2024 per Wikipedia
+     vs. Oct 14, 2024 per DeSoto County News; Hopson's biography could NOT be sourced at all). Barnes, McDonald,
+     McCarty and Lawrence all drew no opponent. Nonpartisan; sub-50% goes to a **Dec 1, 2026** runoff. These are
+     carded in STATEWIDE with explicit scope labels naming the Court of Appeals district, because the site has no
+     geography model for appellate districts — each note says plainly which voters actually vote in it.
+   - **Districts:** MS-1 Kelly vs. Cliff Johnson (a notably credentialed challenger — MacArthur Justice Center
+     director — who raised $371,885); MS-2 Thompson (78, in office since 1993) vs. Ron Eller, whose GOP primary was
+     decided by **544 votes** (⚠ election-night reporting said 440 / 50.9–49.1; WLBT headlined that Wilson refused to
+     concede, and no recount outcome could be located); MS-3 Guest (House Ethics chairman) vs. Chiaradio; MS-4 Ezell
+     vs. Hulum vs. Boyanton (I), the only party-switch of the cycle. ⚠ **NO Mississippi seat is rated competitive by
+     any rater** — the page says so plainly rather than implying closeness.
+   - ⚠ **Chiaradio's own campaign site lists a New York mailing address and a non-Democratic party email domain.**
+     Carded as a sourced observation from his own site with [Verify], NOT as an allegation.
+   - **Access notes:** Ballotpedia, Mississippi Today, WJTV and the Vicksburg Post all 403/return empty. The SoS
+     candidate qualifying list and the 2026 Elections Calendar PDF WERE reachable and are the spine of this page.
+     ⚠ **WebFetch's summariser HALLUCINATED TWO CANDIDATE NAMES** ("Tom O'Neill", "Katrina Bello") on a first pass at
+     the Wikipedia MS House article; the research was redone via `?action=raw` wikitext. Treat that as a live risk.
+   - **Follow-ups:** Derek Hopson Jr.'s biography; the two post-deadline Supreme Court vacancies; Bennie Thompson's
+     2026 issue platform (the carded priorities are from 2024-cycle AP reporting); the independent qualifying
+     deadline's statutory basis (Dec 26, 2025 vs. an unexplained "Aug 20" both appear in sources).
+
+   ### ⏸ ALABAMA — RESEARCH BANKED Aug 6, 2026; BUILD GATED TO AFTER AUG 12. Do not re-research what is here.
+   An Alabama build was worked all the way to a finished, arithmetic-verified county map on Aug 6 and **deliberately
+   not shipped**. Two independent reasons, either of which alone is disqualifying:
+   - ⚠⚠ **THE MAP I DERIVED IS THE WRONG MAP** — see lesson #13. After *Louisiana v. Callais* (decided ~Apr 29, 2026),
+     **SCOTUS on May 11, 2026 set aside the rulings blocking Alabama's 2023 LEGISLATURE-DRAWN map**, a three-judge
+     panel blocked it again May 26, and **SCOTUS overturned that panel June 2**. So 2026 runs on the **2023
+     legislature map (ONE majority-Black district), not the court-drawn *Allen v. Milligan* remedial plan.** That 2023
+     map has never been used in an election, so it is in **neither** the CD118 nor the CD119 Census relationship file.
+     **Any Alabama build must start from the 2023 enacted plan's own legal description or block-equivalency file.**
+   - ⚠ **THE FIELD IS NOT FINAL AND CANNOT BE UNTIL AUG 11.** Gov. Ivey **voided the May 19 primary results in
+     districts 1, 2, 6 and 7** and called a **SPECIAL PRIMARY for Aug 11, 2026 with NO RUNOFF** (her proclamation says
+     so explicitly — Alabama Arise's explainer implying a runoff is reciting generic rules and is wrong). **Independent
+     and minor-party qualifying also closes Aug 11 at 5 p.m.**, so *no* Alabama district's November field is final,
+     including the three unaffected ones. **Build the week of Aug 12.**
+   - The page scaffold is trivial: clone `ms.html`, 67 counties / 7 seats in the hero stats, `#almap`,
+     `AL_STATE_FIPS = "01"`, Montgomery capital marker at -86.3009/32.3792, "Not in AL", `SITE_META`, footer sources.
+
+   **✅ THE CORRECT COUNTY→DISTRICT TABLE FOR 2026 — already derived, do NOT re-derive it.** Operative plan:
+   **"Livingston Congressional Plan 3-2023"**, whose legal description the SoS re-posted in May 2026
+   (`sos.alabama.gov/sites/default/files/2026-5-14/Livingston Congressional Plan 3-2023 Legal Description.pdf`).
+   Parsed to census blocks and joined to 2020 PL 94-171 block populations (185,976 blocks summing to exactly
+   5,024,279). **Arithmetic closes to ONE PERSON:** AL-1 through AL-7 = 717,754 / 717,755 / 717,754 / 717,754 /
+   717,754 / 717,754 / 717,754 against an ideal of 717,754.1. Four districts landed on the ideal directly from
+   parsing, which independently validates the whole-county assignments. **6 split counties**, `ds` in parens:
+```
+   01001|Autauga|6        01047|Dallas|7        01093|Marion|4
+   01003|Baldwin|1        01049|DeKalb|4        01095|Marshall|4
+   01005|Barbour|2        01051|Elmore|6 ds:2,6 01097|Mobile|1
+   01007|Bibb|6           01053|Escambia|1      01099|Monroe|7
+   01009|Blount|4         01055|Etowah|3        01101|Montgomery|2
+   01011|Bullock|2        01057|Fayette|4       01103|Morgan|5
+   01013|Butler|2         01059|Franklin|4      01105|Perry|7
+   01015|Calhoun|3        01061|Geneva|2        01107|Pickens|7
+   01017|Chambers|3       01063|Greene|7        01109|Pike|2
+   01019|Cherokee|3       01065|Hale|7          01111|Randolph|3
+   01021|Chilton|6        01067|Henry|2         01113|Russell|2
+   01023|Choctaw|7        01069|Houston|2       01115|St. Clair|3
+   01025|Clarke|7         01071|Jackson|5       01117|Shelby|6
+   01027|Clay|3           01073|Jefferson|7 ds:6,7   01119|Sumter|7
+   01029|Cleburne|3       01075|Lamar|4         01121|Talladega|3 ds:3,6
+   01031|Coffee|2         01077|Lauderdale|4 ds:4,5  01123|Tallapoosa|3
+   01033|Colbert|4        01079|Lawrence|5      01125|Tuscaloosa|7 ds:4,7
+   01035|Conecuh|7        01081|Lee|3           01127|Walker|4
+   01037|Coosa|6          01083|Limestone|5     01129|Washington|7
+   01039|Covington|1 ds:1,2  01085|Lowndes|2    01131|Wilcox|7
+   01041|Crenshaw|2       01087|Macon|2         01133|Winston|4
+   01043|Cullman|4        01089|Madison|5
+   01045|Dale|2           01091|Marengo|7
+```
+   Split-county populations: Covington D1 34,421 / D2 3,149 · **Elmore D6 45,983 / D2 41,994 (the closest call,
+   a 4.5-point margin)** · Jefferson D7 364,402 / D6 310,319 · Lauderdale D4 76,606 / D5 16,958 · Talladega
+   D3 80,220 / D6 1,929 · Tuscaloosa D7 139,964 / D4 87,072.
+   ⚠ **One honest caveat to carry forward:** the SoS PDF's text layer is defective — it omits ~90 Jefferson
+   tracts and has two corrupted tract tokens. Talladega's last 192 people and **the Jefferson D6/D7 division were
+   closed by the equal-population constraint rather than read directly.** Jefferson's plurality (AL-7) rests on
+   that derivation; the 54k margin is comfortable, but an independent block-equivalency file would settle it.
+   ⚠ **County spellings:** `DeKalb` (not "De Kalb") and `St. Clair` (with the period) — both match us-atlas.
+   ⚠ **Regions changed materially from 2024:** AL-1 loses the Wiregrass but keeps the Gulf Coast; **AL-2 becomes a
+   Wiregrass + Montgomery seat and Mobile moves wholly into AL-1.** Birmingham's core is AL-7, its suburbs AL-6.
+   ⚠ **Do NOT use the CD119 relationship file for Alabama** — under it Mobile is split and assigned to AL-2, Clarke
+   is split, and Autauga/Elmore/Montgomery all differ. That is the 2024 court map. See lesson #13.
+
+   **Findings that DO carry over (verified Aug 6, 2026 — these are about candidates, not geography).**
+   - **Calendar:** primary **May 19, 2026**, runoff **June 16, 2026**, general **Nov 3, 2026** (SoS 2026 Election
+     Administration Calendar). Candidate **withdrawal deadline Aug 24, 2026**; the SoS's consolidated certified ballot
+     list is statutorily due **Sept 4–7, 2026** and will be the first authoritative list including independents.
+   - **sos.alabama.gov serves an INCOMPLETE TLS CHAIN** — WebFetch fails, `curl -k` works. Its general-election
+     certifications are **JBIG2 image scans**: `pdftotext` returns zero characters, and they must be rendered (PyMuPDF)
+     and read as images. This is the single most useful access note for Alabama.
+   - ⚠ **USE THE JULY 1 GENERAL-ELECTION CERTIFICATION, NOT THE MARCH QUALIFYING LIST.** One agent read the March list
+     and wrongly reported PSC Place 2 and Supreme Court Place 8 as uncontested; both are contested.
+   - **U.S. SENATE (OPEN, Class 2 — Tuberville vacating):** **Barry Moore (R)** beat Jared Hudson 55.8%–44.2% in the
+     runoff after leading the primary 39.2%; sitting **AG Steve Marshall finished third at 24.5%**, missing the runoff
+     by ~5,300 votes. **Everett Wess (D)** beat Dakarai Larriett 54.6%–45.4%. Solid/Safe R. FEC June 30: Moore $3.79M
+     raised / $627,788 on hand; **Wess $83,341 raised and a NEGATIVE $10,011 balance** (Wikipedia's "$0" is wrong).
+     ⚠ **Craig Jelks (I)** is listed in the November field by two secondary sources but has **no FEC registration** and
+     could not be confirmed against the SoS — carded on state.html with an explicit ballot-status [Verify].
+     ⚠ **Kenneth Paschal was never in this race** (he is running for Alabama House 73). ⚠ **Doug Jones is running for
+     GOVERNOR, not Senate** — a search-summary error that merged the two races.
+   - **GOVERNOR (OPEN, Ivey term-limited):** **Tuberville (R) 85.5%** vs. **Doug Jones (D) 78.6%**, both won outright,
+     no runoff. A rematch of 2020, which Tuberville won by 20.4 points. Cook Solid R (set Jan 23, 2025, unchanged
+     through its **July 10, 2026** refresh), Sabato Safe R (**July 23, 2026**), Inside Elections Solid R (**June 25,
+     2026**) — ⚠ Wikipedia's Sept 2025 dates for Cook and Sabato are *editor access dates*, not rating dates.
+     Alabama state committees as of July 31: Tuberville $9.2M on hand, Jones $1.7M, but **Jones outraised him in July,
+     $622K to $290K**. ⚠⚠ **TUBERVILLE'S ELIGIBILITY IS LIVE AT THE ALABAMA SUPREME COURT** — *State ex rel. Dorgan v.
+     Tuberville*, No. SC-2026-0540, on the 7-year residency requirement. He has survived every challenge (ALGOP
+     dismissed one Feb 2 and ruled for him June 14; a Covington County suit dismissed on standing May 19; a Montgomery
+     County suit dismissed **July 9 on jurisdiction, not the merits**). Plaintiffs appealed July 14; the court granted
+     **expedited briefing July 21 — plaintiffs' briefs due Aug 7, 2026**, response in 14 days, reply a week later.
+     Justice Greg Cook recused. Plaintiffs' counsel says the schedule is "not fast enough" for ALGOP to replace him if
+     he loses. **No ruling as of Aug 6. Re-check this first, every run.**
+     ⚠ Only two names are on the governor's ballot. **Stacy Lee George** appears on alcampaignfinance.com but that is a
+     finance roster, not a ballot roster — do NOT card him. Alabama does not certify write-ins at all.
+   - **DOWN-BALLOT STATEWIDE — ⚠⚠ THE "UNCONTESTED" HYPOTHESIS IS WRONG. Democrats fielded a candidate in ALL SIX
+     offices; there is NO uncontested statewide constitutional race.** Four of the six Democrats (AG, SoS, Treasurer,
+     Auditor, Ag) were simply **unopposed in their primary**, which is why they appear in no primary-results file —
+     but each is a certified November nominee on the **July 1, 2026 Alabama Democratic Party certification**.
+     - **Lt Gov (OPEN, Ainsworth term-limited):** **John Wahl (R)** — Trump-endorsed, entered on the last day of
+       qualifying and resigned as ALGOP chairman the same day; beat Wes Allen ~57.8%–42.2%; raised $3.0M/spent $2.5M —
+       vs. **Phillip Ensler (D)**, a sitting state rep (Montgomery HD 74) who won 196,990–144,858 (57.6%) and spent
+       $141,000. Wahl runs on eliminating the state income tax; **23 Alabama House members and a senator signed a
+       letter saying the lieutenant governor "cannot decrease your taxes."** ⚠ Wahl survived TWO residency challenges
+       (Isbell, rejected by the ALGOP steering committee in Feb; Schulte, dismissed as not facially valid June 30).
+     - **AG (OPEN, Marshall term-limited and lost the Senate primary):** **Katherine Robertson (R)**, Chief Counsel
+       (NOT chief of staff) to Marshall for ~a decade, beat Jay Mitchell 57%–43% and **spent $5.8M** including $2.9M
+       tied to RAGA and Leonard Leo — **the most expensive statewide race of the cycle at $10.8M** — vs.
+       **Jeff McLaughlin (D)**, a former state rep (2000–2010) and Marshall's former law partner who has **raised $0**
+       on a career-long refusal to take contributions. ⚠ **He has NO campaign website and no findable positions** —
+       Alabama Reflector reported exactly that on July 31 after two weeks of unanswered interview requests. That is a
+       documented finding, not a research gap. His one durable policy identity is the PAC-to-PAC transfer ban he wrote.
+     - **SoS (OPEN, Wes Allen ran for Lt Gov and lost):** **Caroleene Dobson (R)**, the 2024 AL-2 nominee, won
+       outright with 65.5% and spent $586,700, vs. **Wayne Rogers (D)**, a former federal prosecutor who spent $16,200
+       and frames the office as an "impartial scorekeeper."
+     - **Treasurer (INCUMBENT):** **Young Boozer (R)**, 68%, spent $199,000 — vs. **Rosilyn "Roz" Houston (D)**, a
+       Santander US senior EVP who managed a $12B balance sheet at BBVA and **spent about $1,300**, the smallest
+       statewide spend of any nominee. ⚠ Her site has NO issues page. ⚠ **No sourced attack line on Boozer exists** —
+       this race has drawn almost no adversarial coverage; say so rather than inventing one.
+     - **Auditor (INCUMBENT):** **Andrew Sorrell (R)** beat Derek Chen by 35.8 points **despite being outspent ~4-to-1
+       and despite ALFA endorsing Chen** — a striking snub of an incumbent. vs. **Violet Edwards (D)**, a Madison
+       County Commissioner (elected 2020, re-elected 2024, first Black woman on that commission) who serves as the
+       commission's liaison to its Board of Registrars — directly relevant, since the Auditor appoints registrars.
+       ⚠ In Aug 2026 Sorrell moved to add closed primaries to the ALGOP platform (passed) and to bar "frivolous"
+       ALGOP litigants from the ballot for seven years (**indefinitely postponed by ~58% of the executive committee**).
+     - **Ag Commissioner (OPEN, Pate ran for Lt Gov):** **Corey Hill (R)**, mayor of Douglas and a poultry/cattle
+       farmer and grocer, beat Christina Woerner McInnis 53.8%–46.2% after a near-three-way primary tie (35.2/34.9/
+       29.9); ALFA- and Grocers Association-endorsed — vs. **Ron Sparks (D)**, who **HELD THIS EXACT OFFICE 2003–2011**
+       (⚠ not 1999–2011) and was the 2010 Democratic nominee for governor. This is the marquee down-ballot race.
+     ⚠ **Number conflicts to avoid printing as settled:** the Lt Gov runoff RAW totals differ across outlets
+     (Reflector 114,604/83,807 vs. ABC 33/40 156,587/117,342 vs. 1819 News 175,724) — they are partial-count snapshots;
+     **the percentages converge at ~57–43, so use percentages.** McInnis's spending is reported as both $138,100 and
+     "over $1 million." Rick Pate is described as both "term-limited" and "did not seek re-election."
+   - **PUBLIC SERVICE COMMISSION — the cycle's biggest down-ballot story: BOTH Republican incumbents were fired by
+     their own primary voters.** Place 1: Cullman County Sheriff **Matt Gentry** crushed 14-year incumbent Jeremy Oden
+     **75%–25%**, and faces **James O. Gordon (D)**, a former state representative. Place 2: **Jim "Zig" Zeigler**
+     (PSC member 1974–78, State Auditor 2015–23) beat appointed incumbent **Chris Beeker III** 51.3%–48.7% **while
+     being outspent roughly $566K to $152K**, and faces **Sheila D. McNeil (D)**, Madison County Democratic chair.
+     ⚠ **Twinkle Cavanaugh is NO LONGER on the Commission** (resigned 2025; Cynthia Lee Almond appointed president
+     June 6, 2025), and the **PSC presidency is a presidential-year office — NOT on the 2026 ballot.**
+     ⚠ **"Chip Beeker" is the FATHER** (resigned Sept 2024); the 2026 incumbent was his son Chris Beeker III.
+     ⚠⚠ **CONTEXT THE PAGE MUST CARRY OR IT MISLEADS: HB 475, signed April 2, 2026, expanded the PSC from 3 members to
+     7**, put it under a governor-appointed secretary of energy, and **banned formal rate-case hearings until 2029**.
+     Ivey appointed four new commissioners June 17, 2026. Alabama Reflector reports this "effectively neutraliz[ed]
+     the results of this year's PSC elections." Alabama pays 17.15¢/kWh, the highest in the South, and the PSC has not
+     held a formal rate case since 1981–82.
+   - **JUDICIAL — 8 seats, 3 contested, 5 already decided.** ⚠ **Chief Justice Sarah Stewart's seat is NOT up** (term
+     to 2030). **Supreme Court Place 8 is the only competitive judicial race:** incumbent **Greg Shaw (R)**, who joined
+     the Feb 2024 ruling that frozen embryos are "children," vs. **AshLeigh Meyer Dunham (D)**, an assisted-reproduction
+     lawyer who conceived her daughter via IVF obtained outside Alabama — and who **outraised him $82,014 to $25,500**.
+     Place 7 (**Brad Mendheim**, also in the IVF majority) drew no Democrat. Civil Appeals Places 4 (**Ben Bowden**,
+     appointed May 2025) and 5 (**Matt Fridy**) and Criminal Appeals Place 4 (**Mary Windom**, presiding judge) all
+     uncontested. Criminal Appeals Place 5 is **OPEN — incumbent Beth Kellum qualified in January then WITHDREW in
+     February 2026** (reason unsourced), so **Riggs Walker effectively won the seat in February without a vote**.
+     ⚠ **Wikipedia swaps Shaw's and Mendheim's place numbers relative to the SoS certifications — use the SoS
+     numbering** (Mendheim = Place 7, Shaw = Place 8). ⚠ Platforms for 6 of 9 judicial candidates could NOT be sourced;
+     that absence is the finding — do not fill it with judicial-philosophy boilerplate.
+   - **BALLOT MEASURES: ⚠ Amendments 1 and 2 were voted on at the MAY 19 PRIMARY and BOTH PASSED** (81.6% and 57.8%).
+     Whether anything separate is certified for November is UNRESOLVED — resolve against the SoS.
+   - **U.S. HOUSE.** ⚠ AL-1, AL-2, AL-6 and AL-7 have **no determined nominees** pending Aug 11.
+     **AL-1 (OPEN — Barry Moore ran for Senate):** GOP field Lucas Burger / **Jerry Carl** / John Mills / Austin
+     Sidwell; Carl is Trump-endorsed (June 24) with ~$438K on hand and is the former member who lost this seat to
+     Moore by 3.4 points in the 2024 member-vs-member primary. Democrat **Clyde W. Jones Jr.** is the nominee (sole
+     filer) — 21-year Army veteran, Bronze Star, past president of Alabama Arise, ~$15K on hand, takes no PAC money.
+     ⚠ ALGOP and Alabama Daily News list FOUR Republicans; an Alabama Reflector headline says three.
+     **AL-2 IS THE MARQUEE AND IT FLIPPED DIRECTION.** The redraw takes it from ~47% Black to ~40% Black, removes
+     Mobile — incumbent **Shomari Figures'** base — and makes it a seat **Trump would have carried by ~14**.
+     Cook/Inside Elections/Sabato/DDHQ all **Likely R (flip)**, The Economist Lean R, VoteHub Tilt R, **Split Ticket
+     Tossup**. Cook PVI **R+7** for the new lines (⚠ Ballotpedia's D+5 is the OLD court-drawn district and is stale).
+     Figures is on **DCCC Frontline**, has **$662,600 on hand** (FEC through July 22) and outraised the GOP frontrunner
+     ~2.8-to-1 in May–June. GOP field: Hampton Harris / Christian Horn / **Rhett Marques** / David Matthews / Joshua
+     McKee / James Richardson. **Marques is Trump-endorsed** and switched over from AL-1 after the map changed.
+     ⚠ Biographies and positions could NOT be sourced for five of the six AL-2 Republicans — the Alabama Reflector's
+     **Aug 5, 2026 Barbour County candidate-forum piece** almost certainly has them but the site blocks automated
+     fetching; **pull it in a browser next run.**
+     **AL-3 (unchanged):** **Mike Rogers (R)**, Chair of House Armed Services, won 83.2%–16.8%; $2.59M on hand; vs.
+     **Victor "Lee" McInnis (D)**, a 28-year defense-intelligence officer, ~$9,461 on hand, no-PAC pledge. Solid/Safe R,
+     PVI R+23; first contested general here since 2022 (no Democrat filed in 2024).
+     **AL-4 (unchanged):** **Robert Aderholt (R)**, 30 years in office, won 77.6%–22.4%; ⚠ he **outspent his receipts**
+     this cycle ($1.02M raised, $1.24M spent, $749,660 on hand). vs. **Amanda Pusczek (D)**, a registered nurse with
+     **$395.79 on hand**. **PVI R+33 — the most Republican district in the United States.**
+     **AL-5 (unchanged, and the ONLY Alabama district whose November ballot is settled):** **Dale Strong (R)**, drew
+     no primary opponent, $1.28M on hand, Trump-endorsed, on Appropriations and Homeland Security; vs. **Andrew Sneed
+     (D)**, a master plumber who founded Whole Home Solutions, won the June 16 runoff 78.4%–21.6% and raised $453,186 —
+     unusually strong for an Alabama Democratic challenger. PVI R+15, Solid/Safe R.
+     **AL-6:** **Gary Palmer (R)** vs. Case Dixon again on Aug 11 (Palmer won the voided May vote 80.8%–19.2%);
+     four Democrats — Jacob Bouma-Sims / Ashtyn Kennedy / **Maurice Mercer** (former Pelham council president, the only
+     one with elected experience) / **Keith Pilkington** (who had already won the nullified May primary).
+     **AL-7:** **Terri Sewell (D)** unopposed for renomination, **$3.65M on hand**, the delegation's only Ways and Means
+     member; Republicans **Ammie Akin** and **David Perry** compete Aug 11. The redraw cuts AL-7's Black voting-age
+     population only slightly, 52% → 50.6%.
+   - ⚠ **BALLOTPEDIA WAS WRONG AT LEAST THREE TIMES ON ALABAMA ALONE:** a phantom AL-5 Republican ("Joseph Terry") on
+     neither the ALGOP list nor the certified results; **Draic Coakley** listed in the AL-3 primary though the FEC shows
+     him as status "N", not a statutory candidate; and write-in Ronald Burnette Jr. in its governor general-election
+     table. Politics1 separately lists an unconfirmed AL-6 independent (**William Puetz**) and miscodes Maurice Mercer
+     as a Republican. **Prefer the party certifications filed with the SoS.**
+   - **HISTORY (from the SoS's own precinct files, summed across all 67 counties):** 2024 President Trump 64.57% –
+     Harris 34.10%; 2022 Governor Ivey 66.91% – Flowers 29.18%; 2022 Senate Britt 66.62% – Boyd 30.88%; 2020 Senate
+     Tuberville 60.10% – Jones 39.74%. ⚠ **There was NO Alabama U.S. Senate race in 2024.** ⚠ **The SoS's statewide
+     summary .xlsx DUPLICATES COUNTY COLUMNS** — it implies Doug Jones got 574,212 primary votes; the correct figure
+     from the precinct workbook is ~286,000. Percentages are unaffected. Use the precinct files.
+
    ### ⏸ PENNSYLVANIA — RESEARCH BANKED Aug 3, 2026; BUILD GATED TO AFTER AUG 10. Do not re-research what is here.
    A PA build was started on Aug 3 (17th state) and deliberately **not shipped**. Two independent reasons:
    - **The ballot field is not final.** Per the PA Dept. of State 2026 general-election calendar, **independent and
@@ -938,24 +1240,43 @@ every run alongside the state builds.
      is only noted in the race text with a [Verify], not carded. The **three constitutional amendments were already
      confirmed verbatim** against the Dept. of Elections' own referenda pages — no work needed there.
      ⚠ Unresolved: **Cook rates VA-7 Lean D in some sources and Likely D in others** — the page states both.
-   - ⚠⚠ **NC-11 TIME-SENSITIVE — DUE NEXT RUN. Rep. Chuck Edwards (R) ENDED his re-election campaign on Aug 5, 2026**
-     amid a threatened House censure, reported the same day by the Asheville Citizen Times, ABC News, KATU and WBMA.
-     nc.html was updated immediately (card renamed "WITHDREW Aug 5, 2026", race note rewritten), but **how Republicans
-     fill the ballot line and who replaces him is UNRESOLVED** — resolve against the NC State Board of Elections.
-     Jamie Ager (D) is the DCCC Red to Blue nominee. **This was caught by the incumbent-status sweep, NOT by the
-     [Verify] report — exactly the Graham failure mode (lessons #11). The sweep earned its keep on its second run.**
-     ⚠ The underlying ethics findings are sourced only via news aggregation so far; the page says "threatened censure"
-     and marks the detail [Verify]. Do not publish specific allegations without a primary source.
-   - ⚠ **OH-7 VOLATILE — recheck within days. Rep. Max Miller (R)** faces domestic-abuse allegations; Sen. Bernie
-     Moreno (his former father-in-law) called him unfit for office and Trump allies pressed him to quit. **As of Aug 5
-     he REFUSED — "I'm not dropping out" — and remains the nominee**, but Ohio's nominee-replacement window closes in
-     early August (**sources conflict: Aug 6 vs. Aug 7 vs. Aug 9 — unresolved, ohiosos.gov 403s**). This card can flip
-     without warning. Also confirmed Aug 5: **OH-1's Libertarian line did NOT change** — John Hancock won that primary
-     with 91.3% and is the nominee; no replacement occurred.
-   - ⚠ **OH-9 health event, deliberately NOT carded:** Rep. Marcy Kaptur (80) was hospitalized after a **hit-and-run
-     crash in Toledo on Aug 2, 2026**; reported "active, alert" and recovering by Aug 4, still an active candidate.
-     It is NOT a status change and is aggregation-sourced only, so it was logged rather than published. **Confirm
-     against a primary source next run** before adding anything to the marquee OH-9 card.
+   - ⚠⚠ **NC-11 — RESOLVED AS FAR AS IT CAN BE, Aug 6, 2026; NEXT CHECK AUG 10–11.** Rep. Chuck Edwards (R) ended his
+     re-election campaign **Aug 5**, two days after the House Ethics Committee released its report. **He did NOT resign
+     from Congress** — he serves out his term, and there is **no special election**; nc.html says so explicitly, because
+     "ended campaign" is widely misread as resignation. **A PRIMARY SOURCE NOW EXISTS** — *In the Matter of Allegations
+     Relating to Representative Chuck Edwards*, adopted **July 22**, released **Aug 3**, at ethics.house.gov — so the
+     findings ARE now published, including the two that cut in his favour (the Committee found **no evidence** he
+     engaged in sexual activity with or explicitly propositioned anyone under his employ, and his response is printed
+     in the report). The Republican line is carded as an unnamed appointee. **Under N.C. Gen. Stat. § 163-114 the
+     district executive committee appoints the replacement**; it meets **Aug 10** and officials cite **Aug 20** as the
+     deadline to certify to the NCSBE. ⚠ The statute's 75-day clause is written to apply to vacancies arising *more
+     than 120 days* out and Edwards withdrew ~90 days out, so **Aug 20 is "the date officials state," not a clean
+     statutory citation** — no NCSBE directive interpreting it was located. A separate **Sept 3** withdrawal deadline
+     and **Sept 4** ballot-mailing date also apply. Floated names (Moffitt, Corbin, Hise, Balkcom, Johnson) are analyst
+     speculation, not declared candidates. **This was caught by the incumbent-status sweep, not the [Verify] report.**
+   - ⚠ **OH-7 — DEADLINE RESOLVED, Aug 6, 2026. It is MONDAY AUG 10, 2026 AT 4 P.M.** The Aug 6/7/9 confusion came from
+     conflating two statutes. **ORC 3513.312** (special-primary route) required withdrawal **before the 90th day**,
+     i.e. Aug 5 — that window closed unused. **ORC 3513.31** (district-committee appointment) is the live route, and
+     the Ohio SoS's own *2026 Elections Calendar* puts it at the **86th day, Sunday Aug 9, extended to Monday Aug 10 at
+     4 p.m. under ORC 1.14**; SoS LaRose has said Aug 10 publicly. (ohiosos.gov 403s to plain fetch — **a browser
+     User-Agent retrieved the calendar PDF**, same trick that worked for the redistricting PDFs.) **Max Miller remains
+     the nominee**, having refused to quit on Aug 5. **NEW Aug 4: the House Ethics Committee opened a review of him —
+     at his own request** — into alleged domestic violence/abuse or illegal drug use, with its standard caveat that
+     reviewing and disclosing allegations "does not itself indicate that any violation has occurred." Both are now on
+     oh.html. **Re-check Aug 11** to confirm the line did not change.
+   - ⚠ **OH-9 — NOW PRIMARY-SOURCED and carded, Aug 6, 2026.** Rep. Marcy Kaptur (80) was injured **Aug 2** when the car
+     she was riding in was struck in Toledo by a driver who fled. **Her own office's Aug 2 statement** (kaptur.house.gov)
+     says she was "active, alert, and being treated for non-life threatening injuries"; her campaign manager was also
+     hurt. Toledo outlets reported her **still hospitalized Aug 5** with no arrest. The race note carries this. ⚠ **Do
+     NOT write that she has confirmed she is continuing her campaign** — nothing sourced says so; her office has issued
+     no statement about her candidacy since Aug 2. She remains the nominee, and Ohio's replacement deadline is the same
+     Aug 10. **Re-check Aug 11.**
+   - ⚠ **ALABAMA — Aug 11 special primary (districts 1, 2, 6, 7) AND the independent qualifying deadline, 5 p.m.**
+     Plus **plaintiffs' briefs due Aug 7** in the Tuberville residency case. **Build al.html the week of Aug 12** off
+     the 2023 legislature map — see the banked Alabama section. state.html's AL marquee cards were refreshed Aug 6.
+   - **MI update (Aug 6):** the Democratic Senate primary **was called Aug 5** — **Abdul El-Sayed** beat Haley Stevens
+     by about a point; he faces Mike Rogers (R). Governor is Benson (D) vs. James (R). Called, **not yet certified**;
+     county canvasses run for weeks. Still not built.
    - ⚠ **IL follow-up — Aug 21, 2026:** the ISBE certifies the general-election ballot. Add any certified minor-party
      or independent lines then (the Senate especially, where three directories disagreed completely).
    - **DE time-sensitive:** July 14 filing deadline, then Sept 15 primary — refresh de.html after
