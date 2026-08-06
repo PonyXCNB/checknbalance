@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mississippi Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every MS election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #msmap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">MS</div>
+      <div class="brand-text">
+        <span class="brand-name">Mississippi Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Mississippi <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 82 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">82</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>4</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>6</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Mississippi…</div>
+      <svg id="msmap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>MS Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">July 22, 2026</span><br>
+      Sources: Mississippi Secretary of State candidate qualifying list and 2026 Elections Calendar, U.S. Census Bureau congressional-district relationship files and 2020 PL 94-171 data, MCDC Geocorr 2022, FEC, Wikipedia, Cook Political Report, Magnolia Tribune, Mississippi Free Press, Clarion Ledger, WLBT, WLOX, Daily Leader, AP.
+    </div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every MS county + its primary US House district(s)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- (1) Counties + primary US House district -----
+// Mississippi has 4 U.S. House districts under HB 384 (2022 Regular Session), signed by
+// Gov. Tate Reeves on Jan 24, 2022. There has been NO mid-decade redraw. Verified
+// structurally: the Census 118th- and 119th-Congress county relationship files for
+// Mississippi are byte-identical across all 86 rows.
+// ⚠ Do NOT confuse this with NAACP v. State Board of Election Commissioners — that
+// litigation concerned STATE LEGISLATIVE districts only and never touched these lines.
+// Only 4 of the 82 counties are SPLIT: Hinds, Jones, Madison and Oktibbeha. Each carries
+// `d` (its population-PLURALITY district, which drives map shading) plus `ds` — every
+// district overlapping it, so a voter in a split county sees both House races.
+// Derived from MCDC Geocorr 2022 (county -> cd119, pop20 weights) and independently
+// re-derived here from Census tract-level CD119 relationship data joined to 2020 PL 94-171
+// tract populations; the two methods agreed on all 82 counties with zero mismatches.
+// Proved by arithmetic: per-district populations come to 740,319 / 740,319 / 740,320 /
+// 740,321 against an ideal of 740,319.75, totalling Mississippi's 2,961,279 exactly — a
+// maximum deviation of ONE PERSON.
+// ⚠ Jackson, the state capital, is itself split: about 84% of the city (and nearly all of
+// Hinds County's population) is in MS-2, with a northeastern slice in MS-3.
+const COUNTIES = {
+  "28001":{n:"Adams",d:2},
+  "28003":{n:"Alcorn",d:1},
+  "28005":{n:"Amite",d:2},
+  "28007":{n:"Attala",d:2},
+  "28009":{n:"Benton",d:1},
+  "28011":{n:"Bolivar",d:2},
+  "28013":{n:"Calhoun",d:1},
+  "28015":{n:"Carroll",d:2},
+  "28017":{n:"Chickasaw",d:1},
+  "28019":{n:"Choctaw",d:1},
+  "28021":{n:"Claiborne",d:2},
+  "28023":{n:"Clarke",d:3},
+  "28025":{n:"Clay",d:1},
+  "28027":{n:"Coahoma",d:2},
+  "28029":{n:"Copiah",d:2},
+  "28031":{n:"Covington",d:3},
+  "28033":{n:"DeSoto",d:1},
+  "28035":{n:"Forrest",d:4},
+  "28037":{n:"Franklin",d:2},
+  "28039":{n:"George",d:4},
+  "28041":{n:"Greene",d:4},
+  "28043":{n:"Grenada",d:2},
+  "28045":{n:"Hancock",d:4},
+  "28047":{n:"Harrison",d:4},
+  "28049":{n:"Hinds",d:2,ds:[2,3]},
+  "28051":{n:"Holmes",d:2},
+  "28053":{n:"Humphreys",d:2},
+  "28055":{n:"Issaquena",d:2},
+  "28057":{n:"Itawamba",d:1},
+  "28059":{n:"Jackson",d:4},
+  "28061":{n:"Jasper",d:3},
+  "28063":{n:"Jefferson",d:2},
+  "28065":{n:"Jefferson Davis",d:3},
+  "28067":{n:"Jones",d:4,ds:[4,3]},
+  "28069":{n:"Kemper",d:3},
+  "28071":{n:"Lafayette",d:1},
+  "28073":{n:"Lamar",d:4},
+  "28075":{n:"Lauderdale",d:3},
+  "28077":{n:"Lawrence",d:3},
+  "28079":{n:"Leake",d:2},
+  "28081":{n:"Lee",d:1},
+  "28083":{n:"Leflore",d:2},
+  "28085":{n:"Lincoln",d:3},
+  "28087":{n:"Lowndes",d:1},
+  "28089":{n:"Madison",d:3,ds:[3,2]},
+  "28091":{n:"Marion",d:3},
+  "28093":{n:"Marshall",d:1},
+  "28095":{n:"Monroe",d:1},
+  "28097":{n:"Montgomery",d:2},
+  "28099":{n:"Neshoba",d:3},
+  "28101":{n:"Newton",d:3},
+  "28103":{n:"Noxubee",d:3},
+  "28105":{n:"Oktibbeha",d:3,ds:[3,1]},
+  "28107":{n:"Panola",d:2},
+  "28109":{n:"Pearl River",d:4},
+  "28111":{n:"Perry",d:4},
+  "28113":{n:"Pike",d:3},
+  "28115":{n:"Pontotoc",d:1},
+  "28117":{n:"Prentiss",d:1},
+  "28119":{n:"Quitman",d:2},
+  "28121":{n:"Rankin",d:3},
+  "28123":{n:"Scott",d:3},
+  "28125":{n:"Sharkey",d:2},
+  "28127":{n:"Simpson",d:3},
+  "28129":{n:"Smith",d:3},
+  "28131":{n:"Stone",d:4},
+  "28133":{n:"Sunflower",d:2},
+  "28135":{n:"Tallahatchie",d:2},
+  "28137":{n:"Tate",d:1},
+  "28139":{n:"Tippah",d:1},
+  "28141":{n:"Tishomingo",d:1},
+  "28143":{n:"Tunica",d:2},
+  "28145":{n:"Union",d:1},
+  "28147":{n:"Walthall",d:3},
+  "28149":{n:"Warren",d:2},
+  "28151":{n:"Washington",d:2},
+  "28153":{n:"Wayne",d:4},
+  "28155":{n:"Webster",d:1},
+  "28157":{n:"Wilkinson",d:2},
+  "28159":{n:"Winston",d:3},
+  "28161":{n:"Yalobusha",d:2},
+  "28163":{n:"Yazoo",d:2},
+};
+
+// ----- (2) Statewide races -----
+// ⚠ MISSISSIPPI ELECTS ITS STATE OFFICERS IN ODD YEARS. Governor, Lt. Governor, Attorney
+// General, Secretary of State, Treasurer, Auditor and Agriculture Commissioner are NOT on
+// the 2026 ballot — they were elected in November 2023 and are next up in November 2027.
+// Sen. Roger Wicker's Class 1 seat is not involved either (he won in 2024; next up 2030).
+// So the 2026 statewide ballot is short: ONE U.S. Senate race plus five nonpartisan Court
+// of Appeals seats, four of which are uncontested.
+// ⚠ NO Mississippi Supreme Court seat is on the ballot and NO statewide ballot measure is
+// certified — the state's citizen-initiative process has been defunct since the Mississippi
+// Supreme Court struck it down in 2021, and the Secretary of State's 2026 elections calendar
+// contains no constitutional-amendment deadlines at all.
+// Primary March 10, 2026; a runoff was scheduled for April 7 but was NOT required in either
+// Senate primary. Nonpartisan judicial races that draw under 50% go to a Dec 1, 2026 runoff.
+const STATEWIDE = [
+  // UPCOMING — 2026 General Election (Nov 3, 2026)
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Mississippi",
+    note: "Mississippi's most-watched federal race. Cindy Hyde-Smith (R) seeks a second full term; she took 80.8% over physician Sarah Adlakha in the March 10 primary. Democrat Scott Colom, the elected district attorney for the 16th Circuit, won a three-way primary with 72.9% — no runoff was needed on either side. Ty Pinkins, the 2024 Democratic Senate nominee, left the party in July 2025 and qualified as an INDEPENDENT by petition. Rated Safe/Solid Republican by Cook (Apr 13), Sabato (Mar 4), Inside Elections (Apr 23) and Decision Desk HQ (Jul 31). ⚠ One April poll by Impact Research — a DEMOCRATIC-ALIGNED firm, and the only public poll located — had it Hyde-Smith 42, Colom 39, Pinkins 6 [Verify sponsor]. No Democrat has won a Mississippi Senate seat since 1982.",
+    candidates: [
+      { name: "Cindy Hyde-Smith (incumbent)", party: "R", winner: false,
+        positions: [
+          "Defending life and protecting the unborn (campaign site, her wording)",
+          "Stopping illegal immigration (campaign site)",
+          "Supporting Second Amendment rights (campaign site)"
+        ],
+        differentiators: [
+          "Appointed to the seat in April 2018 to succeed Thad Cochran — the first woman to represent Mississippi in Congress; won the 2018 special and a full term in 2020",
+          "Sits on Appropriations, Agriculture, Energy & Natural Resources and Rules; was Agriculture Commissioner 2012–2018 and a Democratic state senator until switching parties in 2010",
+          "$5,458,311 raised with $2,535,895 on hand (FEC, June 30, 2026) — about three times her Democratic opponent's cash"
+        ],
+        supporters: [
+          "Her Appropriations and Agriculture seniority is how a small, heavily federally-dependent state secures farm policy and projects like Yazoo Backwater flood control",
+          "A reliable vote for the Trump agenda in a state that backed him decisively — she highlights his endorsement on her own site",
+          "Already won this seat twice, including a nationally-targeted 2018 runoff"
+        ],
+        opponents: [
+          "The Clarion Ledger reported in February 2026 that no bill she has sponsored has become law since she entered the Senate in 2018 — a line used by both her primary challenger and Colom",
+          "She single-handedly blocked a home-state federal judgeship for the prosecutor who is now her opponent, which critics frame as personal obstruction over institutional duty",
+          "Her 2018 \"public hanging\" remark, which she declined to apologize for, remains the defining objection among Black voters in a state that is roughly 38% Black"
+        ] },
+      { name: "Scott Colom", party: "D", winner: false,
+        positions: [
+          "Lowering costs for families (campaign site)",
+          "Saving Mississippi hospitals — protecting financially vulnerable rural hospitals (campaign site)",
+          "Bringing good jobs home, and an agenda to root out corruption in Washington (campaign site)"
+        ],
+        differentiators: [
+          "District attorney for the 16th Circuit since 2016 — the first Black elected DA in that circuit; in 2021 he dropped murder charges against Eddie Lee Howard, who spent 23 years on death row on discredited bite-mark evidence",
+          "Biden nominated him to the federal bench in Oct 2022; Hyde-Smith refused to return her blue slip in April 2023 and the nomination died — the defining backstory of this race",
+          "$2,384,921 raised with $847,045 on hand (FEC, June 30, 2026) — serious money for a Mississippi Democrat, but a 3-to-1 cash deficit"
+        ],
+        supporters: [
+          "The blocked judgeship lets him cast the race as competence and fair dealing against obstruction",
+          "A sitting prosecutor with a high conviction record is unusually insulated from soft-on-crime attacks",
+          "He is running on rural hospital closures and cost of living rather than national culture-war fights"
+        ],
+        opponents: [
+          "No Democrat has won a Mississippi Senate seat since 1982; every rater has this Safe or Solid Republican",
+          "Republicans revive the Soros-linked PAC funding Hyde-Smith cited against his judicial nomination — a charge he denied in writing in April 2023, saying he neither requested nor coordinated it",
+          "A prosecutors' letter he joined opposing criminalization of gender-affirming surgery is used to argue he is out of step with the state, though he says he took no position on transgender sports participation"
+        ] },
+      { name: "Ty Pinkins", party: "I", winner: false,
+        positions: [
+          "Affordable health care access and comprehensive Medicare (campaign site)",
+          "Rural economic investment, housing and middle-class tax cuts (campaign site)",
+          "Anti-corruption — ban congressional stock trading, repeal Citizens United, accept no Super PAC or billionaire money (campaign site)"
+        ],
+        differentiators: [
+          "21-year Army veteran and Georgetown Law graduate from Rolling Fork; first Black city attorney there",
+          "Was the 2024 DEMOCRATIC Senate nominee, taking 37.19% against Roger Wicker; left the party July 2025 and qualified as an independent by petition with over 1,000 certified signatures",
+          "⚠ $79,244 raised with $2,980 on hand — but as of DEC 31, 2025, seven months staler than his opponents' figures and not directly comparable (FEC)"
+        ],
+        supporters: [
+          "His anti-corruption pledges are self-binding and checkable — no Super PAC money, no stock ownership while serving",
+          "A Delta native and career soldier whose biography starts in the poorest part of the state, not in a donor network",
+          "He says party officials asked how much money he had rather than about health care, veterans or education — which supporters read as proof of the case he is running on"
+        ],
+        opponents: [
+          "[Verify — no organized opposition messaging against him was located; these are structural] He lost this seat's sister race by 25.6 points in 2024 with a major party behind him",
+          "Under $3,000 on hand at his last report, against opponents holding $2.5M and $847K [Verify]",
+          "With the only public poll showing a 3-point race and him at 6%, the question raised about his candidacy is whether he draws disproportionately from Colom — an inference from the poll, not a sourced attack [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Judicial · Court of Appeals District 1 · nonpartisan",
+    office: "Court of Appeals — District 1, Place 1 (special election)",
+    note: "⚠ ONLY voters in Court of Appeals District 1 — 23 northern Mississippi counties including DeSoto, Alcorn, Lafayette, Lee, Marshall, Monroe, Union and Yalobusha — vote in this race. It is the ONLY contested appellate race in Mississippi this year, and it is a SPECIAL election for the remainder of an unexpired term. Judge John Weddle holds the seat by appointment from Gov. Tate Reeves and faces voters for the first time. Nonpartisan: if neither candidate clears 50%, a runoff follows on Dec 1, 2026.",
+    candidates: [
+      { name: "John Weddle (appointed incumbent)", party: "I", winner: false,
+        positions: ["[Verify] — no campaign platform located; Mississippi judicial candidates are limited in what they may say about issues", "[Verify]", "[Verify]"],
+        differentiators: [
+          "Appointed to the Court of Appeals by Gov. Tate Reeves [Verify the date — sources give both Jan 20, 2024 and Oct 14, 2024]",
+          "Former District Attorney for the First Circuit Court District; University of Mississippi School of Law"
+        ],
+        supporters: ["Comes to the seat with trial-level experience as an elected district attorney across north Mississippi [Verify]", "Has been doing the job since his appointment, so voters can judge a record rather than a promise [Verify]"],
+        opponents: ["He reached the bench by appointment rather than election and is standing before voters for the first time [Verify]", "A prosecutor's background raises the usual question of balance on an appellate court that hears criminal appeals [Verify — no opposition messaging was located]"] },
+      { name: "Derek Dewayne Hopson Jr.", party: "I", winner: false,
+        positions: ["[Verify] — no biography, platform or campaign presence could be sourced; only his certified place on the Secretary of State's qualifying list is confirmed", "[Verify]", "[Verify]"],
+        differentiators: ["Certified on the Secretary of State's qualifying list; no further record located [Verify]"],
+        supporters: ["Gives District 1 voters an actual choice rather than a ratification of a gubernatorial appointment [Verify]"],
+        opponents: ["No public record of his qualifications or judicial philosophy could be located for voters to evaluate [Verify]", "Runs against an appointed incumbent already sitting on the court [Verify]"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Judicial · Court of Appeals District 1 · nonpartisan",
+    office: "Court of Appeals — District 1, Place 2 (unopposed)",
+    note: "Chief Judge Donna M. Barnes drew no opponent by the Feb 2, 2026 qualifying deadline, so this seat is already decided. Only District 1's 23 northern counties vote in it.",
+    candidates: [
+      { name: "Donna M. Barnes (incumbent)", party: "I", winner: false,
+        positions: ["[Verify] — no campaign platform located; she drew no opponent", "[Verify]", "[Verify]"],
+        differentiators: ["Chief Judge of the Mississippi Court of Appeals", "Unopposed — qualifying closed Feb 2, 2026"],
+        supporters: ["No one in the district filed against a sitting chief judge, which is usually read as professional consensus [Verify]"],
+        opponents: ["An unopposed judicial race gives voters no choice and generates no public scrutiny of the record [Verify — no opposition to her exists]"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Judicial · Court of Appeals District 2 · nonpartisan",
+    office: "Court of Appeals — District 2, Place 1 (unopposed)",
+    note: "Judge Deborah A. McDonald drew no opponent and is effectively re-elected. Only Court of Appeals District 2 votes in this race.",
+    candidates: [
+      { name: "Deborah A. McDonald (incumbent)", party: "I", winner: false,
+        positions: ["[Verify] — no campaign platform located; she drew no opponent", "[Verify]", "[Verify]"],
+        differentiators: ["Sitting judge of the Mississippi Court of Appeals", "Unopposed — qualifying closed Feb 2, 2026"],
+        supporters: ["Drew no challenger from her district's bar, generally read as professional consensus [Verify]"],
+        opponents: ["An uncontested race means no public examination of her record [Verify — no opposition to her exists]"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Judicial · Court of Appeals District 4 · nonpartisan",
+    office: "Court of Appeals — District 4, Place 2 (unopposed)",
+    note: "Judge David McCarty drew no opponent and is effectively re-elected. Only Court of Appeals District 4 votes in this race.",
+    candidates: [
+      { name: "David McCarty (incumbent)", party: "I", winner: false,
+        positions: ["[Verify] — no campaign platform located; he drew no opponent", "[Verify]", "[Verify]"],
+        differentiators: ["Sitting judge of the Mississippi Court of Appeals", "Unopposed — qualifying closed Feb 2, 2026"],
+        supporters: ["Drew no challenger from his district's bar, generally read as professional consensus [Verify]"],
+        opponents: ["An uncontested race means no public examination of his record [Verify — no opposition to him exists]"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Judicial · Court of Appeals District 5 · nonpartisan",
+    office: "Court of Appeals — District 5, Place 1 (unopposed)",
+    note: "Judge Anthony \"Tony\" Lawrence drew no opponent and is effectively re-elected. Only Court of Appeals District 5 — the Gulf Coast region — votes in this race.",
+    candidates: [
+      { name: "Anthony \"Tony\" Lawrence (incumbent)", party: "I", winner: false,
+        positions: ["[Verify] — no campaign platform located; he drew no opponent", "[Verify]", "[Verify]"],
+        differentiators: ["Sitting judge of the Mississippi Court of Appeals", "Unopposed — qualifying closed Feb 2, 2026"],
+        supporters: ["Drew no challenger from his district's bar, generally read as professional consensus [Verify]"],
+        opponents: ["An uncontested race means no public examination of his record [Verify — no opposition to him exists]"] }
+    ]
+  },
+
+  // PAST
+  {
+    date: "Mar 10, 2026",
+    type: "past",
+    scope: "Federal · Statewide · Primary",
+    office: "Republican Primary — U.S. Senate",
+    note: "Hyde-Smith won renomination outright; no April 7 runoff was needed.",
+    candidates: [
+      { name: "Cindy Hyde-Smith", party: "R", winner: true,
+        positions: ["Won 80.8% (127,852 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Sarah Adlakha", party: "R", winner: false,
+        positions: ["Took 19.2% (30,344 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Mar 10, 2026",
+    type: "past",
+    scope: "Federal · Statewide · Primary",
+    office: "Democratic Primary — U.S. Senate",
+    note: "Colom cleared 50% in a three-way field, so no April 7 runoff was needed.",
+    candidates: [
+      { name: "Scott Colom", party: "D", winner: true,
+        positions: ["Won 72.9% (109,817 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Priscilla Williams-Till", party: "D", winner: false,
+        positions: ["Took 18.6% (28,075 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Albert Littell", party: "D", winner: false,
+        positions: ["Took 8.5% (12,749 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 5, 2024",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Mississippi (2024, Class 1 seat)",
+    note: "A different seat from the one on the 2026 ballot. Wicker's largest-ever margin and the widest in a Mississippi Senate race since 2002. The losing Democrat, Ty Pinkins, is now the independent candidate for the OTHER seat.",
+    candidates: [
+      { name: "Roger Wicker", party: "R", winner: true,
+        positions: ["Won 62.81% (763,420 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Ty Pinkins", party: "D", winner: false,
+        positions: ["Took 37.19% (451,981 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 3, 2020",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Mississippi (2020, the seat on this year's ballot)",
+    note: "The last time this seat was contested. Hyde-Smith won by 10 points over former Agriculture Secretary Mike Espy.",
+    candidates: [
+      { name: "Cindy Hyde-Smith", party: "R", winner: true,
+        positions: ["Won 54.11% (709,511 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Mike Espy", party: "D", winner: false,
+        positions: ["Took 44.13% (578,691 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Jimmy Edwards", party: "L", winner: false,
+        positions: ["Took 1.77% (23,152 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 7, 2023",
+    type: "past",
+    scope: "State · Statewide",
+    office: "Governor of Mississippi (2023)",
+    note: "Included because it shows the state's real partisan range: the closest Mississippi governor's race since 1999, and the closest ever won by a Republican. Gov. Reeves is term-limited; the office is next on the ballot in 2027, not 2026.",
+    candidates: [
+      { name: "Tate Reeves", party: "R", winner: true,
+        positions: ["Won 50.94% (418,233 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Brandon Presley", party: "D", winner: false,
+        positions: ["Took 47.70% (391,614 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  }
+];
+
+// ----- (3) U.S. House races by district -----
+// Mississippi has 4 U.S. House districts under HB 384 (2022 Regular Session), signed
+// Jan 24, 2022. There has been NO mid-decade redraw. Verified structurally: the Census
+// 118th- and 119th-Congress county relationship files for Mississippi are byte-identical.
+// ⚠ Do not confuse this with NAACP v. State Board of Election Commissioners — that
+// litigation redrew STATE LEGISLATIVE districts only and never touched these lines.
+// Primary was March 10, 2026; the runoff date was April 7, 2026, but NO Mississippi
+// congressional race required one — all four nominations were settled on March 10.
+// ⚠ NO Mississippi district is rated competitive by any rater. All four are Solid/Safe
+// for the incumbent party (Cook Mar 13 2025, Inside Elections Mar 7 2025, Sabato Jul 15
+// 2025, Decision Desk HQ Jul 14 2026). Fundraising figures are FEC, as of April 25, 2026.
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — MS District 1",
+    region: "Northeast Mississippi and the Memphis suburbs — Southaven, Tupelo, Oxford, Columbus, Corinth (Cook PVI R+18)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Trent Kelly (R) drew no primary opponent. Democrat Cliff Johnson, who runs the MacArthur Justice Center at Ole Miss law school, won a two-way primary 63.4%–36.6% over Kelvin Buck. Johnson raised $371,885 — unusually strong for an MS-1 Democrat — but Kelly holds a roughly 12-to-1 cash advantage in an R+18 seat. Solid/Safe R by all four raters. Libertarian Johnny Baucom is also on the ballot [Verify — no biography, platform or FEC activity could be located].",
+        candidates: [
+          { name: "Trent Kelly (incumbent)", party: "R", winner: false,
+            positions: [
+              "Chairs the Armed Services Seapower and Projection Forces subcommittee (House record)",
+              "Voted against the $60B Ukraine aid package in 2024 (House record)",
+              "Agriculture and House Intelligence committee work for north Mississippi (House record)"
+            ],
+            differentiators: [
+              "Mississippi Army National Guard since 1985; Tupelo city prosecutor, then elected district attorney in 2011",
+              "$869,489 raised with $826,768 on hand (FEC, Apr 25, 2026)",
+              "Unopposed for renomination; co-chairs the National Guard and Reserve Components Caucus"
+            ],
+            supporters: [
+              "A Seapower gavel and an Intelligence seat steer defense and Guard money to north Mississippi",
+              "Won 69.8% in 2024 — durable trust across the district",
+              "A prosecutor-and-soldier record that matches the district's politics"
+            ],
+            opponents: [
+              "Critics read the Ukraine vote and his signature on the Dec 2020 election amicus brief as national-party alignment over district interest [Verify — no MS-1-specific critical reporting located]",
+              "A 12-to-1 cash edge and an uncontested primary leave little accountability [Verify]"
+            ] },
+          { name: "Cliff Johnson", party: "D", winner: false,
+            positions: [
+              "Combat inflation and the policies driving up costs (campaign site)",
+              "Protect and expand affordable health care (campaign site)",
+              "Federal funding for north Mississippi infrastructure, schools and voting rights (campaign site)"
+            ],
+            differentiators: [
+              "Directs the MacArthur Justice Center at the University of Mississippi School of Law",
+              "Fifth-generation Mississippian; former DOJ health-care-fraud coordinator",
+              "$371,885 raised with $65,418 on hand (FEC, Apr 25, 2026); won his primary by 26.8 points"
+            ],
+            supporters: [
+              "A litigator whose work shut down debtors' prisons brings real accountability experience",
+              "The strongest MS-1 Democratic fundraising in years",
+              "Deep Lafayette County roots in a district that rewards local ties"
+            ],
+            opponents: [
+              "R+18, and the incumbent won by nearly 40 points in 2024 [Verify]",
+              "Republicans argue a civil-rights-litigation résumé fits the district poorly [Verify]",
+              "$65K on hand against $827K is not a competitive posture [Verify]"
+            ] },
+          { name: "Johnny Baucom", party: "L", winner: false,
+            positions: ["[Verify] — no campaign site, platform or public statements could be located", "[Verify]", "[Verify]"],
+            differentiators: ["Appears on the Secretary of State's qualifying list; no FEC activity located [Verify]"],
+            supporters: ["Gives voters who reject both major parties a name on the ballot [Verify]"],
+            opponents: ["No platform of any kind could be located for voters to evaluate [Verify]", "No located fundraising or organization in an R+18 district [Verify]"] }
+        ] },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Kelly re-elected comfortably.",
+        candidates: [
+          { name: "Trent Kelly", party: "R", winner: true,
+            positions: ["Won 69.8% (223,589 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Dianne Black", party: "D", winner: false,
+            positions: ["Took 30.2% (96,697 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ] }
+    ]
+  },
+  2: {
+    name: "U.S. House — MS District 2",
+    region: "The Mississippi Delta and southwest Mississippi, plus most of Jackson — Greenville, Vicksburg, Natchez, Clarksdale, Greenwood, Clinton (Cook PVI D+11)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Mississippi's majority-Black district and its only Democratic seat. The cycle's only genuinely contested Mississippi congressional primary was on the Republican side: Ron Eller edged Adams County supervisor Kevin Wilson by 544 votes, 51.1%–48.9% (⚠ election-night reporting had it at 440 votes / 50.9%–49.1%; WLBT reported Wilson refusing to concede, and no recount outcome could be located [Verify]). Eller is the same nominee Bennie Thompson beat by 24 points in 2024. Solid/Safe D by all four raters. Independent Bennie Foster is also on the ballot [Verify — nothing beyond his name and a 'mentorship coach' description could be sourced].",
+        candidates: [
+          { name: "Bennie G. Thompson (incumbent)", party: "D", winner: false,
+            positions: [
+              "[Verify — priorities stated in 2024-cycle AP reporting; no fresh 2026 issues list located] Lower prescription drug costs",
+              "[Verify] Investment in HBCUs and student-loan relief",
+              "[Verify] Build the middle class through progressive taxation"
+            ],
+            differentiators: [
+              "Ranking Member of the House Homeland Security Committee since January 2023",
+              "In the House since an April 1993 special election — 33 years, Mississippi's senior Democrat; age 78",
+              "$607,467 raised with $1,415,264 on hand (FEC, Apr 25, 2026) — about 37 times his opponent"
+            ],
+            supporters: [
+              "Three decades of seniority and a Homeland Security gavel give a poor rural district outsized federal reach",
+              "Has held the seat through every redistricting cycle since 1993",
+              "Won 86.4% of his primary — intact standing at home"
+            ],
+            opponents: [
+              "At 78 and 33 years in office, critics say the seat has seen no generational turnover [Verify — no substantive 2026 critical reporting located]",
+              "A D+11 district that re-elects him reliably creates little pressure to be responsive [Verify]",
+              "A primary challenger still took 12.4% [Verify as to cause]"
+            ] },
+          { name: "Ron Eller", party: "R", winner: false,
+            positions: [
+              "Lower taxes and expanded energy options (campaign site)",
+              "Strengthen education (campaign site)",
+              "Criminal justice reform aimed at reducing recidivism — \"if we don't give them the skillset to stay out of the prison system, it's just a revolving door\" (WLBT)"
+            ],
+            differentiators: [
+              "Physician assistant; 20 years active military service and 20 years in private health care",
+              "Third consecutive bid for this seat (2022, 2024, 2026); lost to Thompson 62.0%–38.0% in 2024",
+              "$31,985 raised with $37,776 on hand (FEC, Apr 25, 2026)"
+            ],
+            supporters: [
+              "Four decades of military and Delta health-care service is direct constituent experience",
+              "His recidivism-and-job-skills focus addresses a real Delta problem",
+              "Persistence across three cycles in a district his party usually concedes"
+            ],
+            opponents: [
+              "He lost this district by 24 points in 2024 with no evident change in circumstances [Verify]",
+              "$38,000 on hand cannot contest a district this size [Verify]",
+              "A sub-1-point primary win leaves the party divided going into November [Verify]"
+            ] },
+          { name: "Bennie Foster", party: "I", winner: false,
+            positions: ["[Verify] — no platform, campaign site or coverage could be located; described only as a mentorship coach", "[Verify]", "[Verify]"],
+            differentiators: ["Appears on the Secretary of State's qualifying list; no FEC activity located [Verify]"],
+            supporters: ["Offers an alternative to voters unhappy with a 33-year incumbent [Verify]"],
+            opponents: ["No located platform, fundraising or organization [Verify]", "A D+11 seat makes an independent bid a long shot [Verify]"] }
+        ] },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Thompson re-elected over the same Republican he faces again in 2026.",
+        candidates: [
+          { name: "Bennie G. Thompson", party: "D", winner: true,
+            positions: ["Won 62.02% (177,885 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Ron Eller", party: "R", winner: false,
+            positions: ["Took 37.98% (108,956 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ] }
+    ]
+  },
+  3: {
+    name: "U.S. House — MS District 3",
+    region: "Eastern and southwestern Mississippi — Meridian, Starkville, Pearl, Brookhaven, and the wealthier northeastern part of Jackson (Cook PVI R+14)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Both nominees were uncontested in March. Michael Guest (R), who chairs the House Ethics Committee, draws his first general-election opponent since 2022 — he ran unopposed in 2024 — in Democrat Michael Chiaradio, a Shubuta livestock farmer. Guest holds roughly a 58-to-1 cash advantage. Solid/Safe R by all four raters. Libertarian Erik Kiehle is also on the ballot.",
+        candidates: [
+          { name: "Michael Guest (incumbent)", party: "R", winner: false,
+            positions: [
+              "Border security enforcement as chair of the Homeland Security border subcommittee (House record)",
+              "Voted against the $60B Ukraine aid package in 2024 and against creating the January 6th Committee (House record)",
+              "Authored the resolution that expelled Rep. George Santos (House record)"
+            ],
+            differentiators: [
+              "Chairs the House Committee on Ethics; also sits on Appropriations",
+              "Assistant DA 1994–2008, then district attorney for Madison and Rankin counties 2008–2019",
+              "$762,781 raised with $941,930 on hand (FEC, Apr 25, 2026) — the largest war chest in the Mississippi delegation"
+            ],
+            supporters: [
+              "An Ethics chairmanship plus an Appropriations seat is unusual leverage for a member from a small state",
+              "Twenty-five years as a prosecutor underwrites his border-enforcement portfolio",
+              "He led the Santos expulsion when it was uncomfortable for his own party"
+            ],
+            opponents: [
+              "Running effectively unopposed for two cycles produces little accountability [Verify — no MS-3 critical reporting located]",
+              "Critics say the Ukraine and Jan. 6 committee votes track leadership rather than independent judgment [Verify]",
+              "He drew a $200 STOCK Act fine for failing to properly disclose family stock trades — a consistency question for an ethics chairman [Verify the framing; the fine itself is on the record]"
+            ] },
+          { name: "Michael A. Chiaradio", party: "D", winner: false,
+            positions: [
+              "\"Smart, people-first economics\" (campaign site)",
+              "Investing in rural America and agriculture (campaign site)",
+              "Health care that works for everyone; common-sense governance (campaign site)"
+            ],
+            differentiators: [
+              "Raises sheep, pigs and cattle on a farm in Shubuta; describes himself as a regenerative farmer",
+              "MBA from Felician University; played in the inaugural season of what became the Empire Professional Baseball League",
+              "$100,998 raised with $16,206 on hand (FEC, Apr 25, 2026); uncontested primary"
+            ],
+            supporters: [
+              "An actual livestock farmer speaking to farm policy in a farm district",
+              "The first Democrat to contest MS-3 since 2022, restoring a choice on the ballot",
+              "A business and MBA background behind the rural-investment pitch"
+            ],
+            opponents: [
+              "R+14, and the incumbent last ran unopposed with 100% of the vote [Verify]",
+              "$16,000 on hand against $942,000 [Verify]",
+              "His own campaign site lists a New York mailing address and a non-Democratic party email domain, which invites a local-roots question [Verify — no explanation could be sourced]"
+            ] },
+          { name: "Erik Kiehle", party: "L", winner: false,
+            positions: [
+              "\"America First\" — national strength and security (campaign site; no detailed proposals published)",
+              "Community engagement — listening to constituents (campaign site)",
+              "Integrity and accountability through transparency (campaign site)"
+            ],
+            differentiators: [
+              "Property manager in the Meridian area; volunteer firefighter for two Lauderdale County departments and a private pilot",
+              "$0 raised, $0 spent, $0 on hand (FEC, Apr 25, 2026)"
+            ],
+            supporters: [
+              "A genuinely local volunteer firefighter and small businessman offering a third option",
+              "Explicit transparency commitments to constituents"
+            ],
+            opponents: [
+              "A zero-dollar campaign cannot reach a district of 750,000 [Verify]",
+              "Three thematic headings do not amount to a governing platform [Verify]"
+            ] }
+        ] },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Guest ran unopposed — there is no losing candidate to report.",
+        candidates: [
+          { name: "Michael Guest", party: "R", winner: true,
+            positions: ["Unopposed — 265,159 votes (100%)", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ] }
+    ]
+  },
+  4: {
+    name: "U.S. House — MS District 4",
+    region: "The Gulf Coast and the Pine Belt — Gulfport, Biloxi, Pascagoula, Bay St. Louis, Hattiesburg, Laurel (Cook PVI R+21, Mississippi's most Republican district)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Mike Ezell (R) turned back a primary challenge from former Palazzo staffer Sawyer Walters 84.1%–15.9%. The general is a three-way: Democratic state Rep. Jeffrey Hulum III, and Carl Boyanton, who is running as an INDEPENDENT after three consecutive losing Republican primary bids for this seat — the only party switch of the Mississippi cycle. Solid/Safe R by all four raters.",
+        candidates: [
+          { name: "Mike Ezell (incumbent)", party: "R", winner: false,
+            positions: [
+              "Support for the Jones Act on domestic shipbuilding — directly material to Pascagoula's shipyards",
+              "Stronger border security and increased military spending (campaign statements)",
+              "Protections for first responders; pro-life and Second Amendment positions (campaign statements)"
+            ],
+            differentiators: [
+              "Chairs the Coast Guard and Maritime Transportation subcommittee — the most district-relevant gavel in the delegation",
+              "Sheriff of Jackson County 2014–2022 after 35+ years in law enforcement",
+              "$889,083 raised but $908,970 spent, leaving $131,577 on hand (FEC, Apr 25, 2026) — the thinnest reserve of the four incumbents"
+            ],
+            supporters: [
+              "A Coast Guard gavel and Jones Act advocacy target Gulf Coast shipbuilding and fishing jobs directly",
+              "Four decades in local law enforcement is genuine district rootedness",
+              "Won 84% against a credible primary challenger"
+            ],
+            opponents: [
+              "His primary challenger argued South Mississippi \"deserves a representative who will show up\" — an availability critique",
+              "Spending more than he raises suggests an operation out of proportion to the threat [Verify]",
+              "In an R+21 seat the outcome is effectively settled in March, when few voters turn out [Verify]"
+            ] },
+          { name: "Jeffrey Hulum III", party: "D", winner: false,
+            positions: [
+              "\"An economy that works for working people, not just for corporations and the wealthy\" (campaign site)",
+              "Quality education regardless of ZIP code, and affordable health care (campaign site)",
+              "Criminal justice reform balancing public safety with rehabilitation (campaign site)"
+            ],
+            differentiators: [
+              "Sitting Mississippi state representative for the 119th District, elected 2022",
+              "22-year Army veteran, retired as Sergeant Major; born and raised in Gulfport's Gaston Point",
+              "$2,225 raised with $1,715 on hand (FEC, Apr 25, 2026) — the lowest of any Mississippi candidate with a filing"
+            ],
+            supporters: [
+              "A sitting state legislator and retired Sergeant Major — the most experienced challenger any Mississippi Republican faces this year",
+              "His nonprofit distributed over 500,000 lbs of food on the Coast during COVID",
+              "Cleared a three-way primary outright with 57.7%, avoiding a runoff"
+            ],
+            opponents: [
+              "$1,715 on hand against $131,577 is not a funded campaign [Verify]",
+              "R+21, and the incumbent won by 48 points in 2024 [Verify]",
+              "Republicans read his \"this campaign isn't about partisanship\" framing as avoiding the party label [Verify]"
+            ] },
+          { name: "Carl Boyanton", party: "I", winner: false,
+            positions: [
+              "[Verify] Presents as a \"principled conservative alternative\" to the Republican nominee; his site's issues pages return 404",
+              "[Verify] Agriculture appears central to his platform (his produce business and a \"Farmed Fresh for MS\" section)",
+              "[Verify]"
+            ],
+            differentiators: [
+              "Produce store owner; ran in the Republican primary for this seat in 2020, 2022 and 2024",
+              "Took 18.9% (13,432 votes) in the 2024 Republican primary, finishing second to Ezell",
+              "$5,076 raised with $4,654 on hand (FEC, Apr 25, 2026) — more than double the Democratic nominee"
+            ],
+            supporters: [
+              "After three lost Republican primaries, an independent run is the only remaining route to put a conservative alternative on a November ballot",
+              "A produce-business owner speaks directly to Gulf Coast agriculture",
+              "His 18.9% in 2024 is a real base of prior support"
+            ],
+            opponents: [
+              "Three straight primary defeats, the best under 19%, reads as a repudiation rather than a mandate [Verify]",
+              "Running independent after losing the nomination splits the conservative vote [Verify]",
+              "$4,654 cannot compete in a district of 750,000 [Verify]"
+            ] }
+        ] },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Ezell re-elected by 48 points.",
+        candidates: [
+          { name: "Mike Ezell", party: "R", winner: true,
+            positions: ["Won 73.9% (215,095 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Craig Raybon", party: "D", winner: false,
+            positions: ["Took 26.1% (75,771 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ] }
+    ]
+  }
+};
+
+const SITE_META = { name: "Mississippi Elections Hub", lastUpdated: "August 6, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — Mississippi county-level down-ballot research is the next phase.
+// Mississippi counties elect sheriffs, chancery and circuit clerks, supervisors and
+// county judges, but on the ODD-year cycle with the state offices — so the natural first
+// LOCAL_RACES targets here are the 2026 circuit/chancery judicial races and school boards.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Mississippi has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them,
+  // otherwise a district with no plurality county is unreachable from the map.
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const MS_STATE_FIPS = "28";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#msmap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(MS_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Hartford ----
+  drawCapital(g, projection, { name: "Jackson", lng: -90.1848, lat: 32.2988 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in MS";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our Mississippi dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>

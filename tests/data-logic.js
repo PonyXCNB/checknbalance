@@ -45,6 +45,9 @@ const STATE_PAGES = [
   // Cook is deliberately the IL sample: it overlaps 11 districts via `ds`, so this count
   // (9 statewide + 11 districts x 2 races) is the regression guard on the multi-district merge.
   { page: "il.html", countyCount: 102, sampleFips: "17031", sampleName: "Cook",        expectedRaces: 31 },
+  // Hinds is deliberately the MS sample: it is split between MS-2 and MS-3 via `ds`
+  // (Jackson straddles the line), so this count guards the multi-district merge here too.
+  { page: "ms.html", countyCount: 82,  sampleFips: "28049", sampleName: "Hinds",       expectedRaces: 15 },
 ];
 
 for (const cfg of STATE_PAGES) {
@@ -203,7 +206,7 @@ for (const abbr of ALL_TESTED) {
 // makes a race silently vanish from the grouped drawer)
 // ---------------------------------------------------------------
 console.log("\n— type-value audit —");
-for (const page of ["index.html", "nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html", "ny.html", "ri.html", "nh.html", "ct.html", "vt.html", "me.html", "ma.html", "wv.html", "oh.html", "ky.html", "in.html", "ia.html", "il.html", "state.html"]) {
+for (const page of ["index.html", "nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html", "ny.html", "ri.html", "nh.html", "ct.html", "vt.html", "me.html", "ma.html", "wv.html", "oh.html", "ky.html", "in.html", "ia.html", "il.html", "ms.html", "state.html"]) {
   const bad = [];
   for (const code of extractInlineScripts(page)) {
     for (const m of code.matchAll(/type\s*:\s*"([a-z]+)"/g)) {

@@ -1385,13 +1385,18 @@ const HOUSE_RACES = {
     name: "U.S. House — NC District 11",
     region: "Western NC mountains (Asheville and the Great Smoky Mountains region)",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", note: "⚠ THE REPUBLICAN FIELD CHANGED ON AUG 5, 2026: Rep. Chuck Edwards ENDED his re-election campaign amid a threatened House censure, reported the same day by the Asheville Citizen Times, ABC News and other outlets. How Republicans fill the ballot line, and who replaces him, is UNRESOLVED [Verify against the NC State Board of Elections]. Republican-leaning district with Helene recovery as a top issue. Edwards had taken 70.1% of the March 3 primary; farmer Jamie Ager won a five-way Democratic field with 64.7% and is a DCCC Red to Blue designee. Libertarian Travis Groo is also on the November ballot [Verify — no platform sourced this pass].",
+      { date: "Nov 3, 2026", type: "upcoming", note: "⚠ NO REPUBLICAN NOMINEE YET. Rep. Chuck Edwards ENDED his re-election campaign on Aug 5, 2026, two days after the House Ethics Committee publicly recommended he be censured. He did NOT resign — he is serving out his term, and there is no special election. Under N.C. Gen. Stat. § 163-114 the NC-11 Republican district executive committee appoints the replacement nominee; that committee meets Aug 10, 2026 and party officials cite Aug 20 as their deadline to certify a name to the State Board of Elections. Democrat Jamie Ager, a farmer and DCCC Red to Blue designee, won a five-way primary with 64.7%. Libertarian Travis Groo is also on the ballot [Verify — no platform sourced].",
         candidates: [
+          { name: "[Republican nominee — to be appointed by Aug 20]", party: "R", winner: false,
+            positions:["[Verify] Not yet determined — the district executive committee meets Aug 10, 2026","[Verify]","[Verify]"],
+            differentiators:["Chosen by roughly 30 committee members from the district's counties, not by voters","Names floated by analysts include state Sens. Tim Moffitt, Kevin Corbin and Ralph Hise and state Reps. Jennifer Balkcom and Jake Johnson — none has declared [Verify]","Inherits a Republican-leaning seat but starts with no campaign account"],
+            supporters:["A clean slate lets Republicans run without the incumbent's ethics findings attached [Verify]","The seat's Republican lean and Helene-recovery politics still favor the party [Verify]"],
+            opponents:["An appointed nominee faces a Democrat who has been raising money and campaigning for a year [Verify]","Voters had no say in the choice — the appointment is made by a small party committee [Verify]"] },
           { name: "Chuck Edwards (WITHDREW Aug 5, 2026)", party: "R", winner: false,
             positions:["[Verify] Helene recovery and disaster relief","[Verify] Tourism and small business","[Verify] Forest and public-lands management"],
-            differentiators:["⚠ ENDED his re-election campaign on Aug 5, 2026 amid a threatened House censure — the Republican replacement is not yet determined [Verify]","Second-term incumbent and former state senator","Restaurant-franchise businessman"],
-            supporters:["On-the-ground after Helene, securing federal recovery funds","Practical, less ideological than predecessor Madison Cawthorn"],
-            opponents:["Helene recovery in western NC has been slow and uneven","Hasn't broken from party on disaster spending","Left the race under a threatened censure rather than contest it [Verify the underlying findings — reported via news aggregation, not yet read at a primary source]"] },
+            differentiators:["⚠ ENDED his re-election campaign Aug 5, 2026; he remains in office through the end of his term","The House Ethics Committee adopted a report July 22 and released it Aug 3 recommending CENSURE, finding he violated the House Code of Official Conduct toward two young female staffers","He cooperated with the inquiry, disagrees with the findings, and his response is printed in the report"],
+            supporters:["On-the-ground after Helene, securing federal recovery funds","Practical, less ideological than predecessor Madison Cawthorn","Cooperated with the Ethics inquiry and waived steps that would have delayed it"],
+            opponents:["The Ethics report describes persistent unprofessional conduct — recurrent gifts, comments on appearance, invitations to intimate dinners — and says the House lost two staffers because of it","The Committee found his pattern of behavior would lead a reasonable observer to read it as a romantic or sexual advance, though he denies that was his intent","⚖ For fairness: the Committee also found NO evidence he engaged in sexual activity with, or explicitly propositioned, anyone under his employ","Helene recovery in western NC has been slow and uneven"] },
           { name: "Jamie Ager", party: "D", winner: false,
             positions:["Lower costs for working families as the central campaign frame","Fight cuts to Medicaid and health coverage","Secure Hurricane Helene recovery funds for western North Carolina"],
             differentiators:["Fourth-generation Fairview farmer; built Hickory Nut Gap to ~25 employees","A DCCC \"Red to Blue\" designee — a top-tier national flip target","$1.4M raised in Q2 2026 and $2.2M cash on hand to Edwards' $486K"],
@@ -1511,7 +1516,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "North Carolina Elections Hub", lastUpdated: "August 5, 2026" };
+const SITE_META = { name: "North Carolina Elections Hub", lastUpdated: "August 6, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: NC SBE candidate filings, WECT, Port City Daily, WHQR (Mar 2026 primary results).
