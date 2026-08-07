@@ -1,0 +1,2053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Colorado Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every CO election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #comap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">CO</div>
+      <div class="brand-text">
+        <span class="brand-name">Colorado Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Colorado <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 64 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">64</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>8</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>8</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Colorado…</div>
+      <svg id="comap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>CO Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">July 22, 2026</span><br>
+      Sources: Colorado Secretary of State 2026 Primary Statewide Abstract of Votes Cast, certified ballot-order grid and petition-sufficiency lists, Colorado Office of Judicial Performance Evaluation, U.S. Census Bureau congressional-district relationship files and the 119th CD Summary File, FEC, U.S. House Clerk member roster, Colorado Public Radio candidate questionnaires, Colorado Sun issue guides, Colorado Newsline, Colorado Politics, Denver Gazette, AP.
+    </div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every CO county + its primary US House district(s)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- (1) Counties + primary US House district -----
+// PLACEHOLDER
+const COUNTIES = {
+  "08001":{n:"Adams",d:8,ds:[4,6,7,8]},
+  "08003":{n:"Alamosa",d:3},
+  "08005":{n:"Arapahoe",d:6,ds:[1,4,6]},
+  "08007":{n:"Archuleta",d:3},
+  "08009":{n:"Baca",d:4},
+  "08011":{n:"Bent",d:4},
+  "08013":{n:"Boulder",d:2},
+  "08014":{n:"Broomfield",d:7},
+  "08015":{n:"Chaffee",d:7},
+  "08017":{n:"Cheyenne",d:4},
+  "08019":{n:"Clear Creek",d:2},
+  "08021":{n:"Conejos",d:3},
+  "08023":{n:"Costilla",d:3},
+  "08025":{n:"Crowley",d:4},
+  "08027":{n:"Custer",d:7},
+  "08029":{n:"Delta",d:3},
+  "08031":{n:"Denver",d:1,ds:[1,6]},
+  "08033":{n:"Dolores",d:3},
+  "08035":{n:"Douglas",d:4,ds:[4,6]},
+  "08037":{n:"Eagle",d:2,ds:[2,3]},
+  "08039":{n:"Elbert",d:4},
+  "08041":{n:"El Paso",d:5,ds:[4,5,7]},
+  "08043":{n:"Fremont",d:7},
+  "08045":{n:"Garfield",d:3},
+  "08047":{n:"Gilpin",d:2},
+  "08049":{n:"Grand",d:2},
+  "08051":{n:"Gunnison",d:3},
+  "08053":{n:"Hinsdale",d:3},
+  "08055":{n:"Huerfano",d:3},
+  "08057":{n:"Jackson",d:2},
+  "08059":{n:"Jefferson",d:7,ds:[2,6,7]},
+  "08061":{n:"Kiowa",d:4},
+  "08063":{n:"Kit Carson",d:4},
+  "08065":{n:"Lake",d:7},
+  "08067":{n:"La Plata",d:3},
+  "08069":{n:"Larimer",d:2,ds:[2,4,8]},
+  "08071":{n:"Las Animas",d:3},
+  "08073":{n:"Lincoln",d:4},
+  "08075":{n:"Logan",d:4},
+  "08077":{n:"Mesa",d:3},
+  "08079":{n:"Mineral",d:3},
+  "08081":{n:"Moffat",d:3},
+  "08083":{n:"Montezuma",d:3},
+  "08085":{n:"Montrose",d:3},
+  "08087":{n:"Morgan",d:4},
+  "08089":{n:"Otero",d:3},
+  "08091":{n:"Ouray",d:3},
+  "08093":{n:"Park",d:7},
+  "08095":{n:"Phillips",d:4},
+  "08097":{n:"Pitkin",d:3},
+  "08099":{n:"Prowers",d:4},
+  "08101":{n:"Pueblo",d:3},
+  "08103":{n:"Rio Blanco",d:3},
+  "08105":{n:"Rio Grande",d:3},
+  "08107":{n:"Routt",d:2},
+  "08109":{n:"Saguache",d:3},
+  "08111":{n:"San Juan",d:3},
+  "08113":{n:"San Miguel",d:3},
+  "08115":{n:"Sedgwick",d:4},
+  "08117":{n:"Summit",d:2},
+  "08119":{n:"Teller",d:7},
+  "08121":{n:"Washington",d:4},
+  "08123":{n:"Weld",d:8,ds:[2,4,8]},
+  "08125":{n:"Yuma",d:4},
+};
+
+// ----- (2) Statewide races -----
+// Verified against the Colorado SoS "2026 Offices Up For Election" page, the certified party
+// ballot-order grid from the July 28, 2026 lot drawing, the SoS petition-sufficiency list, and the
+// official 2026 Primary Statewide Abstract of Votes Cast (a 43-page scanned PDF with no text layer,
+// rendered to images and read visually — every certified primary figure here comes from it).
+// ⚠ THE NOVEMBER BALLOT IS NOT YET LEGALLY CERTIFIED. The SoS certifies ballot content to counties
+// 57 days out — Sept 7, 2026 (Labor Day, so it may shift to Sept 8) — and designated election
+// officials certify order and content at 60 days, Sept 4. This is the field as it stands.
+// ⚠⚠ THE BENNET QUESTION, RESOLVED: Sen. Michael Bennet RAN FOR GOVERNOR AND LOST the Democratic
+// primary to Phil Weiser 56.88%–43.12%. He did NOT resign, remains a sitting U.S. senator (Class III,
+// term to 2029), and has endorsed Hickenlooper. There is NO 2026 Senate vacancy and no appointment
+// question — the 2025–26 jockeying among Reps. Neguse, Crow and Pettersen over a possible Bennet
+// appointment is moot. He is the first sitting U.S. senator since 2010 to lose a gubernatorial primary.
+// ⚠ FOUR OF THE FIVE STATEWIDE OFFICES ARE OPEN — Polis, Weiser, Griswold and Young are all
+// term-limited. All four statewide executive offices have been Democratic-held since 2019.
+// ⚠ THERE IS NO AT-LARGE REGENT OR AT-LARGE STATE BOARD OF EDUCATION SEAT IN 2026. Those are
+// district races (SBOE districts 1, 3, 7; CU Regents districts 2, 6, 7), not statewide. Any
+// directory implying a statewide at-large contest this year is wrong.
+// ⚠ NO AMENDMENT LETTER OR PROPOSITION NUMBER EXISTS YET for any 2026 measure — the SoS assigns
+// them at certification. Measures are identified by initiative number and SoS caption instead.
+// ⚠ Minor-party PRESENCE per office is state-confirmed from the raw ballot-order grid; several
+// minor-party candidate NAMES are single-source and marked [Verify]. Names the state's own records
+// do NOT support were omitted: Danny Fish (Forward/Gov), Jon Collamer and Bradley Wall
+// (independent/Gov), Murl Hendrickson IV (ACP/Treasurer) and Fred Osborne (No Labels/Gov).
+const STATEWIDE = [
+  // UPCOMING — 2026 General Election (Nov 3, 2026)
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Colorado",
+    note: "John Hickenlooper seeks a second term after an unexpectedly close primary from his left — he took just 52.81% against state Sen. James Gonzales and lost Denver County outright. Republican state Sen. Mark Baisley won his nomination outright at the April 11 state assembly, the only candidate to clear 30%, but enters November roughly 40-to-1 behind on cash. Forward Party nominee Bob Chew has self-funded more than $1 million, giving him far more money than the Republican. Every rating service surveyed calls this Solid or Safe Democratic — Cook (Apr 13, 2026), Sabato (Mar 4, 2026), Inside Elections (Apr 23, 2026) — and it is not considered competitive. ⚠ All three raters block automated access, so those ratings are routed through reporting that cites them [Verify]. American Constitution, Approval Voting, Libertarian and Unity lines are also certified for this office.",
+    candidates: [
+      { name: "John Hickenlooper (incumbent)", party: "D", winner: false,
+        positions: [
+          "Health care — a public option, letting Medicare negotiate drug prices, restoring Roe and protecting IVF access (campaign site)",
+          "Immigration enforcement — legislation to require ICE agents to unmask and to bar raids at sensitive locations; calls for a full ICE overhaul (campaign site)",
+          "Democracy and money in politics — refuses corporate PAC money, supports overturning Citizens United and banning dark money (campaign site)"
+        ],
+        differentiators: [
+          "The only candidate with prior statewide executive experience — Denver mayor 2003–2011, governor 2011–2019",
+          "A former geologist who describes himself as the only peer-reviewed scientist in the Senate; helped pass the Bipartisan Safer Communities Act",
+          "$2,083,870 on hand (FEC, June 30, 2026). Endorsed by Sen. Bennet — the man he might have been replaced by — plus Sens. Warren, Kelly and Ossoff, all three Colorado House Democrats, Planned Parenthood, LCV, GIFFORDS and AFSCME"
+        ],
+        supporters: [
+          "A proven statewide winner with executive experience — the safest hold on the board in a blue-leaning state",
+          "He has moved left on enforcement-agency oversight while keeping a bipartisan legislative record",
+          "Labor, reproductive-rights and gun-safety organizations all consolidated behind him"
+        ],
+        opponents: [
+          "A sitting senator taking 52.8% against a state legislator signals real softness on his left flank — and he LOST Denver County outright",
+          "Republicans argue his Washington tenure has not delivered on affordability, the issue Colorado voters rank first",
+          "Chew argues neither major party will confront federal debt or Social Security solvency"
+        ] },
+      { name: "Mark Baisley", party: "R", winner: false,
+        positions: [
+          "Health care decisions between patient and doctor rather than federal bureaucrats; expand association health plans and HSAs, and require price transparency (campaign site)",
+          "Frames the economy as \"prosperity over affordability\" — government should secure liberties rather than manage lives (campaign site)",
+          "Border security, energy independence and infrastructure rebuilt with fiscal discipline and local control (campaign site)"
+        ],
+        differentiators: [
+          "A sitting state senator who won the nomination outright at assembly — no petition, no contested primary",
+          "A background in aerospace, national security and cybersecurity at NASA, Martin Marietta and in the U.S. Intelligence Community",
+          "⚠ Cash on hand is DISPUTED — $50,021 by one FEC-derived compilation, $26,729 per Colorado Politics (July 17, 2026); the FEC API was rate-limited and could not adjudicate [Verify]. Either way it is a fraction of the incumbent's $2.08M. No endorsements could be sourced. He dropped a gubernatorial bid in January 2026 to run for this seat"
+        ],
+        supporters: [
+          "A movement conservative who consolidated the party early at assembly, avoiding a divisive primary",
+          "A technical national-security background is an unusual credential for a Senate challenger",
+          "He argues Colorado's cost-of-living crisis is the product of one-party control that a Republican senator would check"
+        ],
+        opponents: [
+          "His cash position is a fraction of the incumbent's — critics call the campaign non-viable on resources alone",
+          "At a Republican gubernatorial forum he described LGBTQ colleagues in the legislature as being in \"rebellion against the nature of God\" and accused them of using the state as a church to impose religious beliefs; critics call that disqualifying in a state that has backed Democrats statewide for a decade",
+          "He already failed to win the gubernatorial nomination this cycle before switching races [Verify]"
+        ] },
+      { name: "Bob Chew", party: "I", winner: false,
+        positions: [
+          "Centers the roughly $1.8 trillion annual federal deficit as the root economic problem, arguing lower federal debt would ease mortgage rates and housing costs (campaign materials)",
+          "Health care costs — notes the U.S. spends roughly double comparable Western nations and wants that addressed directly (interview)",
+          "Senate procedure — pass budgets through regular order, restore the 60-vote threshold for judicial and Cabinet confirmations, and join an independent caucus (campaign materials)"
+        ],
+        differentiators: [
+          "Runs on the Colorado Forward Party line and has SELF-FUNDED $1.1 million — far more cash than the Republican nominee [Verify exact cash on hand]",
+          "Left the Republican Party specifically over debt politics, arguing the first party to raise the issue gets punished by the other",
+          "A Navy submarine veteran and former engineering-firm CEO targeting Colorado's roughly 2.1 million unaffiliated voters, about 53% of registrants"
+        ],
+        supporters: [
+          "A genuinely funded third option in a race where the Republican nominee is not financially competitive",
+          "He names federal debt and Social Security solvency, which he argues both parties avoid",
+          "His procedural reforms — regular-order budgets, 60-vote confirmations — are institutional rather than ideological"
+        ],
+        opponents: [
+          "He is running in a deep-blue state against a well-funded incumbent for a party with no federal electoral track record",
+          "Voters wary of splitting the field raise spoiler concerns [Verify]",
+          "Critics characterise the self-funding as money burned for no realistic return [Verify — sourced to an openly Democratic-aligned outlet]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Governor and Lieutenant Governor — Colorado (OPEN SEAT)",
+    note: "An open seat — Jared Polis is term-limited — and the race that produced the cycle's biggest upset. ⚠ ATTORNEY GENERAL PHIL WEISER BEAT SITTING U.S. SEN. MICHAEL BENNET in the Democratic primary, 56.88%–43.12%, despite facing more than $17 million in combined opposing spending; Bennet is the first sitting senator since 2010 to lose a gubernatorial primary, and he keeps his Senate seat. ⚠ ON THE REPUBLICAN SIDE, FIRST-TIME CANDIDATE VICTOR MARX WON BY 2,466 VOTES — a 0.471% margin that fell just outside the 0.5% automatic-recount threshold — over state Sen. Barb Kirkmeyer, who has WITHHELD her endorsement. Former Republican congressman Greg Lopez qualified as an UNAFFILIATED candidate in July, raising vote-split questions on the right; analysts draw the 2010 comparison to Tom Tancredo's splinter bid. Every rating service calls this Solid or Safe Democratic, and no general-election polling could be sourced. ⚠ Three different ballot-access routes were used: Kirkmeyer petitioned only, Bottoms went through assembly, Marx did both.",
+    candidates: [
+      { name: "Phil Weiser and Lesley Dahlkemper", party: "D", winner: false,
+        positions: [
+          "Housing — supports zoning reform including ending parking minimums and allowing accessory dwelling units, but prefers local involvement over state mandates, and OPPOSES rent control (Colorado Sun issue guide)",
+          "TABOR and education — wants public input on TABOR reform while preserving voter-approval rights, and supports eliminating TABOR refunds to fund education and children's programs including a state childcare fund (CPR questionnaire)",
+          "Health care — aims at universal PRIMARY care by expanding the health workforce and preventive care (CPR questionnaire)"
+        ],
+        differentiators: [
+          "As Attorney General he sued the federal administration roughly 65 times, winning most, and secured about $900M in opioid settlement funds plus $32M from vaping companies for youth mental health",
+          "Clerked for Justices Byron White and Ruth Bader Ginsburg, argued two Supreme Court cases, and was dean of CU Law. Running mate Lesley Dahlkemper is a Jefferson County Commissioner",
+          "$369,303 on hand as of July 27, 2026 after spending more than $6M winning a primary in which he raised a record $6.7M — he beat a sitting senator while being outspent"
+        ],
+        supporters: [
+          "He beat the establishment favourite while being massively outspent, which supporters read as genuine grassroots strength",
+          "The litigation record against the federal administration is a concrete, documented executive credential",
+          "A coalition spanning former governors, labor, environmental and LGBTQ+ organisations"
+        ],
+        opponents: [
+          "Even sympathetic analysts flagged his weaknesses as low name recognition and a policy-wonk affect rather than retail political skill",
+          "His career is in academia and law, not elected executive office — Republicans argue he would continue the same governing class",
+          "Marx frames him as representing the current system that has made Colorado more expensive and less safe"
+        ] },
+      { name: "Victor Marx and George Markert", party: "R", winner: false,
+        positions: [
+          "Affordability — cut red tape driving home-building and childcare costs, \"unleash our energy resources\" to lower gas and utility bills, and PROTECT TABOR (CPR questionnaire, his written answers)",
+          "Local control — argues one-party rule has silenced debate; would devolve authority to local governments and school boards and restore transparency (CPR questionnaire)",
+          "Immigration — end sanctuary policies, require state and local law enforcement to cooperate with federal immigration authorities, and establish a \"Border-Related Crime Strike Force\" targeting fentanyl pipelines (CPR questionnaire)"
+        ],
+        differentiators: [
+          "A 61-year-old Marine veteran who runs All Things Possible Ministries in Colorado Springs and briefly worked as an assistant to James Dobson at Focus on the Family; a first-time candidate who beat two sitting legislators",
+          "Named four specific bills he would veto — more specific than his primary rivals — while breaking with the field to support continued coverage for pregnant immigrants under \"Cover All Coloradans,\" and acknowledging human contributions to climate change",
+          "⚠ $136,989 on hand as of July 27, 2026 — and he SPENT MORE THAN HE RAISED in that period. Running mate George Markert is a retired Marine colonel. Primary runner-up Barb Kirkmeyer has withheld her endorsement"
+        ],
+        supporters: [
+          "A genuine outsider who beat two sitting legislators and out-raised both primary rivals combined by early May",
+          "He gave more specific answers than his rivals on vetoes, spending cuts and data-center regulation",
+          "He argues the current system has made Colorado more expensive, less safe and harder to trust"
+        ],
+        opponents: [
+          "⚠ He faces a raft of CAMPAIGN FINANCE COMPLAINTS filed with the Secretary of State's office over donations exceeding the $1,450 legal limit and over his claim that there is \"no limit\" on money received through his campaign's online merchandise store",
+          "The Colorado Sun characterised his primary campaign as focused on personality rather than policy, and he refused to answer a television anchor's question about how many people he had killed during overseas operations",
+          "He is now financially behind his opponent for the first time in his political career, and Kirkmeyer's non-endorsement signals an unhealed party split"
+        ] },
+      { name: "Greg Lopez and Taralyn Romero", party: "I", winner: false,
+        positions: [
+          "Runs on \"People Over Politics, Do No Harm and Do What Works,\" arguing the system itself is broken and both parties raise money better than they solve problems (campaign framing)",
+          "Explicitly targets unaffiliated voters — now near half of Colorado registrants — as an abandoned bloc (campaign framing)",
+          "⚠ [Verify] Detailed policy planks could NOT be sourced — reporting covers his rationale and framing rather than specific commitments, and none are invented here"
+        ],
+        differentiators: [
+          "Left the Republican Party on Dec 30, 2025; this is his THIRD gubernatorial run after losing Republican primaries in 2018 and 2022, when he drew more than 292,000 votes",
+          "Served roughly six months in the U.S. House in 2024 after a CO-4 special election; a former mayor of Parker",
+          "The ONLY statewide-executive candidate to reach the ballot by petition this cycle — 11,948 of 14,723 signatures validated against an 8,000 threshold. $10,390 on hand as of July 27, 2026, including a $65,160 personal loan"
+        ],
+        supporters: [
+          "He offers unaffiliated voters — the largest bloc in Colorado — a ballot line neither party controls",
+          "A twice-tested statewide name with real conservative support",
+          "He qualified the hard way, clearing 1,000 valid signatures in all eight congressional districts"
+        ],
+        opponents: [
+          "Analysts expect his candidacy to further complicate Marx's already narrow path, drawing the 2010 comparison to Tom Tancredo's splinter bid that helped elect Hickenlooper",
+          "His fundraising is negligible — about $10,000 on hand against two major-party campaigns",
+          "He paid a $15,000 settlement after being accused of trying to improperly influence actions of the Small Business Administration in violation of federal law"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Attorney General — Colorado (OPEN SEAT)",
+    note: "An open seat — Phil Weiser is term-limited and running for governor. ⚠ This is the ONLY statewide office with a bare two-way ballot: no minor party or unaffiliated candidate qualified. Secretary of State Jena Griswold won a four-way Democratic primary with 44.21%, and El Paso County District Attorney Michael Allen won the Republican primary 59.89%–40.11%. Both nominees currently hold other offices.",
+    candidates: [
+      { name: "Jena Griswold", party: "D", winner: false,
+        positions: [
+          "Affordability and antitrust — stop hedge funds and corporate landlords from illegally driving up housing costs, block grocery mergers creating monopolies, pursue illegal pricing practices (CPR questionnaire, her words)",
+          "Workers — staff up an office of workers' rights targeting wage theft (CPR questionnaire)",
+          "Democracy — as Secretary of State she expanded voting access, passed automatic voter registration, banned guns near voting sites and criminalised threats against election workers (her record)"
+        ],
+        differentiators: [
+          "The only statewide elected official in the field, and the sitting Secretary of State",
+          "Runs explicitly on a working-class biography — a rural upbringing outside Estes Park, still carrying $200,000 in student debt",
+          "$158,920 on hand as of July 27, 2026; led the Democratic field in fundraising. No endorsements could be specifically sourced [Verify]"
+        ],
+        supporters: [
+          "Statewide-tested and battle-hardened by four years of election-administration fights",
+          "Her consumer-protection and antitrust framing connects the office directly to cost-of-living concerns",
+          "She won a four-way primary by 24 points over the runner-up"
+        ],
+        opponents: [
+          "Primary rivals portrayed her as an inexperienced lawyer relative to the field — she practised only about two years before moving into politics; she called that campaign-trail mudslinging",
+          "She won with 44.2%, meaning a majority of Democratic primary voters chose someone else",
+          "Allen argues the office should prosecute crime rather than pursue what he characterises as political lawsuits"
+        ] },
+      { name: "Michael Allen", party: "R", winner: false,
+        positions: [
+          "Crime and cost of living — argues crime drives Colorado's costs; launched the state's first motor-vehicle-theft prosecution task force, cutting auto theft by over 50%, and an organised-crime unit targeting retail theft rings (CPR questionnaire, his words)",
+          "Constitutional rights — would protect the civil rights of all citizens, citing the second-longest prison sentence in Colorado history (CPR questionnaire)",
+          "Immigration enforcement — says all law enforcement must operate within constitutional requirements and Coloradans must be protected from illegal search and seizure; would use the AG's role in setting officer training standards (CPR questionnaire)"
+        ],
+        differentiators: [
+          "The sitting El Paso County District Attorney — the only candidate who has run a prosecutor's office at scale — who prosecuted the 2022 Club Q shooting that killed five and injured 19",
+          "Says he has prosecuted more fentanyl-death cases than any other district attorney in Colorado",
+          "⚠ $5,732 on hand as of July 27, 2026 — roughly one twenty-eighth of his opponent's. A Navy aviation electronics technician, honorably discharged in 1998. No endorsements sourced"
+        ],
+        supporters: [
+          "The only candidate in the race who has actually run a prosecutor's office at scale",
+          "The Club Q prosecution is a concrete record with bipartisan resonance",
+          "He argues the office should return to core law enforcement rather than political lawsuits and ballooning budgets"
+        ],
+        opponents: [
+          "Under $6,000 on hand entering a statewide general election — critics call the campaign structurally non-viable",
+          "Democrats argue his framing would abandon the consumer-protection and federal-oversight work that defined the office",
+          "No Republican has won this office since 2014, and Democrats have held all four statewide executive offices since 2019 [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Secretary of State — Colorado (OPEN SEAT)",
+    note: "An open seat — Jena Griswold is term-limited and running for Attorney General. Jefferson County Clerk and Recorder Amanda Gonzalez won the Democratic primary by nearly 29 points over a sitting state senator; James Wiley was unopposed on the Republican side. Whoever wins will administer the 2028 presidential election in Colorado. Sabato rated this Safe Democratic, though that rating is from Aug 7, 2025 and is over a year old. Five parties hold certified lines for this office — American Constitution, Forward and Libertarian in addition to the two major parties.",
+    candidates: [
+      { name: "Amanda Gonzalez", party: "D", winner: false,
+        positions: [
+          "Election protection — says Colorado needs \"a firewall, not a figurehead,\" and would ensure eligible voters can participate even if federal immigration agents are stationed near polling places or mail-ballot delivery is disrupted (CPR interview, her words)",
+          "Transparency — proactive public education about voting, and frequent tours of election facilities (CPR interview)",
+          "Campaign finance — rebuild the state's TRACER disclosure system so it is genuinely usable: if you can work Facebook, you should be able to see how money flows through Colorado politics (CPR interview)"
+        ],
+        differentiators: [
+          "The only attorney in the race AND the only candidate who has actually administered an election — she runs elections for roughly 600,000 Jefferson County residents",
+          "A former executive director of Colorado Common Cause, working on ballot access and money in politics",
+          "Won her primary by nearly 29 points and outraised her opponent by more than 5-to-1 as of July 27, 2026"
+        ],
+        supporters: [
+          "She combines hands-on election administration with legal and reform-advocacy experience — an unusual combination",
+          "The TRACER usability pledge is a concrete, non-partisan deliverable",
+          "She beat a sitting state senator by a wide margin"
+        ],
+        opponents: [
+          "Wiley argues the outgoing administration left Coloradans with distrust and casts her as continuity",
+          "Critics of her Common Cause background call it advocacy rather than neutral administration",
+          "County-level administration is a large step down in scale from running statewide elections [Verify — structural argument]"
+        ] },
+      { name: "James Wiley", party: "R", winner: false,
+        positions: [
+          "Elections — restore what he calls free and fair elections, and LOCK PUBLIC RECORDS ON BLOCKCHAIN for immutability (campaign site)",
+          "Business — make it radically easier to start and run a business in Colorado (campaign site)",
+          "Self-describes as a \"Kennedy libertarian\" building a \"Liberty Coalition\" across Republicans, libertarians, MAHA supporters, unions, small businesses and unaffiliated voters (campaign site)"
+        ],
+        differentiators: [
+          "Blockchain-based public records is a distinctive and unusual platform plank for this office",
+          "Explicitly cross-partisan coalition framing rather than standard Republican messaging; says he backed RFK Jr.'s Liberty Presidential Pledge in 2024 before running as a Republican",
+          "Ran unopposed, so enters the general with an undivided party — but was outraised more than 5-to-1. His site has an endorsements page but no names could be extracted [Verify]"
+        ],
+        supporters: [
+          "He argues immutable blockchain records would settle election-integrity disputes with technology rather than argument",
+          "He deliberately courts unaffiliated and cross-ideological voters rather than running a conventional partisan race",
+          "An uncontested nomination left the party undivided"
+        ],
+        opponents: [
+          "⚠ His site asserts the outgoing Secretary of State's tenure produced \"endless scandals\" and that voting machines \"threaten our sovereignty with AI\" — election officials and Democrats dispute those characterisations, and NO source substantiating them could be located",
+          "A substantial fundraising deficit against a well-funded opponent",
+          "Election administrators question whether blockchain addresses any documented failure in Colorado's paper-ballot-plus-risk-limiting-audit system [Verify — structural argument]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "State Treasurer — Colorado (OPEN SEAT)",
+    note: "An open seat — Dave Young is term-limited. Both major-party nominees were unopposed in their primaries, which is why this is the thinnest-covered statewide race on the ballot: no CPR voter-guide questionnaires exist for either, because neither faced a contested primary. ⚠ The Republican nominee's campaign website was still a placeholder reading \"Coming Soon / We're under construction\" as of Aug 7, 2026, so NO policy positions could be sourced for him and none are invented here. Approval Voting and Libertarian lines are also certified for this office.",
+    candidates: [
+      { name: "Jeff Bridges", party: "D", winner: false,
+        positions: [
+          "Invest state funds in Colorado rather than \"parking them on Wall Street and Washington\" — specifically in housing working people can afford (campaign site, his wording)",
+          "Infrastructure creating good-paying jobs, and clean energy to lower utility bills (campaign site)",
+          "Frames the office around Colorado's affordability crisis, naming federal cuts and TABOR's revenue cap as the constraints he would work against (campaign site)"
+        ],
+        differentiators: [
+          "Four years as Chair and Vice Chair of the Joint Budget Committee — the small bipartisan panel that signs off on every dollar of the roughly $17 billion state budget, and the closest legislative analogue to this job",
+          "A decade in the legislature: passed full-day kindergarten, created the nation's first middle-income housing authority and tax credit, and wrote a paid sick leave policy backed by both labor and business",
+          "More than $237,000 on hand as of July 27, 2026 — roughly a 4.5-to-1 advantage"
+        ],
+        supporters: [
+          "Joint Budget Committee leadership is the closest legislative analogue to the Treasurer's job; few candidates ever arrive better prepared on state finance mechanics",
+          "A documented record of passing major bipartisan legislation, not merely budget process",
+          "He enters with roughly a 4.5-to-1 cash advantage"
+        ],
+        opponents: [
+          "Republicans argue his budget-committee record makes him a co-owner of the spending and TABOR-workaround decisions driving Colorado's costs",
+          "His stated aim of directing state dollars toward housing and clean energy invites the critique that the Treasurer should prioritise returns and safety over policy goals [Verify — structural argument]",
+          "He campaigns explicitly against TABOR's cap, which TABOR supporters treat as disqualifying for the office that manages state funds"
+        ] },
+      { name: "Kevin Grantham", party: "R", winner: false,
+        positions: [
+          "⚠ [Verify] NO policy positions could be sourced — his campaign site returns only \"Coming Soon / We're under construction\" and no candidate questionnaire exists because he was unopposed. Deliberately left blank rather than filled in from a directory",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "Currently a Fremont County commissioner",
+          "Was unopposed for the Republican nomination — no primary contest and no divided party",
+          "⚠ $53,247 on hand as of July 27, 2026, roughly a 4.5-to-1 disadvantage. He is widely described as a former Colorado Senate President, but that could NOT be sourced and is not asserted here [Verify]"
+        ],
+        supporters: [
+          "[Verify — structural argument] County-commission experience means direct accountability for a real budget rather than a purely legislative record",
+          "He consolidated the nomination without a contested primary, conserving resources for the general",
+          "Republicans argue a Treasurer from the opposition party provides a check on unified Democratic control of all four statewide offices since 2019"
+        ],
+        opponents: [
+          "He has the least-developed public campaign of any statewide nominee — his website was still a placeholder as of Aug 7, 2026, and he has issued no sourceable policy platform",
+          "Roughly a 4.5-to-1 cash disadvantage",
+          "He faces an opponent with four years running the state's budget committee — a direct experience gap on the office's core function"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Judicial · Statewide · retention",
+    office: "Judicial Retention — Supreme Court and Court of Appeals (7 judges)",
+    note: "Retention is a yes-or-no vote with no opponent. 123 Colorado judges face retention in 2026, but only these SEVEN appellate judges appear on every voter's ballot statewide; the rest are district and county judges voted on locally. The Colorado Office of Judicial Performance Evaluation released its 2026 evaluations on Aug 4, 2026, and ALL SEVEN were rated \"Meets Performance Standards\" — the Supreme Court finding for Justice Hood was unanimous. Justice William W. Hood III would serve a 10-year term if retained; the six Court of Appeals judges — Rebecca Rankin Freyre, Elizabeth Harris, Katherine Lum, Pax Moultrie, Karl Schock and Grant Sullivan — would serve 8-year terms. ⚠ Three trial-court judges elsewhere in the state received \"Does Not Meet Performance Standards,\" but NONE of them is an appellate judge, so none appears on the statewide ballot. Evaluations are published at knowyourjudge.com.",
+    candidates: [
+      { name: "Justice William W. Hood III — retain?", party: "I", winner: false,
+        positions: ["[Verify] — retention judges do not campaign and publish no platform", "[Verify]", "[Verify]"],
+        differentiators: ["A yes-or-no retention vote on the Colorado Supreme Court", "Rated \"Meets Performance Standards\" UNANIMOUSLY by the Office of Judicial Performance Evaluation, Aug 4, 2026", "Would serve a 10-year term if retained"],
+        supporters: ["Colorado publishes an independent, non-partisan performance evaluation before the vote, and his was unanimous — giving voters a real basis for the decision rather than a blind choice"],
+        opponents: ["[Verify — structural] Retention elections give voters little comparative information and no alternative candidate, and Colorado retention votes rarely fail"] },
+      { name: "Six Court of Appeals judges — retain?", party: "I", winner: false,
+        positions: ["[Verify] — retention judges do not campaign and publish no platform", "[Verify]", "[Verify]"],
+        differentiators: ["Rebecca Rankin Freyre, Elizabeth L. Harris, Katherine E. Lum, Pax Moultrie, Karl L. Schock and Grant Sullivan — each a separate yes-or-no question", "ALL SIX rated \"Meets Performance Standards\" by the Office of Judicial Performance Evaluation, Aug 4, 2026", "Each would serve an 8-year term if retained"],
+        supporters: ["All six passed an independent performance evaluation published before ballots go out, and the evaluations are freely readable at knowyourjudge.com"],
+        opponents: ["[Verify — structural] Six separate retention questions deep on a long ballot invites drop-off, and voters rarely have information about appellate judges beyond the evaluation itself"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Ballot Measure · Statewide",
+    office: "Referred Measure — State Public K-12 Education Funding (SB26-135)",
+    note: "The ONLY measure referred by the Legislature this cycle — and notably, NO constitutional amendments were referred at all (seven concurrent resolutions were introduced in 2026 and none passed; five in 2025, none passed). This is a statutory measure requiring a simple majority. It asks whether state K-12 investment should rise 2% annually for ten years, funded NOT by raising taxes but by raising the state fiscal-year spending limit by the amount spent on K-12 as a voter-approved revenue change under TABOR, with an annual independent audit. ⚠ NO PROPOSITION LETTER HAS BEEN ASSIGNED YET — under state law referred measures receive letters at certification, which is Sept 7, 2026. Do not expect the designation used in early coverage to be final.",
+    candidates: []
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Ballot Measure · Statewide",
+    office: "Citizen Initiatives — seven certified, seven more pending",
+    note: "SEVEN citizen initiatives have been ruled sufficient and are on the ballot, identified here by initiative number and the Secretary of State's own caption because ⚠ NO AMENDMENT LETTER OR PROPOSITION NUMBER HAS BEEN ASSIGNED YET (certification is Sept 7, 2026; initiated amendments number from 60 and initiated statutes from 101). They are: #85 Penalties for Fentanyl Crimes (statute); #95 Law Enforcement Reporting Requirements to Federal Authorities (constitutional — needs 55%); #108 Penalties for Human Trafficking of a Minor (statute); #109 Male and Female Participation in School Sports (statute); #110 Prohibit Certain Surgeries on Minors (statute); #175 State Revenue Supporting Road Transportation (constitutional — 55%); and #177 Right to Natural Gas (constitutional — 55%). ⚠ #177's sufficiency issued on AUG 6, 2026 — one day before this page was built — so its elector-protest window has not closed and it is certified but contestable. ⚠ ALL SEVEN can still be WITHDRAWN by their designated representatives through Sept 4, 2026. ⚠ SEVEN MORE initiatives are in signature-line review with a decision deadline of Sept 2, 2026, including a graduated income tax that would remove TABOR's uniform-rate requirement, an income tax rate cap, congressional redistricting, and mail-ballot voter ID. This ballot is not final [Verify after Sept 7].",
+    candidates: []
+  },
+
+  // PAST — 2026 primaries
+  {
+    date: "Jun 30, 2026", type: "past", scope: "State · Statewide · Primary",
+    office: "Democratic Primary — Governor",
+    note: "⚠ THE UPSET OF THE CYCLE. Attorney General Phil Weiser beat sitting U.S. Sen. Michael Bennet despite more than $17 million in combined opposing spending from Bennet's campaign and a billionaire-funded super PAC. Bennet did NOT resign his Senate seat to run, so he remains a sitting senator — there is no vacancy and no appointment question. He is the first sitting U.S. senator since 2010 to lose a gubernatorial primary.",
+    candidates: [
+      { name: "Phil Weiser", party: "D", winner: true, positions: ["Won 56.88% (505,459 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Michael Bennet", party: "D", winner: false, positions: ["Took 43.12% (383,138 votes) — and remains a sitting U.S. senator", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Jun 30, 2026", type: "past", scope: "State · Statewide · Primary",
+    office: "Republican Primary — Governor",
+    note: "⚠ Decided by 2,466 votes — a 0.471% margin that fell just outside the 0.5% automatic-recount threshold. Runner-up Barb Kirkmeyer has withheld her endorsement of the winner. ⚠ Three sets of raw totals circulated before certification; the figures here are from the official certified abstract and supersede them.",
+    candidates: [
+      { name: "Victor Marx", party: "R", winner: true, positions: ["Won 39.85% (208,458 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Barb Kirkmeyer", party: "R", winner: false, positions: ["Took 39.38% (205,992 votes) — 2,466 votes short", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Greg Bottoms", party: "R", winner: false, positions: ["Took 20.75% (108,535 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Jun 30, 2026", type: "past", scope: "Federal · Statewide · Primary",
+    office: "Democratic Primary — U.S. Senate",
+    note: "A closer result than expected for a sitting senator — Hickenlooper took 52.81% and lost Denver County outright.",
+    candidates: [
+      { name: "John Hickenlooper", party: "D", winner: true, positions: ["Won 52.81% (472,870 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "James Gonzales", party: "D", winner: false, positions: ["Took 47.19% (422,488 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Jun 30, 2026", type: "past", scope: "State · Statewide · Primary",
+    office: "Democratic Primary — Attorney General",
+    note: "A four-way field; Griswold won with a plurality rather than a majority.",
+    candidates: [
+      { name: "Jena Griswold", party: "D", winner: true, positions: ["Won 44.21% (385,795 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Michael Seligman", party: "D", winner: false, positions: ["Took 19.81%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Michael Dougherty", party: "D", winner: false, positions: ["Took 19.51%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Crisanta Doshi", party: "D", winner: false, positions: ["Took 16.47%", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+
+  // PAST — prior general elections
+  {
+    date: "Nov 5, 2024", type: "past", scope: "Federal · Statewide",
+    office: "President — Colorado (2024)",
+    note: "Colorado has moved steadily Democratic; Harris carried it by about 11 points.",
+    candidates: [
+      { name: "Kamala Harris", party: "D", winner: true, positions: ["Won 54.13% (1,728,159 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Donald Trump", party: "R", winner: false, positions: ["Took 43.14% (1,377,441 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 8, 2022", type: "past", scope: "Federal · Statewide",
+    office: "U.S. Senate — Colorado (2022)",
+    note: "Michael Bennet's Class III seat — the OTHER Colorado Senate seat, which is NOT on the 2026 ballot. It is next up in 2028.",
+    candidates: [
+      { name: "Michael Bennet", party: "D", winner: true, positions: ["Won 55.88% (1,397,170 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Joe O'Dea", party: "R", winner: false, positions: ["Took 41.26% (1,031,693 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 8, 2022", type: "past", scope: "State · Statewide",
+    office: "Governor — Colorado (2022)",
+    note: "Jared Polis's re-election by more than 19 points. He is now term-limited, which is why 2026 is an open seat.",
+    candidates: [
+      { name: "Jared Polis", party: "D", winner: true, positions: ["Won 58.53% (1,468,481 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Heidi Ganahl", party: "R", winner: false, positions: ["Took 39.18% (983,040 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  }
+];
+
+// ----- (3) U.S. House races by district -----
+// ⚠⚠ CO-1 IS AN OPEN-SEAT UPSET: 15-term Rep. Diana DeGette, in office since 1997, LOST her primary
+// to Melat Kiros. She is serving out her term but is not on the November ballot.
+// ⚠ CO-8 is Colorado's only toss-up and one of the most competitive districts in the country —
+// Gabe Evans flipped it in 2024 by 2,449 votes (0.73 points) and its Cook PVI is EVEN.
+// ⚠⚠ MINOR-PARTY BALLOT LINES BELOW COME FROM A DETERMINISTIC PARSE of the Colorado SoS ballot-order
+// grid (lot drawing July 28, 2026; page updated Aug 3), reading each <td> against its <th> by index.
+// This matters: a page-summariser silently SHIFTED COLUMNS on that table — blank cells collapse when
+// it is read as rendered text, sliding every value left — and produced wrong party attributions in
+// three separate research passes. The verified lines are:
+//   CO-1 Unity 3, Libertarian 4  ·  CO-2 Libertarian 3  ·  CO-3 Libertarian 3  ·  CO-4 Libertarian 3
+//   CO-5 ACP 3, Libertarian 4    ·  CO-6 Libertarian 3, Unity 4
+//   CO-7 Unity 3, ACP 4, Libertarian 5  ·  CO-8 Libertarian 3
+// The Libertarian Party holds a line in ALL EIGHT districts; the American Constitution Party appears
+// ONLY in CO-5 and CO-7; and Approval Voting, Center and Forward have NO House line anywhere.
+// ⚠ Minor-party NOMINEE NAMES are mostly not yet public — Colorado's deadline for assembly/convention
+// nominees to be made public is AUG 20, 2026, and ballot certification is ~Sept 4–7. Those lines are
+// therefore described in the race notes rather than carded with unverifiable names. The exception is
+// CO-4, where the name is independently sourced. Re-check after Sept 7.
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — CO District 1",
+    region: "Denver — nearly all of the City and County of Denver, including the Glendale and Holly Hills enclaves",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ THE SEAT EFFECTIVELY CHANGED HANDS IN JUNE. Melat Kiros, a 29-year-old democratic socialist, unseated Diana DeGette 53.19%–39.78% — DeGette had held this seat since 1997. She is serving out her term but is NOT on the November ballot. Kiros also won the district assembly 67–33. No rater treats the general election as competitive: Cook and Inside Elections Solid D, Sabato Safe D, with Cook's Solid D independently confirmed after the primary. No Cook PVI is printed — none could be traced to a Cook document. Unity and Libertarian lines are also certified here; their nominees' names are not yet public.",
+        candidates: [
+          { name: "Melat Kiros", party: "D", winner: false,
+            positions: [
+              "Medicare for All (campaign site)",
+              "Social and public housing insulated from market speculation, plus federal rent control (campaign site)",
+              "Abolish ICE; also universal childcare and an arms embargo on Israel (campaign site)"
+            ],
+            differentiators: [
+              "Born in Addis Ababa in 1997 and brought to the U.S. as an infant after her father won the Diversity Visa lottery; raised in Aurora — she would be Colorado's first Black woman in Congress",
+              "A Notre Dame Law graduate fired from Sidley Austin in 2023 after refusing to retract a public letter criticising law firms' handling of pro-Palestinian protest — the founding story of her campaign",
+              "Won on organising rather than money: 6,500+ volunteers and 100,000+ doors. $126,406 on hand (FEC, June 30, 2026). Endorsed by Bernie Sanders, DSA, Justice Democrats and Colorado Working Families — NOT by the DCCC"
+            ],
+            supporters: [
+              "Sanders argued democratic socialists are winning because \"status quo politics and policies are not working\"",
+              "Her campaign argues the win was about Medicare for All and universal childcare rather than the label",
+              "She beat a 15-term incumbent by more than 13 points without institutional money"
+            ],
+            opponents: [
+              "The Republican National Committee characterised her platform as \"socialist platform pillars\"",
+              "⚠ Independent candidate Shimon Blau said he is \"particularly concerned by what I view as Ms. Kiros's anti-Semitic rhetoric\" — this is a characterisation BY AN OPPONENT, not an established fact, and is attributed as such",
+              "Some Democrats told reporters they worry DSA momentum becomes a liability in swing districts"
+            ] },
+          { name: "Christy Peterson", party: "R", winner: false,
+            positions: [
+              "Opposes \"the progressive left and communist socialism\" (campaign site, her wording)",
+              "Low tax, limited government, peace through strength and energy independence (campaign site)",
+              "Local agriculture and a \"safer, cleaner Denver\"; frames the campaign as \"family, faith & freedom\" (campaign site)"
+            ],
+            differentiators: [
+              "Works in office management and accounting at a construction company — a non-political nominee, unopposed for the nomination",
+              "Running where no Republican has won since 1973",
+              "⚠ Cash on hand could NOT be sourced; reporting indicates zero receipts and no committee ID was retrievable. No figure is published [Verify]"
+            ],
+            supporters: [
+              "[Verify — structural] A three-way race with a well-funded independent gives the only major-party alternative an unusual opening",
+              "An uncontested nomination left the party undivided [Verify]"
+            ],
+            opponents: [
+              "[Verify — structural] Minimal reported fundraising, with no committee filing retrievable",
+              "Republican analysts are openly discussing Republicans backing the independent instead, which cuts against her own path",
+              "No Republican has won this seat since 1973 [Verify]"
+            ] },
+          { name: "Shimon Blau", party: "I", winner: false,
+            positions: [
+              "Healthcare \"within reach for every family,\" argued as a practising physician (campaign site)",
+              "Cost of living and small-business hiring (campaign site)",
+              "\"Commonsense immigration reform\"; supports reproductive freedom and marriage equality, and says he would caucus with Democrats (campaign site)"
+            ],
+            differentiators: [
+              "Dr. Shimon \"Shimi\" Blau, 50, an interventional spine and pain physician and lifelong Denverite; an observant Orthodox Jew whose father was a Polish Holocaust survivor who worked on the Apollo program",
+              "Entered as a direct reaction to the primary result and qualified in roughly two weeks — 2,212 signatures against a 1,500 threshold, certified sufficient July 24, 2026",
+              "Takes no PAC money. ⚠ No FEC filing could be located as of Aug 7, 2026 [Verify]"
+            ],
+            supporters: [
+              "A Republican analyst argued \"thinking Republicans\" may conclude their own nominee cannot win and back the doctor instead",
+              "A Denver rabbi argued his refusal of PAC money means he cannot be branded the AIPAC candidate",
+              "Colorado's roughly 51% unaffiliated electorate makes independent bids more viable than in most states"
+            ],
+            opponents: [
+              "Democrats argue the nomination was settled by 158,000 primary voters and that an unaffiliated candidate must build a coalition without party infrastructure in a district that voted 76.5% Democratic",
+              "Reporting noted he was still \"refining my talking points\" and declined to give specifics on Israel policy",
+              "[Verify — no on-the-record attack from the Kiros campaign was sourced] He has no reported fundraising"
+            ] }
+        ]
+      },
+      {
+        date: "Jun 30, 2026", type: "past",
+        note: "⚠ One of the biggest primary upsets in the country this cycle — a 15-term incumbent denied renomination.",
+        candidates: [
+          { name: "Melat Kiros", party: "D", winner: true, positions: ["Won 53.19% (83,855 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Diana DeGette (incumbent)", party: "D", winner: false, positions: ["Took 39.78% (62,715 votes) — defeated after 15 terms", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Wanda James", party: "D", winner: false, positions: ["Took 7.03% (11,075 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "DeGette's final election, won by 55 points.",
+        candidates: [
+          { name: "Diana DeGette", party: "D", winner: true, positions: ["Won 76.53%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Valdamar Archuleta", party: "R", winner: false, positions: ["Took 21.58%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+
+  2: {
+    name: "U.S. House — CO District 2",
+    region: "North-central Colorado — Boulder, Fort Collins, Loveland and Longmont, plus the northern mountain resort counties of Summit, Eagle, Grand and Routt",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Safe Democratic. Joe Neguse, the No. 5 House Democrat, was unopposed in his primary and faces a 27-year-old first-time candidate. ⚠ No rater treats this as competitive — a CO-2 ratings table could not even be located, because forecasters do not track the seat. A Libertarian line is also certified; the nominee's name is not yet public.",
+        candidates: [
+          { name: "Joe Neguse (incumbent)", party: "D", winner: false,
+            positions: [
+              "Public lands and climate — wildfire resilience, the Climate Corps, and Camp Hale–Continental Divide National Monument (campaign site)",
+              "Universal health coverage and lower drug costs (campaign site)",
+              "A $15 minimum wage, paid leave and affordable childcare (campaign site)"
+            ],
+            differentiators: [
+              "ASSISTANT DEMOCRATIC LEADER — No. 5 in House Democratic leadership, re-elected unopposed by the caucus in Nov 2024, and by far the highest-ranking Coloradan",
+              "Colorado's first Black member of Congress",
+              "$3,092,918 on hand (FEC, June 30, 2026) — roughly a 3,000-to-1 advantage over an opponent with no financial report on file"
+            ],
+            supporters: [
+              "His leadership rank gives the district outsized influence over public-lands and wildfire funding",
+              "[Verify — structural; no substantive published general-election argumentation was located] A safe seat lets a leadership member focus on national priorities",
+              "He was unopposed for renomination"
+            ],
+            opponents: [
+              "Dennison argues affordability problems persist under long-tenured Democratic representation",
+              "She argues federal policy has underinvested in non-college career paths [Verify]",
+              "[Verify — structural] An uncontested primary meant no public test of his record"
+            ] },
+          { name: "Kelley Anne Dennison", party: "R", winner: false,
+            positions: [
+              "Expanding federal funding for trade and vocational education — her stated top priority, arguing federal funding has \"heavily incentivized four-year college paths\" (her wording)",
+              "Economic affordability and financial stewardship (campaign materials)",
+              "Second Amendment rights, and border security paired with improved lawful pathways (campaign materials)"
+            ],
+            differentiators: [
+              "Age 27, a massage therapist and small-business owner in Estes Park — among the youngest House nominees in the country",
+              "Personally used trade-school funding, which ties directly to her signature issue; calls herself the party's \"tactical nuke option\" for reaching unaffiliated voters",
+              "⚠ NO FEC financial report on file as of Aug 7, 2026 — her committee filed only a Statement of Organization in March [Verify]"
+            ],
+            supporters: [
+              "Federal policy has systematically underfunded skilled trades relative to four-year college, and she has used those programs herself",
+              "A 27-year-old can reach a district that is 51% unaffiliated and only 15% Republican in ways a conventional Republican cannot",
+              "She won a contested primary 57.94%–42.06%"
+            ],
+            opponents: [
+              "⚠ She largely made the case herself, calling it \"definitely a David and Goliath story. It's going to be really hard.\"",
+              "No financial report on file against $3.09 million",
+              "The district has been Democratic for more than 50 years"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Neguse won a fourth term by nearly 40 points.",
+        candidates: [
+          { name: "Joe Neguse", party: "D", winner: true, positions: ["Won 68.36%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Marshall Dawson", party: "R", winner: false, positions: ["Took 28.94%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+
+  3: {
+    name: "U.S. House — CO District 3",
+    region: "The Western Slope and southern Colorado — 29 counties across nearly half the state's land mass: Grand Junction, Pueblo, Montrose, Durango, Aspen and Glenwood Springs",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "The Colorado district most worth watching after CO-8. Jeff Hurd won this as an OPEN seat in 2024 — Boebert had moved to CO-4 — by about 5 points. ⚠ Trump WITHDREW his endorsement over Hurd's vote against Canada tariffs and backed a primary challenger, then RE-ENDORSED him on March 20, 2026 when she quit to join the administration. Hurd then beat Ron Hanks 66.35%–33.65%. Raters disagree: Cook moved it to Solid R (Apr 2026) while Decision Desk HQ and The Economist say Lean R, and the DCCC added the seat to its target list on Aug 5, 2026. ⚠ Cook's Solid R call PREDATES Romero's nomination and the DCCC targeting, and Cook explicitly said it \"could move back onto the board later this cycle.\" ⚠ The only poll is a Romero campaign internal (Hurd 46–45, July 21–23) — label it as such. No Cook PVI is printed; none could be traced to Cook. A Libertarian line is also certified. ⚠ Ballot-access route mattered: Hurd petitioned on, while Hanks reached the ballot through caucus/assembly.",
+        candidates: [
+          { name: "Jeff Hurd (incumbent)", party: "R", winner: false,
+            positions: [
+              "\"Responsible development of all Colorado energy resources,\" energy independence and permitting reform (campaign site)",
+              "Pushing lower Colorado River Basin users to \"live within their water means\" (campaign site)",
+              "Cutting \"unnecessary mandates and regulations\" for the rural economy (campaign site)"
+            ],
+            differentiators: [
+              "A Grand Junction attorney who won an open seat in 2024 and has BROKEN WITH TRUMP repeatedly — the Canada tariff vote, $8B in Ukraine loans, and a veto override on a Colorado water project",
+              "Governs well to his predecessor's left by conservative scorecards — 59% on Heritage Action against Boebert's 98%",
+              "$1,760,849 on hand (FEC, June 30, 2026) — roughly a 21-to-1 advantage. Endorsed by the Denver Gazette editorial board; NRCC Patriot Program membership could NOT be sourced and is not asserted"
+            ],
+            supporters: [
+              "The Denver Gazette called him \"a statesman\" and \"a perfect fit for CD-3\"",
+              "The NRCC says he \"continues to deliver commonsense wins for Coloradans\"",
+              "He casts himself as an effective legislator independent of party leadership, and has the voting record to point at"
+            ],
+            opponents: [
+              "From the RIGHT, his primary challenger cited the 59% Heritage score and attacked the Ukraine loan vote — Trump himself pulled his endorsement for a time",
+              "From the LEFT, Romero says Hurd \"has chosen his political bosses over families in Colorado,\" and the DCCC chair called him \"a weak freshman known for kowtowing to Republican leadership\"",
+              "Reporting notes he signed a letter urging the administration to preserve Medicaid, then voted for legislation reducing it"
+            ] },
+          { name: "Dwayne L. Romero", party: "D", winner: false,
+            positions: [
+              "Cost of living — repeal tariffs, expand family tax credits and stop corporate home purchases (campaign site)",
+              "Public lands and water — opposes selling public lands, calls water \"job number one,\" and would bar foreign ownership of Colorado water and farmland (campaign site)",
+              "Government accountability — ban congressional stock trading, term limits, end dark money (campaign site)"
+            ],
+            differentiators: [
+              "A West Point graduate and Army Ranger School alumnus who served as an officer in the Army Corps of Engineers and earned a Bronze Star in the Persian Gulf War; two of his three daughters serve as military officers",
+              "Director of economic development under Gov. Hickenlooper; served on Aspen City Council and the school board",
+              "⚠ Entered roughly FOUR HOURS before the filing deadline and still won the primary by about 10 points. $84,208 on hand with $350,000 in debt — ALL of it his own candidate loans. NOT on DCCC Red to Blue; on the lower-tier \"Districts in Play\" list as of Aug 5, 2026"
+            ],
+            supporters: [
+              "His own framing: \"We deserve a fighter in Congress who actually knows what it's like to struggle with the cost of living\"",
+              "On entering late: \"given my experience fighting through and being in combat, I always knew I could do well\"",
+              "The DCCC signalled national support in August by adding the seat to its target list"
+            ],
+            opponents: [
+              "The NRCC predicts Hurd wins \"overwhelmingly,\" and neither party's campaign arm classifies the seat as highly competitive",
+              "⚠ His OWN poll shows 41% of voters do not know who he is",
+              "He carries $350,000 in self-funded debt against a 21-to-1 cash disadvantage. ⚠ No on-the-record attack on his Aspen residency or self-funding could be sourced, and none is manufactured here"
+            ] },
+          { name: "Clifton Brown", party: "I", winner: false,
+            positions: [
+              "Universal healthcare as a constitutional right (campaign site, self-described — no independent reporting exists)",
+              "End the drug war and cut military spending (campaign site)",
+              "Election reform, a 32-hour workweek, and a ban on stock trading by officials (campaign site)"
+            ],
+            differentiators: [
+              "Born in Salt Lake City in 1958 and a Denver resident since 1971; a career carpenter framing custom homes",
+              "Says he entered politics over immigration enforcement actions; accepts only individual donations capped at $250 from CD3 residents",
+              "Certified by petition as sufficient on July 28, 2026. ⚠ No FEC data retrievable [Verify]"
+            ],
+            supporters: [
+              "[Verify — structural] A self-funded, PAC-free candidacy in a state where about half of voters are unaffiliated",
+              "His $250 donation cap is a concrete, checkable commitment [Verify]"
+            ],
+            opponents: [
+              "[Verify — structural] No measurable fundraising and no press coverage in a district spanning 50,000 square miles",
+              "Third-party candidates have never been competitive in this seat [Verify]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "An OPEN seat that year — Boebert had moved to CO-4. Hurd held it for Republicans by about 5 points.",
+        candidates: [
+          { name: "Jeff Hurd", party: "R", winner: true, positions: ["Won 50.79%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Adam Frisch", party: "D", winner: false, positions: ["Took 45.81%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+
+  4: {
+    name: "U.S. House — CO District 4",
+    region: "All or part of 21 counties — Colorado's eastern plains plus Douglas County and portions of Larimer (Loveland) and Weld (Greeley)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Lauren Boebert switched from CO-3 to CO-4 for the 2024 cycle and won by 11.6 points. Both nominees were unopposed in June. The race has drawn national attention almost entirely on money — ⚠ BUT THE HEADLINE FIGURE IS MISLABELLED EVERYWHERE: the widely-quoted \"$10.3 million to $1.0 million\" is TOTAL RECEIPTS, not cash on hand. Cash on hand is $3.61M to $247K. $7.58M of Laubacher's total is unitemised small-dollar giving. ⚠ Sabato moved the seat from Safe to LIKELY Republican on July 30, 2026, but its own reasoning cuts against overstating that — it wrote that money and environment make it \"a bit more interesting than a typical Safe Republican race,\" while also saying \"Boebert doesn't seem to truly be in much danger of losing.\" Cook still rates it Solid Republican and Inside Elections Solid Republican. NO forecaster rates this competitive. No Cook PVI is printed — the R+9 figure traces only to Wikipedia and an aggregator conflicts at R+15. ⚠ Unaffiliated candidate Timothy Veldhuizen FAILED to qualify — his petition was ruled INSUFFICIENT on July 28, 1,310 valid signatures against 1,500 required — so this is a three-way race.",
+        candidates: [
+          { name: "Lauren Boebert (incumbent)", party: "R", winner: false,
+            positions: [
+              "Border security and immigration — end catch-and-release, complete the wall, prohibit sanctuary-city funding, restore Remain in Mexico, and aggressive fentanyl interdiction (campaign site)",
+              "Energy and federal land regulators — expand fossil-fuel development, cut permitting timelines, and fight what she calls tyrannical Bureau of Land Management rules (campaign site)",
+              "Water rights, ranching and agriculture — protect water rights and back ranchers against wolf depredation (campaign site)"
+            ],
+            differentiators: [
+              "A House Freedom Caucus member, Vice Chair of the Natural Resources Oversight and Investigations subcommittee, and one of very few members ever to switch districts mid-career",
+              "Scores 98% on Heritage Action — sharply to the right of Colorado's other Republicans, including her CO-3 successor at 59%",
+              "⚠ About $247,000 cash on hand (FEC, June 30, 2026). She is NOT in the NRCC Patriot Program — the NRCC's own July 2026 roster lists Gabe Evans as the only Coloradan. ⚠ Her endorsements page is UNDATED and still lists a member who left Congress in Nov 2024, and a 2026-cycle Trump endorsement could NOT be confirmed; Colorado Politics reported in July 2026 that Trump called for a primary challenge to her"
+            ],
+            supporters: [
+              "The NRCC calls her \"a fighter for eastern Colorado\" with \"a proven track record of advancing common sense conservative principles,\" and predicts she will win overwhelmingly",
+              "The district gave her an 11.6-point win in 2024 and Cook still rates it Solid Republican",
+              "Her campaign points to four bills signed into law, including a Pueblo jobs measure it credits with more than 1,000 jobs"
+            ],
+            opponents: [
+              "The DCCC chair argues she is \"more interested in her own political self-promotion and chasing national attention than actually delivering for Colorado families\"",
+              "Laubacher's campaign argues she has raised healthcare costs and prioritised military spending over Colorado families",
+              "Sabato's move off Safe Republican, plus a ten-to-one fundraising deficit in total receipts, is cited as evidence of unusual vulnerability"
+            ] },
+          { name: "Eileen Laubacher", party: "D", winner: false,
+            positions: [
+              "Government reform — congressional term limits, ban members of Congress from trading stocks, end dark money and limit corporate funds in campaigns (campaign site)",
+              "Cost of living — crack down on price gouging, cut prescription drug prices, hold utility companies accountable (campaign site)",
+              "Healthcare — keep rural hospitals open, expand telehealth, and \"protect women's access to abortion, IVF, and birth control\" (campaign site)"
+            ],
+            differentiators: [
+              "A RETIRED U.S. NAVY REAR ADMIRAL with 34 years of service, retired October 2024 — Naval Academy class of 1990, the 11th class to include women — who deployed to Afghanistan in 2009 while raising five children",
+              "Senior Defense Official and Defense Attaché in New Delhi (2019–2022), then Senior Director for South Asia on the National Security Council",
+              "⚠ $3,610,909 cash on hand (FEC, June 30, 2026) from $10.35M in total receipts, $7.58M of it unitemised small-dollar. She is NOT on DCCC Red to Blue — verified against the DCCC's own list, where the only Coloradans are in CO-5 and CO-8; CO-4 was added to the lower-tier \"Districts in Play\" list on Aug 5, 2026"
+            ],
+            supporters: [
+              "Her campaign argues voters want \"a leader who will fight for a balanced budget, support term limits, lower costs, and actually follow through\"",
+              "A 34-year flag officer and NSC director is a national-security résumé unusual for any challenger",
+              "The ten-to-one fundraising gap and Sabato's rating shift are cited as evidence the seat is genuinely in play"
+            ],
+            opponents: [
+              "The NRCC predicts Boebert wins overwhelmingly, Cook still rates the seat Solid Republican, and the district backed Boebert by 11.6 points in 2024",
+              "She has never held elected office",
+              "⚠ [Verify] Beyond a generic party dismissal, NO substantive on-the-record attack on her could be sourced as of Aug 7, 2026. A primary rival did sue to keep her off the ballot in March, but the filings could not be read and their allegations are deliberately not characterised here"
+            ] },
+          { name: "Douglas Mangeris", party: "L", winner: false,
+            positions: [
+              "⚠ [Verify] NO platform could be sourced — his campaign site was DOWN on Aug 7, 2026, failing to connect on both ports. Only a cached snippet describes him as \"a construction superintendent from Loveland, a Federal Firearms Licensee, and a proud father\"",
+              "[Verify]",
+              "[Verify]"
+            ],
+            differentiators: [
+              "⚠ The Libertarian ballot LINE in CO-4 is state-certified at position 3 — confirmed by a deterministic parse of the SoS ballot-order grid. The NAME comes from the Libertarian Party of Colorado's own slate plus his FEC filing under CO-04, NOT from the Secretary of State, which publishes parties and positions but not names",
+              "Reports $0 raised with the FEC",
+              "A Libertarian took 2.61% in this district in 2024, so the line has a real recent floor"
+            ],
+            supporters: [
+              "[Verify — structural; no supportive coverage of Mangeris was located] A Libertarian drew 2.61% here in 2024, so the line represents a real constituency rather than a token filing",
+              "He gives voters a third option in a district neither major party treats as competitive [Verify]"
+            ],
+            opponents: [
+              "[Verify — structural; no critic has addressed him publicly] No platform of any kind is available for voters to evaluate — his campaign site was offline",
+              "He reports $0 raised in a district of more than 750,000 people [Verify]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Boebert's first election in CO-4 after switching from CO-3. ⚠ FIVE candidates ran, so the top two do not sum near 100. Figures are from the official Colorado Biennial Abstract of Votes Cast; the five counts sum exactly to the printed total of 447,807, which is what confirms the reading.",
+        candidates: [
+          { name: "Lauren Boebert", party: "R", winner: true, positions: ["Won 53.64% (240,213 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Trisha Calvarese", party: "D", winner: false, positions: ["Took 42.04% (188,249 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Hannah Goodman", party: "L", winner: false, positions: ["Took 2.61% (11,676 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Frank Atwood", party: "I", winner: false, positions: ["Took 1.39% (6,233 votes) on the Approval Voting line", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Paul Noel Fiorino", party: "I", winner: false, positions: ["Took 0.32% (1,436 votes) on the Unity line", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+
+  5: {
+    name: "U.S. House — CO District 5",
+    region: "El Paso County — Colorado Springs, Cimarron Hills, Fort Carson and the Air Force Academy area; coterminous with the county except a handful of precincts",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Freshman Republican Jeff Crank seeks a second term in a seat NO DEMOCRAT HAS EVER HELD. Democrat Jessica Killin has OUT-RAISED him and made the DCCC's Red to Blue list — one of only two Coloradans on it. Raters still call it Likely R: Cook (Jan 15, 2026), Inside Elections and Sabato, with Cook PVI R+5. Registration favours Republicans roughly 2-to-1, but unaffiliated voters are slightly over half the electorate. ⚠ Both polls that exist are Killin campaign internals — no independent public poll was located. American Constitution and Libertarian lines are also certified; their nominees' names are not yet public. ⚠ A Republican, Matt Cavanaugh, quit the primary in March after his petition firm came up short — a Colorado-specific ballot-access failure.",
+        candidates: [
+          { name: "Jeff Crank (incumbent)", party: "R", winner: false,
+            positions: [
+              "Support military installations and the district's veteran population (campaign site)",
+              "Wildfire resilience for the community (campaign site)",
+              "\"Western values\" and conservative governance (campaign site)"
+            ],
+            differentiators: [
+              "More than 30 years as an El Paso County political operative and organiser before winning the seat",
+              "Endorsed by Donald Trump (Aug 2025), Americans for Prosperity and AIPAC",
+              "$1,465,048 on hand (FEC, June 30, 2026) — ⚠ LESS than his challenger's"
+            ],
+            supporters: [
+              "A known local quantity with three decades in El Paso County civic life",
+              "He won the seat by 14 points in 2024 and carries Trump's and Americans for Prosperity's backing in a district that has never gone Democratic",
+              "His focus on wildfire resilience and on protecting Colorado Springs military installations matches the district's economic base"
+            ],
+            opponents: [
+              "Killin's internal polling puts his favourables slightly upside-down — 29% favourable to 30% unfavourable overall, and 20/32 among unaffiliated voters — which is weak for an incumbent [Verify — a campaign internal]",
+              "⚠ He has been OUT-RAISED by his challenger, unusual for a sitting Republican in a seat this safe",
+              "Democrats argue the district is moving away from the party faster than any in the country [Verify]"
+            ] },
+          { name: "Jessica Killin", party: "D", winner: false,
+            positions: [
+              "End tariffs she says raise prices, curb corporate price-gouging and corporate landlords, and cut middle-class taxes (campaign site)",
+              "Ban congressional stock trading, end pay during shutdowns, create an independent congressional ethics office and overturn Citizens United (campaign site)",
+              "Repeal Medicaid cuts, let Medicare negotiate drug prices, and cap insulin at $35; also keep Space Command in Colorado Springs and protect the Air Force Academy from cuts (campaign site)"
+            ],
+            differentiators: [
+              "An Army captain and paratrooper who spent over a decade at USAA working on VA home loans and predatory-lending protections for military families",
+              "A former chief of staff to the Second Gentleman; a fourth-generation Coloradan raised by Colorado Springs public-school teachers",
+              "⚠ $1,592,642 on hand (FEC, June 30, 2026) — MORE cash and more raised than the incumbent. On DCCC Red to Blue (May 4, 2026), plus EMILYs List, VoteVets, Giffords and every Colorado congressional Democrat"
+            ],
+            supporters: [
+              "She has out-raised a sitting Republican in a district Republicans have never lost, which supporters read as proof the seat is genuinely in play",
+              "Her military and USAA consumer-protection record fits a district built around Fort Carson, Peterson and the Academy",
+              "Her ethics package polls well with the district's unaffiliated majority"
+            ],
+            opponents: [
+              "Crank's campaign calls her a creature of the \"Washington, D.C. Democrat Establishment,\" noting more than 90% of her early money came from out of state",
+              "No Democrat has ever won this seat in its 50-plus year history, and registered Republicans outnumber Democrats about 2-to-1",
+              "⚠ The only public polling is her OWN campaign's internal — no independent survey exists"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Crank won the open seat by about 14 points.",
+        candidates: [
+          { name: "Jeff Crank", party: "R", winner: true, positions: ["Won 54.66%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "River Gassen", party: "D", winner: false, positions: ["Took 40.87%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+
+  6: {
+    name: "U.S. House — CO District 6",
+    region: "The eastern Denver metro — all of Aurora, plus Centennial and Littleton; anchored in western Arapahoe County with slivers of Adams, Douglas and Jefferson counties",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Four-term Democrat Jason Crow is heavily favoured in a D+11 seat. ⚠ THE REPUBLICAN LINE CHANGED HANDS BEFORE VOTES WERE COUNTED: primary candidate Mel Tewahade withdrew for health reasons in June 2026 AFTER ballots had already been mailed, and the party's vacancy committee substituted Jason Clark. Under Colorado law all votes cast for Tewahade were counted for Clark, which is why the primary shows 100%. Cook and Inside Elections Solid D, Sabato Safe D. Libertarian and Unity lines are also certified. Unaffiliated candidate Samir Ezzeldin Witta qualified by petition (sufficient July 24, 2026).",
+        candidates: [
+          { name: "Jason Crow (incumbent)", party: "D", winner: false,
+            positions: [
+              "National security — Armed Services and Intelligence committee work supporting Buckley Space Force Base and Colorado's aerospace economy (campaign site and House record)",
+              "Lowering costs on health care, prescription drugs, housing, groceries and energy (campaign site)",
+              "Anti-corruption — takes no corporate PAC money, sponsors the End Dark Money Act and stronger ethics rules (campaign site)"
+            ],
+            differentiators: [
+              "An Army Ranger and paratrooper with three combat tours in Iraq and Afghanistan",
+              "A gun owner and hunter who campaigns on gun-violence prevention — a combination that is hard to caricature",
+              "$2,707,899 on hand (FEC, June 30, 2026). Has refused corporate PAC money since 2018"
+            ],
+            supporters: [
+              "His Armed Services and Intelligence seats give an Aurora district built around Buckley Space Force Base and the VA hospital real leverage",
+              "The no-corporate-PAC pledge and the End Dark Money Act give substance to his anti-corruption message",
+              "His combat record makes his gun-safety position hard to caricature"
+            ],
+            opponents: [
+              "Clark's free-market critique is that the federal taxes, regulation and energy policy Crow supports are what drive Colorado's cost of living",
+              "[Verify — structural; no organised anti-Crow campaign with reportable spending was located] A D+11 seat with an unfunded challenger leaves voters without a real alternative and reduces accountability",
+              "He was unopposed for renomination, so his record faced no primary test [Verify]"
+            ] },
+          { name: "Jason Clark", party: "R", winner: false,
+            positions: [
+              "Free-market economics — lower taxes and less regulation (radio interview, July 2026)",
+              "Education reform focused on core subjects and skilled trades (radio interview)",
+              "A diverse energy portfolio including nuclear (radio interview)"
+            ],
+            differentiators: [
+              "West Point class of 1992 with Army service at Fort Carson and in Germany, later a financial advisor; a lifelong Aurora-area resident who self-describes as a \"free market, libertarian Republican\"",
+              "⚠ Reached the general election through a PARTY VACANCY COMMITTEE after the primary candidate withdrew, not through a contested vote",
+              "⚠ $0 — no FEC principal campaign committee is linked to him in the June 30, 2026 bulk data; he may have filed after that coverage date [Verify]. No endorsements located"
+            ],
+            supporters: [
+              "A West Point graduate and Army veteran from Aurora offers the district a serious résumé",
+              "His trades-and-core-subjects education plank and openness to nuclear power are pitched as pragmatic rather than ideological",
+              "He stepped in when the party's ballot line came open rather than leaving the seat uncontested"
+            ],
+            opponents: [
+              "He reached the general election through a vacancy committee, so primary voters never actually chose between him and an alternative",
+              "He reports no federal fundraising against an incumbent with $2.7 million",
+              "The seat is rated Solid or Safe Democratic by all three major handicappers"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Crow won a fourth term by more than 20 points.",
+        candidates: [
+          { name: "Jason Crow", party: "D", winner: true, positions: ["Won 58.97%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "John Fabbricatore", party: "R", winner: false, positions: ["Took 38.45%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+
+  7: {
+    name: "U.S. House — CO District 7",
+    region: "The western Denver metro — Lakewood, Arvada, Golden and Broomfield — plus the central Colorado counties of Park, Teller, Lake, Chaffee, Fremont and Custer",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Two-term Democrat Brittany Pettersen is strongly favoured in a D+8 seat. Her Republican opponent, 32-year Army veteran Tim Bennett, was unopposed but ended June with about $1,300 in the bank and $20,000 in debt against her $1.1 million. Cook and Inside Elections Solid D, Sabato Safe D. Unity, American Constitution and Libertarian lines are all certified here — the most crowded minor-party ballot of any Colorado district. Unaffiliated technology executive Joe Krzeczkowski qualified by petition (sufficient July 24, 2026; $916 on hand).",
+        candidates: [
+          { name: "Brittany Pettersen (incumbent)", party: "D", winner: false,
+            positions: [
+              "Economic recovery and cost of living — sponsored state anti-price-gouging legislation, worked to cut health-insurance premiums by about 20% and reduce Colorado's gas tax (campaign site)",
+              "Health care and support for seniors (campaign site)",
+              "Energy independence, education and democracy protection; runs a district wildfire resource hub and constituent services on federal-agency impacts (campaign site)"
+            ],
+            differentiators: [
+              "Campaigns as a working mother with Vote Mama backing, and runs on a state-legislative record of cutting premiums and the gas tax rather than federal-first messaging",
+              "Carries BOTH AIPAC and J Street endorsements — an unusual pairing that rarely appears on the same candidate",
+              "$1,105,388 on hand (FEC, June 30, 2026). Also endorsed by Giffords, LCV, Planned Parenthood Action Fund and the Jewish Democratic Council of America"
+            ],
+            supporters: [
+              "She has a concrete state-level record on lowering insurance premiums and the gas tax to point at on affordability",
+              "Her office's wildfire and federal-agency constituent work matters in a district running from Lakewood into fire-prone mountain counties",
+              "She holds endorsements across the Democratic ideological spectrum, including groups that rarely back the same candidate"
+            ],
+            opponents: [
+              "Bennett's core critique is that federal spending drives the inflation squeezing the district, and that a member should \"represent Colorado to Washington, not Washington to Colorado\"",
+              "[Verify — drawn from Bennett's own platform framing rather than independent reporting] Republicans argue the district's rural and mountain counties have different priorities — water, land use, energy costs — than the Jefferson County suburbs that dominate its vote",
+              "She was unopposed for renomination, so her record faced no primary test [Verify]"
+            ] },
+          { name: "Tim Bennett", party: "R", winner: false,
+            positions: [
+              "Affordability first — \"will this make life more affordable for CD-7?\" as a test for every bill (campaign site, his wording)",
+              "Housing — reduce inflation and remove barriers so young families can buy homes (campaign site)",
+              "End \"the Washington debt machine\"; also parental authority in education, protecting Colorado's water future, and law and order (campaign site)"
+            ],
+            differentiators: [
+              "A 32-YEAR U.S. Army veteran who frames the office as \"service, not status or personal ambition\"",
+              "Runs an explicitly pro-natalist plank — \"Support Motherhood and Family Stability,\" making family formation affordable — which is unusual in a Colorado House race",
+              "⚠ $1,325 on hand (FEC, June 30, 2026) with $20,000 in reported debts, against $1.1 million. No endorsements located"
+            ],
+            supporters: [
+              "Three decades in uniform gives him standing to argue that public office is service rather than career",
+              "His single affordability test for legislation is a plain, checkable standard",
+              "His water-security plank speaks to the ranching and mountain parts of the district that suburban campaigns tend to skip"
+            ],
+            opponents: [
+              "He ended June with roughly $1,300 on hand and $20,000 in debt against an incumbent with $1.1 million, which Democrats read as an unserious challenge",
+              "No institutional or party endorsement could be sourced",
+              "All three major handicappers rate the seat Solid or Safe Democratic"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Pettersen won a second term by about 14 points.",
+        candidates: [
+          { name: "Brittany Pettersen", party: "D", winner: true, positions: ["Won 55.33%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Sergei Matveyuk", party: "R", winner: false, positions: ["Took 41.15%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+
+  8: {
+    name: "U.S. House — CO District 8",
+    region: "The I-25 corridor north of Denver — sections of Adams, Larimer and Weld counties, centred on Thornton, Northglenn, Commerce City, Brighton, Johnstown and Greeley; Colorado's most Hispanic district at about 38.5% of the adult population (Cook PVI EVEN)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠⚠ COLORADO'S ONLY TOSS-UP AND ONE OF THE MOST COMPETITIVE DISTRICTS IN THE COUNTRY. Gabe Evans flipped it in 2024 by 2,449 votes — 0.73 points — unseating Democrat Yadira Caraveo. He faces state Rep. Manny Rutinel, who won the Democratic primary by about 30 points and joined DCCC Red to Blue on July 9, 2026. Two Latino nominees face off in the state's most Latino seat. ALL THREE major handicappers rate it TOSS UP — Cook, Inside Elections and Sabato — and its Cook PVI is EVEN, one of only about seven such districts nationally; Biden carried these lines by 4.7 points in 2020. Decision Desk HQ is the lone outlier at Lean D. Evans holds a large cash advantage coming out of the primary because Rutinel spent heavily to win his — more than $5 million in outside money backed Rutinel and more than $1.5 million backed his main rival. A Libertarian line is also certified; no unaffiliated candidate qualified.",
+        candidates: [
+          { name: "Gabe Evans (incumbent)", party: "R", winner: false,
+            positions: [
+              "Lower the cost of living by reining in deficit spending and \"tax-and-regulate\" policy (campaign site)",
+              "Keep the military focused on warfighting; educational freedom and parental choice; Second Amendment — he is a certified concealed-carry instructor (campaign site)",
+              "Public safety including fentanyl enforcement and opposition to sanctuary policies, plus border security (campaign site)"
+            ],
+            differentiators: [
+              "Twelve years in the Army and Colorado Army National Guard as a UH-60 Black Hawk pilot and company commander with a Middle East combat deployment, PLUS more than a decade as an Arvada police officer",
+              "A grandson of Mexican immigrants running in Colorado's most Latino district; his FIRE Act, excluding wildfire smoke from Clean Air Act attainment determinations, passed the House with a bipartisan majority in April 2026",
+              "$3,880,463 on hand (FEC, June 30, 2026) — the largest war chest of any Colorado House candidate, roughly six times his opponent's. The ONLY Coloradan in the NRCC Patriot Program. Endorsed by Trump, Speaker Johnson, AIPAC and the Denver Gazette editorial board"
+            ],
+            supporters: [
+              "The Denver Gazette editorial board calls him a statesman rather than a politician, pointing to the FIRE Act clearing the House with bipartisan support as evidence he can legislate",
+              "Black Hawk pilot, company commander and Arvada patrol officer is an unusually literal fit for a district running from north-suburban Denver to agricultural Weld County",
+              "He ended June with nearly $3.9 million, more than six times his opponent's cash"
+            ],
+            opponents: [
+              "He won by fewer than 2,500 votes in a district Biden carried by nearly five points, so Democrats treat the seat as borrowed rather than held",
+              "Rutinel attacks his vote on the reconciliation package as cutting Medicaid and Affordable Care Act coverage, saying Evans \"thinks being tough means putting down our most vulnerable neighbors to give tax breaks to his billionaire donors\"",
+              "The DCCC has made the seat a top-tier target since early in the cycle"
+            ] },
+          { name: "Manny Rutinel", party: "D", winner: false,
+            positions: [
+              "Lower the cost of housing and health care (campaign site)",
+              "Stop ICE from what he calls terrorising communities; restore health-care cuts, expand food assistance and protect Social Security (campaign site)",
+              "Ban members of Congress from trading stocks, get dark money out of politics, and refuse corporate PAC money (campaign site)"
+            ],
+            differentiators: [
+              "The son of a working-class single mother who grew up on food stamps and Medicaid, worked at McDonald's and donated plasma to help pay family bills — then went community college to public university to YALE LAW SCHOOL",
+              "Worked as an economist for the U.S. Army Corps of Engineers and responded to Hurricane Maria in Puerto Rico; a former environmental attorney who founded a plant-based food company; a sitting state representative since 2023",
+              "$601,232 on hand (FEC, June 30, 2026) after raising $4.34M and spending $3.74M winning the primary — he trails Evans by roughly $3.28 million. On DCCC Red to Blue (July 9, 2026), plus BOLD PAC, Latino Victory, SEIU Colorado and End Citizens United"
+            ],
+            supporters: [
+              "The DCCC chair called him a \"top-tier candidate\" focused on lowering costs and growing the economy",
+              "His biography — food stamps and Medicaid to Yale Law and the Army Corps — is the campaign's argument that he understands the district's affordability squeeze firsthand",
+              "He won the primary by about 30 points and refuses corporate PAC money, which supporters pair with his stock-trading ban as a clean-government contrast"
+            ],
+            opponents: [
+              "An NRCC spokesman calls him a \"radical liberal\" who won by \"racing to the far left,\" claiming he wants to end animal agriculture and eradicate fossil fuels — attack lines leaning on his environmental-law and plant-based-food background",
+              "Reporting noted he actually MOVED TOWARD THE CENTRE on fracking and student-debt forgiveness during the primary, which gives Republicans an inconsistency argument",
+              "He emerged from an expensive primary with about $601,000 against Evans' $3.9 million"
+            ] }
+        ]
+      },
+      {
+        date: "Jun 30, 2026", type: "past",
+        note: "⚠ Election-night partial counts showed a narrower race (60.9%–34.4%) than the certified result; the figures here are the final canvass. A third candidate, Katie Munsing, had withdrawn on May 27 but remained on the printed ballot.",
+        candidates: [
+          { name: "Manny Rutinel", party: "D", winner: true, positions: ["Won 62.8% (50,435 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Shannon Bird", party: "D", winner: false, positions: ["Took 32.5% (26,122 votes) — and endorsed Rutinel on primary night", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Katie Munsing", party: "D", winner: false, positions: ["Took 4.6% (3,717 votes) after withdrawing on May 27", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "⚠ Decided by 2,449 votes — 0.73 points — one of the closest House races in the country, and the flip that made this seat a top-tier target.",
+        candidates: [
+          { name: "Gabe Evans", party: "R", winner: true, positions: ["Won 48.95% (163,320 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Yadira Caraveo", party: "D", winner: false, positions: ["Took 48.22% (160,871 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  }
+};
+
+const SITE_META = { name: "Colorado Elections Hub", lastUpdated: "August 7, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — Colorado county-level down-ballot research is the next phase.
+// Colorado counties elect sheriffs, clerk and recorders, assessors, treasurers, coroners and
+// county commissioners, and district attorneys are elected by judicial district. Also not yet
+// carded: State Board of Education districts 1/3/7 and CU Regents districts 2/6/7, which are
+// congressional-district races rather than statewide.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Colorado has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them,
+  // otherwise a district with no plurality county is unreachable from the map.
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const CO_STATE_FIPS = "08";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#comap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(CO_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Hartford ----
+  drawCapital(g, projection, { name: "Denver", lng: -104.9903, lat: 39.7392 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in CO";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our Colorado dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>
