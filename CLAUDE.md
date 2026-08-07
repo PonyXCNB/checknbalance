@@ -1292,13 +1292,43 @@ time-sensitive calendar, and the incumbent-status sweep.
      described as one.** The four Republican-recommended commissioners voted to investigate; three
      Democratic-caucus commissioners and one Brown appointee voted not to. At least six senior staff left
      in five months.
+     ⚠⚠ **A SECOND, SEPARATE ETHICS MATTER IS STILL OPEN.** On Jan 24, 2025 OGEC voted to investigate
+     $65/month state-paid parking for Kotek Wilson, $315/month D.C. parking for a federal lobbyist, a
+     **$9,330 catered dinner** at Mahonia Hall for ~180 staff (policy allows only light refreshments), and
+     ~$615 in concert tickets. Kotek's office called these inherited traditions. **THE FINAL DISPOSITION
+     COULD NOT BE SOURCED** — no reporting found after Jan 2025. **Check OGEC meeting minutes directly
+     (oregon.gov/ogec) before publishing; do NOT describe it as resolved either way.**
      (b) **Housing:** her own goal is 36,000 homes/year; Oregon pulled about **14,000** permits — judge
-     her by her own number. (c) **Measure 110 rollback** via HB 4002. (d) ⚠ **THE CLEAREST REASON THE
+     her by her own number. ⚠ Even the state's own economist put the need at **29,522/year**, BELOW her
+     goal and still far above actual construction. ⚠⚠ **And the outcome moved the wrong way: Oregon's HUD
+     point-in-time homeless count ROSE 19% between 2024 and 2025 to more than 23,000 — one of only three
+     states above +15% — while the NATIONAL count FELL 3%.** That is the hardest number against her. (c) **Measure 110 rollback** via HB 4002. (d) ⚠ **THE CLEAREST REASON THE
      RACE IS COMPETITIVE: Measure 120.** Her fall-2025 special-session transportation package was
-     referred to voters after a ~250,000-signature drive in 30 days and **REJECTED ROUGHLY 4-TO-1, over
-     80% "no," on May 19, 2026.** (e) **Left-flank erosion:** the Oregon Education Association PAC voted
+     referred to voters after a ~250,000-signature drive in 30 days and REJECTED ROUGHLY 4-TO-1 — no
+     county voted in favour, the most supportive being Benton 29.3%, Hood River 28.1%, Multnomah 25.0%.
+     ⚠ **The widely-quoted 83.1% is ELECTION-NIGHT reporting, NOT certified — the SoS has posted no May
+     2026 abstract. Publish "about 83%" or "roughly 4-to-1," never a precise figure.** ⚠ The SEQUENCE is
+     worse for her than the result: **on Jan 7, 2026 she asked lawmakers to REPEAL HER OWN law**
+     ("redirect, repeal and rebuild") before voters could rule on it — Diehl called that an admission she
+     "failed in an epic way." Democrats also MOVED the vote from November to the May primary; Diehl said
+     she "doesn't want to be on the same ballot as this referendum," Republicans sued, and a judge upheld
+     the May date Mar 11, 2026. ⚠ She also REVERSED on the kicker — declining to touch a $5.6B refund in
+     2023, then backing withholding $1B for wildfire costs in May 2025 [Verify whether it passed].
+     ⚠⚠ **SOURCING-BALANCE CAVEAT FOR A NONPARTISAN SITE: roughly 90% of the Kotek controversy record
+     here traces to Oregon Capital Chronicle (a States Newsroom nonprofit) plus OPB-via-OCC**, because
+     oregonlive.com 403s and Willamette Week's and OPB's own search are JS-rendered. **Corroborate the
+     transportation and first-spouse threads against The Oregonian and Willamette Week before publishing.**
+     ⚠ Could NOT be substantiated and should NOT be included without independent sourcing: any Employment
+     Department / "Frances" system controversy, and Portland downtown recovery as a distinct Kotek
+     controversy. ⚠ Of her two education bills, only **SB 141 was enrolled; HB 2009 did NOT pass.**
+     The vote was **May 19, 2026**. (e) **Left-flank erosion:** the Oregon Education Association PAC voted
      **75% NOT to endorse anyone** for governor — first time since 2014, after giving her ~$389,000 in
      2022 — and the Working Families Party left governor off its slate entirely.
+   - ⚠⚠ **SOURCE TRAP — the Oregon Blue Book's "2022 General Election Voting Totals" PDF OMITS THE
+     GOVERNOR'S RACE ENTIRELY.** Do not use it for the Kotek/Drazan/Johnson numbers; pull the SoS
+     certified abstract instead. ⚠ **Ballot-line precision for 2024:** Ronda Kennedy ran on the
+     **We the People** line and Cornel West on the **Progressive** line — Oregon minor-party lines are
+     frequently mis-attributed, so name the line, not just "independent."
    - ⚠ **DO NOT PRINT:** any Drazan **Libertarian** nomination (Wikipedia infobox asserts it; nothing
      else does, including ORESTAR and lporegon.org); **"Alexander Ziwahatan"** (ZERO ORESTAR records);
      **Matt Rowe as "the Libertarian nominee"** (his 2026 committee is registered PACIFIC GREEN, and he
@@ -1424,10 +1454,26 @@ time-sensitive calendar, and the incumbent-status sweep.
      entire footprint is a Vote-USA listing with empty headings. He is the one candidate of the thirteen
      with no sourceable material; all his voices are structural.
    - **OR-4 Hoyle:** ⚠ **her 2025 STOCK Act violation is independently confirmed, not a campaign claim** —
-     late disclosure of 217 of her husband's trades worth $245,215–$3,355,000, standard $200 penalty
-     (OpenSecrets, Sept 2025). **DeSpain OUTRAISED her in the most recent quarter** — the only Oregon
-     challenger outraising a sitting Democrat — yet ⚠ **Sabato moved OR-4 AWAY from her**, Likely → Safe D
-     on Mar 26, 2026. Both facts belong on the card.
+     late disclosure of **217** of her husband's trades worth $245,215–$3,355,000 (OpenSecrets, Sept 2025).
+     ⚠⚠ **PHRASE IT PRECISELY: the $200 was the STANDARD FIRST-OFFENCE LATE-FILING FEE, not a fine for
+     stock trading.** Calling it "a fine for stock trading" would mislead. Use 217, not DeSpain's "over
+     200" or "215."
+     ⚠⚠ **CORRECTION TO AN EARLIER NOTE IN THIS FILE:** I previously wrote that DeSpain "outraised her in
+     the most recent quarter." **The Capital Chronicle issued a correction on July 17, 2026: DeSpain
+     outraised Hoyle only in the APRIL 30–JUNE 30 WINDOW, not the full quarter — Hoyle led over the full
+     three months.** Do not repeat the unqualified version.
+     ⚠ **DeSpain's 2024 claim that Hoyle was "under federal investigation" is FALSE** — per OCC, the DOJ
+     was investigating La Mota, not Hoyle. Do NOT publish it as fact; if the attack is described, say
+     plainly that it was inaccurate.
+     ⚠ **Sabato moved OR-4 AWAY from DeSpain**, Likely → Safe D on Mar 26, 2026. ⚠ DeSpain was NRCC
+     **Young Guns in 2024** but is **NOT in the 2026 MAGA Majority** programme — verified against the
+     July 15, 2026 NRCC roster, which contains no Oregon district. Roughly half her Apr 30–Jun 30 haul was
+     a $30,000 personal loan plus $65,000 transferred from her own PAC.
+     ⚠ **Justin Filip (Pacific Green) — ballot status has a source conflict.** A direct ORESTAR pull shows
+     him filed 07/09/2026 and **Qualified: Yes** (authoritative). A later pass could NOT reach ORESTAR
+     (Imperva) and relayed *Eugene Weekly* reporting that Filip said his filing had not yet appeared on
+     the state site. **Trust the direct ORESTAR pull**, but re-confirm after the Aug 25 deadline. He took
+     **10,315 votes (2.72%) in 2024** — a real baseline, not a token candidacy.
    - **OR-5 Bynum:** first Oregon freshman on House Financial Services in 28 years; three housing bills
      signed into law July 2026; bipartisan BILL Drivers Act with a PA Republican. **Adair explicitly
      SUPPORTS vote-by-mail** — "Oregon has been voting by mail for over 25 years, and I strongly support
