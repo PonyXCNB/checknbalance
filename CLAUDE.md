@@ -690,8 +690,8 @@ time-sensitive calendar, and the incumbent-status sweep.
    map is still the hard blocker), **AL** (fully researched and banked below — build it AFTER Aug 12, once the Aug 11
    special primary and independent qualifying both close, and ONLY off the 2023 legislature map), then **MI**
    (its Senate primary was called Aug 5 and Stevens CONCEDED — only certification still gates it), then **WI/MN/MO**.
-   ⚠ **NEVADA is research-COMPLETE and build-ready (see its banked section) — do that first. OREGON needs
-   only two targeted agents: Governor/Senate candidate detail, and House positions+voices.**
+   ⚠ **NEVADA is research-COMPLETE and build-ready (see its banked section) — do that first. OREGON is
+   one agent away: Governor and U.S. Senate candidate detail. Its House positions and voices are DONE.**
    ⚠ **MO carries a redistricting risk** — it was one of the 2025–26 mid-decade redraw states, so answer "which map
    governs 2026?" from primary sources before deriving anything (lesson #13). WI and MN both held Aug 11 primaries.
    ⚠ **MI is NOT ready.** Its primary was Aug 4, 2026 and as of Aug 5 the **Democratic U.S. Senate primary was still
@@ -1258,11 +1258,50 @@ time-sensitive calendar, and the incumbent-status sweep.
      (R, NV-2). Also **Zach Conine filed for AG but LOST the primary — do not card him**, and Sharron
      Angle lost the SoS primary and is not on the November ballot.
 
-   ### ⏸ OREGON — RESEARCH BANKED Aug 7, 2026. NOT SHIPPED: Governor/Senate detail + House voices.
-   Map, ratings, PVI, House field, money and the full statewide STRUCTURE are verified. **Blockers:
-   (a) Governor and Senate positions, cash and endorsements were never obtained — their voices are
-   structural-only; (b) positions and voices for the 13 major-party House candidates.** Two targeted
-   agents close both.
+   ### ⏸ OREGON — RESEARCH BANKED Aug 7, 2026. ONE BLOCKER LEFT: Governor/Senate candidate detail.
+   Map, ratings, PVI, House field, money, the full statewide STRUCTURE **and positions + voices for all
+   13 House candidates** are verified. **The ONLY remaining gap is Governor and U.S. Senate candidate
+   detail** — positions, cash on hand and endorsements were never obtained for Kotek, Drazan, Merkley or
+   Brock Smith, so their voices are structural-only. ⚠ For a sitting governor and a sitting senator that
+   is a RESEARCH GAP, not a finding — do NOT ship it as "[Verify] no platform located" the way a genuinely
+   invisible minor-party candidate would be carded. One targeted agent closes it (ORESTAR is the state
+   finance source and needs a browser; see access notes).
+   **HOUSE POSITIONS/VOICES — DONE. Load-bearing specifics worth not re-deriving:**
+   - ⚠ **ONLY TWO of the thirteen answered the Oregon Capital Chronicle's nine-question policy survey —
+     Bentz (OR-2) and Adair (OR-5).** Bonamici, Kahl, Beck, Dexter, Hoyle, DeSpain and Bynum all declined
+     or were not surveyed, and NO OR-6 guide was published at all. That asymmetry is itself publishable:
+     in OR-5 the challenger is on record on nine policy questions and the incumbent is not.
+   - **OR-1 Bonamici:** Ranking Member, Early Childhood/Elementary/Secondary Education Subcommittee;
+     longest-serving Oregon House member (since 2012). **Kahl (R) is better documented than her $212
+     suggests** — seven developed issue areas on her own site, and an explicit no-corporate-PAC pledge;
+     only her VOICES are structural, not her positions.
+   - **OR-2 Bentz:** the only Oregonian on both Energy & Commerce and Natural Resources. ⚠ He voted for
+     the SAVE Act and **no other Oregon member of either party joined him** — the sharpest sourced line
+     against him in a vote-by-mail state. Beck (D) last held office in 2003, a 23-year gap.
+   - **OR-3 Dexter:** ⚠ her official House site states she "supports defunding and dismantling ICE" —
+     an unhedged position and the obvious attack line, though **no Republican campaign was located making
+     it.** ⚠ **Loran Ayles (R) has NO FEC committee at all, no site, no positions, no coverage** — his
+     entire footprint is a Vote-USA listing with empty headings. He is the one candidate of the thirteen
+     with no sourceable material; all his voices are structural.
+   - **OR-4 Hoyle:** ⚠ **her 2025 STOCK Act violation is independently confirmed, not a campaign claim** —
+     late disclosure of 217 of her husband's trades worth $245,215–$3,355,000, standard $200 penalty
+     (OpenSecrets, Sept 2025). **DeSpain OUTRAISED her in the most recent quarter** — the only Oregon
+     challenger outraising a sitting Democrat — yet ⚠ **Sabato moved OR-4 AWAY from her**, Likely → Safe D
+     on Mar 26, 2026. Both facts belong on the card.
+   - **OR-5 Bynum:** first Oregon freshman on House Financial Services in 28 years; three housing bills
+     signed into law July 2026; bipartisan BILL Drivers Act with a PA Republican. **Adair explicitly
+     SUPPORTS vote-by-mail** — "Oregon has been voting by mail for over 25 years, and I strongly support
+     mail voting" — which separates her from national Republicans and is aimed at swing voters.
+   - **OR-6 Salinas:** Ranking Member, Agriculture Subcommittee on Forestry and Horticulture; sits in the
+     Hispanic Caucus, New Democrat Coalition leadership AND the Progressive Caucus. **Russ (R) has a real
+     self-authored site** — slogans plus a dated log of his attempts to arrange a public debate, which is
+     a checkable transparency argument — but no policy platform. He is "Mayor Emeritus of Dundee," a
+     FORMER mayor, not a sitting one.
+   - ⚠ **Sabato's OR-5 rating must be phrased "rated Likely Democratic as of July 30, 2026," NEVER as a
+     recent move** — there is NO OR-5 entry anywhere in the Mar 2025–Jul 2026 change log. The only two
+     Oregon rows in that entire log are OR-4 and OR-6, both Likely → Safe D on Mar 26, 2026.
+   - ⚠ **DCCC Frontline: cite dccc.org/2026-frontline/ with an "as of" retrieval date, NOT the Roll Call
+     announcement** — the roster has changed since 2025 and the page carries no revision date.
    - **Map: SB 881 (2021), 6 districts** (Oregon gained a sixth seat in the 2020 apportionment).
      *Clarno v. Fagan* dismissed Nov 24, 2021. **No mid-decade redraw** — Kotek's office said in June 2026
      it was not considering one, and HB 3537 died in House Rules and concerned STATE-LEGISLATIVE criteria
