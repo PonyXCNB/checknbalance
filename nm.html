@@ -1,0 +1,1721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>New Mexico Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every NM election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #nmmap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">NM</div>
+      <div class="brand-text">
+        <span class="brand-name">New Mexico Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every New Mexico <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 33 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">33</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>3</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>13</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of New Mexico…</div>
+      <svg id="nmmap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>NM Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">July 22, 2026</span><br>
+      Sources: New Mexico Secretary of State certified candidate portal and final primary canvass, NM Legislative Council Service amendment analyses, U.S. Census Bureau congressional-district relationship files and the 119th CD Summary File, FEC, U.S. House Clerk member roster, Sabato's Crystal Ball, Cook Political Report, Inside Elections, Albuquerque Journal, Source New Mexico, NM Political Report, KOB, KOAT, AP.
+    </div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every NM county + its primary US House district(s)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- (1) Counties + primary US House district -----
+// PLACEHOLDER
+const COUNTIES = {
+  "35001":{n:"Bernalillo",d:1,ds:[1,2]},
+  "35003":{n:"Catron",d:2},
+  "35005":{n:"Chaves",d:3,ds:[1,2,3]},
+  "35006":{n:"Cibola",d:2},
+  "35007":{n:"Colfax",d:3},
+  "35009":{n:"Curry",d:3},
+  "35011":{n:"De Baca",d:1},
+  "35013":{n:"Doña Ana",d:2},
+  "35015":{n:"Eddy",d:2,ds:[2,3]},
+  "35017":{n:"Grant",d:2},
+  "35019":{n:"Guadalupe",d:1},
+  "35021":{n:"Harding",d:3},
+  "35023":{n:"Hidalgo",d:2},
+  "35025":{n:"Lea",d:3,ds:[2,3]},
+  "35027":{n:"Lincoln",d:1},
+  "35028":{n:"Los Alamos",d:3},
+  "35029":{n:"Luna",d:2},
+  "35031":{n:"McKinley",d:3,ds:[2,3]},
+  "35033":{n:"Mora",d:3},
+  "35035":{n:"Otero",d:2,ds:[1,2]},
+  "35037":{n:"Quay",d:3},
+  "35039":{n:"Rio Arriba",d:3},
+  "35041":{n:"Roosevelt",d:3},
+  "35043":{n:"Sandoval",d:1,ds:[1,3]},
+  "35045":{n:"San Juan",d:3},
+  "35047":{n:"San Miguel",d:3},
+  "35049":{n:"Santa Fe",d:3,ds:[1,3]},
+  "35051":{n:"Sierra",d:2},
+  "35053":{n:"Socorro",d:2},
+  "35055":{n:"Taos",d:3},
+  "35057":{n:"Torrance",d:1},
+  "35059":{n:"Union",d:3},
+  "35061":{n:"Valencia",d:2,ds:[1,2]},
+};
+
+// ----- (2) Statewide races -----
+// Verified against the New Mexico Secretary of State's CERTIFIED candidate portal
+// (candidateportal.servis.sos.state.nm.us, eid=2917) and the final primary canvass at
+// electionresults.sos.nm.gov (2,204/2,204 precincts, 24.60% turnout). ⚠ That certified portal is
+// NOT linked from the SoS candidate-information page — only from the homepage banner — and it is
+// the only reason the phantom candidates noted below were caught.
+// ⚠ NEW MEXICO ELECTS ALL SEVEN EXECUTIVE OFFICERS TOGETHER in the gubernatorial cycle
+// (N.M. Const. art. V §1), so this is a long ballot: Governor/Lt. Governor, Attorney General,
+// Secretary of State, Treasurer, Auditor and Commissioner of Public Lands, plus U.S. Senate.
+// ⚠ THE GOVERNOR AND LIEUTENANT GOVERNOR ARE ELECTED JOINTLY — art. V §1 requires "a single vote
+// applicable to both offices." They are nominated SEPARATELY in June and then joined as a ticket,
+// so there is NO standalone Lieutenant Governor line in November and the ticket cannot be split.
+// ⚠ THE PUBLIC REGULATION COMMISSION IS NOT ON THIS BALLOT — 2020 Constitutional Amendment 1
+// converted it from five elected to three gubernatorially-appointed commissioners as of Jan 1, 2023.
+// ⚠ ONLY Democratic, Republican, Forward and independent filers appear on the certified list. The
+// Forward Party earned minor-party status around May 2026 but EVERY Forward candidate failed to
+// qualify, and NO Libertarian or Green candidate qualified for any statewide office — independents
+// needed roughly 14,200 verified signatures against about 2,400–2,500 for major-party candidates.
+// ⚠ PHANTOM CANDIDATES DELIBERATELY NOT CARDED (all listed by aggregators, none on the SoS
+// certified list): Rhett Trappman (L) and Cameron Chick (I) for Senate; Jason Vaillancourt (L) for
+// Auditor; Ken Miyagishima for Governor (DISQUALIFIED — 11,553 of ~20,000 signatures validated, suit
+// lost June 23, campaign ended July 17). Also excluded: a "Toby Smith" FEC filing that lists Walter
+// White's fictional Breaking Bad address — a prank, not a candidate.
+// Primary figures are published as PERCENTAGES: election-night totals run about 1% below the final
+// canvass across every race, while the percentages are materially identical.
+const STATEWIDE = [
+  // UPCOMING — 2026 General Election (Nov 3, 2026)
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Governor and Lieutenant Governor — New Mexico (OPEN SEAT)",
+    note: "New Mexico's marquee race, and an open seat — Michelle Lujan Grisham is term-limited. Deb Haaland, the first Native American U.S. Cabinet secretary, faces former Rio Rancho mayor Gregg Hull. ⚠⚠ THE DEMOCRATIC LIEUTENANT GOVERNOR NOMINEE WAS REPLACED AFTER THE PRIMARY: Secretary of State Maggie Toulouse Oliver won that primary with 80%, then suspended her campaign on June 18, 2026 citing health and family, and on July 30 the party's state central committee chose Commissioner of Public Lands Stephanie Garcia Richard over state Sen. Harold Pope and two others (reported 255–218 [Verify — single-sourced]). ⚠ AS OF AUG 7 THE OFFICIAL SoS PORTAL STILL SHOWS TOULOUSE OLIVER AS \"WITHDRAWN\" WITH NO DEMOCRATIC REPLACEMENT POSTED — news reporting is ahead of the official record, so the replacement is carded but NOT yet state-certified [Verify]. ⚠ Toulouse Oliver withdrew ONLY from this race; she remains the sitting Secretary of State. Every handicapper rates the race Safe/Solid/Likely Democratic — Sabato moved it further from competitive on July 23, 2026. ⚠ The only public general-election poll showing a tie (Haaland 46–45) is a HULL CAMPAIGN INTERNAL by a Republican firm, and it also found 22% of voters had never heard of Hull. No independent poll exists. New Mexico has not elected a Republican governor since 2014.",
+    candidates: [
+      { name: "Deb Haaland and Stephanie Garcia Richard", party: "D", winner: false,
+        positions: [
+          "A community-safety office pairing police with social workers, fentanyl trafficking enforcement, and treatment as an alternative to incarceration (campaign site)",
+          "Universal childcare, early-literacy screening, community schools, and the Opportunity Scholarship extended to graduate tuition (campaign site)",
+          "Overhaul of the Children, Youth and Families Department — new leadership on day one, an independent oversight commission, expanded Child Advocate funding (campaign site)"
+        ],
+        differentiators: [
+          "Haaland was the FIRST Native American U.S. Cabinet secretary (Interior, 2021–25) and would be the first Native American woman elected governor of any state; she speaks publicly about her own history of alcoholism and reliance on public assistance",
+          "Running mate Stephanie Garcia Richard is the sitting, term-limited Commissioner of Public Lands and has won statewide TWICE — the only second-slot candidate on either ticket who has",
+          "About $2.3M on hand (final primary-cycle state report, June 27, 2026) — roughly a 7-to-1 advantage — after raising $11M+ in the most expensive primary in New Mexico history [Verify — the state CFIS finance system was unreachable; figures are as reported from those filings]"
+        ],
+        supporters: [
+          "She has run a 70,000-employee federal department, and the state's own Child Advocate and Attorney General say CYFD shows a pattern of constitutional violations — a management problem she has actually done at that scale",
+          "Her cost-of-living package is concrete: larger child and working-family tax credits, faster housing permitting, down-payment help, and a ban on algorithmic rent-setting",
+          "Endorsed by both U.S. senators, all three House members, four Pueblos, and most of the state's labor federations"
+        ],
+        opponents: [
+          "Her Interior tenure paused federal oil leasing and withdrew 336,000 acres around Chaco for 20 years — and with oil and gas supplying 25–30% of New Mexico's general fund, critics call that a direct risk to school funding",
+          "She is asking voters to fix problems — CYFD, crime, literacy — that worsened under eight years of single-party control of the governorship and both chambers",
+          "Her energy platform promotes renewables and well cleanup but never states a position on production levels, which critics call strategic vagueness [Verify — argument structure as presented in E&E News, not a quote from a named opponent]"
+        ] },
+      { name: "Greggory D. Hull and David M. Gallegos", party: "R", winner: false,
+        positions: [
+          "\"Unleash oil and gas\" through streamlined permitting — he argues talk of shrinking the industry \"puts everybody on edge because it employs tens of thousands\" (his own words)",
+          "CYFD accountability — demanded an independent investigation over the teen left at the border, and says the agency chased reunification metrics over child safety (his stated position)",
+          "Business-friendly tax policy via incentives and industrial revenue bonds; medical-malpractice reform and interstate licensure compacts to recruit physicians (campaign site)"
+        ],
+        differentiators: [
+          "⚠ He is NOT the sitting mayor — Hull announced in Nov 2025 he would not seek a fourth term and handed off the gavel on April 23, 2026. Describe him as FORMER Mayor of Rio Rancho (2014–2026); he did not resign mid-term",
+          "Rio Rancho's longest-serving mayor, with a municipal record of 38+ roadways rebuilt, an aquifer recharge facility, a permanent city fund, Intel retained and expanded, and no local sales-tax increase in 12 years",
+          "$297,838 on hand (June 27, 2026) — roughly a 7-to-1 deficit. Running mate David Gallegos is a sitting state senator from Lea County, the only nominee on either ticket from the Permian Basin southeast. Endorsed by former Gov. Gary Johnson and by ex-Las Cruces mayor Ken Miyagishima, a former independent candidate in this race"
+        ],
+        supporters: [
+          "Twelve years running the state's fastest-growing city with a measurable record — roads rebuilt, aquifer recharge built, Intel retained, no local tax increase",
+          "He was first and loudest on CYFD, demanding an independent investigation and preservation of records",
+          "He would lift regulatory drag on oil and gas to protect the revenue base — and has drawn both a former Democrat and a libertarian-leaning former governor to his side"
+        ],
+        opponents: [
+          "Rio Rancho is an affluent Albuquerque suburb of about 100,000; critics question whether that scales to a state with deep rural poverty, tribal trust obligations and a $10B+ budget",
+          "He enters with under $300,000 against roughly $2.3M, and his own pollster found 22% of voters had never heard of him in mid-July",
+          "His platform is thin on specifics — four priority headings with no detailed education, water or healthcare policy published [Verify — assessment of his campaign site as of Aug 7, 2026]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — New Mexico",
+    note: "Ben Ray Luján seeks a second term. ⚠ FOR THE FIRST TIME IN NEW MEXICO'S MODERN HISTORY NO REPUBLICAN APPEARED ON THE SENATE PRIMARY BALLOT — the party's only filer, Christopher Vanden Heuvel, was disqualified in February 2026 for insufficient valid signatures. Larry Marker reached the ballot as a WRITE-IN and IS certified, so the Republican line is not blank: under NMSA 1978 §1-8-36.1 primary write-ins are permitted for statewide offices, and the 2026 Republican threshold was 2,351 signatures, which he cleared by a wide margin. Rated Safe/Solid Democratic by Sabato (Feb 20, 2026), Cook and Inside Elections. New Mexico has not elected a Republican senator since 2002. ⚠ Two candidates listed by aggregators — Libertarian Rhett Trappman and independent Cameron Chick — appear NOWHERE on the SoS certified list and are not carded.",
+    candidates: [
+      { name: "Ben Ray Luján (incumbent)", party: "D", winner: false,
+        positions: [
+          "Opposes Medicaid cuts; sponsors the Stroke Act (Senate record)",
+          "Rural broadband, water rights, and RECA-style compensation for downwinders and uranium workers (Senate record)",
+          "Opposes stripping protections from Bears Ears and Grand Staircase-Escalante; pushing Chama Watershed protection from uranium mining (Senate record)"
+        ],
+        differentiators: [
+          "Sits on Commerce and Health with seniority; a Head Start graduate for whom early childhood is a signature personal issue",
+          "A stroke survivor (2022) who then authored stroke-care legislation — he returned to the Senate that spring and no subsequent health incident has been reported",
+          "$4,396,754 on hand (FEC, June 30, 2026) against an opponent with minimal-to-no reported federal fundraising — a disparity on the order of 370-to-1"
+        ],
+        supporters: [
+          "He converts seniority into concrete returns — rural broadband, water rights, and compensation for uranium workers and downwinders harmed by the state's nuclear legacy",
+          "A reliable vote against Medicaid and nutrition-assistance cuts in a state with among the highest Medicaid enrollment in the country",
+          "His biography gives him credibility on what he legislates: a Head Start graduate on early childhood, a stroke survivor on stroke care"
+        ],
+        opponents: [
+          "Critics say he votes with Democratic leadership rather than New Mexico-specific interests, especially on federal energy and public-lands restrictions affecting Permian employment and state royalties",
+          "He underperformed the top of the ticket in 2020, winning by about 6 points while Biden carried the state by 11 [Verify — a widely cited framing, including by Sabato]",
+          "Running effectively unopposed means his record faces no real stress-test this cycle"
+        ] },
+      { name: "Larry E. Marker", party: "R", winner: false,
+        positions: [
+          "Anti-abortion — he calls the 2026 Republican slate \"the most pro-life group of candidates that New Mexico has ever had\" (his own words)",
+          "Explicitly Christian, grassroots-conservative framing (his own words)",
+          "[Verify] Economic and energy conservatism from an oil-and-gas background — no comprehensive issues page could be located"
+        ],
+        differentiators: [
+          "A Roswell building contractor and former oil-and-gas operator — a genuine outsider with no elected experience, from the southeastern oil patch rather than the Albuquerque–Santa Fe corridor",
+          "Reached the ballot by an unusual WRITE-IN route after his party's only filer was disqualified, and frames that as a grassroots mandate",
+          "⚠ Cash on hand UNRESOLVED — one source reports no significant FEC committee filings, another claims $11,850 as of June 30 [Verify]. Lost prior runs for State Land Commissioner (2022) and state Senate (2024)"
+        ],
+        supporters: [
+          "His write-in campaign cleared the statutory bar by a wide margin, showing real volunteer effort and preserving a two-party choice that would otherwise have vanished from the ballot",
+          "He offers southeastern New Mexico's energy economy a candidate from that industry and region",
+          "With no donor network he is not beholden to PACs or industry money [Verify]"
+        ],
+        opponents: [
+          "He entered as a party recruit after an organizational failure rather than through a contested primary, so he carries no demonstrated statewide constituency",
+          "He has lost his two prior campaigns by wide margins and has minimal-to-no reported fundraising with which to communicate statewide",
+          "His 2022 appearances alongside figures promoting debunked 2020 election-fraud claims raise questions about his posture toward election legitimacy [Verify — sourced to NM Political Report's account of that prior campaign]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Attorney General — New Mexico",
+    note: "Raúl Torrez, elected in 2022 and previously the Bernalillo County district attorney, seeks a second term against attorney Samuel Isaiah Kane Sr. Both were unopposed in their primaries, taking 100% each. Sabato rates this Safe Democratic. ⚠ Torrez's specific SECOND-TERM policy positions could not be verified from his own campaign materials, and Kane's biography beyond \"attorney\" and his platform are unverified — neither is filled in from aggregators.",
+    candidates: [
+      { name: "Raúl Torrez (incumbent)", party: "D", winner: false,
+        positions: [
+          "[Verify] — his specific second-term platform could not be sourced from his own campaign materials",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "Elected in 2022; previously the elected district attorney for Bernalillo County, the state's largest",
+          "His office has been an active participant in multistate litigation",
+          "Unopposed for renomination with 100% of the primary vote. ⚠ No cash-on-hand figure could be obtained — the state CFIS campaign-finance system was unreachable [Verify]"
+        ],
+        supporters: [
+          "An unopposed primary reflects a party united behind his record",
+          "Multistate litigation is exactly what a state attorney general's office exists to do",
+          "His district-attorney background gives him prosecutorial credibility on violent crime"
+        ],
+        opponents: [
+          "[Verify — structural; no issue-level opposition research on this race was located] Critics argue the office has leaned toward national headline litigation over in-state consumer and public-corruption work",
+          "One term is a short record on which to claim results on crime [Verify]",
+          "An unopposed primary meant no public test of that record [Verify]"
+        ] },
+      { name: "Samuel Isaiah Kane Sr.", party: "R", winner: false,
+        positions: [
+          "[Verify] — no platform could be sourced; deliberately not filled in from aggregators",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "An attorney; biography beyond that could not be verified [Verify]",
+          "Unopposed for the Republican nomination with 100% of the primary vote",
+          "⚠ No cash-on-hand figure could be obtained — the state CFIS system was unreachable [Verify]"
+        ],
+        supporters: [
+          "[Verify — structural] A practicing attorney offers a check on a legal apparatus otherwise held entirely by one party",
+          "An uncontested nomination let the party conserve resources for November [Verify]"
+        ],
+        opponents: [
+          "[Verify — structural] Low name recognition against a sitting attorney general in a race every rater calls safe",
+          "His primary vote total was roughly half the Democratic incumbent's [Verify]",
+          "No documented statewide profile or published platform for voters to evaluate [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Secretary of State — New Mexico (OPEN SEAT)",
+    note: "An open seat — Maggie Toulouse Oliver is term-limited (and separately withdrew as the Democratic nominee for Lieutenant Governor in June, while remaining Secretary of State through the end of her term). Doña Ana County Clerk Amanda López Askin won a close Democratic primary 53.1%–46.9% over another county clerk; Ramona Goolsby was unopposed on the Republican side. ⚠ A third Democratic filer, former Veterans Services Cabinet Secretary Sonya Lee Smith, was DISQUALIFIED before the primary and never appeared on the ballot — the reason could not be verified [Verify]. Sabato rates this Safe Democratic.",
+    candidates: [
+      { name: "Amanda López Askin", party: "D", winner: false,
+        positions: [
+          "Election security and administration (campaign materials)",
+          "Publicly opposed the intimidation of election workers in 2024 (documented record)",
+          "[Verify] — a third distinct policy position could not be sourced"
+        ],
+        differentiators: [
+          "Doña Ana County Clerk since 2021 — she currently administers elections in New Mexico's second-largest county, making her the most literally qualified candidate for chief election officer",
+          "A former New Mexico State University Regent",
+          "Endorsed by Gov. Lujan Grisham, the outgoing Secretary of State, Sen. Heinrich and Rep. Vasquez. ⚠ No cash-on-hand figure obtainable — CFIS unreachable [Verify]"
+        ],
+        supporters: [
+          "A sitting county clerk is the most literally qualified candidate for the job — she already runs elections professionally",
+          "Her 2024 stand against the intimidation of election workers is a tested record rather than a promise",
+          "A coalition running from the governor to labor-aligned groups suggests she could run the office from day one"
+        ],
+        opponents: [
+          "A 53–47 win over a fellow county clerk shows a genuinely divided party",
+          "The endorsement slate invites the criticism that this is a hand-picked continuation of the current office [Verify]",
+          "A southern-county clerk must still prove she can administer the Bernalillo-centred system [Verify — structural]"
+        ] },
+      { name: "Ramona L. Goolsby", party: "R", winner: false,
+        positions: [
+          "[Verify] — no platform could be sourced; deliberately not filled in from aggregators",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "A retired nurse practitioner and Army veteran",
+          "Serves on a soil and water conservation district board — real elected experience, though not in election administration",
+          "Unopposed for the Republican nomination. ⚠ No cash-on-hand figure obtainable [Verify]"
+        ],
+        supporters: [
+          "[Verify — structural] A non-politician with military and healthcare service offers independence from the apparatus she would oversee",
+          "An unopposed nomination avoided a divisive primary [Verify]",
+          "Conservation-board service is genuine elected experience [Verify]"
+        ],
+        opponents: [
+          "[Verify — structural] No election-administration background, against an opponent who runs elections for a living",
+          "Her primary vote total trails the combined Democratic primary by more than two to one [Verify]",
+          "The office is technical and unforgiving of a learning curve [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "State Treasurer — New Mexico",
+    note: "Laura Montoya, elected in 2022, seeks a second term. ⚠ Her opponent James \"Jim\" Ellison reached the ballot as a WRITE-IN with 29,614 votes — one of three statewide Republican nominees this cycle who did so. Ellison is a former Public Regulation Commission member and ex-utility analyst. ⚠ An earlier 2025 report described Ellison announcing a GUBERNATORIAL bid before he emerged as the Treasurer nominee, and the 2023–24 PRC seats were appointed rather than elected — both his trajectory and his PRC service dates need confirmation [Verify]. Policy positions could not be verified for either candidate and are deliberately not filled in.",
+    candidates: [
+      { name: "Laura M. Montoya (incumbent)", party: "D", winner: false,
+        positions: ["[Verify] — no platform could be sourced from her own materials", "[Verify]", "[Verify]"],
+        differentiators: [
+          "Elected State Treasurer in 2022; unopposed for renomination",
+          "⚠ No cash-on-hand figure obtainable — the state CFIS campaign-finance system was unreachable [Verify]",
+          "Faces a write-in nominee rather than a candidate chosen on a printed primary ballot"
+        ],
+        supporters: [
+          "[Verify — structural] A first-term treasurer with an unopposed primary reflects settled confidence in the office's investment stewardship",
+          "Continuity matters for managing the state portfolio [Verify]"
+        ],
+        opponents: [
+          "[Verify — structural] An unopposed primary meant no scrutiny of her first-term record",
+          "Critics argue transparency in state investment decisions is thin [Verify]"
+        ] },
+      { name: "James F. \"Jim\" Ellison", party: "R", winner: false,
+        positions: ["[Verify] — no platform could be sourced", "[Verify]", "[Verify]"],
+        differentiators: [
+          "A former New Mexico Public Regulation Commission member and ex-utility analyst",
+          "Reached the ballot as a WRITE-IN nominee with 29,614 votes, clearing the statutory threshold by more than twelve times",
+          "⚠ His path to this race is unclear — a 2025 report has him announcing a run for GOVERNOR [Verify]"
+        ],
+        supporters: [
+          "[Verify — structural] A utility analyst and former regulator brings genuine financial-oversight expertise to a portfolio job",
+          "Clearing the write-in bar by more than twelve times shows organized grassroots backing [Verify]"
+        ],
+        opponents: [
+          "[Verify — structural] He was never vetted on a printed primary ballot",
+          "His write-in total is about a sixth of the incumbent's primary vote [Verify]",
+          "A brief PRC tenure is a thin executive record for managing the state portfolio [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "State Auditor — New Mexico",
+    note: "Joseph Maestas, elected in 2022, seeks a second term. ⚠ His opponent Joshua Lawrence also reached the ballot as a WRITE-IN, with 29,268 votes. ⚠ A Libertarian, Jason Vaillancourt, is listed by aggregators for this office but appears NOWHERE on the SoS certified list and is not carded; the Forward Party's Michael Vigil filed and was disqualified. Policy positions could not be verified for either candidate and are deliberately not filled in.",
+    candidates: [
+      { name: "Joseph M. Maestas (incumbent)", party: "D", winner: false,
+        positions: ["[Verify] — no platform could be sourced from his own materials", "[Verify]", "[Verify]"],
+        differentiators: [
+          "Elected State Auditor in 2022; unopposed for renomination",
+          "⚠ No cash-on-hand figure obtainable — CFIS unreachable [Verify]",
+          "Faces a write-in nominee rather than a candidate chosen on a printed primary ballot"
+        ],
+        supporters: [
+          "[Verify — structural] An unopposed renomination signals no serious criticism of his audit output",
+          "The office's value is continuity and independence from the agencies it audits [Verify]"
+        ],
+        opponents: [
+          "[Verify — structural] Critics argue the office issues findings faster than agencies act on them, and that a second term needs enforcement teeth rather than more reports"
+        ] },
+      { name: "Joshua James Ryan Lawrence", party: "R", winner: false,
+        positions: ["[Verify] — no platform could be sourced", "[Verify]", "[Verify]"],
+        differentiators: [
+          "Reported as a movie-set worker and a 2022 candidate for sheriff [Verify]",
+          "Reached the ballot as a WRITE-IN nominee with 29,268 votes, clearing the threshold by more than twelve times",
+          "⚠ No financial or accounting credential could be documented for an office that is fundamentally an audit role [Verify]"
+        ],
+        supporters: [
+          "[Verify — structural] An outsider with no agency ties is arguably the right profile for a watchdog office",
+          "Clearing the write-in bar by more than twelve times showed real volunteer effort [Verify]"
+        ],
+        opponents: [
+          "[Verify — structural] The office is a technical accounting and audit role and no financial credential has been documented for him",
+          "He was never on a printed primary ballot [Verify]",
+          "A prior unsuccessful run for sheriff is unrelated experience [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Commissioner of Public Lands — New Mexico (OPEN SEAT)",
+    note: "An open seat — Stephanie Garcia Richard is term-limited, and in July she became the Democratic nominee for Lieutenant Governor. The office leases New Mexico's State Trust Lands, whose royalties help fund public schools, so it carries real money. Juan de Jesus Sanchez III won a three-way Democratic primary with 56.4% over a sitting state representative; Michael Perry, a Chaves County Commissioner and retired Assistant State Land Commissioner, was unopposed.",
+    candidates: [
+      { name: "Juan de Jesus Sanchez III", party: "D", winner: false,
+        positions: [
+          "Protecting public lands (campaign materials)",
+          "Strengthening rural economies (campaign materials)",
+          "Responsible land and water stewardship, with stated interest in geothermal and renewables on trust lands (campaign materials)"
+        ],
+        differentiators: [
+          "A 13th-generation New Mexican and heir to the Tomé Land Grant, raised on a family ranch that itself depends on a State Trust Land grazing lease",
+          "A former U.S. Army Corps of Engineers natural resources specialist, former political director for Sen. Heinrich, and former Vice Chair of the state Democratic Party",
+          "Raised more than $250,000 — that is RAISED, not cash on hand; CFIS was unreachable. Donors include NextEra Energy and Sen. Heinrich's campaign committee"
+        ],
+        supporters: [
+          "A grazing-lease family and acequia background means he understands trust-land users rather than merely regulating them",
+          "His interest in geothermal and renewables points to growing the beneficiary revenue that funds public schools",
+          "He cleared a field including a sitting legislator without needing a runoff"
+        ],
+        opponents: [
+          "Taking money from a major renewable developer while seeking authority over renewable leasing on trust lands is a conflict critics will press [Verify — the donation is documented, but no reporting of it being raised as an attack was located]",
+          "A party vice-chair and senator's political director is an operative's résumé for a land-management job [Verify — structural]",
+          "At 34 he has never run an agency [Verify — structural]"
+        ] },
+      { name: "Michael Jack Perry", party: "R", winner: false,
+        positions: ["[Verify] — no platform could be sourced; deliberately not filled in", "[Verify]", "[Verify]"],
+        differentiators: [
+          "A retired ASSISTANT STATE LAND COMMISSIONER — he has worked inside the agency he seeks to run",
+          "A sitting Chaves County Commissioner, grounding him in the oil-and-gas revenue that funds trust beneficiaries",
+          "Unopposed for the Republican nomination. ⚠ No cash-on-hand figure obtainable [Verify]"
+        ],
+        supporters: [
+          "A retired Assistant State Land Commissioner needs no orientation to the agency's leasing and royalty machinery",
+          "Chaves County service grounds him in the industry that funds the trust beneficiaries",
+          "An uncontested primary preserved resources for November [Verify]"
+        ],
+        opponents: [
+          "[Verify — structural] An agency veteran may be too close to the industries the office leases to",
+          "His primary total trails the combined Democratic primary by more than two to one [Verify]",
+          "Critics argue the office needs a diversification agenda beyond extraction, which he has not detailed [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Judicial · Statewide · partisan",
+    office: "Court of Appeals — Position 1 (unopposed)",
+    note: "New Mexico fills judicial vacancies by gubernatorial appointment, then requires the appointee to stand in a PARTISAN election, after which they face nonpartisan retention votes. Kristopher \"Kris\" Houghton was appointed by Gov. Lujan Grisham and took office in September 2025; his term expires in 2026, so he must face voters now. He won the Democratic primary with 100% and NO Republican filed — he appears on the certified list unopposed. Judicial conduct rules sharply limit what candidates may say about issues, so the absence of a policy platform here is by design, not a research gap.",
+    candidates: [
+      { name: "Kristopher \"Kris\" Houghton (appointed incumbent)", party: "D", winner: false,
+        positions: [
+          "[Verify] — New Mexico's judicial conduct canons sharply limit what judicial candidates may say about issues; he has no policy platform by design",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "Appointed by Gov. Lujan Grisham and on the Court of Appeals since September 2025",
+          "Won the Democratic primary with 100% (173,182 votes)",
+          "NO Republican filed for this seat — he is unopposed on the certified general-election list"
+        ],
+        supporters: [
+          "[Verify — structural; judicial canons limit the public record here] A sitting appellate judge with a year on the court, seeking voter ratification of an appointment already vetted by the judicial nominating commission",
+          "Running unopposed reflects no organized objection to his record [Verify]"
+        ],
+        opponents: [
+          "[Verify — structural] An uncontested judicial seat gives voters no comparative choice",
+          "Critics of New Mexico's hybrid system argue commission-appointed judges reach the bench before the electorate weighs in at all [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Judicial · Statewide · retention",
+    office: "Judicial Retention — Supreme Court and Court of Appeals",
+    note: "Retention is a yes-or-no vote with no opponent, and New Mexico sets an unusually high bar: 57% approval is required to stay on the bench (N.M. Const. art. VI §33). Two Supreme Court justices — C. Shannon Bacon and David K. Thomson — have terms expiring Dec 31, 2026 and are on this ballot. Court of Appeals Judge Miles Hanisee, the only Republican on that court, also has a term expiring in 2026 ⚠ but whether he filed for retention rather than retiring could NOT be confirmed [Verify]. Justices Vargas (2028), Vigil (2030) and Zamora (2032) are NOT on this ballot. ⚠ The names above are derived from term-expiration records — the Judicial Performance Evaluation Commission publishes its official evaluations and the confirmed list of judges standing for retention on or before SEPT 18, 2026 [Verify then].",
+    candidates: [
+      { name: "Justice C. Shannon Bacon — retain?", party: "I", winner: false,
+        positions: ["[Verify] — retention candidates do not campaign and publish no platform", "[Verify]", "[Verify]"],
+        differentiators: ["A yes-or-no retention vote on the New Mexico Supreme Court", "Requires 57% approval to be retained — a higher bar than most states", "Term expires Dec 31, 2026"],
+        supporters: ["[Verify — structural; retention judges do not campaign] The Judicial Performance Evaluation Commission publishes independent evaluations before the election, giving voters a nonpartisan basis for the decision"],
+        opponents: ["[Verify — structural] Retention elections give voters little public information, and JPEC's evaluation is not published until mid-September"] },
+      { name: "Justice David K. Thomson — retain?", party: "I", winner: false,
+        positions: ["[Verify] — retention candidates do not campaign and publish no platform", "[Verify]", "[Verify]"],
+        differentiators: ["A yes-or-no retention vote on the New Mexico Supreme Court", "Requires 57% approval to be retained", "Term expires Dec 31, 2026"],
+        supporters: ["[Verify — structural; retention judges do not campaign] The Judicial Performance Evaluation Commission publishes independent evaluations before the election, giving voters a nonpartisan basis for the decision"],
+        opponents: ["[Verify — structural] Retention elections give voters little public information, and JPEC's evaluation is not published until mid-September"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Ballot Measure · Statewide",
+    office: "Constitutional Amendment 1 — Pocket veto",
+    note: "Referred by the Legislature (HJR 2, 2025). Official ballot title: \"PROPOSING AN AMENDMENT TO ARTICLE 4, SECTION 22… TO REQUIRE THE GOVERNOR TO PROVIDE VETO MESSAGES ON ALL BILLS VETOED IN WHOLE OR IN PART AND TO PROVIDE THAT ALL BILLS PASSED BY THE LEGISLATURE AND NOT ACTED ON BY THE GOVERNOR WILL BECOME LAW.\" Context: from 2014 through 2026, New Mexico governors pocket vetoed 166 bills and vetoed 180. Needs a simple majority. SUPPORTERS say it brings transparency about why bills die and rebalances power between the branches. OPPONENTS say it is unnecessary because the Legislature can already force a veto message by presenting bills earlier, that 20 days to write explanations for every veto could be burdensome, and that \"substantive explanation\" is undefined and invites litigation. (Arguments as published by the Legislative Council Service.)",
+    candidates: []
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Ballot Measure · Statewide",
+    office: "Constitutional Amendment 2 — School elections",
+    note: "Referred by the Legislature (SJR 1, 2026). Official ballot title: \"PROPOSING TO AMEND ARTICLE 7, SECTION 1… TO REMOVE THE REQUIREMENT THAT SCHOOL ELECTIONS BE SEPARATE FROM PARTISAN ELECTIONS.\" Context: the separation dates to the 1910 constitutional convention, when women could vote only in school elections. Needs a simple majority. SUPPORTERS say districts would avoid $125,000–$250,000 special mail elections, turnout would rise, and access to the public school capital outlay system may improve. OPPONENTS cite ballot length and voter fatigue, and warn it risks politicizing school elections that voters chose to separate in 2008. (Arguments as published by the Legislative Council Service.)",
+    candidates: []
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Ballot Measure · Statewide",
+    office: "Constitutional Amendment 3 — Boards of regents",
+    note: "Referred by the Legislature (HJR 1, 2026). Would establish nominating committees to give the governor lists for regent appointments at the state's ten educational institutions, name student regents from lists provided by elected student governing bodies, and bar appointees who changed party registration within the previous 12 months. Needs a simple majority. SUPPORTERS say university governance requires specialized expertise and the change reduces political influence. OPPONENTS say it alters executive and Senate checks and balances and dilutes the accountability of officials who answer to voters, shifting it to an unelected committee. (Arguments as published by the Legislative Council Service.)",
+    candidates: []
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Ballot Measure · Statewide",
+    office: "Constitutional Amendment 4 — Legislative pay",
+    note: "Referred by the Legislature (HJR 5, 2026). Would allow legislator compensation capped at New Mexico's median household income — about $68,000 in 2026 — rising and falling with it, effective with the 59th Legislature in 2029. ⚠ New Mexico is currently the ONLY state that pays its legislators no salary at all. Needs a simple majority. SUPPORTERS say it opens legislative service to people who cannot afford unpaid work. OPPONENTS say incumbents would gain an advantage over challengers who must forgo income, that the pay would be high relative to comparable part-time legislatures, and that key terms — \"legislative service,\" benefits, income source — are left undefined. (Arguments as published by the Legislative Council Service.)",
+    candidates: []
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Ballot Measure · Statewide",
+    office: "General Obligation Bond Questions (three separate questions)",
+    note: "Three general-obligation bond questions from the 2026 Capital Projects General Obligation Bond Act (HB 248), which passed the House 65–0 and the Senate 38–0 and was signed March 10, 2026. Each question is SEVERABLE — the failure of one does not affect the others. The three fund: (1) senior citizen facility improvement, construction and equipment; (2) academic, public school, public and tribal LIBRARY resource acquisitions; and (3) HIGHER EDUCATION, special schools and tribal schools capital improvements. ⚠⚠ THE DOLLAR AMOUNTS ARE IN CONFLICT AND THIS PAGE DOES NOT ASSERT ONE SET. The enacted bill text specifies $21,582,213 / $19,324,188 / $352,225,379, while Ballotpedia and the Albuquerque Journal report $30M / $20M / $230M. The reported figures appear to come from the bill AS INTRODUCED; the enacted text is the stronger source, but the certified ballot text has not been checked [Verify before relying on any figure].",
+    candidates: []
+  },
+
+  // PAST — 2026 primaries
+  {
+    date: "Jun 2, 2026", type: "past", scope: "State · Statewide · Primary",
+    office: "Democratic Primary — Governor",
+    note: "Haaland won the most expensive primary in New Mexico history.",
+    candidates: [
+      { name: "Deb Haaland", party: "D", winner: true, positions: ["Won 72.4%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Sam Bregman", party: "D", winner: false, positions: ["Took 27.6%", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Jun 2, 2026", type: "past", scope: "State · Statewide · Primary",
+    office: "Republican Primary — Governor",
+    note: "Hull won a three-way field with a plurality.",
+    candidates: [
+      { name: "Greggory D. Hull", party: "R", winner: true, positions: ["Won 47.0%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Doug Turner", party: "R", winner: false, positions: ["Took 36.8%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Duke Rodriguez", party: "R", winner: false, positions: ["Took 16.1%", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Jun 2, 2026", type: "past", scope: "State · Statewide · Primary",
+    office: "Democratic Primary — Lieutenant Governor",
+    note: "⚠ THE WINNER OF THIS PRIMARY IS NOT THE NOMINEE. Maggie Toulouse Oliver won in a landslide and then suspended her campaign on June 18, 2026, citing health and family. Under NMSA 1978 §1-8-8 the party's state central committee filled the vacancy, choosing Commissioner of Public Lands Stephanie Garcia Richard on July 30 over state Sen. Harold Pope — the man she had just beaten here — and two others. Toulouse Oliver remains the sitting Secretary of State.",
+    candidates: [
+      { name: "Maggie Toulouse Oliver", party: "D", winner: true, positions: ["Won 80.0% — then withdrew as nominee on June 18, 2026", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Harold Pope", party: "D", winner: false, positions: ["Took 20.0% — and was passed over by the central committee that replaced the nominee", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Jun 2, 2026", type: "past", scope: "Federal · Statewide · Primary",
+    office: "Democratic Primary — U.S. Senate",
+    note: "Luján was renominated comfortably.",
+    candidates: [
+      { name: "Ben Ray Luján", party: "D", winner: true, positions: ["Won 84.2%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Matt Dodson", party: "D", winner: false, positions: ["Took 15.8%", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+
+  // PAST — prior general elections
+  {
+    date: "Nov 5, 2024", type: "past", scope: "Federal · Statewide",
+    office: "President — New Mexico (2024)",
+    note: "New Mexico has voted Democratic for president in every cycle since 2008, though the 2024 margin narrowed by nearly five points from 2020.",
+    candidates: [
+      { name: "Kamala Harris", party: "D", winner: true, positions: ["Won 51.85%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Donald Trump", party: "R", winner: false, positions: ["Took 45.85% — a 6.0-point margin, down from 10.8 in 2020", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 5, 2024", type: "past", scope: "Federal · Statewide",
+    office: "U.S. Senate — New Mexico (2024)",
+    note: "Martin Heinrich's Class 1 seat — the OTHER New Mexico Senate seat, which is NOT on the 2026 ballot. It is next up in 2030.",
+    candidates: [
+      { name: "Martin Heinrich", party: "D", winner: true, positions: ["Won 55.06%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Nella Domenici", party: "R", winner: false, positions: ["Took 44.94%", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 8, 2022", type: "past", scope: "State · Statewide",
+    office: "Governor — New Mexico (2022)",
+    note: "Michelle Lujan Grisham's re-election — she is now term-limited, which is why 2026 is an open seat.",
+    candidates: [
+      { name: "Michelle Lujan Grisham", party: "D", winner: true, positions: ["Won 51.97%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Mark Ronchetti", party: "R", winner: false, positions: ["Took 45.59%", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 3, 2020", type: "past", scope: "Federal · Statewide",
+    office: "U.S. Senate — New Mexico (2020)",
+    note: "Luján's first election, for the open seat left by Tom Udall's retirement. He won by about 6 points while Biden carried the state by nearly 11 — the underperformance his critics still cite.",
+    candidates: [
+      { name: "Ben Ray Luján", party: "D", winner: true, positions: ["Won 51.73%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Mark Ronchetti", party: "R", winner: false, positions: ["Took 45.62%", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  }
+];
+
+// ----- (3) U.S. House races by district -----
+// All three incumbent Democrats are confirmed running; none sought the open governor's race.
+// ⚠ NM-2 is the marquee and a genuine battleground — one of the Democratic-held seats Trump
+// carried in 2024. NM-1 and NM-3 are safe Democratic seats and the page says so plainly.
+// ⚠ NO minor-party or independent U.S. House candidate qualified in ANY district — all three races
+// are straight D-vs-R. Candidates listed by aggregators but NOT on the SoS certified list, and so
+// deliberately not carded: Steve Jones (R) and Carlton Pennington (R) in NM-1 (Jones fell below the
+// 20% delegate threshold at the March 7 convention and failed to petition on), and Tom Wakely (D)
+// in NM-2.
+// ⚠ COOK'S NM-2 RATING IS GENUINELY UNRESOLVED — two sources give opposite values bearing the SAME
+// Jan 15, 2026 date (Lean D vs Toss Up) and cookpolitical.com blocks automated access. NO Cook
+// value is printed for NM-2 rather than picking one.
+// Primary figures are PERCENTAGES: election-night totals run ~1,000–1,500 votes below the final
+// canvass in every race while the percentages match.
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — NM District 1",
+    region: "Central New Mexico — most of Albuquerque and all of Torrance County, plus parts of Sandoval (Rio Rancho), Santa Fe and Valencia counties, and the Laguna and Sandia Pueblos (Cook PVI D+7)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Safe Democratic, and the most Democratic district in New Mexico at Cook PVI D+7. Melanie Stansbury, who won this seat in a 2021 special election, seeks a third full term against pharmacist Didi Okpareke. Both primaries were uncontested at 100%. Solid/Safe D by Cook, Inside Elections and Sabato (all June 19, 2025) and Safe D by Decision Desk HQ (July 14, 2026) — no rater treats this as competitive. ⚠ Those rating dates are early-cycle and pre-primary; do not assume they have been refreshed.",
+        candidates: [
+          { name: "Melanie Stansbury (incumbent)", party: "D", winner: false,
+            positions: [
+              "[Verify — sourced via reporting rather than her own campaign framing; house.gov blocks automated access] Medicare for All",
+              "[Verify] A federal assault weapons ban",
+              "[Verify] Student loan debt cancellation"
+            ],
+            differentiators: [
+              "Ranking Member of the Oversight subcommittee on Delivering on Government Efficiency; also on Natural Resources (Federal Lands, and Water, Wildlife and Fisheries)",
+              "Led delegation letters against federal workforce reductions — unusually salient in a district heavy with federal and national-laboratory employment",
+              "About $417,000 on hand as of June 30, 2026 [Verify — a journalists' summary of FEC filings, approximate]. She has won three straight elections here"
+            ],
+            supporters: [
+              "She has delivered on Albuquerque-area federal priorities — the Albuquerque Indian School Act and the Downwinder Commemoration Act both cleared committee in May 2026",
+              "Her Oversight perch makes her a lead defender of federal workers and the national labs, which are major local employers",
+              "Three straight wins in a D+7 seat"
+            ],
+            opponents: [
+              "[Verify — these are the standard structural critiques; no NM-1-specific opposition messaging was located in reporting] Her voting record tracks national Democratic leadership rather than the district",
+              "Medicare for All and an assault weapons ban go further than many New Mexico voters want [Verify]",
+              "An uncontested primary meant no public test of her record [Verify]"
+            ] },
+          { name: "Ndidiamaka \"Didi\" Okpareke", party: "R", winner: false,
+            positions: [
+              "Affordable, accessible healthcare focused on pharmacy costs and underserved communities (campaign site)",
+              "Job creation paired with cutting \"reckless federal spending\" (campaign site)",
+              "Voting by constituent need rather than party leadership (campaign site)"
+            ],
+            differentiators: [
+              "A licensed pharmacist of roughly 20 years who founded Olive Tree Compounding Pharmacy in Rio Rancho",
+              "The daughter of Nigerian immigrants who fled the Biafran War; educated at Sandia High School and the UNM College of Pharmacy",
+              "Won 86% of delegates at the March 7, 2026 Republican pre-primary convention. About $43,000 on hand (June 30, 2026) — roughly a 10-to-1 deficit. Has never previously held or run for office"
+            ],
+            supporters: [
+              "A working pharmacist speaks to New Mexico's specialist shortage and drug costs with direct professional standing",
+              "A first-time candidate and small-business owner is a break from career politicians",
+              "Her 86% convention vote showed the party consolidated behind her early"
+            ],
+            opponents: [
+              "[Verify — structural; no NM-1 opposition messaging was located in reporting] Roughly $43,000 against the incumbent's $417,000",
+              "She has never held office, in a district no Republican has won since 2008 [Verify]",
+              "No independent rater considers the seat in play [Verify]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Stansbury won a second full term by nearly 13 points.",
+        candidates: [
+          { name: "Melanie Stansbury", party: "D", winner: true, positions: ["Won 56.37%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Steve Jones", party: "R", winner: false, positions: ["Took 43.63%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+
+  2: {
+    name: "U.S. House — NM District 2",
+    region: "Southern New Mexico — Las Cruces and all of Doña Ana County, Roswell, Hobbs, Carlsbad, Alamogordo, Deming and Silver City, plus Albuquerque's South Valley and Los Lunas; about 60% Hispanic (Cook PVI EVEN)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ NEW MEXICO'S MARQUEE HOUSE RACE and a genuine battleground — one of 23 Democratic-held seats Trump carried in 2024 (Trump 49.9%, Harris 48.1%), and one of only a handful of districts in the country with a Cook PVI of EVEN. Gabe Vasquez unseated Yvette Herrell by 1,350 votes in 2022 and beat her again in 2024 by about 4.2 points. He faces Greg Cunningham, a Marine veteran and Albuquerque police detective who worked undercover against cartels. ⚠ This district's lines were the subject of *Republican Party of New Mexico v. Oliver*: the trial court found in Oct 2023 that mapmakers intended to dilute Republican votes AND that dilution occurred, but held it was not an \"egregious\" gerrymander because the result is a competitive district; affirmed Nov 2023. The map was NOT redrawn. Sabato rates it Lean D and Inside Elections Tilt D (both June 19, 2025); Decision Desk HQ Lean D (July 14, 2026). ⚠ COOK'S CURRENT RATING IS UNRESOLVED — two sources report opposite values (Lean D and Toss Up) bearing the same Jan 15, 2026 date, so no Cook rating is printed here.",
+        candidates: [
+          { name: "Gabe Vasquez (incumbent)", party: "D", winner: false,
+            positions: [
+              "Federal law-enforcement funding, including more than $1M for Albuquerque's Real Time Crime Center (House record)",
+              "Bipartisan anti-fentanyl and cartels-in-schools legislation (House record)",
+              "Public-lands and wildlife conservation; supports abortion rights (House record)"
+            ],
+            differentiators: [
+              "A DCCC FRONTLINE member — the party's designation for its most vulnerable incumbents — sitting on Agriculture and Armed Services",
+              "Raised in the El Paso–Juárez–Las Cruces border region; a former Las Cruces city councilor and field representative for Sen. Heinrich",
+              "$2,378,703 on hand (FEC, June 30, 2026) — roughly a 3-to-1 advantage. Would be the first Democrat elected to three terms in this seat since 1978"
+            ],
+            supporters: [
+              "He has brought concrete federal money home for police and border-region infrastructure while working across the aisle",
+              "His fentanyl and cartel bills answer the public-safety attack on its own terms rather than dodging it",
+              "He holds roughly a 3-to-1 cash advantage"
+            ],
+            opponents: [
+              "He has previously called for overhauling the criminal justice system, which Cunningham argues reveals his real instincts on policing — \"that's in your DNA\"",
+              "He holds a seat Trump carried and has never cleared 53%",
+              "His margins depend on turnout he may not repeat in a midterm [Verify]"
+            ] },
+          { name: "Greg Cunningham", party: "R", winner: false,
+            positions: [
+              "A \"commonsense Republican\" prioritizing public safety, violent crime and fentanyl, running on his record infiltrating cartels (campaign site)",
+              "[Verify — via search snippet; his site's issues page returns a 404] Tax and regulatory relief for small business",
+              "[Verify] Second Amendment rights"
+            ],
+            differentiators: [
+              "A Marine Corps combat veteran, then an Albuquerque Police Department officer and undercover detective working cartels and gangs",
+              "Endorsed by Trump's \"Complete and Total Endorsement\" (April 2026) and added to the NRCC's \"MAGA Majority\" program on April 27, 2026 — the renamed Young Guns list. (The NRCC Patriot Program is for incumbents and does not apply.) Also backed by the Albuquerque Police Officers' Association and several sheriffs",
+              "$794,187 on hand (FEC, June 30, 2026, aggregating four authorized committees; news reporting gives about $768,000 for the principal committee alone). Ran unsuccessfully for state House in 2022 and 2024"
+            ],
+            supporters: [
+              "A Marine and cartel-facing detective is the most credible messenger available on the fentanyl and violent-crime issues topping the district's concerns",
+              "Police-union and sheriff endorsements validate that on the merits rather than on branding",
+              "Trump's endorsement and NRCC MAGA Majority status unlock national money in a seat Trump carried"
+            ],
+            opponents: [
+              "He trails roughly 3-to-1 in cash despite national backing",
+              "He has lost two prior state House races and has never held office",
+              "His campaign offers slogans over specifics — no substantive issues platform is published, and his site's issues page 404s"
+            ] }
+        ]
+      },
+      {
+        date: "Jun 2, 2026", type: "past",
+        note: "⚠ Cunningham's opponent had already quit — Jose Orozco announced on April 8, 2026 that he was withdrawing and endorsing Cunningham, but missed the statutory deadline to file a withdrawal statement, so he stayed on the ballot and still drew about 15%.",
+        candidates: [
+          { name: "Greg Cunningham", party: "R", winner: true, positions: ["Won about 85%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Jose Orozco", party: "R", winner: false, positions: ["Took about 15% after withdrawing and endorsing his opponent", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Vasquez's re-election. ⚠ The margin was about 4.2 points — larger than his 1,350-vote win in 2022 but still among the closest in the country, and Trump carried this district on the same day.",
+        candidates: [
+          { name: "Gabe Vasquez", party: "D", winner: true, positions: ["Won 52.08%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Yvette Herrell", party: "R", winner: false, positions: ["Took 47.92%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+
+  3: {
+    name: "U.S. House — NM District 3",
+    region: "Northern New Mexico plus an eastern extension — Santa Fe, Española, Taos, Los Alamos, Gallup, Farmington and Rio Arriba, together with the eastern plains at Clovis, Portales, Roswell and Hobbs; contains most of New Mexico's Navajo Nation and most Pueblos",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Safe Democratic. Teresa Leger Fernández seeks a fourth term; she explicitly declined to run for the open governorship. Her opponent Martin Zamora is a sitting state representative who is giving up his seat to run. Solid/Safe D by Cook, Inside Elections and Sabato (all June 19, 2025); Decision Desk HQ is the lone outlier at Likely D (July 14, 2026). No major rater treats this as competitive. ⚠ Despite the \"northern New Mexico\" shorthand, this district reaches into the southeastern oil counties of Lea and Chaves — a genuine feature of the 2021 map, confirmed against Census district data.",
+        candidates: [
+          { name: "Teresa Leger Fernández (incumbent)", party: "D", winner: false,
+            positions: [
+              "[Verify — sourced via reporting rather than her own campaign framing] A renewable energy transition and a \"New Mexico Green New Deal\"",
+              "[Verify] Medicare for All",
+              "Tribal sovereignty and land and water protection — she co-leads the effort for permanent Chaco Canyon protection (House record)"
+            ],
+            differentiators: [
+              "Ranking Member of the Rules subcommittee on Legislative and Budget Process; Chair of the Democratic Women's Caucus; Vice Chair of Communications for the Congressional Hispanic Caucus",
+              "Thirty years as a tribal-advocacy and civil-rights lawyer in Santa Fe — an unusually direct fit for a district containing most of the state's Navajo Nation and Pueblos",
+              "About $670,000 on hand as of June 30, 2026. Won her three races with 58.7%, 58.2% and 56.3%"
+            ],
+            supporters: [
+              "Three decades of tribal, land and water law give her unusual fit for this district's composition",
+              "Chaco Canyon protection and acequia and water work are tangible district deliverables",
+              "Caucus leadership posts amplify a small-state member's influence"
+            ],
+            opponents: [
+              "A Green New Deal and a fracking phase-out threaten oil-and-gas employment in the district's Lea, Eddy and San Juan county areas",
+              "[Verify — structural; no NM-3-specific opposition messaging was located] Her voting record aligns fully with national party leadership rather than the conservative eastern counties",
+              "Her margins have narrowed across three cycles, from 58.7% to 56.3% [Verify]"
+            ] },
+          { name: "Martin R. Zamora", party: "R", winner: false,
+            positions: [
+              "Defend agricultural heritage, private property and water rights against \"burdensome federal regulations\" (campaign site, his wording)",
+              "Border security — \"A nation without borders is not a nation\" (campaign site)",
+              "Stand with law enforcement on crime and fentanyl (campaign site)"
+            ],
+            differentiators: [
+              "⚠ A SITTING state Representative for House District 63 since January 2019 and Ranking Member on House Agriculture, Acequias and Water Resources — he is GIVING UP that seat to run. Do NOT call him a former legislator; one outlet did, and the Legislature's own page lists him as sitting through January 2027",
+              "A Clovis farmer and rancher from a multigenerational eastern New Mexico farming family who describes himself as a \"conservative Hispano leader\"",
+              "⚠ About $243,000 on hand (June 30, 2026) and FALLING — he raised roughly $7,000 while spending about $33,000 in May–June"
+            ],
+            supporters: [
+              "An actual farmer, and the legislature's ranking Republican on agriculture and water, speaks with earned authority in a district where acequias and water rights are existential",
+              "He outraised the incumbent in Q3 2025 — $247,065 to $236,834 — showing real early support",
+              "A Hispano Republican broadens the party's reach in northern New Mexico"
+            ],
+            opponents: [
+              "His fundraising has collapsed since the primary — roughly $7,000 raised against $33,000 spent in May–June, with cash on hand falling",
+              "No Republican has held this seat since the 1990s and no major rater considers it competitive",
+              "After the 2020 election he cast doubt on the results and has declined to say whether he believes Biden won [Verify — sourced via Wikipedia; confirm against its underlying citation before hardening this]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Leger Fernández won a third term by about 12.6 points.",
+        candidates: [
+          { name: "Teresa Leger Fernández", party: "D", winner: true, positions: ["Won 56.3%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Sharon Clahchischilliage", party: "R", winner: false, positions: ["Took 43.7%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  }
+};
+
+const SITE_META = { name: "New Mexico Elections Hub", lastUpdated: "August 7, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — New Mexico county-level down-ballot research is the next phase.
+// New Mexico counties elect sheriffs, assessors, clerks, treasurers and county commissions,
+// and district attorneys are elected by judicial district.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for New Mexico has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them,
+  // otherwise a district with no plurality county is unreachable from the map.
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const NM_STATE_FIPS = "35";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#nmmap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(NM_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Hartford ----
+  drawCapital(g, projection, { name: "Santa Fe", lng: -105.9378, lat: 35.687 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in NM";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our New Mexico dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>

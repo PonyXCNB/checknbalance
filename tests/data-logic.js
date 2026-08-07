@@ -52,6 +52,8 @@ const STATE_PAGES = [
   { page: "ar.html", countyCount: 75,  sampleFips: "05119", sampleName: "Pulaski",     expectedRaces: 33 },
   // Sarpy is deliberately the NE sample: it is split between NE-1 and NE-2 via `ds`
   { page: "ne.html", countyCount: 93,  sampleFips: "31153", sampleName: "Sarpy",       expectedRaces: 28 },
+  // Bernalillo is deliberately the NM sample: Albuquerque is split between NM-1 and NM-2 via `ds`
+  { page: "nm.html", countyCount: 33,  sampleFips: "35001", sampleName: "Bernalillo",  expectedRaces: 27 },
 ];
 
 for (const cfg of STATE_PAGES) {
@@ -210,7 +212,7 @@ for (const abbr of ALL_TESTED) {
 // makes a race silently vanish from the grouped drawer)
 // ---------------------------------------------------------------
 console.log("\n— type-value audit —");
-for (const page of ["index.html", "nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html", "ny.html", "ri.html", "nh.html", "ct.html", "vt.html", "me.html", "ma.html", "wv.html", "oh.html", "ky.html", "in.html", "ia.html", "il.html", "ms.html", "ar.html", "ne.html", "state.html"]) {
+for (const page of ["index.html", "nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html", "ny.html", "ri.html", "nh.html", "ct.html", "vt.html", "me.html", "ma.html", "wv.html", "oh.html", "ky.html", "in.html", "ia.html", "il.html", "ms.html", "ar.html", "ne.html", "nm.html", "state.html"]) {
   const bad = [];
   for (const code of extractInlineScripts(page)) {
     for (const m of code.matchAll(/type\s*:\s*"([a-z]+)"/g)) {
