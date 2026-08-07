@@ -52,7 +52,9 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 | `ia.html` | Iowa — nineteenth fully built state (99 counties, 4 districts, June 2 primary results). Built Aug 4, 2026 from in.html. ⚠ **THE MOST ELECTORALLY EVENTFUL STATE ON THE SITE.** For the FIRST TIME SINCE 1968 both the U.S. Senate seat and the governorship are OPEN (Ernst and Reynolds both retiring), and the Auditor's office is open too (Sand vacated it) — three open statewide seats. **Senate:** Hinson (R) vs. Turek (D), moved by all three raters Solid R → Likely R → **Lean R**. **Governor: TOSS-UP by all three raters** — and the primary produced the cycle's biggest upset, businessman Zach Lahn beating Rep. Randy Feenstra by 1,652 votes DESPITE Trump's endorsement, reported as the first Trump-backed primary loss of the 2026 midterms. **Districts: three of four are open or competitive** — IA-1 is a TOSS-UP and a THIRD consecutive Miller-Meeks–Bohannan rematch (decided by 799 votes in 2024, and by SIX votes in the predecessor seat in 2020); IA-2 is OPEN (Hinson vacated) and moved to Lean R; IA-3 is a TOSS-UP; IA-4 is OPEN (Feenstra vacated) but Solid R. Iowa has **three of its four districts on the DCCC's Red to Blue list**. ⚠ **UNIQUE ON THIS SITE: NO IOWA COUNTY IS SPLIT** — state law forbids it, so every `d` value is exact rather than a plurality call. Built WITH voices from the start. No LOCAL_RACES yet |
 | `il.html` | Illinois — twentieth fully built state (102 counties, 17 districts, March 17 primary results). Built Aug 5, 2026 from ma.html — **the first build to use the `ds` multi-district model from the start**, because IL districts 1, 3, 4, 5 and 9 sit ENTIRELY inside Cook County and would otherwise be unreachable (lessons #12). Cook overlaps 11 districts; 32 of 102 counties are split. Map proved exact by arithmetic (CD1–16 = 753,677 each, CD17 = 753,676, totalling 12,812,508 — zero deviation). ⚠ **FIVE OPEN U.S. House seats** — IL-2 (Kelly ran for Senate), IL-4 (García retired), IL-7 (Davis retired), IL-8 (Krishnamoorthi ran for Senate), IL-9 (Schakowsky retired). OPEN U.S. Senate (Durbin retiring): Stratton vs. Tracy, Solid D. Governor: Pritzker seeking a THIRD term vs. Bailey in the first IL gubernatorial rematch since 1986, plus ballot-qualified independent Corbett. ⚠ **NO Illinois district is rated competitive by any rater** — IL-17 is closest by margin but all three say Solid/Safe D. ⚠ **Giannoulias is running for TWO offices at once** (SoS on the Nov ballot + Chicago mayor Feb 2027). NO statewide ballot questions. Built WITH voices from the start. No LOCAL_RACES yet |
 | `ms.html` | Mississippi — twenty-first fully built state (82 counties, 4 districts, March 10 primary results). Built Aug 6, 2026 from il.html. ⚠ **MISSISSIPPI ELECTS ITS STATE OFFICERS IN ODD YEARS** — Governor, Lt Gov, AG, SoS, Treasurer, Auditor and Ag Commissioner are NOT on the 2026 ballot (next 2027), so the statewide ballot is just U.S. Senate plus five nonpartisan Court of Appeals seats, four of them uncontested. NO Supreme Court seat and NO certified ballot measure (the citizen-initiative process has been dead since 2021). Senate: Hyde-Smith (R) vs. **Scott Colom (D)** — NOT Ty Pinkins, who left the party in July 2025 and is on the ballot as an INDEPENDENT. Only 4 counties are split; Jackson itself straddles MS-2/MS-3. No district is rated competitive by any rater. Built WITH voices from the start. No LOCAL_RACES yet |
-| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH/KY/IN/IA/IL/MS redirect to their dedicated pages |
+| `ar.html` | Arkansas — twenty-second fully built state (75 counties, 4 districts, March 3 primary + March 31 runoff results). Built Aug 7, 2026 from ms.html. ⚠ Arkansas elects ALL SEVEN executive constitutional officers together in midterm years (Amendment 63), so the statewide ballot is long — but FOUR races are effectively over: AG, Treasurer and Auditor drew NO opponent of any party, and Lt. Governor and Land Commissioner drew no Democrat. ⚠ **NO appellate judicial race is on the November ballot** — Arkansas runs NONPARTISAN judicial elections at the MARCH primary date and all four seats were settled then (carded as past races); Ballotpedia's "runoff scheduled for November 3" is template boilerplate and is wrong. ⚠ **NO issue numbers are assigned** to the four legislature-referred ballot measures; Wikipedia's "Issue 1/2/3/4" are its editors' own sequencing. ⚠ **Write-in candidates are PROHIBITED** in Arkansas (§ 7-5-205). Marquee: the Secretary of State open seat, decided by **913 votes** in the March 31 runoff. Only 2 split counties (Pulaski 3 ways, Sebastian 2). No LOCAL_RACES yet |
+| `ne.html` | Nebraska — twenty-third fully built state (93 counties, 3 districts, May 12 primary results). Built Aug 7, 2026 from ms.html. ⚠ **THE 2026 SENATE SEAT IS THE SIX-YEAR TERM FOR RICKETTS' CLASS II SEAT** (he was appointed 2023 to Sasse's seat, won a 2024 SPECIAL for the remainder expiring Jan 2027); Fischer's Class I seat is NOT up. ⚠ **THERE IS NO DEMOCRAT ON THE SENATE BALLOT** — primary winner Cindy Burbank withdrew July 17/21 and *Forbes v. Nebraska Democratic Party* (heard Aug 3, NO ruling as of Aug 7) could still force a replacement by Sept 1. Independent **Dan Osborn** is certified by petition and the race is rated **Likely R, not Solid** — Sabato moved it July 10, 2025. ⚠ **NE-2 (Omaha) is an OPEN SEAT** (Bacon retiring) and the "blue dot" that gave Harris an electoral vote in 2024 while re-electing Bacon. ⚠ SoS incumbent Bob Evnen LOST his own primary. Only 2 split counties (Sarpy, Polk — Polk by 30 people). No LOCAL_RACES yet |
+| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH/KY/IN/IA/IL/MS/AR/NE redirect to their dedicated pages |
 | `favicon.svg` | Gold-gradient circle + white checkmark (primary favicon, matches site crest) |
 | `favicon.png` | 32px PNG fallback |
 | `favicon.ico` | Multi-size ICO (16/32/48) at root for legacy auto-discovery |
@@ -150,8 +152,8 @@ must appear AFTER its declaration; a top-level TDZ error kills the whole script 
 ### index.html (national)
 ```
 ST / NAME     : fips → abbr / full name             CAP: capitals (currently unused on this page)
-BUILT         : 21 fips -> page (37 nc, 45 sc, 13 ga, 51 va, 24 md, 10 de, 34 nj, 36 ny, 44 ri, 33 nh,
-                09 ct, 50 vt, 23 me, 25 ma, 54 wv, 39 oh, 21 ky, 18 in, 19 ia, 17 il, 28 ms)
+BUILT         : 23 fips -> page (37 nc, 45 sc, 13 ga, 51 va, 24 md, 10 de, 34 nj, 36 ny, 44 ri, 33 nh,
+                09 ct, 50 vt, 23 me, 25 ma, 54 wv, 39 oh, 21 ky, 18 in, 19 ia, 17 il, 28 ms, 05 ar, 31 ne)
 PARTIAL       : Set of 3 fips (DC FL AL) → lighter gold tier
 CALLOUTS      : label anchor coords for 9 small states + DC
 destFor(fips) : BUILT[fips] if fully built, else state.html?state=XX
@@ -185,7 +187,7 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of August 6, 2026)
+## Current state (as of August 7, 2026)
 
 - **NC (full):** 2024 statewide results (Gov, Lt Gov, AG, Supreme Court Seat 6) + all 14 US House
   districts (2024 + 2026) + 2026 US Senate (Cooper vs. Whatley vs. Bray, rated Lean D). NC primary
@@ -398,7 +400,7 @@ node tests/run-all.js
 |------|----------------|
 | `tests/parse-check.js` | Every inline `<script>` in every page must compile (syntax errors only) |
 | `tests/smoke-test.js` | Executes each page's scripts top-to-bottom with DOM stubs, cut at the first `d3.` usage; runs state.html for all 10 featured states + controls (TX, CA) + verifies the NC→nc.html redirect. **This is the test that catches declaration-order/TDZ bugs.** |
-| `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config, now 21 pages): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly, **and the map `<XX>_STATE_FIPS` constant matches the COUNTIES prefix** (quirk #10). Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
+| `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config, now 23 pages): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly, **and the map `<XX>_STATE_FIPS` constant matches the COUNTIES prefix** (quirk #10). Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
 | `tests/label-fit.js` | **The national map's `LABEL_ADJ` labels must clear their state borders.** Measures clearance (anchor → nearest boundary) against baked geometry and requires 9.66px = 8.76 glyph half-diagonal + 0.4 stroke + 0.5 simplification slack. Added July 24, 2026 after the FL/LA labels shipped clipping *twice* — both earlier passes hit-tested the anchor POINT, which is inside the state even when the box around it is not. HI carries a documented exempt floor (its island cannot do better) |
 | `tests/fixtures/state-label-rings.json` | Projected, simplified state outlines for the 42 inline-label states (48KB). Built by `tools/gen-label-fixture.js`; records the projection it came from so `label-fit.js` fails loudly instead of checking stale geometry |
 | `tests/lib.js` | Shared helpers: inline-script extraction, the d3 cut, DOM stubs, vm sandbox runner |
@@ -535,8 +537,8 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
 **Queue status (as of Aug 6, 2026): items 1, 2, 3 and 5 are COMPLETE, and item 4 has been at ZERO gaps
 site-wide since Aug 5.** The queue is therefore empty of open work — what remains is *maintenance*: every new
 state must be built WITH voices, and `node tools/voices-report.js --summary` must read 0 at the end of every
-run. It read **0 missing / 622 candidates across 21 pages** at the end of the Aug 6 run (Mississippi shipped
-with 21 candidates and 0 gaps). If the owner adds nothing new, spend the freed time on state builds, the
+run. It read **0 missing / 685 candidates across 23 pages** at the end of the Aug 7 run (Arkansas shipped with 26
+candidates and Nebraska with 37, both 0 gaps). If the owner adds nothing new, spend the freed time on state builds, the
 time-sensitive calendar, and the incumbent-status sweep.
 
 ## Backlog / roadmap
@@ -677,12 +679,19 @@ time-sensitive calendar, and the incumbent-status sweep.
    to use the `ds` multi-district model from the start.
    **MISSISSIPPI was COMPLETED Aug 6, 2026** (cloned from il.html; 82 counties / 4 districts / U.S. Senate + five
    nonpartisan Court of Appeals seats; built WITH voices from the start). See the build record below.
-   **Built bloc is now 21 (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA WV OH KY IN IL IA MS)** — the run from Georgia
-   to Maine and west to Iowa, plus Mississippi on the Gulf (index.html's prose says exactly this).
+   **ARKANSAS and NEBRASKA were COMPLETED Aug 7, 2026** (both cloned from ms.html; AR = 75 counties / 4 districts /
+   EIGHT statewide constitutional offices + 4 ballot measures; NE = 93 counties / 3 districts / 6 statewide offices +
+   1 ballot measure + statewide judicial retention + 4 State Board of Education and 3 NU Regents district races).
+   Both built WITH voices from the start. See the build records below.
+   **Built bloc is now 23 (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA WV OH KY IN IL IA MS AR NE)** — the run from
+   Georgia to Maine and west to Iowa and Nebraska, plus Mississippi and Arkansas on the lower Mississippi River
+   (index.html's prose says exactly this).
    **Next targets:** **PA** (banked below — build it AFTER Aug 10, 2026, off the DOS certified list; the county→district
    map is still the hard blocker), **AL** (fully researched and banked below — build it AFTER Aug 12, once the Aug 11
-   special primary and independent qualifying both close, and ONLY off the 2023 legislature map), then **MI**,
-   then **WI/MN/MO**.
+   special primary and independent qualifying both close, and ONLY off the 2023 legislature map), then **MI**
+   (its Senate primary was called Aug 5 and Stevens CONCEDED — only certification still gates it), then **WI/MN/MO**.
+   ⚠ **MO carries a redistricting risk** — it was one of the 2025–26 mid-decade redraw states, so answer "which map
+   governs 2026?" from primary sources before deriving anything (lesson #13). WI and MN both held Aug 11 primaries.
    ⚠ **MI is NOT ready.** Its primary was Aug 4, 2026 and as of Aug 5 the **Democratic U.S. Senate primary was still
    too close to call** (Wikipedia showed El-Sayed at 48.6% over Stevens; Bridge Michigan and the Washington Post both
    called it uncalled), with no certification — county canvasses run for weeks. Governor IS set: Benson (D) vs. James
@@ -967,6 +976,188 @@ time-sensitive calendar, and the incumbent-status sweep.
    - **Follow-ups:** Derek Hopson Jr.'s biography; the two post-deadline Supreme Court vacancies; Bennie Thompson's
      2026 issue platform (the carded priorities are from 2024-cycle AP reporting); the independent qualifying
      deadline's statutory basis (Dec 26, 2025 vs. an unexplained "Aug 20" both appear in sources).
+
+   ### ✅ ARKANSAS — BUILT Aug 7, 2026 (22nd state). The notes below are the build record; do not re-research.
+   Cloned from **ms.html**. Shipped with voices on every upcoming candidate — 26 candidates, 0 gaps.
+   - **Map in force: Act 1116 (2021)**, enacted Oct 13, 2021. **NO mid-decade redraw** — Arkansas is absent from the
+     2025–26 redraw list and its 2026 session was a FISCAL session. **All VRA and state-constitutional litigation is
+     resolved IN FAVOR of the existing map**: *Suttlar v. Thurston* dismissed May 2023, *Simpson v. Thurston* dismissed
+     Sept 2024, and *Christian Ministerial Alliance v. Jester* rejected June 9, 2025 (a three-judge panel found NO
+     racial gerrymander in the 3-way Little Rock split). Post-*Callais* exposure cuts AGAINST new challenges.
+     Verified structurally: the Census CD118 and CD119 county relationship files for Arkansas are **byte-identical**.
+   - ⚠ **The "voided primaries" tell was checked and cleared as a FALSE POSITIVE.** Arkansas did have mid-cycle
+     special-election litigation in 2025–26, but it concerned **state legislative** vacancies and the governor's
+     discretion over election TIMING — not district lines. Do not re-flag it.
+   - **THE TABLE WAS DERIVED WITHOUT A BLOCK-ASSIGNMENT FILE, and closed to ZERO.** Both candidate BAFs were dated
+     BEFORE Act 1116 (2021-01-19 and 2013-02-19) and were discarded — the usual trap. Instead: 73 whole-county
+     assignments from the CD119 relationship file + PL 94-171 county populations + official CD119 district totals,
+     solved as an over-determined system. Pulaski CD4 = 32,780 and Sebastian CD4 = 9,698 sum to 42,478, which equals
+     the CD4 residual **exactly** — an equation never used in the derivation, so it is a genuine independent check.
+   - ⚠ **Per-district populations deviate more than usual** (CD1 752,509 / CD2 752,710 / CD3 753,219 / CD4 753,086
+     against a 752,881 ideal — a 710 range). **This is NOT a transcription error**: the derived totals match the
+     Census Bureau's own published CD119 figures to the person and sum to 3,011,524 exactly. It is a property of the
+     enacted plan as Census tabulates it. Arkansas's self-reported plan deviation could not be confirmed — noted as
+     real-but-unexplained rather than as a failed table.
+   - **Only 2 split counties**, both carrying `ds`: **Pulaski split THREE ways** — CD2 357,733 (89.6%, plurality) /
+     CD4 32,780 / CD1 8,612 — and **Sebastian** CD3 118,101 (92.4%) / CD4 9,698. All 75 names verified against
+     `counties-10m.json`. ⚠ Note `Hot Spring` is singular (no "s") and `Mississippi` **County** is a real Arkansas
+     county (05093) — not a leftover from the Mississippi donor page.
+   - **THE BALLOT IS LONG BUT HALF-DECIDED.** Arkansas elects all seven executive constitutional officers together in
+     midterm years (Amendment 63). **AG (Griffin), Treasurer (Thurston) and Auditor (Milligan) drew NO opponent of any
+     party**; **Lt. Governor (Rutledge) and Land Commissioner drew no Democrat.** Only Senate, Governor and Secretary
+     of State are three-way contests.
+   - ⚠⚠ **THERE IS NO APPELLATE JUDICIAL RACE IN NOVEMBER — the biggest trap in this state.** Arkansas runs
+     NONPARTISAN judicial elections at the **MARCH primary date**, with November runoffs only if nobody clears 50%.
+     All four 2026 appellate seats were settled on or before March 3 and are carded as PAST races: Bronni def. Adams
+     54.71–45.29; Capp def. Carter 62.95–37.05; Hiland and Virden were unopposed and their elections CANCELLED.
+     **Ballotpedia's "A runoff election is scheduled for November 3, 2026" is template boilerplate and is wrong.**
+     ⚠ The official results feed and arcourts.gov DISAGREE on which position number Bronni vs. Hiland holds, so the
+     page states winners and margins but no position number.
+   - ⚠ **NO BALLOT-MEASURE ISSUE NUMBERS EXIST.** The SoS assigns them in the summer and had not as of Aug 7;
+     **Wikipedia's "Issue 1/2/3/4" headings are its own editors' sequencing — do not publish them.** The four
+     legislature-referred measures are HJR 1018 (citizens-only voting), SJR 11 (arms, incl. ammunition/accessories),
+     SJR 15 (economic development districts with tax freezes), and Act 578 of 2025 (up to $500M water/waste GO bonds).
+     ⚠ **CORRECTION TO A CIRCULATING AI-GENERATED CLAIM: HJR 1018 does NOT introduce photo-ID requirements** — those
+     subsections already exist in Art. 3 §1 and are merely re-lettered. Verified against the engrossed text.
+   - **NO citizen initiative is certified.** Two failed to submit signatures; the third (Ballot Measure Rights) was
+     found INSUFFICIENT July 30 with **zero countable signatures** (wrong caption, missing AG-approved ballot title)
+     and is in litigation — *Hanna v. Jester*, No. CV-26-543, filed **Aug 5, 2026**. Unresolved; practical deadline Aug 20.
+   - **Marquee: the Secretary of State open seat, decided by 913 VOTES** in the March 31 runoff (Hammer 50.56 over
+     Norris) after a near three-way tie in March (34.42/33.46/32.13). Norris got recounts in six counties — all
+     matched — and his suit was dismissed June 8 as "specious, ill-founded, and wholly without merit."
+     ⚠ Hammer **authored the initiative-petition restrictions preliminarily enjoined in federal court** (Nov 19, 2025,
+     *League of Women Voters of Arkansas v. Jester*), which is the central argument against him.
+     ⚠ Ethics Commission complaints against BOTH runoff candidates met the threshold for further investigation; the
+     outcome could not be sourced, so the page reports the inquiry, not a finding.
+   - ⚠ **NAME COLLISION, do not merge:** **Christian Olson** (R) lost the Land Commissioner primary; **Christopher
+     Olson** (L) of Viola is the Libertarian nominee. Different people — the Libertarian convention nominated Feb 22
+     while Christian Olson was still on the March 3 primary ballot. **Wikipedia says the primary loser "later emerged
+     as the Libertarian Party's nominee." That is WRONG.**
+   - ⚠ **DO NOT state a reason for Land Commissioner Tommy Land's departure.** The two-term limit would fit, but no
+     retirement announcement or term-limit citation could be sourced. Same for why Jester chose Land Commissioner
+     over a full SoS term — no sourced statement exists.
+   - ⚠ **WRITE-IN CANDIDATES ARE PROHIBITED in Arkansas** (§ 7-5-205: no person shall file as a write-in, and no
+     write-in vote shall be counted). Corroborated three ways, including `writeInChoices: null` in the SoS data.
+   - **Nominee replacement is NARROW** (§ 7-7-104): only death, serious illness, moving out of the area, or filing for
+     another office. A plain withdrawal is NOT replaceable — which is exactly why **Cotton faced no Democrat in 2020**
+     (Josh Mahony quit ~2 hours AFTER the Nov 12, 2019 deadline; Act 648 of 2019 barred substitution).
+   - ⚠ **CERTIFICATION IS AUG 20, 2026** (§7-5-203(a)(1)); ballot draw Aug 23–24. **No affirmative state list of
+     qualified INDEPENDENT statewide candidates could be obtained**, so the page reads "no independent located," not
+     "no independent exists." Re-check after Aug 20.
+   - **Ratings — nothing competitive.** Senate: Cook Solid R, Sabato Safe R, Inside Elections Solid R (set Jan 2025,
+     zero shifts all cycle). Governor: Cook Solid R (Jul 10, 2026), Inside Elections Solid R (Jun 25, 2026), Sabato
+     Safe R (Jul 23, 2026). ⚠ **AR-2 is NOT competitive either** — the Aug 5, 2026 news is that the **DCCC** added it
+     to a 58-seat target list, which is a PARTY TARGETING decision, not a rating change; no independent rater moved it.
+   - ⚠ **All AR polling is partisan.** The only close Senate poll is Shoffner's own internal; the only AR-2 poll is
+     Jones's own campaign internal. Both are labeled as such on the page.
+   - **THE ACCESS UNLOCK, reuse this:** the SoS results portal is a JS SPA, but its API is open and keyless —
+     `https://enr-results-api.totalresults.com/Contest/GetContestResults?cId=arkansas&electionID=<id>&contestType=<Statewide|Federal|Judge|MEA>`.
+     **`cId` is the literal string `arkansas`**, not a GUID; contest NAMES and RESULTS come in separate payloads and
+     must be joined on GUIDs; all 2026 payloads carry `isOfficial: true`. Election IDs: 2020 General `1841`,
+     2022 General `1844`, 2024 General `1846`. Campaign finance lives at **`ethics-disclosures.sos.arkansas.gov`**
+     (`financial-disclosures...` is NXDOMAIN). ⚠ **`candidates.arkansas.gov` returns HTTP 200 with a ZERO-BYTE body**
+     on every query — no state-generated certified November candidate list is obtainable from it.
+   - ⚠ **A fetch-tool PDF summariser FABRICATED dates** for the SoS election calendar (inventing an "August 3"
+     independent deadline and an "October 5" certification). The real dates came from local `pypdf` extraction.
+     **No summarised PDF content was used.** Treat summarised PDFs as a live hallucination risk.
+   - ⚠ **Wrong-cycle trap caught:** a KATV story on a "close" AR-2 rated "likely Republican" is from **Aug 16, 2018**
+     (Hill vs. Clarke Tucker). A Sanders "$3.5M ad buy during a Hogs game" story is from **2022**. Date-check both.
+   - **OMITTED DELIBERATELY: Christopher Hocevar (I, AR-3).** Ballotpedia lists him; Wikipedia says he withdrew or
+     never filed; an April 2026 student-newspaper piece has him still GATHERING signatures before the May 1 deadline,
+     and he is absent from the filing roundup. Two passes failed to corroborate. Needs one manual SoS check.
+
+   ### ✅ NEBRASKA — BUILT Aug 7, 2026 (23rd state). The notes below are the build record; do not re-research.
+   Cloned from **ms.html**. Shipped with voices on every upcoming candidate — 37 candidates, 0 gaps.
+   - **Map in force: LB 1 (2021)**, enacted Sept 30, 2021. ⚠ **NEBRASKA WAS A REAL MID-DECADE REDRAW TARGET AND IT
+     FAILED — this was the gating question.** The 2025–26 national push explicitly targeted breaking up NE-2, and Gov.
+     Pillen said in Oct 2025 he was "open" to it. But he conditioned a special session on "a clear and public
+     indication that 33 senators are willing to vote" (the unicameral's filibuster-cloture threshold), never got it —
+     members privately doubted they could reach even 25 — and the effort died in the spring 2026 session, with Sen.
+     Merv Riepe's opposition cited as decisive. **No bill enacted, no special session, no litigation.** Verified
+     structurally too: the CD118 and CD119 county relationship files are identical, and the CD118/CD119 summary files
+     are byte-identical in both county-part assignments AND populations.
+   - ⚠ **The BAF trap fired as predicted:** `BlockAssign_ST31_NE_CD.txt` is dated **2020-12-11**, nine months before
+     LB 1, and encodes the 116th-Congress map. Using it would have put **Saunders in NE-1** (it is NE-2) and
+     **Washington, Burt and Thurston in NE-1** (all three are NE-3), and mis-split Polk and Dixon. Discarded.
+   - **Arithmetic: NE-1 653,822 (−13) / NE-2 653,847 (+12) / NE-3 653,835 (0)** against a 653,835 ideal, totalling
+     1,961,504 exactly. 93 counties, 95 county-parts.
+   - **Only 2 split counties**, both carrying `ds`: **Sarpy** — NE-1 143,561 / NE-2 47,043, plurality **NE-1** — and
+     **Polk** — NE-3 2,622 / NE-1 2,592, a **30-PERSON margin**, so the `ds:[1,3]` array is doing the real work there.
+     ⚠ **Douglas County is NOT split** (all 584,526 in NE-2) and **Saunders is NOT split** (all in NE-2).
+     **Reachability is safe** — NE-2 is the plurality of both Douglas and Saunders, so it does not depend on Sarpy.
+   - ⚠ **COUNTERINTUITIVE AND VERIFIED FOUR WAYS: Washington County (Blair), Burt and Thurston are in NE-3, not NE-1**,
+     despite Washington being Omaha-adjacent. NE-3 wraps across the northern tier to the Missouri River. This is a
+     genuine LB 1 change — all three were NE-1 under the prior map. Do not "correct" it.
+   - ⚠⚠ **THE 2026 SENATE SEAT IS THE SIX-YEAR TERM FOR THE CLASS II SEAT.** Ricketts was appointed Jan 2023 to
+     Sasse's seat and won a **2024 SPECIAL** (labeled "Two Year Term" in the canvass) for the remainder, expiring
+     **January 2027**. **Deb Fischer's Class I seat is NOT up** (next 2031). Confusing the two would be a serious error.
+   - ⚠⚠ **THERE IS NO DEMOCRAT ON THE NOVEMBER SENATE BALLOT, AND IT IS IN LITIGATION.** Primary winner Cindy Burbank
+     filed to withdraw **July 17**; the SoS accepted **July 21** (inside the Aug 3 §32-623 deadline). Runner-up
+     **William Forbes sued the Nebraska Democratic Party** to force a replacement; **SoS Evnen sided with Forbes**,
+     telling chair Jane Kleeb the party "must" designate someone by **Sept 1**. Heard **Aug 3** before Lancaster County
+     District Judge Susan Strong — **NO RULING as of Aug 7. The ballot can still change; re-check.** ⚠ Democrats allege
+     Ricketts is financing the suit; **no public evidence exists** and the page labels it an allegation.
+   - **Marquee: independent DAN OSBORN, and the race is NOT Solid R.** Sabato moved it **Safe R → LIKELY R on July 10,
+     2025** when he entered; Cook and Inside Elections also Likely R; RealClearPolitics and Race to the WH at Lean R.
+     Osborn's petition was **certified July 16, 2026** (12,000+ submitted, 6,000+ validated against ~4,000 required).
+     He lost to Fischer by 6.7 points in 2024 **with no Democrat on that ballot either** and says he will not caucus
+     with either party. ⚠ **Every public poll is from a Democratic-aligned firm or campaign-sponsored** — the page
+     says so and labels each.
+   - **NE-2 IS AN OPEN SEAT** — Don Bacon announced **June 27, 2025** he would not seek re-election. He is alive and
+     still seated (House Clerk roster, July 6, 2026) and simply is not on the ballot. ⚠ **The "blue dot": in 2024 NE-2
+     gave its electoral vote to Harris by 4.6 points (51.32–46.73, margin 14,636) while re-electing Bacon by 1.85.**
+     Several outlets reported that presidential margin as "about 11,000" — **the certified canvass figure is 14,636.**
+     Cook Lean D (moved from Toss Up in late June 2025), Sabato Leans D (June 27, 2025, unchanged through Aug 4, 2026),
+     Inside Elections Tilt D (Apr 28, 2026). Cook PVI **D+3**. ⚠ A Sabato piece titled "Key NE-2 Race to Leans
+     Democratic" is dated **September 30, 2024** — the Bacon–Vargas cycle. Easy miscitation; date-check it.
+   - ⚠ **Cook PVI is published ONLY for NE-2.** Figures circulating for NE-1 (R+6) and NE-3 (R+27) are secondary-sourced
+     only and were deliberately omitted. Wikipedia gives two contradictory sets of NE-1 rating dates; the defensible
+     claim is the Nebraska Examiner's Aug 5, 2026 formulation plus the fact that Sabato's change log has no NE-1 or
+     NE-3 entry at all.
+   - **SoS incumbent Bob Evnen LOST his own primary** to Scott Petersen 54.65–45.35 — and remains in office
+     administering this election, including accepting the Democratic Senate nominee's withdrawal. ⚠ Rep. Don Bacon
+     accused people in Petersen's "inner circle" of antisemitic social-media posts; **Petersen's denial is carded
+     alongside it.** ⚠ An "Edward Weniger" appears both in Bacon's accusation and in NADC as a school-board candidate —
+     **NOT confirmed to be the same person and deliberately excluded.**
+   - **Treasurer turned over TWICE in three years without a vote:** Murante left Sept 2023 → Briese appointed →
+     Briese resigned **Nov 3, 2025** → **Spellerberg appointed the same day**, sworn in Nov 6. First accountability moment.
+   - **Auditor Mike Foley is UNOPPOSED** — and audits his own party (Pillen's $2.5M no-bid contract, Evnen's travel).
+   - **BALLOT MEASURES: only LR19CA is certain** (legislature-referred; term limits two → three consecutive terms;
+     passed 39–10 on May 28, 2025). Its ballot language is quoted verbatim from the slip law. ⚠ **It is the ONLY
+     legislature-referred amendment** — established by brute-force scanning every `LR1CA`–`LR320CA` slip law for the
+     109th Legislature. Four citizen petitions (Fairness for Girls; a four-fifths threshold to amend voter initiatives;
+     two online sports-wagering measures) were submitted and are **still in signature verification with NO official
+     ballot titles**. **SoS certification deadline is SEPT 11, 2026** (§32-801) — re-check then.
+   - ⚠ **NO Nebraska Supreme Court justice is up for retention in 2026** (2024 had them; terms are staggered). The only
+     STATEWIDE retention questions are two Workers' Compensation Court judges, Stine and Block.
+   - **State Board of Education (D5/6/7/8) and NU Regents (D1/2/4) ARE carded**, each with a scope label naming who
+     votes, since the site has no geography model for those districts. ⚠ **Regents D4 is a SPECIAL ELECTION** for
+     Elizabeth O'Connor's unexpired term (she resigned Jan 2026); **Joel Makovicka holds it by appointment and is not
+     running, so NEITHER candidate is an incumbent** — and all five primary candidates were registered Democrats.
+     ⚠ **Susanne Shore is the former First Lady of Nebraska and Sen. Pete Ricketts' wife — and a registered Democrat**;
+     Ricketts endorsed her ("my one Democrat exception in 2026"). Confirmed against his own senate.gov biography.
+   - ⚠ **Several education-race positions come from the Nebraska Family Alliance voter guide, a socially conservative
+     advocacy group with advocacy-worded questions.** It is named inline wherever used, and note that several
+     candidates DECLINED to answer — which is not the same as having no position.
+   - **NADC ACCESS — and a trap worth recording.** The public candidate search throws "Unknown SQL Database Exception"
+     on every query; the working path is the ADVANCED search plus the **Reports → Entity Financial History** report.
+     ⚠ **NADC's Election Summary Report does NOT contain cash on hand** — its four money columns are contributions
+     and expenditures, and publishing the "Expenditures" column as cash on hand would be an easy, serious error.
+     Cash on hand is `EndingFundsOnHand` in Entity Financial History. All NE down-ballot figures are **as of June 16,
+     2026** (post-primary report close); the next filing is not due until **Oct 5, 2026**.
+   - **Daniel Ebers (D, Treasurer) has NO campaign committee registered with NADC at all** — confirmed two ways. No
+     website, no positions, "No Answer" to all seven questionnaire items. The page reports the absence.
+   - **Access notes:** the Census Data API now requires a key and returns an HTML "Missing Key" page with **HTTP 200**,
+     so it fails SILENTLY. Use keyless `www2.census.gov` bulk files instead — the **119th CD Summary File**
+     (`ne2020.cd19.zip`) carries `POP100` inline at summary level 510 (county-or-part within CD), giving exact
+     populations per county-part with no block-level join at all. **This is the clean path for remaining states.**
+     `electionresults.nebraska.gov` is fetchable and confirmed every canvass total (though it still shows an
+     "Unofficial Results" banner). Older SoS canvass filenames use SPACES, 2026 files use underscores.
+   - ⚠⚠ **BROWSER-PANE CONTAMINATION — a near-miss worth remembering.** A Nebraska research agent's browser pane had
+     pre-existing tabs from the concurrent ARKANSAS task. Its first navigation to the NADC URL **reported success but
+     rendered Arkansas candidate-filing data.** Had it read numbers off that page, Arkansas filings would have been
+     published as Nebraska finance data. It discarded the tab and re-ran in a fresh, verified tab. **When running
+     concurrent state research, verify the tab's actual origin before reading any figure off it.**
 
    ### ⏸ ALABAMA — RESEARCH BANKED Aug 6, 2026; BUILD GATED TO AFTER AUG 12. Do not re-research what is here.
    An Alabama build was worked all the way to a finished, arithmetic-verified county map on Aug 6 and **deliberately

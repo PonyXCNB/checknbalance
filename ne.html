@@ -1,0 +1,2119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nebraska Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every NE election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #nemap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">NE</div>
+      <div class="brand-text">
+        <span class="brand-name">Nebraska Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Nebraska <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 93 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">93</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>3</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>15</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Nebraska…</div>
+      <svg id="nemap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>NE Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">July 22, 2026</span><br>
+      Sources: Nebraska Secretary of State certified Statewide Candidate Filing List and 2026 Primary Canvass Book, 2026 Election Calendar and judicial-retention list, Nebraska Accountability and Disclosure Commission, U.S. Census Bureau congressional-district relationship files and 2020 PL 94-171 data, FEC, U.S. House Clerk member roster, Cook Political Report, Sabato's Crystal Ball, Inside Elections, Nebraska Public Media, Nebraska Examiner, WOWT, 1011now, KLKN, AP.
+    </div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every NE county + its primary US House district(s)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- (1) Counties + primary US House district -----
+// ⚠ PLACEHOLDER — replaced below.
+const COUNTIES = {
+  "31001":{n:"Adams",d:3},
+  "31003":{n:"Antelope",d:3},
+  "31005":{n:"Arthur",d:3},
+  "31007":{n:"Banner",d:3},
+  "31009":{n:"Blaine",d:3},
+  "31011":{n:"Boone",d:3},
+  "31013":{n:"Box Butte",d:3},
+  "31015":{n:"Boyd",d:3},
+  "31017":{n:"Brown",d:3},
+  "31019":{n:"Buffalo",d:3},
+  "31021":{n:"Burt",d:3},
+  "31023":{n:"Butler",d:1},
+  "31025":{n:"Cass",d:1},
+  "31027":{n:"Cedar",d:3},
+  "31029":{n:"Chase",d:3},
+  "31031":{n:"Cherry",d:3},
+  "31033":{n:"Cheyenne",d:3},
+  "31035":{n:"Clay",d:3},
+  "31037":{n:"Colfax",d:1},
+  "31039":{n:"Cuming",d:1},
+  "31041":{n:"Custer",d:3},
+  "31043":{n:"Dakota",d:3},
+  "31045":{n:"Dawes",d:3},
+  "31047":{n:"Dawson",d:3},
+  "31049":{n:"Deuel",d:3},
+  "31051":{n:"Dixon",d:3},
+  "31053":{n:"Dodge",d:1},
+  "31055":{n:"Douglas",d:2},
+  "31057":{n:"Dundy",d:3},
+  "31059":{n:"Fillmore",d:3},
+  "31061":{n:"Franklin",d:3},
+  "31063":{n:"Frontier",d:3},
+  "31065":{n:"Furnas",d:3},
+  "31067":{n:"Gage",d:3},
+  "31069":{n:"Garden",d:3},
+  "31071":{n:"Garfield",d:3},
+  "31073":{n:"Gosper",d:3},
+  "31075":{n:"Grant",d:3},
+  "31077":{n:"Greeley",d:3},
+  "31079":{n:"Hall",d:3},
+  "31081":{n:"Hamilton",d:3},
+  "31083":{n:"Harlan",d:3},
+  "31085":{n:"Hayes",d:3},
+  "31087":{n:"Hitchcock",d:3},
+  "31089":{n:"Holt",d:3},
+  "31091":{n:"Hooker",d:3},
+  "31093":{n:"Howard",d:3},
+  "31095":{n:"Jefferson",d:3},
+  "31097":{n:"Johnson",d:3},
+  "31099":{n:"Kearney",d:3},
+  "31101":{n:"Keith",d:3},
+  "31103":{n:"Keya Paha",d:3},
+  "31105":{n:"Kimball",d:3},
+  "31107":{n:"Knox",d:3},
+  "31109":{n:"Lancaster",d:1},
+  "31111":{n:"Lincoln",d:3},
+  "31113":{n:"Logan",d:3},
+  "31115":{n:"Loup",d:3},
+  "31117":{n:"McPherson",d:3},
+  "31119":{n:"Madison",d:1},
+  "31121":{n:"Merrick",d:3},
+  "31123":{n:"Morrill",d:3},
+  "31125":{n:"Nance",d:3},
+  "31127":{n:"Nemaha",d:3},
+  "31129":{n:"Nuckolls",d:3},
+  "31131":{n:"Otoe",d:3},
+  "31133":{n:"Pawnee",d:3},
+  "31135":{n:"Perkins",d:3},
+  "31137":{n:"Phelps",d:3},
+  "31139":{n:"Pierce",d:3},
+  "31141":{n:"Platte",d:1},
+  "31143":{n:"Polk",d:3,ds:[1,3]},
+  "31145":{n:"Red Willow",d:3},
+  "31147":{n:"Richardson",d:3},
+  "31149":{n:"Rock",d:3},
+  "31151":{n:"Saline",d:3},
+  "31153":{n:"Sarpy",d:1,ds:[1,2]},
+  "31155":{n:"Saunders",d:2},
+  "31157":{n:"Scotts Bluff",d:3},
+  "31159":{n:"Seward",d:1},
+  "31161":{n:"Sheridan",d:3},
+  "31163":{n:"Sherman",d:3},
+  "31165":{n:"Sioux",d:3},
+  "31167":{n:"Stanton",d:1},
+  "31169":{n:"Thayer",d:3},
+  "31171":{n:"Thomas",d:3},
+  "31173":{n:"Thurston",d:3},
+  "31175":{n:"Valley",d:3},
+  "31177":{n:"Washington",d:3},
+  "31179":{n:"Wayne",d:3},
+  "31181":{n:"Webster",d:3},
+  "31183":{n:"Wheeler",d:3},
+  "31185":{n:"York",d:3},
+};
+
+// ----- (2) Statewide races -----
+// Verified against the Nebraska Secretary of State's certified Statewide Candidate Filing List
+// (file last modified Aug 3, 2026 22:06 UTC, re-checked Aug 7 — unchanged), the official 2026
+// Primary Canvass Book of the Board of State Canvassers, the 2026 Election Calendar, and the
+// Aug 3 final judicial-retention list.
+// ⚠ THE 2026 U.S. SENATE SEAT IS THE SIX-YEAR TERM FOR THE CLASS II SEAT. Pete Ricketts was
+// appointed in Jan 2023 to Ben Sasse's seat and won a 2024 SPECIAL for the remainder, which
+// expires January 2027. Deb Fischer's Class I seat is NOT on this ballot (next up 2031).
+// ⚠ THERE IS NO DEMOCRAT ON THE NOVEMBER SENATE BALLOT — the primary winner withdrew and the
+// resulting lawsuit had not been decided as of Aug 7. See the Senate race note.
+// ⚠ NO NEBRASKA SUPREME COURT JUSTICE is up for retention in 2026 (2024 had them; terms are
+// staggered). The only STATEWIDE retention questions are two Workers' Compensation Court judges.
+// ⚠ ONLY ONE BALLOT MEASURE IS CERTAIN — LR19CA, referred by the Legislature. Four citizen
+// petitions were submitted and are still in signature verification; none has an official ballot
+// title yet, and the Secretary of State's certification deadline is SEPT 11, 2026.
+// The NONPARTISAN State Board of Education (districts 5, 6, 7, 8) and University of Nebraska
+// Board of Regents (districts 1, 2, 4) races ARE carded, each with an explicit scope label naming
+// who actually votes in it, because the site has no geography model for those districts.
+// ⚠ Several education-race position summaries come from the Nebraska Family Alliance voter guide,
+// a socially conservative advocacy organization with advocacy-worded questions; it is named inline
+// wherever used. Note that several candidates DECLINED to answer it, which is not the same as
+// having no position. Cash-on-hand figures for these races come from the Nebraska Accountability
+// and Disclosure Commission and are as of JUNE 16, 2026 (the post-primary report close); the next
+// filing is not due until Oct 5, so these are the freshest official figures that exist.
+const STATEWIDE = [
+  // UPCOMING — 2026 General Election (Nov 3, 2026)
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Nebraska (six-year term)",
+    note: "Nebraska's marquee race, and an unusual one. Pete Ricketts (R) — appointed in Jan 2023 to Ben Sasse's seat, then elected in a 2024 special to the remainder — seeks his first full six-year term. Independent Dan Osborn, who lost to Deb Fischer by 6.7 points in 2024 with no Democrat on the ballot, is running again and was certified by petition on July 16, 2026. ⚠ THERE IS NO DEMOCRAT ON THE BALLOT: primary winner Cindy Burbank filed to withdraw July 17 and the Secretary of State accepted it July 21. Runner-up William Forbes then sued the Nebraska Democratic Party to force it to name a replacement; the Secretary of State sided with Forbes and told the party it must designate someone by Sept 1. A hearing was held Aug 3 before a Lancaster County judge and NO RULING had been reported as of Aug 7 — so this field can still change [Verify]. ⚠ This is NOT a Solid Republican race: Sabato moved it Safe R → LIKELY R on July 10, 2025 when Osborn entered, and Cook and Inside Elections also have it Likely R, with RealClearPolitics and others at Lean R. ⚠ Every public poll located is from a Democratic-aligned firm or was campaign-sponsored; no independent public poll exists.",
+    candidates: [
+      { name: "Pete Ricketts (incumbent)", party: "R", winner: false,
+        positions: [
+          "Rein in federal spending and extend the 2017 tax cuts (Senate office and campaign site)",
+          "Boost Nebraska agriculture and counter China's role in U.S. farmland — bipartisan work with Sen. Fetterman (Senate record)",
+          "Border security and energy independence (campaign site)"
+        ],
+        differentiators: [
+          "Two-term former Governor (2015–2023) who claims $12.7B in tax relief; former TD Ameritrade chief operating officer",
+          "Sits on Foreign Relations, Banking, Environment and Public Works, and Budget",
+          "⚠ Raised $6.4M — but about $5.25M of it is his own family money and only roughly $470,000 came from individual donors (Nebraska Public Media, July 16, 2026, citing FEC). Endorsed by Trump (Apr 2025), Club for Growth and the Nebraska Farm Bureau"
+        ],
+        supporters: [
+          "In a state Trump carried by more than 20 points, voters get a senator aligned with the state's clear presidential lean rather than one who won't say who he would caucus with",
+          "Three-plus years of seniority and four committee assignments already deliver more for Nebraska agriculture than a freshman independent could",
+          "His record as governor on tax relief is a concrete, measurable case for re-election"
+        ],
+        opponents: [
+          "Self-funding on this scale — about $5.25M of his own money against roughly $470,000 from individuals — lets Osborn frame the seat as bought rather than earned",
+          "He was appointed to this seat rather than initially elected to it, so 2026 is the first full-term test of his standing",
+          "Ties to national party leadership cut against the anti-Washington mood the (partisan) polling consistently shows [Verify]"
+        ] },
+      { name: "Dan Osborn", party: "I", winner: false,
+        positions: [
+          "Anti-corruption — ban congressional stock trading with jail penalties, pass the DISCLOSE Act, overturn Citizens United, term limits, independent redistricting (campaign site)",
+          "Protect paychecks, Social Security and health care; end medical bankruptcy (campaign site)",
+          "Rural Nebraska — break up agricultural monopolies and corporate consolidation (campaign site)"
+        ],
+        differentiators: [
+          "Steamfitter, industrial mechanic and former local union president who led a 2021 Kellogg's strike — not a career politician",
+          "Ran 6.7 points behind Fischer in 2024 in a state Trump won by more than 20, the strongest independent Senate showing in Nebraska in decades — and SAYS HE WILL NOT CAUCUS WITH EITHER PARTY",
+          "Certified to the ballot by petition July 16, 2026. Raised $2.37M with $1.8M from individuals averaging about $40, and refuses all corporate PAC money. Endorsed by the Nebraska Democratic Party, UAW, AFGE, the state and national education associations, and the Sierra Club"
+        ],
+        supporters: [
+          "A working-class independent can reach voters a Democrat structurally cannot in Nebraska — 2024 was the proof of concept, and this time the anti-Ricketts vote is not split",
+          "Refusing to caucus with either party is the point: it makes him accountable to Nebraskans rather than to Washington leadership",
+          "Small-dollar funding and a no-corporate-PAC pledge are consistent with the anti-corruption platform he is actually running on"
+        ],
+        opponents: [
+          "Ricketts' campaign says 83% of his donations came from out of state and 72% flowed through ActBlue, the Democratic fundraising platform — making him, in their framing, an independent in label only",
+          "With the Democratic Party endorsing him and the Democratic nominee stepping aside, critics call the independent line a workaround for a party that cannot win statewide under its own name",
+          "Sabato noted his much higher profile costs him the element of surprise that made 2024 close"
+        ] },
+      { name: "Mike Marvin", party: "I", winner: false,
+        positions: [
+          "[Verify] — beyond his party's marijuana-legalization line, no documented platform could be sourced from a campaign site or verified account",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "Runs on the Legal Marijuana NOW line, one of Nebraska's four ballot-qualified parties; won its primary 66%–34% out of 1,249 votes cast",
+          "A former labor union official",
+          "⚠ His candidacy is itself contested: Cindy Burbank — the Democrat who later withdrew — admitted paying his $1,740 filing fee after the state declined his check, saying she had never met him, and a former party chair called him a \"Dan Osborn plant,\" which Marvin denies"
+        ],
+        supporters: [
+          "[Verify — structural; no organized advocacy for him was sourced] A minor-party line gives voters who back legalization somewhere to go without endorsing either major candidate",
+          "He stayed on the ballot through the Aug 3 withdrawal deadline despite pressure, preserving that choice [Verify]"
+        ],
+        opponents: [
+          "Republicans allege he was recruited to drop out and endorse Osborn, citing the paid filing fee as evidence of coordination; Marvin denies it",
+          "In a race this close, critics in both camps argue a third line risks deciding the outcome by drawing votes rather than winning them [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Governor and Lieutenant Governor — Nebraska",
+    note: "Jim Pillen (R), elected in 2022 by 23.2 points, seeks a second term with a Trump endorsement. Democrat Lynne Walz, a former state senator and teacher, runs with Humboldt-area farmer Ben Steffen, himself a former Republican. Rated Solid/Safe Republican by every handicapper; no Democrat has won a Nebraska governorship since 1994. ⚠ Former Republican state senator Brett Lindstrom filed 5,735 petition signatures on Aug 3 for an independent ticket with Mike Picard, but the Secretary of State still lists him as \"Signature Verification in Progress\" — he is NOT certified and is not carded here [Verify]. ⚠ The Secretary of State's certified list shows Pillen's lieutenant-governor line as \"(undeclared)\" as of Aug 3, 2026; Joe Kelly is the sitting Lt. Governor and was Pillen's 2022 running mate, but no formal 2026 designation could be corroborated [Verify]. In Nebraska the two offices run on a single ticket. ⚠ All polling located is from Democratic-aligned firms.",
+    candidates: [
+      { name: "Jim Pillen (incumbent)", party: "R", winner: false,
+        positions: [
+          "Property tax reduction for homeowners — the state's dominant issue (campaign site)",
+          "Winner-take-all allocation of Nebraska's presidential electors, ending the district split (campaign site)",
+          "Banning phones in schools; opposing plant-based \"meat\" labeling (campaign site)"
+        ],
+        differentiators: [
+          "A hog producer and former University of Nebraska Regent; won 2022 by 23.2 points and took 75.4% in a six-way 2026 primary",
+          "Endorsed by Donald Trump",
+          "Has publicly criticized the ballot-measure process as one that \"does not represent the people speaking\" — relevant with four citizen petitions pending"
+        ],
+        supporters: [
+          "A Republican governor aligned with a Trump-endorsing state can move a conservative agenda through a nonpartisan Legislature with little friction",
+          "Property-tax relief is the state's dominant issue and he has kept it central for four years",
+          "Taking 75% in a six-way primary shows the Republican base is consolidated behind him"
+        ],
+        opponents: [
+          "Lindstrom — a Republican until this cycle — argues the administration drew down cash reserves and made unsustainable spending commitments, leaving a structural budget deficit",
+          "Walz argues the administration has not respected voter-approved initiatives on medical marijuana, paid sick leave and the minimum wage",
+          "Democratic-firm polling through April 2026 repeatedly put him at 47–48% — under 50 against a much less known challenger [Verify — all such polls are partisan-sponsored]"
+        ] },
+      { name: "Lynne Walz", party: "D", winner: false,
+        positions: [
+          "Lower property taxes, with relief aimed at working families rather than top earners (campaign site)",
+          "Affordability — housing, childcare, health care and groceries (campaign site)",
+          "Respect voter-approved ballot measures; limit government involvement in personal health and family decisions (campaign site)"
+        ],
+        differentiators: [
+          "A former state senator and former teacher who won the Democratic primary with 91.5%",
+          "Chose Ben Steffen — a farmer and former Republican — as her running mate to widen the ticket, and runs on a \"bipartisan problem-solver\" framing",
+          "Explicitly grassroots-funded, in her words \"not backed by billionaires\"; endorsed by Ben Nelson, the former U.S. senator and governor"
+        ],
+        supporters: [
+          "91% in the primary and a cross-party running mate position her as a consensus alternative rather than a partisan protest",
+          "Legislative and classroom experience is a substantive contrast on education and affordability",
+          "Democratic-firm polling had her within 2 points in late April 2026 — closer than the ratings imply"
+        ],
+        opponents: [
+          "Every rating agency has this Solid or Safe Republican, and no Democrat has won a Nebraska governorship since 1994",
+          "All polling showing a close race comes from Democratic firms; no independent survey corroborates it",
+          "If Lindstrom is certified, he likely splits the anti-Pillen vote rather than consolidating it [Verify]"
+        ] },
+      { name: "Rick Beard", party: "I", winner: false,
+        positions: [
+          "[Verify] — no campaign site, verified account or substantive coverage could be located",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "Runs on the Legal Marijuana NOW line, a ballot-qualified Nebraska party",
+          "Won that party's primary 69%–31% out of only 505 votes cast statewide",
+          "His lieutenant-governor line is also listed as \"(undeclared)\" on the certified list [Verify]"
+        ],
+        supporters: [
+          "[Verify — structural argument; no organized advocacy was sourced] A minor-party line keeps marijuana policy on the statewide ballot in a year when the cannabis constitutional amendment failed to qualify"
+        ],
+        opponents: [
+          "[Verify — structural argument] With roughly 350 primary votes behind him, critics argue the line reflects ballot access rather than an organized constituency"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Secretary of State — Nebraska (OPEN SEAT)",
+    note: "⚠ AN INCUMBENT LOST HIS OWN PRIMARY. Two-term Republican Bob Evnen was defeated on May 12 by businessman Scott Petersen, 54.65%–45.35%. Evnen remains in office through the end of the term and is still administering this election — he is the named compiler of the 2026 primary canvass and the official who accepted the Democratic Senate nominee's withdrawal. This is therefore an open-seat contest between two candidates who have never held the office.",
+    candidates: [
+      { name: "Scott Petersen", party: "R", winner: false,
+        positions: [
+          "Restoring public confidence in elections (his stated theme)",
+          "Results-oriented Republican governance — \"All our leaders in Nebraska are Republican and they do have to start figuring out how to get things done\" (his own words)",
+          "[Verify] — a third documented position could not be sourced"
+        ],
+        differentiators: [
+          "Beat a sitting two-term Secretary of State in a primary — one of the cycle's few incumbent defeats anywhere on this site",
+          "An Omaha business owner, former chair of the Douglas County Republican Party and a 2024 Republican National Convention delegate; has never held elected office",
+          "⚠ $1,192 on hand (Nebraska Accountability and Disclosure Commission, June 16, 2026) — he spent nearly everything winning the primary. No endorsements are listed on his site [Verify]"
+        ],
+        supporters: [
+          "The office needs an outsider willing to audit its own operations — he has promised a top-to-bottom review",
+          "Publicly verifiable, hand-checkable election procedures build confidence",
+          "A decisive primary win over a sitting officeholder is a mandate for change"
+        ],
+        opponents: [
+          "⚠ Rep. Don Bacon publicly accused people in Petersen's \"inner circle\" of antisemitic social-media posts; Petersen called that \"dirty politics\" by \"the desperate Evnen campaign\" and said he would never post such content",
+          "His claims about tamperable election technology have not been substantiated by evidence",
+          "He has never held elected office and would run a complex agency — the office handles corporate filings, notaries and licensing at scale as well as elections"
+        ] },
+      { name: "Sarah J. Slattery", party: "D", winner: false,
+        positions: [
+          "Protect voting rights (campaign site)",
+          "Support local economies (campaign site)",
+          "Build efficient state government — and her stated view that \"this specific office doesn't have any room for partisanship so you should check your personal beliefs at the door\" (her own words)"
+        ],
+        differentiators: [
+          "A chef and 18-year small-business owner from Plattsmouth who co-founded Slattery Vintage Estates, a Cass County agri-tourism business, and has worked in school nutrition since 2015",
+          "Would be Nebraska's FIRST FEMALE Secretary of State. Served on the Plattsmouth Library Board and Bridge Commission; lost a 2022 legislative race; helped lead a successful 2024 recall of a school board member over book-banning advocacy",
+          "$8,041 on hand (NADC, June 16, 2026) — she reached about 100,000 primary voters on under $10,000. No endorsements corroborated [Verify]"
+        ],
+        supporters: [
+          "Her own standard for the office: \"check your personal beliefs at the door and follow the rules\"",
+          "Her defense of the security of Nebraska's existing mail-in voting is a defense of a system Nebraska Republicans built and audited",
+          "Small-business ownership is directly relevant to the office's largest non-elections function"
+        ],
+        opponents: [
+          "She has no statewide or administrative experience and lost her only prior race",
+          "Roughly $8,000 on hand, and no Democrat has won a Nebraska statewide constitutional office in decades",
+          "Her sharpest critique — of the incumbent's handling of a voter-data release to the U.S. Justice Department — is aimed at an officeholder who is no longer on the ballot"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "State Treasurer — Nebraska",
+    note: "⚠ THIS OFFICE HAS TURNED OVER TWICE IN THREE YEARS WITHOUT VOTERS WEIGHING IN. John Murante left in Sept 2023; Gov. Pillen appointed Tom Briese, who resigned Nov 3, 2025; Pillen appointed Fremont mayor Joey Spellerberg the same day and he was sworn in Nov 6, 2025 as Nebraska's 47th treasurer. He has never faced voters statewide, and this is the first accountability moment for the seat. Both nominees were unopposed in their primaries.",
+    candidates: [
+      { name: "Joey Spellerberg (appointed incumbent)", party: "R", winner: false,
+        positions: [
+          "Fiscal conservatism — spend wisely, cut waste, and bring transparency to state spending (campaign site)",
+          "Financial literacy expansion and returning unclaimed property (official office priorities)",
+          "Sponsored the First-Time Home Buyer Savings Account Act, which passed 48–1 and was signed by Gov. Pillen; also LB1240 strengthening the Enable Savings Plan and a NEST 529 expansion (legislative record)"
+        ],
+        differentiators: [
+          "Mayor of Fremont 2020–2025 — one of the youngest mayors in state history, elected at 30 — where he cut the property tax levy by over 25% and the food-and-beverage tax from 1.25% to 1%, and created the Fremont Inland Port Authority",
+          "⚠ APPOINTED, not elected — sworn in Nov 6, 2025, the second appointee to this office since 2023, and seeking his first full term",
+          "$331,029 on hand (NADC, June 16, 2026). Endorsed by former state Sen. Julie Slama [Verify — single-sourced]"
+        ],
+        supporters: [
+          "He arrived with a mayoral record of actually cutting tax rates, not just promising to",
+          "The homebuyer savings bill passing 48–1 shows he can move policy through a nonpartisan Legislature",
+          "Continuity matters for NEST 529, Enable and child-support disbursement"
+        ],
+        opponents: [
+          "He was appointed, not elected, and has held the job under a year — this is the first accountability moment",
+          "A $331,000 war chest against an opponent with no registered committee means voters get little real scrutiny of the office",
+          "[Verify — structural; no organized opposition messaging was located] The treasurer's role is largely custodial, so campaign promises about fighting waste overstate the office's actual authority"
+        ] },
+      { name: "Daniel Ebers", party: "D", winner: false,
+        positions: [
+          "[Verify] — no campaign site could be resolved and no documented positions could be sourced",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "Was the 2024 Democratic nominee in Nebraska's 3rd Congressional District, taking 19.58% against Adrian Smith (official 2024 canvass); also ran for Lancaster County Treasurer in 2010",
+          "Won the Democratic nomination unopposed with 107,214 votes. Works in hotel management; from Lincoln",
+          "⚠ HE HAS NO CAMPAIGN COMMITTEE REGISTERED with the Nebraska Accountability and Disclosure Commission at all, so no finances are reported. He has no campaign website and answered \"No Answer\" to all seven questions on the only candidate questionnaire located [Verify]"
+        ],
+        supporters: [
+          "[Verify — structural argument; no supporter commentary was located] A statewide constitutional office should not go to an appointed officeholder without a general-election contest, and his filing guarantees Nebraskans a choice on the ballot"
+        ],
+        opponents: [
+          "[Verify — structural argument; no organized opposition messaging was located] With no committee, no website and no published positions, voters have almost no basis on which to evaluate him",
+          "His record of repeated unsuccessful runs for different offices suggests a candidacy without a constituency [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Attorney General — Nebraska",
+    note: "Mike Hilgers (R), elected in 2022 with 69.7%, seeks a second term. Democrat Jocelyn Brasher, a former assistant attorney general in the same office, is the first Democratic nominee for this office in over a decade. Both were unopposed in their primaries. The office is administratively entangled in this cycle's ballot fights — including the attempt to remove the Democratic Senate primary winner from the ballot, which the Nebraska Supreme Court reversed in March.",
+    candidates: [
+      { name: "Mike Hilgers (incumbent)", party: "R", winner: false,
+        positions: [
+          "Protecting minors and parental rights; consumer and scam enforcement; securing criminal convictions (his own campaign statement)",
+          "Has aggressively litigated against medical marijuana implementation and pursued Delta-8 retailers (office record)",
+          "On a Nebraska Family Alliance questionnaire — a socially conservative advocacy group, worth naming so readers can weigh the framing — he opposed a constitutional right to abortion and recreational marijuana, and supported restricting transgender participation in girls' sports, parental control over classroom instruction, and school choice"
+        ],
+        differentiators: [
+          "A former Speaker of the Nebraska Legislature before winning this office; won his first election in 2022 by 39.5 points",
+          "Unopposed for renomination with 161,220 votes",
+          "$1,444,841 on hand (NADC, June 16, 2026) — roughly a 15-to-1 advantage over his opponent"
+        ],
+        supporters: [
+          "His consumer-protection and anti-scam enforcement has produced real recoveries for Nebraskans",
+          "He has defended parental rights and child-safety priorities",
+          "His fundraising reflects broad in-state Republican confidence"
+        ],
+        opponents: [
+          "Critics say he is fighting the voice of the people by resisting the medical cannabis Nebraska voters approved with about 71% support",
+          "His office's prosecutors missed filing deadlines in the Trevor Jones case, causing a felony theft charge to be dismissed",
+          "Critics say he has turned an independent legal office into a partisan platform"
+        ] },
+      { name: "Jocelyn Brasher", party: "D", winner: false,
+        positions: [
+          "Consumer protection and public safety as the office's core, run independent and principled (campaign site)",
+          "Immediate guidance on medical cannabis patient access, in explicit contrast with the incumbent (campaign site)",
+          "A task force on crimes against children, and ensuring immigration enforcement in Nebraska complies with constitutional requirements and due process (campaign site)"
+        ],
+        differentiators: [
+          "⚠ She spent five years as an Assistant Attorney General in the Consumer Protection Bureau — about nine months of it under Hilgers, making him her former boss",
+          "Would be the first woman elected Nebraska attorney general. Her bureau's work included roughly $36M in consumer settlements, among them a Bellevue University nursing-program settlement and a 41-state, $35M predatory-leasing resolution",
+          "Also a former deputy county attorney in Dawson and Dodge counties; Creighton Law in 2.5 years. $95,981 on hand (NADC, June 16, 2026)"
+        ],
+        supporters: [
+          "She has actually done the office's consumer-protection work, not merely supervised it",
+          "Respecting a 71% voter mandate on medical cannabis is a rule-of-law position, not a partisan one",
+          "A missed filing deadline that killed a felony case is a management failure worth challenging"
+        ],
+        opponents: [
+          "She has never held elected office and would step straight into a statewide constitutional role",
+          "A roughly 15-to-1 money disadvantage makes this an uphill race",
+          "Republicans argue Hilgers' cannabis litigation is a faithful reading of federal law rather than defiance of voters"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Auditor of Public Accounts — Nebraska (unopposed)",
+    note: "⚠ THIS RACE IS UNCONTESTED. Republican incumbent Mike Foley is the only certified candidate — no Democrat, Libertarian or Legal Marijuana NOW candidate filed. He was also unopposed in the May primary. Foley has an unusual career arc: Auditor, then Lieutenant Governor under Gov. Ricketts, then Auditor again.",
+    candidates: [
+      { name: "Mike Foley (incumbent)", party: "R", winner: false,
+        positions: [
+          "Audited Gov. Pillen's $2.5M no-bid contract (office record)",
+          "Scrutinized then-Secretary of State Evnen's international travel spending (office record)",
+          "Tracked misuse of state vehicles — work that drew Wall Street Journal coverage; runs a Fraud, Waste and Abuse reporting line under the office motto \"Accountability, Integrity, Reliability\""
+        ],
+        differentiators: [
+          "A long-serving statewide officeholder — Auditor, then Lieutenant Governor under Pete Ricketts, then Auditor again; won in 2022 with 68.5% in a three-way race",
+          "⚠ HE AUDITS OFFICIALS OF HIS OWN PARTY — the sitting Republican governor and the then-Republican secretary of state",
+          "$120,818 on hand (NADC, June 16, 2026) atop essentially dormant fundraising — $1,503 raised this cycle. No endorsements found, consistent with an uncontested race"
+        ],
+        supporters: [
+          "His audits of a Republican governor's no-bid contract and a Republican secretary of state's travel are evidence the office is genuinely independent",
+          "Deep technical continuity matters in an audit shop",
+          "The near-total absence of campaign spending suggests he is doing the job rather than campaigning"
+        ],
+        opponents: [
+          "[Verify — structural argument; no organized opposition exists in an uncontested race] A statewide watchdog facing no opponent means voters never get to weigh his record, and the accountability office is itself unaccountable this cycle",
+          "Long tenure in an oversight role can breed coziness with the agencies being audited [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Ballot Measure · Statewide",
+    office: "Constitutional Amendment LR19CA — legislative term limits",
+    note: "The only ballot measure that is CERTAIN to appear. LR19CA was referred by the Legislature itself — introduced by Sen. Dover on Jan 16, 2025 and passed 39–10 on May 28, 2025 — so it does not depend on signature verification. Official ballot language, verbatim from the slip law: \"A constitutional amendment to change the limit on legislative terms from two consecutive terms to three consecutive terms. For / Against.\" ⚠ It is the ONLY legislature-referred amendment on this ballot; two others (on citizenship voting language and on 16- and 17-year-old voting) were introduced but never passed. ⚠ SEPARATELY, four citizen petitions were submitted and are still in SIGNATURE VERIFICATION, with no official ballot titles assigned: a \"Fairness for Girls\" school-sports amendment (~211,000 signatures), an amendment raising the threshold for the Legislature to amend voter-passed initiatives from two-thirds to four-fifths (~186,500), and a pair of online sports-wagering measures (~201,000 and ~146,000) that direct 70% of wagering tax revenue to property tax relief. None is certified; the Secretary of State's deadline to certify every candidate, office and issue is SEPT 11, 2026 [Verify — re-check after that date].",
+    candidates: []
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Judicial · Statewide · retention",
+    office: "Judicial Retention — Nebraska Workers' Compensation Court",
+    note: "⚠ NO NEBRASKA SUPREME COURT JUSTICE IS UP FOR RETENTION IN 2026 — terms are staggered and 2024 was the year that had them. Per the Secretary of State's final retention list of Aug 3, 2026, the only STATEWIDE retention questions are two Workers' Compensation Court judges, Thomas E. Stine and Dirk V. Block, each for a six-year term. Retention is a yes-or-no vote with no opponent. One Court of Appeals judge, Michael W. Pirtle, also faces retention but only in Court of Appeals District 2, and the remaining retention questions are district, county and juvenile court seats voted on locally.",
+    candidates: [
+      { name: "Judge Thomas E. Stine — retain?", party: "I", winner: false,
+        positions: ["[Verify] — Nebraska judicial retention candidates do not campaign and publish no platform", "[Verify]", "[Verify]"],
+        differentiators: ["A yes-or-no retention vote for a six-year term on the Workers' Compensation Court", "Appears on every Nebraska ballot statewide", "No opponent — voters vote to retain or not retain"],
+        supporters: ["[Verify — structural; retention judges do not campaign and no advocacy either way was located] No organized opposition to his retention was found, which is generally read as an absence of concern from the bar"],
+        opponents: ["[Verify — structural] Retention elections give voters almost no public information on which to judge a sitting judge, and no evaluation of his record was located"] },
+      { name: "Judge Dirk V. Block — retain?", party: "I", winner: false,
+        positions: ["[Verify] — Nebraska judicial retention candidates do not campaign and publish no platform", "[Verify]", "[Verify]"],
+        differentiators: ["A yes-or-no retention vote for a six-year term on the Workers' Compensation Court", "Appears on every Nebraska ballot statewide", "No opponent — voters vote to retain or not retain"],
+        supporters: ["[Verify — structural; retention judges do not campaign and no advocacy either way was located] No organized opposition to his retention was found, which is generally read as an absence of concern from the bar"],
+        opponents: ["[Verify — structural] Retention elections give voters almost no public information on which to judge a sitting judge, and no evaluation of his record was located"] }
+    ]
+  },
+
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Education · State Board of Education District 5 · nonpartisan",
+    office: "State Board of Education — District 5 (OPEN SEAT)",
+    note: "⚠ ONLY voters in State Board of Education District 5 — 18 counties in southeast Nebraska — vote in this race. The ballot is NONPARTISAN; party labels below are voter registration, not ballot lines. Incumbent Kirk Penner is not seeking re-election. Nebraska's primary sends the TOP TWO to November regardless of party, so Eberspacher and Conway advanced out of a three-way field. ⚠ Several position summaries here come from the Nebraska Family Alliance voter guide, a socially conservative advocacy organization whose questions are advocacy-worded — named so readers can weigh the framing.",
+    candidates: [
+      { name: "Angie Eberspacher", party: "R", winner: false,
+        positions: [
+          "Improve literacy and proficiency scores (campaign site)",
+          "Recruit and retain quality teachers (campaign site)",
+          "\"Restore academic fundamentals\" — her tagline is \"Academic Excellence. Nebraska Integrity.\" (campaign site)"
+        ],
+        differentiators: [
+          "An agricultural producer with dual degrees in elementary and early childhood education",
+          "Chairs the Educational Service Unit 6 Board",
+          "$8,861 on hand (NADC, June 16, 2026). Endorsed by retiring incumbent Kirk Penner and, per Nebraska Public Media, all four Republican members of the State Board"
+        ],
+        supporters: [
+          "Classroom credentials plus service-unit board experience is the right mix for a standards-setting body",
+          "Unified backing from sitting board members signals she could govern from day one",
+          "A focus on reading proficiency addresses a measurable, documented deficit"
+        ],
+        opponents: [
+          "A slate endorsement from all four Republican board members suggests continuity rather than independent judgment",
+          "Her framing around \"parental advocacy\" concerns those who want the board focused on instruction [Verify — inferred from the race's framing, not a quoted critic]",
+          "She outspent her receipts this cycle, reporting more spent than raised [Verify]"
+        ] },
+      { name: "Michaela Conway", party: "D", winner: false,
+        positions: [
+          "Academics and literacy (reported by Nebraska Public Media — ⚠ her campaign site would not resolve, so these are not in her own words)",
+          "Teacher retention (Nebraska Public Media)",
+          "Student mental health (Nebraska Public Media)"
+        ],
+        differentiators: [
+          "The only candidate in this race currently serving on a local school board — Crete Public Schools Board of Education",
+          "A business-management background; from Crete",
+          "$3,922 on hand (NADC, June 16, 2026). She declined to answer the Nebraska Family Alliance questionnaire; no endorsements corroborated [Verify]"
+        ],
+        supporters: [
+          "She is the only candidate currently serving on a school board, so she sees the problems districts actually report",
+          "Teacher retention and student mental health are concrete operational issues rather than culture-war framing",
+          "[Verify — structural] A contested race forces a retiring seat to be argued rather than handed over"
+        ],
+        opponents: [
+          "She finished about 14 points behind in the primary with roughly $4,000 on hand",
+          "Declining to answer candidate questionnaires leaves voters guessing on contested issues",
+          "Her campaign website did not resolve, so her platform is available only through others' reporting [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Education · State Board of Education District 6 · nonpartisan",
+    office: "State Board of Education — District 6",
+    note: "⚠ ONLY voters in State Board of Education District 6 vote in this race, and the ballot is NONPARTISAN — party labels below are voter registration. Incumbent Sherry Jones took 64.5% in the May primary against the same opponent she faces in November.",
+    candidates: [
+      { name: "Sherry Jones (incumbent)", party: "R", winner: false,
+        positions: [
+          "Education that \"nurtures children's hearts, minds and bodies\" while being \"mindful of the resources provided by taxpayers\" (campaign site, her wording)",
+          "Supports public, parochial and homeschool options and school choice (campaign site)",
+          "On the Nebraska Family Alliance questionnaire — a socially conservative advocacy group — she supported parental control over instruction on gender and sexuality and opposed recreational marijuana"
+        ],
+        differentiators: [
+          "A retired educator with 35 years at Grand Island Public Schools — K–9 special education, language arts and school counseling",
+          "M.Ed. in School Counseling from the University of Nebraska at Kearney",
+          "$30,396 on hand (NADC, June 16, 2026). Says she decides based on children's needs \"rather than union agendas\""
+        ],
+        supporters: [
+          "Thirty-five years in classrooms and counseling offices is exactly the expertise a standards board needs",
+          "She held a 2-to-1 primary margin and a healthy treasury",
+          "She defends parental and school-choice options"
+        ],
+        opponents: [
+          "Her \"union agendas\" framing puts her at odds with the working educators the board oversees",
+          "An incumbent who won 64% has little incentive to engage her challenger [Verify]",
+          "[Verify — structural] A long career inside one district can narrow the perspective a statewide board needs"
+        ] },
+      { name: "Grady Erickson", party: "D", winner: false,
+        positions: [
+          "Strengthen public education (campaign site)",
+          "Support educators (campaign site)",
+          "\"Fair, balanced, and independent decisions\" rather than partisan alignment (campaign site, his wording)"
+        ],
+        differentiators: [
+          "An attorney of 10 years — a litigator and Guardian ad Litem for at-risk juveniles across seven Nebraska counties",
+          "From a family of educators: his grandmother a teacher and principal, both parents Grand Island special-education teachers, his wife a school counselor",
+          "$2,105 on hand (NADC, June 16, 2026). Pledged to donate unused campaign funds to colon cancer research in memory of his father"
+        ],
+        supporters: [
+          "His guardian ad litem work gives him direct sight of how schools serve the most at-risk children",
+          "A lawyer's habit of weighing multiple perspectives suits a board that sets standards",
+          "His campaign has been explicitly non-partisan in tone, which fits a nonpartisan office"
+        ],
+        opponents: [
+          "He has never worked in education administration",
+          "He trails by 29 points from the primary with about $2,100 on hand",
+          "A first-time candidate faces a long-serving incumbent in a Republican-leaning district [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Education · State Board of Education District 7 · nonpartisan",
+    office: "State Board of Education — District 7 (unopposed)",
+    note: "⚠ UNCONTESTED, and ONLY voters in State Board of Education District 7 vote in it. Elizabeth Tegtmeier is not only the incumbent but the current PRESIDENT of the State Board of Education, and she drew no opponent — she took 100% of the primary vote. The ballot is nonpartisan.",
+    candidates: [
+      { name: "Elizabeth Tegtmeier (incumbent)", party: "R", winner: false,
+        positions: [
+          "A \"dynamic and rigorous educational environment\" producing \"responsible citizens who understand their freedoms\" (campaign site, her wording)",
+          "Supports school choice extending \"to all accredited schools\" (campaign site)",
+          "Supports parental rights and religious-freedom protections — with an explicit self-imposed limit in her own words: \"I do not support protecting religious beliefs that allow for the marriage or sexual exploitation of minors or the abuse or oppression of women\""
+        ],
+        differentiators: [
+          "PRESIDENT of the Nebraska State Board of Education, reached in her first term",
+          "A homeschool mother and former newspaper typist who has taught in public, private and homeschool settings; M.A. Education from the University of Nebraska at Kearney",
+          "$16,236 on hand (NADC, June 16, 2026). From North Platte; unopposed with 37,190 primary votes"
+        ],
+        supporters: [
+          "She rose to Board President in her first term, which signals real confidence from her peers",
+          "Her explicit caveat on religious-freedom protections shows she draws lines rather than reciting a script",
+          "Unopposed re-election reflects satisfaction across a large rural district"
+        ],
+        opponents: [
+          "[Verify — structural arguments; no organized opposition exists in an uncontested race] The president of the state board facing no opponent means Nebraska's most consequential education seat gets no public debate this cycle",
+          "Homeschool-centered experience is an unusual basis for governing public-school standards [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Education · State Board of Education District 8 · nonpartisan",
+    office: "State Board of Education — District 8 (OPEN SEAT)",
+    note: "⚠ ONLY voters in State Board of Education District 8 (Omaha) vote in this race, and the ballot is NONPARTISAN. Incumbent Deborah Neary is not seeking re-election. The closest statewide-board primary of the cycle — Hutcherson led by 4.4 points. ⚠ Election-night coverage reported the split as 51/49; the canvassed figures are 52.2/47.8, which are the ones used here.",
+    candidates: [
+      { name: "Sherrye Hutcherson", party: "I", winner: false,
+        positions: [
+          "Literacy and early-childhood investment — her \"FIRST CARE\" platform (campaign site)",
+          "Higher teacher pay and solutions to the teacher shortage (campaign site)",
+          "Expand career and technical education and cut chronic absenteeism (campaign site). On school choice she answered No"
+        ],
+        differentiators: [
+          "Executive Vice President at Bellevue University, with 20+ years in corporate roles at Union Pacific, OPPD and Bellevue University; MBA from Creighton and a doctorate in progress",
+          "A registered NONPARTISAN — she is neither a Democrat nor a Republican. Board service includes the Omaha Chamber, Urban League, United Way of the Midlands and the Women's Center for Advancement",
+          "$16,975 on hand (NADC, June 16, 2026). Endorsed by the Nebraska State Education Association and by outgoing incumbent Deborah Neary"
+        ],
+        supporters: [
+          "She pairs large-organization executive experience with the state's largest teacher organization behind her",
+          "Literacy and chronic absenteeism are the measurable failures worth targeting",
+          "The outgoing incumbent's endorsement signals continuity of a working approach"
+        ],
+        opponents: [
+          "An NSEA endorsement plus opposition to school choice makes her, critics say, the union's candidate rather than an independent voice",
+          "Her top-line experience is in university administration, not K–12 governance",
+          "She outspent her receipts this cycle [Verify]"
+        ] },
+      { name: "Lou Ann Goding", party: "R", winner: false,
+        positions: [
+          "Close the \"Graduation vs. Proficiency Gap\" through math and reading proficiency, career and technical education, apprenticeships and financial literacy (campaign site)",
+          "School safety, including security personnel and more school psychologists (campaign site)",
+          "Protect teacher pensions and competitive compensation, plus budget transparency and parental rights (campaign site)"
+        ],
+        differentiators: [
+          "A former PRESIDENT of the Omaha Public Schools Board of Education — the closest analogue in the state to the job she is seeking",
+          "A semi-retired consultant. On the Nebraska Family Alliance questionnaire she DECLINED to answer on school choice, calling it \"a legislative issue and not a responsibility of the State Board of Education\"",
+          "$43,472 on hand (NADC, June 16, 2026) — the largest treasury in this race"
+        ],
+        supporters: [
+          "She has actually led the board of Nebraska's largest school district",
+          "Her refusal to claim school-choice authority the board does not have shows institutional discipline",
+          "Her proficiency-gap focus names a real and measurable accountability problem"
+        ],
+        opponents: [
+          "She lost the primary, and her Omaha Public Schools board tenure ties her to that district's record",
+          "Her Yes answers on the advocacy-group questionnaire items suggest to critics that the board would relitigate social issues instead of academics",
+          "[Verify — structural] A semi-retired consultant returning to elected office invites questions about how long she would serve"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Education · NU Board of Regents District 1 · nonpartisan",
+    office: "University of Nebraska Board of Regents — District 1 (OPEN SEAT)",
+    note: "⚠ ONLY voters in Regents District 1 (Lincoln and northeast Lancaster County) vote in this race, and the ballot is NONPARTISAN — party labels below are voter registration. Incumbent Tim Clare is not seeking re-election. The live backdrop is a year of governance conflict inside the university system.",
+    candidates: [
+      { name: "Brent Comstock", party: "I", winner: false,
+        positions: [
+          "Affordability — cost reductions plus new revenue through scholarships and partnerships (campaign site)",
+          "Excellence and recruitment to lift enrollment and rankings (campaign site)",
+          "Innovation, including navigating name-image-likeness rules in athletics (campaign site). His stated frame: \"We need a Board of Regents that stands for academic freedom and shared governance\""
+        ],
+        differentiators: [
+          "Founder and CEO of BCom, an advertising and technology firm; a southeast Nebraska native, son of a plumber and a former special-education teacher, who took a full-ride scholarship to UNC-Chapel Hill",
+          "A registered NONPARTISAN",
+          "$192,514 on hand (NADC, June 16, 2026) — the largest in any Regents race. Endorsed by the Nebraska Democratic Party, Lincoln Mayor Leirion Gaylor Baird, Jeff Raikes, Regent Barb Weitz and former U.S. Sen. and Gov. Ben Nelson"
+        ],
+        supporters: [
+          "He has built and scaled an organization and recruited Nebraska graduates into it",
+          "His named backers cross party lines, from Ben Nelson to a sitting regent",
+          "Academic freedom and shared governance are the live issues after a year of university infighting"
+        ],
+        opponents: [
+          "He has no experience governing a public institution or a multi-billion-dollar budget",
+          "The Democratic Party endorsement undercuts the nonpartisan framing of the seat",
+          "[Verify — structural] A sitting CEO taking on a governing board raises the same time-commitment question asked of his opponent"
+        ] },
+      { name: "Jeremy Hosein", party: "R", winner: false,
+        positions: [
+          "Put teaching and learning at the center of decisions; advance AI and technological literacy across disciplines (campaign site)",
+          "\"Hold the line on tuition increases\" (campaign site, his wording)",
+          "Incentive programs to attract top faculty talent and tighten university–employer workforce ties (campaign site)"
+        ],
+        differentiators: [
+          "A neurosurgeon who was himself a former NU Student Regent at UNMC; also a White House Fellow and a policy advisor to Nebraska governors",
+          "The son of immigrants, educated in Nebraska public schools and at NU",
+          "$185,938 on hand (NADC, June 16, 2026). He declined the Nebraska Family Alliance questionnaire; his endorsements page listed none at fetch [Verify]"
+        ],
+        supporters: [
+          "A former student regent who became a neurosurgeon and White House Fellow understands both the university and public policy",
+          "His tuition pledge is the most concrete affordability commitment in the race",
+          "Clinical and governor's-office experience is rare on the board"
+        ],
+        opponents: [
+          "He trailed by 18 points in the primary",
+          "A full-time surgical practice raises questions about time for board work",
+          "Declining candidate questionnaires limits accountability [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Education · NU Board of Regents District 2 · nonpartisan",
+    office: "University of Nebraska Board of Regents — District 2 (OPEN SEAT)",
+    note: "⚠ ONLY voters in Regents District 2 (southwest Douglas and northeast Sarpy counties) vote in this race; the ballot is NONPARTISAN. Incumbent Jack Stark is not seeking re-election. Neither candidate had primary opposition — both simply advanced.",
+    candidates: [
+      { name: "Elizabeth Butler", party: "I", winner: false,
+        positions: [
+          "⚠ [Verify] HER PLATFORM COULD NOT BE SOURCED IN HER OWN WORDS — her campaign site returned an access error to every attempt. On the Nebraska Family Alliance questionnaire she answered No on school choice and declined the other six questions",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "Omaha City Clerk — hands-on public administration for Nebraska's largest city",
+          "A registered NONPARTISAN",
+          "$3,636 on hand (NADC, June 16, 2026). Endorsed by the Nebraska State Education Association and the Nebraska Democratic Party"
+        ],
+        supporters: [
+          "Running the clerk's office for Nebraska's largest city is real public-administration experience",
+          "Backing from the state's largest educators' organization reflects confidence from inside education",
+          "She led the primary by 15 points"
+        ],
+        opponents: [
+          "She has published little about how she would actually govern the university, and voters in a nonpartisan race are left relying on party and union cues",
+          "Opposing school choice is largely tangential to a regents seat",
+          "Her campaign site was unreachable, so her platform could not be read in her own words [Verify]"
+        ] },
+      { name: "Jill Wolfe", party: "R", winner: false,
+        positions: [
+          "Academic freedom — universities should \"teach students how to think, not what to think\" (campaign site, her wording)",
+          "Fiscal accountability and fighting tuition increases (campaign site)",
+          "Recruit top talent and retain Nebraska graduates (campaign site)"
+        ],
+        differentiators: [
+          "A first-generation UNL graduate and dietitian who co-founded Midwest Medical Transport Company with her husband in 1987 and ran its business operations",
+          "Served on and chaired the Columbus Planning and Zoning Board",
+          "$20,573 on hand (NADC, June 16, 2026). ⚠ She and her husband received NU's Clarence E. Swanson Memorial Award in 2014 — an award, not an endorsement"
+        ],
+        supporters: [
+          "She built a company from scratch and managed its finances, which maps directly onto budget oversight",
+          "Her academic-freedom framing addresses concerns about political agendas in classrooms",
+          "She has prior elected local-government service"
+        ],
+        opponents: [
+          "\"Teach students how to think, not what to think\" is a slogan critics read as an opening for political scrutiny of curriculum",
+          "She trails in both votes and cash on hand",
+          "[Verify — structural] Planning-and-zoning service is a modest preparation for governing a multi-campus university system"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Education · NU Board of Regents District 4 · nonpartisan · special",
+    office: "University of Nebraska Board of Regents — District 4 (SPECIAL ELECTION)",
+    note: "⚠ ONLY voters in Regents District 4 (Douglas County east of 72nd Street) vote in this race. It is a SPECIAL ELECTION for the unexpired remainder of Elizabeth O'Connor's term after she resigned in January 2026; Joel Makovicka holds the seat by appointment and is NOT running, so NEITHER candidate is an incumbent. The ballot is nonpartisan — and notably, all five primary candidates were registered Democrats. ⚠ The most newsworthy fact on this ballot line: Susanne Shore is the former First Lady of Nebraska and the wife of U.S. Sen. Pete Ricketts, and she is a registered Democrat.",
+    candidates: [
+      { name: "Susanne Shore", party: "D", winner: false,
+        positions: [
+          "Keep the University of Nebraska \"strong and affordable\" to retain talent in-state (campaign site)",
+          "Cross-campus collaboration, more internships and work-study, and support for first-generation and underrepresented students (campaign site)",
+          "Help the university \"heal from months of infighting\" and work \"with leaders from both parties\" (campaign site, her wording)"
+        ],
+        differentiators: [
+          "⚠ Former FIRST LADY OF NEBRASKA (2015–2023) and the wife of U.S. Sen. Pete Ricketts, the former two-term governor — and a registered Democrat",
+          "A registered nurse with degrees from Oklahoma State and Creighton and about 30 years across education and healthcare, including seven years in university residence-life and student-affairs work; launched the \"Bring Up Nebraska\" child-welfare initiative as First Lady",
+          "$59,076 on hand (NADC, June 16, 2026) — the most raised in the field. ⚠ Endorsed by her spouse, Sen. Ricketts, who said: \"I usually vote straight Republican, but Susanne will be my one Democrat exception in 2026!\""
+        ],
+        supporters: [
+          "Eight years as First Lady plus university residence-life experience gives her both statewide convening power and campus-level familiarity",
+          "Bipartisan reach is exactly what a board recovering from infighting needs",
+          "She led the primary by ten points and raised the most in the field"
+        ],
+        opponents: [
+          "Critics say her strongest asset is proximity to the Ricketts political operation rather than governance experience of her own",
+          "A spousal endorsement from a sitting U.S. senator blurs the nonpartisan character of the seat",
+          "She has never held elected office — as she herself put it, \"It's different when you're actually in the driver's seat running for office\""
+        ] },
+      { name: "Justin Solomon", party: "D", winner: false,
+        positions: [
+          "Student affordability and access \"without the burden of crushing debt\" (campaign site, his wording)",
+          "Workforce and economic development leveraging the university's impact in District 4 (campaign site)",
+          "Protecting research and academic freedom across the system, plus leadership on climate and the agricultural economy (campaign site)"
+        ],
+        differentiators: [
+          "⚠ HE HAS ALREADY SAT ON THIS EXACT BOARD — elected NU student body president and Student Regent in 2010",
+          "COO and CFO of Integrated Life Choices, a Lincoln human-services company of roughly 1,800 employees; MBA from NU and a former Pell Grant recipient",
+          "$7,003 on hand (NADC, June 16, 2026). Volunteer treasurer for CASA for Douglas County and the Dundee Elementary PTO"
+        ],
+        supporters: [
+          "He has already served on this board as Student Regent, and he makes the affordability argument as a former Pell Grant recipient",
+          "Running finance and operations for an 1,800-person organization is direct budget-oversight experience",
+          "His academic-freedom and research-protection plank is specific rather than rhetorical"
+        ],
+        opponents: [
+          "He finished ten points back in the primary",
+          "He ended the primary with about $7,000 on hand against roughly $59,000",
+          "A student-regent term fifteen years ago is limited preparation for governing a multi-campus system"
+        ] }
+    ]
+  },
+
+  // PAST — 2026 primaries
+  {
+    date: "May 12, 2026", type: "past", scope: "Federal · Statewide · Primary",
+    office: "Republican Primary — U.S. Senate",
+    note: "Ricketts took better than four-fifths of the vote in a five-way field.",
+    candidates: [
+      { name: "Pete Ricketts", party: "R", winner: true, positions: ["Won 81.47% (160,547 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Todd Knobel", party: "R", winner: false, positions: ["Took 8.08% (15,921 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Debb Axtell Schultz", party: "R", winner: false, positions: ["Took 5.95% (11,735 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Mac Stevens", party: "R", winner: false, positions: ["Took 2.64% (5,204 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Eric Mortimore", party: "R", winner: false, positions: ["Took 1.86% (3,667 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "May 12, 2026", type: "past", scope: "Federal · Statewide · Primary",
+    office: "Democratic Primary — U.S. Senate",
+    note: "⚠ Burbank won this primary and then WITHDREW — she filed to decline on July 17 and the Secretary of State accepted it on July 21, leaving no Democrat on the November ballot. Runner-up William Forbes sued the state party to force it to name a replacement; the case was heard Aug 3 and no ruling had been reported as of Aug 7.",
+    candidates: [
+      { name: "Cindy Burbank", party: "D", winner: true, positions: ["Won 89.55% (110,210 votes) — then withdrew as nominee", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "William J. Forbes", party: "D", winner: false, positions: ["Took 10.45% (12,863 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "May 12, 2026", type: "past", scope: "State · Statewide · Primary",
+    office: "Republican Primary — Secretary of State",
+    note: "⚠ The upset of Nebraska's cycle: a sitting two-term Secretary of State was denied renomination by his own party's voters.",
+    candidates: [
+      { name: "Scott Petersen", party: "R", winner: true, positions: ["Won 54.65% (97,430 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Bob Evnen (incumbent)", party: "R", winner: false, positions: ["Took 45.35% (80,850 votes) — defeated", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "May 12, 2026", type: "past", scope: "State · Statewide · Primary",
+    office: "Republican Primary — Governor",
+    note: "Pillen consolidated the Republican base in a six-way field.",
+    candidates: [
+      { name: "Jim Pillen (incumbent)", party: "R", winner: true, positions: ["Won 75.41% (142,301 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "John Walz", party: "R", winner: false, positions: ["Took 9.57%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Sheila Korth-Focken", party: "R", winner: false, positions: ["Took 7.75%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Gary Rogge", party: "R", winner: false, positions: ["Took 3.70%", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+
+  // PAST — prior general elections
+  {
+    date: "Nov 5, 2024", type: "past", scope: "Federal · Statewide",
+    office: "U.S. Senate — Nebraska (2024, regular six-year term)",
+    note: "⚠ THE RACE THAT MADE 2026 INTERESTING. Deb Fischer held her Class I seat against independent Dan Osborn by 6.7 points — with NO DEMOCRAT ON THE BALLOT, confirmed against the official canvass. This is the seat that is NOT up in 2026; Fischer's term runs to 2031.",
+    candidates: [
+      { name: "Deb Fischer", party: "R", winner: true, positions: ["Won 53.19% (499,124 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Dan Osborn", party: "I", winner: false, positions: ["Took 46.52% (436,493 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 5, 2024", type: "past", scope: "Federal · Statewide · Special",
+    office: "U.S. Senate — Nebraska (2024 SPECIAL, two-year term)",
+    note: "The special election for the remainder of Ben Sasse's term, which Pete Ricketts had held by appointment since January 2023. This term expires in January 2027 — which is why the same seat is up again in 2026, this time for a full six years.",
+    candidates: [
+      { name: "Pete Ricketts", party: "R", winner: true, positions: ["Won 62.58% (585,103 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Preston Love Jr.", party: "D", winner: false, positions: ["Took 37.42% (349,902 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 5, 2024", type: "past", scope: "Federal · Statewide",
+    office: "President — Nebraska (2024)",
+    note: "⚠ NEBRASKA SPLITS ITS ELECTORAL VOTES — 2 awarded statewide and 1 per congressional district, a system only Nebraska and Maine use. In 2024 Trump took 4 electoral votes (the 2 at-large plus NE-1 and NE-3) and Harris took 1, winning NE-2 (Omaha) 51.32%–46.73%. That \"blue dot\" is itself a live issue: Gov. Pillen supports winner-take-all legislation to end the split, and a winner-take-all initiative circulated in 2026 but did not submit signatures.",
+    candidates: [
+      { name: "Donald Trump", party: "R", winner: true, positions: ["Won Nebraska statewide with 59.32% (564,816 votes) — 4 of 5 electoral votes", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Kamala Harris", party: "D", winner: false, positions: ["Took 38.86% (369,995 votes) statewide — but carried NE-2 for 1 electoral vote", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 8, 2022", type: "past", scope: "State · Statewide",
+    office: "Governor — Nebraska (2022)",
+    note: "Pillen's first election, won by 23.2 points on a ticket with Joe Kelly.",
+    candidates: [
+      { name: "Jim Pillen and Joe Kelly", party: "R", winner: true, positions: ["Won 59.22% (398,334 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Carol Blood and Alisha Shelton", party: "D", winner: false, positions: ["Took 35.98% (242,006 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Scott Zimmerman", party: "L", winner: false, positions: ["Took 3.93%", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  }
+];
+
+// ----- (3) U.S. House races by district -----
+// ⚠ NE-2 (Omaha) IS AN OPEN SEAT and is the marquee race — Don Bacon announced on June 27, 2025
+// that he would not seek re-election. He is alive and still seated (U.S. House Clerk member roster,
+// July 6, 2026) and simply is not on the certified ballot. NE-2 is a genuine swing district: it gave
+// its electoral vote to Harris in 2024 while re-electing Bacon, the only district in the country to
+// split that way that cycle.
+// ⚠ NE-1 and NE-3 are not rated competitive by any handicapper. National Democrats added NE-1 to a
+// second-tier target list on Aug 5, 2026 — a TARGETING decision, not a rating change.
+// ⚠ Cook PVI is published ONLY for NE-2 (D+3), which two independent secondary sources carry.
+// Figures circulating for NE-1 and NE-3 are secondary-sourced only and are deliberately omitted.
+// Fields verified against the Nebraska Secretary of State's Statewide Candidate Filing List
+// ("General Election Candidates" worksheet, last modified Aug 3, 2026, re-checked Aug 7) and the
+// 2026 Primary Canvass Book; every total matched the state's live results portal exactly.
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — NE District 1",
+    region: "Lincoln and east-central Nebraska — all of Lancaster, Butler, Cass, Colfax, Cuming, Dodge, Madison, Platte, Seward and Stanton counties plus part of Sarpy and a sliver of Polk: Lincoln, Norfolk, Fremont, Columbus, Plattsmouth",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Mike Flood (R) seeks a third full term; the seat is NOT open. No handicapper rates NE-1 competitive — the Nebraska Examiner reported on Aug 5, 2026 that Cook, Inside Elections and the Center for Politics all treat it as safely Republican, and Sabato's own 2026 rating-change log contains no NE-1 entry at all. National Democrats did add the district to the DCCC's second-tier \"Districts in Play\" list on Aug 5, 2026 — notable, but a targeting list is not a rating. Trump carried the district by about 13 points in 2024. Legal Marijuana NOW made no nomination here.",
+        candidates: [
+          { name: "Mike Flood (incumbent)", party: "R", winner: false,
+            positions: [
+              "Housing affordability — authored the Housing for the 21st Century Act, which passed the House 390–9 in Feb 2026, with provisions enacted in the 21st Century ROAD to Housing Act in July 2026 (House record)",
+              "Taxes — voted for no tax on tips, no tax on overtime and no tax on Social Security (House record)",
+              "Border security funding (House record)"
+            ],
+            differentiators: [
+              "The last member of Nebraska's all-Republican House delegation still holding unscreened in-person town halls — and he kept doing them into 2026 after national Republicans advised members to stop",
+              "Founder of Flood Communications (15 radio and 5 television stations, including News Channel Nebraska); chairs the Republican Main Street Caucus and the Financial Services Housing and Insurance Subcommittee",
+              "$1,560,751 on hand (FEC, June 30, 2026). ⚠ No endorsements are published — his campaign site has no endorsements page, no Trump endorsement was found, and no Nebraskan appears on the NRCC's April 2026 Patriot Program roster"
+            ],
+            supporters: [
+              "He passed something real and bipartisan — a housing bill that cleared the House 390–9 and became the first major housing law in decades",
+              "He shows up: unscreened town halls in Columbus, Lincoln, Norfolk and Bellevue, continued when his own party advised against them",
+              "He is a Nebraskan running against someone who moved back from Washington last year — his own framing"
+            ],
+            opponents: [
+              "He voted for a tax-and-spending bill whose Medicaid provisions drew sustained booing at his own town halls",
+              "He voted for a trade war now hurting Nebraska growers — his opponent's central charge",
+              "He told a Norfolk constituent \"weed is not medicine\" after Nebraskans approved medical cannabis by more than two-thirds, which critics read as overriding the voters"
+            ] },
+          { name: "Chris Backemeyer", party: "D", winner: false,
+            positions: [
+              "Costs — end what he calls reckless tariffs, restore Medicaid, SNAP and VA cuts, and create a public option (campaign site)",
+              "Anti-corruption — ban congressional stock trading, term limits, overturn Citizens United (campaign site)",
+              "Immigration — pathways for Dreamers, skilled workers and farmworkers; claw back excess ICE funding (campaign site)"
+            ],
+            differentiators: [
+              "Twenty years in national security under four presidents — NSC Director for Iran, Deputy Coordinator for Sanctions Policy and lead U.S. sanctions negotiator in the P5+1 Iran talks, twice a Deputy Assistant Secretary of State (verified against State Department archival biographies)",
+              "Attended Flood's Aug 2025 Lincoln town hall, asked \"Who do you work for?\", and used the footage in his launch video",
+              "$290,611 on hand (FEC, June 30, 2026), with $100,000 in debts; on the DCCC's \"Districts in Play\" list as of Aug 5, 2026 — NOT Red to Blue"
+            ],
+            supporters: [
+              "Two decades at the highest levels of national security — he could legislate on day one",
+              "He is pitching the middle rather than the base in a district Trump carried by 13 points",
+              "National Democrats now think the seat is reachable, the first time NE-1 has been targeted in recent cycles"
+            ],
+            opponents: [
+              "Flood's campaign calls him a Washington creature — a 20-year D.C. resident who only moved home in Oct 2025",
+              "Criticism came from his left too: a would-be independent challenger called him \"a creature of the establishment in D.C.\"",
+              "He took 58% against an opponent who raised roughly $5,500 — a modest signal of enthusiasm [Verify]"
+            ] },
+          { name: "Nik Sandman", party: "L", winner: false,
+            positions: [
+              "Agriculture — favors parity pricing over the current subsidy model, calling the existing farm program a disaster (candidate voter-guide answers, his own words)",
+              "Supports government-funded health care facilities while opposing abortion and euthanasia (voter-guide answers)",
+              "War powers — Congress must declare war (voter-guide answers)"
+            ],
+            differentiators: [
+              "Age 77; a retired farmer of 26 years and a rural mail carrier, with a UNL philosophy degree and a stint on the Wauneta-Palisade school board in the 1990s",
+              "Founded religious radio station KNNA 97.5 FM in 2015; says he voted for Flood before concluding his policies were inadequate",
+              "⚠ No FEC committee exists and no fundraising is reported; he is not listed on the Libertarian Party of Nebraska's own candidate page [Verify]"
+            ],
+            supporters: [
+              "He is the only candidate offering parity pricing, a structural break from 75 years of bipartisan farm policy he blames for the farm economy",
+              "A working farmer and mail carrier rather than a broadcaster or a diplomat",
+              "[Verify — structural inference; no published endorsement or supportive coverage of Sandman exists] He offers a conservative alternative for voters unwilling to back Flood"
+            ],
+            opponents: [
+              "[Verify — structural; no critic has addressed him publicly] He reports no fundraising and has no campaign website or social media, and the Libertarian line drew 479 primary votes districtwide",
+              "His platform mixes government-built health care with opposition to abortion, a combination with no organized constituency in either party [Verify]",
+              "The Libertarian line has never approached competitiveness in NE-1 [Verify]"
+            ] }
+        ]
+      },
+      {
+        date: "May 12, 2026", type: "past",
+        note: "Backemeyer won a two-way Democratic primary; Flood and Sandman were unopposed on their lines.",
+        candidates: [
+          { name: "Chris Backemeyer", party: "D", winner: true, positions: ["Won the Democratic primary with 57.62% (26,523 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Eric Moyer", party: "D", winner: false, positions: ["Took 42.38% (19,508 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+
+  2: {
+    name: "U.S. House — NE District 2",
+    region: "The Omaha metro — all of Douglas and Saunders counties plus western Sarpy: Omaha, Bellevue, Papillion, La Vista, Wahoo and Ashland (Cook PVI D+3)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ AN OPEN SEAT AND NEBRASKA'S MARQUEE RACE. Don Bacon announced on June 27, 2025 that he would not seek re-election, citing travel, family and political dysfunction; he serves out his term through January 2027 and is not on the ballot. This is a genuine swing district — in 2024 it gave its electoral vote to Kamala Harris by 4.6 points while simultaneously re-electing Bacon by 1.85, and Nebraska is one of two states that award an electoral vote by district. That \"blue dot\" is itself an issue in the race. Cook rates it Lean Democrat (moved from Toss Up in late June 2025), Sabato Leans Democratic (changed June 27, 2025, with no subsequent change through Aug 4, 2026), Inside Elections Tilt Democratic (Apr 28, 2026). ⚠ No public general-election poll of Harding vs. Powell could be located — treat the absence as the finding. Legal Marijuana NOW made no nomination here.",
+        candidates: [
+          { name: "Brinker Harding", party: "R", winner: false,
+            positions: [
+              "Affordability — grow wages, curb inflation, pass year-round E-15 (campaign site)",
+              "Health costs — take on \"Big Pharma and Big Insurance,\" make care including IVF more affordable, protect Social Security, Medicare and Medicaid (campaign site)",
+              "Accountability — term limits, ban congressional stock trading, national voter ID, and body cameras and identifiable uniforms for ICE agents \"like we do with the Omaha Police\" (campaign site)"
+            ],
+            differentiators: [
+              "Omaha City Councilman for District 6 since 2017 and Council Vice President when he launched; earlier chief of staff and economic development director to Mayor Hal Daub, 1995–2000",
+              "Holds several planks unusual for a Republican — IVF access, drug pricing and ICE body cameras — while also holding a Trump endorsement (Apr 14, 2026)",
+              "$1,070,769 on hand (FEC, June 30, 2026). Endorsed by Trump, Don Bacon, Gov. Pillen, both U.S. senators, the Nebraska Farm Bureau, the county sheriff and the county attorney. ⚠ Not confirmed in any named NRCC program"
+            ],
+            supporters: [
+              "He has actually governed — a city budget balanced annually, three votes to lower Omaha's property tax levy, riverfront and convention-center development",
+              "He backed Omaha police with a record pay raise rather than defunding, and has the sheriff and county attorney behind him",
+              "He unified a party that usually splits here — Bacon's moderates and Trump's base endorsed the same candidate"
+            ],
+            opponents: [
+              "The DCCC calls him \"another empty suit\" who would defer to party leadership rather than the district",
+              "Democrats tie him to the 2025 reconciliation law's Medicaid and food-assistance cuts [Verify — the DCCC asserts he praised the bill; Harding's own words on it could not be found]",
+              "His claimed independence is undercut by Trump's endorsement — his opponent's line is that it gives him the MAGA label regardless"
+            ] },
+          { name: "Denise Powell", party: "D", winner: false,
+            positions: [
+              "Cost of living — opposes trade wars that raise family costs and \"tax breaks for billionaires\" (campaign site)",
+              "Health care — opposes dismantling Medicaid and cutting senior benefits (campaign site)",
+              "Public education and reproductive rights — worked on Nebraska's abortion-rights ballot measure and the school-voucher repeal (campaign site)"
+            ],
+            differentiators: [
+              "Co-founder of Women Who Run Nebraska, a PAC formed after 2016 to recruit Democratic women — an organizer who has NEVER held elected office; daughter of Chilean and Cuban immigrants",
+              "Her defining primary argument was structural: that electing a sitting state senator would let Gov. Pillen appoint a replacement and hand Republicans a legislative supermajority able to abolish Nebraska's district-based electoral vote",
+              "$997,390 on hand (FEC, June 30, 2026), with $75,000 in debts; endorsed by DCCC Red to Blue (June 4, 2026), EMILY's List, CHC BOLD PAC, LCV Action Fund, Sen. Mark Kelly, Pete Buttigieg and Omaha Mayor John Ewing"
+            ],
+            supporters: [
+              "She is the candidate best positioned to protect the \"blue dot\" — Nebraska's district-based electoral vote — along with abortion access and voting rights",
+              "She built the party's Nebraska infrastructure for a decade before asking for the job, including the abortion-rights measure and the voucher repeal",
+              "National validators think she can win: Red to Blue, EMILY's List, CHC BOLD PAC and LCV all invested"
+            ],
+            opponents: [
+              "⚠ \"Dark Money Denise\" — a label originated by FELLOW DEMOCRAT John Cavanaugh, who said she built a career orchestrating secret donations, citing consulting for the Sixteen Thirty Fund and New Venture Fund; Republicans have said they will keep using it. Her campaign calls the attacks dishonest and desperate, pointing to her work on public schools and abortion access",
+              "Republicans call her a career operative with more ties to New York and Los Angeles than to Nebraska",
+              "More than $7 million in outside spending hit the Democratic primary — a district record — and Harding argues she bought the nomination and is only now pivoting to affordability"
+            ] },
+          { name: "Eric Michael Foreman", party: "L", winner: false,
+            positions: [
+              "⚠ [Verify] NO positions could be sourced — no campaign website, no social media, no interviews, no candidate-survey answers and an empty BallotReady profile. He is on the ballot and his campaign has published nothing",
+              "[Verify]",
+              "[Verify]"
+            ],
+            differentiators: [
+              "Won the Libertarian nomination unopposed with 388 votes",
+              "No FEC financial activity is reported [Verify]",
+              "No endorsements could be found [Verify]"
+            ],
+            supporters: [
+              "[Verify — structural; no supportive statement about Foreman exists anywhere] He gives NE-2 voters a third option in a race both major parties are spending millions to win",
+              "The Libertarian line qualified through the state's own nominating process rather than by petition [Verify]"
+            ],
+            opponents: [
+              "[Verify — structural; no critic has addressed him publicly] He has published no platform, no website and no financial activity, and won his nomination with 388 votes in a district that casts over 300,000 general-election ballots",
+              "With all three raters treating this as a Democratic-leaning battleground, both campaigns are contesting third-party votes as spoilers [Verify]"
+            ] }
+        ]
+      },
+      {
+        date: "May 12, 2026", type: "past",
+        note: "Powell won a seven-way Democratic primary by 1,401 votes — 2.42 points — over state Sen. John Cavanaugh. Harding and Foreman were unopposed on their lines.",
+        candidates: [
+          { name: "Denise Powell", party: "D", winner: true, positions: ["Won the Democratic primary with 38.82% (22,516 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "John Cavanaugh", party: "D", winner: false, positions: ["Took 36.40% (21,115 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Crystal Rhoades", party: "D", winner: false, positions: ["Took 14.10%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Kishla Askins", party: "D", winner: false, positions: ["Took 6.03%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Melanie Williams", party: "D", winner: false, positions: ["Took 3.83%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "The closest House race in Nebraska. Bacon held the seat by 5,829 votes while the district's presidential electoral vote went the other way — Harris took NE-2 51.32% to 46.73%, a margin of 14,636. ⚠ Several outlets reported that presidential margin as \"about 11,000\"; the certified canvass figure is 14,636. Bacon ran roughly 4 points ahead of the top of his own ticket.",
+        candidates: [
+          { name: "Don Bacon", party: "R", winner: true, positions: ["Won 50.93% (160,198 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Tony Vargas", party: "D", winner: false, positions: ["Took 49.07% (154,369 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+
+  3: {
+    name: "U.S. House — NE District 3",
+    region: "Central and western Nebraska plus the northeast and southeast corners — 80 of the state's 93 counties, roughly the western three-quarters of the state: Grand Island, Kearney, Hastings, North Platte, Scottsbluff, Beatrice, South Sioux City and Blair",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Adrian Smith (R) seeks an 11th term; he did NOT retire, and the U.S. House Clerk's July 6, 2026 roster confirms he still holds the seat. This is one of the most Republican districts in the country — no handicapper rates it competitive and neither party committee has targeted it. Voter registration runs roughly 268,246 Republican to 70,368 Democratic, and Smith won by 60.8 points in 2024. The live question is his own standing rather than the district's: he took 64.7% against a primary challenger, down from about 75% in 2024 and 76% in 2022. ⚠ THE BALLOT MAY NOT BE FINAL — Mark Cohen, a registered nonpartisan, submitted about 3,680 petition signatures on July 30 against a 2,000-valid requirement, and the Secretary of State's file still lists him as \"Signature Verification in Progress.\" He is NOT yet on the certified list and is not carded here [Verify — re-check with the Secretary of State]. The Libertarian Party made no nomination in NE-3.",
+        candidates: [
+          { name: "Adrian Smith (incumbent)", party: "R", winner: false,
+            positions: [
+              "Taxes — let Nebraskans keep more of what they earn; permanent authorization for \"Trump Accounts\" (his stated position)",
+              "Trade and agriculture — pushed year-round E-15 through the House in May 2026 and USMCA renewal, while saying \"I'm not a fan of tariffs… I understand they need to be a tool in the toolbox\" (his own words)",
+              "Social conservatism — anti-abortion, Second Amendment, school choice (his stated positions)"
+            ],
+            differentiators: [
+              "On Ways and Means since 2010 and CHAIRMAN of its Trade Subcommittee — chairing trade policy during a trade war hitting his own district",
+              "Publicly declines to be a tariff enthusiast, which is unusual in the 2026 Republican conference",
+              "$1,023,354 on hand (FEC, June 30, 2026); endorsed by Donald Trump (Nov 4, 2025), the Nebraska Farm Bureau, Nebraska Right to Life, the NRA, and \"Ranchers for Adrian,\" 170-plus cattle producers"
+            ],
+            supporters: [
+              "Seniority converts to results — the Trade gavel, year-round E-15 through the House, USMCA renewal and a hand in writing the tax law",
+              "He delivers unglamorous local wins: local control of reservoir lands, Bureau of Reclamation funding for the Gering-Fort Laramie Canal tunnels, wildfire rebuilding",
+              "Trump, the Farm Bureau, Right to Life, the NRA and 170-plus ranchers all backed him"
+            ],
+            opponents: [
+              "Twenty years is long enough — his primary challenger ran on voter-imposed term limits and on the incumbent's visibility, saying producers want \"service, communication and visibility\"",
+              "He is not an agricultural producer in the country's most agricultural district — his challenger's central charge",
+              "He will not say when the trade war should end; at a Sept 2025 Dorchester event growers told him they were \"on the verge of a crisis\" and he declined a timeline while some Nebraska colleagues called for it to end by Christmas [Verify — context, not causation; no outlet attributes his 64.7% to tariffs]"
+            ] },
+          { name: "Becky Kelly Stille", party: "D", winner: false,
+            positions: [
+              "Health care and cost of living — \"no one should ever have to choose between buying food and keeping the electricity on\" (her own words)",
+              "Labor unions — fair wages, safe conditions, representation (her own words)",
+              "Reproductive freedom — a woman's decision privately with her doctor (her own words)"
+            ],
+            differentiators: [
+              "A self-identified MODERATE who volunteers that her husband of nearly 30 years is a registered Republican, and is courting tariff-frustrated farmers",
+              "Works in biofuels as a quality and lab manager at Ag Processing Inc. after QA and HR roles at Tyson; went from single teenage mother to a six-figure salary and holds a degree in accounting [Verify — sources conflict on whether it is a bachelor's or an associate's]",
+              "$14,834 on hand (FEC, June 30, 2026) — about two-thirds of her money is her own personal loans ($36,731). Listed by the Nebraska Democratic Party as its CD-3 candidate; no DCCC, union or other formal endorsement could be sourced"
+            ],
+            supporters: [
+              "She is running as a moderate who says differing opinions shouldn't stop people working together, in a district where a conventional Democrat has no path",
+              "Her biography — teenage single mother to plant manager, detasseling corn at 12 — matches the district's economy better than a typical challenger's",
+              "She promises open town halls and has already visited every county in a district spanning 80 of them"
+            ],
+            opponents: [
+              "[Verify — structural; no Republican has attacked her by name in any coverage located] Registration runs about 268,246 Republican to 70,368 Democratic, and Smith won by 60.8 points in 2024 while running 4 points ahead of Trump",
+              "She reports $14,834 on hand against Smith's $1.02 million, roughly two-thirds of it her own loans [Verify]",
+              "Smith's campaign has treated the nonpartisan petition candidate, not her, as the challenger worth answering [Verify — structural inference from coverage patterns]"
+            ] },
+          { name: "David J. Else", party: "I", winner: false,
+            positions: [
+              "Health care — wants ACA protection plus dental coverage, after borrowing against the farm for family medical costs (his own voter-guide answers)",
+              "Tariffs and the farm economy — \"one step away from the '80s again… my dad sold corn in 1974 for about the same prices it is now\" (his own words)",
+              "Immigration — easier work visas, a citizenship path for non-criminals, and more trade with Mexico, \"our No. 1 corn buyer\" (his own words)"
+            ],
+            differentiators: [
+              "Runs on the Legal Marijuana NOW line, a ballot-qualified Nebraska party. A lifetime Overton farmer who took over the family farm at 14 when his father died; a dairy farmer for 22 years, now grain and cow/calf",
+              "Donated a kidney to his daughter. A lifelong Republican who switched parties over health care and was the DEMOCRATIC nominee in this district in 2022, taking 15.79%",
+              "⚠ Why he moved to the Legal Marijuana NOW line could NOT be sourced — no statement, reporting or post explains it. No FEC committee confirmed and no fundraising reported [Verify]"
+            ],
+            supporters: [
+              "A working farmer with a first-hand health care story who has run in this district before, taking 15.8% as the Democratic nominee in 2022",
+              "He talks about the farm economy in concrete terms, comparing today's corn prices to his father's 1974 prices",
+              "[Verify — structural; no published endorsement or supportive coverage of Else exists] He says Congress needs to grow a spine and tell the president no — a message aimed at Republicans, not just Democrats"
+            ],
+            opponents: [
+              "[Verify — structural] He has no reported fundraising and won his nomination with 191 votes districtwide",
+              "He has now sought this seat under two different party labels in three cycles and has not explained the latest switch [Verify — the switch is documented; the criticism is inferred]",
+              "He lost the 2024 Democratic primary here before returning on a minor-party line [Verify — result confirmed, framing is structural]"
+            ] }
+        ]
+      },
+      {
+        date: "May 12, 2026", type: "past",
+        note: "Smith was held to 64.7% by a primary challenger, down from about 75% in 2024 and 76% in 2022. Stille and Else were unopposed on their lines.",
+        candidates: [
+          { name: "Adrian Smith", party: "R", winner: true, positions: ["Won the Republican primary with 64.71% (60,549 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "David P. Huebner", party: "R", winner: false, positions: ["Took 35.29% (33,020 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Smith won a tenth term by 60.8 points, running about 4 points ahead of Trump in the district.",
+        candidates: [
+          { name: "Adrian Smith", party: "R", winner: true, positions: ["Won 80.42% (243,481 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Daniel Ebers", party: "D", winner: false, positions: ["Took 19.58% (59,287 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  }
+};
+
+const SITE_META = { name: "Nebraska Elections Hub", lastUpdated: "August 7, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — Nebraska county-level down-ballot research is the next phase.
+// Nebraska counties elect sheriffs, county attorneys, clerks, treasurers and county boards.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Nebraska has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them,
+  // otherwise a district with no plurality county is unreachable from the map.
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const NE_STATE_FIPS = "31";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#nemap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(NE_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Hartford ----
+  drawCapital(g, projection, { name: "Lincoln", lng: -96.6852, lat: 40.8136 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in NE";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our Nebraska dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>

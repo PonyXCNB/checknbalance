@@ -1,0 +1,1945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Arkansas Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every AR election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #armap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">AR</div>
+      <div class="brand-text">
+        <span class="brand-name">Arkansas Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Arkansas <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 75 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">75</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>4</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>12</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Arkansas…</div>
+      <svg id="armap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>AR Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">July 22, 2026</span><br>
+      Sources: Arkansas Secretary of State official election results feed (certified) and 2026 Election Calendar, Arkansas Ethics Commission campaign-finance filings, U.S. Census Bureau congressional-district relationship files and 2020 PL 94-171 data, FEC, Cook Political Report, Sabato's Crystal Ball, Inside Elections, Arkansas Advocate, Arkansas Democrat-Gazette, Talk Business &amp; Politics, KATV, AP.
+    </div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every AR county + its primary US House district(s)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- (1) Counties + primary US House district -----
+// ⚠ PLACEHOLDER — replaced below.
+const COUNTIES = {
+  "05001":{n:"Arkansas",d:1},
+  "05003":{n:"Ashley",d:4},
+  "05005":{n:"Baxter",d:1},
+  "05007":{n:"Benton",d:3},
+  "05009":{n:"Boone",d:1},
+  "05011":{n:"Bradley",d:4},
+  "05013":{n:"Calhoun",d:4},
+  "05015":{n:"Carroll",d:3},
+  "05017":{n:"Chicot",d:1},
+  "05019":{n:"Clark",d:4},
+  "05021":{n:"Clay",d:1},
+  "05023":{n:"Cleburne",d:2},
+  "05025":{n:"Cleveland",d:4},
+  "05027":{n:"Columbia",d:4},
+  "05029":{n:"Conway",d:2},
+  "05031":{n:"Craighead",d:1},
+  "05033":{n:"Crawford",d:3},
+  "05035":{n:"Crittenden",d:1},
+  "05037":{n:"Cross",d:1},
+  "05039":{n:"Dallas",d:4},
+  "05041":{n:"Desha",d:1},
+  "05043":{n:"Drew",d:4},
+  "05045":{n:"Faulkner",d:2},
+  "05047":{n:"Franklin",d:4},
+  "05049":{n:"Fulton",d:1},
+  "05051":{n:"Garland",d:4},
+  "05053":{n:"Grant",d:4},
+  "05055":{n:"Greene",d:1},
+  "05057":{n:"Hempstead",d:4},
+  "05059":{n:"Hot Spring",d:4},
+  "05061":{n:"Howard",d:4},
+  "05063":{n:"Independence",d:1},
+  "05065":{n:"Izard",d:1},
+  "05067":{n:"Jackson",d:1},
+  "05069":{n:"Jefferson",d:4},
+  "05071":{n:"Johnson",d:4},
+  "05073":{n:"Lafayette",d:4},
+  "05075":{n:"Lawrence",d:1},
+  "05077":{n:"Lee",d:1},
+  "05079":{n:"Lincoln",d:1},
+  "05081":{n:"Little River",d:4},
+  "05083":{n:"Logan",d:4},
+  "05085":{n:"Lonoke",d:1},
+  "05087":{n:"Madison",d:3},
+  "05089":{n:"Marion",d:1},
+  "05091":{n:"Miller",d:4},
+  "05093":{n:"Mississippi",d:1},
+  "05095":{n:"Monroe",d:1},
+  "05097":{n:"Montgomery",d:4},
+  "05099":{n:"Nevada",d:4},
+  "05101":{n:"Newton",d:4},
+  "05103":{n:"Ouachita",d:4},
+  "05105":{n:"Perry",d:2},
+  "05107":{n:"Phillips",d:1},
+  "05109":{n:"Pike",d:4},
+  "05111":{n:"Poinsett",d:1},
+  "05113":{n:"Polk",d:4},
+  "05115":{n:"Pope",d:4},
+  "05117":{n:"Prairie",d:1},
+  "05119":{n:"Pulaski",d:2,ds:[1,2,4]},
+  "05121":{n:"Randolph",d:1},
+  "05123":{n:"St. Francis",d:1},
+  "05125":{n:"Saline",d:2},
+  "05127":{n:"Scott",d:4},
+  "05129":{n:"Searcy",d:1},
+  "05131":{n:"Sebastian",d:3,ds:[3,4]},
+  "05133":{n:"Sevier",d:4},
+  "05135":{n:"Sharp",d:1},
+  "05137":{n:"Stone",d:1},
+  "05139":{n:"Union",d:4},
+  "05141":{n:"Van Buren",d:2},
+  "05143":{n:"Washington",d:3},
+  "05145":{n:"White",d:2},
+  "05147":{n:"Woodruff",d:1},
+  "05149":{n:"Yell",d:4},
+};
+
+// ----- (2) Statewide races -----
+// Arkansas elects ALL SEVEN executive constitutional officers together in midterm years
+// (Amendment 63), so this is a long ballot: Senate + Governor + Lt. Governor + AG + Secretary of
+// State + Treasurer + Auditor + Land Commissioner, plus four legislature-referred ballot measures.
+// ⚠ FOUR of the eight offices are effectively decided already — Attorney General, Treasurer and
+// Auditor drew NO opponent of any party, and Lt. Governor and Land Commissioner drew no Democrat.
+// ⚠ THERE IS NO ARKANSAS SUPREME COURT OR COURT OF APPEALS RACE IN NOVEMBER. Arkansas runs
+// NONPARTISAN judicial elections at the MARCH primary date, with November runoffs only when
+// nobody clears 50%. All four appellate seats up in 2026 were settled on or before March 3 and
+// appear below as PAST races. (Ballotpedia's "a runoff election is scheduled for November 3, 2026"
+// is template boilerplate and is wrong.) Two CIRCUIT judge races do go to November runoffs, but
+// those are regional, not statewide.
+// ⚠ NO ISSUE NUMBERS HAVE BEEN ASSIGNED to the ballot measures. The Secretary of State assigns
+// them in the summer; as of Aug 7 none exists. Wikipedia's "Issue 1/2/3/4" headings are its own
+// editors' sequencing — deliberately not used here.
+// ⚠ CERTIFICATION: the November ballot is not formally certified until AUG 20, 2026
+// (Ark. Code §7-5-203(a)(1), §7-5-204(a)), with the ballot draw Aug 23–24. The fields below are
+// built from official certified PRIMARY results, party nominating records and the closed May 1
+// independent-petition window — not from a state general-election ballot document, which does not
+// yet exist. ⚠ No affirmative state list of qualified INDEPENDENT statewide candidates could be
+// obtained (candidates.arkansas.gov returns an empty body), so read every field as "no independent
+// located," not "no independent exists."
+// Primary percentages come from the Arkansas SoS official results feed (isOfficial: true,
+// certified July 2, 2026; runoff certified April 29, 2026), 2,897 of 2,897 precincts.
+const STATEWIDE = [
+  // UPCOMING — 2026 General Election (Nov 3, 2026)
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Arkansas",
+    note: "Tom Cotton (R) seeks a third term in a seat no rater treats as competitive — Solid Republican (Cook), Safe Republican (Sabato), Solid Republican (Inside Elections, set Jan 2025 with no shift all cycle). He took 81.6% of a three-way primary. Democrat Hallie Shoffner, a sixth-generation Newport farmer, won her primary with 78.3% and has raised unusually well for an Arkansas Democrat — but trails roughly 11.5-to-1 in cash. Libertarian Jeff Wadlin holds the third line. No Democrat has won an Arkansas Senate race since 2008. ⚠ Neither of the two public polls is independent: one is Shoffner's own campaign internal (Cotton 46–43, July 2026) and the other is a Republican-aligned firm (Cotton 58–36, Feb 2026).",
+    candidates: [
+      { name: "Tom Cotton (incumbent)", party: "R", winner: false,
+        positions: [
+          "Border security and immigration restriction — authored the RAISE Act, backed the Laken Riley Act (Senate record)",
+          "Tax cuts and lower energy and health costs (campaign site)",
+          "Defense investment in Arkansas installations at Pine Bluff and Little Rock (Senate record)"
+        ],
+        differentiators: [
+          "Chairs BOTH the Senate Intelligence Committee and the Senate Republican Conference — two leadership posts at once",
+          "Army combat veteran; endorsed by Donald Trump (July 2025), Gov. Sanders and all four Arkansas U.S. Representatives",
+          "$9,931,885 on hand (FEC, June 30, 2026)"
+        ],
+        supporters: [
+          "Two chairmanships give a small state outsized leverage in Washington",
+          "He has steered defense dollars to Pine Bluff and Little Rock",
+          "He consolidated the party completely, taking 81.6% against two challengers"
+        ],
+        opponents: [
+          "Shoffner argues he lacks agricultural experience and voted against farm bills twice — which she calls ironic since the farm bill \"determines the very existence of the farms here in Arkansas\"",
+          "Critics say his national-security profile crowds out state economic concerns [Verify — inferred from Shoffner's framing, not independently sourced]",
+          "Roughly 18% of Republican primary voters chose one of two little-known challengers over him [Verify]"
+        ] },
+      { name: "Hallie Shoffner", party: "D", winner: false,
+        positions: [
+          "Rewrite federal commodity policy to incentivize crop diversity rather than \"just a few different commodities\" (campaign site)",
+          "Develop higher-value rice varieties to compete with cheap imports (campaign site)",
+          "Rural infrastructure and a farm-economy focus (campaign site)"
+        ],
+        differentiators: [
+          "A sixth-generation Newport farmer who ran — and then closed — her family soybean and rice operation after the 2024 season, which she discloses",
+          "Vanderbilt on full scholarship, then the Clinton School of Public Service",
+          "$863,578 on hand (FEC, June 30, 2026) after raising $2.27M — unusually strong for an Arkansas Democrat. Endorsed by Blanche Lincoln, the last Democrat to win an Arkansas Senate race, and by former Gov. Mike Beebe"
+        ],
+        supporters: [
+          "A working farmer speaking to a real farm-income crisis, with concrete commodity policy rather than generic opposition",
+          "She consolidated the party quickly at 78.3%",
+          "She has the backing of both the last Democrat to win a Senate race here and the last Democratic governor"
+        ],
+        opponents: [
+          "No Democrat has won an Arkansas Senate race since 2008, and all three raters call this Safe or Solid Republican",
+          "She trails roughly 11.5-to-1 in cash",
+          "Her farm-crisis message is complicated by having closed her own farm after 2024 [Verify — no opponent was found making this argument publicly; stated as a structural vulnerability]"
+        ] },
+      { name: "Jeff Wadlin", party: "L", winner: false,
+        positions: [
+          "\"Government should leave you alone unless you're harming someone else — physically or financially\" (campaign site, his wording)",
+          "\"Every working family deserves a fair shot at a good life\" (campaign site)",
+          "Wants \"more builders, more problem-solvers, and fewer politicians who profit from keeping us divided\" (campaign site)"
+        ],
+        differentiators: [
+          "An engineer and businessman from Bentonville — UVA aerospace and mechanical engineering, Northwestern MBA",
+          "Co-founded an online auto-salvage company, then worked at Capital One and Sam's Club; nominated by convention, not primary",
+          "$8,469 on hand (FEC, June 30, 2026). ⚠ No coverage of his campaign after February 2026 could be located, though his committee filed a Q2 report [Verify]"
+        ],
+        supporters: [
+          "The Libertarian Party lost recognized status after 2024 and re-qualified for 2026 by gathering 10,000 signatures, giving voters a third option in a race forecasters treat as settled",
+          "He pitches an explicitly anti-polarization message from a private-sector rather than political background",
+          "[Verify — structural] A contested general election forces some public accounting in a race the incumbent would otherwise coast through"
+        ],
+        opponents: [
+          "[Verify — structural; no direct criticism of Wadlin was located] With $8,469 on hand he cannot communicate statewide",
+          "Libertarian Senate nominees in Arkansas have never been competitive [Verify]",
+          "No coverage of his campaign has appeared since February 2026 [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Governor — Arkansas",
+    note: "Sarah Huckabee Sanders drew NO primary opponent at all and enters the general with a cash advantage of more than 600-to-1 over the Democratic nominee. Democrat Fred Love, a term-limited state senator, won his primary 81%–19% and runs squarely against the LEARNS voucher program and the proposed Franklin County prison. Libertarian Colt Shelby lives four miles from the proposed prison site and has already beaten Sanders in court. No rater treats this as competitive: Solid Republican (Cook, July 10, 2026), Solid Republican (Inside Elections, June 25, 2026), Safe Republican (Sabato, July 23, 2026). ⚠ Worth knowing: Arkansas law defines a political party as one whose gubernatorial or presidential nominee wins at least 3%. The Libertarian Party LOST recognized status after 2024 and had to re-qualify for 2026 by gathering 10,000 signatures — so Shelby's showing determines whether the party stays on the ballot in 2028, and the same 3% rule applies to the Democratic nominee.",
+    candidates: [
+      { name: "Sarah Huckabee Sanders (incumbent)", party: "R", winner: false,
+        positions: [
+          "Phase out the state income tax — she proposed a fourth cut of 0.2% in the April 2026 State of the State (her stated agenda)",
+          "Defend and expand LEARNS and Education Freedom Accounts — $309M appropriated plus $70M for growth (state budget record)",
+          "Build the 3,000-bed Franklin County prison and raise law-enforcement and corrections pay (her stated agenda)"
+        ],
+        differentiators: [
+          "The only candidate with statewide executive experience and a national platform; endorsed by Donald Trump in Nov 2025",
+          "Drew ZERO primary opposition in a cycle where the state party set a $40,000 filing fee — her own comment: \"I think one of the most telling things for the ballot for me personally is I'm unopposed\"",
+          "$5,113,351 on hand (Arkansas Ethics Commission filing, June 30, 2026). Trump is her ONLY sourceable endorsement — no Farm Bureau, NRA, law-enforcement or Right to Life endorsement could be located. ⚠ She declined the June 26 Arkansas Press Association debate"
+        ],
+        supporters: [
+          "LEARNS is producing measurable gains — state proficiency rose from 36.9% to 42.2% in a year",
+          "Arkansas closed FY2026 with a $655 million surplus and $4 billion in reserves after four income-tax cuts",
+          "Drawing no primary challenger at all reflects consolidated support across her party"
+        ],
+        opponents: [
+          "Arkansas ranks near the bottom nationally on infant and maternal mortality and food insecurity, and remains the only state not extending Medicaid coverage to new mothers for the year after birth — Love grades her record \"an F\"",
+          "Her intervention against Republican prison opponents Sens. Bryan King and Ron Caldwell backfired when both won their primaries",
+          "Critics charge \"comms before substance,\" pointing to the skipped debate and the 2023 FOIA exemption shielding her travel and security records"
+        ] },
+      { name: "Fredrick \"Fred\" Love", party: "D", winner: false,
+        positions: [
+          "End the Education Freedom Account vouchers — \"my department of education will not administer EFA accounts… we will reinvest that money into the public education system\" (his own words)",
+          "No new Franklin County prison — invest in youth employment and literacy instead (his stated position)",
+          "A data-center moratorium while long-term effects are studied; expand FOIA, protect Medicaid, expand rural mental health and telehealth (his stated positions)"
+        ],
+        differentiators: [
+          "Sixteen years in the Legislature (House 2011–2022, Senate since 2022) and now term-limited",
+          "Sponsored the 2015 bill stripping Robert E. Lee's name from the MLK holiday (enacted 2017) and carcinogen warning labels for hair relaxers; was one of two senators to vote against the 2023 FOIA exemption",
+          "Would be Arkansas's first Black governor. ⚠ $8,179 on hand (Arkansas Ethics Commission, June 30, 2026 — an amended filing, and a second state endpoint reports a lower figure [Verify]), and NO endorsement of any kind could be sourced — a genuine null result, not a research gap"
+        ],
+        supporters: [
+          "A long record of delivered constituent projects, including the Southwest Little Rock health unit and an Arkansas Children's Hospital clinic",
+          "He offers the sharpest alternative on the state's most contested policy, redirecting $309M+ from vouchers to public schools",
+          "He showed up to debate when the governor did not"
+        ],
+        opponents: [
+          "Roughly $19,500 on hand against nearly $5.2 million leaves him with no statewide advertising presence",
+          "His central promise may not be lawful — refusing to administer a statutorily created program was challenged directly at the June 26 debate, and the Arkansas Supreme Court has a 5–2 Republican-appointed majority",
+          "He personally opposes recreational marijuana legalization, which cuts against part of his own coalition"
+        ] },
+      { name: "Colt Shelby", party: "L", winner: false,
+        positions: [
+          "Reject the 3,000-bed prison as costly and poorly planned — expand Calico Rock instead and fund county-jail rehabilitation (campaign site)",
+          "Scale back vouchers rather than abolish them — add an income cap and phase down gradually so current families are not hurt (campaign site)",
+          "Radically expand FOIA — \"I don't know why we have to hide anything. If you don't want mama to know, don't write it down\" (his own words)"
+        ],
+        differentiators: [
+          "⚠ HE SUED THE SITTING GOVERNOR AND WON — his Oct 2025 suit over special-election scheduling prevailed in circuit court and the Arkansas Supreme Court dismissed Sanders' appeals on May 14, 2026",
+          "Lives four miles from the proposed prison site; a farmer and oil-and-gas operations supervisor from Cecil in Franklin County",
+          "About $30,000 on hand (Arkansas Ethics Commission, June 30, 2026 — ⚠ two state endpoints disagree, the other reporting about $14,000 [Verify]) — either way, notably MORE than the Democratic nominee holds"
+        ],
+        supporters: [
+          "He beat the governor in court as a private citizen — a concrete, checkable result rather than a campaign promise",
+          "He is the only candidate living beside the disputed prison site, and he offers a specific alternative rather than only opposition",
+          "His voucher position is the more governable one, avoiding an executive order of contested legality"
+        ],
+        opponents: [
+          "No governing experience — Love said on the debate stage that Shelby \"doesn't have the experience necessary to run state government\"",
+          "The 2022 Libertarian gubernatorial nominee took just 1.84%, and the party must re-petition for ballot status every cycle",
+          "His repeated deference to \"whatever Arkansans want\" reads as avoiding positions a governor must take [Verify — a structural characterization of his stated deference, not a criticism from a named opponent]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Lieutenant Governor — Arkansas",
+    note: "⚠ NO DEMOCRAT FILED. Incumbent Leslie Rutledge faces only a Libertarian, and neither major party held a primary for this office. Rutledge won the seat in 2022 with 64.2%.",
+    candidates: [
+      { name: "Leslie Rutledge (incumbent)", party: "R", winner: false,
+        positions: [
+          "[Verify] — her 2026 campaign materials are biography- and record-forward; three distinct current policy positions could not be sourced from her own materials",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "The only Arkansan to have held both Attorney General (2015–2023 — the first woman and first Republican in that office) and Lieutenant Governor",
+          "With Gov. Sanders, half of the first independently elected female Governor/Lt. Governor pair in U.S. history",
+          "Reported \"over three quarters of a million dollars\" at filing in Nov 2025 [Verify — self-reported; the state campaign-finance portal is offline]"
+        ],
+        supporters: [
+          "A proven statewide vote-getter who took 64.2% in 2022",
+          "Her Attorney General tenure gives unusual legal depth to a largely ceremonial office",
+          "She drew no primary opponent, signaling a unified party"
+        ],
+        opponents: [
+          "[Verify — no organized opposition campaign or critical reporting on her 2026 bid was found; these are structural arguments] She has published no 2026 issue agenda, running on biography alone",
+          "With only minor-party opposition, her record faces little public scrutiny this cycle [Verify]",
+          "Critics question the substantive value of the office at all [Verify]"
+        ] },
+      { name: "Michael Kalagias", party: "L", winner: false,
+        positions: [
+          "Cut the state sales tax from 6.5% to 5% and end local sales tax on food, diapers and feminine hygiene products (campaign site)",
+          "Raise Arkansas's standard deduction from $2,470 to the federal $15,750 (campaign site)",
+          "Kill the mega-prison — \"a $billion pork project that should never have seen the light of day\" — and restore pre-2023 FOIA standards (campaign site, his wording)"
+        ],
+        differentiators: [
+          "The only candidate for this office publishing a detailed tax plan",
+          "Pledges to \"publicly post all actions taken by my office so FOIA would rarely if ever be required\" — a transparency commitment within his own power to keep",
+          "Benton County Water District #1 board member; prior candidate for state House and for Congress in AR-3, where he took 3.42% in 2022"
+        ],
+        supporters: [
+          "He offers the only real policy contrast on the ballot for this office",
+          "The sales-tax argument lands in a state with among the nation's highest combined rates",
+          "His FOIA pledge is concrete and unilateral — he could keep it without the Legislature"
+        ],
+        opponents: [
+          "No Libertarian has won statewide in Arkansas",
+          "The Lieutenant Governor cannot unilaterally cut taxes or rewrite FOIA, so the platform overpromises for the office sought [Verify]",
+          "He has run and lost several prior races [Verify — the \"perennial candidate\" framing is a Wikipedia characterization, not independently corroborated]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Secretary of State — Arkansas (OPEN SEAT)",
+    note: "The only genuinely contested statewide primary, and the closest race of the cycle: Kim Hammer won the March 31 Republican runoff by 913 votes. Appointed incumbent Cole Jester is ineligible for a full term and instead ran for Land Commissioner. All three lines are filled. ⚠ This office is directly entangled in the year's ballot-measure litigation — Hammer authored several of the initiative-petition restrictions a federal judge preliminarily enjoined in November 2025, and the sitting Secretary of State is the named respondent in a case now before the Arkansas Supreme Court. Runner-up Bryan Norris requested recounts in six counties; all six matched, and his suit against Saline County was dismissed June 8, 2026 as \"specious, ill-founded, and wholly without merit.\"",
+    candidates: [
+      { name: "Kim Hammer", party: "R", winner: false,
+        positions: [
+          "\"I'm proud of the election integrity legislation I authored as your Senator\" (campaign site, his wording)",
+          "Will \"implement any election laws passed by the Legislature or any executive orders put forth by Governor Sanders or President Trump\" (campaign site)",
+          "Opposes hand-marked and hand-counted paper ballots — \"if it isn't broke, don't fix it\"; wants high-school poll workers via LEARNS community-service credit (campaign site)"
+        ],
+        differentiators: [
+          "Sixteen years in the Legislature — House 2011–2018, Senate since 2019",
+          "⚠ Authored the canvasser-ID and ballot-title-reading initiative restrictions that are NOW PRELIMINARILY ENJOINED in federal court; also sponsored the 100-foot polling-place buffer law",
+          "Endorsed by Gov. Sanders and Sen. Tom Cotton (Apr 5, 2026)"
+        ],
+        supporters: [
+          "Sixteen years in the Legislature means no learning curve across the office's three divisions",
+          "The state's top Republicans consolidated behind him",
+          "The six-county recount he faced confirmed his win everywhere it was checked"
+        ],
+        opponents: [
+          "The petition restrictions he authored have been blocked by a federal judge as likely unconstitutional, which critics call disqualifying for the state's chief election officer",
+          "He was carried by an outside independent-expenditure committee that spent more than $307,000 promoting him in the runoff",
+          "Winning by under 1,000 votes on roughly 5% turnout is a thin mandate. ⚠ Ethics Commission complaints against BOTH runoff candidates met the threshold for further investigation during the runoff [Verify — the outcome could not be sourced; this reports an inquiry, not a finding]"
+        ] },
+      { name: "Kelly Grappe", party: "D", winner: false,
+        positions: [
+          "\"Fair, secure elections administered consistently — free from political pressure or favoritism\" (campaign site)",
+          "Give all 75 counties \"clear guidance, reliable systems, and responsive support\" (campaign site)",
+          "\"Transparency and accountability in every function of the office… This office belongs to the people — not to political parties or special interests\" (campaign site)"
+        ],
+        differentiators: [
+          "No prior elected office — three decades in private-sector operations, including an 800-person Verizon operations team",
+          "Co-founded the civic-education group Stand Up Arkansas",
+          "Visited hand-count counties herself and diagnosed a training and support gap rather than campaigning on slogans"
+        ],
+        supporters: [
+          "Running large operations is precisely the skill set an administrative office needs",
+          "Her county-neutral posture removes election administration from partisan fights",
+          "She did the fieldwork, identifying concrete training deficits"
+        ],
+        opponents: [
+          "No prior elected office or elections-administration experience",
+          "No Democrat has won statewide in Arkansas since 2010",
+          "Deferring to \"whatever system each county chooses\" sidesteps taking a position on whether hand-counting is sound"
+        ] },
+      { name: "Michael Pakko", party: "L", winner: false,
+        positions: [
+          "\"Elections are too important to leave to the Democrats and Republicans\" (campaign site, his wording)",
+          "Electronic tabulators ARE accurate and paper-ballot mandates are unnecessary, though readers should read text rather than only barcodes (campaign site)",
+          "Ballot-access laws restrict competition, depress choice and drive voter apathy (campaign site)"
+        ],
+        differentiators: [
+          "The only candidate with formal economics credentials — a longtime Arkansas economist and member of the Governor's Council of Economic Advisors",
+          "Libertarian Party of Arkansas state chair for about a decade",
+          "Campaigns on his own count that only 32 of 100 state House races have both a Republican and a Democrat on the November ballot"
+        ],
+        supporters: [
+          "An economist positioned as an honest broker is what a trust-deficit office needs",
+          "He defends tabulator accuracy against machine skeptics in both parties",
+          "He has documented Arkansas's uncontested-race problem with actual numbers"
+        ],
+        opponents: [
+          "The Libertarian line has never won statewide in Arkansas, making this a protest vote [Verify]",
+          "Running elections is an administrative job, not a platform for ballot-access reform [Verify]",
+          "Party-chair experience is not agency-management experience [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Attorney General — Arkansas (unopposed)",
+    note: "⚠ UNCONTESTED. Tim Griffin faces no Democrat, no Libertarian and no independent, and no primary was held. He won this office in 2022 with 67.6%.",
+    candidates: [
+      { name: "Tim Griffin (incumbent)", party: "R", winner: false,
+        positions: [
+          "[Verify — his campaign site publishes no issue platform and redirects to the official office site; his 2026 record is the available evidence] Child-safety consumer suits against Roblox and Discord (June 22, 2026) and Snap Inc. (June 25, 2026)",
+          "[Verify] A settlement in the Board of Corrections litigation",
+          "[Verify] Defending the state in the initiative-petition cases now in federal and state court"
+        ],
+        differentiators: [
+          "Former U.S. Attorney for the Eastern District of Arkansas and a former U.S. Representative",
+          "Former Lieutenant Governor, 2015–2023",
+          "A colonel in the Arkansas Army National Guard with more than 28 years of JAG service"
+        ],
+        supporters: [
+          "An active consumer-protection docket including child-safety suits against major platforms",
+          "An unusually deep federal, state and military legal résumé",
+          "No Arkansan of any party filed against him, which supporters read as broad acceptance of his record"
+        ],
+        opponents: [
+          "[Verify — the Corrections conflict is documented, but no organized 2026 opposition exists] An unopposed Attorney General faces no accountability moment for the office's litigation choices",
+          "His handling of the Board of Corrections dispute drew pushback — the board's former attorneys asked the state Supreme Court to reject his settlement on April 3, 2026",
+          "He is defending in court the petition restrictions a federal judge has preliminarily enjoined [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "State Treasurer — Arkansas (unopposed)",
+    note: "⚠ UNCONTESTED. John Thurston won the 2024 SPECIAL election (65.4%) to fill the unexpired term after Treasurer Mark Lowery's death, and now seeks his first full term. No Democrat, Libertarian or independent filed, and no primary was held.",
+    candidates: [
+      { name: "John Thurston (incumbent)", party: "R", winner: false,
+        positions: [
+          "[Verify — three distinct forward-looking policy positions could not be sourced] \"Solid, proven leadership\" and continuity (campaign site)",
+          "[Verify] A stewardship framing — \"do my job so well that my constituents… never have to be concerned with the office\"",
+          "[Verify] Cites $118M+ returned to counties, more than 80% of it to public schools, on a $40M annual budget"
+        ],
+        differentiators: [
+          "The only Arkansan to have held three different constitutional offices — Commissioner of State Lands for 8 years, Secretary of State 2019–Jan 2025, now Treasurer",
+          "Voters already ratified him statewide in the 2024 special with 65.4%",
+          "⚠ Parts of his own campaign site still describe SECRETARY OF STATE duties (Capitol grounds, election-official liaison) left over from his prior office"
+        ],
+        supporters: [
+          "Unusually broad executive-branch experience across three offices",
+          "A track record of returning money to counties and schools",
+          "Voters already ratified him statewide in 2024"
+        ],
+        opponents: [
+          "[Verify — no organized opposition filed; these are structural and observational, not sourced attacks] Moving across four constitutional posts invites the criticism that he is building a career rather than mastering one",
+          "Running unopposed means no public examination of the state's investment performance [Verify]",
+          "His own campaign site conflates his current duties with his former ones [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "State Auditor — Arkansas (unopposed)",
+    note: "⚠ UNCONTESTED. Dennis Milligan faces no Democrat, no Libertarian and no independent, and no primary was held. He won this office in 2022 with 66.8%; his own campaign site, dated March 4, 2026, states: \"As I run unopposed in this election…\"",
+    candidates: [
+      { name: "Dennis Milligan (incumbent)", party: "R", winner: false,
+        positions: [
+          "Completed replacement of the office's outdated payroll system — 700+ recipients migrated in 18 months with no missed payroll and no added cost (office record)",
+          "Expanded the Unclaimed Property Data Match program, launched August 2025, to return property automatically (office record)",
+          "Frames the office around \"innovation and high-quality service for the taxpayer\" (campaign site)"
+        ],
+        differentiators: [
+          "Twenty-five years across county and state office — Saline County Circuit Clerk 2011–2015, Treasurer of State for two terms, now Auditor",
+          "Claims the highest investment receipts in state history (over $600M) as Treasurer",
+          "Claims a $100M milestone in unclaimed property returned"
+        ],
+        supporters: [
+          "He delivered a concrete modernization on time and on budget rather than a slogan",
+          "The Data Match program measurably returns money to residents without their having to ask",
+          "His prior Treasurer tenure produced record investment returns"
+        ],
+        opponents: [
+          "[Verify — no organized opposition filed; these are structural arguments] An unopposed race means the payroll and unclaimed-property claims go untested by an opponent",
+          "The $600M and $100M figures come from his own campaign rather than an independent audit [Verify]",
+          "The Circuit Clerk → Treasurer → Auditor progression draws the same career-ladder criticism leveled at other Arkansas officers [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Commissioner of State Lands — Arkansas (OPEN SEAT)",
+    note: "An open seat: incumbent Tommy Land, elected in 2018 and re-elected in 2022, is not on the 2026 ballot. ⚠ No statement of his reasons was located — Arkansas's two-term limit on constitutional officers would fit, but no retirement announcement or term-limit citation could be sourced, so this page does not assert a reason [Verify]. Sitting Secretary of State Cole Jester won the Republican primary by 44 points, the widest margin of any contested statewide race this cycle. ⚠ NO DEMOCRAT FILED. ⚠ NAME COLLISION, do not merge these two people: the Republican who LOST this primary is Christian Olson, a Little Rock real-estate investor; the Libertarian nominee is Christopher Olson of Viola. They are different people — the Libertarian convention nominated on Feb 22 while Christian Olson was still on the March 3 Republican primary ballot. Wikipedia states the primary loser \"later emerged as the Libertarian Party's nominee\"; that is wrong.",
+    candidates: [
+      { name: "Cole Jester", party: "R", winner: false,
+        positions: [
+          "Shrink government while improving efficiency (campaign materials)",
+          "Expand \"energy dominance\" through state mineral and land leases (campaign materials)",
+          "Protect Arkansas waterways and natural resources, and investigate Chinese ownership near navigable waterways (campaign materials)"
+        ],
+        differentiators: [
+          "A constitutional lawyer — UVA Law, clerked for the Eighth Circuit — who was Sanders' Deputy Chief Legal Counsel before she appointed him Secretary of State effective Jan 1, 2025",
+          "On Gov. Sanders' staff he led the effort to block CCP purchases of Arkansas farmland and coordinated Big Tech litigation",
+          "The sitting Secretary of State moving sideways rather than out of office; endorsed by Sanders, Cotton, the Senate President Pro Tempore and the House Speaker. ⚠ No sourced statement explains why he chose this office over seeking a full term as Secretary of State [Verify]"
+        ],
+        supporters: [
+          "A sitting constitutional officer with a lawyer's grasp of land and lease law",
+          "He already delivered on blocking foreign farmland purchases while on the governor's staff",
+          "He won his primary by 44 points, the widest margin of any contested statewide race this cycle"
+        ],
+        opponents: [
+          "Moving from Secretary of State to Land Commissioner after about two years reads as seat-shopping rather than service",
+          "He was appointed rather than elected to his current office, so voters have never ratified him statewide",
+          "His \"energy dominance\" leasing push sits uneasily beside his waterway-protection pledge [Verify]"
+        ] },
+      { name: "Christopher Olson", party: "L", winner: false,
+        positions: [
+          "[Verify] — NO campaign site or issue statements could be located; only a Facebook presence and a contact email. Deliberately not filled in from the party platform",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "A Libertarian activist from Viola who works in mental healthcare",
+          "Nominated at the Feb 22, 2026 Libertarian convention and still on the party's published 2026 slate as of August 2026",
+          "⚠ NOT the same person as Christian Olson, who lost the Republican primary for this office"
+        ],
+        supporters: [
+          "[Verify — structural; no candidate statements were found] He gives this office a contested general election that would otherwise be a walkover, since no Democrat filed",
+          "His party ran a full statewide slate and qualified for the ballot for an eighth consecutive cycle [Verify]"
+        ],
+        opponents: [
+          "[Verify — structural; the absence of a campaign site is what was observed, not a sourced criticism] No discoverable campaign presence or published platform for a statewide office",
+          "No Libertarian has won statewide in Arkansas [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Ballot Measure · Statewide",
+    office: "Constitutional Amendment — Citizens Only Voting (HJR 1018)",
+    note: "Referred by the Legislature. Amends Article 3 §1 so that only U.S. citizens meeting elector qualifications may vote in any state or local election. Sponsored by Rep. David Ray and Sen. John Payton with 36 co-sponsors. ⚠ NO ISSUE NUMBER HAS BEEN ASSIGNED — the Secretary of State assigns numbers in the summer and had not done so as of Aug 7. ⚠ CORRECTION TO A CIRCULATING CLAIM: AI-generated summaries online say this measure \"introduces mandatory photographic identification requirements.\" It does not — the photo-ID subsections already exist in Article 3 §1 and are merely re-lettered. Verified against the official engrossed text. SUPPORTERS say it puts citizen-only voting beyond repeal by ordinary legislation and forecloses any Arkansas city or county from extending local voting to noncitizens. OPPONENTS [Verify — no named Arkansas opponent or registered opposing committee could be sourced] make the structural argument that noncitizen voting is already illegal under existing state and federal law, so such measures are redundant and symbolic.",
+    candidates: []
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Ballot Measure · Statewide",
+    office: "Constitutional Amendment — Right to Keep and Bear Arms (SJR 11)",
+    note: "Referred by the Legislature; sponsored by Sen. John Payton with more than 60 sponsors. Amends Article 2 §5 to expressly cover ammunition, firearm accessories and components, and declares the right \"a natural, fundamental, and individual right that shall not be infringed.\" ⚠ No issue number assigned yet. SUPPORTERS say the existing \"common defense\" phrasing is narrower than the individual right recognized today, and that covering ammunition and components closes a gap regulators could exploit. OPPONENTS [Verify — no named Arkansas opponent could be sourced] make the structural argument that \"shall not be infringed\" plus an express accessories guarantee could expose existing state firearm regulations to legal challenge.",
+    candidates: []
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Ballot Measure · Statewide",
+    office: "Constitutional Amendment — Economic Development Districts (SJR 15)",
+    note: "Referred by the Legislature; sponsored by Sen. Jonathan Dismang and Rep. Howard Beaty Jr. Would let the General Assembly make loans and grants of public money for economic development and create economic development districts that may freeze property and local sales taxes for a set period (reported up to 10 years) and issue bonds. ⚠ No issue number assigned yet. SUPPORTERS say Arkansas's constitution currently restricts loans and grants of public money, limiting the tools available to compete for investment, and that tax freezes give new employers a predictable cost basis while districts can finance the roads and utilities a site needs. OPPONENTS [Verify — no named Arkansas opponent could be sourced] make the structural argument that multi-year freezes divert revenue from the counties, cities and school districts serving the same area, and that the amendment delegates the details to future legislation rather than fixing them in the constitution.",
+    candidates: []
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Ballot Measure · Statewide",
+    office: "Bond Issue — Water, Waste Disposal and Pollution Abatement (Act 578 of 2025)",
+    note: "Referred by the Legislature; sponsored by Sen. Bart Hester and Rep. Howard Beaty Jr. Statutory ballot language: \"FOR / AGAINST Issuance of State of Arkansas Water, Waste Disposal, and Pollution Abatement Facilities general obligation bonds.\" The Arkansas Natural Resources Commission could issue general obligation bonds not to exceed $500,000,000, with no more than $165M for irrigation and no more than $60M in any two-year period absent further legislative approval, backed by the full faith and credit of the state. SUPPORTERS say it continues a bond authority voters previously approved in 2008, funds drinking water, wastewater, flood control and irrigation, and that the internal caps constrain the issuance pace — and note voter approval is constitutionally required for all Arkansas general obligation bonds. OPPONENTS [Verify — no named Arkansas opponent could be sourced] make the structural argument that it pledges the state's full faith and credit for up to half a billion in debt repaid from future general revenue, with project selection delegated to an appointed commission rather than specified on the ballot.",
+    candidates: []
+  },
+
+  // PAST — 2026 primaries and the already-decided nonpartisan judicial races
+  {
+    date: "Mar 31, 2026", type: "past", scope: "State · Statewide · Runoff",
+    office: "Republican Runoff — Secretary of State",
+    note: "The closest statewide contest of the Arkansas cycle — decided by 913 votes on roughly 5% turnout. Runner-up Bryan Norris requested recounts in six counties; all six matched his original totals, and his suit against Saline County was dismissed June 8, 2026.",
+    candidates: [
+      { name: "Kim Hammer", party: "R", winner: true, positions: ["Won the runoff with 50.56% — a margin of 913 votes", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Bryan Norris", party: "R", winner: false, positions: ["Took 49.44%", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Mar 3, 2026", type: "past", scope: "State · Statewide · Primary",
+    office: "Republican Primary — Secretary of State",
+    note: "A near three-way tie that sent the top two to a March 31 runoff. ⚠ Raw vote totals differ between the official Secretary of State feed and secondary sources by roughly 300–1,500 votes per candidate; the percentages are stable, so only percentages are published.",
+    candidates: [
+      { name: "Bryan Norris", party: "R", winner: false, positions: ["Led the primary with 34.42% — then lost the runoff", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Kim Hammer", party: "R", winner: true, positions: ["Took 33.46% and advanced to the runoff, which he won", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Cathy Hardin Harrison", party: "R", winner: false, positions: ["Took 32.13% — eliminated by 0.4 percentage points", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Mar 3, 2026", type: "past", scope: "Federal · Statewide · Primary",
+    office: "Republican Primary — U.S. Senate",
+    note: "Cotton won outright; no runoff was needed.",
+    candidates: [
+      { name: "Tom Cotton (incumbent)", party: "R", winner: true, positions: ["Won 81.64%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Micah Ashby", party: "R", winner: false, positions: ["Took 9.23%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Jeb Little", party: "R", winner: false, positions: ["Took 9.12%", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Mar 3, 2026", type: "past", scope: "Federal · Statewide · Primary",
+    office: "Democratic Primary — U.S. Senate",
+    note: "Shoffner won outright; no runoff was needed.",
+    candidates: [
+      { name: "Hallie Shoffner", party: "D", winner: true, positions: ["Won 78.27%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Ethan N. Dunbar", party: "D", winner: false, positions: ["Took 21.73%", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Mar 3, 2026", type: "past", scope: "State · Statewide · Primary",
+    office: "Democratic Primary — Governor",
+    note: "Love won outright. The Republican primary for governor was not held at all — Sanders was unopposed and did not appear on the primary ballot.",
+    candidates: [
+      { name: "Fredrick \"Fred\" Love", party: "D", winner: true, positions: ["Won 81.03%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Supha Xayprasith-Mays", party: "D", winner: false, positions: ["Took 18.97%", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Mar 3, 2026", type: "past", scope: "State · Statewide · Primary",
+    office: "Republican Primary — Commissioner of State Lands",
+    note: "The widest margin of any contested statewide race this cycle. ⚠ The losing candidate here, Christian Olson, is NOT the Libertarian nominee Christopher Olson — they are different people.",
+    candidates: [
+      { name: "Cole Jester", party: "R", winner: true, positions: ["Won 72.20%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Christian Olson", party: "R", winner: false, positions: ["Took 27.80%", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Mar 3, 2026", type: "past", scope: "Judicial · Statewide · nonpartisan",
+    office: "Arkansas Supreme Court — Associate Justice",
+    note: "⚠ ALREADY DECIDED. Arkansas holds NONPARTISAN judicial elections at the March primary date, and a candidate clearing 50% wins outright with no November runoff. Bronni did, so this seat is settled. A second associate-justice election was CANCELLED because J. Cody Hiland was unopposed. [Verify — the official results feed and arcourts.gov disagree on which position number each justice holds, so no position number is stated here; the winners and margins are firm.]",
+    candidates: [
+      { name: "Nick Bronni", party: "I", winner: true, positions: ["Won outright with 54.71% of 397,272 votes", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "John Adams", party: "I", winner: false, positions: ["Took 45.29%", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Mar 3, 2026", type: "past", scope: "Judicial · Court of Appeals District 3 · nonpartisan",
+    office: "Arkansas Court of Appeals — District 3, Position 1 (open seat)",
+    note: "⚠ ALREADY DECIDED at the March nonpartisan election — Capp cleared 50%, so there is no November runoff. Only voters in Court of Appeals District 3 voted in this race. A separate Court of Appeals election (District 2, Position 1) was CANCELLED because incumbent Bart Virden was unopposed.",
+    candidates: [
+      { name: "Sarah Capp", party: "I", winner: true, positions: ["Won outright with 62.95%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Brandon Carter", party: "I", winner: false, positions: ["Took 37.05%", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+
+  // PAST — prior general elections
+  {
+    date: "Nov 5, 2024", type: "past", scope: "Federal · Statewide",
+    office: "President — Arkansas (2024)",
+    note: "⚠ Arkansas had NO U.S. Senate race in 2024 — confirmed against the official 2024 general contest list. John Boozman's Class 3 seat was last up in 2022 and is next up in 2028.",
+    candidates: [
+      { name: "Donald Trump", party: "R", winner: true, positions: ["Won 64.20%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Kamala Harris", party: "D", winner: false, positions: ["Took 33.56% — a margin of 30.64 points", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 5, 2024", type: "past", scope: "State · Statewide · Special",
+    office: "State Treasurer — Arkansas (2024 SPECIAL)",
+    note: "A special election to fill the unexpired term after Treasurer Mark Lowery's death — which is why Thurston is seeking his first FULL term in 2026.",
+    candidates: [
+      { name: "John Thurston", party: "R", winner: true, positions: ["Won 65.37%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "John Pagan", party: "D", winner: false, positions: ["Took 30.32%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Michael Pakko", party: "L", winner: false, positions: ["Took 4.31%", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 8, 2022", type: "past", scope: "State · Statewide",
+    office: "Governor — Arkansas (2022)",
+    note: "Sanders' first election, won by 27.8 points.",
+    candidates: [
+      { name: "Sarah Huckabee Sanders", party: "R", winner: true, positions: ["Won 62.96%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Chris Jones", party: "D", winner: false, positions: ["Took 35.20%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Ricky Dale Harrington Jr.", party: "L", winner: false, positions: ["Took 1.84%", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 8, 2022", type: "past", scope: "Federal · Statewide",
+    office: "U.S. Senate — Arkansas (2022)",
+    note: "John Boozman's Class 3 seat — the OTHER Arkansas Senate seat, not the one on the 2026 ballot. Next up in 2028.",
+    candidates: [
+      { name: "John Boozman", party: "R", winner: true, positions: ["Won 65.73%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Natalie James", party: "D", winner: false, positions: ["Took 31.09%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Kenneth Cates", party: "L", winner: false, positions: ["Took 3.18%", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 3, 2020", type: "past", scope: "Federal · Statewide",
+    office: "U.S. Senate — Arkansas (2020)",
+    note: "⚠ Cotton's last election, and an unusual one: NO DEMOCRAT WAS ON THE BALLOT — the only such Arkansas U.S. Senate race in modern times. Democrat Josh Mahony announced he was ending his campaign about two hours AFTER the filing deadline closed on Nov 12, 2019. Under Act 648 of 2019 a party may fill such a vacancy only for death, serious illness, moving out of the area, or filing for another office; none applied, so no Democrat could be substituted and Cotton faced only the Libertarian.",
+    candidates: [
+      { name: "Tom Cotton", party: "R", winner: true, positions: ["Won 66.53%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Ricky Dale Harrington Jr.", party: "L", winner: false, positions: ["Took 33.47%", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  }
+];
+
+// ----- (3) U.S. House races by district -----
+// ⚠ NO ARKANSAS SEAT IS OPEN and NO ARKANSAS SEAT IS RATED COMPETITIVE. All four Republican
+// incumbents are in office and on the November ballot; Cook, Sabato and Inside Elections all
+// rate all four Solid/Safe Republican. Three of the four chair something in Washington.
+// ⚠ AR-2 is the least Republican seat (Cook PVI R+8) and the only one with contested primaries
+// in both parties — but a party TARGETING decision is not a rating change. See its note.
+// ⚠ Primary RAW vote totals conflict between election-night and later figures in AR-2 and AR-4;
+// the percentages agree within a rounding point, so only percentages are published.
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — AR District 1",
+    region: "North and northeast Arkansas and the Delta — Jonesboro, Blytheville, Helena-West Helena, Batesville, Paragould, plus Lonoke County and a small eastern slice of Pulaski County (Cook PVI R+23)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Rick Crawford (R), in office since 2011 and chairman of the House Intelligence Committee since January 2025, seeks a ninth term. Both major-party primaries were CANCELLED for lack of opposition — Crawford and Democrat Terri Green were each unopposed. Libertarian Steve Parsons makes it a three-way race. At Cook PVI R+23 this is the most Republican district in Arkansas and the 18th most Republican in the country; Crawford won by nearly 49 points in 2024. Solid/Safe R by Cook (Mar 13, 2025), Inside Elections (Mar 7, 2025), Sabato (Apr 10, 2025) and Decision Desk HQ (Jul 14, 2026).",
+        candidates: [
+          { name: "Rick Crawford (incumbent)", party: "R", winner: false,
+            positions: [
+              "Farm Bill and agriculture — Arkansas's only member of House Agriculture; passed two of his own amendments into the 2026 Farm Bill (House record)",
+              "Intelligence and counterintelligence — convened the 2026 Worldwide Threats hearing and a hearing on foreign influence at the state level (committee record)",
+              "Backed the 2025 reconciliation Medicaid changes as better targeting those who most need coverage (his stated position)"
+            ],
+            differentiators: [
+              "Chairs the House Permanent Select Committee on Intelligence since Jan 2025 — one of the most senior posts any Arkansan holds",
+              "Army veteran (explosive ordnance disposal) and a former television news and agriculture broadcaster",
+              "$1,031,631 on hand (FEC Q2 2026, period ending June 30); endorsed by Donald Trump on Nov 3, 2025"
+            ],
+            supporters: [
+              "A committee gavel gives a small, rural district leverage far beyond its size",
+              "His Farm Bill amendments are concrete, checkable deliverables for Delta agriculture",
+              "He voted for the Epstein Files Transparency Act, which passed 427–1"
+            ],
+            opponents: [
+              "His Medicaid votes land hardest at home — eight of the eleven Arkansas rural hospitals running deficits above 20% of patient-care costs are in this district, and federal regulators rejected the state's Medicaid expansion renewal in July 2026 (Arkansas Advocate commentary, May 2025) [Verify]",
+              "An Intelligence chairmanship pulls a member's attention toward Washington and away from the district",
+              "He signed the December 2020 amicus brief supporting the failed Texas suit challenging the 2020 election result"
+            ] },
+          { name: "Terri Yarbrough Green", party: "D", winner: false,
+            positions: [
+              "Accessible, affordable health care and maternity care (campaign site)",
+              "Get dark money out of politics; free, fair and transparent elections (campaign site)",
+              "Economic populism — family farms over monopolies, a higher minimum wage, rural broadband (campaign site)"
+            ],
+            differentiators: [
+              "Board-certified pathologist and laboratory medical director, decades serving rural hospitals; lives in Paragould",
+              "BA Baylor, MD UT Health Science Center San Antonio; a first-time candidate who entered after no other Democrat had filed",
+              "$11,958 on hand (FEC Q2 2026) — about 1% of the incumbent's; no endorsements could be sourced"
+            ],
+            supporters: [
+              "A rural-hospital physician is a credible messenger in the district carrying the state's most financially distressed hospitals",
+              "She gives voters here a contested race the district very nearly did not have",
+              "Her anti-dark-money and election-transparency pitch is aimed at voters in both parties"
+            ],
+            opponents: [
+              "[Verify — no documented criticism of Green exists in Arkansas reporting; these are structural facts, not sourced attacks] Crawford won this seat by roughly 49 points in 2024 in an R+23 district",
+              "Under $12,000 on hand against more than $1 million [Verify]",
+              "She has never held elected office and no endorsements are documented [Verify]"
+            ] },
+          { name: "Steve G. Parsons", party: "L", winner: false,
+            positions: [
+              "Cut inflation, reform the Federal Reserve, revisit tariffs and USMCA (campaign site)",
+              "Deregulate both personal conduct and business (campaign site)",
+              "Non-interventionist foreign policy — stop being, in his words, the World Charity and the World Police (campaign site)"
+            ],
+            differentiators: [
+              "PhD economist; 20+ years an adjunct at Washington University teaching Economics of Technology to graduate engineers",
+              "REFUSES all campaign contributions and pledges to donate his entire congressional salary to district charities",
+              "Ran in AR-1 in 2024 and took 3.1%; nominated at the Libertarian Party of Arkansas convention, Feb 20–22, 2026"
+            ],
+            supporters: [
+              "The no-donations and salary-donation pledges are concrete and checkable rather than slogans",
+              "A credentialed economist brings substance to an inflation debate the other candidates argue in generalities",
+              "Voters in a 49-point district deserve a third option on the ballot"
+            ],
+            opponents: [
+              "[Verify — structural; no sourced criticism of Parsons exists] He drew 3.1% in this district in 2024",
+              "Refusing all contributions guarantees he cannot communicate at scale across 31 counties [Verify]",
+              "In a district this lopsided a third line mainly raises spoiler questions rather than contending [Verify]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Crawford won an eighth term by nearly 49 points.",
+        candidates: [
+          { name: "Rick Crawford", party: "R", winner: true, positions: ["Won 72.9%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Rodney Govens", party: "D", winner: false, positions: ["Took 24.0%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Steven Parsons", party: "I", winner: false, positions: ["Took 3.1%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+
+  2: {
+    name: "U.S. House — AR District 2",
+    region: "Central Arkansas — most of Pulaski County including Little Rock, North Little Rock, Jacksonville, Maumelle and Sherwood, plus Cleburne, Conway, Faulkner, Perry, Saline, Van Buren and White counties (Cook PVI R+8)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Arkansas's most-watched House race, and the only district with a contested primary in BOTH parties. French Hill (R), chairman of House Financial Services since January 2025, faces Chris Jones (D), the 2022 Democratic nominee for governor. At Cook PVI R+8 this is the least Republican of the four seats. ⚠ On Aug 5, 2026 the DCCC added AR-2 to a 58-seat national target list and the NRCC publicly dismissed the expansion as unrealistic — but that is a PARTY TARGETING decision, not a rating change. No independent rater has moved this seat: Cook Solid R (Mar 13, 2025), Inside Elections Solid R (Mar 7, 2025), Sabato Safe R (Apr 10, 2025). Only Decision Desk HQ's forecast model differs, at Likely R (Jul 14, 2026). No Democrat has won an Arkansas U.S. House seat since 2012.",
+        candidates: [
+          { name: "French Hill (incumbent)", party: "R", winner: false,
+            positions: [
+              "Taxes and cost of living — the Working Families Tax Cut, no tax on tips and overtime, a senior Social Security deduction (campaign site)",
+              "Financial services — established a federal regulatory framework for stablecoins (House record)",
+              "Border security — backed the Secure the Border Act and Laken Riley Act; authored the Fentanyl Sanctions Act, now law (House record)"
+            ],
+            differentiators: [
+              "Chairs House Financial Services, directing six subcommittees; also sits on House Intelligence",
+              "Career community banker — founded Delta Trust & Banking in Little Rock, later a Regions Bank executive, and was a Deputy Assistant Treasury Secretary under George H.W. Bush",
+              "$2,967,541 on hand (FEC, June 30, 2026) — roughly 15 times his opponent's; endorsed by Trump, Gov. Sanders, Lt. Gov. Rutledge, AG Griffin and both U.S. senators"
+            ],
+            supporters: [
+              "A full-committee gavel over banking and capital markets is real leverage for Little Rock's financial sector",
+              "A working banker legislating on banking — expertise matched to assignment",
+              "He consolidated the district after the 2022 redistricting, winning about 59–60% twice running"
+            ],
+            opponents: [
+              "[Verify — current 2025–26 criticism of Hill from independent Arkansas outlets could not be sourced; the only opposition material located is a DCCC page citing mostly 2017–2019 items and was deliberately not used] His opponent's central charge is that a decade in office has not delivered enough locally",
+              "His own primary challenger took 23%, which Democrats read as soft support [Verify]",
+              "A Financial Services chairmanship invites scrutiny of industry ties [Verify]"
+            ] },
+          { name: "Chris Jones", party: "D", winner: false,
+            positions: [
+              "Jobs and the local economy — fair wages, small business, rural broadband, keeping rural hospitals open (campaign site)",
+              "Families and health — maternal health, addiction recovery, food security, schools (campaign site)",
+              "Democracy and accountability — fair maps, secure and accessible elections (campaign site)"
+            ],
+            differentiators: [
+              "Was the 2022 Democratic nominee for governor, losing to Sarah Huckabee Sanders 35%–63% while CARRYING Pulaski County, this district's population core",
+              "Pine Bluff native; Morehouse (math and physics), MIT master's in nuclear engineering and a PhD in urban planning; described in Arkansas coverage as a pastor and scientist",
+              "$191,398 on hand (FEC, June 30, 2026); endorsed by Pete Buttigieg, who campaigned with him in Little Rock on Juneteenth 2026"
+            ],
+            supporters: [
+              "He has run statewide before and already carried the county that holds most of this district's voters",
+              "The DCCC added AR-2 to its national target list on Aug 5, 2026 — the first time in years national Democrats have contested Arkansas",
+              "He won the Democratic primary with over 92%, so the party is not divided behind him"
+            ],
+            opponents: [
+              "⚠ The poll showing him ahead 46–43 was SPONSORED BY HIS OWN CAMPAIGN (2040 Strategy Group, 660 likely voters, Apr 28–May 8, 2026) — it is a partisan internal, not independent public polling, and it is the only AR-2 poll that exists",
+              "Hill holds roughly a 15-to-1 cash advantage",
+              "He lost this district's counties badly in the 2022 governor's race, and no Democrat has won an Arkansas House seat since 2012"
+            ] }
+        ]
+      },
+      {
+        date: "Mar 3, 2026", type: "past",
+        note: "Both parties held contested primaries — the only Arkansas district where that happened. Neither required the March 31 runoff.",
+        candidates: [
+          { name: "French Hill", party: "R", winner: true, positions: ["Won the Republican primary with about 76.9%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Kelsey McDowell", party: "R", winner: false, positions: ["Took about 23.1%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Chris Jones", party: "D", winner: true, positions: ["Won the Democratic primary with about 92.8%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Grant Huffman", party: "D", winner: false, positions: ["Took about 7.2%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Hill won a fifth term by about 18 points.",
+        candidates: [
+          { name: "French Hill", party: "R", winner: true, positions: ["Won 58.9%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Marcus Jones", party: "D", winner: false, positions: ["Took 41.1%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+
+  3: {
+    name: "U.S. House — AR District 3",
+    region: "Northwest Arkansas — six whole counties (Benton, Carroll, Crawford, Madison, Sebastian, Washington): Fayetteville, Springdale, Rogers, Bentonville and most of Fort Smith (Cook PVI R+13)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Steve Womack (R), in office since 2011, seeks a ninth term. Both primaries were CANCELLED — the only other Democrat, Diana Lawrence, asked to withdraw in November 2025, leaving Robb Ryerse unopposed. ⚠ Ryerse challenged this same incumbent in the 2018 REPUBLICAN primary as a self-described progressive Republican and now runs as a Democrat, describing it as a genuine change of belief. Womack chairs the Transportation-Housing-Urban Development Appropriations subcommittee — a subcommittee, not a full committee. Libertarian Bobby Wilson, the 2024 third-party nominee, is also on the ballot. Solid/Safe R by all four raters; Womack won by 32 points in 2024.",
+        candidates: [
+          { name: "Steve Womack (incumbent)", party: "R", winner: false,
+            positions: [
+              "Chairs Transportation-Housing-Urban Development Appropriations, marking up the FY26 and FY27 bills (committee record)",
+              "Fiscal policy — a former House Budget Committee chairman, also on Defense and Financial Services Appropriations (House record)",
+              "Military — chairs the Board of Visitors at West Point (House record)"
+            ],
+            differentiators: [
+              "Retired Colonel with roughly 30 years in the Arkansas Army National Guard",
+              "Mayor of Rogers for 12 years — a local-executive background unique in the Arkansas delegation",
+              "$2,404,276 on hand (FEC Q2 2026); endorsed by Donald Trump on Nov 2, 2025"
+            ],
+            supporters: [
+              "An appropriations gavel directs transportation and housing money toward the state's fastest-growing region",
+              "A mayor-turned-congressman with hands-on experience of what local government actually needs",
+              "He voted to certify the 2020 election, backed the January 6 commission, and declined to join the Texas election lawsuit his AR-1 colleague signed"
+            ],
+            opponents: [
+              "Presiding over the House, he ruled out of order a unanimous-consent request to immediately take up the Epstein Files Transparency Act and then missed the vote itself — he cited a family member's serious medical issue and said he would have voted yes; the bill passed 427–1",
+              "His challenger's central charge is that he has stopped holding in-person town halls; he did hold telephone and online town halls in Dec 2025 and Mar 2026 [Verify — whether he has held IN-PERSON town halls in 2025–26 could not be confirmed; treat as an attributed campaign assertion]",
+              "He drew a primary challenge from his right in 2024 [Verify]"
+            ] },
+          { name: "Robb Ryerse", party: "D", winner: false,
+            positions: [
+              "Affordability and cost of living — his lead theme, citing food, health care and housing prices (campaign site)",
+              "A progressive vision of faith explicitly opposed to Christian Nationalism (campaign site)",
+              "LGBTQ+ rights, abortion access and gender-affirming care [Verify — attributed to a Newsweek interview, not his own site, whose issues content is values-level]"
+            ],
+            differentiators: [
+              "⚠ A documented party switch — he challenged this same incumbent in the 2018 REPUBLICAN primary as a progressive Republican, backed by Vote Common Good, and now runs as a Democrat",
+              "Pastor for 20 years in Springdale, co-founded Vintage Fellowship church; now Director of Development for a Fayetteville organization working to end chronic homelessness",
+              "$5,951 on hand (FEC Q2 2026); takes no corporate PAC money. No endorsements could be sourced — his site's endorsements section was still placeholder text"
+            ],
+            supporters: [
+              "A pastor running on affordability and against Christian Nationalism is an unusual profile for northwest Arkansas",
+              "He has contested this district before and knows its politics from inside both parties",
+              "The no-corporate-PAC pledge and a promise of district-wide town halls draw a direct contrast with the incumbent's accessibility record"
+            ],
+            opponents: [
+              "A candidate who sought the REPUBLICAN nomination for this seat in 2018 and now seeks it as a Democrat invites questions about conviction — a charge he addresses directly [Verify — his 2018 primary margin could not be sourced; do not assume it was close]",
+              "Under $6,000 on hand against roughly $2.4 million [Verify]",
+              "No endorsements are documented, and Womack won by 32 points in 2024 [Verify]"
+            ] },
+          { name: "Bobby Wilson", party: "L", winner: false,
+            positions: [
+              "Inflation is the one problem the federal government should be tackling; leave most else to local government [Verify — several positions trace to a Ballotpedia candidate survey rather than a primary source]",
+              "Hard money and fiscal conservatism [Verify]",
+              "Federalism — his slogan is \"Fiscally Conservative, Technologically Progressive\" [Verify]"
+            ],
+            differentiators: [
+              "A repeat candidate — the AR-3 third-party nominee in 2024 with 4.4%, and he shared a televised three-way debate stage with Womack",
+              "Management and business background; moved to Bentonville from Colorado about a decade ago",
+              "The pro-technology framing is distinctive in a district anchored by Walmart and northwest Arkansas tech employment. No reportable fundraising located [Verify]"
+            ],
+            supporters: [
+              "He has actually debated the incumbent on television, which the Democratic nominee has not",
+              "A consistent, repeat presence rather than a one-cycle protest candidacy",
+              "His federalism pitch appeals to voters who want less from Washington generally"
+            ],
+            opponents: [
+              "[Verify — structural; no sourced criticism of Wilson exists] He drew 4.4% here in 2024",
+              "He has no campaign website, only a Facebook page, and no reportable fundraising [Verify]",
+              "In a 32-point district a third line functions as a protest vote [Verify]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Womack won an eighth term by 32 points.",
+        candidates: [
+          { name: "Steve Womack", party: "R", winner: true, positions: ["Won 63.8%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Caitlin Draper", party: "D", winner: false, positions: ["Took 31.8%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Bobby Wilson", party: "I", winner: false, positions: ["Took 4.4%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+
+  4: {
+    name: "U.S. House — AR District 4",
+    region: "South and southwest Arkansas — geographically the largest district: Pine Bluff, Hot Springs, Texarkana, El Dorado, Camden, Magnolia, Hope and Russellville, plus southern Pulaski County (Cook PVI R+20)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Bruce Westerman (R), chairman of House Natural Resources since 2023 and the only licensed forester in Congress, seeks a sixth term. He was unopposed in the primary; Democrat James \"Rus\" Russell III won a close two-way primary 53%–47%. Westerman won by nearly 46 points in 2024 and holds one of the largest cash advantages over an opponent anywhere in the country — about $4.67 million to $907. Solid/Safe R by all four raters.",
+        candidates: [
+          { name: "Bruce Westerman (incumbent)", party: "R", winner: false,
+            positions: [
+              "Forest management and wildfire — lead sponsor, with Scott Peters (D-CA), of the Fix Our Forests Act (House record)",
+              "Permitting reform and energy, aimed at lowering electricity and gas prices (House record)",
+              "Public lands — pressed the BLM to halt its Conservation and Landscape Health rule (committee record)"
+            ],
+            differentiators: [
+              "Chairs House Natural Resources and is the ONLY licensed forester in Congress — a Yale master's in forestry plus a University of Arkansas engineering degree and 22 years at Mid-South Engineering",
+              "Was the first Republican Arkansas House majority leader since Reconstruction before winning Tom Cotton's old seat in 2014",
+              "$4,668,447 on hand (FEC, June 30, 2026) — the largest in the delegation; endorsed by Donald Trump"
+            ],
+            supporters: [
+              "A credentialed forester chairing the committee with jurisdiction over forests is a rare match of expertise to gavel",
+              "The Fix Our Forests Act passed the House 279–141 with 64 Democrats — a genuinely bipartisan result",
+              "His permitting-reform focus targets utility costs, which is a live issue for south Arkansas households"
+            ],
+            opponents: [
+              "In May 2025 Rep. Yassamin Ansari (D-AZ), a member of his own committee, alleged impropriety over energy and mining stock purchases made about two months before the committee advanced a bill cutting public-land royalty rates (Arkansas Times, May 2025). ⚠ His office said the purchases were made independently by his broker and that on learning of them he directed a divestment of individual stocks back into a fund",
+              "⚠ Two figures circulate — Ansari alleged \"more than $1.6 million\" in trades, while disclosure-based analysis puts the energy and mineral holdings in a $14,000–$210,000 bracket range. The disclosure range is the sourced figure; the $1.6M is her allegation [Verify]",
+              "The Fix Our Forests Act still is NOT law more than 18 months after House passage — the Senate companion has not advanced past a May 2025 hearing"
+            ] },
+          { name: "James \"Rus\" Russell III", party: "D", winner: false,
+            positions: [
+              "Health care and mental health — affordable access, prescription drug cost reform, mental health treatment policy (campaign site)",
+              "Workers' rights and economic fairness (campaign site)",
+              "Government reform — anti-corruption and campaign finance reform; supports Second Amendment rights alongside what he calls common-sense reform (campaign site)"
+            ],
+            differentiators: [
+              "He and his wife have owned and operated an outpatient mental health practice in Little Rock since 2014, serving patients statewide",
+              "Family farming roots in Lafayette County dating to the 1860s",
+              "⚠ $907 on hand (FEC, June 30, 2026). He launched a 2026 U.S. SENATE campaign against Tom Cotton in Aug 2025 and then switched to this House race; residual Senate-era content still sits on his campaign site. His site claims several endorsements — all self-reported and none independently corroborated [Verify]"
+            ],
+            supporters: [
+              "A practicing mental-health provider brings direct clinical experience to health policy in a district with deep rural access gaps",
+              "Multigenerational south-Arkansas roots in a district where that still matters",
+              "He won a genuinely contested primary rather than being handed the nomination"
+            ],
+            opponents: [
+              "[Verify — no documented criticism of Russell exists in credible reporting; these are structural facts] $907 on hand against roughly $4.67 million — a ratio of more than 5,000 to 1",
+              "Switching from a Senate bid to a House bid mid-cycle invites questions about focus [Verify]",
+              "R+20, and Westerman carried the district by nearly 46 points in 2024 [Verify]"
+            ] }
+        ]
+      },
+      {
+        date: "Mar 3, 2026", type: "past",
+        note: "The Republican primary was cancelled — Westerman was unopposed. Russell won the two-way Democratic primary without a runoff.",
+        candidates: [
+          { name: "James \"Rus\" Russell III", party: "D", winner: true, positions: ["Won the Democratic primary with 53.0%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Ryan O'Donnell", party: "D", winner: false, positions: ["Took 47.0%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Westerman won a fifth term by nearly 46 points.",
+        candidates: [
+          { name: "Bruce Westerman", party: "R", winner: true, positions: ["Won 72.9%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Risie Howard", party: "D", winner: false, positions: ["Took 27.1%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  }
+};
+
+const SITE_META = { name: "Arkansas Elections Hub", lastUpdated: "August 7, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — Arkansas county-level down-ballot research is the next phase.
+// Arkansas counties elect sheriffs, county judges, circuit and county clerks, assessors and
+// quorum courts, and its CIRCUIT judgeships run nonpartisan with two races going to November
+// runoffs in 2026 — those runoffs are the natural first LOCAL_RACES target here.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Arkansas has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them,
+  // otherwise a district with no plurality county is unreachable from the map.
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const AR_STATE_FIPS = "05";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#armap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(AR_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Hartford ----
+  drawCapital(g, projection, { name: "Little Rock", lng: -92.2896, lat: 34.7465 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in AR";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our Arkansas dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>
