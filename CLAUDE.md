@@ -690,6 +690,8 @@ time-sensitive calendar, and the incumbent-status sweep.
    map is still the hard blocker), **AL** (fully researched and banked below — build it AFTER Aug 12, once the Aug 11
    special primary and independent qualifying both close, and ONLY off the 2023 legislature map), then **MI**
    (its Senate primary was called Aug 5 and Stevens CONCEDED — only certification still gates it), then **WI/MN/MO**.
+   ⚠ **NEVADA is research-COMPLETE and build-ready (see its banked section) — do that first. OREGON needs
+   only two targeted agents: Governor/Senate candidate detail, and House positions+voices.**
    ⚠ **MO carries a redistricting risk** — it was one of the 2025–26 mid-decade redraw states, so answer "which map
    governs 2026?" from primary sources before deriving anything (lesson #13). WI and MN both held Aug 11 primaries.
    ⚠ **MI is NOT ready.** Its primary was Aug 4, 2026 and as of Aug 5 the **Democratic U.S. Senate primary was still
@@ -1158,6 +1160,202 @@ time-sensitive calendar, and the incumbent-status sweep.
      rendered Arkansas candidate-filing data.** Had it read numbers off that page, Arkansas filings would have been
      published as Nebraska finance data. It discarded the tab and re-ran in a fresh, verified tab. **When running
      concurrent state research, verify the tab's actual origin before reading any figure off it.**
+
+   ### ⏸ NEVADA — RESEARCH COMPLETE Aug 7, 2026, NOT YET BUILT. Everything needed is below.
+   Map, U.S. House (with voices), statewide field, Governor, the 13 down-ballot candidates (with
+   positions, differentiators and voices) and history are ALL verified. **There is no research blocker
+   left — this is a build-only task.** It was not built because the session ran out of room after
+   shipping four states; the next run should be able to assemble it directly from these notes.
+   ⚠ ONE OPEN ITEM BEFORE PUBLISHING: **a possible FOURTH Lieutenant Governor candidate, Cornelius D.
+   Jones (No Political Party)** — listed in the GENERAL field by The Nevada Independent's 2026 voter
+   guide (describing him as a Navy veteran of 18 years), by Wikipedia's LG race page, and by
+   Ballotpedia, but NOT found on the 7/29/2026 certified list by the statewide pass. "No Political
+   Party" candidates DO appear on Nevada certified lists. **Re-check the certified PDF before carding
+   the LG race as a three-way; note him with [Verify] rather than omitting silently.**
+   - **Map: SB 1 (2021)** — ⚠ NOT AB 1; the briefing was wrong and the researcher corrected it against two
+     sources. Signed Nov 16, 2021. No mid-decade redraw (it was never on the call for Lombardo's 2025
+     special session; an R governor plus a D legislature blocks it structurally). *Koenig v. Nevada*
+     dismissed with prejudice June 2022. A redistricting-commission amendment FAILED to qualify for 2026.
+     CD118/CD119 relationship files byte-identical on every geographic field.
+   - ⚠⚠ **CD-1 IS UNREACHABLE BY PLURALITY — CLARK MUST CARRY `ds:[1,3,4]`.** CD-1 exists only inside
+     Clark, where it loses to CD-3 by **1,541 of 1.55M (0.2%)**. Worse: on the population base the map was
+     ACTUALLY DRAWN ON (AB 450 prisoner reallocation), CD-1 and CD-3 are **exactly tied at 776,153** —
+     Clark's plurality is genuinely undefined. Verified in-session: plurality-only routing hides CD-1;
+     `ds:[1,3,4]` makes all four reachable. **Never route Clark by plurality alone.**
+   - **Splits (4):** Clark `ds:[1,3,4]` · Churchill `[2,4]` · Lincoln `[2,4]` · Lyon `[2,4]`.
+     ⚠ **Washoe is NOT split** (all 486,492 in CD-2). **No zero-population parts** — the smallest is
+     Churchill/CD-4 at 1 person, genuinely inhabited, retained. All 17 names match us-atlas;
+     **Carson City is 32510 and there is NO 32025** (Ormsby County dissolved into it).
+   - ⚠ **The per-district deviation looks wrong (0.565% range) and is NOT an error.** Nevada drew on an
+     AB 450 (2019) base reallocating incarcerated people to pre-incarceration addresses; Census tabulates
+     as-enumerated. Same lines, two bases. The Legislative Counsel Bureau's own report shows the enacted
+     plan at a **1-person** range. Urban CD-1/CD-3 lose and prison-hosting CD-2/CD-4 gain — the direction
+     confirms the explanation.
+   - ⚠ **BAF trap fired (6th state):** `BlockAssign_ST32_NV.zip` is dated Feb 2021, nine months before
+     enactment. It would have put **all 9,080 White Pine residents in CD-4 instead of CD-2** and missed
+     two splits entirely.
+   - **NO U.S. SENATE RACE** — confirmed three ways (absent from the certified list AND from the primary
+     results; Cortez Masto next up 2028, Rosen 2030). **Do not publish one.** Up: Governor, Lt Governor
+     (**elected SEPARATELY** — its own primary and its own ballot line, NOT a ticket), AG, SoS, Treasurer,
+     Controller, and two Supreme Court seats.
+   - ⚠ **"NONE OF THESE CANDIDATES" is a binding Nevada ballot line and needs explaining.** NRS 293.269:
+     it appears in STATEWIDE races only — confirmed empirically, present in 8 statewide primaries and in
+     ZERO of the 7 House primaries. **NRS 293.269(2): NOTC can finish FIRST and still not win** — the
+     leading named candidate takes the office. **In the 2024 U.S. Senate race it took 3.03%, MORE than the
+     1.64-point margin of victory.** ⚠ Both Supreme Court justices are unopposed, so **NOTC is the only
+     alternative on those two lines** (2022 precedent: NOTC drew 24.11% and 25.49%).
+   - ⚠ **Supreme Court: 2 seats (Pickering Seat B, Herndon Seat D), both unopposed. NO Court of Appeals
+     seat** — all three departments expire 2028. **The briefing's premise about primary thresholds was
+     WRONG:** NRS 293.260 §5 splits them — a nonpartisan JUDICIAL majority winner becomes the only nominee
+     and STILL appears in November; only OTHER nonpartisan offices are elected outright at the primary.
+   - **Ballot questions: exactly TWO, both SECOND-ROUND initiated amendments** — Questions 6 (abortion
+     rights; 2024: 64.36% yes) and 7 (voter ID; 2024: 73.23% yes), which keep their 2024 numbers and
+     wording because Art. 19 §2(4) requires resubmission "in the same manner." ⚠ **The briefing's premise
+     was wrong:** the two-election rule applies to INITIATED amendments (Art. 19 §2(4) = two popular
+     votes), NOT to legislative referrals (Art. 16 §1 = two Legislatures, one popular vote). No
+     legislative referral is on the ballot and no new initiative qualified. ⚠ The 2026 Ballot Question
+     Guide is UNPUBLISHED — do not print Ballotpedia's invented titles as official.
+   - **THE MARQUEE: Gov. Joe Lombardo (R) vs. AG Aaron Ford (D)** — a sitting governor against a sitting
+     statewide officeholder; Lombardo won 2022 by 1.51 points. Sabato **Leans Republican**, issued May 1,
+     2025 and never changed (proved by parsing all 47 tables of their rating-change log — Nevada appears
+     zero times). Cook Toss Up [Verify — no issuance date sourceable]. Inside Elections unavailable.
+     ⚠⚠ **MONEY TRAP:** Ford's widely-quoted **"$3.7M" is a campaign-supplied COMBINED campaign+PAC
+     figure.** His committee's official Line 13 balance is **$2,627,641.17**; Lombardo's is
+     **$9,197,364.58**, both as of June 30, 2026 (AURORA C&E Report #2). Publishing $3.7M beside $9.2M
+     compares a combined figure to a committee-only one and understates the gap. Use the two Line 13
+     figures head-to-head and show PAC money on a separate line (Better Nevada + Nevada Way raised
+     $13,995,302.74; Forward Nevada $1,166,179.23). ⚠ **PAC cash on hand CANNOT be sourced — Nevada's
+     group C&E form has no such line at all.** That is structural, not a research gap.
+   - **NV-2 IS AN OPEN SEAT** — Amodei announced his retirement Feb 6, 2026 and 27 candidates filed.
+     Trump's late endorsement of **David Flippo** beat the establishment pick, Settelmeyer. ⚠ **Amodei
+     still refuses to endorse Flippo** (Aug 5–7, 2026 — the freshest and most consequential NV-2 fact;
+     recheck immediately before publishing). ⚠ There was **NO Democrat on the 2024 NV-2 ballot**, so 2024
+     is not a usable D-vs-R baseline.
+   - **NV-3 is the marquee House race** — Susie Lee (D) vs. Marty O'Donnell (R), the Halo and Destiny
+     composer, who self-funded $3M. Decided by under four points in each of the last two cycles; Cook PVI
+     **D+1**, the most evenly divided in the state; Trump carried it in 2024 while Lee won it.
+   - ⚠ **NV-4: Whipple's own party's Nye County Central Committee formally called on him to WITHDRAW**
+     (Dec 13, 2025) over a residency allegation. He did not, and remains the certified nominee. He has NO
+     Trump and NO Lombardo endorsement and is NOT in the NRCC MAGA Majority program.
+   - **The ballot is LOCKED:** NRS 293.165(4) — no change after 5 p.m. on the fourth Friday in July
+     (**July 24, 2026**, passed). Under §3(b) a post-primary vacancy may be filled ONLY for death or
+     adjudicated incompetency; for a plain withdrawal the name stays on the ballot and the office is
+     vacant if that candidate wins.
+   - **ACCESS:** ⚠ **nvsos.gov is behind Imperva/Incapsula** — curl and WebFetch return a ~1KB challenge
+     page at **HTTP 200**, a silent failure that looks like success. **Only a real browser gets through.**
+     AURORA is NOT at `aurora.nvsos.gov` (NXDOMAIN) — it lives under `www.nvsos.gov/SOSCandidateServices/`.
+     The certified candidate list is a PDF needing in-browser fetch plus FlateDecode inflation and
+     ToUnicode CMap parsing. ⚠ **The SoS's own statewide summary page OMITS the Democratic AG primary
+     entirely** — it was reconstructed by summing all 17 county pages (Cannizzaro 60.65% / Conine 35.16%);
+     label that as a summation, not as a published figure.
+   - ⚠ **FEC `weball26` cautions:** a **phantom Jacky Rosen NV-03 House row** whose financials are
+     byte-identical to her Senate committee (she is a sitting senator, not a House candidate);
+     O'Donnell has TWO candidate IDs with identical totals (count once); Ronda Kennedy appears under both
+     NV-3 and NV-4; and candidate-ID stems reflect a PRIOR cycle's district — always filter on the
+     district field.
+   - **OMIT — failed to qualify, not on the SoS certified list:** Anthony Thomas Jr., Victor Willert and
+     J.E. Houston (NV-1); David Anderson and P. Dean Johnson (NV-3); Gary Steele (NV-4); Doug Miller
+     (R, NV-2). Also **Zach Conine filed for AG but LOST the primary — do not card him**, and Sharron
+     Angle lost the SoS primary and is not on the November ballot.
+
+   ### ⏸ OREGON — RESEARCH BANKED Aug 7, 2026. NOT SHIPPED: Governor/Senate detail + House voices.
+   Map, ratings, PVI, House field, money and the full statewide STRUCTURE are verified. **Blockers:
+   (a) Governor and Senate positions, cash and endorsements were never obtained — their voices are
+   structural-only; (b) positions and voices for the 13 major-party House candidates.** Two targeted
+   agents close both.
+   - **Map: SB 881 (2021), 6 districts** (Oregon gained a sixth seat in the 2020 apportionment).
+     *Clarno v. Fagan* dismissed Nov 24, 2021. **No mid-decade redraw** — Kotek's office said in June 2026
+     it was not considering one, and HB 3537 died in House Rules and concerned STATE-LEGISLATIVE criteria
+     for 2031+ anyway. CD118/CD119 identical. Arithmetic closes exactly, max deviation 3 people.
+   - ⚠ **BAF trap fired (6th state), and here it would have been catastrophic:** `BlockAssign_ST41_OR.zip`
+     is dated **2021-01-25, eight months before SB 881 was signed**, and encodes the obsolete
+     **FIVE-district** map. Discarded.
+   - ⚠ **SIX zero-population boundary slivers found and EXCLUDED from `ds`** (Benton/5, Clackamas/2,
+     Curry/2, Linn/6, Marion/2, Polk/4) — the same trap as Colorado. **Benton, Curry and Polk are
+     therefore NOT split** and take no `ds`. ⚠ Jefferson's CD-5 part holds **20 people / 13 housing
+     units** — genuinely inhabited and retained; it is the record any future de-minimis rule would trip.
+   - **8 counties carry `ds`:** Clackamas `[3,5,6]` · Deschutes `[2,5]` · Douglas `[2,4]` · Jefferson
+     `[2,5]` · Linn `[4,5]` · Marion `[5,6]` · Multnomah `[1,3,5]` · Washington `[1,6]`. All six districts
+     reachable — OR-1 via Washington (422,251) and OR-3 via Multnomah (600,488), both flagged risks that
+     cleared.
+   - ⚠⚠ **ONLY TWO STATEWIDE RACES: Governor and U.S. Senate. ZERO ballot measures qualified.**
+     Secretary of State, Attorney General and Treasurer were all elected in 2024 to terms running to 2028
+     — the 2023 SoS resignation and 2024 appointment do NOT shift that cycle. **No Supreme Court, Court of
+     Appeals or Tax Court seat reaches November.**
+   - ⚠ **WHY THE JUDICIAL AND LABOR SECTIONS ARE EMPTY — explain this, do not leave a blank.**
+     ORS 249.088(1)(b): a candidate for nonpartisan office who wins a MAJORITY at the primary is
+     **ELECTED OUTRIGHT**. All six statewide nonpartisan offices were decided on May 19 and never reach
+     November: **Labor Commissioner — Christina Stephenson re-elected 63.22%**; Supreme Court Pos. 4
+     Garrett 97.37%; Court of Appeals Pos. 1 O'Connor 97.77%, Pos. 9 Kamins 97.70%, Pos. 12 Lagesen
+     97.81%, Pos. 13 Tookey 97.78% — all unopposed incumbents, all marked `**` (Elected) in the certified
+     abstract. ⚠ Judicial candidates file NO policy positions; their pamphlet statements are biography and
+     philosophy only, which is worth saying as the reason that section is short.
+   - **OR-5 is the marquee** — Janelle Bynum (D) unseated Lori Chavez-DeRemer in 2024 by **10,945 votes /
+     2.73 points** (the official Clerk of the House figure; several outlets say "9,600 / 2.5" or "nearly
+     11,000" — use the certified figure). She faces **Patti Adair (R)**, a Deschutes County Commissioner.
+     Bynum **$2,715,860** vs Adair **$135,365** (FEC, 6/30/2026) — roughly 20-to-1.
+   - ⚠ **THE GENUINE OR-5 RATINGS CONFLICT — state it, do not average it away.** **Sabato is the LONE
+     HOLDOUT at Likely Democratic** (set Apr 10, 2025 and NEVER changed — proved by a full-text search of
+     Sabato's WordPress API returning zero OR-5/Bynum hits while OR-4/Salinas correctly returns its change
+     article). Cook moved it **Likely D → Solid D on Jul 16, 2026**; Inside Elections moved it about
+     Dec 5, 2025; DDHQ has it Safe D. **Cook PVI D+4.** Cook's Erin Covey, on the record: "I haven't
+     talked to any Republican in Washington who believes that this is going to be a competitive race."
+   - **Full PVI (2026 release, identical to 2025 — no redistricting):** OR-1 D+20 · OR-2 R+14 · OR-3 D+24
+     · OR-4 D+6 · OR-5 D+4 · OR-6 D+6. **Bynum is on DCCC Frontline** (named Mar 6, 2025) and is the ONLY
+     Oregon Democrat on it. **NO Oregon candidate is in either NRCC program.** ⚠ **"Young Guns" no longer
+     exists for 2026** — the challenger program is now "MAGA Majority."
+   - ⚠⚠ **OREGON HAS FUSION VOTING, and the minor-party field was RESOLVED against ORESTAR:**
+     **OR-4 Justin Filip (Pacific Green)** — a REAL 2026 candidate, filed 07/09/2026 (an earlier pass
+     wrongly guessed 2024 carry-over). **OR-5 Andrea Townsend (Pacific Green)** — filed 07/23/2026, a find
+     in no prior lead list. **OR-6 Andrea Salinas is FUSION** — she filed twice, as Democrat and as
+     Independent, both Qualified. OR-1, OR-2 and OR-3 have no minor-party candidate.
+     **REFUTED:** Christman (OR-1) and Feintech (OR-5) as Libertarians — **NO Libertarian filed for ANY
+     Oregon House seat**, and ⚠ **Feintech is the sitting CHAIR of the Libertarian Party of Oregon**, a
+     party officer mistaken for a candidate (the same error class as Colorado's Allison Spink). **Working
+     Families nominated NO ONE anywhere in the state.** **Jason Faler (OR-6) is NOT qualified** — he holds
+     only a PROSPECTIVE petition, and a statewide search for completed petitions returns zero. If he
+     qualifies his ballot label is **"Nonaffiliated"** — ORS 254.135(3)(d) mandates the word, and a
+     page-summariser claimed otherwise and was wrong.
+   - ⚠ **UNRESOLVED — Chris Beck, OR-2:** the Independent Party's own site lists him among 26 caucus
+     nominees, but the state has no filing for him. Likely paperwork lag — 12 of the 26 IPO nominees are
+     likewise missing filings. **Publish "IPO nominated him, state filing pending" — NOT as fusion.** If
+     he files by Aug 25, OR-2 becomes a second fusion race.
+   - ⚠⚠ **THE OREGON BALLOT IS NOT SET.** Minor-party and nonaffiliated filing closes **5:00:00 pm
+     Aug 25, 2026** (ORS 249.722); withdrawals run through **Aug 28** (ORS 249.180); fusion label
+     selection is due **Sept 3** (ORS 254.135(3)(b)). Filings were still arriving on Aug 6. **Re-pull the
+     single ORESTAR query on Aug 26 for the settled field, and dateline anything published before then.**
+   - **ACCESS:** ⚠ `results.oregonvotes.gov` **IS RETIRED** — every URL 302s to a page with no results
+     archive. The certified abstract was found via Wikipedia's RAW WIKITEXT citation URL, pointing at
+     `records.sos.state.or.us/ORSOSWebDrawer/Record/16180585`. ⚠ **ORESTAR sits behind an F5/TSPD wall**
+     that returns a JavaScript stub at **HTTP 200**, and it **requires an `OWASP_CSRFTOKEN` read from the
+     LIVE form — without it, queries return EMPTY RESULT SETS THAT LOOK LIKE GENUINE ZEROES.** An agent
+     hit exactly that and caught it only because a party sweep returned 0 for Pacific Green, which it knew
+     was nonzero. **Always sanity-check an ORESTAR sweep against a known-nonzero query.**
+   - ⚠ **`lpo.org` IS THE LIBERTARIAN PARTY OF *OHIO*, NOT OREGON** — it lists Ohio House districts and an
+     Ohio PO box. Oregon's affiliate is **`lporegon.org`**. Also: the `gp.org/pgp_*_nominating_convention`
+     pages are **2022**, undated in search results and easy to mistake for 2026; live 2026 Pacific Green
+     material is on `pacificgreens.org`.
+
+   ### ⚠⚠ SITE-WIDE ACCESS CORRECTION, Aug 7, 2026 — COOK AND INSIDE ELECTIONS ARE **NOT** BLOCKED
+   This project has assumed all cycle that cookpolitical.com and insideelections.com return 403, and has
+   been routing every rating through secondary reporting with a [Verify] marker. **That assumption is
+   wrong**, and a large batch of existing markers can be resolved firsthand.
+   * **Cook:** per-race pages (`cookpolitical.com/house/race/<id>`) serve **HTTP 200 to plain curl with a
+     Chrome User-Agent** and render an explicit old→new rating transition widget, a "Last updated" date,
+     the PVI, and a district-composition line. Only Cook's NARRATIVE analysis is paywalled (it renders as
+     lorem ipsum).
+   * **Inside Elections:** `insideelections.com/ratings/house` embeds **all 435 races as JSON in the page
+     source**, including `previous_rating` and `shift` fields — better than any secondary source.
+   * **Cook PVI:** the district map/list page's Datawrapper embed exposes the raw CSV at
+     `datawrapper.dwcdn.net/fejB0/1/dataset.csv`.
+   ⚠ Caveat found the same day: on the STATEWIDE governor/senate ratings pages the tables appear to be
+   JS-injected, so a given state may not appear in static HTML — the per-race and JSON routes above are
+   the reliable ones, with 270toWin carrying Cook's statewide calls as a fallback.
+   ⚠ **Sabato publishes RATINGS as PNG images** — download and read them, or pixel-sample against the
+   legend swatches (both were done successfully today) — **but publishes RATING CHANGES as real HTML**,
+   which is what makes a negative search of their change log conclusive. Sabato lists only COMPETITIVE
+   seats, so "Safe" is inferred by omission. Genuinely unreachable: Decision Desk HQ's own site and
+   racetothewh.com.
 
    ### ⏸ ALABAMA — RESEARCH BANKED Aug 6, 2026; BUILD GATED TO AFTER AUG 12. Do not re-research what is here.
    An Alabama build was worked all the way to a finished, arithmetic-verified county map on Aug 6 and **deliberately
