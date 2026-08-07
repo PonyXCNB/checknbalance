@@ -159,3 +159,32 @@ The [Verify] marker on the site IS the correct output for these.
   transportation and first-spouse threads against The Oregonian and Willamette Week before publishing.
 - **Correction absorbed:** OCC correction of July 17, 2026 — DeSpain outraised Hoyle only in the
   Apr 30–Jun 30 window, not the full quarter.
+
+## 2026-08-07 (later) — NEVADA + OREGON BUILT. Sources pulled at build time.
+
+**Nevada (nv.html):**
+- Official June 9, 2026 primary results — pulled from `silverstateelection.nv.gov/_xml/USandNV.xml`
+  in-browser. Authoritative, per-county, all races. **Do not re-derive; do not scrape that site's
+  `<table>` elements — they are hidden placeholders with fabricated demo numbers.**
+- Full filer roster — nvsos.gov "2026 Candidate Public Media Information" (plain HTML) plus the
+  real-time CertCandList. ⚠ NV-1/NV-3 file with Clark County, not the SoS.
+- Ratings resolved FIRSTHAND (no [Verify] needed): Cook per-race pages, all four dated Feb 6, 2025;
+  Inside Elections embedded JSON, Dec 5, 2025, NV-4 shifted LEFT. Cook PVI 2026 CSV.
+- Governor polling: three R-sponsored summer polls (POS +9, Grassroots Targeting +12, Tarrance +7)
+  vs. earlier independent polls showing a tie. Sponsor labelled on the page.
+- Ballot questions: exactly two (Q6 abortion, Q7 voter ID), both second-round initiated amendments.
+  Open-primaries, independent-redistricting and transgender-athlete measures all FAILED to qualify —
+  confirmed against The Nevada Independent's ballot-measure tracker. Do not re-research this cycle.
+- ⚠ STILL OPEN: the certified-list PDF could not be extracted (see CLAUDE.md access notes). The NPP
+  petition field beyond Danielle Ford is therefore carded per the earlier 7/29/2026 certified-list read.
+  Cornelius D. Jones (LG) carried with an explicit [Verify]. **Re-check before the November push.**
+
+**Oregon (or.html):**
+- Drazan's current office and platform CLOSED — sitting state senator, appointed Oct 2025; launch
+  speech quoted. Source: Oregon Capital Chronicle, Oct 27 2025, read via browser MCP (WebFetch 403s).
+- Merkley and Brock Smith campaign priorities sourced. Everything else was already banked.
+- ⚠ RE-PULL REQUIRED after **Aug 25** (minor-party filing closes) and **Sept 3** (fusion labels).
+
+**Explicit negatives (do not re-research without a trigger):** no Nevada U.S. Senate race in 2026;
+no Nevada Court of Appeals seat; no Oregon statewide ballot measure; no Oregon judicial or labour
+race in November.

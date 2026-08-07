@@ -152,8 +152,9 @@ must appear AFTER its declaration; a top-level TDZ error kills the whole script 
 ### index.html (national)
 ```
 ST / NAME     : fips → abbr / full name             CAP: capitals (currently unused on this page)
-BUILT         : 23 fips -> page (37 nc, 45 sc, 13 ga, 51 va, 24 md, 10 de, 34 nj, 36 ny, 44 ri, 33 nh,
-                09 ct, 50 vt, 23 me, 25 ma, 54 wv, 39 oh, 21 ky, 18 in, 19 ia, 17 il, 28 ms, 05 ar, 31 ne, 35 nm, 08 co)
+BUILT         : 27 fips -> page (37 nc, 45 sc, 13 ga, 51 va, 24 md, 10 de, 34 nj, 36 ny, 44 ri, 33 nh,
+                09 ct, 50 vt, 23 me, 25 ma, 54 wv, 39 oh, 21 ky, 18 in, 19 ia, 17 il, 28 ms, 05 ar, 31 ne, 35 nm, 08 co,
+                41 or, 32 nv)
 PARTIAL       : Set of 3 fips (DC FL AL) → lighter gold tier
 CALLOUTS      : label anchor coords for 9 small states + DC
 destFor(fips) : BUILT[fips] if fully built, else state.html?state=XX
@@ -400,7 +401,7 @@ node tests/run-all.js
 |------|----------------|
 | `tests/parse-check.js` | Every inline `<script>` in every page must compile (syntax errors only) |
 | `tests/smoke-test.js` | Executes each page's scripts top-to-bottom with DOM stubs, cut at the first `d3.` usage; runs state.html for all 10 featured states + controls (TX, CA) + verifies the NC→nc.html redirect. **This is the test that catches declaration-order/TDZ bugs.** |
-| `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config, now 25 pages): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly, **and the map `<XX>_STATE_FIPS` constant matches the COUNTIES prefix** (quirk #10). Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
+| `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config, now 27 pages): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly, **and the map `<XX>_STATE_FIPS` constant matches the COUNTIES prefix** (quirk #10). Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
 | `tests/label-fit.js` | **The national map's `LABEL_ADJ` labels must clear their state borders.** Measures clearance (anchor → nearest boundary) against baked geometry and requires 9.66px = 8.76 glyph half-diagonal + 0.4 stroke + 0.5 simplification slack. Added July 24, 2026 after the FL/LA labels shipped clipping *twice* — both earlier passes hit-tested the anchor POINT, which is inside the state even when the box around it is not. HI carries a documented exempt floor (its island cannot do better) |
 | `tests/fixtures/state-label-rings.json` | Projected, simplified state outlines for the 42 inline-label states (48KB). Built by `tools/gen-label-fixture.js`; records the projection it came from so `label-fit.js` fails loudly instead of checking stale geometry |
 | `tests/lib.js` | Shared helpers: inline-script extraction, the d3 cut, DOM stubs, vm sandbox runner |
@@ -1161,7 +1162,23 @@ time-sensitive calendar, and the incumbent-status sweep.
      published as Nebraska finance data. It discarded the tab and re-ran in a fresh, verified tab. **When running
      concurrent state research, verify the tab's actual origin before reading any figure off it.**
 
-   ### ⏸ NEVADA — RESEARCH COMPLETE Aug 7, 2026, NOT YET BUILT. Everything needed is below.
+   ### ✅ NEVADA — BUILT Aug 7, 2026 (27th state). The notes below are the build record; do not re-research.
+   ⚠ RESOLVED AT BUILD TIME — the down-ballot field was pulled firsthand and is now in nv.html:
+   Lt Gov Anthony (R, inc) / Jauregui (D) / Janine Hansen (IAP) / Cornelius Jones (NPP, [Verify]);
+   AG Cannizzaro (D) / Guzman Fralick (R) — OPEN, Ford is running for governor;
+   SoS Aguilar (D, inc) / Marchant (R) / Barnhill (IAP) / John T. Kennedy (LPN) — a 2022 REMATCH and the
+   sleeper race on the ballot; Treasurer Mathis-Coleman (D) / Drew Johnson (R) — OPEN, Conine term-limited;
+   Controller Matthews (R, inc) / MacDougall (D). House: NV-1 Titus/Buck · NV-2 OPEN Benitez-Thompson/
+   Flippo/Chapman(IAP) · NV-3 Lee/O’Donnell/Kamerath(IAP) · NV-4 Horsford/Whipple/Best(IAP).
+   ⚠ Drew Johnson (R, Treasurer) is the SAME person who lost NV-3 to Susie Lee by ~10,000 votes in 2024
+   and a Clark County Commission race by ~300 votes in 2022 — confirmed, worth carrying.
+   ⚠ Ratings resolved firsthand: Cook NV-1 Likely D · NV-2 Solid R · NV-3 Lean D · NV-4 Likely D, ALL
+   dated Feb 6, 2025 (unchanged since the initial release). Inside Elections NV-1 Lean D · NV-2 Solid R ·
+   NV-3 Lean D · NV-4 Likely D, **moved LEFT from Lean D** (Dec 5, 2025). Cook PVI 2026: D+2 / R+7 / D+1 / D+2.
+   ⚠ Governor polling split by sponsor: three R-commissioned polls this summer had Lombardo +9 (POS,
+   Jun 27–29), +12 (Grassroots Targeting, Jul 8–16) and +7 (Tarrance, Jul 25–29), against earlier
+   independent polling (Emerson, Noble) showing a dead heat. **Always label the sponsor.**
+   The original research notes follow.
    Map, U.S. House (with voices), statewide field, Governor, the 13 down-ballot candidates (with
    positions, differentiators and voices) and history are ALL verified. **There is no research blocker
    left — this is a build-only task.** It was not built because the session ran out of room after
@@ -1258,7 +1275,13 @@ time-sensitive calendar, and the incumbent-status sweep.
      (R, NV-2). Also **Zach Conine filed for AG but LOST the primary — do not card him**, and Sharron
      Angle lost the SoS primary and is not on the November ballot.
 
-   ### ⏸ OREGON — RESEARCH COMPLETE Aug 7, 2026, NOT YET BUILT. Like Nevada, this is a build-only task.
+   ### ✅ OREGON — BUILT Aug 7, 2026 (26th state). The notes below are the build record; do not re-research.
+   ⚠ ONE ITEM CLOSED AT BUILD TIME: Drazan’s current office and platform, which earlier passes could not
+   source. **She is a SITTING STATE SENATOR — county commissioners appointed her to fill a vacancy days
+   before her Oct 27, 2025 launch, which also lets her fundraise during session in a way state
+   representatives cannot.** Her own launch words: “work that matters… schools that succeed… safe streets
+   and lower taxes.” ⚠ Her “35% increase in homelessness” is a CAMPAIGN CLAIM; the sourced federal figure
+   is +19% between 2024 and 2025. The original research notes follow.
    Map, ratings, PVI, House field + positions + voices (all 13), the full statewide structure, **the
    entire U.S. SENATE race AND the entire GOVERNOR race** are verified. **No research blocker remains.**
 
@@ -1560,6 +1583,45 @@ time-sensitive calendar, and the incumbent-status sweep.
      Ohio PO box. Oregon's affiliate is **`lporegon.org`**. Also: the `gp.org/pgp_*_nominating_convention`
      pages are **2022**, undated in search results and easy to mistake for 2026; live 2026 Pacific Green
      material is on `pacificgreens.org`.
+
+   ### ⚠⚠ NEVADA ACCESS — SOLVED Aug 7, 2026. THE STATE PUBLISHES A CLEAN XML RESULTS FEED.
+   Earlier passes recorded nvsos.gov as defeated by Imperva/Incapsula, which is true of **curl and
+   WebFetch** (both get a ~930-byte challenge page at HTTP 200 — a silent failure that looks like
+   success). **A REAL BROWSER GETS THROUGH, and once inside there is a far better source than any page:**
+   * **`https://silverstateelection.nv.gov/_xml/USandNV.xml`** — same-origin `fetch()` from the results
+     site returns ~164KB of XML carrying **every race, every candidate, party, incumbency flag, raw votes,
+     percent, winner flag AND a per-county breakdown.** This is authoritative and completely sidesteps the
+     table-summariser problem. Found via `/_static/_scripts/racesCD2.js`, which names the endpoint.
+     Pages: USCongress · NVOther (governor + all constitutional offices) · Judicial · NVSenate ·
+     NVAssembly · Education · ballot-questions · county-results · vote-turnout.
+   * ⚠⚠ **A REAL TRAP ON THAT PAGE: the rendered HTML contains HIDDEN PLACEHOLDER TABLES carrying FAKE
+     DEMO NUMBERS.** `<table class="race-table noshow" id="table1010">` shows four NV-1 Democrats at
+     26.36 / 25.45 / 24.55 / 23.64 percent on 29 / 28 / 27 / 26 votes. **The real figure is Titus 75.87%
+     on 33,605 votes.** Anyone scraping `<table>` elements off that page would publish invented results.
+     **Use the XML. Never the tables.**
+   * **`https://www.nvsos.gov/SOSCandidateServices/AnonymousAccess/CEFDSearchUU/CertCandList.aspx`** —
+     real-time candidate filing list, filterable by jurisdiction, in-browser. ⚠ Filtering to **"NV SOS"
+     returns statewide + NV-2 + NV-4 ONLY.** NV-1 and NV-3 lie wholly inside Clark County, so **those
+     candidates file with CLARK COUNTY and are absent from the SoS-filtered list.** That absence is a
+     jurisdiction artefact, not a missing candidate.
+   * **Easiest complete roster:** `/elections/election-information/2026-election-information/2026-candidate-public-media-information`
+     is plain HTML listing every congressional and statewide FILER with party.
+   * ⚠⚠ **BUT A FILER LIST IS NOT A BALLOT.** No Political Party candidates must petition on. **The
+     Nevada Independent's 2026 "general" voter guide is a FILER list** — it carries Anthony Thomas Jr.
+     and Victor Willert, both known NON-qualifiers. **Do not treat any news voter guide as the certified
+     field.** Follow the SoS certified list; where it cannot be re-read, say so rather than carding.
+   * ⚠ **STILL UNSOLVED:** the certified-list PDF (`/home/showpublisheddocument/20105/639209364305030000`,
+     251KB, FlateDecode) **403s to WebFetch**, downloads rather than renders in the browser pane, and
+     **in-browser inflation via `DecompressionStream` fails** (blocked before the stream resolves). It
+     needs a route that can get the bytes to disk. Everything else about Nevada is now reachable.
+   ✅ **oregoncapitalchronicle.com 403s to WebFetch but LOADS FINE in the browser MCP** — that is how the
+   Drazan launch article was read. Same pattern as nevadacurrent.com. **Try the browser before recording
+   an outlet as unreachable.**
+   ✅ **Cook and Inside Elections reconfirmed working with plain curl + Chrome UA on Aug 7, 2026**, and the
+   per-race Cook page reliably yields a "Last updated" date via tag-stripping — all four Nevada districts
+   returned Feb 6, 2025, which is how we could state that none has been changed since the initial release.
+   Cook PVI CSV (`datawrapper.dwcdn.net/fejB0/1/dataset.csv`) also still returns 200 and now carries the
+   2026 values with an OPEN-seat marker in the incumbent column.
 
    ### ⚠⚠ SITE-WIDE ACCESS CORRECTION, Aug 7, 2026 — COOK AND INSIDE ELECTIONS ARE **NOT** BLOCKED
    This project has assumed all cycle that cookpolitical.com and insideelections.com return 403, and has

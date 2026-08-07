@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nevada Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every NV election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #nvmap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">MS</div>
+      <div class="brand-text">
+        <span class="brand-name">Nevada Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Nevada <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 17 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">17</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>4</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>10</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Nevada…</div>
+      <svg id="nvmap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>MS Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">August 7, 2026</span><br>
+      Sources: Nevada Secretary of State (certified list of candidates, official June 9, 2026 primary results data file, and AURORA campaign-finance reports), U.S. Census Bureau congressional-district relationship files and 2020 PL 94-171 data, Nevada Revised Statutes, the Nevada Legislative Counsel Bureau, FEC, U.S. House Clerk election statistics, Cook Political Report, Sabato&#39;s Crystal Ball, Inside Elections, The Nevada Independent, Las Vegas Review-Journal, Nevada Current, KOLO, KTNV and Las Vegas Sun.</div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every MS county + its primary US House district(s)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- (1) Counties + primary US House district -----
+// Nevada has 4 U.S. House districts under SB 1 (2021 32nd Special Session), signed
+// Nov 16, 2021. There has been NO mid-decade redraw: it was never on the call for the
+// 2025 special session, and a Republican governor facing a Democratic legislature blocks
+// it structurally. Koenig v. Nevada was dismissed with prejudice in June 2022, and a
+// proposed independent-redistricting amendment FAILED to qualify for the 2026 ballot.
+// Verified structurally: the Census 118th- and 119th-Congress county relationship files
+// for Nevada are byte-identical on every geographic field.
+// ⚠ The Census BLOCK-ASSIGNMENT file for Nevada is dated February 2021 — NINE MONTHS
+// BEFORE SB 1 was enacted — and is wrong. It would have placed all 9,080 White Pine
+// County residents in CD-4 instead of CD-2 and missed two county splits entirely. It was
+// discarded in favour of the county relationship file.
+// ⚠⚠ CLARK COUNTY IS THE REASON THIS PAGE ROUTES BY `ds` AND NOT BY PLURALITY ALONE.
+// NV-1 exists ONLY inside Clark County, where it trails NV-3 by 1,541 people out of
+// 1.55 million — 0.2%. On the population base the map was ACTUALLY DRAWN ON (the AB 450
+// prisoner-reallocation base), NV-1 and NV-3 are EXACTLY TIED at 776,153, so Clark's
+// "plurality" district is genuinely undefined. Routing Clark by plurality alone makes
+// NV-1 unreachable from this map — roughly three quarters of a million Las Vegas voters
+// would never find their own House race. Clark therefore carries ds:[1,3,4].
+// ⚠ Washoe County is NOT split — all 486,492 residents are in NV-2.
+// ⚠ There are no zero-population county parts in Nevada; the smallest, Churchill's
+// NV-4 part, holds one person and is genuinely inhabited, so it is retained.
+// ⚠ Carson City is an independent city with FIPS 32510. There is no FIPS 32025 —
+// Ormsby County was dissolved into Carson City in 1969.
+// ⚠ Nevada's published per-district deviation looks wrong (a 0.565% range) and is NOT an
+// error. Nevada drew on an AB 450 (2019) base that reallocates incarcerated people to
+// their pre-incarceration addresses, while the Census tabulates people where they were
+// counted. Same lines, two population bases. The Legislative Counsel Bureau's own report
+// shows the enacted plan at a ONE-PERSON range — and the direction confirms it, since
+// the urban districts lose and the prison-hosting districts gain.
+const COUNTIES = {
+  "32001":{n:"Churchill",d:2,ds:[2,4]},
+  "32003":{n:"Clark",d:3,ds:[1,3,4]},
+  "32005":{n:"Douglas",d:2},
+  "32007":{n:"Elko",d:2},
+  "32009":{n:"Esmeralda",d:4},
+  "32011":{n:"Eureka",d:2},
+  "32013":{n:"Humboldt",d:2},
+  "32015":{n:"Lander",d:2},
+  "32017":{n:"Lincoln",d:4,ds:[2,4]},
+  "32019":{n:"Lyon",d:2,ds:[2,4]},
+  "32021":{n:"Mineral",d:4},
+  "32023":{n:"Nye",d:4},
+  "32027":{n:"Pershing",d:2},
+  "32029":{n:"Storey",d:2},
+  "32031":{n:"Washoe",d:2},
+  "32033":{n:"White Pine",d:2},
+  "32510":{n:"Carson City",d:2},
+};
+
+// ----- (2) Statewide races -----
+// ⚠ THERE IS NO NEVADA U.S. SENATE RACE IN 2026. Confirmed three ways: the office is
+// absent from the Secretary of State's certified candidate list AND from the June 9
+// primary results. Catherine Cortez Masto is next up in 2028 and Jacky Rosen in 2030.
+// On the 2026 statewide ballot: Governor, Lieutenant Governor (elected SEPARATELY — it
+// has its own primary and its own ballot line, and is NOT a ticket with the Governor),
+// Attorney General, Secretary of State, Treasurer, Controller, two Nevada Supreme Court
+// seats, and exactly two ballot questions.
+// ⚠⚠ "NONE OF THESE CANDIDATES" IS A REAL, BINDING NEVADA BALLOT LINE and voters should
+// understand it. Under NRS 293.269 it appears in STATEWIDE races ONLY — we confirmed
+// this empirically: it was present in all 8 statewide primaries and in ZERO of the 7
+// U.S. House primaries. Under NRS 293.269(2) it can finish FIRST and still not win; the
+// leading NAMED candidate takes the office. It is not a spoiler in the usual sense, but
+// it is not nothing either: in the 2024 U.S. Senate race it took 3.03% — MORE than the
+// 1.64-point margin of victory.
+// ⚠ Both Supreme Court justices are unopposed, which means "None of These Candidates" is
+// the only alternative on those two lines. In 2022 it drew 24.11% and 25.49% in the two
+// unopposed judicial races.
+// ⚠ Nevada's primaries are CLOSED — only registered Democrats and Republicans may vote
+// in them. Nonpartisan voters are the state's single largest bloc, 39% of registered
+// voters as of July 2026, and are shut out of the primary entirely. A ballot measure to
+// open the primaries did NOT qualify for 2026.
+// ⚠ THE BALLOT IS LOCKED. Under NRS 293.165(4) no change is possible after 5 p.m. on the
+// fourth Friday in July — July 24, 2026, which has passed. Under §3(b), a post-primary
+// vacancy may be filled ONLY for death or adjudicated incompetency; for a plain
+// withdrawal the name stays on the ballot and the office is simply vacant if that
+// candidate wins.
+// ⚠⚠ A SOURCING NOTE ON WHO IS ACTUALLY ON THE BALLOT. Candidate guides published by
+// news organisations list every person who FILED, including No Political Party
+// candidates who then failed to gather the petition signatures required to reach the
+// November ballot. This page follows the Secretary of State's CERTIFIED list instead.
+// That is why several names that appear in other 2026 Nevada guides are not carded here.
+const STATEWIDE = [
+  // UPCOMING — 2026 General Election (Nov 3, 2026)
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide",
+    office: "Governor of Nevada",
+    note: "The marquee race, and one of the few in the country where a Republican incumbent is defending a genuinely contested governorship. Gov. Joe Lombardo (R), a former Clark County sheriff, won this office in 2022 by 1.51 points. He faces Attorney General Aaron D. Ford (D), who would be Nevada's first Black governor. Sabato's Crystal Ball rates it LEANS REPUBLICAN — issued May 1, 2025 and never changed since, confirmed by parsing all 47 tables of their rating-change log, in which Nevada appears zero times. Cook has it a TOSS UP [Verify — no issuance date could be sourced]. ⚠ POLLING HAS SPLIT SHARPLY, and who paid matters: three REPUBLICAN-commissioned surveys this summer all showed Lombardo well ahead — Public Opinion Strategies +9 (June 27–29), Grassroots Targeting +12 (July 8–16) and The Tarrance Group +7 (July 25–29) — while earlier independent polling, including Emerson College and Noble Predictive Insights, showed a dead heat. ⚠ MONEY: report the two committee balances head-to-head and keep PAC money separate. Ford's widely quoted \"$3.7 million\" is a campaign-supplied figure COMBINING his committee and an allied PAC; it is not a filing figure.",
+    candidates: [
+      { name: "Joe Lombardo (incumbent)", party: "R", winner: false,
+        positions: [
+          "Taxes: maintains a no-new-taxes pledge and opposes property-tax changes that would raise more revenue (his answers to The Nevada Independent's issues survey)",
+          "Abortion: personally favours a 15-week limit but says voters should decide the constitutional question (same survey)",
+          "Crime: would lower the felony theft threshold from $1,200 to $750, supports capital punishment, and supports a photo voter-ID requirement (same survey)"
+        ],
+        differentiators: [
+          "Clark County sheriff from 2014 to 2022; served in the Army, Army Reserve and Nevada National Guard, then joined Las Vegas Metro in 1988",
+          "Has used the veto as his main lever against a Democratic Legislature — 75 bills in 2023 and 87 in 2025, a record he presents as a feature",
+          "$9,197,364.58 cash on hand (Nevada Secretary of State AURORA, C&E Report #2, as of June 30, 2026). Allied PACs Better Nevada and Nevada Way raised $13,995,302.74 in the same period. ⚠ Nevada's PAC disclosure form has NO cash-on-hand line at all, so PAC cash on hand genuinely cannot be sourced"
+        ],
+        supporters: [
+          "Supporters credit him with delivering on kitchen-table items — roughly $2 billion in education funding, teacher raises, a \"read by grade three\" push, the Campus for Hope homelessness project and housing-access funding — while facing a Legislature controlled by the other party",
+          "His veto record blocked bills supporters saw as costly or overreaching",
+          "A career in law enforcement gives him credibility on public safety in a state where crime polls high"
+        ],
+        opponents: [
+          "Ford's central charge is that costs and housing have not improved on his watch",
+          "The Nevada State Democratic Party ran billboards citing leaked audio in which Lombardo likened his relationship with President Trump to that with a \"commanding officer\"",
+          "⚠ Body-camera footage of a May 15, 2026 traffic stop surfaced in July: he was stopped for a suspected red-light violation, identified himself and was released without a citation. A Reno resident filed a Nevada Commission on Ethics complaint on July 17, 2026 alleging misuse of position. NO ruling has been issued — this is an unresolved allegation, not a finding [Verify]"
+        ] },
+      { name: "Aaron D. Ford", party: "D", winner: false,
+        positions: [
+          "Labour: supports repealing Nevada's right-to-work law and has sponsored paid-sick-leave expansion (The Nevada Independent issues survey)",
+          "Abortion: supports the 24-week constitutional protection and pledges Nevada remains a \"firewall\" (same survey)",
+          "Education and energy: would raise per-pupil spending toward the national average — about $14,000 now against roughly $17,500 nationally — WITHOUT new taxes, and would require data centres to pay for the energy they add and to conserve water. Opposes the death penalty and says he would sign a repeal"
+        ],
+        differentiators: [
+          "Two-term Attorney General since 2019, with a record on consumer protection, drug-price gouging and trafficking prosecutions; has sued the Trump administration",
+          "Former state Senate majority leader — legislative experience his opponent does not have",
+          "$2,627,641.17 cash on hand (AURORA, C&E Report #2, June 30, 2026). Allied PAC Forward Nevada raised $1,166,179.23. ⚠ His campaign's widely quoted \"$3.7 million\" combines committee and PAC money and is not comparable to Lombardo's committee figure"
+        ],
+        supporters: [
+          "Organised labour backs him heavily — the Nevada State AFL-CIO, SEIU 1107, AFSCME, IBEW 357 and 401, UAW, Operating Engineers, Ironworkers 433, IATSE 720 and 363, Painters DC16 and Plumbers 525, plus the Nevada State Education Association",
+          "Reproductive-rights groups including Planned Parenthood Action Fund, Planned Parenthood Advocates Mar Monte and Reproductive Freedom for All see him as the safeguard for Nevada's abortion protections",
+          "Both of Nevada's U.S. senators and all three Democratic House members have endorsed him, along with Govs. Gavin Newsom and Wes Moore"
+        ],
+        opponents: [
+          "Better Nevada PAC's seven-figure ad campaign casts him as absent, citing a Review-Journal analysis of 137 days spent out of state in 2024",
+          "⚠ The Lombardo campaign's \"unaFORDable\" site claims his agenda would cost $18.1 billion over four years and force higher sales, payroll and business taxes. This is a CAMPAIGN ESTIMATE produced by his opponent, not an independent finding",
+          "⚠ A Nevada Commission on Ethics review panel found just and sufficient cause on Feb 17, 2026 to proceed on four alleged violations tied to more than $35,000 in Attorney General Alliance-funded international travel and use of official social media for campaign fundraising. Ford says the travel complied with ethics rules and was undertaken as AGA chair. NO final ruling could be sourced — this is an unresolved allegation [Verify]"
+        ] },
+      { name: "Danielle Ford", party: "I", winner: false,
+        positions: [
+          "[Verify] — no policy platform could be sourced from her own materials",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "Runs with No Political Party affiliation, which under Nevada law meant skipping the primary entirely and petitioning onto the November ballot (250 signatures for a statewide office)",
+          "A first-term member of the Nevada State Board of Education and a former Clark County School District trustee; a vocal public-education advocate",
+          "⚠ No relation to Aaron Ford should be assumed — coverage treats them as unrelated"
+        ],
+        supporters: [
+          "In a race decided by under two points last time, she and \"None of These Candidates\" give voters two outlets outside the major parties — one March 2026 poll put \"a third-party candidate\" at 6% and a May poll put \"none of these\" at 5%"
+        ],
+        opponents: [
+          "No platform, endorsements or campaign finance could be sourced, so there is little for voters to evaluate [Verify]",
+          "No post-June coverage confirming active campaigning could be found [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide",
+    office: "Lieutenant Governor of Nevada",
+    note: "⚠ Nevada elects its lieutenant governor SEPARATELY from the governor — this is its own primary and its own ballot line, not a ticket. So Nevadans can, and sometimes do, split the two offices. Lt. Gov. Stavros Anthony (R) seeks a second term, unopposed for renomination; Assembly Majority Leader Sandra Jauregui (D) won a four-way Democratic primary with 59.80%. ⚠ \"None of These Candidates\" took 7.45% in that Democratic primary — the highest share it drew in any 2026 statewide primary. Janine Hansen runs on the Independent American Party line. ⚠ Cornelius D. Jones (No Political Party) is listed in the general-election field by The Nevada Independent's voter guide, by Ballotpedia and by Wikipedia, but was NOT found on the Secretary of State's certified list by our own check — we card him rather than drop him silently, but his ballot status should be treated as unconfirmed [Verify].",
+    candidates: [
+      { name: "Stavros Anthony (incumbent)", party: "R", winner: false,
+        positions: [
+          "[Verify] — no 2026 policy platform could be independently sourced from his own materials",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "Elected lieutenant governor in 2022; a former police captain with the Las Vegas Metropolitan Police Department",
+          "Previously served on the Las Vegas City Council; ran for Clark County Commission in 2020 and for this state's 4th Congressional District in 2018",
+          "Unopposed for renomination"
+        ],
+        supporters: [
+          "An incumbent with law-enforcement and city-council experience, running alongside a governor of the same party who is favoured by one national rater [Verify]",
+          "He faced no primary opposition, which suggests his own party is united behind him [Verify]"
+        ],
+        opponents: [
+          "No 2026 policy platform could be located, so voters have little to judge him on this cycle beyond his office [Verify]",
+          "The lieutenant governorship is elected separately here, so voters who back the Democratic candidate for governor have no reason to keep him [Verify]"
+        ] },
+      { name: "Sandra Jauregui", party: "D", winner: false,
+        positions: [
+          "[Verify] — no full 2026 policy platform could be independently sourced",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "Assembly Majority Leader; has held her Assembly seat since 2016",
+          "A real-estate professional and former congressional aide",
+          "Won the Democratic primary with 59.80% (109,344 votes) in a four-way field"
+        ],
+        supporters: [
+          "Majority Leader is the second-ranking job in the Assembly, so she has run a legislative chamber's floor operation [Verify]",
+          "She won a contested four-way primary outright with nearly 60% [Verify]"
+        ],
+        opponents: [
+          "\"None of These Candidates\" took 7.45% in her own primary — the highest it drew in any 2026 Nevada statewide primary, which is a signal of unenthusiastic Democratic voters in this race",
+          "No published 2026 platform means voters have little on the record from her [Verify]"
+        ] },
+      { name: "Janine Hansen", party: "I", winner: false,
+        positions: [
+          "[Verify] — no 2026 platform could be independently sourced",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "Runs on the Independent American Party line; a long-time conservative activist and lobbyist and a repeat candidate",
+          "Took 1.46% (21,316 votes) as the Independent American candidate in Nevada's 2024 U.S. Senate race"
+        ],
+        supporters: [
+          "The Independent American Party is a ballot-qualified party in Nevada, and she gives its voters a name to vote for rather than only \"None of These Candidates\" [Verify]"
+        ],
+        opponents: [
+          "No published 2026 platform [Verify]",
+          "Her party's statewide share has stayed in low single digits [Verify]"
+        ] },
+      { name: "Cornelius D. Jones", party: "I", winner: false,
+        positions: [
+          "[Verify] — no platform could be sourced",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "⚠ BALLOT STATUS UNCONFIRMED — listed in the general-election field by The Nevada Independent's voter guide, Ballotpedia and Wikipedia, but not found on the Secretary of State's certified list in our own check [Verify]",
+          "A U.S. Navy veteran of 18 years; previously ran for the Florida House of Representatives"
+        ],
+        supporters: [
+          "An 18-year military record is a substantive biography for an office with few formal duties [Verify]"
+        ],
+        opponents: [
+          "His presence on the November ballot could not be confirmed against the state's certified list [Verify]",
+          "No platform could be sourced [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide",
+    office: "Attorney General of Nevada",
+    note: "An open seat, because Aaron Ford is running for governor. Both nominees won contested primaries decisively. Senate Democratic leader Nicole Cannizzaro beat term-limited Treasurer Zach Conine 60.65%–35.16%; Adriana Guzmán Fralick beat Danny Tarkanian 60.11%–34.59%. ⚠ A source caution: the Secretary of State's own statewide summary page omitted the Democratic Attorney General primary entirely — the figures here come from the state's own results data file, which does carry it, and match a county-by-county summation exactly. Do not card Zach Conine: he lost this primary and is not on the November ballot.",
+    candidates: [
+      { name: "Nicole Cannizzaro", party: "D", winner: false,
+        positions: [
+          "[Verify] — no full 2026 policy platform could be independently sourced beyond her legislative record",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "Has represented state Senate District 6 since 2016 and has been Senate Democratic leader since 2019",
+          "A lifelong Nevadan born in Las Vegas; worked for the Clark County District Attorney's Office for 11 years",
+          "Won her primary 60.65%–35.16% over a sitting statewide officeholder"
+        ],
+        supporters: [
+          "Eleven years as a prosecutor is directly relevant experience for the state's chief law-enforcement job",
+          "She beat a sitting state treasurer by more than 25 points for her own party's nomination",
+          "Leading the state Senate means she has negotiated the laws the office would enforce"
+        ],
+        opponents: [
+          "Legislative leadership and prosecution are different jobs, and she has not run a law office of this size [Verify]",
+          "No published 2026 platform means voters have little on the record about how she would use the office [Verify]"
+        ] },
+      { name: "Adriana Guzmán Fralick", party: "R", winner: false,
+        positions: [
+          "[Verify] — no full 2026 policy platform could be independently sourced",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "A lawyer who has served in many local and state government roles, including general counsel to former Republican Gov. Jim Gibbons",
+          "Most recently chaired Nevada's Cannabis Compliance Board",
+          "Beat Danny Tarkanian, one of the best-known names in Nevada Republican politics, 60.11%–34.59%"
+        ],
+        supporters: [
+          "Regulatory and government-counsel experience across several administrations is unusually broad preparation for the office",
+          "She beat a candidate with far higher name recognition by more than 25 points"
+        ],
+        opponents: [
+          "She has not held elected office, and this would be her first [Verify]",
+          "No published 2026 platform means voters have little on the record about how she would use the office [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide",
+    office: "Secretary of State of Nevada",
+    note: "⚠ THE SLEEPER RACE ON THIS BALLOT, and a direct rematch. Secretary of State Cisco Aguilar (D) beat Jim Marchant (R) by about two points in 2022. Marchant is back, having won a four-way Republican primary with 32.57% — a two-point win over Shirley Folkins-Roberts, with Sharron Angle third at 26.22%. Marchant has said he would not have certified the 2020 presidential result in Nevada and publicly supported the state's slate of alternate electors in December 2020. Whoever wins will oversee Nevada's 2028 presidential election in a state that flipped to Trump in 2024 after backing Biden in 2020. Brad Lee Barnhill (Independent American) and John T. Kennedy (Libertarian) are also on the ballot. ⚠ Do not card Sharron Angle: she lost this primary.",
+    candidates: [
+      { name: "Francisco \"Cisco\" Aguilar (incumbent)", party: "D", winner: false,
+        positions: [
+          "[Verify] — no full 2026 policy platform could be independently sourced beyond his record in office",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "Elected secretary of state in 2022, defeating this same opponent by about two points",
+          "An attorney; previously a staffer for the late Sen. Harry Reid and chair of the Nevada State Athletic Commission",
+          "Unopposed for renomination"
+        ],
+        supporters: [
+          "He has now administered a presidential election in a state both parties contest, without a certification dispute",
+          "Supporters frame the choice as being about whether Nevada's 2028 election is run by someone who accepts certified results",
+          "He faced no primary challenge, which suggests no organised discontent inside his party"
+        ],
+        opponents: [
+          "He won in 2022 by only about two points, in a better year for his party than a midterm under a Democratic-leaning electorate may prove [Verify]",
+          "No published 2026 platform means his second-term agenda is not on the record [Verify]"
+        ] },
+      { name: "Jim Marchant", party: "R", winner: false,
+        positions: [
+          "Has said he would NOT have certified the 2020 presidential result in Nevada (his own public statements)",
+          "Publicly supported Nevada's slate of alternate presidential electors in December 2020 (contemporaneous reporting)",
+          "Supports tightening election procedures, the central theme of both of his campaigns for this office"
+        ],
+        differentiators: [
+          "The 2022 Republican nominee for this office, who lost to Aguilar by about two points",
+          "Served one term in the state Assembly; lost a 2024 U.S. Senate primary",
+          "Operated a computer software business and an internet service provider in Florida before moving to Nevada in 2005"
+        ],
+        supporters: [
+          "Supporters say he has been consistent about wanting stricter verification of Nevada's elections, and that he has now twice won a Republican nomination for the job",
+          "He is the only candidate in the race who has run statewide for this office before"
+        ],
+        opponents: [
+          "Opponents say a chief elections officer who says he would have refused to certify a certified result is disqualifying for the job itself",
+          "He won this primary with only 32.57%, a two-point margin, meaning two-thirds of Republican primary voters chose someone else",
+          "He lost this office in 2022 and lost a U.S. Senate primary in 2024 [Verify]"
+        ] },
+      { name: "Brad Lee Barnhill", party: "I", winner: false,
+        positions: ["[Verify] — no platform could be sourced", "[Verify]", "[Verify]"],
+        differentiators: [
+          "Runs on the Independent American Party line; has worked as a federal contractor, systems analyst, paralegal and consultant",
+          "Took about 2,000 votes as the Independent American candidate in state Senate District 6 in 2024"
+        ],
+        supporters: ["Gives Independent American voters a name on a ballot line that will otherwise offer them only \"None of These Candidates\" [Verify]"],
+        opponents: ["No platform could be sourced [Verify]", "No statewide campaign or fundraising could be located [Verify]"] },
+      { name: "John T. Kennedy", party: "L", winner: false,
+        positions: ["[Verify] — no campaign website could be found", "[Verify]", "[Verify]"],
+        differentiators: ["The Libertarian Party of Nevada's candidate for this office; ⚠ no campaign website could be located [Verify]"],
+        supporters: ["Gives Libertarian voters a name on the ballot in a race with real stakes for how elections are run [Verify]"],
+        opponents: ["No campaign site, platform or public statements could be located [Verify]", "No located fundraising or organisation [Verify]"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide",
+    office: "Nevada State Treasurer",
+    note: "An open seat — Treasurer Zach Conine is term-limited and ran for attorney general instead, losing that primary. ⚠ The Democratic primary was a proxy fight inside the party: Conine endorsed his own deputy, Tya Mathis-Coleman, while Senate leader Nicole Cannizzaro backed Assemblyman Joe Dalia. Mathis-Coleman won 55.20%–30.64%. On the Republican side Drew Johnson beat businessman Jeff Carter by just 1.53 points, 45.47%–43.94%, with \"None of These Candidates\" taking 10.59% — a reminder that the None line is real, and in that primary it was nearly seven times the margin of victory.",
+    candidates: [
+      { name: "Tya Mathis-Coleman", party: "D", winner: false,
+        positions: ["[Verify] — no full 2026 policy platform could be independently sourced", "[Verify]", "[Verify]"],
+        differentiators: [
+          "Deputy treasurer for college savings — the division that runs Nevada's prepaid tuition, 529 plans and student-loan programmes — and executive director of the Millennium Scholarship",
+          "Endorsed by the term-limited incumbent she works for",
+          "Won the Democratic primary 55.20%–30.64%"
+        ],
+        supporters: [
+          "She already runs the largest programmes in the office she is asking to lead",
+          "The sitting treasurer, who knows the job, endorsed her over a sitting legislator"
+        ],
+        opponents: [
+          "She has never held elected office, and a deputy's job is not the same as running the office [Verify]",
+          "Her nomination came over the objection of the Senate Democratic leader, which points to a split party [Verify]"
+        ] },
+      { name: "Drew Johnson", party: "R", winner: false,
+        positions: ["[Verify] — no full 2026 policy platform could be independently sourced", "[Verify]", "[Verify]"],
+        differentiators: [
+          "A policy analyst: senior fellow at the National Center for Public Policy Research and national director of Protect Internet Freedom",
+          "A contributing columnist at Newsmax and The Washington Times",
+          "Won his primary by just 1.53 points"
+        ],
+        supporters: [
+          "A career spent on fiscal policy analysis is directly relevant to the office [Verify]",
+          "He won a genuinely contested primary against a self-funding businessman [Verify]"
+        ],
+        opponents: [
+          "He won with 45.47% and a 1.53-point margin, while \"None of These Candidates\" took 10.59% — nearly seven times that margin",
+          "He has never held elected office or managed public funds [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide",
+    office: "Nevada State Controller",
+    note: "Controller Andy Matthews (R) seeks a second term, unopposed for renomination. He first won this office in 2022 with 50.1%. Michael MacDougall won a four-way Democratic primary with 45.29%. ⚠ \"None of These Candidates\" took 11.86% in that Democratic primary, finishing THIRD — ahead of a named candidate. That is worth knowing: it is a real, binding line, and here more than one in nine Democratic primary voters chose it over any person on the ballot.",
+    candidates: [
+      { name: "Andy Matthews (incumbent)", party: "R", winner: false,
+        positions: ["[Verify] — no full 2026 policy platform could be independently sourced beyond his record in office", "[Verify]", "[Verify]"],
+        differentiators: [
+          "Became controller in 2023 after winning the office in 2022 with 50.1%",
+          "Previously served a term as a state assemblymember",
+          "Unopposed for renomination"
+        ],
+        supporters: [
+          "An incumbent with a full term of experience running the state's accounting and debt-collection functions [Verify]",
+          "He faced no primary challenge [Verify]"
+        ],
+        opponents: [
+          "He won this office by a hair in 2022 — 50.1% — so it has never been a safe seat for him [Verify]",
+          "No published 2026 platform means his second-term agenda is not on the record [Verify]"
+        ] },
+      { name: "Michael MacDougall", party: "D", winner: false,
+        positions: ["[Verify] — no full 2026 policy platform could be independently sourced", "[Verify]", "[Verify]"],
+        differentiators: [
+          "A former Silicon Valley engineer and venture capitalist who worked as a citizen lobbyist during the 2025 legislative session",
+          "Won a four-way Democratic primary with 45.29%",
+          "Has not previously held elected office"
+        ],
+        supporters: [
+          "A finance and engineering background is relevant to an office that is essentially the state's bookkeeper [Verify]",
+          "He showed up to lobby the Legislature as a private citizen before running, which is an unusual level of prior engagement [Verify]"
+        ],
+        opponents: [
+          "He won his own primary with under 46%, and \"None of These Candidates\" finished third in it with 11.86%",
+          "No elected experience and no published platform [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide · Nonpartisan",
+    office: "Nevada Supreme Court — Seat B",
+    note: "⚠ Justice Kristina Pickering is UNOPPOSED, which means the only alternative on this line is \"None of These Candidates.\" That line is binding but cannot win: under NRS 293.269(2), even if it finishes first, the leading named candidate takes the office. In 2022 it drew 24.11% and 25.49% in Nevada's two unopposed judicial races, so a large protest vote here would not be unusual. ⚠ A common misunderstanding worth correcting: nonpartisan JUDICIAL races do NOT end at the primary in Nevada. Under NRS 293.260(5) a judicial candidate who wins a majority becomes the only nominee but STILL appears on the November ballot; it is other nonpartisan offices that can be won outright in June. ⚠ There is NO Nevada Court of Appeals seat on this ballot — all three departments expire in 2028.",
+    candidates: [
+      { name: "Kristina Pickering (incumbent, unopposed)", party: "I", winner: false,
+        positions: ["Judicial candidates in Nevada do not campaign on policy positions", "", ""],
+        differentiators: ["A sitting justice of the Nevada Supreme Court, seeking re-election to Seat B with no opponent filed"],
+        supporters: ["An unopposed sitting justice with no organised opposition from the bar or either party [Verify]"],
+        opponents: ["Voters who want a change have no alternative candidate — only the \"None of These Candidates\" line, which cannot win the seat [Verify]"] },
+      { name: "None of These Candidates", party: "I", winner: false,
+        positions: ["A binding Nevada ballot line under NRS 293.269 that lets voters register opposition to the whole field", "", ""],
+        differentiators: ["⚠ Under NRS 293.269(2) it can finish FIRST and still not win — the leading NAMED candidate takes the office"],
+        supporters: ["It is the only way for a Nevada voter to record active disapproval of an unopposed candidate rather than simply skipping the race"],
+        opponents: ["It cannot change the outcome, so a vote for it does not stop the unopposed candidate from taking the seat"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide · Nonpartisan",
+    office: "Nevada Supreme Court — Seat D",
+    note: "⚠ Justice Douglas Herndon is also UNOPPOSED, so the same applies here: \"None of These Candidates\" is the only alternative, and it cannot win the seat. Two of Nevada's seven Supreme Court seats are on this ballot and neither is contested.",
+    candidates: [
+      { name: "Douglas Herndon (incumbent, unopposed)", party: "I", winner: false,
+        positions: ["Judicial candidates in Nevada do not campaign on policy positions", "", ""],
+        differentiators: ["A sitting justice of the Nevada Supreme Court, seeking re-election to Seat D with no opponent filed"],
+        supporters: ["An unopposed sitting justice with no organised opposition from the bar or either party [Verify]"],
+        opponents: ["Voters who want a change have no alternative candidate — only the \"None of These Candidates\" line, which cannot win the seat [Verify]"] },
+      { name: "None of These Candidates", party: "I", winner: false,
+        positions: ["A binding Nevada ballot line under NRS 293.269 that lets voters register opposition to the whole field", "", ""],
+        differentiators: ["⚠ Under NRS 293.269(2) it can finish FIRST and still not win — the leading NAMED candidate takes the office"],
+        supporters: ["It is the only way for a Nevada voter to record active disapproval of an unopposed candidate rather than simply skipping the race"],
+        opponents: ["It cannot change the outcome, so a vote for it does not stop the unopposed candidate from taking the seat"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide · Ballot Question",
+    office: "Question 6 — Right to abortion in the Nevada Constitution",
+    note: "⚠ THIS IS THE SECOND OF TWO REQUIRED VOTES, NOT A NEW MEASURE. Under Article 19 §2(4) of the Nevada Constitution, a voter-initiated constitutional amendment must be approved at TWO successive general elections, in the same form both times. Nevadans approved this in 2024 with 64.36% support; a second yes in 2026 puts it in the Constitution. It would enshrine Nevada's existing law — abortion permitted through 24 weeks — directly into the state Constitution, shielding it from future legislative or court change. A no vote leaves abortion rights governed by statute, as they are now. ⚠ Only TWO statewide questions are on this ballot, the fewest since 2012. Measures on open primaries, independent redistricting and transgender athletes in school sports all failed to qualify. ⚠ The state's official 2026 Ballot Question Guide is not yet published, so we do not print any unofficial \"title\" as though it were the state's.",
+    candidates: [
+      { name: "Yes — put the 24-week standard in the Constitution", party: "I", winner: false,
+        positions: ["Backed by Nevadans for Reproductive Freedom, which has raised more than $815,000 in 2026", "Also supported by Sen. Jacky Rosen, the Nevada Democratic Party and Planned Parenthood Advocates Mar Monte", ""],
+        differentiators: ["Approved by 64.36% of Nevada voters in 2024; this is the second and final vote"],
+        supporters: ["Supporters frame it as an urgent protection after the Supreme Court overturned Roe v. Wade in 2022 — statute can be changed by a future Legislature, a constitutional provision cannot"],
+        opponents: ["Opponents, including the Protect Our Girls PAC, argue the measure goes further than the standard allowed under Roe v. Wade"] },
+      { name: "No — leave abortion rights in statute", party: "I", winner: false,
+        positions: ["Opposed by the Protect Our Girls and Students for Life Action Ballot PACs, plus Americans United for Life and Priests for Life", "Opposition fundraising is far behind: about $10,000 and roughly $1,700 respectively in 2026", ""],
+        differentiators: ["A no vote would leave Nevada's current 24-week law in place as ordinary statute"],
+        supporters: ["Opponents argue the amendment locks in a standard broader than Roe and removes the Legislature's ability to revisit it"],
+        opponents: ["Supporters of the measure argue that leaving the right in statute is exactly the vulnerability the amendment is meant to close"] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide · Ballot Question",
+    office: "Question 7 — Voter identification requirement",
+    note: "⚠ ALSO A SECOND AND FINAL VOTE, not a new measure. Nevadans approved this in 2024 with 73.23% support. It would amend the Constitution to require government-issued photo ID to vote in person, or verification using the last four digits of a driver's licence or Social Security number when voting by mail. A no vote leaves Nevada's current law, which relies largely on matching a voter's signature against one on file. ⚠ Fundraising has collapsed on both sides compared with 2024: Repair the Vote raised $3,000 in the first half of 2026, and the Nevada Voter ID Coalition and the opposing Nevada Voter Freedom Alliance each reported no contributions at all. In 2024, Las Vegas Sands alone gave $1.5 million to the committee that became the Voter ID Coalition.",
+    candidates: [
+      { name: "Yes — require voter ID", party: "I", winner: false,
+        positions: ["Qualified for the ballot by Repair the Vote, the PAC led by former Clark County GOP chair David Gibbs", "Also backed by the Nevada Voter ID Coalition, an offshoot of the pro-Lombardo Better Nevada PAC", ""],
+        differentiators: ["Approved by 73.23% of Nevada voters in 2024 — a wider margin than the abortion measure"],
+        supporters: ["Supporters frame it as a commonsense election-security measure that could help restore public confidence in how Nevada votes"],
+        opponents: ["Opponents cite sample-ballot argument data that nearly 21% of voting-age Americans lack a valid driver's licence showing their current name and address — more than half a million people at Nevada's scale — and note that rural and tribal voters may have to travel long distances to a DMV"] },
+      { name: "No — keep signature verification", party: "I", winner: false,
+        positions: ["Opposed by the Nevada Voter Freedom Alliance, formed by the progressive group Battle Born Progress", "Also opposed by Silver State Voices, a nonpartisan civic-engagement coalition", ""],
+        differentiators: ["A no vote leaves the current signature-matching system in place"],
+        supporters: ["Opponents argue the requirement would disenfranchise voters who lack current photo ID, particularly rural and tribal voters far from a DMV"],
+        opponents: ["Supporters argue ID requirements are ordinary in most states and that the measure already passed once with 73% of the vote"] }
+    ]
+  },
+
+  // PAST
+  {
+    date: "Nov 5, 2024",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "President of the United States — Nevada result",
+    note: "Trump carried Nevada by 3.10 points and took all six electoral votes, flipping a state Biden won in 2020. Confirmed in exact agreement across three official sources: the Nevada Secretary of State, the FEC's official presidential results and the U.S. House Clerk's election statistics. ⚠ Note that \"None of These Candidates\" appears here as it does in every Nevada statewide race.",
+    candidates: [
+      { name: "Donald Trump / JD Vance", party: "R", winner: true,
+        positions: ["50.59% (751,205 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Kamala Harris / Tim Walz", party: "D", winner: false,
+        positions: ["47.49% (705,197 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "None of These Candidates", party: "I", winner: false,
+        positions: ["1.32% (19,625 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Chase Oliver (Libertarian)", party: "L", winner: false,
+        positions: ["0.41% (6,059 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Joel Skousen (Independent American)", party: "I", winner: false,
+        positions: ["0.19% (2,754 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 5, 2024",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Nevada",
+    note: "⚠ THE CLEAREST ILLUSTRATION OF WHY \"NONE OF THESE CANDIDATES\" MATTERS. It took 3.03% — 44,380 votes — which is MORE than Rosen's 1.64-point, 24,059-vote margin of victory. Ticket-splitting was substantial: Trump carried the state on the same ballot Rosen won. Independently confirmed to the vote against the U.S. House Clerk's official election statistics.",
+    candidates: [
+      { name: "Jacky Rosen (incumbent)", party: "D", winner: true,
+        positions: ["47.87% (701,105 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Sam Brown", party: "R", winner: false,
+        positions: ["46.22% (677,046 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "None of These Candidates", party: "I", winner: false,
+        positions: ["3.03% (44,380 votes) — more than the margin of victory", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Janine Hansen (Independent American)", party: "I", winner: false,
+        positions: ["1.46% (21,316 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Chris Cunningham (Libertarian)", party: "L", winner: false,
+        positions: ["1.43% (20,881 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 8, 2022",
+    type: "past",
+    scope: "Statewide",
+    office: "Governor of Nevada",
+    note: "Lombardo's first win, and the reason 2026 is close: he unseated an incumbent by 1.51 points — 15,386 votes. ⚠ \"None of These Candidates\" took 14,866 votes and the Libertarian 14,919 — a 53-vote gap, both rounding to 1.46%. Neither should be described as clearly third. ⚠ A labelling caution: the Secretary of State's 2022 results page is still titled \"Unofficial\" four years on, and no separate certified canvass document could be located. The totals are solid — byte-identical across snapshots from April 2023, August 2026 and the live page — but they are best described as \"final results reported by the Nevada Secretary of State,\" not as a certified canvass.",
+    candidates: [
+      { name: "Joe Lombardo", party: "R", winner: true,
+        positions: ["48.81% (497,377 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Steve Sisolak (incumbent)", party: "D", winner: false,
+        positions: ["47.30% (481,991 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Brandon Davis (Libertarian)", party: "L", winner: false,
+        positions: ["1.46% (14,919 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "None of These Candidates", party: "I", winner: false,
+        positions: ["1.46% (14,866 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Ed Bridges (Independent American)", party: "I", winner: false,
+        positions: ["0.97% (9,918 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  }
+];
+
+// ----- (3) U.S. House races by district -----
+// Nevada has 4 U.S. House districts under SB 1 (2021), no mid-decade redraw.
+// Primary was June 9, 2026; results are the Nevada Secretary of State's official
+// figures, taken from the state's own results data file rather than a page summary.
+// ⚠ THREE OF NEVADA'S FOUR DISTRICTS ARE COMPETITIVE ON PAPER — the Cook PVI figures
+// (2026 release, July 29, 2026) are D+2, R+7, D+1 and D+2. NV-3 at D+1 is the most
+// evenly divided district in the state.
+// ⚠ Ratings below are firsthand: Cook's per-race pages (all four last updated Feb 6,
+// 2025, meaning none has been changed since the initial release) and Inside Elections'
+// embedded ratings data (Dec 5, 2025), which also records the previous rating and the
+// direction of any shift.
+// ⚠ "None of These Candidates" does NOT appear in U.S. House races — only statewide
+// ones. We confirmed this empirically against all 7 contested House primaries.
+// ⚠ FEC caution for anyone rechecking these figures: the bulk file contains a phantom
+// Jacky Rosen NV-03 House row whose financials are byte-identical to her Senate
+// committee (she is a sitting senator, not a House candidate); Marty O'Donnell appears
+// under TWO candidate IDs with identical totals; and Ronda Kennedy appears under both
+// NV-3 and NV-4. Always filter on the district field, not the candidate-ID stem.
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — NV District 1",
+    region: "Central and eastern Las Vegas — the most compact district in the state, entirely inside Clark County (Cook PVI D+2)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ A GENUINE RATINGS SPLIT: Cook rates this LIKELY DEMOCRATIC while Inside Elections rates it LEAN DEMOCRATIC — one notch more competitive. Dina Titus (D) won renomination with 75.87% in a four-way field; state Sen. Carrie Ann Buck (R) won hers with 77.75%. Titus won this seat by 7.5 points in 2024 while Trump was carrying the state, which is the central fact of the race. Titus reported about $1.3 million on hand against Buck's roughly $626,000 — a real but not overwhelming edge, and the smallest incumbent advantage among Nevada's three Democratic House members. ⚠ Several No Political Party candidates who FILED for this seat — including Anthony Thomas Jr. and Victor Willert — did not qualify for the November ballot and are not carded here, though they appear in some other 2026 guides.",
+        candidates: [
+          { name: "Dina Titus (incumbent)", party: "D", winner: false,
+            positions: [
+              "[Verify] — no full 2026 policy platform could be independently sourced beyond her congressional record",
+              "[Verify]",
+              "[Verify]"
+            ],
+            differentiators: [
+              "Elected to this seat in 2012; previously served one term representing the 3rd District and two decades in the state Senate",
+              "A retired professor of political science at UNLV, raised in Georgia",
+              "About $1.3 million cash on hand against Buck's roughly $626,000"
+            ],
+            supporters: [
+              "She held this seat by 7.5 points in 2024 on the same ballot that Trump carried statewide — evidence of a personal vote that outruns the national trend",
+              "Three decades in Nevada elected office, including two in the state Senate, is deep institutional knowledge for a fast-growing district",
+              "She won renomination with more than three quarters of the vote in a four-way primary"
+            ],
+            opponents: [
+              "D+2 is a narrow partisan cushion, and Inside Elections rates the seat only Lean Democratic",
+              "Her challenger is a sitting state senator with real money, not a nominal candidate",
+              "No published 2026 platform means voters have little on the record from her this cycle [Verify]"
+            ] },
+          { name: "Carrie Ann Buck", party: "R", winner: false,
+            positions: [
+              "[Verify] — no full 2026 policy platform could be independently sourced",
+              "[Verify]",
+              "[Verify]"
+            ],
+            differentiators: [
+              "A sitting Nevada state senator since 2020 — the strongest résumé any recent Republican challenger has brought to this seat",
+              "President of the Pinecrest Foundation education nonprofit; previously a teacher and principal before leading a charter-school network",
+              "Roughly $626,000 cash on hand, and won her primary with 77.75%"
+            ],
+            supporters: [
+              "She holds elected office now and has run and won in Clark County before",
+              "A career in classrooms and school leadership is an unusual and concrete education credential",
+              "D+2 is within reach in a district Trump nearly carried in 2024"
+            ],
+            opponents: [
+              "She is running against an incumbent who has won this district repeatedly, including while her own party carried the state [Verify]",
+              "A roughly 2-to-1 cash disadvantage against a well-known incumbent [Verify]",
+              "No published 2026 platform means voters have little on the record from her [Verify]"
+            ] }
+        ] },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Titus held the seat by 7.5 points on a ballot that Trump carried statewide by 3.1.",
+        candidates: [
+          { name: "Dina Titus", party: "D", winner: true,
+            positions: ["52.0%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Mark Robertson", party: "R", winner: false,
+            positions: ["44.5%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ] }
+    ]
+  },
+  2: {
+    name: "U.S. House — NV District 2",
+    region: "All of northern Nevada — Reno, Sparks, Carson City, Elko and the rural north, plus parts of Churchill, Lincoln and Lyon (Cook PVI R+7)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ AN OPEN SEAT. Rep. Mark Amodei announced his retirement on Feb 6, 2026 after 15 years, and 27 candidates filed. David Flippo (R) won a THIRTEEN-way Republican primary with 46.88% after a late Trump endorsement, beating former state Sen. James Settelmeyer — who had been endorsed by both Amodei and Gov. Lombardo — by 12.3 points. Teresa Benitez-Thompson (D) won an ELEVEN-way Democratic primary with 45.56%. Cook and Inside Elections both rate it SOLID REPUBLICAN, and no Democrat has ever won this seat; active Republican registrations exceed Democratic ones by more than 70,000. But the DCCC added it to its \"districts in play\" list in August 2026. ⚠ THE FRESHEST AND MOST CONSEQUENTIAL FACT: the retiring Republican incumbent STILL refuses to endorse his own party's nominee. In interviews published Aug 5–6, 2026, Amodei called Flippo \"not my cup of tea\" and said there was \"no way\" he was endorsing him — while also saying he would not endorse the Democrat. ⚠ There was NO Democrat on the 2024 ballot here, so 2024 is not a usable Democrat-versus-Republican baseline. ⚠ Douglas Miller, who appears in some guides as a Republican candidate, did not qualify.",
+        candidates: [
+          { name: "Teresa Benitez-Thompson", party: "D", winner: false,
+            positions: [
+              "[Verify] — no full 2026 policy platform could be independently sourced",
+              "[Verify]",
+              "[Verify]"
+            ],
+            differentiators: [
+              "Most recently chief of staff to Attorney General Aaron Ford; served as Assembly Democratic majority leader in 2017 and 2019 and represented Assembly District 27 from 2010",
+              "A licensed clinical social worker who has worked in hospice and adoption; won the Miss Nevada pageant in 2002",
+              "Won an eleven-candidate primary with 45.56% (23,706 votes)"
+            ],
+            supporters: [
+              "She is a northern Nevada legislator who led her party in the Assembly — a genuine local record in a district that punishes carpetbagging",
+              "The DCCC added this seat to its \"districts in play\" list, which brings national attention and money to a race Democrats have never won",
+              "Her campaign notes that only six of her opponent's donors in the most recent reporting period live in the district"
+            ],
+            opponents: [
+              "No Democrat has ever won this district, and active Republican registrations exceed Democratic ones by more than 70,000",
+              "Both Cook and Inside Elections rate the seat Solid Republican",
+              "No published 2026 platform means voters have little on the record from her [Verify]"
+            ] },
+          { name: "David Flippo", party: "R", winner: false,
+            positions: [
+              "[Verify] — no full 2026 policy platform could be independently sourced",
+              "Through his consultant, has emphasised veterans' benefits casework and Bureau of Land Management disputes affecting farmers and ranchers",
+              "[Verify]"
+            ],
+            differentiators: [
+              "A retired Air Force lieutenant colonel and a financial adviser in Las Vegas; previously worked for BP in Alaska",
+              "Won a thirteen-candidate primary with 46.88% (38,174 votes) after a late endorsement from President Trump beat the establishment pick",
+              "⚠ Ran in a Clark County Republican Assembly primary two cycles ago and in the NV-4 Republican primary last cycle, both in southern Nevada, before running here"
+            ],
+            supporters: [
+              "A Trump endorsement carried him past a former state senator backed by both the retiring incumbent and the sitting governor — evidence of where this district's Republican base is",
+              "A 20-plus-year military career and a combat record are a strong fit for a district with a large veteran population",
+              "R+7 in a seat no Democrat has ever won"
+            ],
+            opponents: [
+              "⚠ The retiring Republican incumbent refuses to endorse him. Amodei, on the record: \"Two cycles ago, I got a guy who couldn't get out of a Republican Assembly primary in Clark County. Last cycle, couldn't get out of a Republican CD4 primary in Clark County, and then shows up and goes, 'I'm the answer for CD2 because it has historically been a Republican seat, and I love Donald Trump.'\"",
+              "He was living in southern Nevada and running in a southern Nevada district until this seat opened — a residency argument his opponent is making directly",
+              "He won the nomination with under 47% in a thirteen-way field, so a majority of his own party's primary voters chose someone else"
+            ] },
+          { name: "Lynn Chapman", party: "I", winner: false,
+            positions: ["[Verify] — no 2026 platform could be sourced", "[Verify]", "[Verify]"],
+            differentiators: [
+              "Treasurer of the Nevada Independent American Party; ran for this same seat in 2024"
+            ],
+            supporters: [
+              "In a district where the retiring Republican will not endorse the Republican nominee, a third line gives disaffected conservatives somewhere to go [Verify]"
+            ],
+            opponents: [
+              "No published platform [Verify]",
+              "Independent American candidates have not exceeded low single digits in recent Nevada federal races [Verify]"
+            ] }
+        ] },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "⚠ NOTE THE FIELD: there was NO Democrat on the ballot here in 2024. Amodei's opponent was Greg Kidd, running as an independent — and Kidd then ran in the 2026 DEMOCRATIC primary for this seat, finishing second with 22.51%. That is why 2024 cannot be used as a two-party baseline for this district.",
+        candidates: [
+          { name: "Mark Amodei (incumbent)", party: "R", winner: true,
+            positions: ["55.0%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Greg Kidd (independent)", party: "I", winner: false,
+            positions: ["36.1%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ] }
+    ]
+  },
+  3: {
+    name: "U.S. House — NV District 3",
+    region: "Southern Clark County — Henderson, Enterprise, Paradise and the southern Las Vegas suburbs (Cook PVI D+1)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ THE MOST EVENLY DIVIDED DISTRICT IN NEVADA, and the state's marquee House race. Cook PVI D+1; Cook and Inside Elections both rate it LEAN DEMOCRATIC. It has been decided by under four points in each of the last two cycles, and Trump carried it in 2024 on the same ballot Susie Lee won. Lee (D) won renomination with 69.23%; Marty O'Donnell (R) — the composer known for the Halo and Destiny video-game soundtracks — won a four-way Republican primary with 42.31% and has Trump's endorsement. This is the best-funded House race in the state on both sides: Lee reported about $3.69 million on hand, O'Donnell about $2.38 million, much of it self-funded. O'Donnell launched his first general-election television advertisement on Aug 5, 2026 with more than $2 million in planned spending, foregrounding affordability and nodding to his video-game work. Jon Kamerath (Independent American) is also on the ballot. ⚠ David J. Anderson Jr. and P. Dean Johnson, listed in some guides, did not qualify for the November ballot.",
+        candidates: [
+          { name: "Susie Lee (incumbent)", party: "D", winner: false,
+            positions: [
+              "[Verify] — no full 2026 policy platform could be independently sourced beyond her congressional record",
+              "[Verify]",
+              "[Verify]"
+            ],
+            differentiators: [
+              "First elected to this district in 2018, after losing the 4th District primary in 2016; originally from Ohio",
+              "Previously worked in the nonprofit sector, including leading the dropout-prevention organisation Communities in Schools",
+              "About $3.69 million cash on hand — the largest war chest of any Nevada House candidate"
+            ],
+            supporters: [
+              "She has now held the state's most competitive district through two consecutive close cycles, including one in which Trump carried it",
+              "A nonprofit background in dropout prevention is a concrete record outside politics",
+              "She won renomination with 69.23% against three challengers"
+            ],
+            opponents: [
+              "D+1 is the thinnest partisan margin in Nevada, and Trump carried this district in 2024 while she was winning it",
+              "Her opponent is within about $1.3 million of her on cash and is willing to self-fund",
+              "No published 2026 platform means voters have little on the record from her this cycle [Verify]"
+            ] },
+          { name: "Marty O'Donnell", party: "R", winner: false,
+            positions: [
+              "Affordability and dissatisfaction with government are the themes of his first general-election television advertisement (Aug 5, 2026)",
+              "[Verify] — a fuller 2026 policy platform could not be independently sourced",
+              "[Verify]"
+            ],
+            differentiators: [
+              "A composer known for the Halo and Destiny video-game franchises; placed fourth in the Republican primary for this seat in 2024 before winning it in 2026",
+              "About $2.38 million cash on hand, a large share of it self-funded",
+              "Endorsed by President Trump"
+            ],
+            supporters: [
+              "He can fund a competitive campaign in the state's closest district without waiting for national party money",
+              "Trump carried this district in 2024, and Trump has endorsed him",
+              "A well-known creative career gives him name recognition most challengers never build"
+            ],
+            opponents: [
+              "He finished FOURTH in the Republican primary for this same seat in 2024 and won this one with only 42.31%",
+              "He has never held elected office of any kind [Verify]",
+              "Beyond the themes of one television advertisement, no policy platform could be sourced [Verify]"
+            ] },
+          { name: "Jon Kamerath", party: "I", winner: false,
+            positions: ["[Verify] — no 2026 platform could be sourced", "[Verify]", "[Verify]"],
+            differentiators: [
+              "A national committeeman for the Independent American Party of Nevada and a repeat candidate who most recently ran in this district in 2024"
+            ],
+            supporters: [
+              "In a district decided by under four points twice running, a third line on the right is a factor both major campaigns must account for [Verify]"
+            ],
+            opponents: [
+              "No published platform [Verify]",
+              "No located fundraising or organisation in the state's most expensive House race [Verify]"
+            ] }
+        ] },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Decided by 2.8 points — about 10,000 votes. ⚠ Worth knowing: the losing Republican, Drew Johnson, is on this year's statewide ballot as the Republican nominee for State Treasurer.",
+        candidates: [
+          { name: "Susie Lee", party: "D", winner: true,
+            positions: ["51.4%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Drew Johnson", party: "R", winner: false,
+            positions: ["48.6%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ] }
+    ]
+  },
+  4: {
+    name: "U.S. House — NV District 4",
+    region: "North Las Vegas and central Nevada — including Nye, Esmeralda, Mineral and parts of Churchill, Lincoln and Lyon (Cook PVI D+2)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ THE ONLY NEVADA DISTRICT WHERE A RATER HAS MOVED THIS CYCLE — and it moved toward the Democrat. Inside Elections shifted NV-4 from Lean Democrat to LIKELY DEMOCRAT (Dec 5, 2025); Cook also has it Likely Democratic. Steven Horsford (D) was unopposed for renomination. Cody K. Whipple (R), a rancher, won a three-way Republican primary with 61.81%. Horsford reported about $1.5 million on hand against Whipple's roughly $285,000, and out-raised him roughly 3-to-1 in the most recent period. ⚠ WHIPPLE'S OWN PARTY'S NYE COUNTY CENTRAL COMMITTEE FORMALLY CALLED ON HIM TO WITHDRAW on Dec 13, 2025 over a residency allegation. He did not withdraw and remains the certified nominee. He has no Trump endorsement, no Lombardo endorsement, and is not in the NRCC's 2026 challenger programme. Russell Best (Independent American) is also on the ballot. ⚠ Gary Steele, listed in some guides, did not qualify for the November ballot.",
+        candidates: [
+          { name: "Steven Horsford (incumbent)", party: "D", winner: false,
+            positions: [
+              "[Verify] — no full 2026 policy platform could be independently sourced beyond his congressional record",
+              "[Verify]",
+              "[Verify]"
+            ],
+            differentiators: [
+              "First elected to this district in 2012, lost in 2014, and returned in 2018; a former state Senate majority leader",
+              "Unopposed for renomination",
+              "About $1.5 million cash on hand against roughly $285,000, and out-raised his opponent about 3-to-1 in the most recent period"
+            ],
+            supporters: [
+              "Inside Elections moved this seat further into the Democratic column in December 2025 — the only Nevada district any rater has shifted this cycle",
+              "He won by 8.1 points in 2024 on a ballot Trump carried statewide",
+              "Leading the state Senate and more than a decade in Congress is substantial legislative experience for a district that mixes North Las Vegas with rural central Nevada"
+            ],
+            opponents: [
+              "D+2 leaves little cushion, and he lost this seat once before, in 2014 [Verify]",
+              "An unopposed renomination and a 5-to-1 cash edge mean very little accountability pressure this cycle [Verify]",
+              "No published 2026 platform means voters have little on the record from him [Verify]"
+            ] },
+          { name: "Cody K. Whipple", party: "R", winner: false,
+            positions: [
+              "[Verify] — no full 2026 policy platform could be independently sourced",
+              "[Verify]",
+              "[Verify]"
+            ],
+            differentiators: [
+              "A rancher and digital-communications small business owner who splits his time between Las Vegas and Hiko, where his family has lived for generations",
+              "Won a three-way Republican primary with 61.81% (22,103 votes)",
+              "⚠ Has NO Trump endorsement, NO Lombardo endorsement, and is not in the NRCC's 2026 challenger programme"
+            ],
+            supporters: [
+              "Multi-generational roots in rural Lincoln County are a real credential in the half of this district that is not North Las Vegas",
+              "He won his primary outright with more than 60% in a three-way field"
+            ],
+            opponents: [
+              "⚠ His own party's Nye County Central Committee formally called on him to WITHDRAW on Dec 13, 2025 over a residency allegation. He did not, and remains the nominee",
+              "He has no endorsement from the president, the governor or the national party's challenger programme",
+              "Roughly $285,000 against about $1.5 million, in a district a national rater just moved further out of reach"
+            ] },
+          { name: "Russell Best", party: "I", winner: false,
+            positions: ["[Verify] — no 2026 platform could be sourced", "[Verify]", "[Verify]"],
+            differentiators: [
+              "An Independent American Party candidate who has previously run and lost bids for governor and for several congressional districts"
+            ],
+            supporters: [
+              "Gives Independent American voters a name on the ballot in a district where the Republican nominee has no major endorsements [Verify]"
+            ],
+            opponents: [
+              "No published platform [Verify]",
+              "A long record of unsuccessful campaigns for many different offices [Verify]"
+            ] }
+        ] },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Horsford held the seat by 8.1 points while Trump was carrying the state.",
+        candidates: [
+          { name: "Steven Horsford", party: "D", winner: true,
+            positions: ["52.7%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "John Lee", party: "R", winner: false,
+            positions: ["44.6%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ] }
+    ]
+  }
+};
+
+const SITE_META = { name: "Nevada Elections Hub", lastUpdated: "August 7, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — Nevada county-level down-ballot research is the next phase.
+// Clark and Washoe counties elect commissioners, sheriffs, district attorneys and school
+// board trustees, and Nevada also elects District Court judges by judicial district —
+// five Eighth Judicial District departments were on the 2026 primary ballot alone.
+// Those are the natural first targets.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Nevada has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them,
+  // otherwise a district with no plurality county is unreachable from the map.
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const NV_STATE_FIPS = "32";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#nvmap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(NV_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Hartford ----
+  drawCapital(g, projection, { name: "Carson City", lng: -119.7674, lat: 39.1638 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in MS";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn&#39;t in our Nevada dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>
