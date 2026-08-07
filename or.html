@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Oregon Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every OR election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #ormap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">MS</div>
+      <div class="brand-text">
+        <span class="brand-name">Oregon Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Oregon <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 36 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">36</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>6</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>2</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Oregon…</div>
+      <svg id="ormap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>MS Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">August 7, 2026</span><br>
+      Sources: Oregon Secretary of State (ORESTAR candidate filings and campaign-finance account summaries, certified election abstracts, and the Offices Open list for the November 3, 2026 general election), U.S. Census Bureau congressional-district relationship files and 2020 PL 94-171 data, FEC, Cook Political Report, Sabato&#39;s Crystal Ball, Inside Elections, DCCC and NRCC programme rosters, U.S. Department of Housing and Urban Development point-in-time homeless counts, OpenSecrets, Oregon Capital Chronicle, Willamette Week, OPB, Eugene Weekly, KOIN, and the Internet Archive&#39;s captures of the retired Oregon results portal.</div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every MS county + its primary US House district(s)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- (1) Counties + primary US House district -----
+// Oregon has 6 U.S. House districts under SB 881 (2021 First Special Session), signed
+// Sept 27, 2021. Oregon GAINED a sixth seat in the 2020 apportionment. The legal
+// challenge, Clarno v. Fagan, was dismissed Nov 24, 2021, and there has been NO
+// mid-decade redraw — the Governor's office said in June 2026 it was not considering
+// one, and HB 3537 (which died in House Rules) concerned STATE-LEGISLATIVE criteria for
+// 2031 and later, not these lines. Verified structurally: the Census 118th- and
+// 119th-Congress county relationship files for Oregon are identical.
+// ⚠ The Census BLOCK-ASSIGNMENT file for Oregon is dated 2021-01-25 — EIGHT MONTHS
+// BEFORE SB 881 was signed — and encodes the obsolete FIVE-district map. It was
+// discarded. Populations here come from the Census 119th-Congress county relationship
+// file; the arithmetic closes exactly, with a maximum deviation of THREE people.
+// 8 of the 36 counties are SPLIT. Each carries `d` (its population-PLURALITY district,
+// which drives map shading) plus `ds` — every district overlapping it, so a voter in a
+// split county sees every House race they might actually be voting in.
+// ⚠ SIX zero-population boundary slivers were found and deliberately EXCLUDED from `ds`
+// (Benton/CD-5, Clackamas/CD-2, Curry/CD-2, Linn/CD-6, Marion/CD-2, Polk/CD-4). Nobody
+// lives in them, so routing a voter there would be misleading. Benton, Curry and Polk
+// are therefore NOT treated as split at all. Jefferson County's CD-5 part holds 20
+// people in 13 housing units — small, but genuinely inhabited, so it is retained.
+// ⚠ Portland is itself divided: Multnomah County spans OR-1, OR-3 and OR-5.
+const COUNTIES = {
+  "41001":{n:"Baker",d:2},
+  "41003":{n:"Benton",d:4},
+  "41005":{n:"Clackamas",d:5,ds:[3,5,6]},
+  "41007":{n:"Clatsop",d:1},
+  "41009":{n:"Columbia",d:1},
+  "41011":{n:"Coos",d:4},
+  "41013":{n:"Crook",d:2},
+  "41015":{n:"Curry",d:4},
+  "41017":{n:"Deschutes",d:5,ds:[2,5]},
+  "41019":{n:"Douglas",d:4,ds:[2,4]},
+  "41021":{n:"Gilliam",d:2},
+  "41023":{n:"Grant",d:2},
+  "41025":{n:"Harney",d:2},
+  "41027":{n:"Hood River",d:3},
+  "41029":{n:"Jackson",d:2},
+  "41031":{n:"Jefferson",d:2,ds:[2,5]},
+  "41033":{n:"Josephine",d:2},
+  "41035":{n:"Klamath",d:2},
+  "41037":{n:"Lake",d:2},
+  "41039":{n:"Lane",d:4},
+  "41041":{n:"Lincoln",d:4},
+  "41043":{n:"Linn",d:5,ds:[4,5]},
+  "41045":{n:"Malheur",d:2},
+  "41047":{n:"Marion",d:6,ds:[5,6]},
+  "41049":{n:"Morrow",d:2},
+  "41051":{n:"Multnomah",d:3,ds:[1,3,5]},
+  "41053":{n:"Polk",d:6},
+  "41055":{n:"Sherman",d:2},
+  "41057":{n:"Tillamook",d:1},
+  "41059":{n:"Umatilla",d:2},
+  "41061":{n:"Union",d:2},
+  "41063":{n:"Wallowa",d:2},
+  "41065":{n:"Wasco",d:2},
+  "41067":{n:"Washington",d:1,ds:[1,6]},
+  "41069":{n:"Wheeler",d:2},
+  "41071":{n:"Yamhill",d:6},
+};
+
+// ----- (2) Statewide races -----
+// ⚠ ONLY TWO OFFICES ARE ON OREGON'S NOVEMBER 2026 STATEWIDE BALLOT: Governor and one
+// U.S. Senate seat (Jeff Merkley's Class 2 seat). Ron Wyden is Class 3 and is NOT up.
+// Secretary of State, Attorney General and State Treasurer were all elected in 2024 to
+// four-year terms running to 2028 — the 2023 Secretary of State resignation and the
+// 2024 appointment did NOT shift that cycle.
+// ⚠ ZERO statewide ballot measures qualified for November 2026. Signatures were due
+// July 2, 2026; the thresholds were 117,173 (statute), 156,231 (constitutional) and
+// 78,116 (referendum). Only one petition, the PEACE Act, cleared its threshold in RAW
+// signatures, and raw signatures are not verified signatures. None was certified.
+// ⚠ WHY THERE IS NO JUDICIAL OR LABOR SECTION HERE — this is a real feature of Oregon
+// law, not a gap in our data. Under ORS 249.088, a candidate for a NONPARTISAN office
+// who wins a MAJORITY at the primary is ELECTED OUTRIGHT and never appears in November.
+// All six statewide nonpartisan offices were decided on May 19, 2026. They are listed
+// below as a past race so voters can see who won them.
+// ⚠ OREGON HAS FUSION VOTING. Under ORS 254.135(3), a candidate may be nominated by
+// more than one party and may have up to THREE party labels printed beside their name.
+// The candidate must notify the state of that selection by Sept 3, 2026.
+// ⚠⚠ THE NOVEMBER BALLOT IS NOT FINAL. Minor-party and nonaffiliated candidates may
+// file until 5:00 pm on Aug 25, 2026 (ORS 249.722), and nominees may withdraw through
+// Aug 28 (ORS 249.180). Everything below is current as of Aug 7, 2026.
+// ⚠ Under Oregon's sore-loser law (ORS 249.048), a major-party candidate who lost the
+// May primary may not reappear in November under another label — so Ed Diehl, Chris
+// Dudley, Jo Rae Perkins and the other primary losers are out for this cycle.
+const STATEWIDE = [
+  // UPCOMING — 2026 General Election (Nov 3, 2026)
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide",
+    office: "Governor of Oregon",
+    note: "Oregon's marquee race, and its first gubernatorial rematch since 1978. Gov. Tina Kotek (D) seeks a second term against Christine Drazan (R), who lost to her by 3.42 points in 2022 in a three-way race Kotek won with under 47%. ⚠ ALL THREE national handicappers have moved this seat OFF \"Safe,\" and two moved it rightward within about two weeks: Inside Elections went Solid D → LEAN DEMOCRAT on June 25, 2026, and Cook went Safe D → LIKELY D on July 10, 2026; Sabato's Crystal Ball has it LIKELY D as of July 23, 2026. All three still favour Kotek. Brett Smith (Pacific Green) is also a ballot-qualified candidate, filed June 4, 2026. ⚠ EVERY general-election poll located is sponsored or partisan and should be read that way: Public Opinion Strategies (R), paid for by the Drazan campaign, had Drazan 48–Kotek 44 (June 22–24); Hoffman (R), paid for by the Dudley primary campaign, had it tied 45–45 (May 11–12); FM3 (D) had Kotek 45–Drazan 40. No independent public poll exists. Oregon has not elected a Republican governor since 1982 — yet it voted for Harris by 14.3 points in 2024 while its last governor's race was decided by 3.4.",
+    candidates: [
+      { name: "Tina Kotek (incumbent)", party: "D", winner: false,
+        positions: [
+          "Housing: set a statewide production goal of 36,000 new homes a year, her own stated benchmark since taking office in 2023",
+          "Signed HB 4002 in 2024, rolling back Measure 110's drug decriminalisation and restoring criminal penalties for possession (enacted law)",
+          "Backed the fall-2025 special-session transportation funding package (HB 3991), which voters later rejected as Measure 120 (legislative record)"
+        ],
+        differentiators: [
+          "First-term Democrat; previously the longest-serving Speaker of the Oregon House in state history",
+          "Renominated with 83.6% against NINE primary challengers on May 19, 2026",
+          "$8,198,994.53 cash on hand (Oregon Secretary of State ORESTAR account summary, retrieved Aug 7, 2026) — roughly 3.7 times Drazan's"
+        ],
+        supporters: [
+          "She was renominated with 83.6% against nine challengers, which is not the profile of a party looking to replace its incumbent",
+          "Oregon has not elected a Republican governor since 1982, and all three national handicappers still place this seat in the Democratic column",
+          "She holds a roughly 3.7-to-1 cash advantage going into the fall"
+        ],
+        opponents: [
+          "Homelessness moved the wrong way on her watch: Oregon's federal point-in-time count ROSE 19% between 2024 and 2025 to more than 23,000 people — one of only three states above a 15% increase — while the national count FELL 3%",
+          "Oregon permitted roughly 14,000 homes a year against her own 36,000 goal; even the state's own economist put the need at 29,522 a year",
+          "Voters rejected her transportation package roughly 4-to-1 on May 19, 2026 as Measure 120, and NO county voted for it — and in January 2026 she had asked lawmakers to repeal her own law before voters could rule on it",
+          "Three senior aides including her chief of staff resigned in March 2024 over a proposed paid \"Office of the First Spouse.\" The state ethics commission DEADLOCKED 4–4 in June 2024 and the complaints were dismissed without investigation — a tie, which is not the same as being cleared. A SECOND ethics matter opened in January 2025 over state-paid parking and a $9,330 catered staff dinner; no final disposition could be found in any reporting after that date [Verify]",
+          "The Oregon Education Association's PAC voted 75% NOT to endorse anyone for governor — its first non-endorsement since 2014, after giving her about $389,000 in 2022 — and the Working Families Party left the office off its slate entirely"
+        ] },
+      { name: "Christine Drazan", party: "R", winner: false,
+        positions: [
+          "Lower taxes and lower the cost of living — \"We can have work that matters again. We can have schools that succeed in teaching students to learn. We can have safe streets and lower taxes\" (her campaign launch, Oct 27, 2025)",
+          "Homelessness, addiction, mental health and crime as her central case against the incumbent (campaign launch)",
+          "Led the opposition to the multi-billion-dollar transportation package that became Measure 120 (legislative record)"
+        ],
+        differentiators: [
+          "A sitting state senator — county commissioners appointed her to fill a Senate vacancy days before she launched, which also let her fundraise during session in a way state representatives cannot",
+          "Former House Republican leader; led the 2020 quorum-denying walkout over cap-and-trade legislation, when Kotek was Speaker",
+          "$2,186,497.89 cash on hand (ORESTAR account summary, Aug 7, 2026)"
+        ],
+        supporters: [
+          "She came within 3.42 points in 2022 while an independent took 8.62% — and no comparable independent has emerged in 2026",
+          "She is the only candidate in the race who has already run a statewide general-election campaign",
+          "Two of the three national handicappers moved this race toward her within about two weeks this summer"
+        ],
+        opponents: [
+          "She won her own primary with just 40.5%, with roughly half of Republican voters splitting between Ed Diehl (33.0%) and Chris Dudley (16.9%) in a fourteen-candidate field",
+          "Her \"35% increase in homelessness\" figure is a campaign claim; the independently sourced federal number is a 19% rise between 2024 and 2025",
+          "Oregon's Democratic registration advantage and presidential-year lean have repeatedly outweighed close mid-race polling here, and every 2026 poll located was paid for by a campaign"
+        ] },
+      { name: "Brett Smith", party: "G", winner: false,
+        positions: [
+          "[Verify] — no platform, campaign site or public statements could be located for this candidate",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "Ballot-qualified Pacific Green candidate, filed June 4, 2026 (Oregon Secretary of State ORESTAR)",
+          "Reports raising $0 and spending $0, with $0 cash on hand (ORESTAR account summary, Aug 7, 2026)"
+        ],
+        supporters: [
+          "Gives voters to the left of the incumbent a name on the ballot in a race both major parties are treating as competitive [Verify]"
+        ],
+        opponents: [
+          "No platform of any kind could be located for voters to evaluate [Verify]",
+          "A campaign that has raised and spent nothing has no way to reach voters [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Oregon",
+    note: "Sen. Jeff Merkley (D) seeks a fourth term against state Sen. David Brock Smith (R). No handicapper treats it as competitive: Cook SOLID D (page dated Aug 5, 2026), Inside Elections SOLID D (Aug 6, 2026), Sabato SAFE D (Aug 4, 2026) — all three read firsthand. Oregon has not elected a Republican senator since 2002. Merkley took 93.18% of his own primary; Brock Smith emerged from a SEVEN-way Republican field with 29.48%, just 2.4 points ahead of Jo Rae Perkins, the 2020 nominee who lost by 17.6 points. ⚠ A THIRD CANDIDATE IS ON THE BALLOT WHOM MOST NATIONAL COVERAGE OMITS: Chris Henry (Progressive), a Portland truck driver, filed July 24, 2026 and is recorded as qualified by the state. ⚠ NO fusion cross-nomination was filed by anyone in this race — a genuine break from precedent worth knowing, since Merkley carried FOUR party lines in 2014 and THREE in 2020. ⚠ FRAMING TRAP: Willamette Week's May 2026 piece endorsed Merkley in the DEMOCRATIC primary and Brock Smith in the REPUBLICAN primary — it is a primary-endorsement article covering both, not a general-election endorsement of either.",
+    candidates: [
+      { name: "Jeff Merkley (incumbent)", party: "D", winner: false,
+        positions: [
+          "Ending gerrymandering and the influence of big money in politics (campaign priorities)",
+          "Climate legislation — a longstanding signature issue (campaign priorities)",
+          "Medicare for All (campaign priorities)"
+        ],
+        differentiators: [
+          "Seeking a fourth term; first elected in 2008 by unseating Republican Gordon Smith, and has not fallen below 55% since",
+          "Renominated with 93.18% (457,006 votes) over Paul Wells",
+          "$6,828,403.72 cash on hand (FEC, through June 30, 2026) — a 235-to-1 advantage"
+        ],
+        supporters: [
+          "93.18% in his own primary indicates no organised discontent on his left despite a long tenure",
+          "He won his last race by 17.6 points, and all three national raters call the seat safe",
+          "Seniority in the Senate is how a small state keeps a hand in federal spending decisions"
+        ],
+        opponents: [
+          "A fourth term would push one person's hold on the seat past two decades, and some voters favour turnover on principle [Verify]",
+          "A safe rating discourages scrutiny of an incumbent who faces no real competitive pressure [Verify]"
+        ] },
+      { name: "David Brock Smith", party: "R", winner: false,
+        positions: [
+          "\"Putting Oregon first\" — affordable living, safer communities, good-paying jobs and responsible government (campaign site)",
+          "In December 2020 he signed a letter urging Oregon's Attorney General to join Texas v. Pennsylvania, the suit seeking to overturn the presidential result in four other states (Willamette Week)",
+          "In January 2021 he issued a statement defending January 6 protesters, saying it was not a coup (Willamette Week)"
+        ],
+        differentiators: [
+          "A sitting state senator for Senate District 1 — appointed in January 2023 to fill a vacancy, then elected to a full term in 2024 with 70.8%, so his seat is not at risk in this race",
+          "Won a seven-candidate primary with 29.48% (107,953 votes)",
+          "$28,979.57 cash on hand (FEC, through June 30, 2026); the only outside money located in the race is a single $25,000 independent expenditure supporting him"
+        ],
+        supporters: [
+          "He holds elected office now and consolidated the largest field in the race",
+          "He beat Jo Rae Perkins, a candidate with prior statewide name recognition, in a seven-way contest",
+          "Keeping his state senate seat regardless means this is a free shot with nothing forfeited"
+        ],
+        opponents: [
+          "He won the nomination with under 30% of Republican voters and finished barely 2.4 points ahead of the 2020 nominee",
+          "$28,979.57 against $6.8 million is not a competitive posture in a statewide race",
+          "His December 2020 letter and January 2021 statement are the sharpest sourced lines used against him, and no rater treats the seat as in play"
+        ] },
+      { name: "Chris Henry", party: "I", winner: false,
+        positions: [
+          "[Verify] — both websites listed on his own state filing are dead: henryforsenate.us does not resolve and chrishenry.org returns a 404",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "Runs on the Progressive Party line; filed July 24, 2026 and recorded as qualified by the Oregon Secretary of State — the state filing is authoritative even though the Progressive Party's own 2026 page does not list him",
+          "A Portland truck driver who took 1.91% in the 2022 U.S. Senate race",
+          "⚠ Has NO Federal Election Commission registration or committee at all (direct query returned zero results)"
+        ],
+        supporters: [
+          "He is a real, state-confirmed candidate whom most national coverage of this race leaves out entirely",
+          "A 1.91% showing in 2022 is a genuine, if small, constituency"
+        ],
+        opponents: [
+          "No working campaign website and no federal committee means voters have almost nothing to evaluate [Verify]",
+          "Even his own party's 2026 candidate page does not list him [Verify]"
+        ] }
+    ]
+  },
+
+  // PAST
+  {
+    date: "May 19, 2026",
+    type: "past",
+    scope: "Statewide",
+    office: "Measure 120 — referendum on the 2025 transportation funding law",
+    note: "A veto referendum on HB 3991, the fall-2025 special-session transportation package (gas, payroll and vehicle taxes). Opponents gathered roughly 250,000 signatures in 30 days to force the vote. ⚠ Democrats MOVED the vote from November to the May primary; Republicans sued and a judge upheld the May date on Mar 11, 2026. ⚠ On Jan 7, 2026 — before voters could rule — Gov. Kotek asked lawmakers to \"redirect, repeal and rebuild\" her own law. It was rejected roughly 4-to-1. NO county voted in favour; the most supportive were Benton (29.3%), Hood River (28.1%) and Multnomah (25.0%). ⚠ The precise share widely quoted comes from election-night reporting, not a certified abstract — the Secretary of State has posted no certified May 2026 abstract, so we describe the result as \"about 83% no.\"",
+    candidates: [
+      { name: "No — reject the transportation tax law", party: "I", winner: true,
+        positions: ["About 83% (roughly 1,012,663 votes) — election-night reporting, not certified", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Yes — keep the law", party: "I", winner: false,
+        positions: ["About 17% (roughly 207,066 votes) — election-night reporting, not certified", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "May 19, 2026",
+    type: "past",
+    scope: "Statewide · Nonpartisan",
+    office: "Six statewide nonpartisan offices — decided at the primary, never on the November ballot",
+    note: "⚠ THIS IS WHY OREGON HAS NO JUDICIAL OR LABOR RACE IN NOVEMBER. Under ORS 249.088, a nonpartisan candidate who wins a MAJORITY at the primary is elected outright. All six statewide nonpartisan offices were settled on May 19, 2026 and are marked \"Elected\" in the certified abstract. Five of the six were unopposed incumbents. ⚠ Judicial candidates in Oregon file no policy positions at all — their voters' pamphlet statements are biography and judicial philosophy only, which is the honest reason this section is short.",
+    candidates: [
+      { name: "Christina Stephenson — Labor Commissioner (re-elected)", party: "I", winner: true,
+        positions: ["Won a second term with 63.22%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Aruna Masih Garrett — Supreme Court, Position 4 (re-elected)", party: "I", winner: true,
+        positions: ["Unopposed, 97.37%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Kristina Hilton O'Connor — Court of Appeals, Position 1 (re-elected)", party: "I", winner: true,
+        positions: ["Unopposed, 97.77%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Vance Day Kamins — Court of Appeals, Position 9 (re-elected)", party: "I", winner: true,
+        positions: ["Unopposed, 97.70%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Erin Lagesen — Court of Appeals, Position 12 (re-elected)", party: "I", winner: true,
+        positions: ["Unopposed, 97.81%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Scott Tookey — Court of Appeals, Position 13 (re-elected)", party: "I", winner: true,
+        positions: ["Unopposed, 97.78%", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 5, 2024",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "President of the United States — Oregon result",
+    note: "Harris carried Oregon by 14.3 points. ⚠ Ballot-line precision matters here, because Oregon's minor-party lines are routinely mis-reported: Ronda Kennedy ran on the WE THE PEOPLE line and Cornel West on the PROGRESSIVE line, not as generic independents.",
+    candidates: [
+      { name: "Kamala Harris / Tim Walz", party: "D", winner: true,
+        positions: ["55.27%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Donald Trump / JD Vance", party: "R", winner: false,
+        positions: ["40.97%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Ronda Kennedy (We the People)", party: "I", winner: false,
+        positions: ["1.50%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Jill Stein (Pacific Green)", party: "G", winner: false,
+        positions: ["0.85%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Chase Oliver (Libertarian)", party: "L", winner: false,
+        positions: ["0.40%", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 8, 2022",
+    type: "past",
+    scope: "Statewide",
+    office: "Governor of Oregon",
+    note: "The race being re-run in 2026 — and the reason 2026 is competitive. Kotek won with UNDER 47% in a three-way contest. Betsy Johnson, a former conservative Democratic state senator running unaffiliated, took 8.62% — two and a half times the margin. Figures are from the Oregon Secretary of State's certified abstract. ⚠ Do not use the Oregon Blue Book's \"2022 General Election Voting Totals\" PDF for this race: it omits the governor's contest entirely.",
+    candidates: [
+      { name: "Tina Kotek", party: "D", winner: true,
+        positions: ["46.96% (917,074 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Christine Drazan", party: "R", winner: false,
+        positions: ["43.54% (850,347 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Betsy Johnson (nonaffiliated)", party: "I", winner: false,
+        positions: ["8.62% (168,431 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 3, 2020",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Oregon",
+    note: "Merkley's last race, won by 17.6 points. ⚠ Note the fusion labels: the FEC prints Merkley's 2020 ballot label as D/IP/WF — Democratic, Independent Party and Working Families. He carried FOUR lines in 2014. In 2026 he holds only one, which is a real break from his own pattern.",
+    candidates: [
+      { name: "Jeff Merkley", party: "D", winner: true,
+        positions: ["56.91%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Jo Rae Perkins", party: "R", winner: false,
+        positions: ["39.32%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Gary Dye (Libertarian)", party: "L", winner: false,
+        positions: ["1.84%", "", ""], differentiators: [], supporters: [], opponents: [] },
+      { name: "Ibrahim Taher (Pacific Green)", party: "G", winner: false,
+        positions: ["1.82%", "", ""], differentiators: [], supporters: [], opponents: [] }
+    ]
+  }
+];
+
+// ----- (3) U.S. House races by district -----
+// Oregon has 6 U.S. House districts under SB 881 (2021), no mid-decade redraw.
+// Primary was May 19, 2026. NO Oregon seat is open — all six incumbents filed for and
+// won renomination. Cook PVI figures are the 2026 release (July 29, 2026), which is
+// identical to the 2025 release because Oregon did not redistrict.
+// ⚠ Only ONE Oregon district is treated as competitive by anyone, and even there the
+// raters disagree — see OR-5.
+// ⚠ Cash-on-hand figures are FEC, through June 30, 2026.
+// ⚠ 2024 general-election figures are the Oregon Secretary of State's certified
+// results, retrieved via the Internet Archive because the state's live results portal
+// has been retired. Fusion labels are reproduced exactly as they appeared.
+// ⚠⚠ THE MINOR-PARTY FIELD IS NOT FINAL. Minor-party and nonaffiliated filing closes
+// 5:00 pm Aug 25, 2026 (ORS 249.722). Filings were still arriving on Aug 6, 2026. This
+// page reflects the state's records as of Aug 7, 2026.
+// ⚠ ONLY TWO of the thirteen major-party House candidates answered the Oregon Capital
+// Chronicle's nine-question policy survey — Bentz (OR-2) and Adair (OR-5). That
+// asymmetry is itself worth knowing: in OR-5 the challenger is on record on nine policy
+// questions and the incumbent is not.
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — OR District 1",
+    region: "Northwest Oregon — Beaverton, Hillsboro, western Portland and the north coast (Cook PVI D+20)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Not competitive by any measure. Suzanne Bonamici (D) is the longest-serving member of Oregon's House delegation, first elected in a 2012 special election. She won renomination with 86.63%. Barbara Kahl (R) won a two-way Republican primary with 71.45%. Cook, Sabato and Inside Elections all rate it Solid/Safe Democratic. ⚠ Kahl reports $212 on hand against $10,870 in debts — but she is better documented than that figure suggests, with seven developed issue areas on her own site and an explicit no-corporate-PAC pledge. ⚠ A source caution: the Oregon Capital Chronicle's OR-1 Republican voter guide carries a template bug labelling BOTH Kahl and her primary opponent \"Incumbent.\" Neither is. ⚠ Joe Christman, listed by some aggregators as a 2026 Libertarian candidate here, is NOT one — no Libertarian filed for any Oregon U.S. House seat this cycle.",
+        candidates: [
+          { name: "Suzanne Bonamici (incumbent)", party: "D", winner: false,
+            positions: [
+              "Ranking Member of the Education and Workforce Subcommittee on Early Childhood, Elementary and Secondary Education (House record)",
+              "Education and workforce policy is her committee specialty and long-standing legislative focus (House record)",
+              "[Verify] — she did not answer the Oregon Capital Chronicle's 2026 policy survey, so her positions here rest on her committee record rather than her own 2026 answers"
+            ],
+            differentiators: [
+              "The longest-serving member of Oregon's U.S. House delegation, in office since 2012",
+              "Renominated with 86.63%",
+              "$572,435 cash on hand (FEC, June 30, 2026)"
+            ],
+            supporters: [
+              "A ranking-member seat on education policy is real leverage for Oregon schools",
+              "Fourteen years in the seat means seniority and casework capacity a first-termer would not have",
+              "She won this district by more than 40 points in 2024"
+            ],
+            opponents: [
+              "Fourteen years without a competitive general election means very little accountability pressure [Verify]",
+              "She declined the state's main 2026 policy questionnaire, so voters have less on the record from her this cycle than from some challengers [Verify]"
+            ] },
+          { name: "Barbara Kahl", party: "R", winner: false,
+            positions: [
+              "Seven developed issue areas published on her own campaign site (campaign site)",
+              "An explicit pledge to accept no corporate PAC money (campaign site)",
+              "[Verify] — specific policy detail beyond her own site could not be independently corroborated"
+            ],
+            differentiators: [
+              "Won the Republican primary with 71.45% over Nikki Verbeek",
+              "$212 cash on hand against $10,870 in debts (FEC, June 30, 2026)",
+              "Runs on a no-corporate-PAC pledge, which is unusual on either side in this district"
+            ],
+            supporters: [
+              "She has published an actual platform rather than slogans, which is more than several challengers in this state managed",
+              "A no-corporate-PAC pledge is a checkable commitment voters can hold her to"
+            ],
+            opponents: [
+              "D+20, and the incumbent won by more than 40 points in 2024 [Verify]",
+              "$212 on hand and net debt is not a campaign that can reach voters [Verify]"
+            ] }
+        ] },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Bonamici re-elected by more than 40 points.",
+        candidates: [
+          { name: "Suzanne Bonamici", party: "D", winner: true,
+            positions: ["68.63%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Bob Todd", party: "R", winner: false,
+            positions: ["28.10%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Joe Christman (Libertarian)", party: "L", winner: false,
+            positions: ["3.08%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ] }
+    ]
+  },
+  2: {
+    name: "U.S. House — OR District 2",
+    region: "Eastern and southern Oregon — Medford, Klamath Falls, Pendleton, Ontario and most of the state's land area (Cook PVI R+14)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Oregon's only safely Republican district. Cliff Bentz (R) won renomination with 79.64%; Chris Beck (D) emerged from a six-way Democratic primary with 34.45%. Cook, Sabato and Inside Elections all rate it Solid/Safe Republican. ⚠ Bentz was one of only two Oregon House candidates to answer the Oregon Capital Chronicle's nine-question policy survey. ⚠ The Independent Party of Oregon lists Beck among the 26 nominees from its July 19 caucus, but the STATE has no Independent Party filing for him — 12 of those 26 nominees are likewise missing filings, so this looks like paperwork lag rather than a phantom. We report it as nominated-by-IPO with the state filing pending, NOT as a confirmed fusion candidacy. If he files by Aug 25 this becomes Oregon's second fusion race. ⚠ Beck's home town is reported inconsistently — the Capital Chronicle says Phoenix, his own site's dateline says Jacksonville; both are in Jackson County, about 15 miles apart.",
+        candidates: [
+          { name: "Cliff Bentz (incumbent)", party: "R", winner: false,
+            positions: [
+              "Answered the Oregon Capital Chronicle's nine-question 2026 policy survey — one of only two Oregon House candidates to do so",
+              "The only Oregonian sitting on BOTH Energy & Commerce and Natural Resources (House record)",
+              "Voted for the SAVE Act — and no other Oregon member of either party joined him (House roll call)"
+            ],
+            differentiators: [
+              "Renominated with 79.64%",
+              "$1,420,775 cash on hand (FEC, June 30, 2026) — about 26 times his opponent's",
+              "⚠ His campaign endorsements page is STALE: it lists state legislators who no longer hold the offices shown. His current 2026 Voters' Pamphlet list includes Oregon Right to Life PAC, the Cattlemen's Association, Farm Bureau, American Forest Resource Council, Associated Oregon Loggers, the Rural Electric Cooperative Association and AgPac"
+            ],
+            supporters: [
+              "Seats on both Energy & Commerce and Natural Resources are exactly the committees that matter for a district built on ranching, timber, water and power",
+              "He put himself on the record on nine policy questions when eleven of thirteen Oregon candidates would not",
+              "R+14 and a 63.9% win in 2024 reflect a district that broadly agrees with him"
+            ],
+            opponents: [
+              "His SAVE Act vote is the sharpest sourced line against him in a state that has voted entirely by mail for more than 25 years — no other Oregon member of either party voted with him",
+              "A 26-to-1 cash advantage and a safe rating leave very little accountability pressure [Verify]"
+            ] },
+          { name: "Chris Beck", party: "D", winner: false,
+            positions: [
+              "[Verify] — he did not answer the Oregon Capital Chronicle's 2026 policy survey and no full platform could be independently sourced",
+              "[Verify]",
+              "[Verify]"
+            ],
+            differentiators: [
+              "Won a six-way Democratic primary with 34.45%",
+              "A former Oregon state representative, 1997–2003 — a 23-year gap since he last held office. ⚠ The Capital Chronicle published a correction confirming that seat covered PORTLAND, not Lane County; uncorrected syndicated copies still circulate",
+              "$53,777 cash on hand (FEC, June 30, 2026)"
+            ],
+            supporters: [
+              "The Independent Party of Oregon's caucus nominated him, which in a fusion state signals cross-party appeal [Verify — the state has no IPO filing for him yet]",
+              "He has held elected office before, which no other Democrat in this primary could say"
+            ],
+            opponents: [
+              "R+14, and he won his own primary with barely a third of the vote",
+              "A 23-year gap since he last held office, in a legislative seat on the other side of the state",
+              "$53,777 against $1.42 million [Verify]"
+            ] }
+        ] },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Bentz re-elected. ⚠ Note the fusion label on the Democratic candidate — this is normal in Oregon.",
+        candidates: [
+          { name: "Cliff Bentz", party: "R", winner: true,
+            positions: ["63.90%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Dan Ruby (Democrat, Progressive)", party: "D", winner: false,
+            positions: ["32.81%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Andrea Stettler (Constitution)", party: "I", winner: false,
+            positions: ["3.20%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ] }
+    ]
+  },
+  3: {
+    name: "U.S. House — OR District 3",
+    region: "Portland east of the Willamette, plus Gresham and Hood River (Cook PVI D+24)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Oregon's most Democratic district. Maxine Dexter (D) won renomination with 89.19%. Loran Ayles (R) was unopposed. Solid/Safe Democratic by all three raters. ⚠ Dexter is a PULMONOLOGIST and critical-care physician — the Oregon Capital Chronicle ran a published correction on exactly this point — and she won this seat in the 2024 OPEN-seat race after Earl Blumenauer retired; she is not his continuation as an incumbent. ⚠ Loran Ayles is the one candidate of the thirteen with no sourceable campaign material at all: no FEC committee (confirmed by searching all 8,281 rows of the FEC's 2026 candidate master — the one \"Ayles\" match is a different person in Maryland), no Voters' Pamphlet statement, and no locatable campaign site. \"Positions could not be sourced\" is the honest description.",
+        candidates: [
+          { name: "Maxine Dexter (incumbent)", party: "D", winner: false,
+            positions: [
+              "Her official House site states she \"supports defunding and dismantling ICE\" — an unhedged position, and the obvious line of attack, though no Republican campaign was located making it",
+              "A practising pulmonologist and critical-care physician, which anchors her health-policy work (House biography)",
+              "[Verify] — she did not answer the Oregon Capital Chronicle's 2026 policy survey"
+            ],
+            differentiators: [
+              "Won this seat in the 2024 open-seat race after Earl Blumenauer's retirement; this is her first re-election bid",
+              "Renominated with 89.19%",
+              "$173,687 cash on hand (FEC, June 30, 2026)"
+            ],
+            supporters: [
+              "A working physician in Congress brings direct clinical experience to health policy",
+              "89.19% renomination in the state's most Democratic district indicates broad support at home",
+              "She states her position on immigration enforcement plainly rather than hedging"
+            ],
+            opponents: [
+              "\"Defunding and dismantling ICE\" is an unhedged position that would be a serious liability in almost any other district [Verify — no Republican campaign was located making this argument]",
+              "$173,687 is modest for a sitting member, though she faces no funded opponent [Verify]"
+            ] },
+          { name: "Loran Ayles", party: "R", winner: false,
+            positions: [
+              "[Verify] — no campaign site, no Voters' Pamphlet statement and no public policy statements of any kind could be located",
+              "[Verify]",
+              "[Verify]"
+            ],
+            differentiators: [
+              "Unopposed for the Republican nomination (95.90% against write-ins)",
+              "⚠ Has NO Federal Election Commission filing at all — verified against the complete FEC 2026 candidate master"
+            ],
+            supporters: [
+              "Gives voters in a D+24 district a choice on the ballot rather than an uncontested seat [Verify]"
+            ],
+            opponents: [
+              "No platform, no committee and no campaign site means there is nothing for voters to evaluate [Verify]",
+              "D+24, against an incumbent who won by more than 40 points in 2024 [Verify]"
+            ] }
+        ] },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "An OPEN seat after Earl Blumenauer's retirement — Dexter won it outright rather than inheriting it.",
+        candidates: [
+          { name: "Maxine Dexter", party: "D", winner: true,
+            positions: ["67.71%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Joanna Harbour", party: "R", winner: false,
+            positions: ["25.22%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "David Walker (Independent, Progressive)", party: "I", winner: false,
+            positions: ["3.06%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Michael Meyer (Pacific Green)", party: "G", winner: false,
+            positions: ["3.02%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ] }
+    ]
+  },
+  4: {
+    name: "U.S. House — OR District 4",
+    region: "Southwest Oregon — Eugene, Springfield, Corvallis and the central coast (Cook PVI D+6)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "A 2024 rematch, and the only Oregon race where both major-party candidates are meaningfully funded. Val Hoyle (D) won renomination with 75.34%; Monique DeSpain (R) with 86.63%. ⚠ But the raters have moved AWAY from the challenger, not toward her: Sabato moved OR-4 from Likely to SAFE Democratic on Mar 26, 2026; Cook has it Solid D (Jul 16, 2026) and Inside Elections Solid D (Dec 5, 2025). ⚠ DeSpain was a full-tier NRCC \"Young Guns\" candidate in 2024 but is NOT in the 2026 NRCC challenger programme — verified against the July 15, 2026 roster, which contains no Oregon district at all. Justin Filip (Pacific Green) is a real 2026 candidate — filed July 9, 2026 and recorded as qualified — and took 2.72% here in 2024, a genuine baseline rather than a token candidacy.",
+        candidates: [
+          { name: "Val Hoyle (incumbent)", party: "D", winner: false,
+            positions: [
+              "Sits on Natural Resources and Transportation & Infrastructure (House record)",
+              "[Verify] — she did not answer the Oregon Capital Chronicle's 2026 policy survey",
+              "[Verify]"
+            ],
+            differentiators: [
+              "In office since 2023; won this seat 51.71–43.94 over the same opponent in 2024",
+              "$520,840 cash on hand (FEC, June 30, 2026)",
+              "⚠ In September 2025 she was found to have violated the STOCK Act by disclosing 217 of her husband's trades late, worth between $245,215 and $3,355,000 (OpenSecrets). She paid $200 — which was the STANDARD FIRST-OFFENCE LATE-FILING FEE, not a fine for stock trading"
+            ],
+            supporters: [
+              "She beat this same opponent by 7.8 points in 2024, and every national rater has since moved the district further AWAY from the Republican",
+              "Committee seats on Natural Resources and Transportation are a fit for a timber-and-coast district",
+              "She holds a cash advantage over a well-funded challenger"
+            ],
+            opponents: [
+              "The STOCK Act violation is independently confirmed, not a campaign claim — 217 of her husband's trades were disclosed late",
+              "In the April 30–June 30 window her challenger out-raised her, though Hoyle led over the full three months (the Capital Chronicle corrected its own reporting on this on July 17, 2026)",
+              "D+6 is the second-most competitive Oregon district on paper, and she has never won it by double digits [Verify]"
+            ] },
+          { name: "Monique DeSpain", party: "R", winner: false,
+            positions: [
+              "[Verify] — she did not answer the Oregon Capital Chronicle's 2026 policy survey and no full 2026 platform could be independently sourced",
+              "[Verify]",
+              "[Verify]"
+            ],
+            differentiators: [
+              "An attorney and Air Force veteran; the 2024 Republican nominee here, making this a rematch",
+              "$387,695 cash on hand against $30,000 in debts (FEC, June 30, 2026). Roughly half her April 30–June 30 haul was a $30,000 personal loan plus $65,000 transferred from her own PAC",
+              "Ran in 2024 on a fusion ballot line as \"Republican, Constitution\""
+            ],
+            supporters: [
+              "She held Hoyle under 52% in 2024 in a presidential year, and midterms usually favour the party out of the White House",
+              "She has run this district before and starts with real name recognition and a real bank balance",
+              "The STOCK Act finding gives her a concrete, independently confirmed accountability argument"
+            ],
+            opponents: [
+              "⚠ Her 2024 claim that Hoyle was \"under federal investigation\" was INACCURATE — the federal investigation concerned La Mota, not Hoyle. If the attack resurfaces, that is the correction",
+              "Sabato moved this district AWAY from her in March 2026, and she is absent from the NRCC's 2026 challenger programme after being a Young Gun in 2024 — with no national independent expenditure located in the district",
+              "About half her most recent fundraising was her own loan and a transfer from her own PAC rather than new donors"
+            ] },
+          { name: "Justin Filip", party: "G", winner: false,
+            positions: [
+              "[Verify] — a full policy platform could not be sourced",
+              "[Verify]",
+              "[Verify]"
+            ],
+            differentiators: [
+              "Pacific Green nominee, filed July 9, 2026 and recorded as qualified by the Oregon Secretary of State",
+              "Took 10,315 votes (2.72%) here in 2024 — a real baseline, not a token candidacy",
+              "Has raised under $5,000 and is therefore not required to file with the FEC"
+            ],
+            supporters: [
+              "A 2.72% showing in 2024 means a measurable bloc of this district's voters already chose him once"
+            ],
+            opponents: [
+              "No published platform means voters have little to evaluate [Verify]",
+              "A campaign under the federal reporting threshold cannot compete for attention in a two-way race with real money on both sides [Verify]"
+            ] }
+        ] },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "The first Hoyle–DeSpain contest. ⚠ Note DeSpain's fusion label.",
+        candidates: [
+          { name: "Val Hoyle", party: "D", winner: true,
+            positions: ["51.71% (195,862 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Monique DeSpain (Republican, Constitution)", party: "R", winner: false,
+            positions: ["43.94% (166,430 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Justin Filip (Pacific Green)", party: "G", winner: false,
+            positions: ["2.72% (10,315 votes)", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Levi Bahlen (Libertarian)", party: "L", winner: false,
+            positions: ["1.51% (5,704 votes)", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ] }
+    ]
+  },
+  5: {
+    name: "U.S. House — OR District 5",
+    region: "Clackamas County, Salem's eastern edge, Bend and the central Cascades (Cook PVI D+4)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Oregon's most competitive district on paper and the only one where the raters genuinely disagree. Janelle Bynum (D) unseated Republican Lori Chavez-DeRemer in 2024 by 10,945 votes — 2.73 points, the official Clerk of the House figure. She won renomination with 82.05%; Patti Adair (R), a Deschutes County Commissioner, won hers with 59.61%. ⚠⚠ THE RATINGS CONFLICT IS REAL AND WE ARE NOT AVERAGING IT AWAY: Sabato's Crystal Ball is the LONE HOLDOUT at LIKELY DEMOCRATIC, a rating set April 10, 2025 and never changed — a full-text search of Sabato's archive returns zero OR-5 entries in the entire Mar 2025–Jul 2026 change log. Cook moved it Likely D → SOLID D on July 16, 2026; Inside Elections moved it to Solid D around Dec 5, 2025; Decision Desk HQ has it Safe D. Cook's Erin Covey, on the record: \"I haven't talked to any Republican in Washington who believes that this is going to be a competitive race.\" Bynum is on the DCCC's Frontline list (named Mar 6, 2025) and is the ONLY Oregon Democrat on it; NO Oregon candidate is in either NRCC programme. Andrea Townsend (Pacific Green) filed July 23, 2026 and is recorded as qualified. ⚠ Sonja Feintech, listed by some aggregators as a Libertarian candidate here, is NOT a candidate — she is the sitting CHAIR of the Libertarian Party of Oregon.",
+        candidates: [
+          { name: "Janelle Bynum (incumbent)", party: "D", winner: false,
+            positions: [
+              "The first Oregon freshman on House Financial Services in 28 years (House record)",
+              "Three housing bills signed into law in July 2026 (legislative record)",
+              "Co-sponsored the bipartisan BILL Drivers Act with a Pennsylvania Republican (legislative record)"
+            ],
+            differentiators: [
+              "Unseated a sitting Republican in 2024 by 10,945 votes — 2.73 points",
+              "$2,715,860 cash on hand (FEC, June 30, 2026) — roughly 20 times her opponent's",
+              "The only Oregon Democrat on the DCCC's Frontline list of most-vulnerable incumbents"
+            ],
+            supporters: [
+              "Three housing bills signed into law in a single month is a concrete first-term record in the state's tightest district",
+              "A Financial Services seat as a freshman is unusual leverage for a swing district",
+              "Three of the four national raters have moved this seat out of the competitive column since she took it"
+            ],
+            opponents: [
+              "She won by 2.73 points, and D+4 is the narrowest partisan margin in the state — Sabato still calls it only Likely Democratic",
+              "She did not answer the state's main 2026 policy questionnaire while her challenger did, so voters have less from her on the record this cycle [Verify]",
+              "A 20-to-1 cash advantage in the state's closest seat invites the argument that money, not persuasion, is holding it [Verify]"
+            ] },
+          { name: "Patti Adair", party: "R", winner: false,
+            positions: [
+              "Answered the Oregon Capital Chronicle's nine-question 2026 policy survey — one of only two Oregon House candidates to do so",
+              "Explicitly SUPPORTS vote-by-mail: \"Oregon has been voting by mail for over 25 years, and I strongly support mail voting\" (her own survey answer) — a position that separates her from much of the national Republican party",
+              "A sitting Deschutes County Commissioner, running on that local-government record"
+            ],
+            differentiators: [
+              "Won the Republican primary with 59.61% over Justin Lockwood",
+              "$135,365 cash on hand against $27,361 in debts (FEC, June 30, 2026)",
+              "NOT in the NRCC's 2026 \"MAGA Majority\" challenger programme — no Oregon candidate is"
+            ],
+            supporters: [
+              "She put herself on the record on nine policy questions when the incumbent did not",
+              "Her explicit support for vote-by-mail is aimed squarely at swing voters and breaks with her national party",
+              "She holds county-wide elected office in the district's fastest-growing area"
+            ],
+            opponents: [
+              "Three of four raters have moved this seat OUT of the competitive column, and a Cook analyst said on the record that no Washington Republican expects a competitive race",
+              "$135,365 against $2.72 million is a 20-to-1 gap",
+              "No national Republican programme or independent expenditure has been located supporting her here"
+            ] },
+          { name: "Andrea Townsend", party: "G", winner: false,
+            positions: [
+              "[Verify] — no platform could be sourced",
+              "[Verify]",
+              "[Verify]"
+            ],
+            differentiators: [
+              "Pacific Green nominee, filed July 23, 2026 and recorded as qualified by the Oregon Secretary of State",
+              "Took 1.04% in this district in 2024"
+            ],
+            supporters: [
+              "In a district decided by 2.73 points last time, a third candidate on the left is a factor both major campaigns have to reckon with"
+            ],
+            opponents: [
+              "No published platform [Verify]",
+              "1.04% in 2024 is a small base to build on [Verify]"
+            ] }
+        ] },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Bynum unseated Republican Lori Chavez-DeRemer by 10,945 votes — 2.73 points. ⚠ Several outlets report \"9,600 / 2.5 points\" or \"nearly 11,000\"; the figure here is the official Clerk of the House number.",
+        candidates: [
+          { name: "Janelle Bynum", party: "D", winner: true,
+            positions: ["47.69%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Lori Chavez-DeRemer", party: "R", winner: false,
+            positions: ["44.96%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Brett Smith (Independent)", party: "I", winner: false,
+            positions: ["4.65%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Sonja Feintech (Libertarian)", party: "L", winner: false,
+            positions: ["1.54%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Andrea Townsend (Pacific Green)", party: "G", winner: false,
+            positions: ["1.04%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ] }
+    ]
+  },
+  6: {
+    name: "U.S. House — OR District 6",
+    region: "Salem, Yamhill County and western Washington County — Oregon's newest district, created in 2021 (Cook PVI D+6)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Both nominees were unopposed in their primaries. Andrea Salinas (D) is Oregon's only FUSION candidate this cycle: she filed twice, as a Democrat on June 25 and as an Independent Party nominee on July 6, both recorded as qualified, so both labels should print beside her name. Sabato moved this district from Likely to SAFE Democratic on Mar 26, 2026; Cook and Inside Elections have it Solid D. ⚠ NO Oregon Capital Chronicle voter guide was published for this district at all — the only one of the six with none. ⚠ Jason Faler, listed by aggregators as a nonaffiliated candidate here, is NOT qualified: he holds only a prospective petition and needs roughly 3,500 valid signatures by Aug 25. If he does qualify, Oregon law (ORS 254.135) requires his ballot label to read \"Nonaffiliated.\"",
+        candidates: [
+          { name: "Andrea Salinas (incumbent)", party: "D", winner: false,
+            positions: [
+              "Ranking Member of the Agriculture Subcommittee on Forestry and Horticulture (House record)",
+              "Sits simultaneously in the Congressional Hispanic Caucus, New Democrat Coalition leadership and the Progressive Caucus (House record)",
+              "[Verify] — no 2026 policy questionnaire was published for this district"
+            ],
+            differentiators: [
+              "Oregon's only fusion candidate in 2026 — nominated by both the Democratic Party and the Independent Party of Oregon, and qualified under both",
+              "Unopposed for renomination (98.74%)",
+              "$611,103 cash on hand (FEC, June 30, 2026)"
+            ],
+            supporters: [
+              "A cross-party nomination from the Independent Party is the clearest available evidence of appeal beyond her own party",
+              "A ranking-member seat on forestry matters directly to this district's timber and nursery economy",
+              "She holds leadership positions in both the moderate and progressive House caucuses simultaneously"
+            ],
+            opponents: [
+              "D+6 and a 53.34–46.49 win in 2024 make this closer than most of Oregon's Democratic seats [Verify]",
+              "No policy guide was published here, so voters in this district have less on the record from her than voters elsewhere in the state [Verify]"
+            ] },
+          { name: "David Russ", party: "R", winner: false,
+            positions: [
+              "[Verify] — his site carries slogans but no policy platform",
+              "Publishes a dated log of his attempts to arrange a public debate with the incumbent (his own campaign site)",
+              "[Verify]"
+            ],
+            differentiators: [
+              "Unopposed for the Republican nomination (98.37%)",
+              "\"Mayor Emeritus of Dundee\" — a FORMER mayor, not a sitting one",
+              "$1,855 cash on hand against $2,000 in debts (FEC, June 30, 2026)"
+            ],
+            supporters: [
+              "The debate log is a checkable transparency argument rather than a slogan — he has documented and dated each attempt",
+              "He has held local elected office in the district"
+            ],
+            opponents: [
+              "$1,855 on hand and net debt against $611,103 [Verify]",
+              "A campaign site with slogans and no policy platform gives voters little to evaluate [Verify]"
+            ] }
+        ] },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Salinas re-elected. ⚠ Note her fusion ballot label — the same cross-nomination she holds again in 2026.",
+        candidates: [
+          { name: "Andrea Salinas (Democrat, Independent)", party: "D", winner: true,
+            positions: ["53.34%", "", ""], differentiators: [], supporters: [], opponents: [] },
+          { name: "Mike Erickson", party: "R", winner: false,
+            positions: ["46.49%", "", ""], differentiators: [], supporters: [], opponents: [] }
+        ] }
+    ]
+  }
+};
+
+const SITE_META = { name: "Oregon Elections Hub", lastUpdated: "August 7, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — Oregon county-level down-ballot research is the next phase.
+// Oregon counties elect commissioners, sheriffs, clerks and district attorneys, and five
+// CIRCUIT COURT positions plus the Lake County DA appear on the November 2026 ballot
+// because they became vacant by retirement or resignation: Lane P14, Multnomah P6,
+// Clackamas P5, Deschutes P3 and Washington P1. Those are the natural first targets.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Oregon has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them,
+  // otherwise a district with no plurality county is unreachable from the map.
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const OR_STATE_FIPS = "41";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#ormap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(OR_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Hartford ----
+  drawCapital(g, projection, { name: "Salem", lng: -123.0351, lat: 44.9429 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in MS";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn&#39;t in our Oregon dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>

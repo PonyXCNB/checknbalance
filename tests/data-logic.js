@@ -56,6 +56,7 @@ const STATE_PAGES = [
   { page: "nm.html", countyCount: 33,  sampleFips: "35001", sampleName: "Bernalillo",  expectedRaces: 27 },
   // Adams is deliberately the CO sample: it spans FOUR districts (CO-4/6/7/8) via `ds`
   { page: "co.html", countyCount: 64,  sampleFips: "08001", sampleName: "Adams",       expectedRaces: 24 },
+  { page: "or.html", countyCount: 36,  sampleFips: "41051", sampleName: "Multnomah",   expectedRaces: 13 },
 ];
 
 for (const cfg of STATE_PAGES) {
@@ -214,7 +215,7 @@ for (const abbr of ALL_TESTED) {
 // makes a race silently vanish from the grouped drawer)
 // ---------------------------------------------------------------
 console.log("\n— type-value audit —");
-for (const page of ["index.html", "nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html", "ny.html", "ri.html", "nh.html", "ct.html", "vt.html", "me.html", "ma.html", "wv.html", "oh.html", "ky.html", "in.html", "ia.html", "il.html", "ms.html", "ar.html", "ne.html", "nm.html", "co.html", "state.html"]) {
+for (const page of ["index.html", "nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html", "ny.html", "ri.html", "nh.html", "ct.html", "vt.html", "me.html", "ma.html", "wv.html", "oh.html", "ky.html", "in.html", "ia.html", "il.html", "ms.html", "ar.html", "ne.html", "nm.html", "co.html", "or.html", "state.html"]) {
   const bad = [];
   for (const code of extractInlineScripts(page)) {
     for (const m of code.matchAll(/type\s*:\s*"([a-z]+)"/g)) {
