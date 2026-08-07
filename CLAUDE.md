@@ -691,7 +691,7 @@ time-sensitive calendar, and the incumbent-status sweep.
    special primary and independent qualifying both close, and ONLY off the 2023 legislature map), then **MI**
    (its Senate primary was called Aug 5 and Stevens CONCEDED — only certification still gates it), then **WI/MN/MO**.
    ⚠ **NEVADA is research-COMPLETE and build-ready (see its banked section) — do that first. OREGON is
-   one agent away: Governor and U.S. Senate candidate detail. Its House positions and voices are DONE.**
+   ALSO research-COMPLETE — both are BUILD-ONLY tasks now, with no research blocker left on either.**
    ⚠ **MO carries a redistricting risk** — it was one of the 2025–26 mid-decade redraw states, so answer "which map
    governs 2026?" from primary sources before deriving anything (lesson #13). WI and MN both held Aug 11 primaries.
    ⚠ **MI is NOT ready.** Its primary was Aug 4, 2026 and as of Aug 5 the **Democratic U.S. Senate primary was still
@@ -1258,14 +1258,115 @@ time-sensitive calendar, and the incumbent-status sweep.
      (R, NV-2). Also **Zach Conine filed for AG but LOST the primary — do not card him**, and Sharron
      Angle lost the SoS primary and is not on the November ballot.
 
-   ### ⏸ OREGON — RESEARCH BANKED Aug 7, 2026. ONE BLOCKER LEFT: Governor/Senate candidate detail.
-   Map, ratings, PVI, House field, money, the full statewide STRUCTURE **and positions + voices for all
-   13 House candidates** are verified. **The ONLY remaining gap is Governor and U.S. Senate candidate
-   detail** — positions, cash on hand and endorsements were never obtained for Kotek, Drazan, Merkley or
-   Brock Smith, so their voices are structural-only. ⚠ For a sitting governor and a sitting senator that
-   is a RESEARCH GAP, not a finding — do NOT ship it as "[Verify] no platform located" the way a genuinely
-   invisible minor-party candidate would be carded. One targeted agent closes it (ORESTAR is the state
-   finance source and needs a browser; see access notes).
+   ### ⏸ OREGON — RESEARCH COMPLETE Aug 7, 2026, NOT YET BUILT. Like Nevada, this is a build-only task.
+   Map, ratings, PVI, House field + positions + voices (all 13), the full statewide structure, **the
+   entire U.S. SENATE race AND the entire GOVERNOR race** are verified. **No research blocker remains.**
+
+   **GOVERNOR — DONE, including the controversy that two earlier passes could not source.**
+   - **Field (ORESTAR, Aug 7): Tina Kotek (D, incumbent), Christine Drazan (R), and Brett Smith
+     (PACIFIC GREEN)** — a ballot-qualified third candidate, filed 06/04/2026. NO fusion cross-nomination
+     is recorded for any of the three.
+   - **Cash on hand, PRIMARY-SOURCED from ORESTAR account summaries (Aug 7, 2026): Kotek
+     $8,198,994.53 · Drazan $2,186,497.89 · Brett Smith $0.00** (raised $0, spent $0).
+   - **Primary:** Kotek **83.6%** over NINE challengers; Drazan **40.5%** over Ed Diehl 33.0% and Chris
+     Dudley 16.9% in a FOURTEEN-candidate field. ⚠ Two Kotek totals circulate (385,999 vs 382,642) —
+     flag, do not resolve. ⚠ The certified May 2026 abstract could NOT be retrieved (see access notes),
+     so these are Wikipedia-via-SoS figures that sum exactly internally. ⚠ Wikipedia's own Kotek BIO says
+     "more than 85%," contradicting its own election article at 83.6% — another reason it is a lead only.
+   - ⚠⚠ **RATINGS MOVED RIGHT, AND THAT IS THE HEADLINE.** **Inside Elections: Lean Democrat, moved from
+     Solid Democrat on June 25, 2026** — verified FIRSTHAND from their embedded ratings JSON, which
+     carries `previous_rating` and `shift: right`. Cook: **Likely D, moved from Safe D July 10, 2026**
+     [secondhand via 270toWin's Cook changelog — cookpolitical.com renders client-side and the string
+     "Oregon" appears nowhere in its HTML]. Sabato: Likely D (map colour match, July 23). **All three have
+     it off "Safe" and two moved it rightward within two months.**
+   - ⚠ **ALL general-election polling is sponsored or partisan — say so.** Public Opinion Strategies (R),
+     *sponsored by the Drazan campaign*, June 22–24: **Drazan 48, Kotek 44**. Hoffman (R), *sponsored by
+     the Dudley campaign*, May 11–12: tied 45–45. FM3 (D): Kotek 45, Drazan 40. **No independent public
+     poll exists.**
+   - **KOTEK'S FIRST-TERM CONTROVERSY — now properly sourced, carry it with the counterweight:**
+     (a) **The "Office of the First Spouse."** Three top aides including her chief of staff and deputy
+     chief of staff RESIGNED in March 2024 over the expanding policy role of First Lady Aimee Kotek
+     Wilson and a proposed paid office; Kotek abandoned the plan and issued a "First Partner Handbook."
+     ⚠⚠ **The ethics commission DEADLOCKED 4–4 on June 27–28, 2024 and the complaints were
+     ADMINISTRATIVELY DISMISSED WITHOUT INVESTIGATION. A 4–4 tie is NOT an exoneration and must not be
+     described as one.** The four Republican-recommended commissioners voted to investigate; three
+     Democratic-caucus commissioners and one Brown appointee voted not to. At least six senior staff left
+     in five months.
+     (b) **Housing:** her own goal is 36,000 homes/year; Oregon pulled about **14,000** permits — judge
+     her by her own number. (c) **Measure 110 rollback** via HB 4002. (d) ⚠ **THE CLEAREST REASON THE
+     RACE IS COMPETITIVE: Measure 120.** Her fall-2025 special-session transportation package was
+     referred to voters after a ~250,000-signature drive in 30 days and **REJECTED ROUGHLY 4-TO-1, over
+     80% "no," on May 19, 2026.** (e) **Left-flank erosion:** the Oregon Education Association PAC voted
+     **75% NOT to endorse anyone** for governor — first time since 2014, after giving her ~$389,000 in
+     2022 — and the Working Families Party left governor off its slate entirely.
+   - ⚠ **DO NOT PRINT:** any Drazan **Libertarian** nomination (Wikipedia infobox asserts it; nothing
+     else does, including ORESTAR and lporegon.org); **"Alexander Ziwahatan"** (ZERO ORESTAR records);
+     **Matt Rowe as "the Libertarian nominee"** (his 2026 committee is registered PACIFIC GREEN, and he
+     is stale in aggregators); or the Jan 2026 federal-agent shooting detail (sourced only to a visibly
+     corrupted Wikipedia passage).
+   - ⚠ Four people hold real 2026 state committees for Governor but have **NOT filed for the ballot** —
+     LaNicia Duke (nonaffiliated, $108.75), John Fial (nonaffiliated, $0), Dawn Regier, Matthew Rowe.
+     Worth telling voters they exist; do NOT card them. They may still file by Aug 25.
+   - **2022 history, from the certified abstract:** Kotek **46.96%** (917,074) · Drazan **43.54%**
+     (850,347) · **Betsy Johnson (nonaffiliated) 8.62%** (168,431). Margin **+3.42 points** — Johnson's
+     share was 2.5× the margin, and Kotek won with UNDER 47%. Oregon has not elected a Republican
+     governor since **1982**, yet voted Harris +14.3 in 2024 while the last governor's race was +3.4.
+
+   ### ⚠⚠ ACCESS CORRECTION — ORESTAR **IS** REACHABLE BY PLAIN HTTP (three earlier agents got this wrong)
+   Three separate passes reported ORESTAR as defeated by an F5/TSPD JavaScript wall requiring a browser.
+   **It is not.** The obstacle is OWASP CSRFGuard, and it is defeatable with curl:
+   **`POST /orestar/JavaScriptServlet` with header `FETCH-CSRF-TOKEN: 1` returns `OWASP_CSRFTOKEN:<value>`,
+   which must then be posted with the form using a persistent cookie jar.** Without it you are bounced to
+   `CommitteeSearchFirstPage.do?csrfInvalid=true` — and, worse, malformed queries return **EMPTY RESULT
+   SETS THAT LOOK LIKE GENUINE ZEROES.** Endpoints: `cfFilings.do` (candidate filings),
+   `CommitteeSearchFirstPage.do` / `CommitteeSearchSecondPage.do`, `sooDetail.do?sooRsn=`, and
+   **`publicAccountSummary.do?filerId=` for cash on hand.**
+   ✅ **Inside Elections is first-party readable:** WebFetch 403s, but curl with a browser UA returns the
+   full page with all 435 races as an embedded JSON array carrying `rating`, `previous_rating`, `shift`
+   and an ISO timestamp per race.
+   ✅ **Official Oregon abstracts:** `records.sos.state.or.us/ORSOSWebDrawer/Record/<id>/file/browserviewable?inline=true`
+   — 2022 general **13735454**, 2024 general **13735458**. ⚠ Parse with `pdftotext` **WITHOUT** `-layout`;
+   the `-layout` output slides county values into the wrong candidate columns.
+   ⚠ Still unretrievable: the **certified May 19, 2026 primary abstract** (results.oregonvotes.gov is
+   retired and 302s everywhere; the SoS Documents path 404s after a restructure; ORMS returns 0 records
+   for 2026). Cook renders client-side; Sabato publishes governor ratings only as map images.
+
+   **U.S. SENATE — DONE, and it contains a candidate Wikipedia omits entirely.**
+   - **Field (ORESTAR, retrieved Aug 7, all Qualified, zero withdrawals): Jeff Merkley (D), David Brock
+     Smith (R), and ⚠ CHRIS HENRY (PROGRESSIVE)** — a real, state-confirmed third candidate that
+     **Wikipedia's race article leaves out completely.** Filed 07/24/2026; a Portland truck driver.
+   - ⚠ **NO fusion cross-nominations were filed — a genuine break from precedent worth noting.** Each
+     candidate holds exactly ONE nomination. Merkley carried **four** lines in 2014 (D+Independent+
+     Working Families+Progressive) and **three** in 2020 (the FEC prints his 2020 label as **D/IP/WF**).
+     Confirmed against each fusion-capable party's own site: the Independent Party's July 19 caucus
+     produced 26 nominees with **no Senate pick**; Pacific Green named none; Working Families endorsed
+     none. ⚠ The Libertarian convention was **July 25 and its result is unpublished** — and in 2020 the
+     LP filed **on deadline day**, so this can still change before Aug 25 [Verify].
+   - **May 19 primary (certified abstract, every % recomputed and summing to 100):** D — Merkley
+     **93.18%** (457,006), Wells 6.23%. R — **Brock Smith 29.48%** (107,953) over Perkins 27.11% and
+     Barker 23.27% in a seven-way field. ⚠ A search snippet showing "452,444" for Merkley is a tool
+     artifact; the certified figure is 457,006.
+   - **Money: Merkley $6,828,403.72 on hand vs Brock Smith $28,979.57** (FEC, through 06/30/2026) — a
+     235-to-1 gap. Only outside money in the race: a $25,000 independent expenditure for Brock Smith.
+     ⚠ **Chris Henry has NO FEC registration or committee at all** (direct query, 0 results) and **both
+     websites on his SoS filing are DEAD** — henryforsenate.us does not resolve, chrishenry.org 404s.
+     He took **1.91% in the 2022 Senate race**. The Progressive Party's own 2026 page doesn't list him,
+     but **the SoS filing is authoritative** — card him.
+   - ⚠ **Brock Smith keeps his state senate seat regardless** — elected to a full term in 2024 with 70.8%,
+     so this is a free shot. He was **appointed** to SD-1 in Jan 2023 to fill a vacancy, then elected in
+     2024; that resolves an apparent ORESTAR/Wikipedia conflict about his start date.
+   - **Ratings, ALL THREE verified firsthand (not via Wikipedia): Cook Solid D (page dated Aug 5, 2026),
+     Inside Elections Solid D (Aug 6, 2026 6:20pm), Sabato Safe D (Aug 4, 2026).** Wikipedia's April
+     dates are stale. Not competitive; Oregon has not elected a Republican senator since 2002.
+   - ⚠ **FRAMING TRAP: Willamette Week's May 2026 piece endorsed Merkley in the DEMOCRATIC primary and
+     Brock Smith in the REPUBLICAN primary — it is a primary-endorsement article covering both.** Do NOT
+     render either as a general-election endorsement.
+   - ⚠ Endorsement lists for both majors come from campaign sites or Wikipedia citations; **Oregon Right
+     to Life, the Chiefs of Police Association and Oregon AFL-CIO could NOT be corroborated from those
+     organisations' own sites** [Verify].
+   - The sharpest sourced line against Brock Smith: his **Dec 2020 letter urging Oregon's AG to join
+     *Texas v. Pennsylvania*** and his **Jan 2021 statement defending Jan. 6 protesters as not a coup**
+     (Willamette Week reporting).
    **HOUSE POSITIONS/VOICES — DONE. Load-bearing specifics worth not re-deriving:**
    - ⚠ **ONLY TWO of the thirteen answered the Oregon Capital Chronicle's nine-question policy survey —
      Bentz (OR-2) and Adair (OR-5).** Bonamici, Kahl, Beck, Dexter, Hoyle, DeSpain and Bynum all declined
