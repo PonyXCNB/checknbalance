@@ -1367,6 +1367,45 @@ time-sensitive calendar, and the incumbent-status sweep.
    - The sharpest sourced line against Brock Smith: his **Dec 2020 letter urging Oregon's AG to join
      *Texas v. Pennsylvania*** and his **Jan 2021 statement defending Jan. 6 protesters as not a coup**
      (Willamette Week reporting).
+   ### ⚠⚠ OREGON — DO-NOT-PUBLISH AND CORRECTION LIST. READ BEFORE BUILDING THE HOUSE CARDS.
+   - ⚠⚠⚠ **A CRIMINAL-RECORD ITEM ABOUT LORAN AYLES (R, OR-3) — DO NOT PUBLISH.** *Columbia Gorge News*
+     (May 15, 2019) reported that a **Loran Ayles**, then running for Hood River County School Board,
+     pleaded guilty in 2013 to a misdemeanor Identity Theft count, plus 2004 and 2008 misdemeanors.
+     **THE IDENTITY WAS NEVER CONFIRMED AS THE SAME PERSON.** Hood River County is inside OR-3 and the
+     name is uncommon, but no 2026 source lists Ayles's city of residence, and the researcher explicitly
+     recommended against publishing. **This is a criminal allegation about a near-private individual with
+     no verified identity link — the single highest-risk item in the whole Oregon file. Do NOT publish it
+     unless residence is confirmed via the county SEL 101 filing or the campaign, and if it is ever
+     published, carry his own 2019 explanation alongside it.**
+   - ⚠ **Maxine Dexter is a PULMONOLOGIST and critical-care physician, NOT a pediatrician** — the Oregon
+     Capital Chronicle ran a published correction on exactly this. ⚠ And **do not confuse her with Earl
+     Blumenauer** — she won the 2024 OPEN-seat race after his retirement; she is not his continuation.
+   - ⚠ **The Oregon Capital Chronicle's OR-1 Republican voter guide has a TEMPLATE BUG labelling BOTH
+     Kahl and Verbeek "Incumbent." Neither is.** Do not repeat it.
+   - ⚠ **Bentz's campaign endorsements page is STALE** — it lists state legislators who no longer hold the
+     offices shown, so it dates from an earlier cycle. **Prefer his 2026 Voters' Pamphlet list**, which is
+     current (Oregon Right to Life PAC, Cattlemen's Association, Farm Bureau, American Forest Resource
+     Council, Associated Oregon Loggers, Rural Electric Cooperative Association, AgPac).
+   - ⚠ **Kahl cash-on-hand conflict:** the FEC bulk file says **$212** at 06/30/2026; the Capital Chronicle,
+     reading the SAME filing, wrote **$75**. Publish the bulk-file figure or say "roughly $100–$200."
+     Every other Oregon FEC figure was corroborated exactly.
+   - ⚠ **Chris Beck's town conflicts** — OCC says Phoenix, his own site's dateline says Jacksonville. Both
+     are Jackson County, ~15 miles apart. **Safest: "of Jackson County" or "of southern Oregon."** Also
+     note OCC published a correction confirming his 1997–2003 Oregon House seat covered **PORTLAND**, not
+     Lane County — uncorrected syndicated copies still circulate on JPR and Central Oregon Daily.
+   - ⚠ **The official NOVEMBER 2026 general-election candidate list could NOT be obtained** for these
+     districts — the SoS "current election" page has dates but no roster and the general Voters' Pamphlet
+     is unpublished. All three districts had 1–4 minor-party candidates in 2024. **Re-check after the SoS
+     certifies the November ballot.**
+   - ⚠ **Oregon's live results portal is RETIRED**, so the 2024 general and 2026 primary figures come from
+     **Internet Archive captures of the official SoS portal** (2024 general: Dec 12, 2024 capture, after
+     the Dec 5 certification; 2026 primary: June 10, 2026 capture, which is NEAR-final rather than
+     certified). Describe them as "Oregon Secretary of State official results, via the Internet Archive."
+   - ⚠ **Loran Ayles has NO FEC filing at all** — verified by downloading the FEC 2026 candidate master
+     (cn26.zip) and searching all 8,281 rows: "AYLES" appears once, and it is a different person in
+     Maryland. He also filed **no Oregon Voters' Pamphlet statement** and has no locatable campaign site
+     (five domain guesses all failed to resolve). **"Positions could not be sourced" is the honest card.**
+
    **HOUSE POSITIONS/VOICES — DONE. Load-bearing specifics worth not re-deriving:**
    - ⚠ **ONLY TWO of the thirteen answered the Oregon Capital Chronicle's nine-question policy survey —
      Bentz (OR-2) and Adair (OR-5).** Bonamici, Kahl, Beck, Dexter, Hoyle, DeSpain and Bynum all declined
