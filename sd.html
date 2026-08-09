@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>South Dakota Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every SD election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #sdmap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">SD</div>
+      <div class="brand-text">
+        <span class="brand-name">South Dakota Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every South Dakota <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 66 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">66</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>1</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>9</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of South Dakota…</div>
+      <svg id="sdmap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>SD Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">August 7, 2026</span><br>
+      Sources: South Dakota Secretary of State (certified 2026 general-election candidate list, 2026 candidate withdrawal information, and independent-candidate signature requirements), the South Dakota State Board of Canvassers&#39; certification of the July 28, 2026 gubernatorial runoff, electionresults.sd.gov, the Office of the Attorney General, FEC filings, U.S. Census Bureau county geography, Cook Political Report, Sabato&#39;s Crystal Ball, Inside Elections and Decision Desk HQ, and reporting from South Dakota Searchlight, South Dakota News Watch, Dakota News Now, SDPB, KOTA, KELOLAND and Ballotpedia News.</div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every SD county + its primary US House district(s)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- (1) Counties + U.S. House district -----
+// South Dakota elects ONE at-large U.S. House member, so there are no congressional
+// district lines to draw and no split counties: every one of the 66 counties votes in
+// the same House race. `d:1` throughout is therefore exact, not a plurality call, and
+// no county needs the `ds` multi-district list.
+// County set and spellings are taken from the us-atlas@3 counties-10m.json geometry the
+// map itself renders, so every key here has a shape to shade. Note 46102 Oglala Lakota
+// (renamed from Shannon in 2015) and the absence of 46113 — the same FIPS change.
+const COUNTIES = {
+  "46003":{n:"Aurora",d:1},
+  "46005":{n:"Beadle",d:1},
+  "46007":{n:"Bennett",d:1},
+  "46009":{n:"Bon Homme",d:1},
+  "46011":{n:"Brookings",d:1},
+  "46013":{n:"Brown",d:1},
+  "46015":{n:"Brule",d:1},
+  "46017":{n:"Buffalo",d:1},
+  "46019":{n:"Butte",d:1},
+  "46021":{n:"Campbell",d:1},
+  "46023":{n:"Charles Mix",d:1},
+  "46025":{n:"Clark",d:1},
+  "46027":{n:"Clay",d:1},
+  "46029":{n:"Codington",d:1},
+  "46031":{n:"Corson",d:1},
+  "46033":{n:"Custer",d:1},
+  "46035":{n:"Davison",d:1},
+  "46037":{n:"Day",d:1},
+  "46039":{n:"Deuel",d:1},
+  "46041":{n:"Dewey",d:1},
+  "46043":{n:"Douglas",d:1},
+  "46045":{n:"Edmunds",d:1},
+  "46047":{n:"Fall River",d:1},
+  "46049":{n:"Faulk",d:1},
+  "46051":{n:"Grant",d:1},
+  "46053":{n:"Gregory",d:1},
+  "46055":{n:"Haakon",d:1},
+  "46057":{n:"Hamlin",d:1},
+  "46059":{n:"Hand",d:1},
+  "46061":{n:"Hanson",d:1},
+  "46063":{n:"Harding",d:1},
+  "46065":{n:"Hughes",d:1},
+  "46067":{n:"Hutchinson",d:1},
+  "46069":{n:"Hyde",d:1},
+  "46071":{n:"Jackson",d:1},
+  "46073":{n:"Jerauld",d:1},
+  "46075":{n:"Jones",d:1},
+  "46077":{n:"Kingsbury",d:1},
+  "46079":{n:"Lake",d:1},
+  "46081":{n:"Lawrence",d:1},
+  "46083":{n:"Lincoln",d:1},
+  "46085":{n:"Lyman",d:1},
+  "46087":{n:"McCook",d:1},
+  "46089":{n:"McPherson",d:1},
+  "46091":{n:"Marshall",d:1},
+  "46093":{n:"Meade",d:1},
+  "46095":{n:"Mellette",d:1},
+  "46097":{n:"Miner",d:1},
+  "46099":{n:"Minnehaha",d:1},
+  "46101":{n:"Moody",d:1},
+  "46102":{n:"Oglala Lakota",d:1},
+  "46103":{n:"Pennington",d:1},
+  "46105":{n:"Perkins",d:1},
+  "46107":{n:"Potter",d:1},
+  "46109":{n:"Roberts",d:1},
+  "46111":{n:"Sanborn",d:1},
+  "46115":{n:"Spink",d:1},
+  "46117":{n:"Stanley",d:1},
+  "46119":{n:"Sully",d:1},
+  "46121":{n:"Todd",d:1},
+  "46123":{n:"Tripp",d:1},
+  "46125":{n:"Turner",d:1},
+  "46127":{n:"Union",d:1},
+  "46129":{n:"Walworth",d:1},
+  "46135":{n:"Yankton",d:1},
+  "46137":{n:"Ziebach",d:1},
+};
+
+// ----- (2) Statewide races — every county votes in these -----
+// ⚠ SOUTH DAKOTA'S 35% RULE SHAPED THIS ENTIRE BALLOT. A 1985 law requires a candidate for
+// Governor, U.S. Senate or U.S. House to take 35% of the primary vote to win outright.
+// In 2026 that threshold was missed for the first time in a governor's race, forcing the
+// state's FIRST-EVER statewide gubernatorial runoff on July 28, 2026.
+// ⚠ CERTIFICATION STATUS DIFFERS BY RACE, and the page says so per race: the July 28 RUNOFF
+// totals are certified by the Secretary of State, but the June 2 primary figures are
+// news/AP-reported — the SoS's certified canvass is an 8.1 MB scanned-image PDF with no
+// extractable text and the state results portal is JavaScript-rendered.
+// ⚠ BALLOT-ACCESS TRAP CAUGHT AND EXCLUDED: Wikipedia and Ballotpedia list Anthony Sitter as
+// an independent candidate for governor. He does NOT appear on the Secretary of State's
+// certified candidate list — independents needed 3,502 signatures by Apr 28, 2026, and he was
+// reported still gathering them with about $2,000 raised. He is not carded. Three other
+// independents (Renville, Gleason, Morris) withdrew.
+const STATEWIDE = [
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide",
+    office: "U.S. Senate — South Dakota",
+    note: "⚠ THE DEMOCRATIC LINE IS EMPTY, AND THAT IS NOT YET FINAL. Democratic nominee Julian Beaudion WITHDREW on Aug 4, 2026 — the state's own certified candidate list records \"Withdrawn 08/04/2026\" — and under South Dakota law his name may not be printed. The party's central committee has until 5:00 p.m. Tuesday, AUG 11, 2026 to appoint a replacement, and the state Democratic vice-chair has said the party has no interest in doing so. So the race is expected to be a two-way contest between Sen. Mike Rounds (R) and independent Brian Bengs — but that is not legally settled as of Aug 9. ⚠ Beaudion cited a house fire and financial hardship, and also said \"an opponent and those associated with the opponent hit my family and I with intimidating threats to drop out\"; BENGS DENIES making any threats, saying his campaign only cited Beaudion's financial struggles as evidence the campaign was not viable. Both accounts are carded here because neither is established. Beaudion endorsed no one. ⚠ Every published race rating — Solid/Safe R across Cook (Apr 13), Sabato (Mar 4), Inside Elections (Apr 23) and four others through July 31 — PREDATES the withdrawal, so none reflects the current two-way field [Verify — ratings are reported through a citing table; the raters' own pages return 403].",
+    candidates: [
+      { name: "Mike Rounds (incumbent)", party: "R", winner: false,
+        positions: [
+          "Agriculture and farm-bill policy as his stated first priority",
+          "Supports the administration's agenda while defending Senate institutional norms",
+          "Border security and a defense-hawk posture"
+        ],
+        differentiators: [
+          "Two-term governor of South Dakota, 2003–2011; in the Senate since 2015",
+          "Endorsed by Trump on July 22, 2025 — a reversal, after Trump said in 2022 he would \"never endorse this jerk again\" over Rounds calling the 2020 election fair",
+          "$2,736,663 cash on hand through June 30, 2026, on $4.51M raised"
+        ],
+        supporters: [
+          "Seniority gives a small state disproportionate committee leverage that a freshman could not replace",
+          "He beat a MAGA-lane primary challenger 76–24, so the Republican base is plainly with him",
+          "Winning back the Trump endorsement after a public rupture shows he can work with the administration without being a rubber stamp"
+        ],
+        opponents: [
+          "Two decades in statewide office makes him the career politician voters say they are tired of — his opponent's central charge",
+          "Critics on both flanks read the 2022 break with Trump and the 2025 reconciliation as expedient rather than principled",
+          "Bengs argues corporate PAC money leaves him more responsive to donors than to South Dakotans"
+        ] },
+      { name: "Brian L. Bengs", party: "I", winner: false,
+        positions: [
+          "Campaign-finance reform; refuses corporate PAC money",
+          "Health-care access and cost-of-living affordability",
+          "Ban congressional stock trading; a self-imposed two-term limit"
+        ],
+        differentiators: [
+          "Retired Navy and Air Force JAG lieutenant colonel, 26 years, and a former Northern State University professor in Aberdeen",
+          "⚠ He was the DEMOCRATIC nominee for this state's other Senate seat in 2022, losing to John Thune 69.6%–26.2%; he runs as an independent now on the theory that the party label, not the candidate, was the obstacle",
+          "$51,405 cash on hand through June 30, 2026, on $782,049 raised — heavily outspent"
+        ],
+        supporters: [
+          "Dropping the party label removes the single largest barrier in a state Trump carried by 29 points",
+          "A no-corporate-PAC pledge and a two-term self-limit are a concrete contrast with a twenty-year officeholder",
+          "The Democrat's exit leaves him a clean one-on-one rather than a split anti-incumbent vote"
+        ],
+        opponents: [
+          "The Rounds campaign calls him \"a fake independent being run by the Democratic Party\"",
+          "He already lost a statewide race by 43 points in 2022, and changing the label does not change that arithmetic [Verify — structural argument]",
+          "About $51,000 on hand against $2.7M leaves him no way to reach voters [Verify — structural, from the June 30 FEC figures]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide",
+    office: "Governor of South Dakota",
+    note: "⚠ AN INCUMBENT WHO HAS NEVER BEEN ELECTED TO THE JOB. Larry Rhoden was Kristi Noem's lieutenant governor and SUCCEEDED her on Jan 25, 2025 when she left to become Secretary of Homeland Security; this is his first time on a ballot for governor. He got there the hard way: in the June 2 primary he finished SECOND with 25.2%, behind businessman Toby Doeden's 30.6%, with Rep. Dusty Johnson third and House Speaker Jon Hansen fourth — nobody cleared 35%, triggering South Dakota's first-ever gubernatorial runoff. Rhoden then won that runoff on July 28 by roughly 71%–29%, carrying 64 of 66 counties. ⚠ The Cook, Sabato and Inside Elections ratings for this race are all from AUGUST–SEPTEMBER 2025 and predate both the primary and the runoff; no rater appears to have revisited it [Verify].",
+    candidates: [
+      { name: "Larry Rhoden (incumbent)", party: "R", winner: false,
+        positions: [
+          "Property-tax relief — signed SB 96 and SB 245, which he says cut owner-occupied property taxes 34%",
+          "Agriculture and K-12 education funding",
+          "\"Traditional South Dakota conservative\" governing rather than disruption"
+        ],
+        differentiators: [
+          "About 19 years in the Legislature, then lieutenant governor 2019–2025 and governor since Jan 2025",
+          "Running with Tony Venhuizen as his lieutenant-governor candidate; endorsed by Sioux Falls Mayor Christine Erickson in July 2026",
+          "Raised more than $571,000 before the primary, including over $244,000 from the Missouri-based Free American Fund PAC — its sole recipient that cycle — and $50,000 from banker Denny Sanford"
+        ],
+        supporters: [
+          "He turned a second-place primary finish into a 64-of-66-county landslide, which shows the party consolidated once the choice was binary",
+          "He delivered an enacted property-tax cut rather than a promise to abolish the tax",
+          "Nearly two decades in the Legislature plus six years as lieutenant governor is the most governing experience in the field"
+        ],
+        opponents: [
+          "A sitting governor could not crack 26% against three rivals in his own party's first round [Verify — structural, from the certified June 2 result]",
+          "Doeden's campaign argued his property-tax bills were inadequate half-measures, and Dusty Johnson also questioned their effectiveness",
+          "He inherited the office rather than winning it, and has never faced South Dakota voters for the top job"
+        ] },
+      { name: "Dan Ahlers", party: "D", winner: false,
+        positions: [
+          "K-12 education funding",
+          "Affordable health care, small business and family farms",
+          "Opposes private companies' use of eminent domain — the carbon-pipeline fight — and wants a full review of the state tax structure"
+        ],
+        differentiators: [
+          "Six years in the Legislature for District 25 and a Dell Rapids small-business owner",
+          "Executive director of the South Dakota Democratic Party when he announced",
+          "Was the 2020 Democratic nominee for U.S. Senate. ⚠ No campaign-finance figure could be sourced for him — the governor's race is state-regulated rather than FEC-reported, and the two outlets carrying the numbers both block automated access [Verify]"
+        ],
+        supporters: [
+          "A small-business owner and former legislator is a mainstream, non-ideological profile built for a red state",
+          "Republicans spent two months and real money attacking each other in the runoff, leaving damage to exploit",
+          "Opposition to eminent domain for carbon pipelines cuts across party lines with South Dakota landowners"
+        ],
+        opponents: [
+          "No Democrat has won the South Dakota governorship since 1974",
+          "He lost his 2020 statewide Senate bid, so critics cast him as a repeat statewide loser [Verify — structural argument]",
+          "Running the state party makes him the establishment Democrat in a state that gave Harris 34% [Verify — structural argument]"
+        ] }
+    ]
+  },
+  {
+    date: "Jul 28, 2026",
+    type: "past",
+    scope: "Statewide",
+    office: "Republican Runoff — Governor of South Dakota",
+    note: "THE FIRST STATEWIDE GUBERNATORIAL RUNOFF IN SOUTH DAKOTA HISTORY, held because no candidate reached the 35% threshold on June 2. Rhoden reversed a first-round deficit and carried 64 of 66 counties; Doeden won only Fall River and Todd. These totals ARE certified by Secretary of State Monae Johnson. ⚠ Wikipedia gives 83,582 / 34,430; the certified figures below supersede it.",
+    candidates: [
+      { name: "Larry Rhoden (incumbent)", party: "R", winner: true,
+        positions: [], differentiators: ["83,590 votes — about 71%"], supporters: [], opponents: [] },
+      { name: "Toby Doeden", party: "R", winner: false,
+        positions: [], differentiators: ["34,435 votes — about 29%"], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Jun 2, 2026",
+    type: "past",
+    scope: "Statewide",
+    office: "Republican Primary — Governor of South Dakota",
+    note: "The four-way field that produced the runoff. ⚠ Note the consequence beyond this race: Rep. DUSTY JOHNSON finished third here, which is why South Dakota's at-large U.S. House seat is open. ⚠ Figures are news/AP-reported [Verify against the certified canvass].",
+    candidates: [
+      { name: "Toby Doeden", party: "R", winner: false,
+        positions: [], differentiators: ["41,712 votes — 30.6%, first place but short of the 35% threshold"], supporters: [], opponents: [] },
+      { name: "Larry Rhoden (incumbent)", party: "R", winner: false,
+        positions: [], differentiators: ["34,321 votes — 25.2%"], supporters: [], opponents: [] },
+      { name: "Dusty Johnson", party: "R", winner: false,
+        positions: [], differentiators: ["31,856 votes — 23.4%; the sitting at-large U.S. Representative, eliminated"], supporters: [], opponents: [] },
+      { name: "Jon Hansen", party: "R", winner: false,
+        positions: [], differentiators: ["28,341 votes — 20.8%; Speaker of the South Dakota House"], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Jun 2, 2026",
+    type: "past",
+    scope: "Statewide",
+    office: "Republican Primary — U.S. Senate",
+    note: "Rounds cleared the 35% threshold comfortably, so no Senate runoff was required. ⚠ Figures are news/AP-reported [Verify against the certified canvass].",
+    candidates: [
+      { name: "Mike Rounds (incumbent)", party: "R", winner: true,
+        positions: [], differentiators: ["101,284 votes — 75.8%"], supporters: [], opponents: [] },
+      { name: "Justin McNeal", party: "R", winner: false,
+        positions: [], differentiators: ["32,341 votes — 24.2%. ⚠ No substantive platform could be sourced for him beyond his description as an entrepreneur [Verify]"], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 5, 2024",
+    type: "past",
+    scope: "Statewide",
+    office: "President — South Dakota result",
+    note: "South Dakota's three electoral votes went to Trump by 29.2 points — the baseline against which every 2026 race here should be read.",
+    candidates: [
+      { name: "Donald Trump", party: "R", winner: true,
+        positions: [], differentiators: ["272,081 votes — 63.43%"], supporters: [], opponents: [] },
+      { name: "Kamala Harris", party: "D", winner: false,
+        positions: [], differentiators: ["146,859 votes — 34.24%"], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 8, 2022",
+    type: "past",
+    scope: "Statewide",
+    office: "Governor of South Dakota — 2022",
+    note: "Kristi Noem's re-election, by 26.8 points. ⚠ Worth noting for continuity: LARRY RHODEN was on this ticket as her lieutenant-governor running mate — he is now the governor and the 2026 nominee.",
+    candidates: [
+      { name: "Kristi Noem / Larry Rhoden", party: "R", winner: true,
+        positions: [], differentiators: ["217,035 votes — 61.98%"], supporters: [], opponents: [] },
+      { name: "Jamie Smith / Jennifer Healy Keintz", party: "D", winner: false,
+        positions: [], differentiators: ["123,148 votes — 35.17%"], supporters: [], opponents: [] },
+      { name: "Tracey Quint / Ashley Strand", party: "L", winner: false,
+        positions: [], differentiators: ["9,983 votes — 2.85%"], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 8, 2022",
+    type: "past",
+    scope: "Statewide",
+    office: "U.S. Senate — South Dakota, 2022",
+    note: "⚠ DIRECTLY RELEVANT TO 2026: this is the race BRIAN BENGS lost by 43.5 points as the Democratic nominee. He is on the 2026 ballot as an independent, against the state's other senator. This seat — John Thune's — is not up until 2028. Also note Tamara Lesnar, the Libertarian here, is the 2026 Libertarian nominee for Secretary of State.",
+    candidates: [
+      { name: "John Thune (incumbent)", party: "R", winner: true,
+        positions: [], differentiators: ["242,316 votes — 69.63%"], supporters: [], opponents: [] },
+      { name: "Brian Bengs", party: "D", winner: false,
+        positions: [], differentiators: ["91,007 votes — 26.15%"], supporters: [], opponents: [] },
+      { name: "Tamara Lesnar", party: "L", winner: false,
+        positions: [], differentiators: ["14,697 votes — 4.22%"], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide",
+    office: "Attorney General of South Dakota",
+    note: "⚠ NOBODY IS RUNNING AGAINST HIM. South Dakota nominates its constitutional officers at PARTY CONVENTIONS rather than at the June primary, and the Democrats did not nominate an Attorney General candidate at their June 6 convention. They scheduled a second convention for Aug 10 purely to fill the slot — then CANCELLED IT ON AUG 6, after a Republican blogger threatened suit arguing state law allows only \"a state convention.\" Party chair Shane Merrill cited \"potential legal challenges and the significant costs associated with imminent legal injunctions.\" No Libertarian filed either. The seat is open because Marty Jackley left it to run for the U.S. House. Russell needed TWO convention ballots to win — the only 2026 statewide nomination that did.",
+    candidates: [
+      { name: "Lance Russell", party: "R", winner: false,
+        positions: [
+          "\"My number one priority will be to reverse that trend and to make sure our streets are safe\" — violent and drug crime",
+          "Open government and transparency",
+          "West River prosecutorial experience as the core qualification"
+        ],
+        differentiators: [
+          "Fourth-term state's attorney for Fall River and Oglala Lakota counties; 12 years in the Legislature, including as Senate Judiciary chair",
+          "Won the nomination on a second ballot with 57.4%, over Austin Hoffman (31.1%) and John Fitzgerald (11.8%)",
+          "Ran for Attorney General once before, in 2018, and lost that nomination"
+        ],
+        supporters: [
+          "Two decades as an elected county prosecutor is direct preparation for the state's chief law-enforcement job",
+          "Legislative service, including chairing Senate Judiciary, means he knows the statutes he would enforce",
+          "Convention delegates chose him over a sitting judge and another sitting state's attorney"
+        ],
+        opponents: [
+          "No Democrat filed, so voters get no choice at all on the state's chief legal officer — and Democrats' own account is that they \"struggled to find a brave lawyer\" willing to run",
+          "He endorsed Toby Doeden over Gov. Rhoden in the July gubernatorial runoff, which critics read as signalling a partisan rather than a neutral prosecutor",
+          "Running unopposed means his record faces no general-election scrutiny before voters decide [Verify — structural argument]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide",
+    office: "Secretary of State — South Dakota",
+    note: "⚠ THE INCUMBENT WAS DENIED RENOMINATION BY HER OWN PARTY. Monae Johnson (R) won this office in 2022 with backing from election-machine skeptics — and then lost them: former supporters Rick Weible and Jessica Pollema worked for Heather Baxter's campaign, which beat Johnson 59.3% to 40.1% at the June 27 convention. Johnson's closing argument to delegates was \"experience matters.\" The substance of the race is how South Dakota counts ballots. ⚠ Baxter's campaign materials originally advocated hand-counted paper ballots and \"no more voting machines\"; that language was later removed.",
+    candidates: [
+      { name: "Heather Baxter", party: "R", winner: false,
+        positions: [
+          "\"I am a strong proponent for election integrity and accountability\" — citizenship and ID requirements, voter-roll accuracy, mail-ballot and machine security",
+          "\"Robust post-election audits, improved hand counting methods,\" plus Cast Vote Record audit tools for all 66 counties — she says only four can fully audit today",
+          "Business services: modernise UCC filings and drop address-change fees"
+        ],
+        differentiators: [
+          "First-term state representative for District 34, Rapid City, and a business owner; a member of the South Dakota Freedom Caucus",
+          "Unseated a sitting Republican secretary of state at convention, 59%–40%, backed by the election-integrity group SD Canvassing",
+          "The only candidate in the race advocating expanded hand counting"
+        ],
+        supporters: [
+          "She argues hand-counted paper ballots are the most transparent method available",
+          "Johnson promised change to election skeptics and did not deliver it — Pollema told her at a 2024 Board of Elections meeting, \"Monae, we supported you. We campaigned for you. We donated money to you\"",
+          "She promises concrete audit infrastructure — Cast Vote Record tools in all 66 counties, not just the four that can fully audit now"
+        ],
+        opponents: [
+          "Johnson's own counter at convention was that experience matters, citing eleven years in the office and the post-election audits she implemented",
+          "South Dakota's machines are not internet-connected and audits have repeatedly validated results",
+          "Critics say hand-counting is slower, costlier and less accurate than machine tabulation [Verify — this characterisation comes from an explicitly progressive blog]"
+        ] },
+      { name: "Terrence Davis", party: "D", winner: false,
+        positions: [
+          "\"I have no concern in the system at all\" — opposes hand-counting as the primary method",
+          "Pre-registration for licensed 16-year-olds and automatic registration at 18; a new investigative division inside the office for fraudulent activity",
+          "Modernise operations to \"reduce barriers, save time, and enhance the user experience\" for voters, businesses and nonprofits"
+        ],
+        differentiators: [
+          "A former Highway Patrol trooper in Tennessee and South Dakota; master's in public policy and pursuing a doctorate in law and policy",
+          "A former registered Republican who describes himself as a centrist — \"I'm in the middle as a Democrat. I don't hide that\"",
+          "Reports crossover interest after the Republican convention: \"I had a flood of Republicans\""
+        ],
+        supporters: [
+          "A law-enforcement career plus policy credentials fits an office that is fundamentally administrative",
+          "He frames the job as constituent service — voters \"want good services\" regardless of party",
+          "He would keep machine tabulation and audits rather than remake the system"
+        ],
+        opponents: [
+          "No Democrat has won a South Dakota statewide office in years [Verify — structural argument]",
+          "He has no prior elections-administration or business-services experience [Verify]",
+          "His registration-expansion proposals would need legislative buy-in he would not control [Verify — structural argument]"
+        ] },
+      { name: "Tamara J. Lesnar", party: "L", winner: false,
+        positions: [
+          "[Verify] — no platform could be sourced anywhere. She has no campaign website, and the state Libertarian Party site was unreachable. The absence is the finding, not a gap in searching",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "The ONLY third-party candidate in any South Dakota statewide race in 2026",
+          "⚠ Her candidacy is legally load-bearing: state law requires a recognised party to field a statewide candidate to keep its ballot status, and registered South Dakota Libertarians fell from about 3,000 in 2025 to 2,804 by May 2026",
+          "A prior nominee for U.S. Senate in 2022 and a state House seat in 2024, taking roughly 3–4% each time"
+        ],
+        supporters: [
+          "Her candidacy is what keeps a third party on South Dakota ballots at all",
+          "She gives voters unwilling to back either major party somewhere to go [Verify]"
+        ],
+        opponents: [
+          "No published platform exists for an office that is almost entirely administrative [Verify]",
+          "Her prior statewide results in the low single digits suggest a placeholder candidacy rather than a competitive one"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide",
+    office: "State Auditor — South Dakota",
+    note: "An OPEN seat: Rich Sattgast (R) is term-limited. The State Auditor is South Dakota's warrant-and-payment control — the office that approves state spending. Barranco won a three-way convention outright on one ballot with 53%, over Renae Randall and state Sen. Tamara Grove. ⚠ Note a pattern across two of these races: the retiring officeholder endorsed the candidate who won — Sattgast for Barranco, and Treasurer Josh Haeder for Melissa Hull.",
+    candidates: [
+      { name: "Catherine Barranco", party: "R", winner: false,
+        positions: [
+          "\"Taxpayer dollars belong to the taxpayers. Let's DOGE South Dakota!\"",
+          "Would create a new division to find waste, fraud and inefficiency",
+          "Pledges to relocate to Pierre if elected"
+        ],
+        differentiators: [
+          "BA and MA in economics; a former investigator at the U.S. Securities and Exchange Commission working financial-fraud cases, and a former Walmart corporate manager over a division with more than $165M in annual revenue",
+          "Endorsed by the retiring incumbent, Auditor Rich Sattgast; formerly SDGOP data director and president of the South Dakota Federation of Republican Women",
+          "⚠ She entered the race in place of her husband, Sioux Falls city councilman David Barranco, who withdrew after a cancer diagnosis in May 2026 and died in July 2026 [Verify — the death is confirmed only by a headline behind a paywall]"
+        ],
+        supporters: [
+          "SEC financial-fraud investigative experience translates directly to state warrant and payroll oversight",
+          "Economics training rather than a purely political résumé",
+          "She won a three-way convention outright on a single ballot, beating a sitting state senator"
+        ],
+        opponents: [
+          "A party-infrastructure background raises independence questions for what is meant to be a watchdog office [Verify]",
+          "She has never held elected office or served in state government [Verify]",
+          "Critics of one-party sweeps argue an all-Republican slate of constitutional officers removes internal checks [Verify — structural argument]"
+        ] },
+      { name: "Tom Cool", party: "D", winner: false,
+        positions: [
+          "[Verify] — no 2026 platform for this office could be sourced; he has no campaign website and the state party page carries no link for him",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "Roughly 40 years as executive director of the Council on College Admissions; current chair of the Democratic Forum of Southeast Dakota",
+          "A repeat statewide candidate — the party's 2018 nominee for this same office and its 2022 nominee for Secretary of State",
+          "A communications degree and a background as a newspaper reporter"
+        ],
+        supporters: [
+          "Decades running a budgeted organisation is relevant management experience",
+          "He gives voters an actual choice in a race that would otherwise be uncontested",
+          "Independence from the party that currently holds every statewide office"
+        ],
+        opponents: [
+          "Repeated unsuccessful statewide bids and no election ever won [Verify — structural argument]",
+          "No accounting or audit credential could be identified in any source [Verify]",
+          "No published 2026 platform for the auditor's office [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide",
+    office: "State Treasurer — South Dakota",
+    note: "An OPEN seat: Josh Haeder (R) is term-limited. Hull won the largest convention margin of any contested 2026 race, 81.25% to 18.75%. ⚠ This office matters to another item on the same ballot: unclaimed property is a DIVISION OF THE TREASURER'S OFFICE, and Amendment K would create a trust for the unclaimed property fund [Verify — the administering-office link is inferred from Hull's own campaign announcement describing cross-training between the Treasury and Unclaimed Property divisions, not from the official ballot explanation, which could not be retrieved].",
+    candidates: [
+      { name: "Melissa Hull", party: "R", winner: false,
+        positions: [
+          "\"From day one, we've transformed how this office operates — not just in technology, but in how we protect and account for every taxpayer dollar\"",
+          "Continuity plus modernisation: AI accounting tools, Positive Pay fraud prevention, and cross-training between the Treasury and Unclaimed Property divisions",
+          "Office lead on Project BISON, a $70M state IT initiative"
+        ],
+        differentiators: [
+          "Treasury manager inside the State Treasurer's office since 2019 — she already runs its day-to-day operations",
+          "Endorsed by the retiring incumbent, Josh Haeder: \"Melissa doesn't just understand the work — she's helped lead it\"",
+          "Won the convention 81.25%–18.75%, the largest margin of any contested statewide nomination this year"
+        ],
+        supporters: [
+          "An internal promotion means no learning curve on investments, unclaimed property and cash management — her campaign's line is that she is \"not learning the job\"",
+          "Delegates rejected the alternative overwhelmingly",
+          "A technical rather than political candidacy for a technical office"
+        ],
+        opponents: [
+          "A continuity candidate promoted from inside offers no independent scrutiny of the office's existing practices [Verify]",
+          "The endorsement chain across two offices — Haeder to Hull, Sattgast to Barranco — means retiring officeholders effectively picked their own successors [Verify — structural argument]",
+          "No independent policy platform distinct from the office's current direction could be sourced [Verify]"
+        ] },
+      { name: "Margaret Kuipers", party: "D", winner: false,
+        positions: [
+          "\"Honest Stewardship for South Dakota's Finances\"",
+          "Protecting state assets through \"integrity, accountability and responsible financial oversight\"",
+          "⚠ [Verify] — beyond those two lines her campaign site contains no specific policy detail on investment strategy, unclaimed property or cash management"
+        ],
+        differentiators: [
+          "A business owner who served 14 years as treasurer of the South Dakota Emergency Medical Services Association",
+          "Has been campaign treasurer for federal candidates, including the 2024 at-large House nominee",
+          "Ran for the state House three times, in 2018, 2020 and 2022"
+        ],
+        supporters: [
+          "She has actually kept the books for organisations, rather than working inside the office she would oversee",
+          "Independence from an office whose retiring incumbent endorsed her opponent",
+          "An outside perspective on an office held by the same party for decades"
+        ],
+        opponents: [
+          "Organisational treasurer duties are far smaller in scale than managing a state treasury [Verify]",
+          "Her published platform is slogan-level rather than a program [Verify]",
+          "Three prior unsuccessful legislative bids and no statewide name recognition [Verify — structural argument]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide",
+    office: "Commissioner of School and Public Lands — South Dakota",
+    note: "⚠ THE ONLY SITTING CONSTITUTIONAL OFFICER ON SOUTH DAKOTA'S 2026 BALLOT. Four of the five other statewide executive offices are open, and the Secretary of State's incumbent was denied renomination — Brock Greenfield is the lone officeholder defending a seat. The office manages state-owned land and mineral rights whose leases and trust earnings fund South Dakota schools. Greenfield was renominated 81.3%–18.4%.",
+    candidates: [
+      { name: "Brock Greenfield (incumbent)", party: "R", winner: false,
+        positions: [
+          "Managing school trust land leases and distributing trust earnings to schools",
+          "Exploring new land uses for the trust, including gas and oil exploration",
+          "Overseeing the Richmond Lake dam and spillway replacement, which began construction May 13, 2026"
+        ],
+        differentiators: [
+          "Commissioner since 2022, and the only sitting constitutional officer on this year's ballot",
+          "More than 20 years in the Legislature as a representative and senator, including Senate President Pro Tempore",
+          "Renominated with 81.3% over James Bialota"
+        ],
+        supporters: [
+          "Convention delegates ratified his first term overwhelmingly",
+          "Two decades of legislative relationships help protect the trust's appropriations in Pierre",
+          "He is hands-on with a large capital project and with new revenue streams for the school trust"
+        ],
+        opponents: [
+          "⚠ No record-based criticism of his conduct in office could be sourced at all — a genuine null result rather than an omission [Verify]",
+          "Critics have questioned rising costs on the Richmond Dam project [Verify — headline-level sourcing only]",
+          "Whether oil-and-gas leasing is the right direction for school trust land is a live policy question his tenure has answered in one direction [Verify — structural argument]"
+        ] },
+      { name: "Raeann Mettler", party: "D", winner: false,
+        positions: [
+          "[Verify] — no platform could be sourced; she has no campaign website and the state party page lists only a social-media link that appears misconfigured. The absence is the finding",
+          "[Verify]",
+          "[Verify]"
+        ],
+        differentiators: [
+          "A PhD in natural sciences and ten years as a professor at Black Hills State University; now a lecturer at South Dakota Mines",
+          "A research specialist in Indigenous public health with Missouri Breaks Industries Research, a Native-owned research organisation",
+          "Recently a candidate for Spearfish city council and school board; directs STEAM camps and has taught at Crazy Horse Memorial University"
+        ],
+        supporters: [
+          "A natural-sciences doctorate is squarely relevant to grazing, mineral and land-stewardship decisions",
+          "As an educator she has a direct stake in the schools the trust funds",
+          "She brings local elected-office experience from outside the Pierre establishment"
+        ],
+        opponents: [
+          "No land-management, leasing or investment experience could be identified [Verify]",
+          "An academic rather than operational background for a revenue-generating office [Verify]",
+          "She faces an incumbent with an 81% convention mandate [Verify — structural argument]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide",
+    office: "Public Utilities Commission — South Dakota",
+    note: "One of three commission seats, on staggered six-year terms. The seat up is Gary Hanson's (R) — on the commission since January 2003, he is NOT seeking a fifth term, having stepped down as chair in November 2025 after an October 2025 cancer diagnosis. ⚠ The Republican convention produced a notable result: Don Haggar beat Peri Pourier 54.9%–44.9% — Pourier being a former DEMOCRATIC state representative from Pine Ridge who had switched parties less than a year earlier and is a vocal opponent of the Summit Carbon Solutions pipeline. The live issues here are carbon-pipeline eminent domain, data-centre electricity demand, and the pending Black Hills Energy / NorthWestern Energy merger.",
+    candidates: [
+      { name: "Don Haggar", party: "R", winner: false,
+        positions: [
+          "\"Fighting for affordable energy, reliable infrastructure, and consumer-focused regulation\"",
+          "A free-market, limited-regulation approach drawn from his policy career",
+          "⚠ [Verify] — no position on carbon pipelines, data-centre load growth or the Black Hills / NorthWestern merger could be sourced. He has no findable campaign website, and that gap on the commission's three live questions is the finding"
+        ],
+        differentiators: [
+          "A former state representative who resigned in 2017 to become South Dakota state director of Americans for Prosperity, where he spent eight years before leaving to run",
+          "Background in real estate, banking and insurance, with a master's in business",
+          "Beat the field's leading pipeline critic for the nomination, 55%–45%"
+        ],
+        supporters: [
+          "A finance and insurance background suits the ratemaking side of utility regulation",
+          "He cites a record of state policy wins at Americans for Prosperity, including a sales-tax cut from 4.5% to 4.2%",
+          "Legislative experience with the commission's oversight committee [Verify]"
+        ],
+        opponents: [
+          "Commenters on his own campaign-launch post questioned his lack of any direct energy or utilities experience, and raised his Koch-network-affiliated background as a concern for someone regulating monopoly utilities",
+          "The absence of any published platform leaves ratepayers guessing on the three biggest questions before the commission [Verify]",
+          "Defeating the field's leading pipeline critic signals where he is likely to land on eminent domain [Verify — structural argument]"
+        ] },
+      { name: "Frank Kloucek", party: "D", winner: false,
+        positions: [
+          "\"We need greater transparency with every issue. Nothing kills bad policy like the light of day\"",
+          "Pipeline property rights, electricity and natural-gas rate increases, and data-centre impacts on consumer rates",
+          "Oversight of the Black Hills Energy / NorthWestern Energy merger, plus grain-buyer bonding protections for farmers"
+        ],
+        differentiators: [
+          "22 consecutive years in the Legislature for District 19 — described as the longest-tenured Democrat in South Dakota legislative history — while repeatedly winning a heavily Republican district",
+          "A working Scotland farmer; a member of R-CALF and the South Dakota Stockgrowers and a charter member of the South Dakota Soybean Association",
+          "The only candidate in this race with a documented, itemised platform"
+        ],
+        supporters: [
+          "A farm background gives him standing on eminent domain and on grain-buyer bonding, which this commission also regulates",
+          "He pledges to open up proceedings he calls \"as quiet as a library or a church\" — \"the PUC is one of the quietest offices in Pierre, and yet it greatly affects all our lives\"",
+          "His issue list is concrete and checkable, against an opponent with no published platform"
+        ],
+        opponents: [
+          "No utility-regulation or finance credential could be identified [Verify]",
+          "He has been out of elected office for more than a decade [Verify]",
+          "Democrats have not won a South Dakota commission seat in many cycles, and critics of ratepayer populism argue heavy rate scrutiny deters utility investment [Verify — structural argument; no named Republican criticism of him could be found]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide",
+    office: "Ballot Measures — South Dakota",
+    note: "⚠ EXACTLY FOUR measures, and ALL FOUR are legislature-referred constitutional amendments from the 2025 session. NO citizen initiative and NO referred law qualified for 2026 — which is itself the story in the state that invented the initiative and referendum in 1898. Attorney General Marty Jackley issued final ballot explanations for these four in mid-May 2026. ⚠ NOT ON THE BALLOT, despite circulating: two Rick Weiland amendments protecting the initiative process, a property-tax repeal amendment, and a referred law on SB 245 — that petition drive FAILED, needing 17,508 valid signatures by June 29 and falling short, so SB 245 became law on July 1. ⚠ Ballotpedia maintains a page for a 2026 South Dakota online sports-betting amendment; that referral (SJR 504) was REJECTED by the Legislature and is not on the ballot. ⚠ Only Amendment L has organised campaigns on either side; for I, J and K no committee, spokesperson or campaign could be found at all.",
+    candidates: [
+      { name: "Amendment I — Medicaid expansion conditioned on the federal match", party: "I", winner: false,
+        positions: [
+          "Official title: \"An amendment to the Constitution of the State of South Dakota, conditioning the requirement of expanded Medicaid on the level of federal medical assistance\"",
+          "Would let the Legislature repeal Medicaid expansion if the federal match drops below 90%",
+          "Referred by the 2025 Legislature as HJR 5001; expansion currently covers roughly 30,000 South Dakotans, about 6% of the Medicaid budget"
+        ],
+        differentiators: [
+          "⚠ South Dakota voters wrote Medicaid expansion into the constitution themselves, by citizen initiative, in 2022 — this would let legislators undo it under a condition",
+          "A FULL, immediate repeal referral (HJR 5002) was introduced in the 2026 session and FAILED in the House 27–39, so the conditional version is what voters actually get",
+          "⚠ No registered ballot-question committee could be found on either side [Verify]"
+        ],
+        supporters: [
+          "Legislative Republicans argue the state needs an exit if Washington shifts costs onto it",
+          "Rep. Chris Kassin (R-Vermillion) argued against putting two Medicaid questions on the same ballot because it \"would confuse voters\" — the conditional version was the compromise"
+        ],
+        opponents: [
+          "Voters put expansion in the constitution by direct vote in 2022, and repeal-by-condition reverses that [Verify — argument reconstructed from commentary rather than an organised campaign]",
+          "Roughly 30,000 people's coverage would depend on a federal funding formula rather than a state decision [Verify]"
+        ] },
+      { name: "Amendment J — citizenship requirement to vote", party: "I", winner: false,
+        positions: [
+          "Official title: \"An amendment to the Constitution of the State of South Dakota, clarifying that an individual must be a citizen of the United States to be eligible to vote\"",
+          "Referred by the 2025 Legislature as SJR 503",
+          "[Verify] — no source located describes what the amendment would change in practice, given existing law"
+        ],
+        differentiators: [
+          "One of four legislature-referred amendments on this ballot",
+          "⚠ NO organised campaign, committee or spokesperson could be found on EITHER side of this measure — the absence is the finding",
+          "⚠ A search summary attributed to a secondary source says every Republican legislator voted for it; the underlying page could not be opened, so that is deliberately not stated as fact here"
+        ],
+        supporters: [
+          "[Verify] — no argument for this measure could be sourced from any organisation or legislator, and none has been invented here"
+        ],
+        opponents: [
+          "[Verify] — no argument against this measure could be sourced from any organisation or legislator, and none has been invented here"
+        ] },
+      { name: "Amendment K — trust for the unclaimed property fund", party: "I", winner: false,
+        positions: [
+          "Official title: \"An amendment to the Constitution of the State of South Dakota, establishing the trust for unclaimed property fund\"",
+          "Referred by the 2025 Legislature as SJR 505",
+          "⚠ Unclaimed property is administered by the STATE TREASURER, whose office is also on this ballot [Verify — inferred from the Treasurer nominee's own campaign material, not from the official ballot explanation, which is a scanned image with no text layer]"
+        ],
+        differentiators: [
+          "The only 2026 measure that directly touches another office on the same ballot",
+          "⚠ Note a numbering trap: the 2026 session had its own unrelated SJR 505, a property-tax cap that was killed. This measure is the 2025 SJR 505",
+          "⚠ No organised campaign could be found on either side [Verify]"
+        ],
+        supporters: [
+          "[Verify] — no argument for this measure could be sourced from any organisation or legislator, and none has been invented here"
+        ],
+        opponents: [
+          "[Verify] — no argument against this measure could be sourced from any organisation or legislator, and none has been invented here"
+        ] },
+      { name: "Amendment L — 60% threshold for constitutional amendments", party: "I", winner: false,
+        positions: [
+          "Official title: \"An amendment to the Constitution of the State of South Dakota, requiring that a constitutional amendment receive an affirmative vote of sixty percent of the votes cast before the measure is enacted\"",
+          "Referred by the 2025 Legislature as HJR 5003 — House 61–5 on Jan 22, 2025 and Senate 29–4 on Mar 10, 2025",
+          "⚠ Amendment L would itself pass on a SIMPLE MAJORITY; the 60% bar would apply only to future amendments"
+        ],
+        differentiators: [
+          "The only 2026 measure with organised campaigns on both sides",
+          "⚠ South Dakota PIONEERED the initiative and referendum in 1898; a 60% threshold would tie Florida and Illinois for the highest in the country",
+          "Since 2018 South Dakota has passed eleven laws tightening direct democracy — more than any other state"
+        ],
+        supporters: [
+          "Prime sponsor Rep. John Hughes (R-Sioux Falls): \"Our constitution is more than a statute. It is a contract between the state\" and its citizens",
+          "Hughes also cites voter fatigue, with roughly six measures per ballot since 2000",
+          "Nathan Sanderson of the South Dakota Retailers Association argues amendments should be about \"philosophy of governance, not specific policies\"; the NRA, South Dakota Right to Life and South Dakota Family Voice Action also backed it in session testimony"
+        ],
+        opponents: [
+          "The Voter Defense Association of South Dakota launched a \"No on L\" campaign in May 2025",
+          "Rick Weiland of Dakotans for Health: \"They're attempting to orchestrate the death of direct democracy by a thousand cuts\"",
+          "Chase Jensen of Dakota Rural Action argues a higher threshold \"wouldn't deter out-of-state money… It would only open the tap even further\""
+        ] }
+    ]
+  },
+];
+
+// ----- (3) U.S. House races by district -----
+// South Dakota has ONE at-large seat, so every county votes in this same race.
+// ⚠ BALLOT-ACCESS TRAP CAUGHT AND EXCLUDED: Wikipedia and Ballotpedia both list an
+// independent, Jack Pittman, in this race. Wikipedia's own text says only that he "filed
+// paperwork," and he does NOT appear on the Secretary of State's certified candidate list
+// — independents needed 3,502 valid signatures by Apr 28, 2026. He is not carded. This is
+// the declared-versus-ballot-qualified conflation those two sites make repeatedly.
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — South Dakota (at-large)",
+    region: "All 66 counties — South Dakota elects a single at-large member, so every voter in the state casts a ballot in this race",
+    races: [
+      {
+        date: "Nov 3, 2026",
+        type: "upcoming",
+        note: "⚠ AN OPEN SEAT. Rep. Dusty Johnson (R) gave it up to run for governor — and finished THIRD in the June 2 primary with 23.4%, eliminated before the runoff. He serves out his term through January 2027. The Republican nominee is MARTY JACKLEY, the sitting South Dakota Attorney General, who took 79.2% of the primary. Ratings are Solid/Safe R — but ⚠ the Cook, Inside Elections and Sabato ratings all date from JULY 2025, before Johnson's exit was even settled, and no rater appears to have revisited the seat since; Decision Desk HQ's Safe R of July 14, 2026 is the only recent one [Verify — all are reported through a citing table; the raters' own pages return 403]. Johnson won this seat by 44 points in 2024.",
+        candidates: [
+          { name: "Marty Jackley", party: "R", winner: false,
+            positions: [
+              "The farm bill is his stated top priority; has requested Agriculture and Judiciary committee seats",
+              "Border security",
+              "Election integrity, including the SAVE Act"
+            ],
+            differentiators: [
+              "Sitting South Dakota Attorney General — served 2009–2019 and again since 2023",
+              "Former chairman of the National Association of Attorneys General; says the problems he hit as AG \"trace back to Washington\"",
+              "$1,066,870 cash on hand as of May 13, 2026, on $1.33M raised — roughly ten times his opponent's cash"
+            ],
+            supporters: [
+              "More than a decade as attorney general plus a national chairmanship means he arrives with a network and no learning curve",
+              "His committee request — Agriculture and Judiciary — is precisely targeted at what a farm state needs",
+              "Taking 79% of the primary shows the party unified behind him immediately"
+            ],
+            opponents: [
+              "He lost the 2018 Republican gubernatorial primary to Kristi Noem, so critics cast him as a second-choice candidate now seeking a third office",
+              "Leaving the attorney general's job mid-term to run for Washington is opportunistic [Verify — structural argument]",
+              "A career prosecutor-politician is not the outsider profile South Dakota Republicans favoured in this year's governor primary, where the anti-establishment candidate led the first round [Verify — structural argument]"
+            ] },
+          { name: "Nicole \"Nikki\" Gronli", party: "D", winner: false,
+            positions: [
+              "Affordability for working families",
+              "Public education and rural health care",
+              "Tribal priorities — expanding tribal law enforcement, the Indian Health Service and tribal colleges"
+            ],
+            differentiators: [
+              "Former USDA Rural Development state director, overseeing rural housing, broadband and infrastructure investment",
+              "Former vice-chair of the South Dakota Democratic Party; endorsed by former President Joe Biden",
+              "$102,581 cash on hand as of May 13, 2026, on $213,223 raised"
+            ],
+            supporters: [
+              "Running USDA Rural Development gave her hands-on experience delivering exactly the programmes this district depends on",
+              "Her tribal-priorities plank speaks to constituencies statewide campaigns here routinely skip",
+              "She argues voters are tired of performative politics and want a candidate focused on delivery"
+            ],
+            opponents: [
+              "A Biden-administration appointee carrying a Biden endorsement is a liability in a state Trump won 63–34 [Verify — the endorsement is sourced; the electoral inference is structural]",
+              "She is outraised roughly six-to-one and out-cashed ten-to-one",
+              "Dusty Johnson won this seat by 44 points in 2024, and no Democrat has come close in years [Verify — structural argument]"
+            ] }
+        ]
+      },
+      {
+        date: "Jun 2, 2026",
+        type: "past",
+        note: "Jackley cleared South Dakota's 35% primary threshold comfortably, so no runoff was required in this race. Nikki Gronli was unopposed for the Democratic nomination. ⚠ Figures are news/AP-reported: the Secretary of State's certified canvass is an 8.1 MB scanned-image PDF with no extractable text, and the state results portal is JavaScript-rendered [Verify against the certified canvass].",
+        candidates: [
+          { name: "Marty Jackley", party: "R", winner: true,
+            positions: [], differentiators: ["103,074 votes — 79.2% of the Republican primary"], supporters: [], opponents: [] },
+          { name: "James Bialota Jr.", party: "R", winner: false,
+            positions: [], differentiators: ["27,100 votes — 20.8%"], supporters: [], opponents: [] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024",
+        type: "past",
+        note: "Dusty Johnson's last re-election, won by just over 44 points — the margin that frames how steep the 2026 Democratic climb is.",
+        candidates: [
+          { name: "Dusty Johnson (incumbent)", party: "R", winner: true,
+            positions: [], differentiators: ["303,630 votes — 72.04%"], supporters: [], opponents: [] },
+          { name: "Sheryl Johnson", party: "D", winner: false,
+            positions: [], differentiators: ["117,818 votes — 27.96%"], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  }
+};
+
+const SITE_META = { name: "South Dakota Elections Hub", lastUpdated: "August 9, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — South Dakota county-level down-ballot research has not started.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for South Dakota has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them,
+  // otherwise a district with no plurality county is unreachable from the map.
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const SD_STATE_FIPS = "46";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#sdmap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(SD_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Hartford ----
+  drawCapital(g, projection, { name: "Pierre", lng: -100.3364, lat: 44.3683 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in MS";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn&#39;t in our South Dakota dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>

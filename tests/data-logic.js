@@ -58,6 +58,16 @@ const STATE_PAGES = [
   { page: "co.html", countyCount: 64,  sampleFips: "08001", sampleName: "Adams",       expectedRaces: 24 },
   { page: "or.html", countyCount: 36,  sampleFips: "41051", sampleName: "Multnomah",   expectedRaces: 13 },
   { page: "nv.html", countyCount: 17,  sampleFips: "32003", sampleName: "Clark",       expectedRaces: 19 },
+  // South Dakota elects ONE at-large U.S. House member, so no county is split and every
+  // county sees the identical race list — Minnehaha (Sioux Falls) is simply the largest.
+  { page: "sd.html", countyCount: 66,  sampleFips: "46099", sampleName: "Minnehaha",   expectedRaces: 18 },
+  // Ada is deliberately the ID sample: it is Idaho's ONLY split county (Boise sits mostly
+  // in CD2 while Meridian and Eagle sit in CD1), so it carries `ds` and this count guards
+  // the multi-district merge — 16 statewide + 3 races each from CD1 and CD2.
+  { page: "id.html", countyCount: 44,  sampleFips: "16001", sampleName: "Ada",         expectedRaces: 22 },
+  // Pondera is deliberately the MT sample: it is Montana's ONLY split county — the belief
+  // that Montana splits none is wrong — so it carries `ds` and guards the multi-district merge.
+  { page: "mt.html", countyCount: 56,  sampleFips: "30073", sampleName: "Pondera",     expectedRaces: 14 },
 ];
 
 for (const cfg of STATE_PAGES) {
@@ -89,6 +99,25 @@ for (const cfg of STATE_PAGES) {
   const countyPrefix = Object.keys(x.COUNTIES)[0].slice(0, 2);
   check(!!fipsDecl && fipsDecl[1] === countyPrefix,
     `${cfg.page}: map STATE_FIPS "${fipsDecl ? fipsDecl[1] : "MISSING"}" matches COUNTIES prefix "${countyPrefix}"`);
+
+  // Second clone-bug guard, added Aug 9, 2026 after or.html AND nv.html both shipped
+  // showing "MS" — Mississippi's initials — in the header crest and the footer, because
+  // both were cloned from ms.html and those two strings are the easiest to miss: they are
+  // pure presentation, so no data test and no runtime check could see them. Derive the
+  // expected initials from the FILENAME, which is the one thing about a state page that
+  // is never ambiguous.
+  const expectAbbr = cfg.page.replace(".html", "").toUpperCase();
+  const crest = rawPage.match(/<div class="crest">([^<]*)<\/div>/);
+  check(!!crest && crest[1].trim() === expectAbbr,
+    `${cfg.page}: header crest reads "${expectAbbr}" (got "${crest ? crest[1].trim() : "MISSING"}")`);
+  // The footer is written either as initials ("OR Elections Hub") or spelled out
+  // ("Ohio Elections Hub"); both are fine, but it must not name a DIFFERENT state.
+  const footer = rawPage.match(/<strong>([^<]*) Elections Hub<\/strong>/);
+  const footerName = footer ? footer[1].trim() : "";
+  const footerOk = footerName === expectAbbr ||
+    (x.SITE_META.name || "").startsWith(footerName + " ");
+  check(footerOk,
+    `${cfg.page}: footer says "${footerName} Elections Hub", matching the page's own state`);
 
   const result = x.getCountyElections(cfg.sampleFips);
   const races = (result && result.elections) || [];

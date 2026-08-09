@@ -6,7 +6,7 @@
 const path = require("path");
 const { extractInlineScripts, cutAtD3, runScript } = require(path.join(__dirname, "..", "tests", "lib.js"));
 
-const PAGES = ["nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html", "ny.html", "ri.html", "nh.html", "ct.html", "vt.html", "me.html", "ma.html", "wv.html", "oh.html", "ky.html", "in.html", "ia.html", "il.html", "ms.html", "ar.html", "ne.html", "nm.html", "co.html", "or.html", "nv.html"];
+const PAGES = ["nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html", "ny.html", "ri.html", "nh.html", "ct.html", "vt.html", "me.html", "ma.html", "wv.html", "oh.html", "ky.html", "in.html", "ia.html", "il.html", "ms.html", "ar.html", "ne.html", "nm.html", "co.html", "or.html", "nv.html", "sd.html", "id.html", "mt.html"];
 
 function loadData(page) {
   const code = extractInlineScripts(page)[0];
@@ -32,9 +32,15 @@ function scanRace(page, office, race, out) {
     }
   }
   if (hits.length) out.push({ page, office: office || race.office, date: race.date, type: race.type, hits });
-  // calendar: anything upcoming that isn't the Nov 3 general is time-sensitive
-  if (race.type === "upcoming" && race.date && race.date !== "Nov 3, 2026") {
-    out.calendar.push({ page, office: office || race.office, date: race.date });
+  // Calendar: any race still ahead of us that isn't the Nov 3 general.
+  // ⚠ This MUST include `scheduled`, not just `upcoming`. It checked only `upcoming`
+  // until Aug 9, 2026, and by then every `upcoming` race was dated Nov 3 — so the
+  // section printed EMPTY on every run and the calendar quietly stopped existing.
+  // Pending primaries and runoffs are typed `scheduled`, which is exactly the set
+  // a refresh run needs to see.
+  if ((race.type === "upcoming" || race.type === "scheduled") &&
+      race.date && race.date !== "Nov 3, 2026") {
+    out.calendar.push({ page, office: office || race.office, date: race.date, type: race.type });
   }
 }
 
@@ -52,8 +58,18 @@ for (const page of PAGES) {
 
 console.log("=== [Verify] MARKER REPORT ===");
 console.log("Totals by page:", JSON.stringify(counts), "— grand total:", Object.values(counts).reduce((a, b) => a + b, 0));
-console.log("\n=== TIME-SENSITIVE (upcoming, non-general dates) ===");
-out.calendar.forEach(c => console.log(`${c.date} | ${c.page} | ${c.office}`));
+console.log("\n=== TIME-SENSITIVE (upcoming/scheduled, non-general dates) ===");
+// Sort chronologically and mark anything already in the past — a date that has come and
+// gone but is still typed `scheduled` is a stale card, which is its own kind of finding.
+const TODAY = new Date();
+const dated = out.calendar
+  .map(c => ({ ...c, ts: new Date(c.date).getTime() }))
+  .sort((a, b) => (isNaN(a.ts) ? 1 : isNaN(b.ts) ? -1 : a.ts - b.ts));
+if (!dated.length) console.log("(none)");
+for (const c of dated) {
+  const past = !isNaN(c.ts) && c.ts < TODAY.getTime() ? "  ⚠ DATE HAS PASSED — refresh this card" : "";
+  console.log(`${c.date} | ${c.page} | ${c.office} [${c.type}]${past}`);
+}
 console.log("\n=== MARKERS (page | office | who | field | text) ===");
 for (const e of out) {
   for (const h of e.hits) {

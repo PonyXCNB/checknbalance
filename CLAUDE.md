@@ -54,7 +54,14 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 | `ms.html` | Mississippi — twenty-first fully built state (82 counties, 4 districts, March 10 primary results). Built Aug 6, 2026 from il.html. ⚠ **MISSISSIPPI ELECTS ITS STATE OFFICERS IN ODD YEARS** — Governor, Lt Gov, AG, SoS, Treasurer, Auditor and Ag Commissioner are NOT on the 2026 ballot (next 2027), so the statewide ballot is just U.S. Senate plus five nonpartisan Court of Appeals seats, four of them uncontested. NO Supreme Court seat and NO certified ballot measure (the citizen-initiative process has been dead since 2021). Senate: Hyde-Smith (R) vs. **Scott Colom (D)** — NOT Ty Pinkins, who left the party in July 2025 and is on the ballot as an INDEPENDENT. Only 4 counties are split; Jackson itself straddles MS-2/MS-3. No district is rated competitive by any rater. Built WITH voices from the start. No LOCAL_RACES yet |
 | `ar.html` | Arkansas — twenty-second fully built state (75 counties, 4 districts, March 3 primary + March 31 runoff results). Built Aug 7, 2026 from ms.html. ⚠ Arkansas elects ALL SEVEN executive constitutional officers together in midterm years (Amendment 63), so the statewide ballot is long — but FOUR races are effectively over: AG, Treasurer and Auditor drew NO opponent of any party, and Lt. Governor and Land Commissioner drew no Democrat. ⚠ **NO appellate judicial race is on the November ballot** — Arkansas runs NONPARTISAN judicial elections at the MARCH primary date and all four seats were settled then (carded as past races); Ballotpedia's "runoff scheduled for November 3" is template boilerplate and is wrong. ⚠ **NO issue numbers are assigned** to the four legislature-referred ballot measures; Wikipedia's "Issue 1/2/3/4" are its editors' own sequencing. ⚠ **Write-in candidates are PROHIBITED** in Arkansas (§ 7-5-205). Marquee: the Secretary of State open seat, decided by **913 votes** in the March 31 runoff. Only 2 split counties (Pulaski 3 ways, Sebastian 2). No LOCAL_RACES yet |
 | `ne.html` | Nebraska — twenty-third fully built state (93 counties, 3 districts, May 12 primary results). Built Aug 7, 2026 from ms.html. ⚠ **THE 2026 SENATE SEAT IS THE SIX-YEAR TERM FOR RICKETTS' CLASS II SEAT** (he was appointed 2023 to Sasse's seat, won a 2024 SPECIAL for the remainder expiring Jan 2027); Fischer's Class I seat is NOT up. ⚠ **THERE IS NO DEMOCRAT ON THE SENATE BALLOT** — primary winner Cindy Burbank withdrew July 17/21 and *Forbes v. Nebraska Democratic Party* (heard Aug 3, NO ruling as of Aug 7) could still force a replacement by Sept 1. Independent **Dan Osborn** is certified by petition and the race is rated **Likely R, not Solid** — Sabato moved it July 10, 2025. ⚠ **NE-2 (Omaha) is an OPEN SEAT** (Bacon retiring) and the "blue dot" that gave Harris an electoral vote in 2024 while re-electing Bacon. ⚠ SoS incumbent Bob Evnen LOST his own primary. Only 2 split counties (Sarpy, Polk — Polk by 30 people). No LOCAL_RACES yet |
-| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH/KY/IN/IA/IL/MS/AR/NE/NM/CO redirect to their dedicated pages |
+| `nm.html` | New Mexico — twenty-fourth fully built state (33 counties, 3 districts). Built Aug 4, 2026 |
+| `co.html` | Colorado — twenty-fifth fully built state (64 counties, 8 districts). Built Aug 4, 2026. ⚠ Minor-party nominee names are deliberately described rather than carded — see the ledger's Sept 7 certification re-check |
+| `or.html` | Oregon — twenty-sixth fully built state (36 counties, 6 districts, May 19 primary). Built Aug 7, 2026. Marquee: Gov. Kotek (D) vs. Christine Drazan (R), a rematch of 2022 that all three raters moved OFF "Safe" |
+| `nv.html` | Nevada — twenty-seventh fully built state (17 counties, 4 districts, June 9 primary). Built Aug 7, 2026. NO 2026 U.S. Senate; two ballot questions (Q6 abortion, Q7 voter ID) |
+| `sd.html` | South Dakota — twenty-eighth fully built state (66 counties, ONE at-large seat, June 2 primary + a July 28 RUNOFF). Built Aug 9, 2026. ⚠ South Dakota's 35% primary threshold forced the state's FIRST-EVER gubernatorial runoff; the at-large U.S. House seat is OPEN because Dusty Johnson ran for governor and finished third; and the Democratic U.S. Senate nominee WITHDREW Aug 4, leaving that line empty pending an Aug 11 deadline. Six constitutional officers are nominated at party CONVENTIONS, not the primary. No LOCAL_RACES yet |
+| `id.html` | Idaho — twenty-ninth fully built state (44 counties, 2 districts, May 19 primary, CERTIFIED). Built Aug 9, 2026. ⚠ NO office is open and no judicial race is on the November ballot (Idaho decides those at the May primary). The Democratic Senate nominee quit July 28 but is STILL on the ballot until a Sept 4 deadline; an ID-2 Constitution nominee DIED in June and the state's list has not been updated. Four ballot measures. No LOCAL_RACES yet |
+| `mt.html` | Montana — thirtieth fully built state (56 counties, 2 districts, June 2 primary, CERTIFIED). Built Aug 9, 2026. ⚠ **The U.S. Senate seat is OPEN — Steve Daines withdrew two minutes before the March 4 filing deadline** and endorsed Kurt Alme, who had filed minutes earlier. MT-1 is also OPEN (Zinke retiring) and is the state's competitive House race. One Supreme Court seat, two PSC district races, and three ballot measures still circulating with NOTHING certified. No LOCAL_RACES yet |
+| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH/KY/IN/IA/IL/MS/AR/NE/NM/CO/OR/NV/SD/ID/MT redirect to their dedicated pages |
 | `favicon.svg` | Gold-gradient circle + white checkmark (primary favicon, matches site crest) |
 | `favicon.png` | 32px PNG fallback |
 | `favicon.ico` | Multi-size ICO (16/32/48) at root for legacy auto-discovery |
@@ -152,9 +159,9 @@ must appear AFTER its declaration; a top-level TDZ error kills the whole script 
 ### index.html (national)
 ```
 ST / NAME     : fips → abbr / full name             CAP: capitals (currently unused on this page)
-BUILT         : 27 fips -> page (37 nc, 45 sc, 13 ga, 51 va, 24 md, 10 de, 34 nj, 36 ny, 44 ri, 33 nh,
+BUILT         : 30 fips -> page (37 nc, 45 sc, 13 ga, 51 va, 24 md, 10 de, 34 nj, 36 ny, 44 ri, 33 nh,
                 09 ct, 50 vt, 23 me, 25 ma, 54 wv, 39 oh, 21 ky, 18 in, 19 ia, 17 il, 28 ms, 05 ar, 31 ne, 35 nm, 08 co,
-                41 or, 32 nv)
+                41 or, 32 nv, 46 sd, 16 id, 30 mt)
 PARTIAL       : Set of 3 fips (DC FL AL) → lighter gold tier
 CALLOUTS      : label anchor coords for 9 small states + DC
 destFor(fips) : BUILT[fips] if fully built, else state.html?state=XX
@@ -389,6 +396,30 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
    four districts whose lines moved, and voided the May 19 results in those districts. **A state re-running
    primaries mid-cycle is a redistricting change until proven otherwise.**
 
+14. **The clone checklist had shipped a SECOND, purely cosmetic failure mode — and it was live on two pages.**
+   Found and fixed Aug 9, 2026: **`or.html` and `nv.html` both displayed "MS"** — Mississippi's initials — in the
+   header crest AND the footer ("MS Elections Hub"), because both were cloned from `ms.html` on Aug 7 and those two
+   strings were missed. They are pure presentation, so **no data test, no parse check and no runtime check could
+   see them**; only a human looking at the page, or a test that knows what state the page is supposed to be about.
+   ➤ **Two fixes, both applied:**
+   (a) `tests/data-logic.js` now derives the expected initials **from the filename** — the one unambiguous fact
+   about a state page — and asserts the crest and footer match. Verified to fail on the pre-fix or/nv pages.
+   (b) **`tools/clone-state.js`** now performs every replacement on the clone checklist from a single config
+   object, so none can be forgotten by hand: title, meta description, crest, brand name, hero title + county count
+   + the three hero stat numbers, map loading text, `#xxmap` in BOTH the CSS and the `d3.select`, the
+   `<XX>_STATE_FIPS` VALUE (lesson #10), `drawCapital` coordinates, the "Not in XX" empty state, the footer
+   sources line and `SITE_META`. **It refuses to write the file if any replacement finds no match in the donor**,
+   which is what catches donor-wording drift instead of silently skipping a substitution. Use it for every new
+   state — hand-cloning is what produced quirks #10 and #14.
+
+15. **`tools/verify-report.js`'s time-sensitive calendar had been silently EMPTY, probably for weeks.**
+   Found Aug 9, 2026. It only collected races with `type: "upcoming"` whose date was not "Nov 3, 2026" — but by
+   August every `upcoming` race IS dated Nov 3, and pending primaries/runoffs are typed **`scheduled`**. So the
+   section printed nothing on every run and the calendar quietly stopped existing, while still *looking* like a
+   working feature. It now includes `scheduled`, sorts chronologically, and **flags any date that has already
+   passed** as a stale card. ➤ General lesson: a report section that renders empty is indistinguishable from a
+   report section that has nothing to say. When a tool's output goes quiet, check whether the tool broke.
+
 ## Testing (`tests/` — plain Node.js, zero dependencies)
 
 Requires Node.js (any recent LTS). Run the whole suite from the site root:
@@ -401,7 +432,7 @@ node tests/run-all.js
 |------|----------------|
 | `tests/parse-check.js` | Every inline `<script>` in every page must compile (syntax errors only) |
 | `tests/smoke-test.js` | Executes each page's scripts top-to-bottom with DOM stubs, cut at the first `d3.` usage; runs state.html for all 10 featured states + controls (TX, CA) + verifies the NC→nc.html redirect. **This is the test that catches declaration-order/TDZ bugs.** |
-| `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config, now 27 pages): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly, **and the map `<XX>_STATE_FIPS` constant matches the COUNTIES prefix** (quirk #10). Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
+| `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config, now 30 pages): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly, **and the map `<XX>_STATE_FIPS` constant matches the COUNTIES prefix** (quirk #10). Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
 | `tests/label-fit.js` | **The national map's `LABEL_ADJ` labels must clear their state borders.** Measures clearance (anchor → nearest boundary) against baked geometry and requires 9.66px = 8.76 glyph half-diagonal + 0.4 stroke + 0.5 simplification slack. Added July 24, 2026 after the FL/LA labels shipped clipping *twice* — both earlier passes hit-tested the anchor POINT, which is inside the state even when the box around it is not. HI carries a documented exempt floor (its island cannot do better) |
 | `tests/fixtures/state-label-rings.json` | Projected, simplified state outlines for the 42 inline-label states (48KB). Built by `tools/gen-label-fixture.js`; records the projection it came from so `label-fit.js` fails loudly instead of checking stale geometry |
 | `tests/lib.js` | Shared helpers: inline-script extraction, the d3 cut, DOM stubs, vm sandbox runner |
@@ -538,8 +569,11 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
 **Queue status (as of Aug 6, 2026): items 1, 2, 3 and 5 are COMPLETE, and item 4 has been at ZERO gaps
 site-wide since Aug 5.** The queue is therefore empty of open work — what remains is *maintenance*: every new
 state must be built WITH voices, and `node tools/voices-report.js --summary` must read 0 at the end of every
-run. It read **0 missing / 685 candidates across 23 pages** at the end of the Aug 7 run (Arkansas shipped with 26
-candidates and Nebraska with 37, both 0 gaps). If the owner adds nothing new, spend the freed time on state builds, the
+run. It read **0 missing / 876 candidates across 30 pages** at the end of the Aug 9 run (South Dakota shipped with 22
+candidates, Idaho with 37 and Montana with 20, all 0 gaps). ⚠ `tools/voices-report.js` keeps its OWN page list,
+separate from the tests and from verify-report.js — it silently under-counted until Aug 9 because sd/id/mt were
+not in it. Add every new state to ALL FOUR lists: tests/parse-check.js, tests/smoke-test.js (two places),
+tests/data-logic.js, tools/verify-report.js AND tools/voices-report.js. If the owner adds nothing new, spend the freed time on state builds, the
 time-sensitive calendar, and the incumbent-status sweep.
 
 ## Backlog / roadmap
@@ -684,15 +718,19 @@ time-sensitive calendar, and the incumbent-status sweep.
    EIGHT statewide constitutional offices + 4 ballot measures; NE = 93 counties / 3 districts / 6 statewide offices +
    1 ballot measure + statewide judicial retention + 4 State Board of Education and 3 NU Regents district races).
    Both built WITH voices from the start. See the build records below.
-   **Built bloc is now 23 (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA WV OH KY IN IL IA MS AR NE)** — the run from
-   Georgia to Maine and west to Iowa and Nebraska, plus Mississippi and Arkansas on the lower Mississippi River
-   (index.html's prose says exactly this).
-   **Next targets:** **PA** (banked below — build it AFTER Aug 10, 2026, off the DOS certified list; the county→district
-   map is still the hard blocker), **AL** (fully researched and banked below — build it AFTER Aug 12, once the Aug 11
-   special primary and independent qualifying both close, and ONLY off the 2023 legislature map), then **MI**
-   (its Senate primary was called Aug 5 and Stevens CONCEDED — only certification still gates it), then **WI/MN/MO**.
-   ⚠ **NEVADA is research-COMPLETE and build-ready (see its banked section) — do that first. OREGON is
-   ALSO research-COMPLETE — both are BUILD-ONLY tasks now, with no research blocker left on either.**
+   **Built bloc is now 30 (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA WV OH KY IN IL IA MS AR NE NM CO OR NV SD ID MT)**
+   — the run from Georgia to Maine and west to Iowa and Nebraska, plus Mississippi and Arkansas on the lower
+   Mississippi River, Colorado and New Mexico in the Southwest, South Dakota and Montana across the northern Plains,
+   and Nevada, Oregon and Idaho in the West (index.html's legend and prose say exactly this).
+   **Next targets, in order:**
+   1. **PA** (banked below — build off the DOS certified list now that the Aug 10 objection deadline has passed;
+      the county→district map is still the hard blocker).
+   2. **AL** (fully researched and banked below — build AFTER Aug 12, once the Aug 11 special primary and
+      independent qualifying both close, and ONLY off the 2023 legislature map).
+   3. **MI** — ⚠ still NOT certified. County canvasses must certify by **Aug 18** and the Board of State
+      Canvassers by **Aug 24**. Do not build before then.
+   4. Then **WI/MN/MO**, and **TN**, where Blackburn's win in the Aug 6 gubernatorial primary leaves her
+      **U.S. Senate seat OPEN**.
    ⚠ **MO carries a redistricting risk** — it was one of the 2025–26 mid-decade redraw states, so answer "which map
    governs 2026?" from primary sources before deriving anything (lesson #13). WI and MN both held Aug 11 primaries.
    ⚠ **MI is NOT ready.** Its primary was Aug 4, 2026 and as of Aug 5 the **Democratic U.S. Senate primary was still
@@ -1843,6 +1881,228 @@ time-sensitive calendar, and the incumbent-status sweep.
      Tuberville 60.10% – Jones 39.74%. ⚠ **There was NO Alabama U.S. Senate race in 2024.** ⚠ **The SoS's statewide
      summary .xlsx DUPLICATES COUNTY COLUMNS** — it implies Doug Jones got 574,212 primary votes; the correct figure
      from the precinct workbook is ~286,000. Percentages are unaffected. Use the precinct files.
+
+   ### ✅ SOUTH DAKOTA — BUILT Aug 9, 2026 (28th state). The notes below are the build record; do not re-research.
+   Cloned from `or.html` using the new **`tools/clone-state.js`** (see quirk #14) — the first state built with it.
+   66 counties, ONE at-large U.S. House seat, built WITH voices from the start (0 gaps).
+   - **The map is the simplest on the site and needs no derivation.** South Dakota elects a single at-large member,
+     so there are no congressional lines, no split counties, and `d:1` is exact rather than a plurality call. The
+     county list was generated directly FROM the us-atlas `counties-10m.json` geometry the page renders, so every
+     key is guaranteed to have a shape. ⚠ Note **46102 Oglala Lakota** (renamed from Shannon in 2015) and the
+     absence of 46113 — the same FIPS change.
+   - ⚠⚠ **THE 35% RULE IS THE KEY TO THIS ENTIRE BALLOT.** A 1985 law requires 35% of the primary vote to win a
+     nomination outright for Governor, U.S. Senate or U.S. House. In 2026 that produced **the first statewide
+     gubernatorial runoff in South Dakota history, on July 28, 2026.**
+   - **GOVERNOR — an incumbent who has never been elected to the job.** Larry Rhoden was Noem's lieutenant governor
+     and **succeeded her on Jan 25, 2025** when she left for Homeland Security. In the June 2 primary he finished
+     **SECOND with 25.2%**, behind businessman **Toby Doeden (30.6%)**, with **Rep. Dusty Johnson third (23.4%)** and
+     House Speaker Jon Hansen fourth (20.8%). He then won the runoff **83,590 to 34,435 (about 71–29), carrying 64 of
+     66 counties** — Doeden took only Fall River and Todd. **The runoff totals ARE certified**; Wikipedia's 83,582 /
+     34,430 is wrong. Democrat **Dan Ahlers**, the state party's executive director and the 2020 Senate nominee.
+   - ⚠ **THE U.S. HOUSE SEAT IS OPEN BECAUSE OF THAT PRIMARY** — Dusty Johnson gave it up to run for governor and was
+     eliminated. GOP nominee is **Marty Jackley, the sitting Attorney General** (79.2%); Democrat **Nikki Gronli**,
+     former USDA Rural Development state director, Biden-endorsed.
+   - ⚠⚠ **U.S. SENATE — THE DEMOCRATIC LINE IS EMPTY AND WAS NOT FINAL AT BUILD TIME.** Nominee **Julian Beaudion
+     withdrew Aug 4, 2026**; the SoS's own certified list records "Withdrawn 08/04/2026" and state law bars printing
+     a withdrawn name. **The central committee had until 5 p.m. Tue Aug 11 to appoint a replacement**, and the state
+     party's vice-chair said it had no interest in doing so. So Rounds (R) vs. independent **Brian Bengs** — who was
+     the **2022 DEMOCRATIC** nominee against Thune, losing by 43 points. **RE-CHECK AUG 12** and harden the card.
+     ⚠ Beaudion alleged "intimidating threats to drop out" from "an opponent and those associated with the opponent";
+     **Bengs denies it.** Both accounts are carded together because neither is established. Do not resolve it silently.
+   - ⚠ **Trump/Rounds is a reversal worth keeping straight:** Trump said in 2022 he would "never endorse this jerk
+     again" after Rounds called the 2020 election fair — then **endorsed him on July 22, 2025.**
+   - ⚠ **BALLOTPEDIA AND WIKIPEDIA BOTH CARRY TWO PHANTOM INDEPENDENTS** — **Anthony Sitter** (Governor) and
+     **Jack Pittman** (U.S. House). Neither is on the SoS certified list; independents needed 3,502 signatures by
+     Apr 28, 2026 and Sitter was reported still gathering them with about $2,000 raised. **Neither is carded.**
+     Three other independents (Renville, Gleason, Morris) withdrew.
+   - ⚠ **CERTIFICATION STATUS DIFFERS BY RACE and the page says so per race.** The July 28 runoff is certified. The
+     **June 2 primary figures are news/AP-reported**: the SoS certified canvass is an **8.1 MB scanned-image PDF with
+     no extractable text**, and electionresults.sd.gov is JavaScript-rendered (it yielded only turnout — 34.52%,
+     171,560 of 497,037). Swap in certified totals when the canvass is machine-readable.
+   - ⚠ **RATINGS ARE ALL STALE AND THE PAGE SAYS SO.** Every SD-SEN rating predates the Aug 4 withdrawal; the
+     SD-GOV ratings from Cook, Sabato and Inside Elections are from **Aug–Sep 2025**, before the primary AND the
+     runoff; the SD-AL ratings from those three are from **July 2025**. No rater has revisited any of them.
+   - **Access notes:** 403 to automated fetch — southdakotasearchlight.com (the best SD political outlet, blocked on
+     every attempt), keloland.com, kcau9.com, newsfromthestates.com, nbcnews.com. governor.sd.gov returns an invalid
+     header. **atg.sd.gov IS reachable** and confirmed Jackley directly, as is the certified candidate list at
+     `vip.sdsos.gov/candidatelist.aspx?eid=774` and the withdrawal-rules page on sdsos.gov.
+   - **Deliberately NOT published:** a claimed Biden endorsement of **Beaudion** that appears on Wikipedia's Senate
+     page. The verified Biden endorsement is of **Gronli** (KOTA, June 9, 2026); the Wikipedia claim looks like
+     conflation and was not carded.
+
+   ### ✅ IDAHO — BUILT Aug 9, 2026 (29th state). The notes below are the build record; do not re-research.
+   Cloned from `or.html` with `tools/clone-state.js`. 44 counties / 2 districts / NINE statewide races
+   (Senate, Governor, all six constitutional officers, and four ballot measures) — built WITH voices, 0 gaps
+   across 37 candidates.
+   - **MAP: Plan C03**, adopted Nov 5, 2021, effective Nov 12, 2021. Currency answered from primary sources:
+     the Idaho Supreme Court upheld it in *Pentico v. Denney* on Feb 11, 2022; Idaho redistricts only through a
+     decennial commission with no legislature-driven mid-decade path; and NCSL's tracker (updated Aug 5, 2026)
+     does not list Idaho. The Idaho rows of the Census CD118 and CD119 relationship files are byte-identical.
+     Rebuilt from the Legislature's own enacted C03 shapefile and proved THREE independent ways, all exact:
+     **CD1 = 919,553 and CD2 = 919,553 against an ideal of 919,553 — ZERO deviation.**
+     ⚠ **TRAP: the Census BLOCK-ASSIGNMENT files for Idaho encode the 116th-Congress map** and yield
+     954,891/884,215. Discarded. ⚠ **ONE split county: ADA** (CD1 234,149 / CD2 260,818, plurality CD2) — it
+     carries `ds:[1,2]` and is the data-logic sample county. ⚠ **16015 BOISE COUNTY is in CD1 while the CITY of
+     Boise is in Ada County and mostly CD2** — the easiest error to make here. 16049 is a county named "Idaho."
+   - ⚠⚠ **THE DEMOCRATIC SENATE NOMINEE QUIT AND IS STILL ON THE BALLOT.** David Roth won the primary with
+     61.9%, announced on July 28 he was ending his campaign, and **as of Aug 9 had NOT filed the notarised
+     withdrawal Idaho requires** — the state's filing system still shows him "Approved." His deadline is
+     **5 p.m. Fri Sept 4, 2026** (Idaho Code § 34-717(2)); if he files nothing his name prints.
+     ⚠ **Whether the party could then substitute is genuinely unsettled**: § 34-715(1) allows a post-primary
+     replacement only for "death or disqualification" and omits withdrawal, while § 34-714(2) routes
+     withdrawal-caused vacancies into that same machinery. No SoS guidance resolving it was found. If allowed,
+     the deadline is Sept 11. **Wikipedia has already dropped Roth from its general-election list — it is running
+     ahead of the official record. Defer to run.voteidaho.gov.** The real contest is Risch vs. independent
+     **Todd Achilles**, a former Democratic state rep appointed to the House by REPUBLICAN Gov. Little who left
+     the party in June 2025 and refuses to caucus with either side.
+   - ⚠⚠ **A CANDIDATE ON THE ID-2 BALLOT IS DEAD AND THE STATE RECORD HAS NOT CAUGHT UP.** The Constitution
+     nominee listed as "C. Sierra – ID Law – Idaho Lorax" **died on or about June 9, 2026** (KPVI, Pocatello,
+     June 10) — and the SoS system still listed him "Approved" on Aug 9. He is carded with the death stated and
+     the stale record flagged, positions left as [Verify], and his 2020 survey answers deliberately NOT reused.
+     **Re-check before Sept 4.** This is the same class of error as the Graham case (lesson #11) — caught before
+     publishing this time, and caught by candidate-level verification, not by any marker sweep.
+   - **NO office is open** — every statewide incumbent is running, and Idaho has no gubernatorial term limits.
+     All six down-ballot offices were nominated UNOPPOSED in BOTH parties.
+   - ⚠ **NO JUDICIAL RACE IS ON THE NOVEMBER BALLOT.** Idaho runs nonpartisan judicial elections at the MAY
+     primary and a majority wins outright; all three 2026 appellate seats were uncontested and decided then
+     (Moeller, Meyer, Tribe) — carded as past races. Every Idaho Supreme Court race has been uncontested since
+     2018. ⚠ Chief Justice Bevan retires Oct 30, 2026 but his successor is **APPOINTED**, serving to Jan 2031 —
+     court news, not a ballot item.
+   - **GOVERNOR:** Little seeking a THIRD term (58.96% in the primary; 41% chose someone else) vs. Terri Pickens
+     (D) and — the interesting part — **JOHN STEGNER, a former Idaho Supreme Court justice running as an
+     independent** and out-raising the Democrat nearly 3-to-1. Ammon Bundy's 17.2% here in 2022 is the empirical
+     basis for that lane. ⚠ Melissa-Sue Robinson LOST the Libertarian primary 523–392 and is NOT on the ballot
+     though several directories list her; Jacob Burnett is WRITE-IN only.
+   - **SECRETARY OF STATE is the marquee down-ballot race and it is a REMATCH** (McGrane beat Keenan 72–27 in
+     2022). What changed: **Idaho's Republican SoS is being sued by a Republican Justice Department** —
+     *United States v. McGrane*, 1:26-cv-00197 (D. Idaho), filed Apr 1, 2026 after he refused to hand over
+     unredacted voter data on ~1M Idahoans; stayed pending Ninth Circuit rulings. He is attacked from the right
+     too (a **county-level** Canyon County censure, 23–13, 2024 — [Verify], right-leaning outlets only, no
+     statewide party censure found).
+   - **RATINGS WERE OBTAINED FIRSTHAND** — a real improvement over routing through Wikipedia. Cook's per-race
+     page shows a PUBLIC rating block with a "Last updated" stamp **if loaded in the browser** (WebFetch 403s):
+     Senate **Solid R, stamped Feb 11, 2025** — 17 months before Roth's exit, so it is stale and the page says
+     so. **Inside Elections' ratings GRID is public** even though its articles are paywalled: Solid R, Aug 6,
+     2026, with no directional arrow (they mark recent movers with one). **Sabato publishes ratings ONLY as a
+     map image** — decoded by loading the PNG into a canvas and matching the palette, then cross-checked against
+     Sabato's own "2026 Rating Changes" log, in which Idaho never appears. **Reuse all three techniques.**
+   - ⚠ **NO 2026 state campaign-finance figures exist**: Idaho's Sunshine portal shows a March 2026
+     "last updated" stamp but its newest transaction is from **June 2024**, and the Lt Gov Democratic nominee has
+     no committee record in it at all. Federal figures are FEC-filed via docquery.
+   - **BALLOT MEASURES — four, and they are NOT the same kind of thing:** the **Reproductive Freedom and Privacy
+     Act** (citizen initiative, qualified July 14 with 75,478 signatures — ⚠ **STATUTORY, not constitutional, so
+     the Legislature could amend or repeal it**), **HJR 4** (would make the Legislature the only body able to
+     legalise marijuana/narcotics, barring initiatives on that subject), **HJR 6** (English as the official
+     language — ⚠ **no argument on EITHER side could be sourced; both voices blocks say so rather than inventing
+     one**), and **HB 932**, a **NON-BINDING advisory question on an official state gun** that designates nothing
+     by itself. Failed to qualify: the Idaho Medical Cannabis Act (58,024 of 70,725) and Decriminalize Cannabis Now.
+     ⚠ Ballot NUMBERING is unconfirmed beyond the reported "Proposition 1," and pro/con pamphlet arguments were
+     open through July 31 and are not yet published — re-check voteidaho.gov.
+   - **ACCESS — the reusable finds:** the CERTIFIED canvass is a machine-readable PDF at a predictable path,
+     `archive.voteidaho.gov/results/2026/primary/canvass_report_2026_primary.pdf` (311 pp., extract with PyMuPDF);
+     historical results have stable contest URLs at `canvass.sos.idaho.gov/eng/contests/view/<id>` (2024 President
+     19439, 2022 Senate 17248, 2022 Governor 17251); the results API is
+     `results.voteidaho.gov/results/public/api/elections/id/may2026/ballot-items` and returns
+     `isOfficialResults: true`; and the candidate list is `run.voteidaho.gov` → Search Filed Candidates, a JS
+     Angular app reachable only via browser + JS evaluation, which shows "Approved" vs. "Withdrawn" per filing.
+     ⚠ **403 to WebFetch but 200 to curl with a browser UA:** ballotpedia.org, idahocapitalsun.com, cdapress.com,
+     fulcher.house.gov, simpson.house.gov, postregister.com. **idahocapitalsun.com is syndicated by KMVT**, which
+     is reachable. sunshine.sos.idaho.gov and results.voteidaho.gov defeat WebFetch entirely.
+
+   ### ✅ MONTANA — BUILT Aug 9, 2026 (30th state). The notes below are the build record; do not re-research.
+   Cloned from `or.html` with `tools/clone-state.js`. 56 counties / 2 districts / U.S. Senate + one Supreme Court
+   seat + two PSC districts + three circulating ballot measures. Built WITH voices, 0 gaps across 20 candidates.
+   ⚠⚠ **THE HEADLINE: STEVE DAINES IS NOT RUNNING AND THE SENATE SEAT IS OPEN.** He had filed for re-election on
+   Feb 17 with $4.9M banked, then WITHDREW about two minutes before the **March 4, 2026** filing deadline, moments
+   after Kurt Alme filed, and endorsed Alme two hours later; Trump endorsed Alme the same day. He gave no reason
+   for the timing. He is alive and serves out his term to January 2027. Tester: "They obviously did this to keep
+   certain people out of these races. It wasn't an accident." ⚠ **NO complaint, referral or investigation exists —
+   that is criticism, not misconduct.** ⚠ Wikipedia dates it March 5; the SoS calendar's March 4 filing deadline
+   settles it. **The initial research brief for this build assumed Daines was the incumbent seeking re-election —
+   verifying the premise is what caught it.**
+   ⚠⚠ **THE FIELD WAS NOT FINAL AT BUILD TIME.** The general-election withdrawal deadline is 85 days out under
+   § 13-10-327 — **Aug 10, 2026** (Daily Montanan says Aug 11; the calendar's arithmetic gives Aug 10) — with
+   **Aug 19** the deadline for parties to appoint replacements. Democrat Alani Bankhead and independent Seth
+   Bodnar are both under heavy pressure to quit and both refused as of Aug 7–8; **22 Democratic legislators**,
+   over a third of Montana's elected Democrats, endorsed Bodnar on Aug 7. **RE-CHECK AUG 11–12.**
+   ⚠⚠ **NO BALLOT MEASURE IS CERTIFIED.** The SoS's "Issues Qualified for the 2026 General Election Ballot"
+   section reads exactly "TBD"; certification deadline is **AUG 20**. ⚠ The two research passes DISAGREED on how
+   close CI-132 / CI-133 / I-194 are — one found signatures submitted well above threshold, the other found the
+   SoS still listing all eight petitions as merely "approved to gather signatures." The page describes them as
+   CIRCULATING and says the disagreement out loud. **Do not state that any of them failed.** The SoS page also
+   still lists withdrawn CI-131, so it lags.
+   **RE-CHECK AUG 20** and card whatever actually qualifies.
+   - **MAP — the 2021 Commission plan, and the "Montana splits no county" belief is WRONG.** Montana regained a
+     second seat in the 2020 apportionment; the Districting and Apportionment Commission adopted the plan
+     **Nov 12, 2021 (4–1)** and labels it "Congressional District Boundaries, **2022-2030** Elections." Currency
+     answered from primary sources: the plans were **never challenged in court**; redistricting sits with a
+     constitutional five-member commission on a decennial trigger, and Montana law would likely be construed to
+     forbid a mid-decade redraw; Montana is not among the 2025–26 redraw states; and the Montana rows of the
+     Census CD118 and CD119 county relationship files are **byte-identical (md5 95e1cb6c…)**.
+     Rebuilt from the Commission's OWN enacted block-equivalency file (88,417 blocks) joined to 2020 PL 94-171
+     block populations, and independently from the Census relationship file — the two agree **to the person**:
+     **MT-01 = 542,112, MT-02 = 542,113** against an ideal of 542,112.5, a range of ONE.
+     ⚠ **EXACTLY ONE county IS split — PONDERA** (MT-01 2,372 / MT-02 3,526, plurality MT-02): the Blackfeet
+     Reservation CCDs and the Valier area fall in MT-01, Conrad in MT-02. Only one census tract statewide is
+     split (Tract 9772, Pondera). All 56 county names were diffed against us-atlas and match exactly.
+     ⚠ Naming: "Lewis and Clark" (lowercase "and"), "McCone" (the only Mc county), and **Chouteau the COUNTY vs.
+     Choteau the CITY**, which drops the "u". ⚠ Yellowstone National Park county (30113) no longer exists.
+     MT-01 = Missoula, Bozeman, Butte, Kalispell; MT-02 = Billings, Great Falls, Helena, Havre, Miles City.
+   - **MT-1 IS AN OPEN SEAT AND THE STATE'S COMPETITIVE HOUSE RACE.** Ryan Zinke (R) announced **Mar 2, 2026**
+     he would not seek a fifth term, citing surgeries tied to Special Operations injuries; he serves out his term
+     and is **NOT on the ballot — do not card him.** **Aaron Flint (R)**, a 17-year statewide conservative radio
+     host and former Zinke state director, won the primary with **50.08%** outright over Secretary of State
+     Christi Jacobsen (22.96%); **Sam Forstag (D)**, 31, a wildland firefighter and union vice-president endorsed
+     by Sanders and Ocasio-Cortez at a May 28 Missoula rally, won with **37.42%**. Both national committees are in:
+     Forstag on DCCC **Red to Blue**, Flint on NRCC **MAGA Majority**. **All four raters: LIKELY REPUBLICAN as of
+     July 21, 2026**, and Sabato's change log shows no MT-1 movement all cycle. Cook PVI **R+5**; Trump won the
+     district 54–43 in 2024 **but Tester carried it 50–49** the same night. Cash through June 30: Flint $502,000,
+     Forstag $550,079 — **Forstag outraised him in Q2**. Libertarian Nick Sheedy is the third line.
+   - **MT-2 is Solid/Safe R but has a real independent.** Troy Downing (R), the former State Auditor, was
+     **unopposed** for renomination (82,088 votes). **Brian J. Miller (D)**, a Helena consumer-side attorney, won
+     55.54% (⚠ use the CERTIFIED figure — election night said 58% and Wikipedia says 55.7%). The variable is
+     **Michael Eisenhauer (I)**, a Great Falls cardiologist and retired Army colonel **certified onto the ballot
+     July 15, 2026** — one of only THREE independents to qualify statewide — **endorsed by former Sen. Jon Tester**
+     on July 6 and reportedly by the AFL-CIO. Cash through June 30: Downing $650,464 (carrying $2M in personal
+     loans from 2024), Eisenhauer $140,121 (of which $257,126 raised is his own loans), Miller **$3,165**.
+     Cook PVI **R+15** (⚠ not the older R+16). A Montana Free Press–Eagleton poll (Apr 29–May 7) had Downing at
+     **34% approve / 40% disapprove** in a seat Trump won by 29.
+   - ⚠ **BALLOT-ACCESS TRAPS ALREADY CAUGHT:** Wikipedia and Ballotpedia both list **Kimberly Persico** as an
+     MT-1 independent — she **FAILED to qualify** (562 accepted signatures against a 6,742 requirement), and the
+     SoS's July 15 certification named only Bodnar (U.S. Senate), Eisenhauer (MT-2) and Shayne Morgan (state
+     House 76). Conversely Wikipedia **OMITS** Libertarian **Patrick McCracken** from MT-2, who IS on the ballot.
+     ⚠ **"Bodnar" implies a certified INDEPENDENT in the Senate race — identify them during the statewide pass.**
+   - **THE NEGATIVES WERE PROVED, NOT ASSUMED — and the method is reusable.** Governor, Lt Governor, AG, Secretary
+     of State, State Auditor, Superintendent and Clerk of the Supreme Court are all NOT on the 2026 ballot: Montana's
+     six executive officers serve four-year terms (Const. Art. VI, §1), were all elected Nov 5, 2024 and are next up
+     in 2028. The proof was **enumerating every race label in the SoS's official precinct-by-precinct primary file
+     (24,244 rows)** — a statewide office up in 2026 would necessarily have appeared there. Exactly ONE Supreme
+     Court seat and exactly TWO PSC districts are up.
+   - **SUPREME COURT JUSTICE #4 (OPEN — Beth Baker retiring):** Amy Eddy vs. Dan Wilson, both Flathead County
+     district judges who hold court in the same building. ⚠ **Wilson is NOT an incumbent justice** — he lost the
+     2024 Justice #3 race to Bidegaray 54–46. ⚠ The race DID appear on the June primary ballot but was
+     **NON-ELIMINATING** — with two candidates both advanced regardless. **The real issue is party money in a
+     nonpartisan race: 2026 is the FIRST cycle in which parties may donate to judicial candidates, under HB 39.**
+     Eddy refuses party money; Wilson took $20,000 from the Montana Republican Party. Certified: Eddy 51.40%.
+   - **PSC — DISTRICT RACES, NOT STATEWIDE, and the page says so.** Only Districts 1 and 5 are up; all five sitting
+     commissioners are Republican and no Democrat has held a seat since 2012. **D1 (26 counties, north and east)
+     is OPEN** — Pinocci term-limited — Pattison (R) vs. Cheek (D). **D5 (13 counties, west and central)** —
+     incumbent Bukacek (R), who survived a three-way primary by 776 votes, vs. Hamm (D). ⚠ **CASCADE COUNTY IS IN
+     BOTH DISTRICTS**, so county-level assumptions about who votes in which race will mislead. The live docket is
+     the $15.4B NorthWestern / Black Hills merger and data-centre large-load tariffs.
+   - **ACCESS — the reusable finds, and they are good ones.** ⚠⚠ **Cook and Inside Elections are NOT actually
+     blocked: they 403 to WebFetch but return 200 to `curl` with a browser User-Agent.** Cook renders its rating
+     server-side; **Inside Elections publishes a free, complete, machine-readable ratings feed** at
+     `insideelections.com/wp-content/themes/inside-elections/cache/ratings_latest_house_year=2026_district=all_clean.json`
+     with per-district rating, previous rating, shift, date and an `open` flag for all 435 seats. **Cook PVI is
+     downloadable without a subscription** via the Datawrapper CSV behind the PVI page
+     (`datawrapper.dwcdn.net/rAx2t/1/dataset.csv`, all 435 districts). **Sabato's 2026 House ratings are a TABLE
+     image listing only competitive seats** — absence plus the Rating Changes log is the finding, no colour-matching
+     needed (that trick is still right for the Senate MAP). The SoS canvass link serves an HTML iframe wrapper, not
+     a PDF; the real file is under `sosmt.gov/wp-content/uploads/wpfd/preview_files/`, and `pdftotext` fails on it
+     while `pypdf` works. **FEC bulk downloads** (`fec.gov/files/bulk-downloads/2026/weball26.zip`) need `curl -L`
+     and carry a `CVG_END_DT` coverage-date field. politicalpractices.mt.gov fails TLS; COPP's CERS needs a real
+     browser; all Lee Enterprises Montana papers sit behind a TollBit paywall with no body.
 
    ### ⏸ PENNSYLVANIA — RESEARCH BANKED Aug 3, 2026; BUILD GATED TO AFTER AUG 10. Do not re-research what is here.
    A PA build was started on Aug 3 (17th state) and deliberately **not shipped**. Two independent reasons:

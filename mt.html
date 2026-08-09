@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Montana Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every MT election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #mtmap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">MT</div>
+      <div class="brand-text">
+        <span class="brand-name">Montana Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Montana <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 56 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">56</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>2</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>5</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Montana…</div>
+      <svg id="mtmap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>MT Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">August 7, 2026</span><br>
+      Sources: Montana Secretary of State — the CERTIFIED 2026 Statewide Primary Election Canvass and its precinct-by-precinct file, the 2026 Candidate Calendar, the certified candidate-filing list, the ballot-qualified party list and the Proposed 2026 Ballot Issues page — plus the Montana Districting and Apportionment Commission&#39;s enacted congressional plan and its block-equivalency file, U.S. Census Bureau congressional-district relationship files and 2020 PL 94-171 data, FEC filings read from docquery.fec.gov and the FEC bulk files, the Montana Commissioner of Political Practices, Cook Political Report, Sabato&#39;s Crystal Ball and Inside Elections read firsthand, the Clerk of the U.S. House roll-call records, and reporting from Montana Free Press, the Daily Montanan, the Flathead Beacon, Montana Public Radio, KTVH, NBC Montana, the Northern Plains Independent and the Choteau Acantha.</div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every MT county + its primary US House district(s)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- (1) Counties + U.S. House district -----
+// Montana has 2 U.S. House districts — it REGAINED a second seat in the 2020
+// apportionment after thirty years with a single at-large member. The map was adopted by
+// the Montana Districting and Apportionment Commission on Nov 12, 2021 (4-1), and the
+// Commission's own page labels it "Congressional District Boundaries, 2022-2030 Elections".
+// ⚠ THIS IS THE MAP THAT GOVERNS 2026 — answered from primary sources, not assumed: the
+// plans were never challenged in court; redistricting authority sits with a constitutional
+// five-member commission on a decennial trigger, not the Legislature, and Montana law would
+// likely be construed to forbid a mid-decade redraw; and Montana is not among the states
+// that redrew in the 2025-26 wave. Verified structurally too: the Montana rows of the Census
+// 118th- and 119th-Congress county relationship files are byte-identical.
+// The table was rebuilt from the Commission's OWN enacted block-equivalency file (88,417
+// blocks) joined to 2020 PL 94-171 block populations, and independently from the Census
+// relationship file — the two agree to the person: MT-01 = 542,112 and MT-02 = 542,113
+// against an ideal of 542,112.5, a range of ONE person.
+// ⚠ EXACTLY ONE county is split, and the widely repeated belief that Montana splits NO
+// county is WRONG: PONDERA is divided — the Blackfeet Reservation CCDs and the Valier area
+// fall in MT-01, Conrad in MT-02. It carries `d` (its population-plurality district, which
+// drives map shading) plus `ds` — every district overlapping it.
+// ⚠ NAMING: "Lewis and Clark" (lowercase "and", no ampersand), "McCone" (the only Mc
+// county), and Chouteau the COUNTY versus Choteau the CITY, which drops the "u".
+const COUNTIES = {
+  "30001":{n:"Beaverhead",d:1},
+  "30003":{n:"Big Horn",d:2},
+  "30005":{n:"Blaine",d:2},
+  "30007":{n:"Broadwater",d:2},
+  "30009":{n:"Carbon",d:2},
+  "30011":{n:"Carter",d:2},
+  "30013":{n:"Cascade",d:2},
+  "30015":{n:"Chouteau",d:2},
+  "30017":{n:"Custer",d:2},
+  "30019":{n:"Daniels",d:2},
+  "30021":{n:"Dawson",d:2},
+  "30023":{n:"Deer Lodge",d:1},
+  "30025":{n:"Fallon",d:2},
+  "30027":{n:"Fergus",d:2},
+  "30029":{n:"Flathead",d:1},
+  "30031":{n:"Gallatin",d:1},
+  "30033":{n:"Garfield",d:2},
+  "30035":{n:"Glacier",d:1},
+  "30037":{n:"Golden Valley",d:2},
+  "30039":{n:"Granite",d:1},
+  "30041":{n:"Hill",d:2},
+  "30043":{n:"Jefferson",d:2},
+  "30045":{n:"Judith Basin",d:2},
+  "30047":{n:"Lake",d:1},
+  "30049":{n:"Lewis and Clark",d:2},
+  "30051":{n:"Liberty",d:2},
+  "30053":{n:"Lincoln",d:1},
+  "30055":{n:"McCone",d:2},
+  "30057":{n:"Madison",d:1},
+  "30059":{n:"Meagher",d:2},
+  "30061":{n:"Mineral",d:1},
+  "30063":{n:"Missoula",d:1},
+  "30065":{n:"Musselshell",d:2},
+  "30067":{n:"Park",d:2},
+  "30069":{n:"Petroleum",d:2},
+  "30071":{n:"Phillips",d:2},
+  "30073":{n:"Pondera",d:2,ds:[1,2]},   // SPLIT — MT-01 2,372 / MT-02 3,526
+  "30075":{n:"Powder River",d:2},
+  "30077":{n:"Powell",d:1},
+  "30079":{n:"Prairie",d:2},
+  "30081":{n:"Ravalli",d:1},
+  "30083":{n:"Richland",d:2},
+  "30085":{n:"Roosevelt",d:2},
+  "30087":{n:"Rosebud",d:2},
+  "30089":{n:"Sanders",d:1},
+  "30091":{n:"Sheridan",d:2},
+  "30093":{n:"Silver Bow",d:1},
+  "30095":{n:"Stillwater",d:2},
+  "30097":{n:"Sweet Grass",d:2},
+  "30099":{n:"Teton",d:2},
+  "30101":{n:"Toole",d:2},
+  "30103":{n:"Treasure",d:2},
+  "30105":{n:"Valley",d:2},
+  "30107":{n:"Wheatland",d:2},
+  "30109":{n:"Wibaux",d:2},
+  "30111":{n:"Yellowstone",d:2},
+};
+
+// ----- (2) Statewide races — every county votes in these -----
+// ⚠⚠ THE U.S. SENATE SEAT IS OPEN. Steve Daines had filed for re-election on Feb 17 with
+// $4.9M banked, and then WITHDREW roughly two minutes before the March 4, 2026 filing
+// deadline, minutes after Kurt Alme filed — endorsing Alme about two hours later. He gave
+// no explanation for the timing. He is alive, is not resigning, and serves out his term
+// through January 2027. ⚠ Wikipedia dates the withdrawal March 5; the Secretary of State's
+// own 2026 Candidate Calendar puts the filing deadline at March 4, 5:00 p.m., and same-day
+// reporting is datelined March 4.
+// ⚠ CONFIRMED NEGATIVES, verified by enumerating every race label in the SoS's official
+// precinct-by-precinct primary file (24,244 rows) rather than by assumption: Governor,
+// Lieutenant Governor, Attorney General, Secretary of State, State Auditor, Superintendent
+// of Public Instruction and Clerk of the Supreme Court are NOT on the 2026 ballot. Montana's
+// six executive officers serve four-year terms (Const. Art. VI, §1), were all elected
+// Nov 5, 2024, and are next up in 2028; the Clerk was elected in 2024 to a six-year term.
+// Exactly ONE Supreme Court seat and exactly TWO Public Service Commission districts are up.
+// ⚠ PRIMARY FIGURES BELOW ARE CERTIFIED — aggregated from the Secretary of State's official
+// precinct-by-precinct canvass file, not news-reported. Where Montana Free Press's guide
+// differs by a few dozen votes, the canvass is used.
+// ⚠ RATINGS WERE OBTAINED FIRSTHAND, not through an aggregator: Cook and Inside Elections
+// return 403 to a plain fetch but serve 200 to `curl` with a browser User-Agent — Cook
+// renders its rating server-side and Inside Elections embeds a `rawRatings` JSON array.
+// TWO WIDELY-CIRCULATED ERRORS ARE CORRECTED HERE. (1) Daily Montanan reported on Mar 4 that
+// Sabato moved Montana to "LEAN Republican"; Sabato's own change log says LIKELY Republican.
+// (2) Wikipedia misdates both Cook (it prints Apr 13, 2026, which is North Carolina's date)
+// and Inside Elections (Jul 12, 2026). The correct, attributed values are in the Senate note.
+const STATEWIDE = [
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide",
+    office: "U.S. Senate — Montana (OPEN SEAT)",
+    note: "⚠ AN OPEN SEAT NOBODY EXPECTED, AND A THREE-WAY RACE THAT MAY NOT STAY THAT WAY. Sen. Steve Daines withdrew about two minutes before the March 4 filing deadline, moments after former U.S. Attorney Kurt Alme filed, and endorsed him two hours later; Trump endorsed Alme the same day. The criticism was bipartisan — Jon Tester said \"they obviously did this to keep certain people out of these races. It wasn't an accident.\" ⚠ NO formal complaint, ethics referral or investigation exists; that is criticism, not misconduct. ⚠⚠ THE FIELD IS NOT FINAL AS OF AUG 9: the Secretary of State's own candidate calendar sets the general-election withdrawal deadline at 85 days before the election under § 13-10-327 — AUG 10, 2026 — with Aug 19 the deadline for parties to appoint replacements. (Daily Montanan reports the withdrawal deadline as Aug 11; the calendar's own arithmetic gives Aug 10. Treat the field as unsettled through Aug 11 either way.) Democrat Alani Bankhead and independent Seth Bodnar are both under heavy public pressure to leave and both refused as of Aug 7–8. RATINGS, each read firsthand from the rater: COOK SOLID R, stamped Feb 11, 2025 — it has not moved all cycle, including through Daines' withdrawal; INSIDE ELECTIONS SOLID R, June 25, 2026, moved Likely R → Solid R after Alme won the primary; SABATO LIKELY R, changed Mar 4, 2026 from Safe R, with Kyle Kondik writing that \"Daines's late retirement, paired with Bodnar's candidacy… enough to push it from Safe Republican to Likely Republican.\" ⚠ ALL public polling is partisan-sponsored; no independent or media poll of this race exists. The one poll corroborated by two sources is GrayHouse (R), June 23–24, 500 registered voters, ±4.4: Alme 41, Bankhead 25, Bodnar 17, Austin 3. A well-sourced dynamic worth knowing: Republicans have been PROMOTING an NRSC-funded poll showing Bankhead ahead of Bodnar while spending $750,000 on ads attacking Bodnar — that is, working to keep the non-Republican vote split.",
+    candidates: [
+      { name: "Kurt Alme", party: "R", winner: false,
+        positions: [
+          "\"Secure our borders\" and tough-on-crime federal enforcement",
+          "\"Protect our public lands,\" plus Second Amendment, veterans and election security",
+          "Balanced budgets and tax cuts to \"make life more affordable\"; anti-abortion"
+        ],
+        differentiators: [
+          "Former U.S. Attorney for Montana, 2017–20 and reappointed in 2025, resigning in March 2026 to run; previously state revenue director and Gianforte's budget director. First run for office",
+          "Trump's \"Complete and Total Endorsement,\" plus Daines, Gov. Gianforte and Sen. Sheehy; also the NRSC, the NRA and SBA Pro-Life America",
+          "Won the primary with 76.1%; $1,450,719 cash on hand as of June 30, 2026, on $1,984,861 raised — $1,021,120 from individuals, $577,500 from PACs and $62,000 from party committees"
+        ],
+        supporters: [
+          "A prosecutor who, in Daines' words, \"took on the meth crisis head-on, confronted cartels flooding our state with fentanyl\"",
+          "Real governing experience across three roles — U.S. Attorney, state revenue director and state budget director",
+          "He leads every public poll of the race, at 36–49%"
+        ],
+        opponents: [
+          "The handoff denied Republican voters a choice — Bankhead says it \"violated the Republican voters' ability to choose their candidate,\" and Bodnar calls him \"a rubber stamp for what outside, D.C. interests want\"",
+          "⚠ The campaign is unusually content-free: his own website's priorities page STILL displays Lorem-ipsum placeholder text under headers reading \"Placeholder Text,\" checked Aug 9, 2026",
+          "Montana Public Radio's Sally Mauk called it \"the most timid campaign rollout I've ever seen from who is supposed to be the front runner.\" ⚠ No position on tariffs, agriculture or health care could be sourced anywhere — that absence is itself the finding"
+        ] },
+      { name: "Alani Bankhead", party: "D", winner: false,
+        positions: [
+          "Affordable-housing tax credits for portfolios at least 30% housing at \"$350,000 or below\"",
+          "End the Iran war — \"Even I, who's pro-defense… still believe that we need to stop the war in Iran\"",
+          "\"Protecting the Vulnerable — standing up for kids, survivors, and seniors\""
+        ],
+        differentiators: [
+          "A retired U.S. Air Force LIEUTENANT COLONEL with 21 years' service and a former federal supervisory special agent; now a leadership coach",
+          "The only candidate in the race with a voter mandate — she won the Democratic primary outright with 48,772 votes, 43.65% of a five-way field",
+          "⚠ Massively outgunned: $58,829 raised and $21,485 cash on hand through June 30, against Bodnar’s $3.2M — and just 42 donors giving more than $50"
+        ],
+        supporters: [
+          "Voters already decided — a party spokesperson put it as \"Alani won the primary… What does it say to them if she leaves? It's a form of voter suppression\"",
+          "Her campaign argues she earned it while Bodnar, like Alme, \"was handpicked by the establishment\" and \"hasn't even won an election\"",
+          "\"The split vote was created by the independent. Therefore, it's his problem to fix\""
+        ],
+        opponents: [
+          "⚠ TWENTY-TWO Democratic legislators — seven senators and fifteen representatives, over a third of Montana's elected Democrats — endorsed Bodnar on Aug 7, saying a three-way race \"will weaken Democratic and allied campaigns across the ballot\"",
+          "Rep. Josh Seckinger: \"If they both remain, they both lose\"; former party chair Nancy Keenan says \"there is not a viable path for a Democratic victory in this race\"",
+          "She trails Bodnar in five of the seven public polls, with about $21,000 on hand against his $977,779. She refuses to exit — \"not only no, but hell no\""
+        ] },
+      { name: "Seth Bodnar", party: "I", winner: false,
+        positions: [
+          "Reject the two-party system — voters should \"declare their independence from elected officials who are working for themselves, their donors, consultants\"",
+          "Opposes the administration's Iran strategy and its tariffs, which he says harm Montana agriculture",
+          "Supports border security but opposes aggressive ICE tactics"
+        ],
+        differentiators: [
+          "West Point first in his class, a Rhodes Scholar and a GREEN BERET with 1st Special Forces Group in Iraq; later GE's chief digital officer; the 19th president of the University of Montana, 2018 to January 2026",
+          "The race's TOP FUNDRAISER — $3,238,151 raised this cycle with $977,779 cash on hand through June 30 — 97% of it from individuals, with no self-funding and no loans",
+          "Ballot-qualified by petition, certified July 15, 2026: about 30,000 signatures gathered across 52 of 56 counties, 21,284 accepted against a 13,327 threshold"
+        ],
+        supporters: [
+          "He is the only non-Republican with the money and coalition to beat Alme, and leads the Democrat in five of seven public polls",
+          "Cross-partisan endorsements that are genuinely unusual — Democrats Jon Tester and Max Baucus alongside former Republican governor and RNC chairman Marc Racicot, plus SEIU and Montana Conservation Voters",
+          "21,284 verified signatures across 52 counties is a grassroots mandate no other candidate can claim"
+        ],
+        opponents: [
+          "From the left: he has never won an election and was \"handpicked by the establishment,\" per Bankhead. The Montana Democratic Party's executive director wrote an op-ed calling him \"another man who looked away\" over a University of Montana sex-discrimination suit brought by 18 employees and settled for $350,000 — his campaign notes female academic deans went from 1 to 7 of 13 under him, and the university called the allegations \"inflammatory\"",
+          "From the right: $750,000 in Republican attack ads on his university record",
+          "⚠ He has never publicly said which party he would caucus with, and no outlet reports him being asked — a genuinely open question for voters, not an omission here"
+        ] },
+      { name: "Kyle Austin", party: "L", winner: false,
+        positions: [
+          "ZERO tariffs on allied nations, and opposes the administration's tariffs — his sharpest contrast with the Republican",
+          "Defund the Montana Department of Labor and Industry, refusing roughly $66.9M in federal money",
+          "0% financing for agricultural producers and a USDA overhaul"
+        ],
+        differentiators: [
+          "A pharmacist and owner of Pharm406 in Billings; ⚠ he ran for MT-2 as a REPUBLICAN in both 2022 and 2024",
+          "⚠ HIS OWN PARTY PUBLICLY DISOWNS HIM: the Montana Libertarian Party said members \"concluded that Austin was only running as a Libertarian to take advantage of the MTLP's statewide ballot access\" — he beat the party's own endorsed candidate in the primary",
+          "⚠ ESSENTIALLY ENTIRELY SELF-FUNDED: of $262,195 raised this cycle, $261,082 is his own money and just $626 came from other individuals; $19,833 cash on hand through June 30, 2026"
+        ],
+        supporters: [
+          "He speaks to two-party exhaustion — \"We're tired of the garbage that's coming out of the two-party system\"",
+          "A working pharmacist brings practitioner credibility on health-care costs [Verify]",
+          "He says he is campaigning to win rather than to make a point"
+        ],
+        opponents: [
+          "His own party's formal charge is that he is a Republican exploiting Libertarian ballot access",
+          "His views conflict with Libertarian anti-interventionism — he says \"I support Trump and his efforts with Iran,\" against his primary opponent's \"We are kind of anti-war.\" He concedes: \"I have conservative values, I see eye to eye with a lot of Libertarian values, not all\"",
+          "Of $262,195 raised, all but about $1,100 is his own money — there is no measurable outside support"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide",
+    office: "Montana Supreme Court — Justice #4 (nonpartisan, OPEN SEAT)",
+    note: "OPEN: Justice Beth Baker is retiring rather than seek a third eight-year term — \"I never contemplated serving more than two terms.\" The winner serves January 2027 to January 2035. Only ONE Supreme Court seat is on the 2026 ballot. ⚠ The race DID appear on the June 2 primary ballot in all 56 counties, but with only two candidates it was NON-ELIMINATING — both advanced regardless. ⚠ THE REAL ISSUE IS PARTY MONEY IN A NONPARTISAN RACE: 2026 is the first cycle in which political parties may contribute to Montana judicial candidates, under HB 39. One candidate refuses party money; the other has taken $20,000 from the Montana Republican Party. Both are Flathead County district judges who hold court in the same building.",
+    candidates: [
+      { name: "Amy Eddy", party: "I", winner: false,
+        positions: [
+          "Judicial restraint — courts \"should not be deciding things we don't have to decide\"",
+          "Keep politics out of the courtroom; REFUSES political party money",
+          "Treats the court as guardian of the Montana Constitution"
+        ],
+        differentiators: [
+          "A Flathead County District Court judge since 2015, elected in 2016, 2018 and 2024, with more than 10,000 cases",
+          "Montana's FIRST Asbestos Claims Court Judge, appointed 2017",
+          "Won the primary 51.40% to 48.60%. In the first quarter she raised less than her opponent — $55,004 — but holds more than $240,000 cash on hand"
+        ],
+        supporters: [
+          "Retired Judge David Ortley says she has \"served without bias, favoritism, or allegiance to political affiliation\"",
+          "Refusing party contributions in the first cycle they are legal is the concrete test of a nonpartisan judiciary rather than rhetoric about one",
+          "She banked more than her opponent while raising less, which suggests disciplined, durable support"
+        ],
+        opponents: [
+          "A guest opinion in the Flathead Beacon argues that before the bench she was a leading climate litigator whose side's work helped establish a constitutional right to a stable climate, leaving \"taxpayers on the hook\" for legal fees — that is an opinion column, not reporting",
+          "Republicans argue a Bullock appointee and former Montana Trial Lawyers Association president exemplifies the \"leftward tilt\" of the court [Verify — the phrase is the state GOP chairman's; applying it to her specifically is inference]",
+          "Pledging to stay out of politics while accepting an advocacy group's endorsement is inconsistent [Verify]"
+        ] },
+      { name: "Dan Wilson", party: "I", winner: false,
+        positions: [
+          "A self-described \"classical constitutional conservative\" who views the Constitution as a static document",
+          "Against \"judicial activism\"",
+          "\"Uphold our laws as written, protect the Constitution\""
+        ],
+        differentiators: [
+          "A Flathead County District Court judge since 2017; previously a justice of the peace and a prosecutor in Great Falls, Chinook and Kalispell",
+          "⚠ His SECOND Supreme Court run — he lost the 2024 race for Seat 3 to Katherine Bidegaray by about 8 points",
+          "Raised $95,646.50 in the first quarter with more than $196,000 on hand, including $20,000 FROM THE MONTANA REPUBLICAN PARTY — legal for the first time this cycle under HB 39. Endorsed by the Montana Chamber of Commerce and the Montana Stockgrowers Association"
+        ],
+        supporters: [
+          "State GOP chairman Art Wittich argues the party \"has to do something and say something about the leftward tilt of our court\"",
+          "He applies law as written rather than reading in new rights",
+          "Business and agriculture groups back him as a check on economically damaging rulings"
+        ],
+        opponents: [
+          "Taking $20,000 in party money and headlining party events compromises a nonpartisan bench — Montana State Bar representatives argued the HB 39 change creates \"the appearance of partisanship among judges,\" conflicting with the judicial conduct code",
+          "Nine retired Montana Supreme Court justices have endorsed CI-132 to keep judicial elections nonpartisan, which the state party opposes [Verify — reading that as a rebuke of him specifically is synthesis]",
+          "Voters already rejected him statewide in 2024 [Verify — structural argument]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide",
+    office: "Public Service Commission — District 1 (OPEN SEAT)",
+    note: "⚠ NOT A STATEWIDE RACE — only voters in PSC District 1 cast a ballot in it. District 1 covers 26 counties across northern and eastern Montana: Big Horn, Blaine, Carter, Cascade, Chouteau, Custer, Daniels, Dawson, Fallon, Garfield, Golden Valley, Hill, Liberty, McCone, Musselshell, Phillips, Powder River, Prairie, Richland, Roosevelt, Rosebud, Sheridan, Treasure, Valley, Wibaux and Yellowstone. ⚠ COUNTIES ARE SPLIT BETWEEN COMMISSION DISTRICTS — Cascade County appears in BOTH District 1 and District 5 — so county-level assumptions about who votes in which race will mislead. It is carded here because the Public Service Commission sets the electricity and gas rates those counties pay. The five-member commission is currently ALL REPUBLICAN and no Democrat has held a seat since 2012; only Districts 1 and 5 are up in 2026. OPEN because incumbent Randy Pinocci is term-limited and is running for the state Senate. The live issues are data-centre electricity demand, NorthWestern Energy rate increases and the pending Black Hills / NorthWestern merger.",
+    candidates: [
+      { name: "Jeff Pattison", party: "R", winner: false,
+        positions: [
+          "Data centres must \"pay the full cost of the infrastructure they require,\" especially water",
+          "Opposes NorthWestern Energy's \"secret letters\" on data-centre deals — \"transparency is a very big virtue\"",
+          "Supports \"smart planning\" for advanced nuclear"
+        ],
+        differentiators: [
+          "A farmer and rancher from Valley County near Glasgow; served in the Montana House in the 2001 and 2003 sessions",
+          "Beat a sitting state senator two-to-one in the primary, 66.59% to 33.41%",
+          "Has been shadowing the outgoing commissioner — \"I've been working intimately with him, trying to learn what is important\""
+        ],
+        supporters: [
+          "He speaks for agricultural producers being hit by rising power costs",
+          "He wants to rebuild the commission's professionalism after a period of open infighting",
+          "A two-to-one primary win shows broad Republican consensus behind him"
+        ],
+        opponents: [
+          "He has no utility-regulation background — his own pitch is that he is learning the job from the outgoing commissioner [Verify]",
+          "Apprenticing to that commissioner ties him to a body widely criticised as dysfunctional [Verify]",
+          "He last held office more than two decades ago [Verify]"
+        ] },
+      { name: "Angeline Cheek", party: "D", winner: false,
+        positions: [
+          "Fight unfair rate increases and shield vulnerable ratepayers from predatory pricing",
+          "Transparency and ethics, with deliberations free of corporate influence",
+          "Tribal and rural representation — \"ensure that north central and eastern Montana have a seat at the table\""
+        ],
+        differentiators: [
+          "A community organiser and Indigenous rights advocate of roughly 18 years, from Brockton on the Fort Peck Indian Reservation",
+          "Unopposed for the Democratic nomination with 12,294 votes",
+          "Would be the FIRST Democrat on the Public Service Commission since 2012"
+        ],
+        supporters: [
+          "She would bring a tribal and rural voice that is entirely absent from an all-Republican commission",
+          "Her focus is affordability for ratepayers rather than utility returns",
+          "She has a long organising record in the specific communities this district covers"
+        ],
+        opponents: [
+          "She has no regulatory, utility or engineering background [Verify]",
+          "Consumer-advocacy framing may not translate into technical ratemaking [Verify]",
+          "The district is deeply Republican — its primary drew 2.7 Republican ballots for every Democratic one [Verify — the turnout figure is certified; using it as an argument is structural]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide",
+    office: "Public Service Commission — District 5",
+    note: "⚠ NOT A STATEWIDE RACE — only voters in PSC District 5 cast a ballot in it; District 5 covers 13 counties in western and central Montana: Cascade, Deer Lodge, Flathead, Glacier, Granite, Lake, Lewis and Clark, Missoula, Pondera, Powell, Sanders, Teton and Toole — taking in Kalispell, Missoula, Helena and part of Great Falls. ⚠ Cascade County is split between Districts 1 and 5. It is the more competitive of the two commission races: District 5's primary drew 1.4 Republican ballots per Democratic one, against 2.7 in District 1. The incumbent survived a three-way primary by 776 votes. Rates rose 39% in three years under the current commission, more than triple inflation — a figure raised by one of her own primary opponents.",
+    candidates: [
+      { name: "Annie Bukacek (incumbent)", party: "R", winner: false,
+        positions: [
+          "The commission should \"scrutinize large load tariffs\" so households and \"mom and pop businesses\" don't absorb data-centre costs",
+          "Defended NorthWestern rate increases as necessary for reliability — her slogan is \"Let's Keep the Lights On\"",
+          "Wants commission funding for forensic examiners; opposes making the commission appointed rather than elected"
+        ],
+        differentiators: [
+          "A physician of more than 35 years in Flathead County, elected to the commission in 2022 — the ONLY incumbent in either commission race",
+          "Survived a three-way primary by 776 votes, 35.53% to 33.00% to 31.47%",
+          "⚠ Her RESIDENCY was challenged by a primary rival who alleged her primary residence was outside the district; she says she keeps residences in Kalispell and Helena and that \"I do not live at my Marion off grid cabin that has been rented out for over two years\""
+        ],
+        supporters: [
+          "Reliability first — she argues the increases she approved are what keeps the lights on",
+          "She wants the commission resourced with forensic examiners so it can audit utility filings rather than take them on faith",
+          "Elected commissioners stay accountable to ratepayers in a way appointees would not"
+        ],
+        opponents: [
+          "Rates rose 39% in three years under this commission, more than triple inflation — the charge came from one of her own primary opponents",
+          "Another primary opponent said the commission has \"deteriorated,\" with commissioners \"targeting each other\" instead of scrutinising the NorthWestern / Black Hills merger",
+          "She argued public transparency requirements would \"confuse the public and strain the monopoly\" — critics read that as siding with the utility"
+        ] },
+      { name: "Kevin Hamm", party: "D", winner: false,
+        positions: [
+          "Opposes the Black Hills / NorthWestern merger unless it drives rates toward pre-deregulation levels",
+          "Data centres \"as they are 'planned' now are so egregiously destructive\" — the companies, not ratepayers, should fund upgrades",
+          "Supports solar investment and rail modernisation"
+        ],
+        differentiators: [
+          "Chief operating officer of Treasure State Internet and Telegraph, and its CEO from 2018 to 2023 — more than 25 years in tech and communications",
+          "⚠ The ONLY candidate in either commission race with utility-industry operating experience",
+          "Unopposed with 22,014 votes — the strongest Democratic showing in either commission district"
+        ],
+        supporters: [
+          "He runs a utility-adjacent business and understands ratemaking from the operator's side",
+          "He argues rates have risen 400% since 1996 deregulation with the money going to executives rather than infrastructure",
+          "A Democrat on an all-Republican commission would restore adversarial scrutiny [Verify — structural argument]"
+        ],
+        opponents: [
+          "A telecom background is not regulatory or ratemaking experience [Verify]",
+          "He is a repeat candidate who lost his last two primaries [Verify — sourced only to a candidate directory, not independently confirmed]",
+          "Blanket opposition to data centres would push investment out of Montana [Verify]"
+        ] }
+    ]
+  },
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "Statewide",
+    office: "Ballot Measures — Montana (PENDING CERTIFICATION)",
+    note: "⚠⚠ NOTHING IS CERTIFIED YET. The Secretary of State's \"Proposed 2026 Ballot Issues\" page lists, under \"Issues Qualified for the 2026 General Election Ballot,\" exactly one word: \"TBD.\" The certification deadline is AUG 20, 2026. ⚠ THE TWO RESEARCH PASSES DISAGREE ON HOW CLOSE THESE ARE. One found that CI-132, CI-133 and I-194 submitted signatures well above their thresholds and are expected to qualify; the other found the SoS page still showing all eight 2026 petitions only as “approved to gather signatures,” and noted that CI-133 and I-194 were cleared to circulate only in March–April 2026, late in the window. Both agree NOTHING is certified. The measures are described below as CIRCULATING, not as ballot items — re-check after Aug 20 and do NOT state that any of them failed. All ballot language quoted here is from the Secretary of State's own approved ballot-statement documents. ⚠ FAILED or WITHDRAWN, and NOT on the ballot: CI-129 and CI-130 (2% property-valuation caps, never submitted signatures), CI-131 (withdrawn to consolidate behind CI-132 — note the SoS page has NOT been updated and still lists it as approved to circulate), CI-134 (2% local tax cap, withdrawn) and CI-135 (folded into I-194). No legislative referendum reached the ballot [Verify — no exhaustive bill-by-bill sweep of the 2025 session was completed].",
+    candidates: [
+      { name: "CI-132 — nonpartisan judicial elections (constitutional)", party: "I", winner: false,
+        positions: [
+          "Ballot statement: \"CI-132 amends the Montana Constitution to require that judicial elections remain nonpartisan\"",
+          "A YES vote locks nonpartisan judicial elections into the constitution; a NO vote leaves it in ordinary statute, changeable by a future Legislature",
+          "Reported more than 102,000 signatures against a 60,241 requirement"
+        ],
+        differentiators: [
+          "⚠ Directly connected to the Supreme Court race on this same ballot, where party money is legal for the first time under HB 39",
+          "Campaign: Montanans for Nonpartisan Courts. It has raised $2.79M — ACLU Foundation $600K, Global Impact Social Welfare Fund–MT $600K, The Fairness Project $500K, A Better Big Sky $500K",
+          "No opposition committee total could be sourced [Verify]"
+        ],
+        supporters: [
+          "Judges should answer to the constitution rather than to political parties",
+          "The 2025 Legislature and the governor pushed party labels for judges, and this would foreclose that",
+          "NINE retired Montana Supreme Court justices back it"
+        ],
+        opponents: [
+          "The state Republican Party formally opposes it — chairman Art Wittich argues party labels give voters MORE information and that the measure \"restricts\" candidates",
+          "The party characterises the current court as already a \"partisan Democrat bench\"",
+          "Writing it into the constitution removes legislative flexibility without another statewide vote [Verify]"
+        ] },
+      { name: "CI-133 — right to initiative and referendum (constitutional)", party: "I", winner: false,
+        positions: [
+          "Would make initiative and referendum a fundamental right subject to strict scrutiny, with 90-day approval deadlines",
+          "Bars disqualification for \"minor or technical issues,\" allows signature withdrawal, and bars use of government resources for or against measures",
+          "More than 100,000 signatures against a 60,241 requirement"
+        ],
+        differentiators: [
+          "Campaign: Montanans Decide. ⚠ More than 99% of its money comes from three social-welfare nonprofits — The Fairness Project $847,500, Global Impact SWF–MT $605,000, American Opportunity Action Fund $380,000",
+          "The context is that the attorney general has repeatedly found citizen measures insufficient and rewritten ballot language; the Montana Supreme Court rejected his rewrite of CI-132",
+          "One of two constitutional initiatives on the same ballot dealing with how Montanans govern themselves"
+        ],
+        supporters: [
+          "It shields citizen lawmaking from political maneuvering and procedural delay",
+          "Hard deadlines stop measures being run out the clock by officials who oppose them",
+          "Barring disqualification over technical defects prevents small errors from voiding tens of thousands of signatures"
+        ],
+        opponents: [
+          "Rep. Braxton Mitchell says it opens \"the door to endless litigation and leaving it up to courts to decide where the line is\"",
+          "A compelling-interest standard puts courts rather than the Legislature in charge of petition rules [Verify]",
+          "Loosening technical-defect rules weakens signature verification [Verify]"
+        ] },
+      { name: "I-194 — the Montana Plan Act, corporate contributions (statutory)", party: "I", winner: false,
+        positions: [
+          "Would bar \"artificial persons\" — corporations, nonprofits, trusts, partnerships and trade associations — from contributing to candidates, parties or ballot issues",
+          "The penalty is forfeiting the privilege of doing business in Montana; news and commentary, individuals, political committees and government are exempt",
+          "Effective Jan 1, 2027 if approved. About 50,000 signatures against a 30,121 requirement"
+        ],
+        differentiators: [
+          "Sponsored by Jeff Mangan, a FORMER Commissioner of Political Practices — the state's own campaign-finance regulator",
+          "The legal theory is to route around Citizens United by redefining the powers Montana grants the entities it charters, restoring the spirit of the 1912 Corrupt Practices Act",
+          "An all-volunteer drive — roughly 500 volunteers across all 56 counties with no paid signature gatherers. It raised $145,892, 77% from The Transparent Election Initiative. The Montana Supreme Court DISMISSED a constitutionality challenge on Apr 1, 2026"
+        ],
+        supporters: [
+          "Bipartisan endorsers include former Republican Gov. Marc Racicot, former Democratic Gov. Steve Bullock and former Sen. Jon Tester",
+          "It restores the spirit of a Montana anti-corruption law that stood from 1912 until Citizens United",
+          "A volunteer-only signature drive across all 56 counties is evidence of genuine public demand"
+        ],
+        opponents: [
+          "Montana Chamber of Commerce president Todd O'Hair says it would \"prevent businesses from defending themselves\"",
+          "The Kalispell and Billings chambers call it \"one-sided disarmament of Montana's own voices\" while out-of-state money continues to flow",
+          "The Chamber circulated an open letter urging signers to WITHDRAW their signatures — an unusually direct counter-mobilisation"
+        ] }
+    ]
+  },
+  {
+    date: "Jun 2, 2026",
+    type: "past",
+    scope: "Statewide",
+    office: "Primary — U.S. Senate",
+    note: "CERTIFIED, aggregated from the Secretary of State's official precinct-by-precinct canvass file. Statewide primary turnout was 37.92% — 300,011 ballots of 791,207 registered. ⚠ Note that Republican Senate primary ballots outnumbered Democratic ones 169,062 to 111,743.",
+    candidates: [
+      { name: "Kurt Alme", party: "R", winner: true,
+        positions: [], differentiators: ["128,716 votes — 76.14% of the Republican primary"], supporters: [], opponents: [] },
+      { name: "Lee Calhoun", party: "R", winner: false,
+        positions: [], differentiators: ["23,872 votes — 14.12%"], supporters: [], opponents: [] },
+      { name: "Charles Walking Child", party: "R", winner: false,
+        positions: [], differentiators: ["16,474 votes — 9.74%"], supporters: [], opponents: [] },
+      { name: "Alani Bankhead", party: "D", winner: true,
+        positions: [], differentiators: ["48,772 votes — 43.65% of a five-way Democratic primary"], supporters: [], opponents: [] },
+      { name: "Reilly Neill", party: "D", winner: false,
+        positions: [], differentiators: ["36,880 votes — 33.00%"], supporters: [], opponents: [] },
+      { name: "Michael Black Wolf", party: "D", winner: false,
+        positions: [], differentiators: ["14,678 votes — 13.14%"], supporters: [], opponents: [] },
+      { name: "Kyle Austin", party: "L", winner: true,
+        positions: [], differentiators: ["1,819 votes — 53.33% of the Libertarian primary, beating the party's own endorsed candidate"], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Jun 2, 2026",
+    type: "past",
+    scope: "Statewide",
+    office: "Primary — Montana Supreme Court and Public Service Commission",
+    note: "CERTIFIED. ⚠ The Supreme Court primary was NON-ELIMINATING — with only two candidates, both advanced to November regardless of the result. ⚠ Montana Free Press's guide lists the Supreme Court figures 86 and 91 votes lower than the official canvass; the canvass is used here.",
+    candidates: [
+      { name: "Amy Eddy", party: "I", winner: true,
+        positions: [], differentiators: ["140,131 votes — 51.40% (Supreme Court Justice #4; both candidates advanced)"], supporters: [], opponents: [] },
+      { name: "Dan Wilson", party: "I", winner: false,
+        positions: [], differentiators: ["132,502 votes — 48.60% (advanced to November regardless)"], supporters: [], opponents: [] },
+      { name: "Jeff Pattison", party: "R", winner: true,
+        positions: [], differentiators: ["22,077 votes — 66.59% of the PSC District 1 Republican primary"], supporters: [], opponents: [] },
+      { name: "Angeline Cheek", party: "D", winner: true,
+        positions: [], differentiators: ["12,294 votes — unopposed for the PSC District 1 Democratic nomination"], supporters: [], opponents: [] },
+      { name: "Annie Bukacek (incumbent)", party: "R", winner: true,
+        positions: [], differentiators: ["10,925 votes — 35.53% of the PSC District 5 Republican primary, surviving a three-way race by 776 votes"], supporters: [], opponents: [] },
+      { name: "Kevin Hamm", party: "D", winner: true,
+        positions: [], differentiators: ["22,014 votes — unopposed for the PSC District 5 Democratic nomination"], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 5, 2024",
+    type: "past",
+    scope: "Statewide",
+    office: "President — Montana result",
+    note: "Official Montana Secretary of State canvass. Trump carried Montana by just under 20 points.",
+    candidates: [
+      { name: "Donald Trump", party: "R", winner: true,
+        positions: [], differentiators: ["352,079 votes — 58.39%"], supporters: [], opponents: [] },
+      { name: "Kamala Harris", party: "D", winner: false,
+        positions: [], differentiators: ["231,906 votes — 38.46%"], supporters: [], opponents: [] },
+      { name: "Robert F. Kennedy Jr.", party: "I", winner: false,
+        positions: [], differentiators: ["11,825 votes — 1.96%"], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 5, 2024",
+    type: "past",
+    scope: "Statewide",
+    office: "Governor of Montana — 2024",
+    note: "⚠ THIS IS WHY THERE IS NO GOVERNOR'S RACE IN 2026. Montana's six executive officers serve four-year terms and were all elected on this date; they are next up in 2028. Official Secretary of State canvass.",
+    candidates: [
+      { name: "Greg Gianforte / Kristen Juras", party: "R", winner: true,
+        positions: [], differentiators: ["354,569 votes — 58.86%"], supporters: [], opponents: [] },
+      { name: "Ryan Busse / Raph Graybill", party: "D", winner: false,
+        positions: [], differentiators: ["232,644 votes — 38.62%"], supporters: [], opponents: [] },
+      { name: "Kaiser Leib / Cooper Campbell", party: "L", winner: false,
+        positions: [], differentiators: ["15,191 votes — 2.52%"], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 3, 2020",
+    type: "past",
+    scope: "Statewide",
+    office: "U.S. Senate — Montana, 2020",
+    note: "⚠ THE SEAT NOW OPEN. This is the race Steve Daines won in 2020 and then declined to defend, withdrawing two minutes before the March 4, 2026 filing deadline. It was a straight two-way contest with no third-party candidate on the ballot. Official Secretary of State canvass.",
+    candidates: [
+      { name: "Steve Daines (incumbent)", party: "R", winner: true,
+        positions: [], differentiators: ["333,174 votes — 55.01%"], supporters: [], opponents: [] },
+      { name: "Steve Bullock", party: "D", winner: false,
+        positions: [], differentiators: ["272,463 votes — 44.99%; he was Montana's sitting governor at the time"], supporters: [], opponents: [] }
+    ]
+  }
+];
+
+// ----- (3) U.S. House races by district -----
+// All primary vote totals below are from the Montana Secretary of State's CERTIFIED
+// 2026 Statewide Primary Election Canvass (state canvass completed June 29, 2026);
+// percentages are computed from the certified totals. Where election-night reporting
+// differs, the certified figure is used and the discrepancy is noted.
+// ⚠ BALLOT-ACCESS TRAP CAUGHT AND EXCLUDED: both Wikipedia and Ballotpedia list
+// Kimberly Persico as an independent candidate in MT-1. She FAILED to qualify — 562
+// accepted signatures against a 6,742 requirement — and the Secretary of State's
+// July 15, 2026 certification named only THREE independents statewide, none in MT-1.
+// She is deliberately not carded. Conversely, Wikipedia OMITS Patrick McCracken (L) from
+// MT-2, who is on the ballot. Prefer the state's certified list in both directions.
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — MT District 1",
+    region: "Western Montana — Missoula, Bozeman, Kalispell and Butte, from the Idaho line east to the Continental Divide, including Glacier National Park and the Flathead and Blackfeet reservations (Cook PVI R+5)",
+    races: [
+      {
+        date: "Nov 3, 2026",
+        type: "upcoming",
+        note: "⚠ AN OPEN SEAT, and Montana's competitive House race. Ryan Zinke (R) announced on March 2, 2026 that he would not seek a fifth term, citing surgeries tied to Special Operations service injuries; he serves out his term through January 2027 and is NOT on the ballot. Both national committees are spending here — Sam Forstag is on the DCCC's Red to Blue list and Aaron Flint on the NRCC's MAGA Majority list. All four handicappers rated it LIKELY REPUBLICAN as of July 21, 2026 (Cook, Inside Elections, Sabato, Decision Desk HQ), and Sabato's own change log shows no movement all cycle. The district backed Trump 54–43 in 2024 — but Jon Tester (D) carried it 50–49 in the Senate race the same night, which is why both parties are contesting it.",
+        candidates: [
+          { name: "Aaron Flint", party: "R", winner: false,
+            positions: [
+              "Public lands: \"keep these lands in public hands, keep them accessible\"",
+              "Cut regulation to expand \"responsible timber harvests\" and restart mill towns",
+              "Opposes limits on presidential war powers; backs the administration's Iran approach"
+            ],
+            differentiators: [
+              "17 years a statewide conservative radio host; Iraq and Afghanistan veteran, Army Guard and Reserve 2002–2024",
+              "Former state director for Rep. Zinke; endorsed by Trump, Zinke, Rep. Downing and Sens. Sheehy and Daines",
+              "$502,000 cash on hand through June 30, 2026, on about $1.2–1.3M raised"
+            ],
+            supporters: [
+              "Won an outright majority — 50.1% — in a four-way primary against a sitting statewide official, so the party consolidated early",
+              "Two decades on Montana radio give him name recognition across the district that no ad buy replicates",
+              "A combat veteran who staffed this seat arrives already fluent in its federal-lands and timber files"
+            ],
+            opponents: [
+              "Public Domain reported on Apr 30, 2026 that he repeatedly backed transferring federal land to state control in 2014–15 posts and an interview, and declined to say whether he had changed his view — critics call his current public-lands framing a reversal. His campaign's stated position is preservation",
+              "His opponent's campaign calls him \"a political puppet… who will sell out Montana to make a buck for their corporate backers\"",
+              "He was outraised in the second quarter in an open seat both parties are targeting"
+            ] },
+          { name: "Sam Forstag", party: "D", winner: false,
+            positions: [
+              "Medicare as a public option, expanded ACA subsidies, higher rural hospital reimbursement",
+              "Federal housing investment; ban corporate purchases of residential property",
+              "Enforce the War Powers Resolution and redirect military spending to domestic needs"
+            ],
+            differentiators: [
+              "31; eight years a wildland firefighter and smokejumper; vice-president of National Federation of Federal Employees Local 60",
+              "Endorsed by Bernie Sanders and Alexandria Ocasio-Cortez at a Missoula rally on May 28, 2026, plus Rep. Jamie Raskin and state and national unions; on the DCCC's Red to Blue list",
+              "$550,079 cash on hand through June 30, 2026 — he outraised Flint in the second quarter, $688,304 to $619,143"
+            ],
+            supporters: [
+              "A union firefighter rather than a lawyer or lobbyist is the profile Democrats need to compete in an R+5 seat that Tester carried in 2024",
+              "Out-raising the Republican nominee in an open seat is evidence the race is live rather than symbolic",
+              "His public-lands and forestry positions come from eight seasons actually working the ground"
+            ],
+            opponents: [
+              "The NRCC calls him a \"socialist stooge\" who \"proudly accepted an endorsement from radical New York socialist Alexandria Ocasio-Cortez\"",
+              "He won the nomination with only 37.4% — nearly two-thirds of Democratic primary voters chose someone else",
+              "Democrats also had Red to Blue backing for Monica Tranel here in 2024 and still lost the seat by 7.7 points"
+            ] },
+          { name: "Nick Sheedy", party: "L", winner: false,
+            positions: [
+              "End the Federal Reserve \"and the federal banking cartel\" as anti-inflation policy",
+              "Require congressional authorization for military action",
+              "Rural health care through deregulation rather than subsidy"
+            ],
+            differentiators: [
+              "Sole Libertarian filer; took 100% of the Libertarian primary with 1,202 votes",
+              "Lives in Columbia Falls; also backs overturning Citizens United and limiting contributions to eligible U.S. voters — an unusual campaign-finance stance for a Libertarian",
+              "No FEC report on file, so he was below the $5,000 reporting threshold as of June 30, 2026"
+            ],
+            supporters: [
+              "Offers a consistent limited-government option to voters unwilling to back either major party [Verify]",
+              "His campaign-finance and war-powers planks cross the usual partisan lines, which he argues frees him from party leadership",
+              "In a Likely Republican seat, a third-party vote is a low-cost way to register dissent [Verify]"
+            ],
+            opponents: [
+              "With no measurable fundraising he cannot communicate with a district of roughly 750,000 people",
+              "MT-1's Libertarian took 3.09% in 2024 — close to the margin Democrats needed — so both major campaigns argue a third line only shifts the outcome [Verify — this is a structural argument, not a sourced quote]",
+              "Abolishing the Federal Reserve is outside the range of what a freshman member could enact [Verify]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024",
+        type: "past",
+        note: "Zinke held the seat by 7.7 points; the Libertarian line took 3.09%, more than the gap Democrats needed to close.",
+        candidates: [
+          { name: "Ryan Zinke (incumbent)", party: "R", winner: true,
+            positions: [], differentiators: ["168,529 votes — 52.29%"], supporters: [], opponents: [] },
+          { name: "Monica Tranel", party: "D", winner: false,
+            positions: [], differentiators: ["143,783 votes — 44.62%"], supporters: [], opponents: [] },
+          { name: "Dennis Hayes", party: "L", winner: false,
+            positions: [], differentiators: ["9,954 votes — 3.09%"], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  2: {
+    name: "U.S. House — MT District 2",
+    region: "Eastern Montana — Billings, Great Falls and Helena, plus Havre, Lewistown, Miles City, Glendive and Sidney, running from the Rocky Mountain Front across the Hi-Line to the Dakotas (Cook PVI R+15)",
+    races: [
+      {
+        date: "Nov 3, 2026",
+        type: "upcoming",
+        note: "A safe Republican seat with an unusual four-way ballot. First-term Rep. Troy Downing (R) — Montana's former State Auditor — was unopposed for renomination. The race's live question is independent MICHAEL EISENHAUER, a Great Falls cardiologist and retired Army colonel who was one of only three independents in the state to clear certification, on July 15, 2026, and who is endorsed by former Sen. Jon Tester. Ratings are Solid/Safe R across Cook, Inside Elections, Sabato and Decision Desk HQ as of July 14, 2026 [Verify — these are reported through a citing table; the raters' own pages could not be retrieved]. Trump carried the district 63–34 in 2024.",
+        candidates: [
+          { name: "Troy Downing (incumbent)", party: "R", winner: false,
+            positions: [
+              "Opposes sales of public lands; supports maintained access and \"responsible management\"",
+              "Rural health care: workforce development and CMS accountability on reimbursement delays",
+              "Housing supply: his Whole-Home Repairs Act and fewer construction regulatory barriers"
+            ],
+            differentiators: [
+              "First-term member; previously Montana State Auditor, so he has already won statewide",
+              "Unopposed for renomination, taking all 82,088 Republican primary votes",
+              "$650,464 cash on hand through June 30, 2026, on $2.1M raised — but carrying $2M in personal loans from his 2024 campaign"
+            ],
+            supporters: [
+              "He has publicised funding wins for Montana infrastructure, law enforcement and the Sentinel program",
+              "He runs a steady constituent-service operation, including recurring tele-town halls — most recently with the VA Secretary on Aug 3, 2026",
+              "He argues warnings about Medicaid cuts rest on \"a false narrative that's based on faulty CBO estimates\" and that the reconciliation bill targeted fraud and waste"
+            ],
+            opponents: [
+              "A Daily Montanan opinion column of Apr 7, 2026 charges he has held \"seven one-hour telephone events but zero in-person\" town halls and lives primarily in Bozeman, outside the district — presented as that columnist's criticism, not established fact",
+              "The same column argues his tax-bill vote \"will harm more than will help poor and lower- to middle-income families\"",
+              "His own district gave him 34% approve to 40% disapprove in the Montana Free Press–Eagleton poll of Apr 29–May 7, 2026, in a seat Trump won by 29 points"
+            ] },
+          { name: "Brian J. Miller", party: "D", winner: false,
+            positions: [
+              "Repeal recent Medicaid cuts, restore ACA subsidies, expand rural telehealth",
+              "\"Only Congress has the power to declare war\" — pledges to block Middle East operations funding",
+              "Federal task forces on missing and murdered Indigenous women and on trafficking"
+            ],
+            differentiators: [
+              "Helena attorney of about ten years, representing small businesses and consumers against insurers and banks; former Montana Supreme Court staff",
+              "Won the Democratic primary outright with 55.5% in a three-way field",
+              "About $3,165 cash on hand through June 30, 2026 — the weakest of the four candidates"
+            ],
+            supporters: [
+              "A consumer-side litigator who has spent a decade suing insurers and banks is credible on the affordability and health-cost questions voters name first",
+              "He commits to in-person town halls and a constituent app tracking his votes, a direct contrast with the incumbent's telephone-only format",
+              "He beat two rivals outright, giving Democrats a unified nominee in a district they usually cede"
+            ],
+            opponents: [
+              "About $3,165 on hand against $650,464 makes the race non-competitive on communication alone",
+              "Roughly two-thirds of MT-2 voters had never heard of him as of early May",
+              "With Tester and reportedly the AFL-CIO behind independent Eisenhauer, the anti-Downing vote now splits two ways [Verify — this inference is analysis, not a claim any named party has made on the record]"
+            ] },
+          { name: "Michael D. Eisenhauer", party: "I", winner: false,
+            positions: [
+              "Enforce the War Powers Resolution — \"no branch of government should act unilaterally in matters as serious as war\"",
+              "Protect pre-existing-condition coverage and patient choice; opposes single-payer",
+              "Backs a Transparent Election Initiative banning corporate \"dark money\""
+            ],
+            differentiators: [
+              "Great Falls cardiologist and retired Army colonel, running as a non-partisan pragmatist",
+              "Endorsed by former Sen. Jon Tester on July 6, 2026 — \"the person that matters more than the party\" — and reportedly by the AFL-CIO [Verify — the AFL-CIO endorsement is single-sourced]",
+              "$140,121 cash on hand through June 30, 2026, on $304,181 raised — of which $257,126 is his own loans"
+            ],
+            supporters: [
+              "A cardiologist and retired colonel brings direct expertise to the two issues eastern Montana feels hardest, rural hospital closures and war powers",
+              "Tester, the last Democrat to win statewide in Montana, judged him the strongest available challenger regardless of party label",
+              "He cleared a 7,274-signature petition with no party organisation behind him"
+            ],
+            opponents: [
+              "Montana has never elected an independent to Congress, and the last third-party winner was more than a century ago",
+              "Most of his money is his own — $257,126 of $304,181 — which critics read as self-funding rather than grassroots demand",
+              "Without a caucus he would have no committee assignments, and Republicans argue an independent cannot deliver for a Trump+29 seat [Verify — structural argument]"
+            ] },
+          { name: "Patrick McCracken", party: "L", winner: false,
+            positions: [
+              "Mandatory country-of-origin beef labelling via the American Beef Labeling Act",
+              "Data centres must bear full grid cost; would codify an enforceable Ratepayer Protection Pledge",
+              "Protect Medicaid expansion funding plus price transparency — \"fee for service doesn't work when there aren't enough fees\""
+            ],
+            differentiators: [
+              "Construction and service-industry background, including work at the Yellowstone Club",
+              "Proposes a \"Send Baron Act\" drafting the families of presidents, cabinet officials and members of Congress first, to make war \"a personal decision, not a financial one\"",
+              "Sole Libertarian filer with 1,846 votes; no FEC filings on record as of June 30, 2026"
+            ],
+            supporters: [
+              "His ratepayer and country-of-origin-labelling planks are concrete eastern-Montana economic issues the major-party nominees have said less about",
+              "Unlike most Libertarians he defends Medicaid expansion funding, which widens his potential appeal",
+              "A working tradesman on the ballot is a different profile from an attorney, a cardiologist and a wealthy incumbent [Verify]"
+            ],
+            opponents: [
+              "Zero reported fundraising leaves no path to reaching voters",
+              "With an independent already consolidating the anti-Downing vote, a fourth candidate fragments it further [Verify — structural]",
+              "The \"Send Baron Act\" is a messaging vehicle rather than legislation with a path [Verify]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024",
+        type: "past",
+        note: "Downing won the open seat by nearly 32 points, succeeding retiring Rep. Matt Rosendale. ⚠ A small residual vote share is unexplained in the sources reachable for this build, so only the two principal candidates are carded [Verify against the Montana SoS canvass].",
+        candidates: [
+          { name: "Troy Downing", party: "R", winner: true,
+            positions: [], differentiators: ["181,832 votes — 65.73%"], supporters: [], opponents: [] },
+          { name: "John Driscoll", party: "D", winner: false,
+            positions: [], differentiators: ["93,713 votes — 33.87%"], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  }
+};
+
+const SITE_META = { name: "Montana Elections Hub", lastUpdated: "August 9, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — Montana county-level down-ballot research has not started.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Montana has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them,
+  // otherwise a district with no plurality county is unreachable from the map.
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const MT_STATE_FIPS = "30";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#mtmap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(MT_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Hartford ----
+  drawCapital(g, projection, { name: "Helena", lng: -112.0361, lat: 46.5891 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in MS";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn&#39;t in our Montana dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>
