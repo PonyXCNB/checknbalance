@@ -68,6 +68,11 @@ const STATE_PAGES = [
   // Pondera is deliberately the MT sample: it is Montana's ONLY split county — the belief
   // that Montana splits none is wrong — so it carries `ds` and guards the multi-district merge.
   { page: "mt.html", countyCount: 56,  sampleFips: "30073", sampleName: "Pondera",     expectedRaces: 14 },
+  // Philadelphia is deliberately the PA sample: PA-2 and PA-3 sit ENTIRELY inside it and PA-5
+  // reaches in as well, so it carries ds:[2,3,5]. PA-3 is the plurality district of NO county
+  // in the state — without `ds` it would be unreachable statewide (lesson #12), so this count
+  // (4 statewide + 3 districts x 2 races) is the regression guard on that.
+  { page: "pa.html", countyCount: 67,  sampleFips: "42101", sampleName: "Philadelphia", expectedRaces: 10 },
 ];
 
 for (const cfg of STATE_PAGES) {

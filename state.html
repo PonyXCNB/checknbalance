@@ -184,7 +184,7 @@
   <p class="hero-lede" id="hero-lede">Preparing this state's county map.</p>
   <div class="banner">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-    <span>Offices on this state's <strong>2026 ballot are verified</strong> (Senate, governor, U.S. House). Candidate-level detail is being researched state by state — North Carolina shows the finished version.</span>
+    <span>Offices on this state's <strong>2026 ballot are verified</strong> (Senate, governor, U.S. House). Candidate-level detail is being researched state by state — the gold states on the home map show the finished version.</span>
   </div>
 </section>
 
@@ -298,6 +298,7 @@ if (abbr === "NV") { window.location.replace("nv.html"); }
 if (abbr === "SD") { window.location.replace("sd.html"); }
 if (abbr === "ID") { window.location.replace("id.html"); }
 if (abbr === "MT") { window.location.replace("mt.html"); }
+if (abbr === "PA") { window.location.replace("pa.html"); }
 
 const STATE = STATES[abbr];
 const FIPS = STATE.f;
@@ -642,7 +643,7 @@ function renderSeat(s, countyName) {
   const detailBody = hasCands
     ? `<div class="candidates">${s.candidates.map(renderCandidate).join("")}</div>`
     : `<div class="placeholder-body"><div class="ph-card">
-        The office above is verified for the 2026 ballot. Candidate-level detail for <strong>${countyName} County, ${STATE.n}</strong> — top positions, differentiators, and what supporters and opponents say — is being researched, matching the North Carolina build.
+        The office above is verified for the 2026 ballot. Candidate-level detail for <strong>${countyName} County, ${STATE.n}</strong> — top positions, differentiators, and what supporters and opponents say — is being researched, matching the depth of the fully built states.
       </div></div>`;
   return `
     <div class="election-card">

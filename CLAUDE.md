@@ -61,7 +61,8 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 | `sd.html` | South Dakota — twenty-eighth fully built state (66 counties, ONE at-large seat, June 2 primary + a July 28 RUNOFF). Built Aug 9, 2026. ⚠ South Dakota's 35% primary threshold forced the state's FIRST-EVER gubernatorial runoff; the at-large U.S. House seat is OPEN because Dusty Johnson ran for governor and finished third; and the Democratic U.S. Senate nominee WITHDREW Aug 4, leaving that line empty pending an Aug 11 deadline. Six constitutional officers are nominated at party CONVENTIONS, not the primary. No LOCAL_RACES yet |
 | `id.html` | Idaho — twenty-ninth fully built state (44 counties, 2 districts, May 19 primary, CERTIFIED). Built Aug 9, 2026. ⚠ NO office is open and no judicial race is on the November ballot (Idaho decides those at the May primary). The Democratic Senate nominee quit July 28 but is STILL on the ballot until a Sept 4 deadline; an ID-2 Constitution nominee DIED in June and the state's list has not been updated. Four ballot measures. No LOCAL_RACES yet |
 | `mt.html` | Montana — thirtieth fully built state (56 counties, 2 districts, June 2 primary, CERTIFIED). Built Aug 9, 2026. ⚠ **The U.S. Senate seat is OPEN — Steve Daines withdrew two minutes before the March 4 filing deadline** and endorsed Kurt Alme, who had filed minutes earlier. MT-1 is also OPEN (Zinke retiring) and is the state's competitive House race. One Supreme Court seat, two PSC district races, and three ballot measures still circulating with NOTHING certified. No LOCAL_RACES yet |
-| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH/KY/IN/IA/IL/MS/AR/NE/NM/CO/OR/NV/SD/ID/MT redirect to their dedicated pages |
+| `pa.html` | Pennsylvania — thirty-first fully built state (67 counties, 17 districts, May 19 primary results). Built Aug 10, 2026 from il.html, the other 17-district `ds` state. ⚠ **PA-2 AND PA-3 SIT WHOLLY INSIDE PHILADELPHIA COUNTY, and PA-3 is the plurality district of NO county in the state** — without `ds` it would be unreachable statewide (lesson #12). Philadelphia's own plurality is decided by ONE PERSON (PA-2 764,865 vs PA-3 764,864), so its shading is effectively a coin toss. NO U.S. Senate race (McCormick 2030, Fetterman 2028); the row offices (AG/Auditor General/Treasurer) are presidential-year offices; PA is the only state electing appellate judges SOLELY in odd years, so no judicial race and no ballot question — **the entire statewide ballot is the Governor/Lt. Gov ticket** (Shapiro–Davis vs. Garrity–Richey, Solid D, plus qualified Libertarian and Green tickets). Marquee: PA-7 (Mackenzie–Brooks) and PA-8 (Bresnahan–Cognetti), both Toss Up by all three raters; PA-1 Fitzpatrick is the crossover seat Harris carried; PA-10 Perry–Stelson is a Toss Up rematch; PA-3 is an OPEN D+40 seat with NO Republican on the ballot. No LOCAL_RACES yet |
+| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH/KY/IN/IA/IL/MS/AR/NE/NM/CO/OR/NV/SD/ID/MT/PA redirect to their dedicated pages |
 | `favicon.svg` | Gold-gradient circle + white checkmark (primary favicon, matches site crest) |
 | `favicon.png` | 32px PNG fallback |
 | `favicon.ico` | Multi-size ICO (16/32/48) at root for legacy auto-discovery |
@@ -159,9 +160,9 @@ must appear AFTER its declaration; a top-level TDZ error kills the whole script 
 ### index.html (national)
 ```
 ST / NAME     : fips → abbr / full name             CAP: capitals (currently unused on this page)
-BUILT         : 30 fips -> page (37 nc, 45 sc, 13 ga, 51 va, 24 md, 10 de, 34 nj, 36 ny, 44 ri, 33 nh,
+BUILT         : 31 fips -> page (37 nc, 45 sc, 13 ga, 51 va, 24 md, 10 de, 34 nj, 36 ny, 44 ri, 33 nh,
                 09 ct, 50 vt, 23 me, 25 ma, 54 wv, 39 oh, 21 ky, 18 in, 19 ia, 17 il, 28 ms, 05 ar, 31 ne, 35 nm, 08 co,
-                41 or, 32 nv, 46 sd, 16 id, 30 mt)
+                41 or, 32 nv, 46 sd, 16 id, 30 mt, 42 pa)
 PARTIAL       : Set of 3 fips (DC FL AL) → lighter gold tier
 CALLOUTS      : label anchor coords for 9 small states + DC
 destFor(fips) : BUILT[fips] if fully built, else state.html?state=XX
@@ -420,6 +421,19 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
    passed** as a stale card. ➤ General lesson: a report section that renders empty is indistinguishable from a
    report section that has nothing to say. When a tool's output goes quiet, check whether the tool broke.
 
+16. **`tools/clone-state.js` had a hole exactly where quirk #14 said it wouldn't — and it caught itself.**
+   Found Aug 10, 2026 building Pennsylvania from `il.html`. The tool refused to write the page, reporting that
+   `This county isn&#39;t in our Illinois dataset.` matched nothing. It was right: **pages differ in how they spell
+   the apostrophe** — most write `&#39;`, but `il.html` writes a raw `'` — and the substitution list hard-coded one
+   spelling. Worse, chasing that down exposed a **second, silent gap: the drawer title `"Not in IL"` had NO
+   substitution at all**, so a clone would have shipped a drawer reading "Not in IL" on the Pennsylvania page.
+   That is precisely the class of pure-presentation bug that shipped live on or.html and nv.html.
+   ➤ **Both fixed:** the empty-state sentence now tries both apostrophe spellings and requires exactly one to match,
+   and `"Not in <XX>"` is now an explicit checked substitution.
+   ➤ **The real lesson is that the tool's refuse-to-write behaviour is what saved this.** A tool that fails loudly on
+   an unmatched substitution turned a would-be shipped cosmetic bug into a 30-second fix. Do not soften it into a
+   warning, and when it complains, fix the TOOL rather than hand-editing around it.
+
 ## Testing (`tests/` — plain Node.js, zero dependencies)
 
 Requires Node.js (any recent LTS). Run the whole suite from the site root:
@@ -565,6 +579,25 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
      `localhost` by policy — the July 20 run hit the same wall). Verified instead by ASCII-rasterising
      each state with the glyph box overlaid, which showed the old FL box hanging into the Gulf and the
      new one clean. That trick is worth reusing when the browser tools are blocked.
+
+6. ~~**The national-map legend was crowded out by its own description (index.html).**~~ **DONE (Aug 10, 2026.)**
+   Owner-reported with a screenshot: the "Fully built" swatch carried the entire ~330-character geography sentence
+   inline, so it wrapped to two lines, ate the whole flex row and shoved the other two swatches to the right edge —
+   "the text is so long for the description, that it crowds out the usefulness of having a key at all."
+   **Fix:** the swatch label is now just `Fully built (31 states)`, with the count in gold via a new `.legend-count`
+   span, and the geography sentence moved to a new centred `.legend-note` paragraph beneath the key (max-width 660px,
+   11.5px, 82% opacity). `.legend` also gained `flex-wrap: wrap`. All three swatches now sit on one balanced line
+   (~464px total against a ~1000px row) instead of one item consuming the row.
+   ⚠ **Browser verification was blocked AGAIN** — the preview pane refuses files outside the working directory, the
+   same wall hit on July 20 and July 24. Verified by structural inspection plus a rendered before/after mock-up
+   shown to the owner in chat. **If a real screenshot is ever needed, the repo must be the working directory.**
+7. ~~**Starter-framework pages still pointed at North Carolina as "the finished version."**~~ **DONE (Aug 10, 2026.)**
+   Owner-reported with a screenshot: with 31 states now built, naming NC alone was stale. Both prose references in
+   `state.html` were rewritten — the banner now says "the gold states on the home map show the finished version,"
+   and the county empty-state now says detail is being researched "matching the depth of the fully built states."
+   Neither names a single state, so neither can go stale again. The two remaining NC mentions in `index.html` are
+   deliberate and still true: a cited turnout statistic, and the note that NC alone goes down to sheriff and school
+   board (it is still the only state with `LOCAL_RACES`).
 
 **Queue status (as of Aug 6, 2026): items 1, 2, 3 and 5 are COMPLETE, and item 4 has been at ZERO gaps
 site-wide since Aug 5.** The queue is therefore empty of open work — what remains is *maintenance*: every new
@@ -718,18 +751,20 @@ time-sensitive calendar, and the incumbent-status sweep.
    EIGHT statewide constitutional offices + 4 ballot measures; NE = 93 counties / 3 districts / 6 statewide offices +
    1 ballot measure + statewide judicial retention + 4 State Board of Education and 3 NU Regents district races).
    Both built WITH voices from the start. See the build records below.
-   **Built bloc is now 30 (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA WV OH KY IN IL IA MS AR NE NM CO OR NV SD ID MT)**
+   **Built bloc is now 31 (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA WV OH KY IN IL IA MS AR NE NM CO OR NV SD ID MT PA)**
    — the run from Georgia to Maine and west to Iowa and Nebraska, plus Mississippi and Arkansas on the lower
    Mississippi River, Colorado and New Mexico in the Southwest, South Dakota and Montana across the northern Plains,
    and Nevada, Oregon and Idaho in the West (index.html's legend and prose say exactly this).
+   **PENNSYLVANIA was COMPLETED Aug 10, 2026** (cloned from il.html; 67 counties / 17 districts / the Governor +
+   Lt. Gov ticket, which is the state's ENTIRE statewide ballot; built WITH voices from the start, 39 candidates,
+   0 gaps). See the build record below — the county map, the blocker that stopped this build twice, is now solved
+   and double-derived. **Built bloc is now 31.**
    **Next targets, in order:**
-   1. **PA** (banked below — build off the DOS certified list now that the Aug 10 objection deadline has passed;
-      the county→district map is still the hard blocker).
-   2. **AL** (fully researched and banked below — build AFTER Aug 12, once the Aug 11 special primary and
+   1. **AL** (fully researched and banked below — build AFTER Aug 12, once the Aug 11 special primary and
       independent qualifying both close, and ONLY off the 2023 legislature map).
-   3. **MI** — ⚠ still NOT certified. County canvasses must certify by **Aug 18** and the Board of State
+   2. **MI** — ⚠ still NOT certified. County canvasses must certify by **Aug 18** and the Board of State
       Canvassers by **Aug 24**. Do not build before then.
-   4. Then **WI/MN/MO**, and **TN**, where Blackburn's win in the Aug 6 gubernatorial primary leaves her
+   3. Then **WI/MN/MO**, and **TN**, where Blackburn's win in the Aug 6 gubernatorial primary leaves her
       **U.S. Senate seat OPEN**.
    ⚠ **MO carries a redistricting risk** — it was one of the 2025–26 mid-decade redraw states, so answer "which map
    governs 2026?" from primary sources before deriving anything (lesson #13). WI and MN both held Aug 11 primaries.
@@ -2104,7 +2139,80 @@ time-sensitive calendar, and the incumbent-status sweep.
      and carry a `CVG_END_DT` coverage-date field. politicalpractices.mt.gov fails TLS; COPP's CERS needs a real
      browser; all Lee Enterprises Montana papers sit behind a TollBit paywall with no body.
 
-   ### ⏸ PENNSYLVANIA — RESEARCH BANKED Aug 3, 2026; BUILD GATED TO AFTER AUG 10. Do not re-research what is here.
+   ### ⏸ KANSAS — MAP AND STATEWIDE BALLOT BANKED Aug 10, 2026. District research NOT done. Do not re-derive the map.
+   Scoped during the PA run and left unbuilt because the four districts' candidate research was never started and the
+   session's web-search quota was exhausted. **Everything below is verified; only the district cards are missing.**
+   - ⚠ **GATING QUESTION ANSWERED: Kansas did NOT redistrict.** The mid-decade push was real, sustained and **failed
+     twice**: the Nov 5, 2025 special-session petition fell ~10 House signatures short (Speaker Hawkins then stripped
+     committee assignments from Republicans who refused to sign); on Jan 5–6, 2026 Hawkins said publicly the votes
+     were not there; and the regular session **ended Apr 22, 2026 with no map**, roughly 20 votes short of a veto
+     override. No new map means no new-map litigation, and *Rivera v. Schwab* (2022) already upheld the plan.
+     **Ad Astra 2 governs 2026**, so Census 118th-Congress geography IS the operative map.
+   - ⚠ **TRAP:** `BlockAssign_ST20_KS_CD.txt` encodes the **116th** Congress (the 2012 map) — it shows splits in
+     Marshall/Miami/Pawnee that no longer exist. Rejected. The map below came from **Geocorr 2022** (109,149
+     populated blocks → 109 county×district rows).
+   - **ARITHMETIC PROOF: all four districts land on exactly 734,470**, totalling Kansas' 2,937,880 — zero deviation.
+     Split-county reassembly also checks out (Douglas 95,921+22,864; Jackson 12,542+690; Pawnee 3,288+2,965;
+     Wyandotte 112,661+56,584). **Only 4 counties are split:** Douglas→1 (Lawrence cracked), Jackson→1,
+     **Pawnee→1 at 53/47 — nearly a coin toss, worth a footnote**, and **Wyandotte→2 (the MAJORITY of Kansas City,
+     Kansas sits in KS-2, not KS-3)**. Douglas and Wyandotte were the core grievances in *Rivera v. Schwab*.
+     KS-3 is only 5 counties (Johnson whole, plus Miami, Franklin, Anderson and part of Wyandotte) but is the
+     plurality of four, so all four districts are reachable. **The full 105-row JS table is in the agent's report;
+     re-derive from Geocorr 2022 if it is not recoverable — do NOT use the block-assignment file.**
+   - **Nov 2026 statewide ballot:** U.S. Senate — **Roger Marshall (R, 79.9%)** did NOT run for governor and seeks a
+     second term, vs. **Adam Hamilton (D, 34.9%** of an eight-way field). **Governor is OPEN (Kelly term-limited):**
+     **Ty Masterson (R, 43.2%, Trump-endorsed)** with Jeff Klemp vs. **Cindy Holscher (D, 48.6%)** with KC Ohaebosim —
+     Holscher beat Corson 48.6–38.8. AG **Kris Kobach (R)** vs. **Chris Mann (D)**, both unopposed. **SoS is OPEN**
+     (Schwab ran for governor): Pat Proctor (R) vs. Jennifer Day (D) vs. **Scott E. Morgan (United Kansas)** — note
+     "United Kansas" is a recognised third party, so the page's party filter must handle it. Treasurer Steven Johnson
+     (R) vs. Juan Luengo (D). **Insurance Commissioner is UP and OPEN** (Schmidt ran for governor and lost).
+   - ⚠ **NO constitutional amendment is on the November ballot.** The only 2026 amendment — partisan election of
+     Supreme Court justices — was on the **Aug 4 PRIMARY** ballot and **voters rejected it by about 62–38**, so merit
+     selection and retention elections survive.
+   - **Three items NOT verified — do not publish without checking:** the Insurance Commissioner nominees; which State
+     Board of Education districts are up (the even-numbered ones is an *inference* from the cycle pattern, not a
+     source); and which justices and judges are on the 2026 retention ballot. Also unconfirmed: the state canvass
+     date (statute suggests on or before Sept 1; the SoS calendar URL 404s).
+
+   ### ✅ PENNSYLVANIA — BUILT Aug 10, 2026 (31st state). The notes below are the build record; do not re-research.
+   **The county→district map — the blocker that stopped this build twice — is SOLVED, and was derived TWICE
+   INDEPENDENTLY by two agents that agreed exactly:** (a) the Commonwealth's own block-equivalency file for the
+   adopted plan (`2022-02-25 Carter-adjusted`, redistricting.state.pa.us) joined to 2020 P.L. 94-171 block
+   populations; and (b) the PA DOS published VERBAL LEGAL DESCRIPTIONS of all 17 districts, machine-extracted
+   rather than read by eye. Same 14 split counties, same plurality in every one. **Arithmetic proof: every district
+   lands on 764,864 / 764,865 / 764,866 — the only three values possible — totalling 13,002,700 exactly.**
+   ⚠ Per lesson #13 the currency question was answered FIRST and separately: **Pennsylvania did NOT redistrict
+   mid-decade.** Shapiro ruled it out publicly in Sept 2025, the path is structurally closed (a PA map passes as
+   ordinary legislation with a split legislature and a Democratic governor), and the Census CD118 and CD119
+   county-relationship files for PA are **byte-identical**. ⚠ A search result from `patriotfetch.com` (May 2026)
+   claiming a new 12R-5D Pennsylvania map is **AI slop** — both derivation agents independently identified and
+   discarded it. ⚠ The obvious `BlockAssign_ST42_PA.zip` encodes the OLD 18-district map and is unusable.
+   **THE AUTHORITATIVE CANDIDATE SOURCE WAS FINALLY REACHED, and it is worth reusing for every state:**
+   `pavoterservices.pa.gov` blocks curl/WebFetch behind an Incapsula wall **but loads in a real browser**, where the
+   page embeds the entire **1,295-record statewide 2026 general-election candidate list as a client-side DataTable**.
+   Two agents independently extracted the same dataset. It settled every disputed line at once: statewide there are
+   only **14 nomination-paper filers across all offices, and just TWO congressional** — Mahoney (PA-3, ballot label
+   literally "The Independent Party") and Tupone (PA-7, Green). Everything else a directory listed was NOT on the
+   ballot: Rahman/Remmey/Hoban (PA-1), Patel (PA-4), Armstrong and Schnell (PA-3), Cerroni (PA-6), Golden and
+   Granados (PA-7), Shimp (PA-10), **Wilder (PA-11)**, **Cody Thomas (PA-13)**, Halfhill (PA-14), Smith (PA-15),
+   Singelis (PA-16). ⚠ Two limits, both stated on the page: the database records only Approved/Withdrawn/Terminated,
+   so it cannot distinguish "never filed" from "filed and was rejected"; and **Aug 10 was itself the objection
+   deadline**, so the field is final only subject to an objection lodged that day. **Re-check PA-7's Tupone line.**
+   - **The whole statewide ballot is Governor + Lt. Gov.** No U.S. Senate (McCormick 2030, Fetterman 2028); AG,
+     Auditor General and Treasurer are presidential-year offices (2024 → 2028); PA is the only state that elects
+     appellate judges SOLELY in odd years, so no judicial race; and no statewide ballot question could be found.
+     ⚠ Garrity is the sitting Treasurer and need not resign — any vacancy falls in Jan 2027 and is filled by
+     gubernatorial appointment with Senate confirmation, NOT a special election. There is no Treasurer race.
+   - ⚠ **Salem Snow (PA-2) — the banked "did he withdraw?" question resolved: he DIED**, per an obituary published
+     Apr 21, 2026, a month before the primary. Sourced only to an obituary; he was never a nominee and is not
+     mentioned on the page.
+   - ⚠ **Do NOT print a 2026 Cook PVI** — that edition is paywalled. PA-5 D+15, PA-6 D+6, PA-9 R+19, PA-11 R+11,
+     PA-13 R+23, PA-14 R+17, PA-15 R+19, PA-16 R+11, PA-17 D+3 are all confirmed as the **2025 edition (Apr 3, 2025)**.
+   - Open items for a later pass: Q2 cash-on-hand for the PA-14/15/16/17 candidates (the FEC DEMO_KEY was rate-limited
+     for ~11 hours); PA-14's primary vote totals (two sources conflict, so none is printed); and Deluzio's positions
+     in his own words (both his House and campaign sites 403).
+
+   **The original Aug 3 banked research follows, preserved as the sourcing record.**
    A PA build was started on Aug 3 (17th state) and deliberately **not shipped**. Two independent reasons:
    - **The ballot field is not final.** Per the PA Dept. of State 2026 general-election calendar, **independent and
      minor-party nomination papers were due Aug 3, 2026** (moved from Aug 1, a Saturday) and **objections and

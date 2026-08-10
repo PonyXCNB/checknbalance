@@ -53,8 +53,11 @@
   .hero-lede { font-size: 17px; line-height: 1.65; color: var(--ink-soft); max-width: 62ch; margin: 24px auto 0; }
 
   .map-section { max-width: 1240px; margin: 0 auto; padding: 32px 32px 64px; }
-  .legend { display: flex; align-items: center; gap: 18px; font-size: 12px; color: var(--ink-soft); margin-bottom: 16px; justify-content: center; }
-  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend { display: flex; align-items: center; gap: 22px; font-size: 12px; color: var(--ink-soft); margin-bottom: 9px; justify-content: center; flex-wrap: wrap; }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .legend-count { color: var(--gold-deep); font-weight: 600; }
+  .legend-note { max-width: 660px; margin: 0 auto 18px; text-align: center; font-size: 11.5px;
+                 line-height: 1.6; color: var(--ink-soft); opacity: .82; }
   .legend-swatch i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; border: 1px solid rgba(0,0,0,.06); }
 
   .map-shell { background: var(--paper-pure); border: 1px solid var(--line); border-radius: 18px; padding: 8px; box-shadow: var(--shadow); position: relative; overflow: hidden; }
@@ -173,10 +176,14 @@
 
 <section class="map-section">
   <div class="legend">
-    <span class="legend-swatch"><i style="background:#B8893C;border-color:#8C6420"></i> Fully built (30 states — Georgia to Maine, all of New England, west through the Ohio Valley to Iowa and Nebraska, on to Colorado and New Mexico, plus Mississippi and Arkansas, the Dakotas&#39; southern half and Montana on the northern Plains, and Nevada, Oregon and Idaho in the West)</span>
+    <span class="legend-swatch"><i style="background:#B8893C;border-color:#8C6420"></i> Fully built <span class="legend-count">(31 states)</span></span>
     <span class="legend-swatch"><i style="background:#D9BE85;border-color:#B8893C"></i> Marquee races built</span>
     <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework</span>
   </div>
+  <p class="legend-note">The fully built states run from Georgia to Maine, taking in Pennsylvania and all of New
+    England, then west through the Ohio Valley to Iowa and Nebraska and on to Colorado and New Mexico — plus
+    Mississippi and Arkansas, the Dakotas&#39; southern half and Montana on the northern Plains, and Nevada,
+    Oregon and Idaho in the West.</p>
   <div class="map-shell">
     <div class="map-frame">
       <div class="map-loading" id="map-loading">Loading map of the United States…</div>
@@ -271,11 +278,11 @@
 <section class="roadmap">
   <h2>How <em>you</em> can help.</h2>
   <p>
-    Thirty states — an unbroken stretch from Georgia up the Atlantic coast through all six New England states,
-    then west through West Virginia, Ohio, Kentucky, Indiana and Illinois to Iowa and on to Nebraska, plus Mississippi
-    and Arkansas on the lower Mississippi River, Colorado and New Mexico in the Southwest, South Dakota and Montana
-    across the northern Plains, and Nevada, Oregon and Idaho in the West — are built out with verified
-    statewide and U.S. House races, and
+    Thirty-one states — an unbroken stretch from Georgia up the Atlantic coast through Pennsylvania and all six
+    New England states, then west through West Virginia, Ohio, Kentucky, Indiana and Illinois to Iowa and on to
+    Nebraska, plus Mississippi and Arkansas on the lower Mississippi River, Colorado and New Mexico in the Southwest,
+    South Dakota and Montana across the northern Plains, and Nevada, Oregon and Idaho in the West — are built out
+    with verified statewide and U.S. House races, and
     North Carolina goes deeper still, down to local contests like sheriff and school board.
     Every other state has a clickable starter map ready to be filled in with verified candidates, positions, and
     the supporter/opponent perspectives that make a ballot legible. Pick a state, click in, and you'll see either
@@ -331,7 +338,7 @@ const CAP = {
   "54":[-81.612,38.336],"55":[-89.384,43.074],"56":[-104.820,41.140]
 };
 // Fully built states — each has its own dedicated page (the gold tier)
-const BUILT = { "37": "nc.html", "45": "sc.html", "13": "ga.html", "51": "va.html", "24": "md.html", "10": "de.html", "34": "nj.html", "36": "ny.html", "44": "ri.html", "33": "nh.html", "09": "ct.html", "50": "vt.html", "23": "me.html", "25": "ma.html", "54": "wv.html", "39": "oh.html", "21": "ky.html", "18": "in.html", "19": "ia.html", "17": "il.html", "28": "ms.html", "05": "ar.html", "31": "ne.html", "35": "nm.html", "08": "co.html", "41": "or.html", "32": "nv.html", "46": "sd.html", "16": "id.html", "30": "mt.html" };
+const BUILT = { "37": "nc.html", "45": "sc.html", "13": "ga.html", "51": "va.html", "24": "md.html", "10": "de.html", "34": "nj.html", "36": "ny.html", "44": "ri.html", "33": "nh.html", "09": "ct.html", "50": "vt.html", "23": "me.html", "25": "ma.html", "54": "wv.html", "39": "oh.html", "21": "ky.html", "18": "in.html", "19": "ia.html", "17": "il.html", "28": "ms.html", "05": "ar.html", "31": "ne.html", "35": "nm.html", "08": "co.html", "41": "or.html", "32": "nv.html", "46": "sd.html", "16": "id.html", "30": "mt.html", "42": "pa.html" };
 // States with marquee 2026 races built out (partial tier)
 const PARTIAL = new Set(["11","12","01"]); // DC FL AL
 

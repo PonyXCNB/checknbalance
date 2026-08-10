@@ -1,0 +1,2312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pennsylvania Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every PA election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #pamap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">PA</div>
+      <div class="brand-text">
+        <span class="brand-name">Pennsylvania Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Pennsylvania <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 67 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">67</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>17</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>1</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Pennsylvania…</div>
+      <svg id="pamap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>PA Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">July 22, 2026</span><br>
+      Sources: Pennsylvania Department of State (pa.gov/agencies/vote), the 2022 Carter v. Chapman congressional plan and its published legal descriptions, U.S. Census Bureau 2020 P.L. 94-171 block data, FEC, Ballotpedia, Wikipedia, Cook Political Report, Sabato's Crystal Ball, Inside Elections, Spotlight PA, WESA, WHYY, WITF, PoliticsPA, The Philadelphia Inquirer, Lehigh Valley Public Media, AP.</div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every PA county + its primary US House district(s)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- (1) Every PA county -> its U.S. House district -----
+// `d` is the population-PLURALITY district and drives map shading. `ds` lists EVERY district
+// that overlaps the county, so a voter in a split county sees all of their real House races
+// (see CLAUDE.md lesson #12 — without it, a district that is nobody's plurality is unreachable).
+//
+// ⚠ WHICH MAP GOVERNS 2026 (CLAUDE.md lesson #13 — answered BEFORE deriving anything):
+// the Feb 23, 2022 Pennsylvania Supreme Court map from *Carter v. Chapman*. Pennsylvania did
+// NOT redistrict mid-decade: Gov. Shapiro ruled it out publicly in Sept 2025 ("It's not on the
+// table here in Pennsylvania"), and the path is structurally closed — a PA congressional map
+// passes as ordinary legislation, and the chambers are split with a Democratic governor. The
+// earliest any redraw could happen is 2027. Confirmed structurally as well: the Census CD118
+// and CD119 county-relationship files for PA are BYTE-IDENTICAL (84 county x district pairs),
+// so the boundaries did not move for the Congress elected in 2024.
+// ⚠ A search result from "patriotfetch.com" (May 2026) claiming Pennsylvania adopted a 12R-5D
+// map is contradicted by every credible source AND by the Census data. It was independently
+// identified as junk by both derivation passes and is NOT used.
+// ⚠ TRAP, confirmed: the obvious Census block-assignment file `BlockAssign_ST42_PA.zip` encodes
+// districts 01-18 — the OLD 18-seat map. Pennsylvania has had 17 seats since the 2020
+// apportionment. That file is unusable.
+//
+// DERIVED TWICE, INDEPENDENTLY, AND THE TWO AGREED EXACTLY:
+//   (a) the Commonwealth's own block-equivalency file for the adopted plan
+//       ("2022-02-25 Carter-adjusted", redistricting.state.pa.us) joined to the 2020 Census
+//       P.L. 94-171 block populations, aggregated to county x district; and
+//   (b) the PA Department of State's published VERBAL LEGAL DESCRIPTIONS of all 17 districts,
+//       machine-extracted rather than read by eye.
+// Both passes returned the same 14 split counties and the same plurality in every one.
+// ARITHMETIC PROOF: assigned populations sum to 764,864 / 764,865 / 764,866 for every one of
+// the 17 districts — the only three values possible, since 13,002,700 is not divisible by 17 —
+// and total exactly 13,002,700, Pennsylvania's 2020 population. Zero deviation.
+// ⚠ Note this proves TRANSCRIPTION, not CURRENCY; currency is established separately above.
+//
+// ⚠ PHILADELPHIA CONTAINS TWO ENTIRE DISTRICTS. PA-2 (764,865) and PA-3 (764,864) sit WHOLLY
+// inside Philadelphia County, and PA-5 reaches in for a further 74,068 people. PA-3 is the
+// plurality of NO county in Pennsylvania, so without `ds` it would be invisible to every
+// voter in the state — exactly the failure found in New York and Massachusetts. The county's
+// plurality is decided by ONE PERSON (764,865 vs 764,864), so treat the shading as a coin toss
+// and the `ds` list as the real answer.
+// ⚠ There is NO district wholly inside Allegheny County: PA-12 extends into Westmoreland and
+// PA-17 takes in all of Beaver.
+// ⚠ Chester County is legally split — the description puts two census blocks of Birmingham
+// Township in PA-5 — but that sliver holds SIX people and is a contiguity artifact, so Chester
+// is carded as single-district PA-6. That is the only overlap dropped; the next smallest kept
+// is Somerset's 1,503 people in PA-13.
+const COUNTIES = {
+  "42001":{n:"Adams",d:13},
+  "42003":{n:"Allegheny",d:12,ds:[12,17]},
+  "42005":{n:"Armstrong",d:15},
+  "42007":{n:"Beaver",d:17},
+  "42009":{n:"Bedford",d:13},
+  "42011":{n:"Berks",d:6,ds:[4,6,9]},
+  "42013":{n:"Blair",d:13},
+  "42015":{n:"Bradford",d:9},
+  "42017":{n:"Bucks",d:1},
+  "42019":{n:"Butler",d:16},
+  "42021":{n:"Cambria",d:13},
+  "42023":{n:"Cameron",d:15},
+  "42025":{n:"Carbon",d:7},
+  "42027":{n:"Centre",d:15},
+  "42029":{n:"Chester",d:6},
+  "42031":{n:"Clarion",d:15},
+  "42033":{n:"Clearfield",d:15},
+  "42035":{n:"Clinton",d:15},
+  "42037":{n:"Columbia",d:9},
+  "42039":{n:"Crawford",d:16},
+  "42041":{n:"Cumberland",d:10,ds:[10,13]},
+  "42043":{n:"Dauphin",d:10},
+  "42045":{n:"Delaware",d:5},
+  "42047":{n:"Elk",d:15},
+  "42049":{n:"Erie",d:16},
+  "42051":{n:"Fayette",d:14},
+  "42053":{n:"Forest",d:15},
+  "42055":{n:"Franklin",d:13},
+  "42057":{n:"Fulton",d:13},
+  "42059":{n:"Greene",d:14},
+  "42061":{n:"Huntingdon",d:13},
+  "42063":{n:"Indiana",d:14,ds:[14,15]},
+  "42065":{n:"Jefferson",d:15},
+  "42067":{n:"Juniata",d:13},
+  "42069":{n:"Lackawanna",d:8},
+  "42071":{n:"Lancaster",d:11},
+  "42073":{n:"Lawrence",d:16},
+  "42075":{n:"Lebanon",d:9},
+  "42077":{n:"Lehigh",d:7},
+  "42079":{n:"Luzerne",d:8,ds:[8,9]},
+  "42081":{n:"Lycoming",d:9,ds:[9,15]},
+  "42083":{n:"McKean",d:15},
+  "42085":{n:"Mercer",d:16},
+  "42087":{n:"Mifflin",d:13},
+  "42089":{n:"Monroe",d:8,ds:[7,8]},
+  "42091":{n:"Montgomery",d:4,ds:[1,4,5]},
+  "42093":{n:"Montour",d:9},
+  "42095":{n:"Northampton",d:7},
+  "42097":{n:"Northumberland",d:9},
+  "42099":{n:"Perry",d:13},
+  "42101":{n:"Philadelphia",d:2,ds:[2,3,5]},
+  "42103":{n:"Pike",d:8},
+  "42105":{n:"Potter",d:15},
+  "42107":{n:"Schuylkill",d:9},
+  "42109":{n:"Snyder",d:15},
+  "42111":{n:"Somerset",d:14,ds:[13,14]},
+  "42113":{n:"Sullivan",d:9},
+  "42115":{n:"Susquehanna",d:9},
+  "42117":{n:"Tioga",d:15},
+  "42119":{n:"Union",d:15},
+  "42121":{n:"Venango",d:15,ds:[15,16]},
+  "42123":{n:"Warren",d:15},
+  "42125":{n:"Washington",d:14},
+  "42127":{n:"Wayne",d:8},
+  "42129":{n:"Westmoreland",d:14,ds:[12,14]},
+  "42131":{n:"Wyoming",d:9},
+  "42133":{n:"York",d:10,ds:[10,11]},
+};
+
+// ----- (2) Statewide races -----
+// ⚠ PENNSYLVANIA HAS EXACTLY ONE STATEWIDE RACE IN 2026: Governor / Lieutenant Governor.
+// There is NO U.S. Senate contest — Pennsylvania's two seats are Class 1 (McCormick, next up
+// 2030) and Class 3 (Fetterman, next up 2028), and Class 2 is the class on the 2026 ballot.
+// The three row offices (Attorney General, Auditor General, Treasurer) are PRESIDENTIAL-year
+// offices, last elected in 2024 and next up in 2028. Pennsylvania is also the only state that
+// holds its judicial elections SOLELY in odd-numbered years, so no appellate seat or retention
+// question is on this ballot; the next statewide judicial elections are in 2027.
+// ⚠ Stacy Garrity is the sitting Treasurer and is NOT required to resign to run. If she wins,
+// the vacancy falls in January 2027 — after this election — and is filled by gubernatorial
+// appointment with State Senate confirmation, NOT by a special election. There is no Treasurer
+// race in 2026.
+// ⚠ Built Aug 10, 2026 — the deadline for objections to nomination papers and for withdrawals.
+// The field is final only as of the close of that window; re-check the Department of State's
+// certified candidate list. No statewide ballot question could be found for November 2026, and
+// none is carded rather than asserting either way.
+const STATEWIDE = [
+  // UPCOMING — 2026 General Election (Nov 3, 2026)
+  {
+    date: "Nov 3, 2026",
+    type: "upcoming",
+    scope: "State · Statewide",
+    office: "Governor and Lieutenant Governor of Pennsylvania",
+    note: "PENNSYLVANIA'S ONLY STATEWIDE RACE THIS YEAR. Governor and Lieutenant Governor run as a ticket in November but are nominated SEPARATELY in the primary: Josh Shapiro and Austin Davis were both renominated unopposed on May 19, 2026, while Stacy Garrity was unopposed for governor and Jason Richey won the Republican lieutenant-governor primary 65.6%–34.4% over John Ventre. Two minor-party tickets qualified by the Aug 3 nomination-paper deadline — Libertarian Ken Krawchuk / John Thomas with 5,649 signatures, and Green Tony Dastra / Craig Bolton with more than 5,000 across 14 counties. Rated Solid Democratic by Cook (Sept 11, 2025), Inside Elections (June 25, 2026) and RealClearPolitics (June 5, 2026); Sabato's Crystal Ball publishes its governor ratings only as an image and is therefore not quoted here [Verify]. ⚠ POLLING SPREAD: Franklin & Marshall had Shapiro 50–28 (June 8–14, 546 registered voters) while Quinnipiac had 53–40 — those describe meaningfully different races, so both are shown rather than averaged [Verify — Quinnipiac field dates could not be sourced]. Doug Mastriano ran a primary write-in campaign and is NOT a certified nominee. ⚠ Certified vote totals differ slightly from election-night counts; the Richey–Ventre raw totals in particular are unofficial [Verify against the Department of State canvass].",
+    candidates: [
+      {
+        name: "Josh Shapiro (incumbent)",
+        party: "D",
+        winner: false,
+        positions: [
+          "Record public-school funding — over $1B added, with $565M more proposed for FY2026–27",
+          "Withdrew Pennsylvania from RGGI in Nov 2025; proposes a state cap-and-trade needing legislative approval",
+          "No income or sales tax increase — taxes skill games and legal marijuana and closes corporate loopholes (~$1.7B/yr); backs a $15 minimum wage"
+        ],
+        differentiators: [
+          "Governor since January 2023; rebuilt the collapsed I-95 viaduct in weeks after the 2023 tanker fire",
+          "$38,315,400 cash on hand as of June 8, 2026 (Pennsylvania state filing — governors do not file with the FEC), after outraising Garrity roughly 10-to-1 in the first quarter",
+          "Dropped four-year-degree requirements for most state jobs; continued the death-penalty moratorium; set \"GRID\" standards requiring data centers to bring their own generation"
+        ],
+        supporters: [
+          "A \"get it done\" executive record — I-95 rebuilt in weeks, record school funding, permitting and licensing reform",
+          "His job approval reached 60% in an October 2025 Quinnipiac poll",
+          "Governs from the center in a state Trump carried in 2024"
+        ],
+        opponents: [
+          "Environmental groups say leaving RGGI walked back Pennsylvania's main climate commitment",
+          "Some Democrats objected to his early support for private-school vouchers and his centrist posture on policing",
+          "Republicans argue he is positioning for a 2028 presidential run rather than governing [Verify — this is his opponents' framing, not an established fact]"
+        ]
+      },
+      {
+        name: "Stacy Garrity",
+        party: "R",
+        winner: false,
+        positions: [
+          "School choice — charters, private options and scholarships, plus the federal private-school tax credit",
+          "Natural gas development as the main lever on energy costs; opposes RGGI",
+          "Lower senior property taxes, cut the income tax, end the inheritance tax for farmers, ~$300M/yr skill-game fee"
+        ],
+        differentiators: [
+          "State Treasurer since 2021 — beat an incumbent Democrat in 2020 and drew the largest vote total of any statewide candidate in 2024",
+          "Retired Army Reserve colonel, 30 years and three deployments, twice awarded the Bronze Star; would be Pennsylvania's first woman governor",
+          "$1,115,868 cash on hand as of June 8, 2026 — roughly 25-to-1 behind Shapiro",
+          "Endorsed by Donald Trump on Jan 27, 2026; the Republican Party of Pennsylvania endorsed her in September 2025"
+        ],
+        supporters: [
+          "The only Republican to have recently won statewide — she led the whole 2024 ballot in raw votes",
+          "As Treasurer she returned over $1B in unclaimed property, cut 529 fees by $22M and built a spending-transparency portal",
+          "Runs on cost of living — energy and taxes — the ground Republicans most want to contest"
+        ],
+        opponents: [
+          "She spoke at a Jan 5, 2021 rally questioning the 2020 election result, the day before the Capitol riot",
+          "The Shapiro campaign says she has shifted her position on school choice",
+          "A roughly 25-to-1 money gap is the most-cited reason no rater treats the race as competitive"
+        ]
+      },
+      {
+        name: "Ken Krawchuk",
+        party: "L",
+        winner: false,
+        positions: [
+          "Privatize the public schools (his own framing)",
+          "Eliminate property taxes, financed by that privatization (his own framing)",
+          "Veto all tax increases and pork-barrel spending (his own framing)"
+        ],
+        differentiators: [
+          "His fourth run for governor — 1998, 2002 and 2018, when he took 49,229 votes",
+          "Career computer programmer since 1970 and founder of an IT consulting firm",
+          "Qualified with 5,649 signatures on nomination papers; running mate John Thomas was the 2024 Libertarian U.S. Senate nominee"
+        ],
+        supporters: [
+          "Gives voters who reject both major parties a ballot line with a fully published platform [Verify]",
+          "Has run statewide repeatedly and knows Pennsylvania's demanding ballot-access process [Verify]"
+        ],
+        opponents: [
+          "No reportable fundraising or organized campaign coverage could be located [Verify]",
+          "Privatizing the public schools sits far outside where Pennsylvania opinion has been [Verify — structural argument]",
+          "His best prior showing was about 49,000 votes in a state that cast over five million [Verify]"
+        ]
+      },
+      {
+        name: "Tony Dastra",
+        party: "G",
+        winner: false,
+        positions: [
+          "No more data centers (his own framing)",
+          "Eliminate working-class property taxes and cut the gas tax (his own framing)",
+          "Expand municipal powers; break up healthcare monopolies (his own framing)"
+        ],
+        differentiators: [
+          "29, of Lancaster; communications and outreach coordinator for Lancaster Township public works",
+          "Ran for mayor of Lancaster twice — 2017 as an independent and 2025 as a Green",
+          "Endorsed by the Green Party of Pennsylvania state committee on March 8, 2026; qualified with 5,000+ signatures from 14 counties"
+        ],
+        supporters: [
+          "The only candidate running explicitly against data-center expansion, a live fight in several Pennsylvania counties [Verify]",
+          "A young local-government worker rather than a career politician [Verify]"
+        ],
+        opponents: [
+          "No reportable fundraising could be located [Verify]",
+          "He has not won either of his two prior local races [Verify]",
+          "No Green statewide ticket has come close in Pennsylvania [Verify — structural argument]"
+        ]
+      }
+    ]
+  },
+
+  // PAST — history cards
+  {
+    date: "Nov 8, 2022",
+    type: "past",
+    scope: "State · Statewide",
+    office: "Governor of Pennsylvania (2022)",
+    note: "Shapiro beat state Sen. Doug Mastriano 3,031,137 (56.49%) to 2,238,477 (41.71%) — a margin of 14.78 points, or 792,660 votes, on 60.5% turnout. Reported as the largest margin for a non-incumbent Pennsylvania gubernatorial candidate since 1946. ⚠ The 55.2%–43.0% figures still circulating from election night are an INCOMPLETE count; these are the certified results.",
+    candidates: [
+      { name: "Josh Shapiro", party: "D", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] },
+      { name: "Doug Mastriano", party: "R", winner: false, positions: [], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 5, 2024",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "U.S. Senate — Pennsylvania (2024)",
+    note: "The closest Senate race of the 2024 cycle and the closest in Pennsylvania since the 17th Amendment: Dave McCormick (R) 3,399,295 (48.82%) beat incumbent Bob Casey Jr. (D) 3,384,180 (48.60%) by 15,115 votes — 0.22 points — which triggered an automatic statewide recount. McCormick's term runs to January 2031, which is why there is no Pennsylvania Senate race in 2026.",
+    candidates: [
+      { name: "Dave McCormick", party: "R", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] },
+      { name: "Bob Casey Jr. (incumbent)", party: "D", winner: false, positions: [], differentiators: [], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Nov 5, 2024",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "President — Pennsylvania (2024)",
+    note: "Donald Trump (R) carried Pennsylvania 3,543,308 (50.37%) to Kamala Harris's 3,423,042 (48.66%) — 1.71 points, or 120,266 votes. Pennsylvania's 19 electoral votes were the tipping-point state of the 2024 election, which is the backdrop for every competitive U.S. House race on this page.",
+    candidates: [
+      { name: "Donald Trump", party: "R", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] },
+      { name: "Kamala Harris", party: "D", winner: false, positions: [], differentiators: [], supporters: [], opponents: [] }
+    ]
+  }
+];
+
+// ----- (3) U.S. House races, all 17 districts -----
+// ⚠ THE CANDIDATE FIELD ON THIS PAGE COMES FROM THE PENNSYLVANIA DEPARTMENT OF STATE'S OWN
+// 2026 GENERAL ELECTION CANDIDATE DATABASE (1,295 records statewide), retrieved Aug 10, 2026.
+// That database is the authority here, and it contradicts every candidate directory on several
+// points. Statewide it records just 14 nomination-paper ("Paper") filers across ALL offices, and
+// only TWO of those are congressional: Dennis Joseph Mahoney in PA-3 and Andrew Tupone in PA-7.
+// Paper filers DO appear in the database once approved, so an absence is real evidence, not a gap.
+// Directory-listed names that the Commonwealth has NO record of, and which are therefore NOT
+// carded: Reza Rahman, Jamie Frost Remmey and John Hoban (PA-1); Milan Patel (PA-4); Sheila
+// Armstrong and Alex Schnell (PA-3); Philip Cerroni (PA-6); Frank Golden and Ramon Granados
+// (PA-7); Jeffrey Wilder (PA-11); Cody Thomas (PA-13); Adam Halfhill (PA-14); Jacob Smith (PA-15);
+// Nicholas Singelis II (PA-16); Fogel Shimp (PA-10).
+// ⚠ TWO LIMITS ON THAT SOURCE, both stated on the affected pages: the database records only
+// Approved / Withdrawn / Terminated, so it cannot distinguish "never filed" from "filed and was
+// rejected"; and AUG 10, 2026 — the day this page was built — is itself the deadline for
+// objections to nomination papers. Treat the field as final subject to any objection filed that day.
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — PA District 1",
+    region: "All of Bucks County plus a sliver of Montgomery County (Cook PVI D+1, 2025 edition) — one of only three districts in the country that Harris carried while electing a Republican",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ THE MOST-WATCHED CROSSOVER SEAT IN PENNSYLVANIA. Brian Fitzpatrick has held Bucks County for five terms by winning voters who vote Democratic at the top of the ticket — Harris carried the district about 50%–49% in 2024 while he won it by roughly 13 points. Democrats nominated Bucks County Commissioner Bob Harvie, who won the primary 65.1%–34.9% over Lucia Simonelli. Rated Likely Republican by Cook, LEAN REPUBLICAN by Inside Elections (moved from Likely R in Dec 2025), Leans Republican by Sabato and Lean Republican by Decision Desk HQ (July 14, 2026) — the most competitive Republican-held seat in the state after PA-7 and PA-8 [Verify — every rater's own page blocks automated retrieval, so these are read through citing tables; rating DATES conflict between sources and are best read as each rater's ratings-set date]. No public polling of this race was found. No minor-party or independent candidate qualified.",
+        candidates: [
+          { name: "Brian Fitzpatrick (incumbent)", party: "R", winner: false,
+            positions: [
+              "Protecting Medicare and Social Security (his campaign site)",
+              "A health care system that works for everyone (his campaign site)",
+              "Protecting the environment and clean water (his campaign site)"
+            ],
+            differentiators: [
+              "Ranked FIRST on Georgetown's Lugar Bipartisan Index and co-chairs the Problem Solvers Caucus",
+              "About $6.35M cash on hand as of July 1, 2026, on $6.73M raised this cycle (FEC) — roughly an 8-to-1 advantage",
+              "A 74% lifetime League of Conservation Voters score and an \"F\" from the NRA's political arm — an unusual profile for a House Republican"
+            ],
+            supporters: [
+              "Objectively the most bipartisan member of the House by the standard published index",
+              "He wins a district Harris carried, by 13 points, because voters trust him personally",
+              "He worked to extend Affordable Care Act subsidies rather than following his party"
+            ],
+            opponents: [
+              "The DCCC's line is that he \"won't stand up to Trump when it matters most\"",
+              "Democrats charge that he voted for higher costs and health-care cuts ⚠ his votes on the 2025 tax bill are genuinely disputed between two outlets — a procedural vote and final passage may both be true — and no claim is made here either way [Verify]",
+              "He has not held in-person town halls for several years, preferring prescreened telephone events"
+            ] },
+          { name: "Bob Harvie", party: "D", winner: false,
+            positions: [
+              "Raise the federal minimum wage and back union workers (his campaign site)",
+              "Repeal the Trump-era tariffs (his campaign site)",
+              "Expand affordable health care (his campaign site)"
+            ],
+            differentiators: [
+              "A high school social studies teacher for 26 years before politics",
+              "$794,921 cash on hand as of June 30, 2026, on $2.01M raised (FEC) — about eight times behind",
+              "Elected Bucks County Commissioner in 2019 as part of the county's first Democratic majority in some 40 years, re-elected in 2023, and now chair"
+            ],
+            supporters: [
+              "He has won countywide repeatedly in a county Trump carried, so his crossover appeal is already proven",
+              "Democrats had a strong 2025 in Bucks County",
+              "He runs on a \"New Fair Deal for Working Families\" rather than national culture fights"
+            ],
+            opponents: [
+              "He is outgunned roughly eight to one on cash",
+              "The district has rejected Democratic challengers to Fitzpatrick by double digits three cycles running",
+              "Cook still rates it Likely Republican — the toughest of the Democrats' Pennsylvania targets"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Fitzpatrick won a fifth term with 261,390 votes (56.4%) to Ashley Ehasz's 202,042 (43.6%) — while Kamala Harris was narrowly carrying the same district.",
+        candidates: [
+          { name: "Brian Fitzpatrick", party: "R", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] },
+          { name: "Ashley Ehasz", party: "D", winner: false, positions: [], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  2: {
+    name: "U.S. House — PA District 2",
+    region: "Entirely inside Philadelphia — the Northeast, the River Wards, Center City and parts of North Philadelphia east of Broad Street (Cook PVI D+19, 2025 edition)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ THIS DISTRICT SITS WHOLLY INSIDE PHILADELPHIA COUNTY — one of two that do. Brendan Boyle, the ranking Democrat on the House Budget Committee, is seeking a seventh term; both nominees were unopposed in the primary. Rated Solid or Safe Democratic by Cook, Sabato and Inside Elections. No minor-party or independent candidate qualified.",
+        candidates: [
+          { name: "Brendan Boyle (incumbent)", party: "D", winner: false,
+            positions: [
+              "Opposes cuts to Philadelphia children's-hospital and university health research funding (Aug 2026 statements)",
+              "Defends Medicare and Medicaid, which he says are \"under attack like never before\"",
+              "Pressed the Treasury Secretary on the failure to lower costs for working families (June 2026)"
+            ],
+            differentiators: [
+              "RANKING MEMBER of the House Budget Committee and dean of Pennsylvania's Democratic delegation",
+              "$5,560,518 cash on hand as of June 30, 2026 (FEC)",
+              "The son of an Irish immigrant — his father a transit janitor, his mother a school crossing guard — and the first in his family to attend college"
+            ],
+            supporters: [
+              "One of the most senior budget posts held by any Pennsylvanian, used to defend Medicare and the city's research funding",
+              "Visible local work, including a bill to prevent post office closures after a threat to the Fishtown branch",
+              "He convened Congress at Independence Hall for the nation's 250th anniversary"
+            ],
+            opponents: [
+              "After six terms he embodies the Philadelphia Democratic establishment his challenger runs against",
+              "His opponent argues longstanding leadership has left neighbourhood families struggling",
+              "A $5.6M war chest against an opponent who has filed no financial report is itself the argument that the seat is not contested [Verify — structural argument; no named critic was found]"
+            ] },
+          { name: "Jessica Arriaga", party: "R", winner: false,
+            positions: [
+              "Federal resources for local police targeting repeat violent offenders (her campaign site)",
+              "Cut taxes on working families and regulation on small businesses (her campaign site)",
+              "Federal support for career and technical education and school safety (her campaign site)"
+            ],
+            differentiators: [
+              "More than 20 years as an operating room technician",
+              "Republican ward leader for Philadelphia's 37th Ward",
+              "⚠ She has filed NO FEC financial report at all — only organisational paperwork. That is the absence of any report, which is different from a report showing zero [Verify]"
+            ],
+            supporters: [
+              "A Puerto Rican mother from North Philadelphia offering two decades of frontline health-care work rather than a political résumé",
+              "A sitting ward leader with real neighbourhood organising experience",
+              "Endorsed by the Pennsylvania Young Republicans"
+            ],
+            opponents: [
+              "She faces a district the incumbent carried by about 43 points, at D+19",
+              "No FEC financial report could be located, so no funded operation is documented",
+              "Her positions are thematic rather than tied to specific bills or votes [Verify — structural argument]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Boyle won with 193,691 votes (71.4%) to Aaron Bashir's 77,355 (28.5%), with 408 write-ins. ⚠ The 71.1% figure in circulation is the election-night unofficial count and 71.5% is the two-party share; 71.4% is the certified all-votes figure. ⚠ One reference work names the 2024 Republican \"Haroon Bashir\" and files the result under the wrong district; every other source says Aaron Bashir.",
+        candidates: [
+          { name: "Brendan Boyle", party: "D", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] },
+          { name: "Aaron Bashir", party: "R", winner: false, positions: [], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  3: {
+    name: "U.S. House — PA District 3",
+    region: "Entirely inside Philadelphia — West and Northwest Philadelphia, North Philadelphia west of Broad, most of Center City and South Philadelphia (Cook PVI D+40, 2025 edition) — the most Democratic district in the United States",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠⚠ AN OPEN SEAT, THE SAFEST DEMOCRATIC DISTRICT IN THE COUNTRY, AND A DISTRICT THAT IS INVISIBLE ON A COUNTY MAP. Dwight Evans retired after running unopposed in 2024; PA-3 lies wholly within Philadelphia and is the population plurality of NO county, so it is reachable here only because Philadelphia carries every district that overlaps it. State Rep. Chris Rabb won the May 19 Democratic primary with 44.6% (65,782 votes) over state Sen. Sharif Street 29.3%, Dr. Ala Stanford 24.0% and Shaun Griffith 2.1%. ⚠ NO REPUBLICAN IS ON THE BALLOT — one attempted to file and did not qualify, and the Republican primary drew only 519 write-ins. The one alternative is Dennis Joseph Mahoney, whose ballot label is literally \"The Independent Party\"; he is ONE OF ONLY TWO congressional nomination-paper filers approved statewide, and the Commonwealth approved him on July 30, 2026. Rated Solid or Safe Democratic by all four raters [Verify — read through citing tables].",
+        candidates: [
+          { name: "Chris Rabb", party: "D", winner: false,
+            positions: [
+              "Medicare for All and protecting reproductive freedom (his platform)",
+              "Guarantee homes for everyone through a Housing First model (his platform)",
+              "Universal basic income and a living wage for all (his platform)"
+            ],
+            differentiators: [
+              "A five-term state representative who authored a death-penalty repeal bill, an open-primaries bill and a 2024 anti-greenwashing measure described as the first of its kind nationally",
+              "⚠ Only $21,452 cash on hand and $42,000 of committee debt as of June 30, 2026, on $1.33M raised — his campaign disclosed that a former treasurer allegedly made more than $161,000 in unauthorised withdrawals",
+              "Endorsed by the Philadelphia DSA, the Working Families Party, Justice Democrats, the Sunrise Movement and the Philadelphia Inquirer, plus a range of national progressive members of Congress"
+            ],
+            supporters: [
+              "He won a decisive 15-point plurality against two better-known officeholders while being outspent by opposing super PACs",
+              "He has a record of authored legislation rather than only advocacy",
+              "He is independent of the Philadelphia Democratic machine"
+            ],
+            opponents: [
+              "Reporting says he has consistently clashed with the local Democratic party, and that the governor declined to endorse him",
+              "A political consultant argued he could needlessly attract the attention of the Trump administration, and questioned his emphasis on Gaza — Rabb has called Israel's actions a genocide",
+              "A December 2025 social-media repost promoting false conspiracy theories drew criticism; he disavowed it and attributed it to a former staffer"
+            ] },
+          { name: "Dennis Joseph Mahoney", party: "I", winner: false,
+            positions: [
+              "End the benefits cliff — phase benefits out gradually rather than all at once (his campaign site)",
+              "Treat housing as workforce infrastructure and reform tangled property titles (his campaign site)",
+              "Restore the Child Tax Credit and protect food assistance (his campaign site)"
+            ],
+            differentiators: [
+              "One of only TWO congressional nomination-paper filers approved statewide — he qualified by gathering signatures, approved July 30, 2026",
+              "$8,252 cash on hand as of June 30, 2026 on $10,800 raised, $1,000 of it his own — about 0.8% of his opponent's receipts",
+              "⚠ His ballot label is \"The Independent Party,\" a named party line, not the generic independent designation. His site says endorsements are forthcoming and lists none"
+            ],
+            supporters: [
+              "He qualified the hard way, by petition, and is the only alternative on a ballot where no Republican filed",
+              "His platform targets concrete service-delivery problems — benefit cliffs, property titles — rather than national ideological fights"
+            ],
+            opponents: [
+              "⚠ No sourced criticism of him could be located at all — the arguments below are structural [Verify]",
+              "About $8,300 on hand against a D+40 baseline, with no listed endorsements and no detectable news coverage",
+              "No independent has ever come close in a district this lopsided [Verify — structural argument]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Dwight Evans was re-elected unopposed with 340,223 votes (100%). His retirement is what opened the seat.",
+        candidates: [
+          { name: "Dwight Evans", party: "D", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  4: {
+    name: "U.S. House — PA District 4",
+    region: "Most of Montgomery County plus most of Berks County northeast of Reading (Cook PVI D+8, 2025 edition)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Madeleine Dean, an impeachment manager in Trump's second impeachment trial, is seeking a fifth term and was unopposed for renomination, as was Republican Aurora Stuski. Harris carried the district about 57%–42%. Rated Solid or Safe Democratic by all four raters [Verify — read through citing tables]. ⚠ A reported independent, Milan Patel, DID NOT QUALIFY — the Commonwealth has no record of him, though he is a real FEC filer who reported no money. A second Republican, Ismaine Ayouaz, also failed to qualify.",
+        candidates: [
+          { name: "Madeleine Dean (incumbent)", party: "D", winner: false,
+            positions: [
+              "Every person has a right to affordable, accessible, quality health care (her campaign site)",
+              "Confront gun violence as a public health crisis (her campaign site)",
+              "Protect the environment, air, water and land (her campaign site)"
+            ],
+            differentiators: [
+              "Sits on House Appropriations and Foreign Affairs; chairs the Bipartisan Fentanyl Prevention Caucus",
+              "$1,184,807 cash on hand as of June 30, 2026 (FEC)",
+              "Served as an impeachment manager in the second Trump impeachment trial in January 2021, after six years in the state House"
+            ],
+            supporters: [
+              "A senior appropriator with Foreign Affairs experience gives a suburban district real institutional leverage",
+              "Bipartisan work on fentanyl prevention and addiction recovery",
+              "A broad coalition — the state AFL-CIO, Planned Parenthood Action Fund, Giffords, the League of Conservation Voters and the Sierra Club"
+            ],
+            opponents: [
+              "Her challenger's framing is that Washington needs integrity and transparency and should \"answer to the people again\"",
+              "Republicans argue an eight-year incumbent in a D+8 seat has faced little competitive pressure",
+              "⚠ No specific attack on her voting record could be sourced from any opponent [Verify]"
+            ] },
+          { name: "Aurora Stuski", party: "R", winner: false,
+            positions: [
+              "Fight inflationary spending and support small businesses (her campaign site)",
+              "Enforce immigration law and stop trafficking (her campaign site)",
+              "Back law enforcement and protect neighbourhoods and local schools (her campaign site)"
+            ],
+            differentiators: [
+              "Founded and owns a jewellery appraisal business established in 1989, doing expert-witness and estate valuation work",
+              "A West Norriton resident since 1987; a Graduate Gemologist and county Republican area vice chair",
+              "⚠ No processed FEC financial total is on file for her committee [Verify — this may reflect a processing lag rather than no fundraising]"
+            ],
+            supporters: [
+              "Nearly 40 years running her own small business in the district she wants to represent",
+              "A deep precinct-level organising base as a local party chair",
+              "She campaigns on specific local grievances including data-center siting and a proposed water-utility merger"
+            ],
+            opponents: [
+              "She is running in a seat rated Solid or Safe Democratic against an incumbent who won by 18.2 points",
+              "No FEC financial report is on file against an incumbent holding $1.18M [Verify]",
+              "She has not previously won elective office beyond party positions [Verify — structural argument]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Dean won a fourth term with 269,066 votes (59.1%) to David Winkler's 186,457 (40.9%).",
+        candidates: [
+          { name: "Madeleine Dean", party: "D", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] },
+          { name: "David Winkler", party: "R", winner: false, positions: [], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  5: {
+    name: "U.S. House — PA District 5",
+    region: "All of Delaware County plus southwest Philadelphia, part of Montgomery County (Norristown, Narberth, Bridgeport, parts of Lower and Upper Merion) and one unincorporated Chester County area (Cook PVI D+15, 2025 edition)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Four-term Democrat Mary Gay Scanlon is running; the seat is not open. ⚠ BOTH PRIMARIES WERE UNOPPOSED — Scanlon took 100% and Manganaro 100%. Earlier reporting that Manganaro beat Joshua Brown in a contested primary is wrong: Brown is a real FEC filer who reported no cash and never appeared on the ballot, the declared-versus-qualified confusion this site sees constantly. No independent or minor-party candidate qualified. Rated Solid Democratic by Cook (Sept 11, 2025) and Inside Elections (Sept 11, 2025) and Safe Democratic by Sabato (Apr 10, 2025) [Verify — read through a citing table; all three raters' own pages block automated retrieval]. No public polling of this race was found.",
+        candidates: [
+          { name: "Mary Gay Scanlon (incumbent)", party: "D", winner: false,
+            positions: [
+              "Stricter firearms restrictions [Verify]",
+              "Health-care and public-education access — sponsored the Take Back Our Hospitals Act (Mar 2026)",
+              "Voting rights and constitutional oversight"
+            ],
+            differentiators: [
+              "Ranking Member on the Judiciary Subcommittee on the Constitution and on a Rules subcommittee",
+              "$448,590 cash on hand as of June 30, 2026 (FEC) — about a 76-to-1 edge over her opponent",
+              "Education Law Center and Ballard Spahr lawyer; president of the Wallingford-Swarthmore school board 2009–11"
+            ],
+            supporters: [
+              "A senior Judiciary and Rules Democrat with real committee leverage",
+              "Four straight wins at around 65% in this district",
+              "A public-interest legal and elected school-board record before Congress"
+            ],
+            opponents: [
+              "Her opponent blames incumbents for inflation driven by what he calls default spending",
+              "He argues the Affordable Care Act is bureaucratic and its results poor",
+              "A D+15 seat insulates her from accountability [Verify — structural argument; no PA-5-specific published criticism was found]"
+            ] },
+          { name: "Nick Manganaro", party: "R", winner: false,
+            positions: [
+              "Cut federal overspending — he argues default spending drove inflation (his own framing)",
+              "All-of-the-above energy including nuclear; critical of RGGI (his own framing)",
+              "Opposes Affordable Care Act mandates (his own framing)"
+            ],
+            differentiators: [
+              "Signed the U.S. Term Limits pledge on May 5, 2026 — the first in this race to do so",
+              "69, of Haverford; Reed College mathematics and an MIT finance degree; BlackRock, MacKay Shields and Mariner, then founded a property firm in 2017",
+              "$9,296 raised and $5,930 cash on hand as of June 30, 2026 (FEC); ran for Radnor Township Treasurer in 2025"
+            ],
+            supporters: [
+              "Decades of institutional risk and finance work bear directly on federal budgeting",
+              "Signed a binding term-limits pledge rather than only talking about reform",
+              "No Washington voting record to defend"
+            ],
+            opponents: [
+              "About $9,300 raised against roughly $449,000 banked is not a funded campaign",
+              "His campaign site still read \"Launching Soon\" months after the primary [Verify]",
+              "No Republican has come within 30 points of this seat since the 2022 redraw [Verify — structural argument]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Scanlon won a fourth term with 267,754 votes (65.3%) to Alfeia DeVaughn-Goodwin's 142,355 (34.7%). ⚠ Some sources print 65.1%, most likely a write-in denominator difference. ⚠ David Galluch was the 2022 Republican nominee here, NOT the 2024 or 2026 one — a stale PoliticsPA page still says otherwise.",
+        candidates: [
+          { name: "Mary Gay Scanlon", party: "D", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] },
+          { name: "Alfeia DeVaughn-Goodwin", party: "R", winner: false, positions: [], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  6: {
+    name: "U.S. House — PA District 6",
+    region: "All of Chester County plus 19 southeastern Berks municipalities including the city of Reading, West Reading, Wyomissing, Shillington and Birdsboro (Cook PVI D+6, 2025 edition)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Chrissy Houlahan (D) is seeking a fifth term; the seat is not open, and she was unopposed for renomination. ✅ THE DISTRICT'S COMPOSITION IS NOW SETTLED after two conflicting descriptions: it is ALL of Chester County plus 19 Berks municipalities — not \"most of Chester,\" and not \"Chester plus Reading only.\" Chester County's own 2026 ballot listing contains exactly ONE congressional contest, which independently proves the whole county sits in this district. Rated Solid Democratic by Cook and Inside Elections (both Sept 11, 2025 — the shared date is genuine, not a table artifact) and Safe Democratic by Sabato (Apr 10, 2025) [Verify — read through a citing table]. ⚠ A third name, Green filer Philip Vincent Cerroni, is NOT carded: he reported no financial activity, a candidate directory flags him as not certified by any election authority, and Chester County's post-deadline list of Aug 6, 2026 shows only two names.",
+        candidates: [
+          { name: "Chrissy Houlahan (incumbent)", party: "D", winner: false,
+            positions: [
+              "Medicare drug-price negotiation and a public option; opposes single-payer",
+              "Supports the Equality Act",
+              "Hawkish on Ukraine — pushed to send F-16s"
+            ],
+            differentiators: [
+              "Air Force veteran, active duty 1989–91 and Reserve to 2004, retiring as a captain; Stanford engineering and an MIT master's",
+              "$4,037,759 cash on hand as of June 30, 2026 (FEC) — roughly 19-to-1 ahead",
+              "Chief operating officer of AND1 and of B Lab, and a Teach for America teacher; sits on Armed Services and Intelligence"
+            ],
+            supporters: [
+              "A veteran, engineer and operator — a profile that fits a defense-heavy district",
+              "Problem Solvers Caucus membership is evidence of real bipartisan work",
+              "Seniority on both Armed Services and Intelligence"
+            ],
+            opponents: [
+              "A safe-seat incumbent who votes with leadership on the big items [Verify]",
+              "Four terms without facing a competitive race",
+              "Affordability in Chester and Berks has worsened on her watch [Verify — structural argument]"
+            ] },
+          { name: "Marty Young", party: "R", winner: false,
+            positions: [
+              "A campaign built on three fixes — health care, housing and personal debt (his own framing)",
+              "All-of-the-above energy focused on reliability and affordability (his own framing) [Verify]",
+              "Backs term limits and a ban on lawmaker stock trading (his own framing) [Verify]"
+            ],
+            differentiators: [
+              "West Point class of 1993 and an infantry officer until injuries; returned after 9/11 as an Army chaplain and is now a lieutenant colonel",
+              "Senior managing director at a restructuring firm; a Georgia Tech master's in operations research and an NYU Stern MBA",
+              "$411,271 raised including $75,000 of his own money and a $25,000 loan, with $213,449 cash on hand as of June 30, 2026 (FEC)"
+            ],
+            supporters: [
+              "A turnaround specialist is a fitting profile for federal dysfunction",
+              "Served as both an infantry officer and a chaplain — an unusual double record",
+              "His cost-of-living focus targets real pressure in Reading and Chester County"
+            ],
+            opponents: [
+              "He has never held elected office",
+              "Roughly 19-to-1 behind on cash on hand",
+              "His campaign material is thin on policy detail behind the slogans [Verify — structural argument; the money gap is directly observed]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Houlahan won 235,625 (56.2%) to Neil Young Jr.'s 183,638 (43.8%). ⚠ THIS IS NOT A REMATCH — the 2026 Republican, Marty Young, is a DIFFERENT PERSON from 2024 nominee Neil Young Jr. Beware also an automated document extraction that renders the 2026 nominee as \"Marty Yoder\"; the official record says Young.",
+        candidates: [
+          { name: "Chrissy Houlahan", party: "D", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] },
+          { name: "Neil Young Jr.", party: "R", winner: false, positions: [], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  7: {
+    name: "U.S. House — PA District 7",
+    region: "The Lehigh Valley — all of Carbon, Lehigh and Northampton counties plus western Monroe (Allentown, Bethlehem, Easton). Cook PVI R+1 [Verify — cited without an edition year]",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ ONE OF THE CLOSEST HOUSE SEATS IN THE COUNTRY, AND A TOSS UP BY ALL THREE RATERS (Cook, Sabato and Inside Elections). Freshman Republican Ryan Mackenzie took the seat in 2024 by 4,062 votes, 50.5%–49.5%, unseating three-term Democrat Susan Wild; Decision Desk HQ moved it to Lean Democratic on July 14, 2026. Democrat Bob Brooks, a retired Bethlehem firefighter, won a four-way May 19 primary with about 41.4% and has been on the DCCC's Red to Blue list since May 4, 2026. ⚠⚠ A DISPUTED THIRD CANDIDACY IS UNRESOLVED AS THIS PAGE PUBLISHES: Andrew Tupone filed Aug 4 as a GREEN with about 9,000 signatures, but he was a registered Republican from 2008 until February 2026, switched to Democrat and then to Green in April, and was the 2021 REPUBLICAN nominee for a Northampton County magisterial seat. The Green Party of Pennsylvania disavows him — a spokesman called him a \"faux Green Party candidate\" — and of 22 listed circulators reportedly only one is a Pennsylvanian. Brooks' campaign calls it a scheme to split the vote; Tupone denies paying or coordinating with anyone. ⚠ THE COMMONWEALTH'S OWN CANDIDATE DATABASE CONFIRMS HE QUALIFIED — he is one of only TWO congressional nomination-paper filers approved statewide. He is described here rather than carded because no policy platform for him could be sourced anywhere and his candidacy is contested; the deadline to object to nomination papers was Aug 10, 2026, the day this page was built, and no ruling could be confirmed [Verify]. Two further names that appear in one candidate directory, Frank Golden and Ramon Granados, have NO record with the Commonwealth and are NOT on the ballot. Spending has already passed $9.3M, beating the last midterm's full-cycle total.",
+        candidates: [
+          { name: "Ryan Mackenzie (incumbent)", party: "R", winner: false,
+            positions: [
+              "Runs on his record of tax relief",
+              "Require E-Verify for federal contractors (H.R. 2641)",
+              "Charter school expansion through the FLEX Act"
+            ],
+            differentiators: [
+              "Twelve years in the PA House; chaired Labor and Industry for the GOP and Government Oversight, and was a deputy majority whip",
+              "$2,938,717 cash on hand as of June 30, 2026 on $4.36M raised (FEC) — nearly a 3-to-1 edge",
+              "He and his mother Milou were the first mother-and-son pair to serve in the PA House at the same time; NYU finance and a Harvard MBA"
+            ],
+            supporters: [
+              "He won a seat Democrats had held, and brings a 12-year Harrisburg record on labor and oversight",
+              "Enters the fall with nearly three times his opponent's cash on hand",
+              "His campaign points to a constituent-services record"
+            ],
+            opponents: [
+              "He won by a single point in a presidential year and now faces a worse midterm environment",
+              "He voted for budget cuts to SNAP nutrition programs [Verify]",
+              "Critics say he votes the party line with no notable breaks [Verify]"
+            ] },
+          { name: "Bob Brooks", party: "D", winner: false,
+            positions: [
+              "Medicare for All",
+              "Pro-union legislation",
+              "Cost of living in the Lehigh Valley"
+            ],
+            differentiators: [
+              "Retired after about 20 years as a City of Bethlehem firefighter; president of the Pennsylvania Professional Fire Fighters Association",
+              "$1,018,423 cash on hand as of June 30, 2026 on $2.39M raised — he outraised the incumbent nearly 2-to-1 in the second quarter (FEC)",
+              "Endorsed across the party's range — Bernie Sanders, Elizabeth Warren, Gov. Josh Shapiro and Pete Buttigieg; no college degree, and campaigns on growing up on food assistance"
+            ],
+            supporters: [
+              "A union firefighter is the authentic working-class profile Democrats lost this seat without",
+              "He outraised a sitting incumbent nearly 2-to-1 in the second quarter",
+              "He unified a party that ranges from Sanders to Shapiro behind one first-time candidate"
+            ],
+            opponents: [
+              "A first-time candidate with no legislative record",
+              "He enters the fall with about a third of the incumbent's cash",
+              "Medicare for All is a hard sell in an R+1 swing seat [Verify — structural argument]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Ryan Mackenzie (R) unseated three-term Democrat Susan Wild by 4,062 votes, 50.5%–49.5% — one of the closest House results in the country.",
+        candidates: [
+          { name: "Ryan Mackenzie", party: "R", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] },
+          { name: "Susan Wild (incumbent)", party: "D", winner: false, positions: [], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  8: {
+    name: "U.S. House — PA District 8",
+    region: "Northeastern Pennsylvania — all of Lackawanna, Wayne and Pike counties plus parts of Luzerne and Monroe (Scranton, Wilkes-Barre, the Poconos). Cook PVI R+4 [Verify — cited without an edition year]",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ A TOSS UP BY ALL THREE RATERS. Freshman Republican Rob Bresnahan ousted nine-year incumbent Matt Cartwright in 2024 by 6,252 votes, 50.8%–49.2%, while Trump carried the district by nearly ten points. Cook moved the seat from Lean Republican to Toss Up, Inside Elections on June 11, 2026, and SABATO'S CRYSTAL BALL MOVED IT FROM LEANS REPUBLICAN TO TOSS-UP ON JULY 30, 2026 — that last change was confirmed at the rater's own site rather than secondhand. His challenger is Scranton Mayor Paige Cognetti, on the DCCC's Red to Blue list, who has out-raised him. No independent or minor-party candidate surfaced [Verify — the state's certified list is not machine-readable]. ⚠ ALL THREE PUBLIC POLLS ARE DEMOCRATIC-SPONSORED and are labelled as such: Lake Research (June 18–23, 2026) Cognetti 47–45; Impact Research for her own campaign (June 8–11) Cognetti 46–45; PPP (Aug 2025) Cognetti 45–43. No independent poll of this race was found.",
+        candidates: [
+          { name: "Rob Bresnahan Jr. (incumbent)", party: "R", winner: false,
+            positions: [
+              "Local Control Protection Act (June 2026) — limit corporate suits against towns that reject data-center zoning; it has no cosponsors and is stalled",
+              "Wrote a bill to ban congressional stock trading (May 2025); an original cosponsor of the Stop Insider Trading Act",
+              "Cosponsored a Sept 2025 bill raising the minimum wage indexed to regional cost of living"
+            ],
+            differentiators: [
+              "Became chief financial officer of his grandfather's construction firm at 19 and chief executive in 2013; net worth estimated near $48M",
+              "$2,608,048 cash on hand as of June 30, 2026 on $5.23M raised (FEC)",
+              "Endorsed by the Amalgamated Transit Union, IBEW Local 1319, the PA Teamsters Conference and police lodges — unusual union backing for a Republican"
+            ],
+            supporters: [
+              "He ran a real northeastern Pennsylvania business, which bears on his infrastructure and small-business work",
+              "He holds genuine building-trades and police union endorsements",
+              "He wrote a stock-trading ban and has stopped trading — four bond purchases in 2026 against roughly 650 trades in 2025"
+            ],
+            opponents: [
+              "He made between 617 and 626 trades worth $7.24M in 2025 — about 79% of the entire Pennsylvania delegation's activity — after campaigning against exactly that",
+              "Reporting says he sold about $130,000 in health-care stocks days before voting for Medicaid cuts in Nov 2025",
+              "He voted for the One Big Beautiful Bill Act and its Medicaid cuts, though he later voted to restore lapsed ACA subsidies"
+            ] },
+          { name: "Paige Gebhardt Cognetti", party: "D", winner: false,
+            positions: [
+              "Data centers must \"pay their own way\" — no tax breaks, no higher electric bills, no water pollution, union labor",
+              "Rooting out waste, fraud and abuse; rejecting special interests",
+              "Investing in local law enforcement"
+            ],
+            differentiators: [
+              "Won the Scranton mayoralty as an INDEPENDENT on an \"Against the Machine\" anti-corruption message",
+              "$3,406,710 cash on hand as of June 30, 2026 on $4.61M raised — more than the sitting incumbent (FEC)",
+              "Endorsed by AFSCME, the United Steelworkers, CWA, the PA AFL-CIO, the Human Rights Campaign and Brady PAC"
+            ],
+            supporters: [
+              "She beat the local party machine as an independent — a reform record rather than a slogan",
+              "She leads a sitting incumbent on cash, $3.4M to $2.6M",
+              "Her data-center message taps real anger over electric bills and land use"
+            ],
+            opponents: [
+              "Her \"no corporate PAC money\" pledge has a loophole — she took $5,000 and $4,000 from two leadership PACs that are themselves corporate-PAC funded",
+              "Her opponent casts the large outside spending on her behalf as proof she is an establishment creature",
+              "She has never held federal office, in a district that voted for Trump by nearly ten points"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Rob Bresnahan (R) unseated nine-year Democratic incumbent Matt Cartwright by 6,252 votes, 50.8%–49.2%.",
+        candidates: [
+          { name: "Rob Bresnahan Jr.", party: "R", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] },
+          { name: "Matt Cartwright (incumbent)", party: "D", winner: false, positions: [], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  9: {
+    name: "U.S. House — PA District 9",
+    region: "East-central and north-central Pennsylvania — all of Bradford, Columbia, Lebanon, Montour, Northumberland, Schuylkill, Sullivan, Susquehanna and Wyoming counties plus parts of Berks, Luzerne and Lycoming (Williamsport, Bloomsburg, Pottsville, Lebanon). Cook PVI R+19, 2025 edition",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ NOT AN OPEN SEAT — this corrects a widely repeated assumption. Dan Meuser was weighing a run for governor and publicly RULED IT OUT in July 2025, saying his focus needed to stay on his current job; he filed and was renominated unopposed. Both primaries were uncontested: Meuser 100%, Rachel Wallace 100%. Trump carried this district 68%–31% in 2024 and Meuser won it by 41 points, so every rater calls it Solid or Safe Republican — Cook and Inside Elections (both Sept 11, 2025), Sabato (Apr 10, 2025) and Decision Desk HQ (July 14, 2026) [Verify — read through a citing table; the raters' own pages block automated retrieval]. ⚠ NO third-party candidate qualified: Jenn Brothers left the Democratic primary to run as an independent but never filed nomination papers and is seeking WRITE-IN votes only, so she is not on the ballot. ⚠ A candidate directory listed three primary entrants — Gage Heller, Jennifer Brothers and Daniel Byron — who never appeared on any ballot; Byron withdrew and endorsed Wallace. None is carded.",
+        candidates: [
+          { name: "Dan Meuser (incumbent)", party: "R", winner: false,
+            positions: [
+              "Secure the border — reinstate Remain in Mexico and end catch-and-release (his official priorities page)",
+              "Energy dominance — back domestic drilling, especially Pennsylvania natural gas (his official priorities page)",
+              "Extend the 2017 tax cuts, including bonus depreciation and the small-business deduction"
+            ],
+            differentiators: [
+              "Chairs the House Financial Services Subcommittee on Oversight and Investigations; co-chairs the Congressional Coal Caucus",
+              "$170,733 cash on hand as of June 30, 2026 on $1.90M raised (FEC) — he TRAILS his challenger on cash despite raising nearly three times as much",
+              "Pennsylvania Secretary of Revenue 2011–2015 and former president of a mobility-products manufacturer"
+            ],
+            supporters: [
+              "He carries this district overwhelmingly — 70.5% in 2024, in a seat Trump won 68–31",
+              "He has used his oversight subcommittee against consumer financial fraud, including a constituent scam-reporting portal",
+              "He stayed in the seat rather than chasing the governor's race [Verify — the quote comes through a citation rather than the original article]"
+            ],
+            opponents: [
+              "He voted for final passage of the 2025 reconciliation law, and his challenger runs explicitly on reversing its health-care cuts",
+              "Her campaign contrasts his reported net worth — about $35.6M in 2019 against $69.1M in 2025 — with falling median household income; those are her figures, presented as such",
+              "About 41% of his money came from PACs, against 4% committee money for her (analysis covering Jan 2025–Apr 2026)"
+            ] },
+          { name: "Rachel Wallace", party: "D", winner: false,
+            positions: [
+              "Reverse the 2025 health-care cuts (her campaign site)",
+              "Ban individual stock trading by members of Congress and their spouses (her campaign site)",
+              "Break up monopolies in fertilizer, seed and meatpacking (her campaign site)"
+            ],
+            differentiators: [
+              "$386,883 cash on hand as of June 30, 2026 on $697,865 raised (FEC) — more than double the incumbent's cash",
+              "Born and raised in Pottsville; career in federal service including the State Department and chief of staff at the Office of Management and Budget",
+              "Endorsed by former PA congressman Tim Holden and by Minnesota Gov. Tim Walz; her only primary rival withdrew and endorsed her"
+            ],
+            supporters: [
+              "Deep local roots — a tenth-generation Pennsylvanian from a coal-and-farming family — plus senior federal budget experience",
+              "She is out-banking a well-funded incumbent while taking only about 4% of her money from committees",
+              "She backs structural anti-corruption measures — a stock-trading ban, a 12-year term limit, and overturning Citizens United"
+            ],
+            opponents: [
+              "The structural case is brutal: an R+19 district that Trump won 68–31 and the incumbent carried by 41 points",
+              "Her résumé is largely Washington-based, with no record of elected office — an easy insider framing in a rural district [Verify — the honest structural argument; no specific attack from her opponent could be sourced]",
+              "No opposition messaging about her from the incumbent's campaign could be located at all [Verify]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Meuser won a fourth term with 276,212 votes (70.5%) to Amanda Waldman's 115,523 (29.5%).",
+        candidates: [
+          { name: "Dan Meuser", party: "R", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] },
+          { name: "Amanda Waldman", party: "D", winner: false, positions: [], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  10: {
+    name: "U.S. House — PA District 10",
+    region: "South-central Pennsylvania — all of Dauphin County including Harrisburg, 25 Cumberland County municipalities (Carlisle, Mechanicsburg, Camp Hill) and 26 in York County including the city of York. Cook PVI R+3 [Verify — cited without an edition year]",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ A TOSS UP AND A REMATCH. Scott Perry, a former chair of the House Freedom Caucus, held this seat in 2024 by just 5,133 votes — 50.5%–49.3%, his narrowest margin in twelve years — while Trump carried the district 52.0%–46.8%. Janelle Stelson, the 26-year WGAL news anchor he beat, is back: she won the May 19 Democratic primary over Dauphin County Commissioner Justin Douglas roughly 74%–26%, and Perry was unopposed. Cook and Sabato both rate it Toss Up; Inside Elections is a genuine conflict, called Toss-up in one 2025 report and Tilt Republican in another from May 2026 [Verify]. THIS IS THE MOST EXPENSIVE HOUSE RACE IN PENNSYLVANIA — more than $11.5M raised between them and $4.3M already spent. An independent, Army veteran Isabelle Harman of Carlisle, is also on the ballot. ⚠ A candidate directory lists a fourth name, Fogel G. Shimp, as an independent; he actually filed as a REPUBLICAN primary challenger, never made the ballot, and his campaign site is dead. He is not carded. ⚠ ALL polling in this race is partisan-sponsored — no independent public poll was found.",
+        candidates: [
+          { name: "Scott Perry (incumbent)", party: "R", winner: false,
+            positions: [
+              "Excessive taxes and over-regulation stop small businesses creating jobs (his own framing)",
+              "Opposes the Affordable Care Act; would reform to cut costs and widen access (his own framing)",
+              "A self-described staunch advocate of Second Amendment rights"
+            ],
+            differentiators: [
+              "More than 35 years in the Army and Pennsylvania National Guard, retiring as a brigadier general; former chair of the House Freedom Caucus",
+              "$2.4M cash on hand on $5.2M raised (FEC period ending June 30, 2026) — he outspent his opponent despite having no primary",
+              "Endorsed by Donald Trump; featured in an NRCC video series in Aug 2026 ⚠ his campaign site still carries 2024-cycle copy [Verify]"
+            ],
+            supporters: [
+              "He points to a working-families tax cut and the elimination of taxes on tips",
+              "A 14-year record and service as a brigadier general, which his backers call a proven fight for south-central Pennsylvania",
+              "He has already won twice since Jan 6, 2021, so a Republican strategist argues that attack is spent"
+            ],
+            opponents: [
+              "He was the only vulnerable Pennsylvania Republican to vote against extending Affordable Care Act subsidies",
+              "He voted for tariffs that his opponents say drove up grocery and housing costs",
+              "He opposed certifying the 2020 presidential election; one district poll put his approval at minus 17 [Verify — that poll was sponsored by a committee opposing him]"
+            ] },
+          { name: "Janelle Stelson", party: "D", winner: false,
+            positions: [
+              "Fight for Social Security, Medicare and Medicaid (her campaign site)",
+              "Supports abortion rights (her campaign site)",
+              "Term limits, a congressional stock-trading ban, and no lobbying after leaving office"
+            ],
+            differentiators: [
+              "26 years as a WGAL news anchor — she says the job trained her to hold the powerful accountable",
+              "About $4.5M cash on hand on $6.3M raised (FEC period ending June 30, 2026), the largest war chest of any Pennsylvania House candidate",
+              "Endorsed by Gov. Josh Shapiro, Lt. Gov. Austin Davis, labor unions and the county party; on the DCCC's Red to Blue list"
+            ],
+            supporters: [
+              "She came within about a point in 2024 and is far better funded and better known this time",
+              "Decades of local broadcast work make her a credible non-partisan messenger on affordability",
+              "Shapiro at the top of the ticket should lift Democratic turnout here"
+            ],
+            opponents: [
+              "Her opponent calls her a carpetbagger and a far-left radical",
+              "Republican strategists warn of a \"sophomore slump\" — repeat challengers often do worse the second time [Verify]",
+              "She has never held elected office [Verify — structural argument]"
+            ] },
+          { name: "Isabelle Harman", party: "I", winner: false,
+            positions: [
+              "Agriculture, education and health care are her three stated priorities (her own campaign announcement)",
+              "Says she would answer to the people of the district rather than to a party",
+              "[Verify] — no fuller platform could be sourced; the local paper covering her launch is now paywalled"
+            ],
+            differentiators: [
+              "60, of Carlisle, and a U.S. Army veteran",
+              "Also an Army spouse, with more than 30 years working with military families",
+              "No FEC fundraising figure could be located [Verify]"
+            ],
+            supporters: [
+              "Offers a veteran, non-party option in a district where both major candidates are strongly disliked [Verify — structural argument]",
+              "One district poll put the incumbent's approval at minus 17, suggesting real appetite for an alternative [Verify — partisan-sponsored poll]"
+            ],
+            opponents: [
+              "No fundraising or campaign infrastructure could be located [Verify]",
+              "In a race last decided by 1.2 points, a third candidate risks being a spoiler rather than a winner [Verify — structural argument]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Perry held the seat 50.5%–49.3% over Janelle Stelson — about 5,133 votes, and his closest race in twelve years. ⚠ Some sources render it 50.6%–49.4%. He had won by 53.8%–46.2% in 2022.",
+        candidates: [
+          { name: "Scott Perry", party: "R", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] },
+          { name: "Janelle Stelson", party: "D", winner: false, positions: [], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  11: {
+    name: "U.S. House — PA District 11",
+    region: "All of Lancaster County plus the parts of York County south and east of — but not including — the city of York (Cook PVI R+11, 2025 edition)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Five-term Republican Lloyd Smucker is seeking re-election; the seat is not open and both primaries were uncontested (Smucker 100%, Nancy Mannion 100%). A third Democrat, Sarah Klimm, failed to qualify for the ballot. Trump carried the district 60%–39% in 2024. Rated Solid Republican by Cook and Inside Elections (both Sept 11, 2025) and Safe Republican by Sabato (Apr 10, 2025) and Decision Desk HQ (July 14, 2026) [Verify — read through a citing table; the raters' own pages block automated retrieval]. ⚠ A REPORTED THIRD CANDIDATE IS NOT ON THE BALLOT. One candidate directory lists an independent, Jeffrey Wilder, and annotates him \"(Republican)\" — which in that directory's own published legend means only that some source associates him with a party that is NOT his ballot label. TWO SEPARATE CHECKS OF THE COMMONWEALTH'S 2026 general-election candidate database return ZERO records for him, while that database does list the nomination-paper filers who did qualify elsewhere in the state. He registered with the FEC but never made the ballot.",
+        candidates: [
+          { name: "Lloyd K. Smucker (incumbent)", party: "R", winner: false,
+            positions: [
+              "Lower taxes; opposes income tax increases",
+              "Opposes abortion; authored legislation on infant survivors of abortion",
+              "Supports repealing the Affordable Care Act and leaving health decisions to the states"
+            ],
+            differentiators: [
+              "Sits on House Ways and Means — real tax-writing influence for Lancaster",
+              "$810,787 cash on hand as of June 30, 2026, on $1.52M raised (FEC) — more than 17 times his opponent's cash; $803,667 of the total came from other committees against $224,612 from individuals",
+              "⚠ Crosswise with much of his party on immigration: voted for the Farm Workforce Modernization Act and cosponsored the DIGNIDAD Act, pairing stricter enforcement with a legal-status pathway. Ran a family commercial construction firm for 25 years; endorsed by Donald Trump"
+            ],
+            supporters: [
+              "62.9% in 2024 plus a Ways and Means seat gives Lancaster genuine leverage on tax law",
+              "His farm-labor and immigration votes are cited as evidence he legislates for Lancaster's agricultural economy rather than the party line",
+              "Trump-endorsed in a district Trump carried by 21 points"
+            ],
+            opponents: [
+              "His challenger campaigns on cost of living and health care against his support for repealing the Affordable Care Act",
+              "At R+11 this is by far the most competitive of the state's safe Republican seats on paper, which challengers argue makes it winnable",
+              "Five terms in office invites the standard case for turnover [Verify — structural argument]"
+            ] },
+          { name: "Nancy Ellen Mannion", party: "D", winner: false,
+            positions: [
+              "Lowering costs (her campaign site)",
+              "Safer communities (her campaign site)",
+              "Real results for working families (her campaign site)"
+            ],
+            differentiators: [
+              "A former emergency nurse and international health-care leader with more than 40 years in the field",
+              "$47,150 cash on hand as of June 30, 2026, on $214,230 raised (FEC) — about 22% of it her own money",
+              "Endorsed by the Pennsylvania AFL-CIO, the PA Professional Fire Fighters, IBEW Local 229, the Machinists, Nurses for America and the county Democratic committee"
+            ],
+            supporters: [
+              "The broadest labor and local-party endorsement list of any challenger in central Pennsylvania",
+              "A 40-year clinician running directly against a supporter of repealing the Affordable Care Act",
+              "She is contesting the most marginal of the region's Republican seats"
+            ],
+            opponents: [
+              "About $47,000 cash on hand against the incumbent's $811,000, with roughly a fifth of her money self-funded",
+              "Local reporting says her campaign lost staff over unpaid wages [Verify]",
+              "Smucker has won five straight terms, most recently by nearly 26 points, and every rater calls the seat Safe or Solid Republican"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Smucker won a fifth term with 253,672 votes (62.9%) to Jim Atkinson's 149,641 (37.1%).",
+        candidates: [
+          { name: "Lloyd K. Smucker", party: "R", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] },
+          { name: "Jim Atkinson", party: "D", winner: false, positions: [], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  12: {
+    name: "U.S. House — PA District 12",
+    region: "All of the City of Pittsburgh plus 46 other Allegheny County municipalities and 17 in Westmoreland County — Monroeville, Bethel Park, Baldwin, Braddock, Swissvale. Cook PVI D+10 [Verify — cited without an edition year]",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "A rematch, but a lopsided one. Two-term Democrat Summer Lee seeks a third term and — unlike 2022 and 2024 — faced NO serious primary challenge, winning renomination 81.2%–18.8% over app developer Will Parker, who reported $10 raised in the first quarter. James Hayes, the Republican she beat in 2024, was unopposed for renomination with 100%. The district voted Harris 59%–40% in 2024. Rated Solid Democratic by Cook and Inside Elections (both Sept 11, 2025), Safe by Sabato (Apr 10, 2025) and Safe by Decision Desk HQ (July 14, 2026) [Verify — read through a citing table]. No independent or minor-party candidate qualified. ⚠ A candidate directory lists three more primary entrants — Adam Forgie, Benson Fechter and Arnold Santos. Forgie withdrew, Fechter failed to qualify, and Santos appears in no official listing at all. None is carded.",
+        candidates: [
+          { name: "Summer Lee (incumbent)", party: "D", winner: false,
+            positions: [
+              "Make government work for people instead of corporations and billionaire donors (her own framing)",
+              "Crack down on corporate price-gouging; protect Social Security and Medicare",
+              "Guardrails on AI against algorithmic bias and worker exploitation"
+            ],
+            differentiators: [
+              "Sits on House Oversight and on Education and the Workforce; demanded release of the Epstein files and filed impeachment articles against the attorney general",
+              "$1,649,288 cash on hand as of June 30, 2026 on $1.47M raised this cycle (FEC) — about a 173-to-1 edge",
+              "From Swissvale; the first Black woman elected to Congress from Pennsylvania, winning the seat in 2022"
+            ],
+            supporters: [
+              "She was renominated with 81% — the district's Democrats are firmly behind her",
+              "Backed by major labor, environmental and reproductive-rights groups including the NEA and Planned Parenthood Action Fund",
+              "She uses her Oversight seat aggressively against the administration"
+            ],
+            opponents: [
+              "Her opponent argues Pittsburgh needs leadership that attracts investment rather than showboating for distant causes",
+              "He casts her as pushing a radical agenda and pitches free markets and backing police instead",
+              "She draws a primary challenger every cycle, and in 2026 an opponent who raised almost nothing still took 18.8% [Verify — no sourced commentary interprets that figure]"
+            ] },
+          { name: "James Hayes", party: "R", winner: false,
+            positions: [
+              "\"The way to create jobs is to encourage business. The way to stop crime is to prosecute it\" (his campaign site)",
+              "Expand Pennsylvania's energy industry to protect American jobs",
+              "School choice — \"you should not be regulated to a poor future because you have a bad zip code\""
+            ],
+            differentiators: [
+              "Six years at the Federal Reserve Bank of Richmond; degrees from Georgetown, Princeton, Chicago and Case Western",
+              "$9,521 cash on hand as of June 30, 2026 on $40,139 raised (FEC)",
+              "The son of a steelworker displaced by the industry's collapse; his own son, a welder, was shot and killed outside his home in a case that remains unsolved, which he cites as why he ran"
+            ],
+            supporters: [
+              "A credentialed economist and former Federal Reserve staffer offering economic development over ideology",
+              "He frames the race around two concrete things — jobs and prosecuting violent crime — with personal reason to care about the second",
+              "Not an unknown: he ran district-wide in 2024 and took 43.6%"
+            ],
+            opponents: [
+              "The arithmetic is brutal — the district went Harris 59–40 and he lost these same lines by 12.8 points",
+              "He has raised $40,139 against an incumbent holding $1.65M",
+              "Every rater calls the seat Solid or Safe Democratic, and no organisational endorsement for him could be located [Verify]"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Lee won a second term with 234,802 votes (56.4%) to James Hayes' 181,426 (43.6%) — a margin of 12.8 points. ⚠ A widely circulated 205,651-to-132,285 figure is a PARTIAL count and does not reconcile with the reported percentages.",
+        candidates: [
+          { name: "Summer Lee", party: "D", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] },
+          { name: "James Hayes", party: "R", winner: false, positions: [], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  13: {
+    name: "U.S. House — PA District 13",
+    region: "South-central Pennsylvania — all of Adams, Bedford, Blair, Cambria, Franklin, Fulton, Huntingdon, Juniata, Mifflin and Perry counties plus slivers of Cumberland and Somerset (Altoona, Chambersburg, Gettysburg, Johnstown). Cook PVI R+23, 2025 edition — the most Republican district in the state",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "A rematch in the most Republican seat in Pennsylvania. Four-term Republican John Joyce, a dermatologist, faces Beth Farnham for the second time; both primaries were uncontested (Joyce 100%, Farnham 100%). Trump carried the district 72%–27% in 2024 and Joyce won it by 48 points. Rated Solid Republican by Cook and Inside Elections (both Sept 11, 2025) and Safe Republican by Sabato (Apr 10, 2025) and Decision Desk HQ (July 14, 2026) [Verify — read through a citing table]. ⚠ A REPORTED THIRD CANDIDATE IS NOT ON THE BALLOT. Independent Cody Thomas launched a real campaign in March 2026 and his site is still live, but the Commonwealth's 2026 general-election candidate database has no record of him, he has no FEC candidate registration, and his campaign committee is marked terminated in the FEC's own file. One directory still lists him — in italics, which by that directory's published legend means it has no confirmation from any election authority.",
+        candidates: [
+          { name: "John Joyce (incumbent)", party: "R", winner: false,
+            positions: [
+              "Strengthening the economy (his campaign site)",
+              "Improving access to quality, affordable health care (his campaign site)",
+              "Defending constitutional rights (his campaign site)"
+            ],
+            differentiators: [
+              "Sits on House Energy and Commerce, including its Health subcommittee; a member of the GOP Doctors Caucus",
+              "$3,571,066 cash on hand as of May 21, 2026, on $2.42M raised through June 30, 2026 — the largest war chest of any Pennsylvania House member outside the toss-ups",
+              "A dermatologist in Altoona for more than 25 years; chief resident at Johns Hopkins; served as a Navy physician during Desert Shield and Desert Storm"
+            ],
+            supporters: [
+              "A practising physician sitting on the Health subcommittee that writes health law",
+              "Four straight wins averaging over 70% of the vote",
+              "Endorsed by Donald Trump in a district Trump carried 72–27"
+            ],
+            opponents: [
+              "His challenger runs on universal health care and reproductive freedom against his record",
+              "Holding $3.57M in cash against a $16,000 opponent leaves little pressure to contest the district's actual concerns [Verify — inference from the FEC figures, not a sourced quote]",
+              "The seat has not been genuinely contested in four cycles [Verify — structural argument]"
+            ] },
+          { name: "Elizabeth Rhoads \"Beth\" Farnham", party: "D", winner: false,
+            positions: [
+              "Preserve democracy (her campaign site)",
+              "Ensure affordability (her campaign site)",
+              "Recreate a functioning Congress; also lists public education, reproductive freedom, gun safety and universal health care"
+            ],
+            differentiators: [
+              "A former Conewago Valley School District board member and the party's 2024 nominee here",
+              "$16,428 cash on hand as of May 21, 2026, on $55,347 raised through June 30, 2026 (FEC)",
+              "Endorsed by the Pennsylvania AFL-CIO and the Pennsylvania Machinists Union (July 26, 2026); appeared with Lt. Gov. Austin Davis on Aug 2, 2026"
+            ],
+            supporters: [
+              "A second run gives her name recognition and an organisation already built",
+              "She has nearly quadrupled her 2024-cycle fundraising pace",
+              "She carries statewide labor backing and drew a sitting lieutenant governor to campaign with her"
+            ],
+            opponents: [
+              "She is outraised by roughly 44 to 1",
+              "She lost this district by 48 points in 2024 against the same opponent",
+              "Every rater has the seat Safe or Solid Republican"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Joyce won a fourth term with 301,460 votes (74.2%) to Beth Farnham's 104,823 (25.8%) — a 48-point margin. The 2026 contest is a rematch of exactly this pairing.",
+        candidates: [
+          { name: "John Joyce", party: "R", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] },
+          { name: "Elizabeth Rhoads \"Beth\" Farnham", party: "D", winner: false, positions: [], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  14: {
+    name: "U.S. House — PA District 14",
+    region: "Southwestern Pennsylvania — all of Fayette, Greene and Washington counties plus most of Indiana, Westmoreland and Somerset (the Mon Valley, Uniontown, Washington). Cook PVI R+17, 2025 edition",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Guy Reschenthaler, the House Republican chief deputy whip, is seeking a fifth term; the seat is not open and both nominations were uncontested. Trump carried the district 66%–33% in 2024. Rated Solid Republican by Cook and Inside Elections (both Sept 11, 2025) and Safe Republican by Sabato (Apr 10, 2025) [Verify — read through a citing table; the raters' own pages block automated retrieval]. ⚠ NO PRIMARY VOTE TOTAL IS PRINTED HERE: two sources give materially different counts for the Democratic primary and the state's returns portal could not be read, so the figure is omitted rather than guessed. ⚠ A third name, independent Adam Halfhill, is NOT carded — a local paper reported the Department of State saying he had not filed nomination papers, and one directory labels him with a party that has no Pennsylvania ballot line [Verify against the certified list].",
+        candidates: [
+          { name: "Guy Reschenthaler (incumbent)", party: "R", winner: false,
+            positions: [
+              "A pro-coal and natural-gas agenda — he notes Pennsylvania is the second largest gas producer (his own framing)",
+              "Uses his Appropriations seat to earmark district infrastructure and lock-and-dam funding",
+              "Voted against certifying Pennsylvania's electoral votes on Jan 6, 2021"
+            ],
+            differentiators: [
+              "House Republican chief deputy whip since Jan 2023; sits on both Appropriations and Rules",
+              "$739,459 cash on hand as of May 21, 2026 (FEC); a later aggregator reading put it near $991,000 at June 30 [Verify]",
+              "Navy JAG lieutenant deployed to Baghdad in 2009, then a magisterial district judge and state senator"
+            ],
+            supporters: [
+              "His Appropriations seat and whip rank convert into district money — he announced about $200M in FY2027 bills for southwestern Pennsylvania in June 2026, including $167.2M for the Montgomery Lock and Dam",
+              "He defends the coal and gas jobs the Mon Valley economy still runs on",
+              "Voters have returned him four times, twice by better than two to one"
+            ],
+            opponents: [
+              "Constituents protesting outside his Washington County office say he has not held an in-person town hall in six years [Verify]",
+              "A constituent letter charges that his vote for the 2025 reconciliation bill cost 11,071 district residents SNAP benefits [Verify]",
+              "His opponent argues he backs Medicaid cuts that threaten rural hospitals"
+            ] },
+          { name: "Alan Bradstock", party: "D", winner: false,
+            positions: [
+              "Economic security — raising wages and supporting small businesses (his campaign site)",
+              "Universal health care — lowering costs, expanding coverage, ending medical debt (his campaign site)",
+              "Restore constitutional norms and the rule of law (his campaign site)"
+            ],
+            differentiators: [
+              "A U.S. Army helicopter pilot and retired FBI agent; a Desert Storm veteran, later a financial adviser",
+              "About $201,000 raised this cycle; $42,000 cash on hand at the Apr 29, 2026 snapshot, 92% of it from individuals [Verify — the June 30 figure could not be obtained]",
+              "A native of Donora in the Mon Valley, now living in Fayette County; this is his first run for office"
+            ],
+            supporters: [
+              "A helicopter pilot and FBI agent offers competence and a rule-of-law credential — his slogan is \"bring competency back to Congress\"",
+              "He is campaigning in person across the district, in pointed contrast to the incumbent's town-hall record [Verify]",
+              "He leads on affordability and on protecting rural hospitals from Medicaid cuts"
+            ],
+            opponents: [
+              "He is contesting an R+17 seat the incumbent carried by 33 points, with no public polling showing it competitive",
+              "A first-time candidate with no elected experience, against a member of House leadership",
+              "Outraised roughly 20 to 1 cycle-to-date"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Reschenthaler won a fourth term with 268,380 votes (66.6%) to Chris Dziados' 134,755 (33.4%). ⚠ One outlet renders it 66.5%–33.5%; the difference is rounding.",
+        candidates: [
+          { name: "Guy Reschenthaler", party: "R", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] },
+          { name: "Chris Dziados", party: "D", winner: false, positions: [], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  15: {
+    name: "U.S. House — PA District 15",
+    region: "A very large rural north-central district — all of Armstrong, Cameron, Centre, Clarion, Clearfield, Clinton, Elk, Forest, Jefferson, McKean, Potter, Snyder, Tioga, Union and Warren counties plus parts of Indiana, Lycoming and Venango (State College, DuBois, Bradford). Cook PVI R+19, 2025 edition — the most Republican seat in the state after PA-13",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Glenn \"GT\" Thompson, chairman of the House Agriculture Committee, is seeking a tenth term; he announced his re-election bid in a video on Feb 12, 2026 and was renominated unopposed with 100%, as was Democrat Ray Bilger. Trump carried the district 69%–31% in 2024. Rated Solid Republican by Cook and Inside Elections (both Sept 11, 2025) and Safe Republican by Sabato (Apr 10, 2025) [Verify — read through a citing table]. ⚠ Thompson disclosed a prostate cancer diagnosis in DECEMBER 2023, saying he felt well and would continue serving; he has since taken a full committee chairmanship and filed for re-election, and no later adverse health news was found — the date matters because that story still circulates as though it were current [Verify current status]. ⚠ A reported Green candidate appears in exactly one directory, with no corroboration anywhere and no listing by the state Green Party, and is not carded.",
+        candidates: [
+          { name: "Glenn \"GT\" Thompson (incumbent)", party: "R", winner: false,
+            positions: [
+              "Leads on agriculture and career and technical education — the farm bill and CTE (his campaign site)",
+              "Saving Medicare and Social Security (his campaign site)",
+              "Opposes abortion (his campaign site)"
+            ],
+            differentiators: [
+              "CHAIRMAN of the House Agriculture Committee since Jan 2023 — a full-committee gavel for a rural district",
+              "$738,849 cash on hand as of May 21, 2026 (FEC) — roughly 27 to 1 ahead",
+              "28 years in therapy and rehabilitation services in Lycoming County; a volunteer firefighter, EMT, school board member and Scoutmaster before Congress"
+            ],
+            supporters: [
+              "A sitting full-committee chairman gives a rural district outsized leverage over farm policy, crop insurance and career-and-technical funding",
+              "Deep local roots — firefighter, EMT, school board, Scoutmaster — and a reputation for constant travel across a very large district",
+              "He won by 43 points in 2024"
+            ],
+            opponents: [
+              "His opponent argues the district is losing people and hospitals on his watch — families \"face no health care in their communities\"",
+              "Critics point to Agriculture Committee language overturning state animal-welfare laws",
+              "In a ninth term he draws the standard entrenchment critique; his opponent campaigns explicitly for six-term limits"
+            ] },
+          { name: "Ray Bilger", party: "D", winner: false,
+            positions: [
+              "Bring tariff decisions back to Congress to shield farmers from trade wars (his campaign site)",
+              "Oppose Medicaid cuts threatening rural hospital survival; extend state health-insurance tax credits",
+              "Ban congressional stock trading and limit House members to six terms"
+            ],
+            differentiators: [
+              "A 35-year intelligence career — an Air Force airborne cryptologic linguist from 1986, a Desert Storm veteran, later NSA technical director for cyber analysis",
+              "$27,208 cash on hand as of May 21, 2026 (FEC) — roughly 27 to 1 behind",
+              "An unusually detailed platform for his funding level, including a data-center plank on community benefit agreements, water transparency and ratepayer protection"
+            ],
+            supporters: [
+              "A 35-year national-security career is a substantive, non-partisan credential",
+              "He runs on concrete rural pain points — an eight-county maternity care desert, hospital closures, right-to-repair for farm equipment",
+              "He targets Congress itself with a stock-trading ban, term limits and overturning Citizens United [Verify — no district polling was located]"
+            ],
+            opponents: [
+              "R+19, and the incumbent won by 43 points in 2024",
+              "Outraised roughly 40 to 1, with under $30,000 on hand against a committee chairman",
+              "A first-time candidate with no elected experience against a chairman with district-wide name recognition"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Thompson won with 279,027 votes (71.5%) to Zacheray Womer's 111,408 (28.5%).",
+        candidates: [
+          { name: "Glenn Thompson", party: "R", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] },
+          { name: "Zacheray Womer", party: "D", winner: false, positions: [], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  16: {
+    name: "U.S. House — PA District 16",
+    region: "Erie and northwestern Pennsylvania — all of Erie, Crawford, Mercer, Lawrence and Butler counties plus 13 Venango municipalities. Cook PVI R+11, 2025 edition",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Mike Kelly, 78, chairman of the Ways and Means Tax Subcommittee, announced in September 2025 that he is seeking a NINTH term; both nominations were uncontested. ⚠ THE ONE CRACK IN THE REGION'S REPUBLICAN WALL: while Cook and Inside Elections have it Solid Republican (both Sept 11, 2025) and Sabato Safe Republican (Apr 10, 2025), DECISION DESK HQ RATES IT ONLY LIKELY REPUBLICAN (July 14, 2026) — a notch more competitive than every other Republican seat in western Pennsylvania [Verify — the first three read through a citing table]. A data point without a clear meaning: Democrat Justin Wagner's uncontested primary drew about 5,100 MORE votes than Kelly's uncontested primary. ⚠ Kelly's campaign site carries a 2015 copyright and appears stale, so his positions below are treated as longstanding rather than current-cycle [Verify]. A reported independent is not carded — every trace of him is an FEC registration rather than a certified ballot line.",
+        candidates: [
+          { name: "Mike Kelly (incumbent)", party: "R", winner: false,
+            positions: [
+              "No tax on tips and no tax on overtime — he defends the Working Families Tax Cuts",
+              "An all-of-the-above energy policy — coal, gas, nuclear, hydro, solar and wind (his campaign site)",
+              "Lower rates and a simpler code; grow revenue through jobs rather than rate rises (his campaign site)"
+            ],
+            differentiators: [
+              "CHAIRMAN of the Ways and Means Subcommittee on Tax — the House's lead tax-writing panel",
+              "$1,189,104 cash on hand as of May 21, 2026 (FEC) — the largest war chest of any candidate in western Pennsylvania",
+              "Took over his father's Butler auto dealership and expanded it; endorsed by Donald Trump. ⚠ He cosponsored the DIGNIDAD Act in 2026, pairing a legal-status pathway with stricter enforcement — a break from hardline party orthodoxy"
+            ],
+            supporters: [
+              "Chairing the tax subcommittee gives northwestern Pennsylvania direct influence over the tax code its manufacturers live under",
+              "A car dealer rather than a lawyer — he argues business ownership, not government, creates jobs",
+              "Eight consecutive wins, the most recent by 27 points, plus Trump's endorsement"
+            ],
+            opponents: [
+              "He violated the STOCK Act by failing to disclose a stock purchase, and an ethics watchdog recommended a subpoena after his wife bought steel-company shares following his receipt of confidential information",
+              "He filed the lawsuit seeking to invalidate Pennsylvania's mail-in ballots, which the state Supreme Court dismissed with prejudice",
+              "His dealerships received about $974,100 in forgiven pandemic loans while he served in Congress"
+            ] },
+          { name: "Justin Wagner", party: "D", winner: false,
+            positions: [
+              "Hold at least one in-person town hall in the district every month (his campaign site)",
+              "Expand Social Security by lifting the payroll tax cap on high earners",
+              "Pass the PRO Act and require union labor on federally funded projects"
+            ],
+            differentiators: [
+              "An Army combat veteran — 4th Infantry Division, deployed to Iraq in 2006 — and a working controls and automation engineer",
+              "$23,953 cash on hand as of May 21, 2026 (FEC); 99% of his money from individuals and none from PACs [Verify — a later aggregator reading is higher]",
+              "Serves on Mercer Borough Council; endorsed by the PA AFL-CIO, the Machinists and the Iron Workers ⚠ sources disagree on whether he lives in Greenville or Mercer [Verify]"
+            ],
+            supporters: [
+              "A working engineer and combat veteran who still holds a job, not a career politician",
+              "He refuses corporate PAC money and pledges monthly in-person town halls",
+              "Backed by the state AFL-CIO and two industrial unions in a manufacturing district"
+            ],
+            opponents: [
+              "He has raised roughly one-eighteenth of the incumbent's total in a seat Kelly won with 63.7%",
+              "Medicare for All and a data-center moratorium sit well to the left of a district Trump carried comfortably",
+              "His only elected experience is a borough council seat"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Kelly won an eighth term with 256,923 votes (63.7%) to Preston Nouri's 146,709 (36.3%).",
+        candidates: [
+          { name: "Mike Kelly", party: "R", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] },
+          { name: "Preston Nouri", party: "D", winner: false, positions: [], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  },
+  17: {
+    name: "U.S. House — PA District 17",
+    region: "Pittsburgh's northern and western suburbs — all of Beaver County plus the north-western part of Allegheny County outside PA-12. Cook PVI D+3, 2025 edition — historically the region's genuine swing seat",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ THIS SEAT HAS MOVED OUT OF CONTENTION DURING THE CYCLE. Two-term Democrat Chris Deluzio, a Naval Academy graduate and Iraq veteran, was renominated unopposed. Cook moved it to Solid Democratic on Jan 15, 2026, Sabato to Safe Democratic on Mar 26, 2026, and INSIDE ELECTIONS MOVED IT FROM LIKELY TO SOLID DEMOCRATIC ON JUNE 17, 2026, explicitly taking it \"off the battleground\" — that last change is confirmed from the rater's own published note rather than secondhand. Decision Desk HQ is the outlier at Likely Democratic. Republicans nominated Beaver County Sheriff Tony Guy in THE ONLY CONTESTED PRIMARY IN WESTERN PENNSYLVANIA, 53.3%–46.7% over perennial candidate Jesse James Vodvarka. The Democratic primary drew about 83,800 votes to the Republicans' 36,800 combined. ⚠ A widely circulated DCCC release announcing an Inside Elections move on this seat is dated AUGUST 2024 and is not about this cycle.",
+        candidates: [
+          { name: "Chris Deluzio (incumbent)", party: "D", winner: false,
+            positions: [
+              "Rail safety — two-person crews, more hotbox sensors and tougher hazardous-materials rules",
+              "Democrats should break with the economists \"who think tariffs are always bad\" (his own words)",
+              "Ban congressional stock trading and get corporate PACs out of politics (his campaign site)"
+            ],
+            differentiators: [
+              "His Railway Safety Act provisions were folded into a five-year, $580B surface transportation bill by the Transportation Committee on a 54–11 vote on May 22, 2026, over railroad-industry opposition",
+              "$922,859 cash on hand as of May 21, 2026 (FEC) — better than 21 to 1 ahead",
+              "Naval Academy graduate and surface warfare officer who deployed to Iraq; then Georgetown Law, Wachtell Lipton, and voting-rights work at the Brennan Center"
+            ],
+            supporters: [
+              "He moved a bipartisan rail-safety bill out of committee 54–11 three years after East Palestine, against the railroads' lobby",
+              "An Iraq veteran who broke with his own party's economic orthodoxy on tariffs to defend western Pennsylvania manufacturing",
+              "He stood by a November 2025 video telling service members to refuse illegal orders even after the president accused him of sedition"
+            ],
+            opponents: [
+              "Republicans call that video reckless and say it invited insubordination in the ranks",
+              "His opponent says he \"is not keeping his word\" to the district",
+              "He votes with his party about 94% of the time in a district that is not uniformly liberal"
+            ] },
+          { name: "Tony Guy", party: "R", winner: false,
+            positions: [
+              "\"Back the Blue\" — fund and equip law enforcement (his campaign site)",
+              "Complete the border wall, deport criminal aliens and stop fentanyl trafficking (his campaign site)",
+              "\"It should be easy to vote and hard to cheat\" — voter ID and ballot security (his campaign site)"
+            ],
+            differentiators: [
+              "26 years in the Pennsylvania State Police — patrol, vice, polygraph and criminal investigations, rising to sergeant — then elected Beaver County Sheriff in 2016",
+              "$42,823 cash on hand as of May 21, 2026 (FEC) — roughly 21 to 1 behind",
+              "No endorsements are listed on his campaign site and none were found in coverage of his launch [Verify — this means none are publicly listed, not that none exist]"
+            ],
+            supporters: [
+              "Four decades in law enforcement — he has done public safety rather than legislated about it",
+              "Locally rooted and elected countywide in Beaver County, the Republican-trending half of the district",
+              "Public safety, the border and fentanyl are his professional subject matter rather than talking points"
+            ],
+            opponents: [
+              "Three former deputies sued him in 2019 alleging he violated settlement agreements from 2016 firings and disparaged them in retaliation for backing his opponent; a federal judge let the case proceed in 2020. He denied wrongdoing and said he had good reason to dismiss them [Verify — earlier settlements were reported near $105,000]",
+              "He won his own primary with only 53% against a perennial candidate, which Democrats read as weak party consolidation",
+              "He trails by more than 21 to 1 on cash, and three of four raters now place the seat in their safest Democratic tier"
+            ] }
+        ]
+      },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Deluzio won a second term with 242,838 votes (53.9%) to Rob Mercuri's 207,900 (46.1%) — a margin of under eight points, which is why this seat was on every 2026 battleground list before the raters moved it.",
+        candidates: [
+          { name: "Chris Deluzio", party: "D", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] },
+          { name: "Rob Mercuri", party: "R", winner: false, positions: [], differentiators: [], supporters: [], opponents: [] }
+        ]
+      }
+    ]
+  }
+};
+
+const SITE_META = { name: "Pennsylvania Elections Hub", lastUpdated: "August 10, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — Pennsylvania county-level down-ballot research has not started.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Pennsylvania has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them,
+  // otherwise a district with no plurality county is unreachable from the map.
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const PA_STATE_FIPS = "42";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#pamap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(PA_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Hartford ----
+  drawCapital(g, projection, { name: "Harrisburg", lng: -76.8844, lat: 40.2732 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in PA";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our Pennsylvania dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>

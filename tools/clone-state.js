@@ -110,8 +110,9 @@ const subs = [
   // the FIPS constant — lesson #10, the one that has shipped broken twice
   [`const ${donorAB}_STATE_FIPS = "${cfg.donorFips}";`, `const ${AB}_STATE_FIPS = "${cfg.fips}";`],
   [`${donorAB}_STATE_FIPS`, `${AB}_STATE_FIPS`],
-  // empty state
-  [`This county isn&#39;t in our ${donorName} dataset.`, `This county isn&#39;t in our ${cfg.name} dataset.`],
+  // empty state — the drawer title AND the sentence under it. Pages differ in how they write
+  // the apostrophe (raw ' vs &#39;), so both spellings are tried and exactly one must match.
+  [`"Not in ${donorAB}"`, `"Not in ${AB}"`],
   // data-layer comment
   [`every ${donorAB} county`, `every ${AB} county`],
   // SITE_META
@@ -124,6 +125,15 @@ for (const [from, to] of subs) {
   if (!html.includes(from)) { missed.push(from); continue; }
   html = html.split(from).join(to);
 }
+
+// empty-state sentence — accept either apostrophe spelling, but require one of them
+const emptyVariants = [
+  [`This county isn&#39;t in our ${donorName} dataset.`, `This county isn&#39;t in our ${cfg.name} dataset.`],
+  [`This county isn't in our ${donorName} dataset.`,    `This county isn't in our ${cfg.name} dataset.`],
+];
+const emptyHit = emptyVariants.find(([from]) => html.includes(from));
+if (!emptyHit) missed.push(`This county isn(&#39;|')t in our ${donorName} dataset.`);
+else html = html.split(emptyHit[0]).join(emptyHit[1]);
 
 // capital marker
 const capRe = /drawCapital\(g, projection, \{ name: "[^"]+", lng: [-\d.]+, lat: [-\d.]+ \}\);/;
