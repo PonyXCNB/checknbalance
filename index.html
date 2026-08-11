@@ -59,6 +59,8 @@
   .legend-note { max-width: 660px; margin: 0 auto 18px; text-align: center; font-size: 11.5px;
                  line-height: 1.6; color: var(--ink-soft); opacity: .82; }
   .legend-swatch i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; border: 1px solid rgba(0,0,0,.06); }
+  .legend-link { color: var(--gold-deep); border-bottom: 1px solid var(--gold-soft); transition: border-color .15s ease; }
+  .legend-link:hover { border-bottom-color: var(--gold-deep); }
 
   .map-shell { background: var(--paper-pure); border: 1px solid var(--line); border-radius: 18px; padding: 8px; box-shadow: var(--shadow); position: relative; overflow: hidden; }
   .map-frame { background: radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%), var(--paper-pure); border-radius: 12px; aspect-ratio: 1.62 / 1; width: 100%; position: relative; }
@@ -131,6 +133,68 @@
   .roadmap h2 em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
   .roadmap p { color: var(--ink-soft); font-size: 15px; max-width: 60ch; margin: 0 auto; }
 
+  /* ---- Contribution form ---- */
+  .contrib {
+    max-width: 620px; margin: 28px auto 0; text-align: left;
+    background: var(--paper-pure); border: 1px solid var(--line); border-radius: 16px;
+    padding: 28px 28px 24px; box-shadow: var(--shadow);
+  }
+  .contrib fieldset { border: 0; }
+  .contrib legend, .contrib-label {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--ink-soft); margin-bottom: 10px; display: block;
+  }
+  .contrib-choices { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+  .contrib-choice { flex: 1 1 240px; }
+  /* Visually hidden, but still focusable and still announced by screen readers.
+     `opacity:0; width:0` drops the input out of some accessibility trees; the clip
+     pattern keeps it in. The visible control is the <span> that follows it. */
+  .contrib-choice input {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+  }
+  .contrib-choice span {
+    display: block; padding: 13px 16px; border: 1px solid var(--line); border-radius: 10px;
+    font-size: 14px; line-height: 1.4; cursor: pointer; transition: border-color .15s ease, background .15s ease, color .15s ease;
+  }
+  .contrib-choice span small { display: block; font-size: 12px; color: var(--ink-soft); margin-top: 3px; }
+  .contrib-choice input:checked + span { border-color: var(--gold); background: rgba(184,137,60,.07); }
+  .contrib-choice input:checked + span small { color: var(--gold-deep); }
+  .contrib-choice input:focus-visible + span { outline: 2px solid var(--gold-deep); outline-offset: 2px; }
+  .contrib-choice span:hover { border-color: var(--gold-soft); }
+
+  .contrib-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; }
+  .contrib-field { flex: 1 1 220px; display: flex; flex-direction: column; }
+  .contrib input[type="text"], .contrib input[type="email"], .contrib textarea {
+    font-family: var(--sans); font-size: 14px; color: var(--ink); background: var(--paper);
+    border: 1px solid var(--line); border-radius: 9px; padding: 11px 13px; width: 100%;
+    transition: border-color .15s ease;
+  }
+  .contrib textarea { min-height: 132px; resize: vertical; line-height: 1.55; }
+  .contrib input:focus, .contrib textarea:focus { outline: none; border-color: var(--gold); }
+  .contrib-hint { font-size: 11.5px; color: var(--ink-soft); margin-top: 6px; }
+
+  .contrib-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 20px; }
+  .contrib-submit {
+    font-family: var(--sans); font-size: 13px; font-weight: 600; letter-spacing: 0.04em;
+    color: #fff; background: linear-gradient(135deg, var(--gold), var(--gold-deep));
+    border: 0; border-radius: 999px; padding: 12px 30px; cursor: pointer;
+    box-shadow: 0 2px 8px rgba(184,137,60,.32); transition: filter .15s ease, transform .15s ease;
+  }
+  .contrib-submit:hover:not(:disabled) { filter: brightness(1.07); transform: translateY(-1px); }
+  .contrib-submit:disabled { opacity: .6; cursor: default; }
+  .contrib-note { font-size: 11.5px; color: var(--ink-soft); flex: 1 1 220px; }
+  .contrib-status { font-size: 13.5px; margin-top: 16px; line-height: 1.55; display: none; }
+  .contrib-status.ok { display: block; color: var(--gold-deep); }
+  .contrib-status.err { display: block; color: var(--red, #B91C2C); }
+  /* Honeypot — hidden from people, visible to bots that fill every field. */
+  .contrib-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+  @media (max-width: 560px) {
+    .contrib { padding: 22px 18px 20px; }
+    .contrib-choice { flex: 1 1 100%; }
+  }
+
   .footer { border-top: 1px solid var(--line); background: var(--paper-pure); padding: 48px 32px 40px; margin-top: 20px; }
   .footer-inner { max-width: 1240px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
   .footer-crest { font-family: var(--serif); font-size: 15px; color: var(--ink-soft); }
@@ -180,10 +244,9 @@
     <span class="legend-swatch"><i style="background:#D9BE85;border-color:#B8893C"></i> Marquee races built</span>
     <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework</span>
   </div>
-  <p class="legend-note">The fully built states run from Georgia to Maine, taking in Pennsylvania and all of New
-    England, then west through the Ohio Valley to Iowa and Nebraska and on to Colorado and New Mexico — plus
-    Mississippi and Arkansas, the Dakotas&#39; southern half and Montana on the northern Plains, and Nevada,
-    Oregon and Idaho in the West.</p>
+  <p class="legend-note">We&#39;re working as fast as we can to get all fifty states fully built, with priority to
+    geographies with upcoming competitive races. If you&#39;re interested in contributing, please submit your
+    interest <a class="legend-link" href="#contribute">at the bottom of this page</a>.</p>
   <div class="map-shell">
     <div class="map-frame">
       <div class="map-loading" id="map-loading">Loading map of the United States…</div>
@@ -275,19 +338,64 @@
   </div>
 </section>
 
-<section class="roadmap">
+<section class="roadmap" id="contribute">
   <h2>How <em>you</em> can help.</h2>
   <p>
-    Thirty-one states — an unbroken stretch from Georgia up the Atlantic coast through Pennsylvania and all six
-    New England states, then west through West Virginia, Ohio, Kentucky, Indiana and Illinois to Iowa and on to
-    Nebraska, plus Mississippi and Arkansas on the lower Mississippi River, Colorado and New Mexico in the Southwest,
-    South Dakota and Montana across the northern Plains, and Nevada, Oregon and Idaho in the West — are built out
-    with verified statewide and U.S. House races, and
-    North Carolina goes deeper still, down to local contests like sheriff and school board.
-    Every other state has a clickable starter map ready to be filled in with verified candidates, positions, and
-    the supporter/opponent perspectives that make a ballot legible. Pick a state, click in, and you'll see either
-    a finished ballot or the framework waiting for data.
+    This is an independent, volunteer-run project. Two things move it forward faster than anything else:
+    people who can help build it, and people who tell us what we're getting wrong.
   </p>
+
+  <!-- Submissions are handled by Netlify Forms and emailed to the project maintainer.
+       The recipient address is configured in Netlify (Site settings > Forms > Form notifications),
+       deliberately NOT in this page's source, so it can't be scraped. -->
+  <form class="contrib" id="contrib-form" name="contribute" method="POST"
+        data-netlify="true" netlify-honeypot="bot-field">
+    <input type="hidden" name="form-name" value="contribute">
+    <input type="hidden" name="subject" value="checknbalance.org — new contribution submission">
+    <p class="contrib-hp">
+      <label>Leave this field empty: <input name="bot-field" tabindex="-1" autocomplete="off"></label>
+    </p>
+
+    <fieldset>
+      <legend>What brings you here?</legend>
+      <div class="contrib-choices">
+        <label class="contrib-choice">
+          <input type="radio" name="reason" value="Developer interest" checked>
+          <span>I'd like to help build it
+            <small>Development, data research, or design</small></span>
+        </label>
+        <label class="contrib-choice">
+          <input type="radio" name="reason" value="Criteria / platform suggestion">
+          <span>I'd like to suggest a change
+            <small>Our criteria, coverage, or the site itself</small></span>
+        </label>
+      </div>
+    </fieldset>
+
+    <div class="contrib-row">
+      <div class="contrib-field">
+        <label class="contrib-label" for="contrib-name">Name <span style="text-transform:none;letter-spacing:0">(optional)</span></label>
+        <input type="text" id="contrib-name" name="name" autocomplete="name">
+      </div>
+      <div class="contrib-field">
+        <label class="contrib-label" for="contrib-email">Email</label>
+        <input type="email" id="contrib-email" name="email" required autocomplete="email">
+      </div>
+    </div>
+
+    <div class="contrib-field">
+      <label class="contrib-label" for="contrib-message">Your message</label>
+      <textarea id="contrib-message" name="message" required
+                placeholder="Tell us what you'd like to work on, or what you think we should change and why. If you're flagging something we got wrong, a link to a source helps a lot."></textarea>
+      <p class="contrib-hint">Corrections are especially welcome — every candidate claim on this site is meant to be traceable to a real source.</p>
+    </div>
+
+    <div class="contrib-actions">
+      <button type="submit" class="contrib-submit" id="contrib-submit">Send it in</button>
+      <p class="contrib-note">Your email is used only to reply to you. Nothing is published, shared, or added to a mailing list.</p>
+    </div>
+    <p class="contrib-status" id="contrib-status" role="status" aria-live="polite"></p>
+  </form>
 </section>
 
 <footer class="footer">
@@ -495,6 +603,46 @@ d3.json(TOPO_URL).then((us) => {
 }).catch(err => {
   loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
 });
+</script>
+
+<script>
+// ---- Contribution form ----
+// Progressive enhancement only. With JavaScript off, the form posts normally and
+// Netlify shows its own confirmation page; this just keeps the visitor on the page
+// and gives them an inline acknowledgement instead.
+(function () {
+  const form = document.getElementById("contrib-form");
+  if (!form || !form.addEventListener) return;
+  const status = document.getElementById("contrib-status");
+  const button = document.getElementById("contrib-submit");
+
+  form.addEventListener("submit", function (event) {
+    if (typeof FormData !== "function" || typeof fetch !== "function") return; // let the browser post it
+    event.preventDefault();
+    button.disabled = true;
+    button.textContent = "Sending…";
+    status.className = "contrib-status";
+
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(new FormData(form)).toString()
+    })
+      .then(function (res) {
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        form.reset();
+        button.textContent = "Sent";
+        status.className = "contrib-status ok";
+        status.textContent = "Thank you — that's on its way. We read every message and will reply to the address you gave.";
+      })
+      .catch(function () {
+        button.disabled = false;
+        button.textContent = "Send it in";
+        status.className = "contrib-status err";
+        status.textContent = "That didn't send. Please try again in a moment — and if it keeps failing, the problem is on our end, not yours.";
+      });
+  });
+})();
 </script>
 </body>
 </html>
