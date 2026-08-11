@@ -62,7 +62,8 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 | `id.html` | Idaho — twenty-ninth fully built state (44 counties, 2 districts, May 19 primary, CERTIFIED). Built Aug 9, 2026. ⚠ NO office is open and no judicial race is on the November ballot (Idaho decides those at the May primary). The Democratic Senate nominee quit July 28 but is STILL on the ballot until a Sept 4 deadline; an ID-2 Constitution nominee DIED in June and the state's list has not been updated. Four ballot measures. No LOCAL_RACES yet |
 | `mt.html` | Montana — thirtieth fully built state (56 counties, 2 districts, June 2 primary, CERTIFIED). Built Aug 9, 2026. ⚠ **The U.S. Senate seat is OPEN — Steve Daines withdrew two minutes before the March 4 filing deadline** and endorsed Kurt Alme, who had filed minutes earlier. MT-1 is also OPEN (Zinke retiring) and is the state's competitive House race. One Supreme Court seat, two PSC district races, and three ballot measures still circulating with NOTHING certified. No LOCAL_RACES yet |
 | `pa.html` | Pennsylvania — thirty-first fully built state (67 counties, 17 districts, May 19 primary results). Built Aug 10, 2026 from il.html, the other 17-district `ds` state. ⚠ **PA-2 AND PA-3 SIT WHOLLY INSIDE PHILADELPHIA COUNTY, and PA-3 is the plurality district of NO county in the state** — without `ds` it would be unreachable statewide (lesson #12). Philadelphia's own plurality is decided by ONE PERSON (PA-2 764,865 vs PA-3 764,864), so its shading is effectively a coin toss. NO U.S. Senate race (McCormick 2030, Fetterman 2028); the row offices (AG/Auditor General/Treasurer) are presidential-year offices; PA is the only state electing appellate judges SOLELY in odd years, so no judicial race and no ballot question — **the entire statewide ballot is the Governor/Lt. Gov ticket** (Shapiro–Davis vs. Garrity–Richey, Solid D, plus qualified Libertarian and Green tickets). Marquee: PA-7 (Mackenzie–Brooks) and PA-8 (Bresnahan–Cognetti), both Toss Up by all three raters; PA-1 Fitzpatrick is the crossover seat Harris carried; PA-10 Perry–Stelson is a Toss Up rematch; PA-3 is an OPEN D+40 seat with NO Republican on the ballot. No LOCAL_RACES yet |
-| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH/KY/IN/IA/IL/MS/AR/NE/NM/CO/OR/NV/SD/ID/MT/PA redirect to their dedicated pages |
+| `tn.html` | Tennessee — thirty-second fully built state (95 counties, 9 districts, Aug 6, 2026 primary). Built Aug 11, 2026 from il.html. ⚠⚠ **BUILT ON A BRAND-NEW MID-DECADE MAP** — Public Chapter 3, Second Extraordinary Session, signed May 7, 2026 after *Louisiana v. Callais*; building on the 2022 plan would have been wrong on every district. **Nashville/Davidson is split 4/6/7 (NOT the old 5/6/7) and Memphis/Shelby is carved three ways 5/8/9**, eliminating the state's only majority-minority district. 12 split counties, all carrying `ds`; Knox, Hamilton and Wilson are whole. ⚠ The 2026 U.S. Senate seat is **HAGERTY's Class 2 seat** (he is running; Bradshaw D) — NOT Blackburn's, whose Class 1 seat is next up in 2030. Open Governor (Blackburn R vs. Jerri Green D — Tennessee gets its first female governor either way). ⚠ **TN-5 is no longer a Nashville seat** (runs Williamson/Maury to downtown Memphis) and **Ogles LOST his primary** to Charlie Hatcher; **TN-9 flipped D+43 → R+21 and Cohen was drawn out** (withdrew May 15; Pearson is the nominee); **TN-6 open** (Rose ran for governor and lost). Three certified constitutional amendments. NO other statewide executive office is elected (SoS/Comptroller/Treasurer by the General Assembly, AG by the Supreme Court) and NO statewide judicial race (retention is an August 8-year cycle, next 2030). No LOCAL_RACES yet |
+| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH/KY/IN/IA/IL/MS/AR/NE/NM/CO/OR/NV/SD/ID/MT/PA/TN redirect to their dedicated pages |
 | `favicon.svg` | Gold-gradient circle + white checkmark (primary favicon, matches site crest) |
 | `favicon.png` | 32px PNG fallback |
 | `favicon.ico` | Multi-size ICO (16/32/48) at root for legacy auto-discovery |
@@ -434,6 +435,45 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
    an unmatched substitution turned a would-be shipped cosmetic bug into a 30-second fix. Do not soften it into a
    warning, and when it complains, fix the TOOL rather than hand-editing around it.
 
+17. **⚠⚠ *LOUISIANA v. CALLAIS* SET OFF A WAVE OF MID-DECADE REDRAWS, AND A STATE'S MAP CAN NOW CHANGE BETWEEN BUILDS.**
+   Established Aug 11, 2026 while building Tennessee. *Louisiana v. Callais* (Nos. 24-109/24-110, **decided Apr 29, 2026**,
+   Alito 6–3) held that VRA §2 compliance was not a compelling interest justifying Louisiana's map. It did NOT strike §2
+   down or overrule *Allen v. Milligan* — it layered new requirements onto *Gingles* — but Kagan's dissent calls §2 "all
+   but a dead letter," and **four states redrew for 2026 because of it: Tennessee, Florida, Louisiana and Alabama.**
+   ➤ **Tennessee is the worked example.** It repealed its own statutory bar on mid-decade congressional redistricting
+   (HB 7002, Pub. Ch. 1) and enacted a new plan (HB 7003, Pub. Ch. 3, Second Extraordinary Session), both signed
+   **May 7, 2026**. Every challenge failed and the **Aug 6 primary ran on the new lines**. Our banked note said Tennessee
+   used the 2022 Pub. Ch. 598 plan. It was wrong, and a build on it would have mis-assigned every district.
+   ➤ **THE CURRENCY TEST — use this, it is cheap and decisive.** An arithmetic population proof establishes TRANSCRIPTION,
+   not CURRENCY (lesson #13), so prove currency SEPARATELY by parsing the enacted plan into district→county sets and
+   comparing them against **the Secretary of State's own election-night results, county by county**. For Tennessee all
+   9 districts matched on county count, Davidson cast District 7 ballots in 178/178 precincts and appeared nowhere in
+   District 5, and TN-9 went from 2 counties to 15. That is direct evidence of which map voters actually voted under,
+   and no amount of population arithmetic can substitute for it.
+   ➤ **A full currency audit of all 31 then-built states was run the same day and came back CLEAN** — none had a
+   different map for Nov 3, 2026 than it had on Jan 1, 2026. Ballotpedia's closed list of 2026 new-map states is
+   AL, CA, FL, LA, MO, NC, OH, TN, TX, UT; only NC and OH are ours and both enacted in **October 2025**.
+   ➤ **⚠ THIS AUDIT PAID FOR ITSELF IMMEDIATELY: it caught that `nc.html` — the flagship — was routing voters using a
+   superseded county map, with 28 of 100 counties wrong. Fixed the same day; see Owner to-do item 9.** The audit's real
+   value was not the 31 clean answers, it was the one dirty one.
+   ➤ **Georgia is the only live congressional-map case in the country** — the 11th Circuit has held the consolidated
+   appeal since Jan 23, 2025 with no ruling. Re-check it. Maryland's Aug 3–5 special session passed HB 2100, a November
+   ballot amendment that could enable a new map for **2028** — it does not touch Nov 2026.
+
+18. **TWO ACCESS UNLOCKS FOUND Aug 11, 2026 — both retire long-standing dead ends.**
+   (a) **COOK PVI IS REACHABLE. cookpolitical.com does NOT always 403** — it returns HTTP 200, but its tables are
+   **Datawrapper embeds**, so the HTML carries no numbers. Pull Cook's own data file directly:
+   `https://datawrapper.dwcdn.net/<chartId>/1/dataset.csv` (the 2025 PVI district list is chart `vcf6i`). This retires
+   a dead end recorded against ky.html, in.html, ma.html, tn.html and others, where PVI was omitted as unsourceable.
+   Sabato remains genuinely unusable as a text source — it publishes House ratings as images.
+   (b) **BROWSER VERIFICATION IS POSSIBLE AFTER ALL.** The preview pane refuses files outside the *working directory*,
+   which is why July 20, July 24 and Aug 10 all recorded "browser verification blocked" and fell back to geometry.
+   **Fix: copy the page into a folder under the working directory and open it from there.** A real screenshot of
+   index.html was taken this way on Aug 11. ⚠ The pane also stops compositing if it is not displayed, and returns a
+   timeout rather than an image — retry or fall back. The geometric fallback still works and is worth keeping: read
+   `<XX>_STATE_FIPS` back OUT of the built page, filter the real us-atlas geometry with it, and compare the bounding
+   box to the state's true lat/lng extent. Tennessee matched to two decimals on all four bounds.
+
 ## Testing (`tests/` — plain Node.js, zero dependencies)
 
 Requires Node.js (any recent LTS). Run the whole suite from the site root:
@@ -598,6 +638,52 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
    Neither names a single state, so neither can go stale again. The two remaining NC mentions in `index.html` are
    deliberate and still true: a cited turnout statistic, and the note that NC alone goes down to sheriff and school
    board (it is still the only state with `LOCAL_RACES`).
+
+8. ~~**Replace the "How you can help" body text with a contribution form.**~~ **DONE (Aug 11, 2026.)** Owner-requested
+   mid-run, with a screenshot: the heading promised a way to help and the body then listed which states were covered.
+   The prose also duplicated the legend note and had to be hand-maintained on every state build.
+   **Built:** a Netlify Forms submission form (form name `contribute`) with two options — (1) interest in contributing
+   as a developer, (2) a suggested change to our criteria/platform — plus name (optional), email (required) and a
+   message box. Honeypot field for spam; hidden `subject` sets the notification subject. Progressive enhancement:
+   with JS on it posts via `fetch` and shows an inline acknowledgement, with JS off it posts normally to Netlify's own
+   confirmation page. The radio inputs use the **clip pattern**, not `opacity:0;width:0`, so they stay in the
+   accessibility tree. Verified visually in a real browser (see lesson #18b for how).
+   ⚠⚠ **THE RECIPIENT ADDRESS IS DELIBERATELY NOT IN THE PAGE SOURCE** (owner's explicit instruction — it would be
+   scraped). It is configured in the Netlify dashboard instead. **TWO ONE-TIME STEPS ONLY THE OWNER CAN DO, in Netlify:
+   (i) Site configuration → Forms → enable Form detection (then redeploy once if it was off); (ii) Forms → Form
+   notifications → Add notification → Email notification → his address.** Until (ii) is done, submissions are still
+   captured in Netlify's Forms tab — nothing is lost, he just gets no email. **If a future run is asked why no
+   submissions are arriving, check those two settings before touching the form.**
+   Also done in the same pass: the legend note under the map was replaced with the owner's own wording about building
+   all fifty states and prioritising upcoming competitive races, with an anchor link to the form. That removed the LAST
+   piece of landing-page prose that had to be re-synced with the map on every build — which is why the landing-page
+   review is now much cheaper.
+
+9. ~~**`nc.html`'s county→district map was on SUPERSEDED 2024 LINES.**~~ **FOUND AND FIXED Aug 11, 2026** — by the
+   map-currency audit (lesson #17), on the site's FLAGSHIP page. This was the most consequential data error the site
+   has shipped: `COUNTIES` was labelled "primary **2024** US House district" while the race notes described the
+   late-2025 redraw, and the county table is what decides which U.S. House race a voter sees when they click.
+   ➤ **The real damage was worse than the label suggested. 28 of 100 counties were wrong — and only 9 of those were
+   stale from the redraw. NINETEEN were ALREADY WRONG under the 2024 map the page claimed to encode**, including
+   Cumberland (said 9, is 7), Guilford (6→5), Forsyth (6→10), Alamance (4→9) and Rowan (8→6). **No county carried `ds`
+   at all**, so split-county voters saw only one of their possible races.
+   ➤ **Fixed with the map governing 2026: N.C. Session Law 2025-95** (SB 249, "Realign Congressional Districts 2025"),
+   chaptered **Oct 22, 2025**; the NCGA redistricting portal files it as "Congressional (To be used for the 2026
+   Election) … ENACTED" and a three-judge panel denied a preliminary injunction Nov 26, 2025. Derived from the enacted
+   block-assignment file joined to 2020 P.L. 94-171 blocks — 236,638 blocks, zero unmatched, total 10,439,388;
+   **deviation 1 person**; independently confirmed by NCGA's own StatPack, which also states `Split Counties: 12`.
+   ➤ **Currency proved by the lesson-#17 test:** NCSBE's certified **March 3, 2026** precinct results, aggregated
+   county→districts-on-ballot, match SL 2025-95 in **100/100 counties** and contradict the 2023 map in exactly the 11
+   counties that moved. (Wake reads {4,13} not {2,4,13} only because NC-2 had no primary contest in either party.)
+   ➤ 12 split counties now carry `ds`: Cabarrus[6,8] Chatham[4,9] Cumberland[7,9] Forsyth[6,10] Granville[1,13]
+   Guilford[5,6,9] Mecklenburg[8,12,14] Onslow[1,3] Polk[11,14] Robeson[7,8] Sampson[3,7] Wake[2,4,13]. All 14
+   districts remain some county's plurality. Only CD1/CD3 moved in the redraw, and **the page's existing "6 GOP-leaning
+   coastal counties into D1" note was exactly right**.
+   ➤ ⚠ Merits litigation is still pending — re-check before late October.
+   ➤ **THE GENERAL LESSON: the county→district table on an OLD page can be wrong in ways nothing surfaces.** It is
+   internally consistent, so every test passes; it predates our own `ds` model, so it silently hides races; and it was
+   built once and never re-derived. **Every legacy page's map deserves the same audit nc.html just got** — sc.html and
+   ga.html are the oldest and were built the same week under the same assumptions.
 
 **Queue status (as of Aug 6, 2026): items 1, 2, 3 and 5 are COMPLETE, and item 4 has been at ZERO gaps
 site-wide since Aug 5.** The queue is therefore empty of open work — what remains is *maintenance*: every new
