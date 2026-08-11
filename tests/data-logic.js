@@ -73,6 +73,10 @@ const STATE_PAGES = [
   // in the state — without `ds` it would be unreachable statewide (lesson #12), so this count
   // (4 statewide + 3 districts x 2 races) is the regression guard on that.
   { page: "pa.html", countyCount: 67,  sampleFips: "42101", sampleName: "Philadelphia", expectedRaces: 10 },
+  // Davidson is deliberately the TN sample: under the map enacted May 7, 2026 (Pub. Ch. 3,
+  // 2nd Extraordinary Session) Nashville is split THREE ways — districts 4, 6 and 7 — so it
+  // carries `ds` and this count guards the multi-district merge on the new lines.
+  { page: "tn.html", countyCount: 95,  sampleFips: "47037", sampleName: "Davidson",     expectedRaces: 16 },
 ];
 
 for (const cfg of STATE_PAGES) {
