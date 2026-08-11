@@ -77,6 +77,10 @@ const STATE_PAGES = [
   // 2nd Extraordinary Session) Nashville is split THREE ways — districts 4, 6 and 7 — so it
   // carries `ds` and this count guards the multi-district merge on the new lines.
   { page: "tn.html", countyCount: 95,  sampleFips: "47037", sampleName: "Davidson",     expectedRaces: 16 },
+  // Honolulu is deliberately the HI sample: it is Hawaii's ONLY split county and the only one
+  // touching HI-1 (which sits entirely inside it), so it carries `ds` and this count guards the
+  // multi-district merge. HI-1 holds the county as an outright 71.46% majority, not a plurality.
+  { page: "hi.html", countyCount: 5,   sampleFips: "15003", sampleName: "Honolulu",     expectedRaces: 10 },
 ];
 
 for (const cfg of STATE_PAGES) {

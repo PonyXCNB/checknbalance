@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hawaii Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every HI election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #himap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">HI</div>
+      <div class="brand-text">
+        <span class="brand-name">Hawaii Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Hawaii <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 5 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">5</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>2</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>2</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Hawaii…</div>
+      <svg id="himap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>HI Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">July 22, 2026</span><br>
+      Sources: Hawaii Office of Elections (elections.hawaii.gov) official Aug 8, 2026 primary results and voter guides; Hawaii Campaign Spending Commission (csc.hawaii.gov) disclosure reports; the 2021 Reapportionment Commission plan; U.S. Census Bureau 2020 congressional-district summary files; FEC; U.S. House Clerk member roster; Cook Political Report 2025 PVI; Sabato's Crystal Ball; Inside Elections; Honolulu Civil Beat; Honolulu Star-Advertiser; Hawaii Public Radio.</div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every HI county + its primary US House district(s)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- All 5 Hawaii county-equivalents, keyed by FIPS -----
+// Geometry: us-atlas@3 counties-10m.json (state FIPS 15) — 5 geometries, names verified
+//   verbatim: "Hawaii", "Honolulu", "Kalawao", "Kauai", "Maui" (no okina/macrons in this dataset).
+// District assignment: Hawaii Office of Elections official Aug 8, 2026 primary precinct file
+//   https://elections.hawaii.gov/wp-content/results/2026%20Primary/media.txt (fetched Aug 11, 2026)
+//   Cross-tab of registered voters by county x U.S. House contest (sums exactly to the state's
+//   published 846,543 registered voters; no precinct is split between HI-1 and HI-2):
+//     Hawaii   15001 -> HI-2 only          134,573 reg
+//     Honolulu 15003 -> SPLIT: HI-1 395,331 (72.4%) / HI-2 150,709 (27.6%)  => plurality HI-1
+//     Kalawao  15005 -> HI-2 (Kalaupapa, Molokai; no county govt; votes in Maui Co. precincts,
+//                       state House Dist 13, which carries only "U.S. Representative, Dist II")
+//     Kauai    15007 -> HI-2 only           49,060 reg
+//     Maui     15009 -> HI-2 only          116,870 reg
+// Honolulu carries an explicit ds list so HI-1 and HI-2 both stay visible on the map.
+const COUNTIES = {
+  "15001": { n: "Hawaii",   d: 2 },
+  "15003": { n: "Honolulu", d: 1, ds: [1, 2] },
+  "15005": { n: "Kalawao",  d: 2 },
+  "15007": { n: "Kauai",    d: 2 },
+  "15009": { n: "Maui",     d: 2 }
+};
+
+// ----- Statewide races (every Hawaii county sees these) -----
+// Sources: Hawaii Office of Elections official Primary Election 2026 Statewide Summary
+//   (Report 3, printed 08/09/2026) https://elections.hawaii.gov/wp-content/results/2026%20Primary/histatewide.pdf ;
+//   Hawaii Campaign Spending Commission disclosure reports (csc.hawaii.gov/CFSPublic), all cash-on-hand
+//   figures as of July 24, 2026; Honolulu Civil Beat candidate Q&As (July 2026); Hawaii Const. Art. V §2
+//   and HRS §11-115 for the joint-ticket mechanic; SB3219 CD1 for the ballot question.
+// NOTE: there is NO 2026 U.S. Senate race in Hawaii — Schatz next faces voters in 2028 and Hirono in 2030.
+// NOTE: Hawaii does NOT elect judges. The Judicial Selection Commission decides retention, so no
+//   judicial contest appears on any Hawaii ballot.
+const STATEWIDE = [
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Statewide", office: "Governor and Lieutenant Governor of Hawaii",
+    note: "⚠ ONE VOTE, A TICKET YOU DID NOT ASSEMBLE. Hawaii nominates Governor and Lt. Governor SEPARATELY in the primary, then locks them together in November: under Hawaii Const. Art. V §2 a vote for the governor nominee is deemed cast for that party's LG nominee, and HRS §11-115 puts one box beside the pair. Neither running mate was chosen by the other. Rated Solid/Safe Democratic by Cook (Jul 10), Sabato (Jul 23) and Inside Elections (baseline D+35.6).",
+    candidates: [
+      { name: "Josh Green (incumbent)", party: "D", winner: false,
+        positions: [
+          "Protect the 2024 middle-class income tax cuts and the expanded earned-income, food and child-care credits (his own framing)",
+          "Build housing by deregulating through emergency proclamation; expand \"kauhale\" villages for homelessness",
+          "Defend the Green Fee; treat LNG as a bridge while scaling to 100% renewables by 2045"
+        ],
+        differentiators: [
+          "Emergency physician; state House, state Senate, then Lt. Governor 2018–2022 and governor since Dec 2022",
+          "Signed Act 96 (2025), the nation's first climate \"Green Fee\" — the transient accommodations tax up 0.75 pt to 11% and extended to cruise passengers, roughly $100M/yr; it survived a cruise-industry challenge and took effect Jan 1, 2026",
+          "$1,924,055.64 cash on hand as of July 24, 2026 (Campaign Spending Commission)"
+        ],
+        supporters: [
+          "Cites the state's largest middle-class tax cut and a 13% drop in unsheltered homelessness across about 26 kauhale villages (his own framing)",
+          "Backed the $4 billion Maui wildfire global settlement, which the Hawaii Supreme Court cleared unanimously in Feb 2025 by blocking separate insurer suits",
+          "Lahaina residential rebuilding accelerated sharply — about 45 homes rebuilt at the two-year mark against nearly 600 rebuilt and 315 under construction at three years"
+        ],
+        opponents: [
+          "Emergency-powers overreach: more than 90 emergency proclamations in under three years. Earthjustice's David Henkin likened it to governing by executive order, and predecessor David Ige said the power \"shouldn't be utilized lightly.\" A challenge was argued before the Hawaii Supreme Court in May 2025 [Verify — no ruling could be located]",
+          "None of Lahaina's destroyed businesses have been rebuilt, and residents describe permitting rules that changed repeatedly; 702 households were still on FEMA temporary housing assistance in late July 2026",
+          "More people are homeless, in shelters and on the street, than when he took office in 2022 — the premise of Civil Beat's own question to him"
+        ] },
+      { name: "Derek S. K. Kawakami", party: "D", winner: false,
+        positions: [
+          "Continue the early-childhood education expansion (his own framing)",
+          "State–county collaboration on land, infrastructure and permitting to bring housing costs down",
+          "Dedicate freed-up transient accommodations tax revenue to public schools, shifting more of the burden onto visitors"
+        ],
+        differentiators: [
+          "Mayor of Kauaʻi County since 2018, re-elected in 2022 with more than 70%; earlier a state representative and county council member",
+          "The only candidate on either ticket with executive experience; claims 500+ affordable homes built on Kauaʻi and illegal vacation rentals cut by more than 96% (his own framing)",
+          "$296,344.38 cash on hand as of July 24, 2026 (Campaign Spending Commission)"
+        ],
+        supporters: [
+          "A crisis-tested executive who led Kauaʻi through COVID, hurricanes and floods",
+          "Endorsed by HSTA, SHOPO, UPW, ILWU Local 142, the firefighters, the carpenters and the building trades",
+          "Won the primary decisively — 139,935 votes, more than double the runner-up's 55,093"
+        ],
+        opponents: [
+          "A super PAC spent more than $2 million supporting him — more than on all its other candidates combined. One strategist called it \"not a fair test of anything\"",
+          "Declined a Civil Beat candidate forum with his primary rivals and did not respond to interview requests",
+          "Leaves Kauaʻi's mayoralty mid-term for an office with few formal duties [Verify — structural argument]"
+        ] },
+      { name: "Gary Cordery", party: "R", winner: false,
+        positions: [
+          "Eliminate the general excise tax on food and medicine; freeze property taxes for kūpuna at retirement (his own framing)",
+          "Build 15,000 fee-simple homes at $400K–$600K on state land, with an independent permitting department",
+          "Create a Government Transparency Office with annual departmental audits"
+        ],
+        differentiators: [
+          "Owns a contracting company; runs as a businessman rather than a career politician [Verify — no detailed biography page could be located on his own site]",
+          "Unusually for a Republican here, would renegotiate Hawaiian Homes Act blood-quantum terms and put Hawaiian-language instruction statewide from 3rd grade",
+          "$23,488.91 cash on hand as of July 24, 2026 (Campaign Spending Commission)"
+        ],
+        supporters: [
+          "Frames the race on cost of government: \"Hawai'i's 20.5 billion dollar budget for 1.4 mil[lion] people is a staggering number. New Hampshire has 1.4 million people but a $7.75 billion dollar budget.\"",
+          "Won his primary decisively, 36,308 to 11,554 — a clear party mandate rather than a fractured field",
+          "Argues one-party control produced the corruption cases now shadowing the Capitol, and that only an outsider breaks it"
+        ],
+        opponents: [
+          "No Republican has won a Hawaii governorship since Linda Lingle, who left office in 2010; Cook puts the seat at D+13",
+          "Roughly an 82-to-1 cash-on-hand disadvantage against the incumbent as of July 24, 2026",
+          "His platform cuts against the state's centre of gravity — he calls the Green Fee \"another tax\" and would ban union and ActBlue political donations"
+        ] },
+      { name: "Daniel Anthony", party: "R", winner: false,
+        positions: [
+          "Food security and local agriculture, with ahupuaʻa-based emergency readiness centres (his own framing)",
+          "Real-time public access to government spending, independent audits and stricter procurement oversight",
+          "Protect the 2026 income tax cuts; treat LNG as temporary; audit how Green Fee money is spent"
+        ],
+        differentiators: [
+          "Built a paʻiʻai business and the movement that helped legalize hand-pounded paʻiʻai in the 2011 legislative session [Verify — the specific act number could not be confirmed]",
+          "Founded the nonprofit Hui Aloha ʻĀina Momona; served on the State Taro Purity and Security Task Force; organized Kuʻi at the Capitol and the annual Lā Hoʻihoʻi Ea commemoration",
+          "$8,352.78 cash on hand as of July 24, 2026 (Campaign Spending Commission)"
+        ],
+        supporters: [
+          "Two decades of documented community results — legalizing paʻiʻai, legalizing traditional hale building, the taro task force — without ever holding office",
+          "Argues the office needs independence: \"The lieutenant governor should be a trusted partner, not a rubber stamp\"",
+          "Won a genuinely contested four-way Republican primary, 16,930 to 10,794"
+        ],
+        opponents: [
+          "By his own disclosure he has held no prior office and lists no community-organization affiliations, for a job first in line to the governorship",
+          "Locked to Cordery on a ticket that all three raters call Solid or Safe Democratic; his own vote total is about a eighth of Kawakami's [Verify — structural argument]",
+          "Cash on hand under 3% of his opponent's, and no endorsements could be located [Verify]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Statewide", office: "Constitutional Amendment — County Resilient Infrastructure Bonds (SB3219 CD1)",
+    note: "⚠ THE ONLY STATEWIDE BALLOT MEASURE IN HAWAII THIS YEAR. The Legislature passed exactly one constitutional amendment in final form in 2026. It would let counties issue bonds for public improvements in designated districts, repaid solely out of future growth in property-tax revenue inside those districts rather than by raising rates — a mechanism usually called tax-increment financing. In Hawaii a proposed amendment passes only if the YES votes are a majority of ALL ballots cast, so blank votes count effectively as no.",
+    candidates: [
+      { name: "The question as it appears on the ballot", party: "I", winner: false,
+        positions: [
+          "\"Shall the Hawaii State Constitution be amended to direct the legislature to authorize the counties to issue resilient infrastructure for shelter and equity bonds to fund public improvements in designated districts, repaid solely by future growth in property tax revenues within those districts, not by increasing real property tax rates, where such bonds are excluded from the counties' debt limit and are subject to accountability and oversight requirements as may be provided by law?\""
+        ],
+        differentiators: [
+          "Amends Article VII, sections 12 and 13; introduced as SB3219, companion HB2476; enrolled to the Governor May 8, 2026",
+          "The bonds would sit OUTSIDE each county's debt limit — the central structural change",
+          "[Verify] No ballot number has been assigned in any source located"
+        ],
+        supporters: [
+          "Lets counties finance infrastructure in the districts that need it without raising anyone's property-tax rate [Verify — argument as framed in the measure's own text]",
+          "Excluding the bonds from the debt limit is what makes the tool usable at all, and the measure requires accountability and oversight by law"
+        ],
+        opponents: [
+          "Debt excluded from a county's debt limit is still debt, and the repayment depends on growth that may not materialize [Verify — structural argument]",
+          "[Verify] No organized opposition campaign could be located as of Aug 11, 2026"
+        ] }
+    ] },
+
+  { date: "Aug 8, 2026", type: "past", scope: "Statewide", office: "Governor — Democratic Primary",
+    note: "Green renominated. Percentages here are the Office of Elections' own, whose denominator includes blank and over votes.",
+    candidates: [
+      { name: "Josh Green (incumbent)", party: "D", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] }
+    ] },
+  { date: "Aug 8, 2026", type: "past", scope: "Statewide", office: "Lieutenant Governor — Democratic Primary",
+    note: "Kawakami 139,935 to Della Au Belatti's 55,093. ⚠ The seat was open because Lt. Gov. Sylvia Luke abandoned her re-election bid on Apr 19, 2026 and took indefinite unpaid leave on Apr 23 after her attorney confirmed she is the TARGET of a state Attorney General bribery investigation; she denies accepting the money. Comptroller Keith Regan was named acting lieutenant governor. [Verify — her status and the investigation's outcome as of today could not be confirmed past Apr 24, 2026.]",
+    candidates: [
+      { name: "Derek S. K. Kawakami", party: "D", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] }
+    ] },
+  { date: "Aug 8, 2026", type: "past", scope: "Statewide", office: "Governor — Republican Primary",
+    note: "Cordery 36,308 to Ken Fujiyama's 11,554.",
+    candidates: [
+      { name: "Gary Cordery", party: "R", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] }
+    ] },
+  { date: "Aug 8, 2026", type: "past", scope: "Statewide", office: "Lieutenant Governor — Republican Primary",
+    note: "Anthony 16,930 to Mejia's 10,794 in a four-way field.",
+    candidates: [
+      { name: "Daniel Anthony", party: "R", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] }
+    ] }
+];
+
+// ----- U.S. House races, keyed by district -----
+// Sources: Hawaii Office of Elections official Aug 8, 2026 primary results; the U.S. House Clerk
+//   member roster (clerk.house.gov/xml/lists/MemberData.xml, retrieved Aug 11, 2026) for incumbency;
+//   raw filed FEC Form 3s via docquery.fec.gov (all cash-on-hand figures coverage-through July 19,
+//   2026) plus the FEC 2026 bulk candidate master; Cook Political Report 2025 PVI district list;
+//   Honolulu Civil Beat and Honolulu Star-Advertiser candidate Q&As and post-primary reporting.
+// Districts: the 2022 plan adopted by the 2021 Reapportionment Commission. Hawaii's commission
+//   convenes only in years ending in 1 (Const. Art. IV), so no mid-decade change is possible; the
+//   Census CD118 and CD119 relationship files for Hawaii are geographically identical.
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — HI District 1",
+    region: "Urban Honolulu — Waikiki, Chinatown, Kaimuki, Manoa, Pearl City, Waipahu, Ewa Beach, Mililani (Cook PVI D+13)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "Ed Case survived the most serious challenge of his current run, beating state Sen. Jarrett Keohokalole 58.5%–37.4% in a primary fought on whether a moderate Democrat is the right fit for the seat. ⚠ The November field below is DERIVED by applying HRS §12-41(b) to the certified primary counts — the Office of Elections had published no certified general-election candidate list as of Aug 11, 2026 [Verify the two minor-party lines].",
+        candidates: [
+          { name: "Ed Case (incumbent)", party: "D", winner: false,
+            positions: [
+              "Jones Act reform — calls it \"the single biggest across-the-board driver\" of Hawaii's cost of living, worth upwards of $2,000 per family a year (his own framing)",
+              "Co-introduced the Social Security 2100 Act; would raise the payroll cap so higher earners pay more",
+              "Opposes unilateral presidential war-making; voted for Iran war-powers resolutions and against the defense budget over unanswered questions"
+            ],
+            differentiators: [
+              "Twelve years in Congress, eight of them on House Appropriations (Defense and Homeland Security subcommittees)",
+              "Vice chair of the Problem Solvers Caucus and co-founder of the Pacific Islands Caucus. ⚠ He is a FORMER Blue Dog Coalition co-chair — he is not on the coalition's current roster",
+              "$599,649.29 cash on hand as of July 19, 2026 (FEC Form 3)"
+            ],
+            supporters: [
+              "Argues seniority is the leverage: re-election would put him in the top quarter of the House by seniority with continued Appropriations power (his own framing)",
+              "Claims more than $100M a year secured through Appropriations for Native Hawaiian health, education, housing and veterans programs (his own framing)",
+              "Primary voters affirmed the moderate lane by 21 points against a well-funded progressive"
+            ],
+            opponents: [
+              "Angered Hawaii progressives by joining House Republicans to vote for an early version of the SAVE Act, a strict voter-ID bill critics say erodes voting rights [Verify — reported by Civil Beat and the Star-Advertiser; the roll call itself was not pulled]",
+              "Critics want a more forceful opponent of the current administration, especially on immigration enforcement — his challenger's central attack",
+              "At 73 he faced a challenge framed as older-moderate against younger-progressive, and 37.4% of his own party's voters went the other way"
+            ] },
+          { name: "Adriel C. Lam", party: "R", winner: false,
+            positions: [
+              "\"Maintaining Hawaii's strategic importance at the center of the Pacific\" (his own framing)",
+              "Accessing federal funds to upgrade waterways and transportation infrastructure (his own framing)",
+              "Reforming federal shipping regulations to give businesses and consumers fairer access to mainland and global markets (his own framing)"
+            ],
+            differentiators: [
+              "Retired U.S. Army — \"nearly 24 years of service\" [Verify — self-reported on his own site; not independently confirmed]",
+              "Fourth-generation Kāneʻohe resident; his great-grandfather farmed rice there and his grandfather worked at Pearl Harbor Naval Shipyard",
+              "⚠ No cash-on-hand figure exists. His own committee filed an FEC Form 99 on July 28, 2026 certifying it had not raised or spent more than $5,000 through July 19"
+            ],
+            supporters: [
+              "A military background plus a shipping-reform plank speaks directly to the district's dominant cost-of-living complaint (his own framing)",
+              "Deep multigenerational local roots, the standard rebuttal to outsider attacks in Hawaii politics",
+              "He is the only Republican on the ballot here, having won the primary unopposed with 18,480 votes"
+            ],
+            opponents: [
+              "His own committee certifies it is under the $5,000 threshold — a structural indicator of a campaign without resources to compete",
+              "His campaign site is a single page of three priority sentences, and no newspaper candidate Q&A for him could be located [Verify]",
+              "Charles Djou's May 2010 special-election win in this district was the last Republican victory in a Hawaii U.S. House race [Verify — the unbroken span rests on aggregators]"
+            ] },
+          { name: "Jordan S. Conley", party: "G", winner: false,
+            positions: [
+              "\"I will fight to end the Jones Act. It is unfair and stupid.\" (his own words)",
+              "An empty-homes tax and a rent cap, with government building or buying apartments to rent \"at no profit rates\"",
+              "\"Tax the rich,\" plus a new automation and AI tax to fund caregiving and youth-coaching jobs"
+            ],
+            differentiators: [
+              "Teacher, coach and fitness trainer; more than 12 years as a group fitness instructor for Hawaii Pacific Health",
+              "Founded the nonprofit Hapa Mana in 2016; platform also includes universal basic income, ranked-choice voting and public campaign financing",
+              "⚠ No FEC committee could be located at all — he is absent from the FEC's 2026 bulk candidate master file; his own site says a donation account is still being created [Verify]"
+            ],
+            supporters: [
+              "Explicitly anti-establishment: \"I am not a politician by trade… I cannot be bought,\" citing periods of homelessness",
+              "Offers the ballot's furthest-left option on housing and health care in a district where 37.4% just voted for a progressive challenger",
+              "Agrees with the incumbent that the Jones Act drives costs, but would repeal rather than reform it"
+            ],
+            opponents: [
+              "Received 397 votes in the Green primary, roughly 0.4% of the incumbent's Democratic total",
+              "On climate he concedes \"I am not sure the best thing to do,\" and several answers redirect to videos rather than policy [Verify — critics' framing of his own Q&A]",
+              "No fundraising apparatus of any kind could be located [Verify]"
+            ] },
+          { name: "Nathan M. Berning", party: "I", winner: false,
+            positions: [
+              "[Verify] No campaign website, platform statement or candidate questionnaire could be located as of Aug 11, 2026. His domain resolves to an empty page and his voter-guide profile is blank"
+            ],
+            differentiators: [
+              "Qualified for the November ballot under HRS §12-41(b) with 972 nonpartisan primary votes, ahead of the Green candidate's 397",
+              "FEC committee registered June 30, 2026; the Statement of Organization is its only filing of any kind, so no cash-on-hand figure exists",
+              "⚠ His FEC committee's address of record is Flagler Beach, FLORIDA. That address is verified; whether he resides in Hawaii is [Verify]"
+            ],
+            supporters: [
+              "He cleared a statutory threshold the Green candidate did not approach, so his ballot slot reflects measurable if small support",
+              "The nonpartisan line gives voters an option outside both parties in a race where the Republican has reported under $5,000 [Verify — structural argument]"
+            ],
+            opponents: [
+              "Zero financial activity reported and no locatable campaign website or platform — voters have almost no basis on which to evaluate him [Verify]",
+              "A committee address in Florida raises an obvious connection question for a Hawaii seat [Verify — the address is fact; the inference is ours]",
+              "972 primary votes is under 1% of the ballots cast in the Democratic primary alone"
+            ] }
+        ] },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Case held the seat comfortably.",
+        candidates: [
+          { name: "Ed Case", party: "D", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] }
+        ] }
+    ]
+  },
+  2: {
+    name: "U.S. House — HI District 2",
+    region: "Windward and rural Oahu plus every neighbor island — Kaneohe, Kailua, Waianae, Maui, Kauai, Hawaii Island (Cook PVI D+12)",
+    races: [
+      {
+        date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ THE RACE HAWAII REPUBLICANS ARE ACTUALLY CONTESTING. Jill Tokuda took 91.5% of her primary, but her opponent is the state Senate MINORITY LEADER, whose own Senate seat is not on the ballot — so he can run at no political risk. No Republican has ever represented HI-2. The district is a plurality-Oahu seat, not a pure neighbor-islands one: Honolulu County supplies about 40% of its people.",
+        candidates: [
+          { name: "Jill N. Tokuda (incumbent)", party: "D", winner: false,
+            positions: [
+              "SUPPORTS the Jones Act — says it \"protects Hawaiʻi's supply chain\" and that there is little evidence repeal would deliver meaningful savings (a direct, on-the-record split with HI-1's incumbent)",
+              "Co-led the Stop Wall Street Landlords Act to block large corporate investors buying up single-family homes",
+              "Introduced legislation to lift the income cap on Social Security contributions; opposed the Iran strikes as launched \"without clear authorization, strategy, or accountability\""
+            ],
+            differentiators: [
+              "Twelve years in the state Senate including chair of Ways and Means before entering Congress in 2023",
+              "Sits on Agriculture, Armed Services and the Select Committee on the Chinese Communist Party — defense portfolio in a state with a large military footprint",
+              "$570,354.51 cash on hand as of July 19, 2026 (FEC Form 3)"
+            ],
+            supporters: [
+              "An overwhelming party mandate — 91.5% of the primary vote, 91,832 votes",
+              "Bipartisan delivery record on Maui wildfire recovery, disaster-relief tax relief for survivors, and co-founding the Rural Health Caucus",
+              "Argues seniority matters and her opponent's one-term pledge forfeits it: \"There are some who simply want to run so that they can serve during this president's tenure.\""
+            ],
+            opponents: [
+              "Her Jones Act support is the sharpest available cost-of-living attack — her own party's HI-1 incumbent calls the law the single biggest driver of Hawaii's prices",
+              "Her opponent's core argument is that an all-Democratic delegation is \"on a team currently not in charge,\" leaving Hawaii sidelined in federal funding decisions",
+              "She has never had to defend this seat against a serious Republican, so her general-election strength is untested [Verify — structural argument]"
+            ] },
+          { name: "Brenton Awa", party: "R", winner: false,
+            positions: [
+              "Cap federal housing allowances in Hawaii and require the military to prioritize on-base housing \"to protect local families from inflated rents\" (his own framing)",
+              "Require military personnel stationed in Hawaii to pay the standard vehicle registration fee, using the revenue to cut fees for residents",
+              "Reduce the blood quantum requirement for Hawaiian Home Lands so \"all Hawaiians can secure long term, generational housing\""
+            ],
+            differentiators: [
+              "Hawaii Senate MINORITY LEADER, one of only three Republicans in the 25-seat chamber; his own seat runs to 2028 and is not on this ballot",
+              "Former TV news anchor; founded Hawaii's first roadside food forest and says he saved more than 26 million gallons of drinking water by exposing a pipeline leak",
+              "$16,100.80 cash on hand as of July 19, 2026 (FEC Form 3)"
+            ],
+            supporters: [
+              "Argues a Republican would have access the all-Democratic delegation lacks: \"If we only got screwdrivers and wrenches… but you need a hammer, you're out of luck\"",
+              "Independent of party orthodoxy — says plainly that Joe Biden won in 2020 (\"If your numbers don't show up as the winner, you lost. Accept it.\") and does not identify with MAGA",
+              "Runs a \"No-Gift\" policy and says he was re-elected in 2024 without raising or spending any money (his own framing)"
+            ],
+            opponents: [
+              "Pledges to serve only one term and does not want to move to Washington — which his opponent calls disqualifying in a system where seniority drives federal funding",
+              "Roughly a 35-to-1 cash disadvantage as of the same July 19, 2026 reporting date",
+              "His signature state bill, banning mainland Americans from buying Hawaii homes, \"gathered little momentum because it likely runs afoul of the Commerce Clause\""
+            ] }
+        ] },
+      {
+        date: "Nov 5, 2024", type: "past",
+        note: "Tokuda won a second term.",
+        candidates: [
+          { name: "Jill N. Tokuda", party: "D", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] }
+        ] }
+    ]
+  }
+};
+
+const SITE_META = { name: "Hawaii Elections Hub", lastUpdated: "August 11, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — Hawaii county-level down-ballot research has not started.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Hawaii has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them,
+  // otherwise a district with no plurality county is unreachable from the map.
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const HI_STATE_FIPS = "15";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#himap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(HI_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Hartford ----
+  drawCapital(g, projection, { name: "Honolulu", lng: -157.858, lat: 21.307 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in HI";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our Hawaii dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>
