@@ -346,7 +346,8 @@
   </p>
 
   <!-- Submissions are handled by Netlify Forms and emailed to the project maintainer.
-       The recipient address is configured in Netlify (Site settings > Forms > Form notifications),
+       The recipient address is configured in Netlify (Project configuration > Notifications >
+       Emails and webhooks > Form submission notifications),
        deliberately NOT in this page's source, so it can't be scraped. -->
   <form class="contrib" id="contrib-form" name="contribute" method="POST"
         data-netlify="true" netlify-honeypot="bot-field">
@@ -641,7 +642,8 @@ d3.json(TOPO_URL).then((us) => {
         status.className = "contrib-status err";
         // A 404/405 here is NOT a transient failure and retrying will never help: it means
         // Netlify's form handler never saw the POST, which in practice means Form detection
-        // is switched off for the site (Site configuration > Forms). Say something honest
+        // is switched off for the project (its Forms tab > Enable form detection). Say something
+        // honest
         // rather than inviting the visitor to keep hammering a button that cannot work.
         var dead = err && (err.status === 404 || err.status === 405);
         status.textContent = dead
@@ -653,9 +655,12 @@ d3.json(TOPO_URL).then((us) => {
             (dead
               ? "\nThe POST reached the static host instead of Netlify's form handler." +
                 "\nMost likely cause: Form detection is OFF for this site." +
-                "\nFix: Netlify > Site configuration > Forms > enable Form detection, then trigger one redeploy" +
+                "\nFix: open the project's Forms tab and select 'Enable form detection', then redeploy once" +
                 "\n(detection registers forms at DEPLOY time, so an existing deploy will not pick it up)." +
-                "\nThen: Forms > Form notifications > Add notification > Email notification."
+                "\n  Forms:   https://app.netlify.com/projects/strong-bienenstitch-2e0547/forms" +
+                "\n  Deploys: https://app.netlify.com/projects/strong-bienenstitch-2e0547/deploys" +
+                "\nThen add an email notification under Project configuration > Notifications >" +
+                "\nEmails and webhooks > Form submission notifications > Add notification."
               : "")
           );
         }

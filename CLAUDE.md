@@ -686,10 +686,29 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
    accessibility tree. Verified visually in a real browser (see lesson #18b for how).
    ⚠⚠ **THE RECIPIENT ADDRESS IS DELIBERATELY NOT IN THE PAGE SOURCE** (owner's explicit instruction — it would be
    scraped). It is configured in the Netlify dashboard instead. **TWO ONE-TIME STEPS ONLY THE OWNER CAN DO, in Netlify:
-   (i) Site configuration → Forms → enable Form detection (then redeploy once if it was off); (ii) Forms → Form
-   notifications → Add notification → Email notification → his address.** Until (ii) is done, submissions are still
+   (i) enable Form detection; (ii) add an email notification.** ⚠ SEE THE CORRECTED PATHS IMMEDIATELY BELOW —
+   the menu tree first recorded here was wrong. Until (ii) is done, submissions are still
    captured in Netlify's Forms tab — nothing is lost, he just gets no email. **If a future run is asked why no
    submissions are arriving, check those two settings before touching the form.**
+   ⚠⚠ **THE MENU PATH RECORDED HERE ORIGINALLY WAS WRONG. CORRECTED Aug 12, 2026 against Netlify's own current
+   docs, after the owner tried to follow it and could not find the options.** The cause: **Netlify renamed "Sites"
+   to "Projects"**, so anything reading "Site configuration" no longer exists in the UI. Form detection is also
+   NOT under configuration at all — it lives on the Forms tab itself. The correct paths, with deep links for this
+   project (Netlify project name `strong-bienenstitch-2e0547`):
+   - **(i) Enable form detection** — go to the project's **Forms** tab and select **Enable form detection**.
+     Direct: `https://app.netlify.com/projects/strong-bienenstitch-2e0547/forms`
+     Netlify's wording on what happens next: *"Starting with your next site deploy, Netlify will automatically
+     scan your deploys for forms that require submission handling."*
+   - **(ii) Redeploy once** — **Deploys** page → **Trigger deploy** at the top of the deploy list.
+     Direct: `https://app.netlify.com/projects/strong-bienenstitch-2e0547/deploys`
+     ⚠ In practice this step is usually unnecessary for this project, because the daily 8am task pushes a commit
+     most days and every push to `main` deploys. Enabling detection and waiting for the next scheduled run works.
+   - **(iii) Email notification** — **Project configuration → Notifications → Emails and webhooks → Form
+     submission notifications** → **Add notification**.
+     Direct: `https://app.netlify.com/projects/strong-bienenstitch-2e0547/configuration/notifications#form-submission-notifications`
+   ➤ **Lesson: do not write UI instructions from memory or from a stale note.** Netlify's console is renamed
+   often enough that a path recorded months ago is a liability. Re-read `docs.netlify.com` and quote its current
+   labels, and prefer deep links over menu trees — the links survive renames that the menu names do not.
    ✅ **CONFIRMED BROKEN FOR EXACTLY THIS REASON, Aug 12, 2026.** The owner reported the "Send it in" button failing
    with the red error text. **The form markup and the submit handler were both CORRECT** — textbook Netlify Forms
    AJAX — so nothing in the page was actually broken. Diagnosed WITHOUT creating a real submission: a POST to the
