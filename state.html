@@ -102,7 +102,24 @@
   .pill.past { background: #F1EAD8; color: var(--gold-deep); }
   .election-scope { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
   .election-office { font-family: var(--serif); font-size: 23px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.15; }
-  .election-note { font-size: 13px; color: var(--ink-soft); margin-top: 6px; font-style: italic; }
+  /* The note renders inside the collapsed accordion header, and some notes run to
+     several hundred words of sourcing and caveats — which made a collapsed race card
+     taller than the screen (owner-reported Aug 12, 2026, on Boise County, ID).
+     Clamp to 3 lines when collapsed; restore the full text when the card is open, so
+     nothing is hidden from the reader, it just waits for the chevron. line-clamp
+     supplies its own ellipsis, so the truncation is visible rather than silent. */
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+    display: -webkit-box; -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3; line-clamp: 3;
+    overflow: hidden;
+  }
+  .election-card.open .election-note {
+    display: block;
+    -webkit-line-clamp: none; line-clamp: none;
+    overflow: visible;
+  }
   .election-toggle { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; padding-top: 2px; }
   .cand-count { font-size: 11px; letter-spacing: 0.06em; color: var(--ink-soft); white-space: nowrap; }
   .chevron { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--line); background: var(--paper); display: grid; place-items: center; transition: transform .25s ease, background .15s ease, border-color .15s ease; color: var(--gold-deep); }

@@ -750,6 +750,18 @@ not in it. Add every new state to ALL FOUR lists: tests/parse-check.js, tests/sm
 tests/data-logic.js, tools/verify-report.js AND tools/voices-report.js. If the owner adds nothing new, spend the freed time on state builds, the
 time-sensitive calendar, and the incumbent-status sweep.
 
+10. ~~**Race-note blurbs made collapsed accordion headers taller than the screen.**~~ **DONE (Aug 12, 2026.)**
+   ✅ **FIXED SITE-WIDE Aug 12, 2026** — owner-reported from Boise County, ID. The race `note` renders inside the
+   COLLAPSED accordion header, so a race whose note runs to several hundred words of sourcing and caveats produced a
+   header taller than the viewport (Idaho’s U.S. Senate note is 1,435 characters and rendered 450px tall, collapsed).
+   **Fix: `.election-note` is clamped to 3 lines with `-webkit-line-clamp` when collapsed and restored to full text
+   under `.election-card.open`.** Nothing is hidden from the reader — it waits for the chevron — and line-clamp
+   supplies its own ellipsis so the truncation is visible rather than silent. Applied to all 35 drawer pages by
+   `tools/clamp-notes` logic; two CSS spellings existed (multi-line on state pages, single-line on state.html) and
+   the sweep refused to write any file it could not match exactly once. Verified in a real browser on the reported
+   county: the Senate note went 450px → 54px, every collapsed card is now 147–192px instead of 560px+, and expanding
+   restores all 1,435 characters. ⚠ Do NOT “fix” long notes by deleting content — the length is deliberate.
+
 ## Backlog / roadmap
 
 1. **Post-primary refresh (late Aug 2026):** FL primaries (Aug 18) → replace pre-primary fields;
