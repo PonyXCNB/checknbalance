@@ -24,7 +24,7 @@ const VALID_PARTIES = new Set(["D", "R", "I", "L", "G"]);
 // ---------------------------------------------------------------
 const STATE_PAGES = [
   { page: "nc.html", countyCount: 100, sampleFips: "37129", sampleName: "New Hanover", expectedRaces: 15 },
-  { page: "sc.html", countyCount: 46,  sampleFips: "45019", sampleName: "Charleston",  expectedRaces: 15 },
+  { page: "sc.html", countyCount: 46,  sampleFips: "45019", sampleName: "Charleston",  expectedRaces: 17 },
   { page: "ga.html", countyCount: 159, sampleFips: "13121", sampleName: "Fulton",      expectedRaces: 18 },
   { page: "va.html", countyCount: 133, sampleFips: "51059", sampleName: "Fairfax",     expectedRaces: 9 },
   { page: "md.html", countyCount: 24,  sampleFips: "24031", sampleName: "Montgomery",  expectedRaces: 10 },
@@ -34,7 +34,7 @@ const STATE_PAGES = [
   { page: "ri.html", countyCount: 5,   sampleFips: "44007", sampleName: "Providence",  expectedRaces: 10 },
   { page: "nh.html", countyCount: 10,  sampleFips: "33011", sampleName: "Hillsborough", expectedRaces: 6 },
   { page: "ct.html", countyCount: 8,   sampleFips: "09011", sampleName: "New London",  expectedRaces: 9 },
-  { page: "vt.html", countyCount: 14,  sampleFips: "50007", sampleName: "Chittenden",  expectedRaces: 6 },
+  { page: "vt.html", countyCount: 14,  sampleFips: "50007", sampleName: "Chittenden",  expectedRaces: 9 },
   { page: "me.html", countyCount: 16,  sampleFips: "23019", sampleName: "Penobscot",   expectedRaces: 9 },
   { page: "ma.html", countyCount: 14,  sampleFips: "25025", sampleName: "Suffolk",     expectedRaces: 15 },
   { page: "wv.html", countyCount: 55,  sampleFips: "54039", sampleName: "Kanawha",     expectedRaces: 10 },
@@ -81,6 +81,10 @@ const STATE_PAGES = [
   // touching HI-1 (which sits entirely inside it), so it carries `ds` and this count guards the
   // multi-district merge. HI-1 holds the county as an outright 71.46% majority, not a plurality.
   { page: "hi.html", countyCount: 5,   sampleFips: "15003", sampleName: "Honolulu",     expectedRaces: 10 },
+  // Jefferson is deliberately the AL sample: Birmingham is split between AL-7 (the city core,
+  // and the county plurality) and AL-6 (the southern suburbs), so it carries `ds` and this count
+  // guards the multi-district merge on the 2023 legislature map now in force.
+  { page: "al.html", countyCount: 67,  sampleFips: "01073", sampleName: "Jefferson",    expectedRaces: 22 },
 ];
 
 for (const cfg of STATE_PAGES) {

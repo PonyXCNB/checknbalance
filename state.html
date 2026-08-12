@@ -268,6 +268,7 @@ const params = new URLSearchParams(window.location.search);
 let abbr = (params.get("state") || "CA").toUpperCase();
 if (!STATES[abbr]) abbr = "CA";
 // If someone lands here for NC, send them to the full build.
+if (abbr === "AL") { window.location.replace("al.html"); }
 if (abbr === "NC") { window.location.replace("nc.html"); }
 if (abbr === "SC") { window.location.replace("sc.html"); }
 if (abbr === "GA") { window.location.replace("ga.html"); }
@@ -385,43 +386,6 @@ const HOUSE_SEATS = {
 // Keys suppress the matching office-level entry in buildSeats.
 // ============================================================
 const STATE_RACES = {
-  AL: [
-    { key:"governor", date:"Nov 3, 2026", type:"upcoming", scope:"State · Statewide · Nov 3, 2026",
-      office:"Governor of Alabama",
-      note:"Open seat — Kay Ivey is term-limited. A rematch of the 2020 U.S. Senate race, which Tuberville won by 20.4 points. Both won their May 19 primaries outright: Tuberville 85.5%, Jones 78.6%. Solid/Safe R (Cook Jul 10, Sabato Jul 23, Inside Elections Jun 25). ⚠ Tuberville's eligibility is BEFORE THE ALABAMA SUPREME COURT — State ex rel. Dorgan v. Tuberville (SC-2026-0540) argues he fails the 7-year residency requirement. He has survived every challenge so far and remains the certified nominee; the court granted expedited briefing on July 21 with plaintiffs' briefs due Aug 7, 2026. No ruling as of Aug 6 [Verify — recheck].",
-      candidates:[
-        { name:"Tommy Tuberville", party:"R", winner:false,
-          positions:["Recruit manufacturing to Alabama (announcement speech)","Crack down on illegal immigration (announcement speech)","\"Make education better again\" — backs the CHOOSE Act school-choice program"],
-          differentiators:["Sitting U.S. Senator, giving up the seat to run; Auburn head football coach for 10 years","Trump's \"Complete and Total Endorsement,\" Jan 23, 2026; also backed by Club for Growth","$9.2M cash on hand to Jones's $1.7M (Alabama state committees, July 31, 2026)"],
-          supporters:["Proven statewide vote-getter in deep-red Alabama, with name recognition from Auburn","Trump-aligned outsider promising manufacturing jobs and reasons for young Alabamians to stay","Won 85.5% of his primary — near-universal party support"],
-          opponents:["Two voters sued alleging his primary residence is a $5.6M Florida beach home, not his Auburn \"game day\" house — his campaign calls it a \"residency hoax\"","No state-government experience","As senator he blocked hundreds of military promotions over one policy dispute"] },
-        { name:"Doug Jones", party:"D", winner:false,
-          positions:["Expand Medicaid to cover 154,000+ working Alabamians and keep rural hospitals open (campaign site)","Affordability — eliminate the grocery tax, end taxes on tips and overtime, raise the minimum wage (campaign site)","Restore faith in government — citizen-led ballot initiatives, ban stock trading by officials (campaign site)"],
-          differentiators:["Former U.S. Senator (2018–2021); as U.S. Attorney he prosecuted the Klansmen who bombed the 16th Street Baptist Church","Won the primary with 78.6%, beating the party's own 2022 nominees for Senate and governor","OUTRAISED Tuberville in July — $622K to $290K — while still trailing $1.7M to $9.2M on hand"],
-          supporters:["The only Democrat to win statewide in Alabama this century — he has actually done it","A detailed affordability and health-care agenda in a state leaving roughly $182M a year in federal Medicaid money unclaimed","His July fundraising outpaced a far better-funded opponent"],
-          opponents:["Alabama has not elected a Democratic governor since 1998, and Tuberville beat him by 20 points in 2020","Still outgunned more than 5-to-1 on cash","His 2017 Senate win came against a uniquely damaged opponent [Verify — no named Republican rebuttal to his July 27 agenda could be sourced]"] }
-      ]},
-    { key:"senate", date:"Nov 3, 2026", type:"upcoming", scope:"Federal · Statewide · Nov 3, 2026",
-      office:"U.S. Senate — Alabama (open seat)",
-      note:"Open because Tuberville is running for governor. Barry Moore (R) won the June 16 GOP runoff 55.8%–44.2% over Jared Hudson; sitting Attorney General Steve Marshall missed the runoff by about 5,300 votes. Everett Wess (D) won the Democratic runoff 54.6%–45.4%. Solid/Safe R by Cook (Apr 13), Sabato (Mar 4) and Inside Elections (Apr 23). ⚠ ALABAMA'S U.S. HOUSE MAP CHANGED MID-CYCLE: after Louisiana v. Callais, the Supreme Court cleared Alabama on May 11, 2026 to use its 2023 legislature-drawn map instead of the court-drawn one, so Gov. Ivey VOIDED the May 19 primary results in districts 1, 2, 6 and 7 and called a SPECIAL PRIMARY for AUG 11, 2026 with no runoff. Independent and minor-party qualifying also closes Aug 11 at 5 p.m., so no Alabama district's November field is final yet.",
-      candidates:[
-        { name:"Barry Moore", party:"R", winner:false,
-          positions:["Border security, deportation, and English as the official language (campaign site)","Tax cuts, deregulation and shrinking the size of government (campaign site)","Second Amendment — opposes gun confiscation and new gun-control measures (campaign site)"],
-          differentiators:["U.S. Representative (AL-01; previously AL-02, 2021–2025), giving up the House seat to run","Trump endorsed him Jan 17, 2026; won the runoff 55.8% after beating a sitting attorney general for the runoff slot","$3.79M raised with $627,788 on hand (FEC, June 30, 2026) — roughly 45 times his opponent's receipts"],
-          supporters:["Trump's pick in a state Trump carried decisively","Six years in Congress plus small-business ownership and National Guard service","Beat both a sitting attorney general and a well-funded challenger to get here"],
-          opponents:["Independent Craig Jelks says Moore's vote for the 2025 reconciliation bill raised health-care costs and cut safety-net support for Alabama families","Jelks also charges he put \"blind loyalty to the president\" ahead of constituents, citing his vote on presidential war authority over Iran","Critics point to his objection to certifying the 2020 presidential results [Verify the framing; the vote itself is on the record]"] },
-        { name:"Everett Wess", party:"D", winner:false,
-          positions:["Affordable health care, especially rural — federal incentives for providers in underserved areas (campaign site)","Strengthen the federal role in education so grants and student loans keep flowing (campaign site)","Voting rights, equal justice and fair courts (campaign site)"],
-          differentiators:["Managing partner of the Wess Law Firm; 8 years a Midfield municipal judge, plus city prosecutor and public defender","Unusual STEM path — computer science degree and MBA, and 10+ years in Huntsville tech including NASA mission operations","⚠ $83,341 raised and $94,747 spent, leaving a NEGATIVE balance of about $10,000 (FEC, June 30, 2026)"],
-          supporters:["A courtroom career spanning prosecutor, public defender and judge is a nonpartisan-sounding credential in a state where Democrats need crossover voters","The DNC congratulated him on consolidating a four-way primary field","His rural-health focus targets a concrete Alabama problem — hospital closures and long drives to care"],
-          opponents:["[Verify — no sourced Republican attack line on Wess was located; these are structural] Alabama has not elected a Democrat to a full Senate term since 1992","With under $84,000 raised all cycle and a negative balance, he has no means to run statewide paid media [Verify]","Tuberville carried this seat by 20.4 points in 2020 and every rater lists it Solid or Safe R [Verify]"] },
-        { name:"Craig Jelks", party:"I", winner:false,
-          positions:["Non-partisan governing — \"policy over political party\" (campaign site)","Health-care costs and protecting the safety net (campaign statements)","Congressional war powers and cost of living (campaign statements)"],
-          differentiators:["⚠ BALLOT QUALIFICATION NOT CONFIRMED — two secondary sources list him in the November field, but the Alabama Secretary of State's site could not be reached to verify, and he has NO FEC candidate registration [Verify]","Career educator — teaches at Mountain Brook Junior High; a 2019 National History Teacher of the Year nominee","Howard University BA, Columbia MA; a former U.S. Senate intern who once ran for mayor of Charleston, S.C."],
-          supporters:["An independent can appeal to Alabamians alienated by both parties — he has campaigned outside the usual coalitions","He is the only candidate publicly prosecuting a case against Moore's record since the runoff","A classroom teacher's perspective on Alabama's bottom-tier rankings is a direct credential on his central issue"],
-          opponents:["Independents in Alabama must gather 42,458 statewide signatures and have no party infrastructure [Verify the exact figure]","No FEC registration means no reportable money against Moore's $3.8M","[Verify — no one was located actually making this argument] Democrats may argue an independent splits the anti-Moore vote"] }
-      ] }
-  ],
   FL: [
     { key:"governor", date:"Nov 3, 2026", type:"upcoming", scope:"State · Statewide · Nov 3, 2026",
       office:"Governor of Florida",

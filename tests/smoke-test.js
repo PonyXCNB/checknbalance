@@ -16,7 +16,7 @@ const CONTROL_ABBRS = ["TX", "CA"];
 const { check, summary } = makeChecker();
 
 // --- index.html and the fully built state pages: run every inline script once ---
-for (const page of ["index.html", "nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html", "ny.html", "ri.html", "nh.html", "ct.html", "vt.html", "me.html", "ma.html", "wv.html", "oh.html", "ky.html", "in.html", "ia.html", "il.html", "ms.html", "ar.html", "ne.html", "nm.html", "co.html", "or.html", "nv.html", "sd.html", "id.html", "mt.html", "pa.html", "tn.html", "hi.html"]) {
+for (const page of ["index.html", "nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html", "ny.html", "ri.html", "nh.html", "ct.html", "vt.html", "me.html", "ma.html", "wv.html", "oh.html", "ky.html", "in.html", "ia.html", "il.html", "ms.html", "ar.html", "ne.html", "nm.html", "co.html", "or.html", "nv.html", "sd.html", "id.html", "mt.html", "pa.html", "tn.html", "hi.html", "al.html"]) {
   extractInlineScripts(page).forEach((code, i) => {
     const { error } = runScript(cutAtD3(code));
     check(!error, `${page} script #${i + 1} runs without error${error ? ` — ${error.message}` : ""}`);
@@ -37,7 +37,7 @@ for (const abbr of [...FEATURED_ABBRS, ...CONTROL_ABBRS]) {
 }
 
 // --- fully built states must redirect to their dedicated pages ---
-for (const [abbr, page] of [["NC", "nc.html"], ["SC", "sc.html"], ["GA", "ga.html"], ["VA", "va.html"], ["MD", "md.html"], ["DE", "de.html"], ["NJ", "nj.html"], ["NY", "ny.html"], ["RI", "ri.html"], ["NH", "nh.html"], ["CT", "ct.html"], ["VT", "vt.html"], ["ME", "me.html"], ["MA", "ma.html"], ["WV", "wv.html"], ["OH", "oh.html"], ["KY", "ky.html"], ["IN", "in.html"], ["IA", "ia.html"], ["IL", "il.html"], ["MS", "ms.html"], ["AR", "ar.html"], ["NE", "ne.html"], ["NM", "nm.html"], ["CO", "co.html"], ["OR", "or.html"], ["NV", "nv.html"], ["SD", "sd.html"], ["ID", "id.html"], ["MT", "mt.html"], ["PA", "pa.html"], ["TN", "tn.html"], ["HI", "hi.html"]]) {
+for (const [abbr, page] of [["NC", "nc.html"], ["SC", "sc.html"], ["GA", "ga.html"], ["VA", "va.html"], ["MD", "md.html"], ["DE", "de.html"], ["NJ", "nj.html"], ["NY", "ny.html"], ["RI", "ri.html"], ["NH", "nh.html"], ["CT", "ct.html"], ["VT", "vt.html"], ["ME", "me.html"], ["MA", "ma.html"], ["WV", "wv.html"], ["OH", "oh.html"], ["KY", "ky.html"], ["IN", "in.html"], ["IA", "ia.html"], ["IL", "il.html"], ["MS", "ms.html"], ["AR", "ar.html"], ["NE", "ne.html"], ["NM", "nm.html"], ["CO", "co.html"], ["OR", "or.html"], ["NV", "nv.html"], ["SD", "sd.html"], ["ID", "id.html"], ["MT", "mt.html"], ["PA", "pa.html"], ["TN", "tn.html"], ["HI", "hi.html"], ["AL", "al.html"]]) {
   const { sandbox } = runScript(cutAtD3(stateScripts[0]), { search: `?state=${abbr}` });
   check(
     sandbox.__calls.locationReplace.includes(page),

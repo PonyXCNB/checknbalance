@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Alabama Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every AL election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #almap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .election-note {
+    font-size: 13px; color: var(--ink-soft);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">AL</div>
+      <div class="brand-text">
+        <span class="brand-name">Alabama Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Alabama <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 67 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">67</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>7</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>20</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Alabama…</div>
+      <svg id="almap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>AL Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">July 22, 2026</span><br>
+      Sources: Alabama Secretary of State (sos.alabama.gov) certified candidate lists and the Aug 11, 2026 special-primary results; Gov. Kay Ivey's proclamation calling the special primary; the enacted Livingston Congressional Plan 3-2023 legal description; U.S. Census Bureau 2020 P.L. 94-171; FEC; Alabama Ethics Commission campaign-finance filings; Cook Political Report; Sabato's Crystal Ball; Inside Elections; Alabama Reflector; Alabama Daily News; AL.com; 1819 News; AP.</div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every AL county + its primary US House district(s)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- COUNTY -> U.S. HOUSE DISTRICT (all 67 Alabama counties) -----
+// Source: "Livingston Congressional Plan 3-2023" — the map GOVERNING the 2026 election.
+// After Louisiana v. Callais (Apr 29, 2026) the Supreme Court set aside the rulings blocking
+// Alabama's 2023 legislature-drawn plan (May 11, 2026) and overturned a further three-judge
+// block on June 2, 2026. The court-drawn Allen v. Milligan remedial plan used in 2024 is NOT
+// in force, so the Census CD119 county relationship file describes the WRONG map for Alabama.
+// Derived from the Secretary of State's re-posted legal description of Plan 3-2023, parsed to
+// census blocks and joined to 2020 P.L. 94-171 block populations (185,976 blocks summing to
+// 5,024,279). Population check closes to ONE PERSON: districts 1-7 = 717,754 / 717,755 /
+// 717,754 / 717,754 / 717,754 / 717,754 / 717,754 against an ideal of 717,754.1.
+// 'd' is the population-plurality district (drives map shading); 'ds' lists EVERY district
+// overlapping a split county so the drawer shows all of that county's U.S. House races.
+// 6 split counties: Covington, Elmore, Jefferson, Lauderdale, Talladega, Tuscaloosa.
+const COUNTIES = {
+  "01001": { n: "Autauga", d: 6 },
+  "01003": { n: "Baldwin", d: 1 },
+  "01005": { n: "Barbour", d: 2 },
+  "01007": { n: "Bibb", d: 6 },
+  "01009": { n: "Blount", d: 4 },
+  "01011": { n: "Bullock", d: 2 },
+  "01013": { n: "Butler", d: 2 },
+  "01015": { n: "Calhoun", d: 3 },
+  "01017": { n: "Chambers", d: 3 },
+  "01019": { n: "Cherokee", d: 3 },
+  "01021": { n: "Chilton", d: 6 },
+  "01023": { n: "Choctaw", d: 7 },
+  "01025": { n: "Clarke", d: 7 },
+  "01027": { n: "Clay", d: 3 },
+  "01029": { n: "Cleburne", d: 3 },
+  "01031": { n: "Coffee", d: 2 },
+  "01033": { n: "Colbert", d: 4 },
+  "01035": { n: "Conecuh", d: 7 },
+  "01037": { n: "Coosa", d: 6 },
+  "01039": { n: "Covington", d: 1, ds: [1, 2] },
+  "01041": { n: "Crenshaw", d: 2 },
+  "01043": { n: "Cullman", d: 4 },
+  "01045": { n: "Dale", d: 2 },
+  "01047": { n: "Dallas", d: 7 },
+  "01049": { n: "DeKalb", d: 4 },
+  "01051": { n: "Elmore", d: 6, ds: [2, 6] },
+  "01053": { n: "Escambia", d: 1 },
+  "01055": { n: "Etowah", d: 3 },
+  "01057": { n: "Fayette", d: 4 },
+  "01059": { n: "Franklin", d: 4 },
+  "01061": { n: "Geneva", d: 2 },
+  "01063": { n: "Greene", d: 7 },
+  "01065": { n: "Hale", d: 7 },
+  "01067": { n: "Henry", d: 2 },
+  "01069": { n: "Houston", d: 2 },
+  "01071": { n: "Jackson", d: 5 },
+  "01073": { n: "Jefferson", d: 7, ds: [6, 7] },
+  "01075": { n: "Lamar", d: 4 },
+  "01077": { n: "Lauderdale", d: 4, ds: [4, 5] },
+  "01079": { n: "Lawrence", d: 5 },
+  "01081": { n: "Lee", d: 3 },
+  "01083": { n: "Limestone", d: 5 },
+  "01085": { n: "Lowndes", d: 2 },
+  "01087": { n: "Macon", d: 2 },
+  "01089": { n: "Madison", d: 5 },
+  "01091": { n: "Marengo", d: 7 },
+  "01093": { n: "Marion", d: 4 },
+  "01095": { n: "Marshall", d: 4 },
+  "01097": { n: "Mobile", d: 1 },
+  "01099": { n: "Monroe", d: 7 },
+  "01101": { n: "Montgomery", d: 2 },
+  "01103": { n: "Morgan", d: 5 },
+  "01105": { n: "Perry", d: 7 },
+  "01107": { n: "Pickens", d: 7 },
+  "01109": { n: "Pike", d: 2 },
+  "01111": { n: "Randolph", d: 3 },
+  "01113": { n: "Russell", d: 2 },
+  "01115": { n: "St. Clair", d: 3 },
+  "01117": { n: "Shelby", d: 6 },
+  "01119": { n: "Sumter", d: 7 },
+  "01121": { n: "Talladega", d: 3, ds: [3, 6] },
+  "01123": { n: "Tallapoosa", d: 3 },
+  "01125": { n: "Tuscaloosa", d: 7, ds: [4, 7] },
+  "01127": { n: "Walker", d: 4 },
+  "01129": { n: "Washington", d: 7 },
+  "01131": { n: "Wilcox", d: 7 },
+  "01133": { n: "Winston", d: 4 },
+};
+
+// ----- STATEWIDE races (every Alabama county sees these) -----
+// Sources: Alabama Secretary of State certified party candidate lists for the Nov 3, 2026
+// general election (ALGOP June 24/30, Alabama Democratic Party July 1) and SoS election-night
+// returns; Alabama Ethics Commission / alcampaignfinance.com; FEC; candidates' own campaign
+// sites; Alabama Reflector; Alabama Political Reporter; Alabama Daily News; 1819 News;
+// Yellowhammer News; WAKA; WSFA; WBRC; Cook Political Report; Sabato's Crystal Ball;
+// Inside Elections.
+// ⚠ ALABAMA ELECTS ALL SEVEN EXECUTIVE CONSTITUTIONAL OFFICERS TOGETHER in midterm years,
+// so the statewide ballot is long. Democrats fielded a candidate in ALL of them — there is
+// no uncontested statewide executive race, though four Democrats were simply unopposed in
+// their own primary and so appear in no primary-results file.
+// ⚠ The independent / minor-party qualifying deadline for the GENERAL election was
+// MAY 19, 2026 at 5 p.m. (42,458 signatures for a statewide office) — NOT Aug 11, which
+// governed only the special primary in districts 1, 2, 6 and 7. No independent or
+// minor-party certification has been posted by the SoS, so none is carded.
+const STATEWIDE = [
+  // ─────────────────────────── UPCOMING ───────────────────────────
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · Statewide", office: "U.S. Senate — Alabama (OPEN SEAT)",
+    note: "OPEN — Tommy Tuberville is vacating the seat to run for governor. Barry Moore (R), the sitting AL-1 congressman, beat Jared Hudson 55.8%–44.2% in the June 16 runoff after leading the primary with 39.2%; sitting Attorney General Steve Marshall finished THIRD at 24.5%, missing the runoff by about 5,300 votes. Everett Wess (D) beat Dakarai Larriett 54.6%–45.4%. Rated Solid/Safe R by Cook (Apr 13), Sabato (Mar 4) and Inside Elections (Apr 23). ⚠ This is Alabama's Class 2 seat; Katie Britt's Class 3 seat is not up until 2028. ⚠ Craig Jelks is described as an independent candidate by two secondary sources, but he has no FEC registration and no Secretary of State certification could be located, so he is NOT carded [Verify].",
+    candidates: [
+      { name: "Barry Moore", party: "R", winner: false,
+        positions: ["[Verify] A detailed 2026 Senate platform could not be sourced this pass; his record is that of a House Freedom Caucus member","",""],
+        differentiators: ["U.S. Representative for AL-1 since 2025 and for AL-2 2021–2025, giving up the House seat to run","$3.79M raised and $627,788 on hand through June 30, 2026 (FEC) — roughly 45 times his opponent's receipts","Beat a sitting attorney general for a runoff slot, then won the runoff 55.8%–44.2%"],
+        supporters: ["Six years in Congress and a runoff win over two credible rivals","A seat no Democrat has won since 1992 [Verify — structural argument]","Roughly a 45-to-1 fundraising advantage"],
+        opponents: ["Nearly 45% of runoff Republicans preferred someone else","[Verify] No specific sourced criticism of Moore was located this pass","Vacating a safe House seat for the Senate leaves him without a fallback [Verify — structural argument]"] },
+      { name: "Everett Wess", party: "D", winner: false,
+        positions: ["[Verify] A detailed policy platform could not be sourced this pass","",""],
+        differentiators: ["Won the Democratic runoff 54.6%–45.4% over Dakarai Larriett","$83,341 raised and a NEGATIVE $10,011 balance through June 30, 2026 (FEC) — ⚠ Wikipedia's \"$0\" figure is wrong","A Birmingham attorney [Verify — the fuller \"civil-rights attorney\" description could not be confirmed]"],
+        supporters: ["Won his party's nomination outright against a self-funding rival","Gives Alabama Democrats a contested Senate line rather than a blank [Verify — structural argument]"],
+        opponents: ["A negative campaign balance against a $3.79M opponent","No published platform for voters to evaluate [Verify]","Alabama has not elected a Democrat to a full Senate term since 1992 [Verify — structural argument]"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Governor of Alabama (OPEN SEAT)",
+    note: "OPEN — Kay Ivey is term-limited. A rematch of the 2020 U.S. Senate race, which Tuberville won by 20.4 points. Both won their primaries outright: Tuberville 85.5%, Jones 78.6%. Cook Solid R (set Jan 23, 2025, unchanged through its July 10, 2026 refresh), Sabato Safe R (July 23, 2026), Inside Elections Solid R (June 25, 2026) — ⚠ Wikipedia's Sept 2025 dates for Cook and Sabato are editor ACCESS dates, not rating dates. State filings as of July 31: Tuberville $9.2M on hand to Jones's $1.7M, but Jones OUTRAISED him in July, $622,000 to $290,000. ⚠⚠ TUBERVILLE'S ELIGIBILITY IS LIVE AT THE ALABAMA SUPREME COURT. State ex rel. Dorgan v. Tuberville was filed June 17, 2026 by two voters under Art. V, § 117, which requires seven years' residency before election. A Montgomery circuit judge dismissed it July 9 on JURISDICTION, not the merits — while saying the challengers had \"a very strong argument\" and there was \"no good case law\" either way. The appeal was expedited July 21; appellants' brief was filed Aug 10, Tuberville's response is due Aug 21 and the reply Aug 28. NO RULING, and no oral argument is scheduled. ⚠ The replacement-nominee deadline is Aug 19 and the SoS certifies to probate judges Aug 26 — all before briefing even closes. Only two names are on this ballot; Stacy Lee George appears on a campaign-finance roster, which is not a ballot roster, and Alabama does not certify write-ins at all.",
+    candidates: [
+      { name: "Tommy Tuberville", party: "R", winner: false,
+        positions: ["Expand school choice — charter, magnet, private and homeschool options; his stated top priority is workforce and career-technical education, including AI training","Cut state taxes, and he has floated ELIMINATING the state income tax — which raised $7.5 billion last year and funds about 70% of Alabama's K-12 schools","A \"forensic accounting\" of prison construction whose cost roughly doubled, and a full overhaul of the Department of Corrections"],
+        differentiators: ["U.S. Senator since 2021; former Auburn head football coach, running explicitly as \"Coach\" on an \"Alabama First Agenda\"","Trump endorsed him for governor on Jan 23, 2026 — \"COACH TUBERVILLE WILL NEVER LET YOU DOWN!\"","$9.2M on hand to $1.7M, and a nine-member \"Golden Age Action Team\" already vetting state agencies before the election — \"We are not coming to Montgomery to maintain the status quo\""],
+        supporters: ["Allies pitch the coaching résumé as recruitment skill — House Speaker Nathaniel Ledbetter: \"Can you just imagine what it’s going to look like when we got a recruiter sitting in that chair?\"","An outsider-auditor promise to force a forensic accounting of prison spending and \"find the waste, expose the duplication\"","He points to Alabama’s post-2019 gains in K-12 math and reading and wants to build on them: \"There’s no reason we can’t have a miracle here, too\""],
+        opponents: ["⚠ HIS RESIDENCY IS THE CENTRAL ATTACK. Voting records show he voted in FLORIDA in November 2018, and he owns a Santa Rosa Beach home reported at roughly $5 million. He released partially redacted 2018–2024 Alabama tax returns to rebut it; at least one expert quoted said returns alone do not establish residency","Eliminating the income tax would open a $7.5 billion hole that funds about 70% of K-12 — al.com framed its own coverage as \"how will Alabama pay for them?\"","His campaign took $10,000 from a Florida casino owner — the first casino contribution to an Alabama campaign since 2014 — and a reported $30,000 from a gambling company. A primary rival said such donations \"are the reason we will never get a ‘clean lottery bill’\""] },
+      { name: "Doug Jones", party: "D", winner: false,
+        positions: ["Expand Medicaid on day one — his campaign says it would cover more than 154,000 working Alabamians and stop turning away about $182 million a year in federal funds (⚠ his own Substack uses a larger ~300,000 figure; the two campaign numbers differ)","Halt the CHOOSE Act school-voucher program: \"At a minimum, I want to stop the CHOOSE Act in its tracks. Do not lift the caps... I am not a fan of it\"","Fully eliminate the grocery tax, end taxes on overtime, add a state earned-income tax credit, and put a state lottery before voters"],
+        differentiators: ["U.S. Senator 2018–2021, elected in a December 2017 special election; the U.S. Attorney who prosecuted the 16th Street Baptist Church bombing Klansmen","Won the primary outright with 78.6%; runs a statewide \"Ticket for Change\" slate with several down-ballot Democratic nominees","Calls for an independent prison-oversight agency — \"We need to get somebody in there that is going to open it up, look under every hood\" — and a one-year moratorium on data centers until guardrails exist"],
+        supporters: ["The only Democrat to have actually won statewide in modern Alabama; Cook has called him \"quite possibly the only Alabama Democrat with a prayer of competing statewide\"","He outraised Tuberville in July, $622,000 to $290,000, and DGA chair Gov. Andy Beshear campaigned with him in May declaring \"Alabama is in play\"","He runs on kitchen-table costs — grocery tax, overtime, childcare, housing — rather than culture war"],
+        opponents: ["Tuberville accuses him of wanting to \"open borders, liberalize opportunities for child transgender procedures, and defund the police\"; Jones calls this baseless name-calling","His pledge to halt the CHOOSE Act runs against a July 2026 survey finding Alabama likely voters overwhelmingly support fully funding it [Verify — the poll was sponsored by a school-choice advocacy foundation]","Every major forecaster rates the race Solid or Safe R; he lost to this same opponent by 20.4 points in 2020, and a Democratic governor would face a Republican supermajority legislature that controls both Medicaid expansion and any lottery referral [Verify — structural argument]"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Lieutenant Governor of Alabama (OPEN SEAT)",
+    note: "OPEN — Will Ainsworth is term-limited. John Wahl (R) entered on the last day of qualifying, resigned as Alabama Republican Party chairman the same day, and beat Secretary of State Wes Allen 56.9%–43.0% in the June 16 runoff. Phillip Ensler (D), a sitting state representative, won his primary with 57.6%.",
+    candidates: [
+      { name: "John Wahl", party: "R", winner: false,
+        positions: ["Phase out the state income tax over 6–8 years and eliminate the grocery tax, to compete with Florida, Tennessee, Mississippi and Georgia","Education overhaul, and \"protecting children from harmful content in the classroom\"","Election integrity, border security and Second Amendment defence"],
+        differentiators: ["Chaired the Alabama Republican Party Feb 2021 – Jan 2026, and served as RNC vice-chair for the southern region from Jan 2023","A butterfly farmer in Limestone County who supplies about 40,000 butterflies a year to zoos","Trump's \"complete and total\" endorsement, delivered in January 2026 before he formally entered; roughly $1.5M raised and $1.2M on hand as of early April"],
+        supporters: ["The only candidate with a concrete, ambitious tax-cut plan, and his defenders argue critics attacked the goal rather than the math","Five years running the state party gives him organizational reach and donor networks no first-time statewide candidate has","Trump's endorsement carried him past a sitting secretary of state in a runoff"],
+        opponents: ["⚠ His signature tax plan drew fire FROM THE RIGHT: the Alabama Policy Institute called it \"utter nonsense\" to advocate immediate or full elimination of the income tax and said anyone proposing it \"cannot do basic math\"","A group of lawmakers released a letter condemning his tax promises [Verify — headline-level only; 1819 News blocks automated fetch, so the signatories are unread]","His fundraising claims outran his filings — he said the campaign raised \"more than $1 million\" in 24 hours when records showed about $517,000 from ten donors. He also survived two residency challenges, one dismissed by ALGOP as \"not facially valid\""] },
+      { name: "Phillip Ensler", party: "D", winner: false,
+        positions: ["Expand Medicaid","Establish a statewide lottery to fund education and health care — \"Let's finally have a lottery, once and for all\"","Gun-violence prevention and mental-health access"],
+        differentiators: ["State Representative for House District 74 (Montgomery) since Nov 2022; entered this race only after Doug Jones announced for governor","Authored the Glock-switch ban push after the Dadeville shooting — the measure passed the House 77–23 with a Republican Senate sponsor","Won his primary with 57.6%; about $185,000 raised and $85,200 on hand as of May"],
+        supporters: ["A bipartisan legislative win in a Republican legislature, which supporters cite as proof he can produce results rather than just opposition","He argues the bitter Wahl–Allen runoff left \"a huge faction of Republicans dissatisfied and angry,\" and notes he drew more primary votes than Wahl took in the May primary and June runoff combined","Medicaid expansion and a lottery are perennially popular across party lines in a state that has adopted neither"],
+        opponents: ["No Democrat has won this office since Jim Folsom Jr. in 2006 [Verify — structural argument]","Outspent by roughly eight to one [Verify — structural, computed from the two filings]","He has been attacked on social media as \"a carpetbagger and a Yankee — 'he's not one of us'\" [Verify — reported in an opinion piece we could not open in full]"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Attorney General of Alabama (OPEN SEAT)",
+    note: "OPEN — Steve Marshall is term-limited and lost the U.S. Senate primary. ⚠ THIS WAS THE MOST EXPENSIVE STATEWIDE RACE OF THE CYCLE AT ABOUT $10.8 MILLION. Katherine Robertson (R) beat former Alabama Supreme Court Justice Jay Mitchell 57%–43%, spending $5.8M to his $4.6M. Jeff McLaughlin (D) was nominated without a contest — the May 19 Democratic primary was cancelled and he never appeared on a ballot.",
+    candidates: [
+      { name: "Katherine Robertson", party: "R", winner: false,
+        positions: ["Tougher laws on gangs, child exploitation and illegal immigration, and backing law enforcement","Defend \"President Trump's Pro-Law & Order Agenda\" and fight federal overreach","Continue the office's national litigation posture on women's sports, free speech and abortion restrictions"],
+        differentiators: ["The longest-serving Chief Counsel in the history of the Alabama Attorney General's office — about a decade under Steve Marshall (Chief Counsel, NOT chief of staff)","Endorsed by Marshall at her launch, plus the NRA Political Victory Fund and the Coosa and Tuscaloosa county sheriffs","Raised and spent about $5.8M, with more than 45% from out of state, including $2.9M tied to the Republican Attorneys General Association and Leonard Leo"],
+        supporters: ["A decade as chief counsel means she can run the office on day one; she helped lead the parole overhaul, the Speedy Trial Act and election-integrity work","She survived the most expensive and bitter attorney-general primary in recent memory against a former Supreme Court justice","Marshall's endorsement plus sheriff and NRA backing signal continuity for voters who like the office's current direction"],
+        opponents: ["Her primary conduct drew a formal retraction demand: Mitchell called her ad \"defamatory\" after she branded him a \"weak fraud\" and \"a lobbyist for a Muslim country\" over pro-bono work for an imprisoned Uzbek opposition figure","More than 45% of her money came from out of state, and $2.9M from RAGA and Leonard Leo","She has never held elected office; her entire record is as a staff lawyer for the incumbent [Verify — structural argument]"] },
+      { name: "Jeff McLaughlin", party: "D", winner: false,
+        positions: ["[Verify] ⚠ AS OF AUG 12, 2026 THERE ARE NO FINDABLE POLICY POSITIONS FOR THIS CANDIDATE. He appears to have no campaign website and no campaign social-media account, and no interview, forum appearance, debate or policy statement dated after July 31 exists in any outlet. Ballotpedia, BallotReady and Transparency USA list no positions. That absence is a documented finding, not a gap in our research","",""],
+        differentiators: ["Alabama House, District 27, 2001–2011; a Guntersville attorney and former law partner of the current attorney general; Birmingham-Southern BA, Harvard JD","AUTHORED ALABAMA'S PAC-TO-PAC TRANSFER BAN — he introduced it every session he served, it passed the House annually and always died in the Senate, and the Legislature enacted it bearing his name after he left office","Has raised $0, consistent with a career-long refusal to accept any campaign contributions; he self-funded every House race"],
+        supporters: ["He wrote and eventually passed a campaign-finance reform that carries his name, and his $0 fundraising is that same principle applied consistently for 25 years","A Harvard-trained attorney with a decade in the legislature and a reputation for standing up to lobbyists","Against an opponent who took $2.9M from RAGA and Leonard Leo, a candidate who accepts nothing from anyone is the sharpest available contrast on independence [Verify — structural argument]"],
+        opponents: ["⚠ The Alabama Reflector reported on July 31, 2026 that he has \"virtually no visible presence,\" does not appear to have a campaign website, and did not respond to two weeks of interview requests — leaving voters no way to learn what he would do in office","$0 against roughly $5.8 million, in a statewide race across 67 counties","He advanced without a contested primary and never appeared on a ballot, so he has faced no voter test and built no organization [Verify — structural argument]"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Secretary of State of Alabama (OPEN SEAT)",
+    note: "OPEN — Wes Allen ran for lieutenant governor and lost. Caroleene Dobson (R), the 2024 AL-2 nominee, won the primary outright with 65.5% over two rivals. Wayne Rogers (D) was unopposed for his nomination.",
+    candidates: [
+      { name: "Caroleene Dobson", party: "R", winner: false,
+        positions: ["Create an \"Election Integrity Division\" modelled on Florida's Election Crimes Division, to investigate voter-fraud claims proactively and handle voter-roll maintenance","Cut business filing fees and make Alabama a national leader in incorporation, with same-day processing","Pass statewide post-election audit legislation [Verify — sourced to a news summary rather than a full article]"],
+        differentiators: ["The 2024 Republican nominee in AL-2, who lost to Shomari Figures 45.1%–54.8% in the court-drawn district","Self-loaned $500,000 at launch and finished the primary with about $599,300 on hand against her opponent's $13,500","Endorsed by the Business Council of Alabama's ProgressPAC, Manufacture Alabama, the Alabama Grocers Association and the Alabama Farmers Federation; a Monroe County native, Harvard College and Baylor Law, and a shareholder at Maynard Nexsen"],
+        supporters: ["Her legal and private-sector background equips her both to secure elections and to modernize business filings — BCA's chief executive called her \"exactly the kind of leader Alabama needs\"","Her own framing is that enforcement is the gap: \"our laws are only good if they're actually being enforced\"","She won the nomination outright with 65.5% over two rivals"],
+        opponents: ["Her opponent's central pitch is an implicit rebuke — the office \"must be an impartial scorekeeper,\" and \"partisan politics should never play a part in determining who received the most votes\"","Voting-rights advocates argue a fraud-investigation unit is a solution in search of a problem that risks chilling eligible voters; Alabama's 2024 purge of naturalized citizens was blocked by a federal judge as a violation of the National Voter Registration Act [Verify — no source applies this argument to Dobson by name]","She has never won an election, and her campaign leans on a $500,000 personal loan [Verify — the loan is documented; the framing is ours]"] },
+      { name: "Wayne Rogers", party: "D", winner: false,
+        positions: ["Early voting — a continuous 38-hour weekend window, Saturday 6 a.m. to Sunday 8 p.m., which he estimates would raise turnout 15–20%","Absentee-ballot tracking — barcode every absentee ballot so voters know if theirs is rejected; he notes Alabama is one of only four states without it","Cut red tape for small businesses, including clearer tax-filing and forms guidance"],
+        differentiators: ["A Thomasville native and Cumberland School of Law graduate with about 20 years in private practice; since 2019 executive assistant to Jefferson County Sheriff Mark Pettway, working on election security","⚠ The \"former federal prosecutor\" label comes from his own site and one news description; no agency, district or dates could be found for it [Verify]","Unopposed for the Democratic nomination; $24,364 raised and about $13,500 on hand"],
+        supporters: ["He argues turnout is the real crisis — \"There are way too many people not voting in this state\"","Concrete, administrable fixes (ballot barcodes, weekend voting) rather than culture-war framing, paired with \"Let legal registered voters vote\"","He argues the office is poorly run today: \"Our current secretary of state has no idea what he's doing\""],
+        opponents: ["Outspent roughly 45-to-1 on cash on hand, with no comparable endorsement roster","No Democrat has held this office since 2007 [Verify — structural argument]","He has never held elective office; his election experience is party organizing and a sheriff's-office staff role, not running an elections agency [Verify — structural argument]"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "State Treasurer of Alabama",
+    note: "Young Boozer (R) is the incumbent, seeking a second consecutive and fourth overall term; he won the May 19 primary 68.04%–31.96%. Rosilyn \"Roz\" Houston (D) runs on Doug Jones's \"Ticket for Change\" slate.",
+    candidates: [
+      { name: "Young Boozer (incumbent)", party: "R", winner: false,
+        positions: ["Protect and grow the college savings programs — he restructured PACT out of insolvency into surplus and grew CollegeCounts 529 to about 128,000 accounts and $3.1 billion","Run the office at zero net cost to the General Fund — self-funded since about 2013, with staff cut from 46 to 26","Conservative stewardship and unclaimed-property return — $587 million returned to citizens over his tenure, $45 million last year"],
+        differentiators: ["Treasurer 2011–2019 and again since Oct 2021 — the longest-tenured holder of the office","Stanford economics, Wharton MBA, 31 years in banking including 22 at Colonial BancGroup, plus Assistant Superintendent of Banking at the state banking department","Eleven trade-association endorsements, from the Alabama Farmers Federation and BCA to Cattlemen, Trucking, Retail and Rural Electric. His stated investing philosophy: \"Never try to catch a falling knife\""],
+        supporters: ["He rescued PACT from insolvency and has raised its benefits eleven years running","The office costs the General Fund nothing and he shrank its headcount","A Wharton MBA and three decades of bank management, rewarded with a 68% primary win and near-uniform business backing"],
+        opponents: ["⚠ THE BIRMINGHAM-SOUTHERN COLLEGE LOAN. He denied BSC's application under the 2023 distressed-institutions loan fund, calling the college a \"terrible credit risk\" at one step above default. BSC's president accused him of having \"acted arbitrarily or capriciously, or in bad faith\"; Boozer replied \"I did not. President Coleman is wrong.\" A judge dismissed BSC's suit, holding the statute gave him discretion. The college closed May 31, 2024","U.S. Reps. Terri Sewell (D) and Robert Aderholt (R) jointly urged him to reconsider: \"We strongly urge Treasurer Boozer to rethink his decision to deny the bridge loan that was designed for this very situation\"","Doug Jones's slate frames him as an entrenched incumbent and Houston as the change candidate ⚠ its \"over 20 years\" claim overstates his actual service, which is 2011–2019 and 2021–present"] },
+      { name: "Rosilyn \"Roz\" Houston", party: "D", winner: false,
+        positions: ["\"Financial responsibility, transparency, and opportunity for every Alabamian\" — the single vision line on her campaign site","[Verify] ⚠ HER CAMPAIGN SITE HAS NO ISSUES PAGE. As of Aug 12, 2026 it carries only Home and Donate. No position on CollegeCounts, PACT, ABLE accounts, unclaimed property, the Alabama Trust Fund or the distressed-institutions loan fund could be found anywhere","Doug Jones's endorsement describes her as bringing \"honesty, discipline, and accountability\" from highly regulated environments — his characterization of her, not a statement from her"],
+        differentiators: ["Senior EVP and Chief People & Culture Officer at Santander US; previously at BBVA US with profit-and-loss responsibility for a $12 billion balance sheet; began as a part-time teller","Named to American Banker's \"Top 25 Most Powerful Women in Banking,\" 2019–2020; describes herself as the highest-ranking woman and first person of colour in the C-suite of two global banking firms","Chair and interim CEO of the Birmingham Civil Rights Institute for 16 months; runs on Doug Jones's statewide \"Ticket for Change\" slate. ⚠ No campaign-finance total for her could be located [Verify]"],
+        supporters: ["She has actually managed money on the scale the office handles — a $12 billion balance sheet at BBVA","Jones's pitch is that she \"knows how to make Alabama's money work for its people\"","Her Civil Rights Institute leadership and civic board work suggest she would use the office for broader economic-opportunity goals"],
+        opponents: ["⚠ She has published no issues platform at all, so voters have nothing to evaluate her against on the office's actual portfolio","She faces an incumbent with four terms of name recognition, a 68% primary win and eleven statewide trade-association endorsements","No Democrat has been Alabama State Treasurer since 2003, and she has never held elective office [Verify — structural argument]"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "State Auditor of Alabama",
+    note: "Andrew Sorrell (R) is the incumbent. ⚠ HE BEAT DEREK CHEN BY 35.8 POINTS (67.9%–32.1%) DESPITE BEING OUTSPENT ROUGHLY FIVE TO ONE — Chen spent $1.09M to Sorrell's $223,600 — AND DESPITE THE ALABAMA FARMERS FEDERATION ENDORSING CHEN, a striking snub of a sitting Republican by his own party's largest agricultural organization. ⚠ Sorrell had announced for SECRETARY OF STATE in Feb 2025 and switched back to re-election as auditor in January 2026; no source states his reason. Violet Edwards (D) is a Madison County Commissioner.",
+    candidates: [
+      { name: "Andrew Sorrell (incumbent)", party: "R", winner: false,
+        positions: ["State property accountability and a new \"Property Investigations Division\" — legislation letting the auditor determine when property losses were negligent, across about $1.3 billion in taxpayer property","An \"Alabama DOGE\" task force to identify and eliminate wasteful spending; opposes bond issues and tax or fee increases","Restructure the registrar system — expand the Voter Registration Advisory Board, raise registrar daily pay to at least $150 from $115, and support routine voter-roll purges"],
+        differentiators: ["Alabama House District 3, 2018–2022; primary architect of Alabama's 2022 constitutional-carry law; 100% rating from the American Conservative Union in 2021","Declined a state vehicle, relocated staff and left an administrative post unfilled, and completed an RFID tagging system for state property","Business owner — Infinity College Textbooks and Gold, Guns & Guitars"],
+        supporters: ["He runs the office cheaply and says so in specifics — a declined state car, unfilled posts, \"saving taxpayers tens of thousands of dollars\"","Property losses under him are a fraction of a percent of the state's roughly 293,000 inventory items annually","He survived about $1 million in spending against him and an ALFA endorsement of his opponent, and still won by 35.8 points"],
+        opponents: ["⚠ CONSULTING-FIRM QUESTIONS, reported in an Alabama Political Reporter OPINION column: Sorrell formed Stable Revolution LLC at his own address in Jan 2024, and a State Board of Education campaign paid it $236,661 while Sorrell chaired a PAC funding that campaign. The LLC was initially left off his Statement of Economic Interests and added only after the outlet's inquiries. He called the omission a mistake, said he took no percentage of ad placements, and described his pay as a one-time \"win bonus\" for a longtime friend","Scope creep beyond the office — he campaigns on election administration and an \"Alabama DOGE,\" and publicly criticized the Alabama Sheriffs Association over Flock licence-plate cameras","His own party's largest agricultural organization backed his primary challenger, and his record includes votes against state budgets and teacher pay raises [Verify — structural argument drawn from the record]"] },
+      { name: "Violet Edwards", party: "D", winner: false,
+        positions: ["Improve transparency — ensuring taxpayer dollars and state property are \"accurately accounted for and responsibly managed\"","Ensure integrity and trust through the auditor's registrar-appointment power, so that \"competent, qualified professionals oversee voter registration, citizenship verification, and voter identification\"","Independent, non-politicized oversight — \"The State Auditor should work for the people, not the political system\""],
+        differentiators: ["The first Black woman elected to the Madison County Commission (2020, re-elected 2024)","Commission liaison to the Madison County Board of Registrars, where she pushed professional standards, staffing and pay — directly relevant, since the auditor appoints registrars to all 67 county boards","Endorsed by former U.S. Sen. Doug Jones; a former TV and radio news reporter with AP awards for investigative reporting, with a BA from Alabama and an MBA from UAH"],
+        supporters: ["She is the only candidate with hands-on Board of Registrars experience — the office's least-understood but most consequential power","County budget oversight plus award-winning investigative journalism match an office whose core job is asking uncomfortable questions about public money","She frames the race as \"continuing business as usual or electing a leader who can bring independent oversight, transparency, and integrity back to how Alabama manages public assets\""],
+        opponents: ["No Democrat has won a statewide Alabama constitutional office since 2006, and Sorrell won the 2022 general with 85% [Verify — structural argument]","Her county-level résumé is a step down in scale from an office auditing about 180 state departments and over $1 billion in inventory [Verify — structural argument]","Both nominees were nearly broke after the primary — she reported $11,400 on hand against his $4,900, so neither can run a real statewide campaign [Verify — no published opponent attack on Edwards was found]"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Commissioner of Agriculture and Industries (OPEN SEAT)",
+    note: "OPEN — Rick Pate ran for lieutenant governor. THE MARQUEE DOWN-BALLOT RACE. Corey Hill (R), mayor of Douglas, won the June 16 runoff 53.8%–46.2% over Christina Woerner McInnis after a near-three-way primary tie (35.2 / 34.9 / 29.9). Ron Sparks (D) HELD THIS EXACT OFFICE FROM 2003 TO 2011 (⚠ not 1999–2011) and was the 2010 Democratic nominee for governor.",
+    candidates: [
+      { name: "Corey Hill", party: "R", winner: false,
+        positions: ["Protect prime farmland from data centers and solar farms — \"We cannot lose our prime farmland to data centers or solar farms\"","Food safety, deregulation and lower taxes for farmers; ease rules on local meat and dairy processors and build in-state regional beef processing","Expand Sweet Grown Alabama and farm-to-school, and revive the department's rural crime task force"],
+        differentiators: ["A fourth-generation farmer who is ALSO a retailer — poultry and cattle operations plus a grocery store — and mayor of Douglas in Marshall County","Endorsed by the Alabama Farmers Federation (Sept 2025) and the Alabama Grocers Association (Oct 2025)","Won the runoff 53.8%–46.2%; ⚠ no campaign-finance total for this race could be located [Verify]"],
+        supporters: ["He has lived the whole supply chain — grower, processor customer and grocer — which he ties directly to food safety","The two most relevant trade groups, ALFA and the Grocers Association, both backed him","He is already engaging concrete near-term threats, including New World screwworm spread and foreign seafood and catfish competition"],
+        opponents: ["He faces the only living Alabamian who has actually run this department; his own executive experience is a small-town mayoralty [Verify — structural argument]","He needed a runoff and won it by only 7.6 points, and warns his own side that \"Alabama Democrats are becoming increasingly organized and motivated\" [Verify — structural argument]","Sparks argues the department has been weakened, specifically by \"the removal of its law enforcement division\" — an implicit critique of the status quo Hill would inherit"] },
+      { name: "Ron Sparks", party: "D", winner: false,
+        positions: ["Eliminate the state's 1.5% sales tax on farm equipment, which he says would return \"tens of millions of dollars annually\" to farmers, citing Tennessee's 2023 exemption","Restore the department's enforcement and consumer-protection arm — gas-pump accuracy (\"You Pay for a Gallon, You Get a Gallon of Gas\"), price-gouging enforcement, and prosecuting puppy mills and animal abuse","Relief on farm input costs — \"Everything they touch is going up. I've had farmers tell me they can't get a pencil to work out on it\""],
+        differentiators: ["Held this exact office 2003–2011, was president of the National Association of State Departments of Agriculture in 2008, worked on two federal farm bills, and won 62 of 67 counties in his 2006 re-election","⚠ CROSS-PARTY ENDORSEMENT: former Republican Attorney General Troy King endorsed him on Aug 11, 2026, calling him \"the most qualified man running in this race,\" and contributed to his campaign","2010 Democratic nominee for governor; director of Alabama's Rural Development Agency 2011–2017; later a senior adviser to U.S. Sen. Doug Jones; U.S. Coast Guard Honor Guard 1971–75"],
+        supporters: ["Zero learning curve — he ran this department, expanding state lab testing and managing the 2008 salmonella-tomato scare so Alabama growers could keep selling","He built export markets, including a Cuban agreement to import Alabama farm products valued at roughly $18M [Verify — sourced only to Wikipedia; it appears nowhere on his own campaign site]","His appeal crosses party lines in a deep-red state, as the King endorsement shows"],
+        opponents: ["⚠ THE GAMBLING RECORD. As the 2010 Democratic nominee for governor he campaigned on REOPENING the shuttered electronic-bingo casinos and taxing gambling revenue, and appeared outside Greenetrack in support of casino workers during the state's bingo raids. (This belongs to his 2010 governor's race, not to his conduct as agriculture commissioner.)","He reports that opponents call him \"radical\" and \"woke\" rather than debating policy","He is the last Democrat to win this office, in 2002 and 2006, and lost his most recent statewide race in 2010; ALFA, the state's dominant farm organization, endorsed his opponent [Verify — structural argument]"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Public Service Commission — Place 1",
+    note: "⚠⚠ READ THE HB 475 NOTE ON PLACE 2 FIRST — a law signed April 2, 2026 changed what the winner of this race will actually be able to do. Cullman County Sheriff Matt Gentry (R) crushed 14-year incumbent Jeremy Oden 75%–25% in the primary — one of TWO sitting Republican commissioners fired by their own primary voters this cycle. James O. Gordon (D), a former state representative, won his primary with 57.78%.",
+    candidates: [
+      { name: "Matt Gentry", party: "R", winner: false,
+        positions: ["Reliable electricity and gas at fair prices for Alabama families","Transparency and accountability at the commission — \"a voice for all people,\" protecting ratepayers and also utility, railroad and transportation workers","An open door, travelling statewide to meet constituents face to face"],
+        differentiators: ["A Marine Corps veteran with about 27 years in law enforcement; Cullman County Sheriff since 2015, when he was the youngest in the state, overseeing 170 staff and a 400-inmate detention centre","Endorsed by the Alabama Farmers Federation's FarmPAC","Raised $656,742 and spent $694,603, 95% of it in-state, after opening with $97,800 plus a $100,000 self-loan; beat the incumbent 311,845 to 104,541"],
+        supporters: ["A 50-point win over a long-serving incumbent shows real appetite for new utility oversight","A career in public safety is a record of accountability, and ALFA's backing signals rural and agricultural confidence","He has committed to statewide accessibility rather than governing from Montgomery"],
+        opponents: ["His career is law enforcement, with no utility, energy or ratemaking background","His platform is thematic — \"fair prices,\" \"transparency\" — without specific rate positions, as his own campaign site bears out","He is the beneficiary of substantial organized-interest support in a race about regulating monopolies [Verify — structural inference; no reporting frames the ALFA endorsement as a criticism]"] },
+      { name: "James O. Gordon", party: "D", winner: false,
+        positions: ["Affordable power bills, contrasting household costs against utility profits","Utilities and public services operating \"fairly, transparently, and in the best interest of everyday citizens\"","Grants for small cities for nature trails, sidewalks and bus service"],
+        differentiators: ["Alabama House of Representatives, District 98, 2006–2010","A licensed chiropractor for 30+ years in Mobile who owns the Alabama Injury and Pain Clinic","Won the Democratic primary with 57.78%. ⚠ He does not appear in the state campaign-finance tracker's Place 1 listing at all [Verify — absence from the tracker is not proof of $0]"],
+        supporters: ["The only Place 1 candidate with legislative experience","A small-business owner and health-care provider who has run a payroll","He leads with affordability rather than with process"],
+        opponents: ["His signature idea — grants for trails, sidewalks and buses — sits largely outside the commission's authority, a limit his OWN site concedes in noting the PSC's \"limited grant authority\"","Gentry reported $656,742 raised; no filing for Gordon could be located [Verify]","No Democrat has won an Alabama statewide race in many years [Verify — structural argument]"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Public Service Commission — Place 2",
+    note: "⚠⚠ CONTEXT THIS RACE CANNOT BE UNDERSTOOD WITHOUT: HB 475, signed April 2, 2026, EXPANDED THE PSC FROM 3 MEMBERS TO 7, created a cabinet-level governor-appointed secretary of energy who directs commission activity and sets its agendas, and BARRED any formal rate case until 2029 unless the secretary orders one or 5 of 7 commissioners agree. Base retail rates are frozen through January 2029. The House had passed a version requiring rate cases and capping Alabama Power profits 104–0; the Senate stripped those and kept the governance restructuring. Gov. Ivey appointed four new commissioners on June 17, 2026 — one day after Republican voters rejected the second sitting incumbent — with terms beginning Jan 18, 2027; two will be the PSC's first Black commissioners in its 145-year history. So whoever wins this race will be 2 of 7 votes, under an agenda set by a gubernatorial appointee. ⚠ HB 475 IS UNDER FEDERAL CHALLENGE — McNeil v. Ivey (M.D. Ala. 2:26-cv-00411), filed May 25, 2026 by the Democratic candidate in this very race, raising First and Fourteenth Amendment and Voting Rights Act §2 claims; absentee voting had begun March 25, eight days BEFORE the bill was signed. No ruling as of the last confirmed docket entry, June 25, 2026 [Verify anything later]. ⚠ Jim Zeigler's own site says five of the seven seats are appointed; reporting consistently says FOUR — do not repeat his figure. In the primary, Zeigler beat appointed incumbent Chris Beeker III 51.3%–48.7% while being heavily outspent. ⚠ \"Chip Beeker\" is the father, who resigned in Sept 2024; the 2026 incumbent was his son. ⚠ Twinkle Cavanaugh is no longer on the commission (resigned 2025), and the PSC presidency is a presidential-year office, not on this ballot.",
+    candidates: [
+      { name: "Jim \"Zig\" Zeigler", party: "R", winner: false,
+        positions: ["\"Big Tech should fund the power solution — not Alabama\" — data centers and solar farms should not shift infrastructure costs onto residential ratepayers","Hard scrutiny of Alabama Power rate requests and transparent cost recovery, and the same scrutiny for natural gas","Pipeline safety \"not paperwork,\" plus railroad safety and carrier insurance compliance"],
+        differentiators: ["A PSC member 1974–78, elected at age 24, and State Auditor 2015–2023 — the only candidate in either PSC race who has actually sat on the commission","Beat the appointed incumbent 152,491 to 144,557 while being outspent — the state tracker shows Beeker at $576,621 raised to Zeigler's $187,250","ALFA's FarmPAC endorsed Beeker, not Zeigler [Verify — snippet-level; al.com blocks automated fetch]"],
+        supporters: ["He won while being outspent roughly three to one, which backers read as independence from utility-aligned money","He is the only candidate in either PSC race with prior commission experience","A decades-long self-styled watchdog record"],
+        opponents: ["His PSC service ended in 1978, nearly fifty years ago, and the industry he would regulate is unrecognizable since [Verify — structural, drawn from his own dates]","His site frames the contest around keeping \"Republican control\" of the commission rather than around ratepayers, which critics can fairly call partisan framing of a regulatory job","Organized agricultural money backed his primary opponent"] },
+      { name: "Sheila D. McNeil", party: "D", winner: false,
+        positions: ["Fair rates, reliable service and transparent decision-making","Large industrial and data-center customers should cover their own utility service costs — \"Alabama families and small businesses should not subsidize the utility infrastructure needed to serve some of the largest electric customers our state has ever seen\"","Public hearings in affected communities before major contract decisions, with community benefits judged on actual jobs and wages rather than announced investment figures"],
+        differentiators: ["Two terms on the San Antonio, Texas city council, chairing the Metropolitan Planning Organization and the Infrastructure Growth Committee; a decade as a UTSA political science professor","Chair of the Madison County Democratic Executive Committee 2023–2026, and endorsed by the Alabama AFL-CIO","⚠ SHE IS THE PLAINTIFF in the federal challenge to HB 475: \"I opposed every version of this restructuring... filing suit became the only path to safeguard the rights of voters and candidates alike.\" Raised $5,663"],
+        supporters: ["She is the only candidate who went to federal court to defend the elected commission against a mid-election restructuring","Organized labour backs her, and she ties utility bills to wages — \"Every raise workers negotiate loses some of its value when utility bills keep climbing\"","She has the most developed data-center ratepayer-protection policy of anyone in either PSC race"],
+        opponents: ["She has raised $5,663 against Zeigler's $187,250, roughly a 33-to-1 disadvantage [Verify — structural, computed from the two filings]","Her elected experience is in Texas, not Alabama, by her own biography","Her lawsuit is unresolved with no ruling on the docket, so the restructuring she opposes is proceeding regardless"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Alabama Supreme Court — Place 8",
+    note: "⚠ THE ONLY CONTESTED APPELLATE RACE IN ALABAMA THIS YEAR. Alabama elects appellate judges on a PARTISAN ballot. Six appellate seats are up in 2026 and this is the only one with candidates from both parties — verified against the Secretary of State's own party certifications, which are image scans and had to be read as images. ⚠ Chief Justice Sarah Stewart's seat is NOT up; her term runs to 2030. ⚠ Wikipedia now assigns the place numbers correctly, but Bama Politics puts this race at \"Place 1\" and Yellowhammer put Mendheim at \"Place 2\" — both are wrong; use the Secretary of State's numbering.",
+    candidates: [
+      { name: "Greg Shaw (incumbent)", party: "R", winner: false,
+        positions: ["[Verify] No campaign platform or judicial-philosophy statement could be located for Justice Shaw. That absence is the finding — we will not fill it with boilerplate","",""],
+        differentiators: ["A sitting Associate Justice of the Alabama Supreme Court","Joined the February 2024 majority in LePage v. Center for Reproductive Medicine, which held that frozen embryos are \"children\"","Raised $25,500 — he was outraised by his challenger by more than three to one"],
+        supporters: ["An incumbent justice with a record on the court, running in a state that has not elected a Democrat to it in decades [Verify — structural argument]","Republicans have swept Alabama's appellate courts for a generation, and no other appellate seat this year is even contested [Verify — structural argument]"],
+        opponents: ["The LePage ruling froze IVF services at Alabama clinics until the Legislature passed immunity legislation weeks later, and it is the central issue his opponent is running on","He is being outraised more than three to one in his own re-election","[Verify] No campaign presence or platform could be located for him at all"] },
+      { name: "AshLeigh Meyer Dunham", party: "D", winner: false,
+        positions: ["[Verify] A full judicial platform could not be sourced, but her campaign is organized around the court's IVF ruling and reproductive medicine","",""],
+        differentiators: ["An assisted-reproduction lawyer — the practice area the court's own ruling disrupted","She conceived her daughter via IVF obtained outside Alabama","Outraised the sitting justice $82,014 to $25,500"],
+        supporters: ["She practises in exactly the field the court's LePage ruling upended, and can speak to its consequences from direct experience","She outraised a sitting Supreme Court justice by more than three to one","This is the only appellate race on the ballot where voters have a choice at all"],
+        opponents: ["No Democrat has won an Alabama Supreme Court seat in decades [Verify — structural argument]","She has never served as a judge [Verify — structural argument]","Running a judicial campaign on a single issue invites the charge of prejudging cases [Verify — structural argument; no sourced attack line on Dunham was located]"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Appellate Courts — five UNCONTESTED seats",
+    note: "⚠ FIVE OF ALABAMA'S SIX APPELLATE SEATS ARE EFFECTIVELY ALREADY DECIDED. No Democrat filed for any of them, and the Secretary of State has posted no minor-party or independent certification for the general election, so none can still become contested. They still appear on your ballot. ⚠ Court of Criminal Appeals Place 5 is an OPEN seat with an unusual history: incumbent Beth Kellum qualified in January 2026 and then WITHDREW in February (the reason is unsourced), so Riggs Walker effectively won the seat in February without a vote being cast. ⚠ Platforms could NOT be located for Bowden or Fridy; that absence is recorded rather than filled with judicial-philosophy boilerplate.",
+    candidates: [
+      { name: "Brad Mendheim — Supreme Court, Place 7", party: "R", winner: false,
+        positions: ["[Verify] No 2026 campaign platform could be located","",""],
+        differentiators: ["Sitting Associate Justice of the Alabama Supreme Court","Also joined the February 2024 LePage majority holding that frozen embryos are \"children\"","Drew no Democratic opponent"],
+        supporters: ["An incumbent justice returned without opposition"],
+        opponents: ["He faces no opponent, so the LePage ruling he joined gets no test at the ballot box in his seat [Verify — structural argument]","[Verify] No campaign platform exists for voters to evaluate"] },
+      { name: "Benjamin M. Bowden — Court of Civil Appeals, Place 4", party: "R", winner: false,
+        positions: ["[Verify] No campaign platform could be located","",""],
+        differentiators: ["Appointed to the Court of Civil Appeals in May 2025","Seeking his first full term","Uncontested"],
+        supporters: ["Standing for election for the first time after an appointment, without opposition"],
+        opponents: ["Appointed rather than elected, and now returned without a contest, so voters have never chosen him [Verify — structural argument]","[Verify] No campaign platform exists for voters to evaluate"] },
+      { name: "Matt Fridy — Court of Civil Appeals, Place 5", party: "R", winner: false,
+        positions: ["[Verify] No campaign platform could be located","",""],
+        differentiators: ["Sitting judge of the Court of Civil Appeals","Uncontested",""],
+        supporters: ["A sitting appellate judge returned without opposition"],
+        opponents: ["[Verify] No campaign platform exists for voters to evaluate","An uncontested judicial race gives voters no basis for a choice [Verify — structural argument]"] },
+      { name: "Mary Windom — Court of Criminal Appeals, Place 4", party: "R", winner: false,
+        positions: ["[Verify] A full campaign platform could not be located","",""],
+        differentiators: ["Presiding Judge of the Alabama Court of Criminal Appeals","Uncontested",""],
+        supporters: ["The court's presiding judge, returned without opposition"],
+        opponents: ["[Verify] No campaign platform exists for voters to evaluate","An uncontested judicial race gives voters no basis for a choice [Verify — structural argument]"] },
+      { name: "Riggs Walker — Court of Criminal Appeals, Place 5 (OPEN)", party: "R", winner: false,
+        positions: ["[Verify] A full campaign platform could not be located","",""],
+        differentiators: ["⚠ He effectively won this seat in FEBRUARY 2026 without a vote being cast, when incumbent Beth Kellum qualified in January and then withdrew","No Democrat filed, and no primary opponent ran",""],
+        supporters: ["Takes an open appellate seat that no one else sought"],
+        opponents: ["⚠ No voter in Alabama will have cast a ballot for or against him at any stage — the incumbent's February withdrawal decided the seat, and the reason for that withdrawal is not on the public record [Verify]","[Verify] No campaign platform exists for voters to evaluate"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Four statewide constitutional amendments",
+    note: "⚠ THESE ARE NOT THE SAME AS AMENDMENTS 1 AND 2, which Alabama voted on at the MAY 19 PRIMARY and both of which passed. Four more amendments go to voters in November: (1) SB271, on filling a lieutenant-governor vacancy and letting the Legislature set lieutenant-governor and legislative-officer salaries by joint resolution; (2) HB380, on the process for county school-board merger and consolidation, a State Board of Education impact study, and voter referral on a 25% protest; (3) HB511, requiring school boards to adopt policies for a daily Pledge of Allegiance and student-initiated prayer, with voluntary participation; (4) SB5, requiring K-12 schools to perform or broadcast the first stanza of The Star-Spangled Banner weekly. ⚠ THE NUMBERING 1–4 IS PROVISIONAL. The Fair Ballot Commission, which met Aug 4, 2026, approves plain-language EXPLANATIONS — it is not the certifying body — and the Secretary of State has not yet posted a November amendment certification. The two amendment files currently on its 2026 page both belong to the May 19 vote. Re-check the final numbering against the SoS certification [Verify].",
+    candidates: [] },
+
+  // ─────────────────────────── PAST ───────────────────────────
+  { date: "May 19, 2026", type: "past", scope: "Statewide", office: "Constitutional Amendments 1 and 2",
+    note: "⚠ Alabama voted on its two 2026 statewide constitutional amendments at the MAY 19 PRIMARY, not in November. Both passed: Amendment 1 with 81.6% and Amendment 2 with 57.8%.",
+    candidates: [] },
+
+  { date: "Nov 5, 2024", type: "past", scope: "Statewide", office: "President — Alabama",
+    note: "Alabama's nine electoral votes. Figures summed from the Secretary of State's own precinct-level results files across all 67 counties. ⚠ There was NO Alabama U.S. Senate race in 2024.",
+    candidates: [
+      { name: "Donald Trump", party: "R", winner: true, positions: [], differentiators: ["64.57% statewide"], supporters: [], opponents: [] },
+      { name: "Kamala Harris", party: "D", winner: false, positions: [], differentiators: ["34.10% statewide"], supporters: [], opponents: [] }
+    ] },
+
+  { date: "Nov 8, 2022", type: "past", scope: "Statewide", office: "Governor of Alabama",
+    note: "Kay Ivey's second full term, and the reason the 2026 governorship is open — Alabama limits its governor to two consecutive terms. Figures from the Secretary of State's precinct files.",
+    candidates: [
+      { name: "Kay Ivey (incumbent)", party: "R", winner: true, positions: [], differentiators: ["66.91% statewide"], supporters: [], opponents: [] },
+      { name: "Yolanda Flowers", party: "D", winner: false, positions: [], differentiators: ["29.18% statewide"], supporters: [], opponents: [] }
+    ] },
+
+  { date: "Nov 8, 2022", type: "past", scope: "Statewide", office: "U.S. Senate — Alabama (Class 3)",
+    note: "Katie Britt succeeded the retiring Richard Shelby. This is Alabama's OTHER Senate seat — it is not up again until 2028, and it is not on the 2026 ballot.",
+    candidates: [
+      { name: "Katie Britt", party: "R", winner: true, positions: [], differentiators: ["66.62% statewide"], supporters: [], opponents: [] },
+      { name: "Will Boyd", party: "D", winner: false, positions: [], differentiators: ["30.88% statewide"], supporters: [], opponents: [] }
+    ] },
+
+  { date: "Nov 3, 2020", type: "past", scope: "Statewide", office: "U.S. Senate — Alabama (Class 2)",
+    note: "The seat now open in 2026, and the last time these two 2026 gubernatorial nominees faced each other: Tuberville unseated Jones by 20.4 points. Jones had won the seat in a December 2017 special election.",
+    candidates: [
+      { name: "Tommy Tuberville", party: "R", winner: true, positions: [], differentiators: ["60.10% statewide"], supporters: [], opponents: [] },
+      { name: "Doug Jones (incumbent)", party: "D", winner: false, positions: [], differentiators: ["39.74% statewide"], supporters: [], opponents: [] }
+    ] }
+
+];
+
+// ----- U.S. HOUSE districts (all 7) -----
+// Sources: Alabama Secretary of State election-night returns for the Aug 11, 2026 SPECIAL
+// primary (40 of 40 counties reporting, 113,493 ballots, 5.24% turnout) and the May 19 /
+// June 16 regular primaries; ALGOP and Alabama Democratic Party candidate certifications
+// filed with the SoS (May 26, 2026); FEC; Alabama Reflector; Alabama Daily News; AL.com.
+// ⚠ GOV. IVEY VOIDED THE MAY 19 PRIMARY RESULTS IN DISTRICTS 1, 2, 6 AND 7 and called a
+// special primary for Aug 11, 2026 with NO RUNOFF — the legislation setting it up did not
+// provide for one, so a plurality won the nomination outright. Districts 3, 4 and 5 kept
+// their May results because their lines did not move.
+// ⚠ All Aug 11 figures are UNOFFICIAL pending party certification (in May, certification
+// came eight days after the primary).
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — AL District 1",
+    region: "Gulf Coast — Mobile, Baldwin, Escambia and most of Covington. ⚠ Under the 2023 map AL-1 loses the Wiregrass but gains ALL of Mobile County, which was split in the 2024 court-drawn plan.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "OPEN SEAT — Barry Moore vacated it to run for the U.S. Senate. Former Rep. JERRY CARL won the Aug 11 Republican special primary with 74.70%, a 57-point margin over three rivals. It is a striking comeback: Carl held this seat 2021–2025 and lost it to Moore by 3.4 points in the 2024 member-versus-member primary forced by the last redraw. ⚠ Carl and Rhett Marques would have gone to a runoff in the VOIDED May 19 AL-1 primary; the redraw moved Marques's home of Enterprise into AL-2, where he ran and won instead. Democrat Clyde W. Jones Jr. was the sole filer and is the nominee without a contest. Cook PVI moved from R+27 on the old lines to R+17 on the new ones — a 9.9-point shift toward Democrats, the second-largest in the state.",
+        candidates: [
+          { name: "Jerry Carl", party: "R", winner: false,
+            positions: ["Wants seats on Appropriations and on Natural Resources","Would seek national-park protection for the underwater petrified forest off the Alabama coast, to stop timber harvesting there","Runs on Washington experience: \"Donald Trump is going to need some people that understand Washington that can get some stuff done, and I'm that person\""],
+            differentiators: ["U.S. Representative for AL-1, 2021–2025; a former Mobile County Commissioner","Endorsed by President Trump on June 24, 2026; about $438,000 on hand","Won the Aug 11 special primary 74.70% over Austin Sidwell (17.63%), John Mills (5.81%) and Lucas Burger (1.86%)"],
+            supporters: ["Four years of seniority and committee relationships that a freshman would have to build from nothing","Took three quarters of the vote in a four-way field, so the party is not divided going into November","Carries the President's endorsement in a district Republicans have held comfortably"],
+            opponents: ["Rival John Mills ran explicitly against \"career politicians\" — \"there's a huge difference between a politician and a patriot\"","Austin Sidwell campaigned on rising federal debt and Social Security funding, an implicit critique of the incumbent record","He lost this seat in 2024 before winning it back, which opponents can frame as a rejected record [Verify — structural framing; no sourced attack line on Carl was located]"] },
+          { name: "Clyde W. Jones Jr.", party: "D", winner: false,
+            positions: ["[Verify] No detailed policy platform could be sourced this pass","",""],
+            differentiators: ["A 21-year U.S. Army veteran and Bronze Star recipient","Past president of Alabama Arise, the state's anti-poverty advocacy coalition","Sole Democratic filer — the nominee without a primary; about $15,000 on hand and takes no PAC money"],
+            supporters: ["A decorated veteran and anti-poverty advocate rather than a career politician","Refusing PAC money is a concrete commitment voters can check [Verify — self-described]","Nominated without a contest, so he has campaigned all summer while Republicans fought a special primary"],
+            opponents: ["About $15,000 on hand against a former member of Congress with roughly $438,000 [Verify]","No Democrat has represented this coastal district in decades [Verify — structural argument]","No published platform for voters to evaluate [Verify]"] } ] },
+      { date: "Aug 11, 2026", type: "past",
+        note: "The special Republican primary, run because the 2023 map moved this district's lines. ⚠ A ROSTER NOTE WORTH RECORDING: the ALGOP certification signed May 26, 2026 lists FOUR Republicans, but an Alabama Reflector headline said three — its article simply omitted Lucas Burger, who was on the ballot and drew 580 votes. The Secretary of State's four-candidate field is correct. ⚠ Jimmy Dees, a May AL-1 candidate, did not qualify for the special primary. 31,225 votes cast; UNOFFICIAL.",
+        candidates: [
+          { name: "Jerry Carl", party: "R", winner: true, positions: [], differentiators: ["74.70% — 23,325 votes"], supporters: [], opponents: [] },
+          { name: "Austin Sidwell", party: "R", winner: false, positions: [], differentiators: ["17.63% — 5,505 votes"], supporters: [], opponents: [] },
+          { name: "John Mills", party: "R", winner: false, positions: [], differentiators: ["5.81% — 1,815 votes"], supporters: [], opponents: [] },
+          { name: "Lucas Burger", party: "R", winner: false, positions: [], differentiators: ["1.86% — 580 votes"], supporters: [], opponents: [] } ] }
+    ] },
+
+  2: {
+    name: "U.S. House — AL District 2",
+    region: "The Wiregrass and Montgomery — Montgomery, Houston (Dothan), Coffee (Enterprise), Dale, Barbour, Russell (Phenix City), Pike, Bullock, Butler, Crenshaw, Geneva, Henry, Lowndes, Macon and part of Covington. ⚠ This is the district the 2023 map changed most: Mobile moved out entirely, the Black share of the population fell from about 47% to about 40%, and it became a seat Trump would have carried by roughly 14 points.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠⚠ ALABAMA'S MARQUEE HOUSE RACE, AND THE REDRAW POINTED IT THE OTHER WAY. Freshman Rep. Shomari Figures (D) won this seat in 2024 under the court-drawn Allen v. Milligan remedial plan; the 2023 legislature map now in force removes Mobile — his base — and makes the district roughly R+14 at the presidential level. Cook, Inside Elections, Sabato and Decision Desk HQ all rate it Likely R (flip), The Economist Lean R, VoteHub Tilt R, and Split Ticket Tossup. Cook PVI R+7 on the new lines, against D+5 on the old ones — an 11.2-point shift, the largest of any district in Alabama. ⚠ Ballotpedia's D+5 IS that old court-drawn figure and is stale. Inside Elections moved the seat from Solid Democrat to Likely Republican on June 4, 2026. State Rep. RHETT MARQUES won the Aug 11 Republican special primary with 50.03% — clearing a majority by eleven votes above the line — in a six-way field. Figures is on the DCCC's Frontline list, had $662,600 on hand through July 22 and outraised the Republican frontrunner about 2.8-to-1 in May–June.",
+        candidates: [
+          { name: "Shomari Figures (incumbent)", party: "D", winner: false,
+            positions: ["[Verify] A detailed 2026 issue platform could not be sourced this pass","",""],
+            differentiators: ["Elected in 2024 as the first Democrat to hold this seat in a generation, under district lines that no longer exist","On the DCCC's Frontline list for endangered incumbents; $662,600 on hand through July 22, 2026 (FEC)","Outraised the Republican frontrunner roughly 2.8-to-1 across May and June"],
+            supporters: ["A sitting member with a large cash advantage over a state legislator","Ran and won here once already, and keeps Montgomery and the Black Belt core of the district","National Democrats are defending the seat rather than writing it off"],
+            opponents: ["The new lines remove Mobile, his home base, and cut the Black share of the district from about 47% to about 40%","Trump would have carried the redrawn seat by roughly 14 points; every rater has it Lean or Likely Republican","Marques calls him \"another rubber stamp\" and argues Republicans can flip the seat back"] },
+          { name: "Rhett Marques", party: "R", winner: false,
+            positions: ["Affordability first — cites his state record halving the grocery tax, ending sales tax on diapers and baby supplies, and cutting taxes for seniors","Immigration: \"Detain and Deport\"","Veterans and Fort Rucker, rural broadband and infrastructure, and ending DEI and CRT programs"],
+            differentiators: ["State Representative for Alabama House District 91 since 2018 — the seat Barry Moore vacated — and the ONLY elected officeholder in the six-way primary field","Endorsed by President Trump, plus Speaker Johnson, Scalise, Emmer, McClain, Sen. Katie Britt, Rep. Mike Rogers, the Alabama Farmers Federation, the Alabama Forestry Association, Home Builders and Manufacture Alabama","Raised $1.32M against $521,000 for the next-closest candidate; he owns a tire and automotive service business he has run for 26 years"],
+            supporters: ["The Alabama AGC PAC cited his vote for the Rebuild Alabama Act of 2019 infrastructure funding; Home Builders cited his tax-cutting record","His own pitch is electability — \"We have a chance to flip a [Democratic] seat back to the Republicans\"","NRCC chair Richard Hudson said he would help \"deliver a strong economy, maintain secure borders\""],
+            opponents: ["Primary rival Hampton Harris attacked him over the gas-tax increase in Rebuild Alabama — the same vote the contractors' PAC praised","Figures says his support for the war in Iran will push fuel prices higher still, and calls him \"another rubber stamp\"","DCCC chair Suzan DelBene called him a \"backbench extremist\" who \"sells out to the ultra-wealthy\""] } ] },
+      { date: "Aug 11, 2026", type: "past",
+        note: "The most consequential result of the night, and the reason the whole special primary existed. Six Republicans; no runoff was available, so a plurality would have sufficed — Marques cleared 50% anyway, by eleven votes. 32,801 votes cast; UNOFFICIAL. ⚠ A WRONG NUMBER SET IS CIRCULATING (Marques 54 / Matthews 24 / Harris 11, with Matthews second). It is contradicted by the Secretary of State's own returns: HAMPTON HARRIS finished second. Five of the six candidates appeared at a Barbour County GOP forum in Eufaula on Aug 4 — Christian Horn was absent — and every one of them said they opposed deploying troops to Iran.",
+        candidates: [
+          { name: "Rhett Marques", party: "R", winner: true, positions: [], differentiators: ["50.03% — 16,411 votes"], supporters: [], opponents: [] },
+          { name: "Hampton Harris", party: "R", winner: false, positions: [], differentiators: ["21.65% — 7,100 votes. A 29-year-old Montgomery-native real estate broker and part-time attorney; ran on no tax increases, \"pro-life with no exceptions,\" parental rights and ending birthright citizenship. Endorsed by Eagle Forum PAC and the Christian Coalition of Alabama; $245,500 raised. He has since said he will back Marques"], supporters: [], opponents: [] },
+          { name: "David Matthews", party: "R", winner: false, positions: [], differentiators: ["17.43% — 5,716 votes. An Ozark native and two-time Trump USDA appointee, most recently Director of State Operations for Rural Development, who resigned to run; campaigned on passing a farm bill — \"We haven't had a farm bill since 2018\" — and rural water and utility infrastructure. $47,612 raised"], supporters: [], opponents: [] },
+          { name: "Joshua McKee", party: "R", winner: false, positions: [], differentiators: ["4.69% — 1,537 votes. An Army veteran of about 25 years including the Green Berets; proposed structuring his campaign finances as a non-profit for full transparency. Raised about $521,000 and spent about $525,000 — more than he took in"], supporters: [], opponents: [] },
+          { name: "James Richardson", party: "R", winner: false, positions: [], differentiators: ["3.29% — 1,078 votes. A Marine Corps veteran from Headland whose signature issue is veterans' health care; he told the Barbour County forum he lost his father, a veteran, to suicide after the VA could not provide mental-health care. About $7,600 raised, $26 on hand"], supporters: [], opponents: [] },
+          { name: "Christian Horn", party: "R", winner: false, positions: [], differentiators: ["2.92% — 959 votes. A small-business owner and chairman of Alabama's Tennessee Valley Republican Club who did not attend the Barbour County forum; his FEC address is Huntsville, outside the district, and he filed no fundraising reports at all. He argued distinctively that Republicans must build inroads with Black voters through churches and colleges"], supporters: [], opponents: [] } ] }
+    ] },
+
+  3: {
+    name: "U.S. House — AL District 3",
+    region: "East Alabama — Calhoun (Anniston), Lee (Auburn/Opelika), Etowah (Gadsden), St. Clair, Talladega, Tallapoosa, Chambers, Cherokee, Clay, Cleburne and Randolph. Lines unchanged by the 2023 map.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "Lines unchanged, so this district kept its May 19 primary results and held no special primary. Rep. Mike Rogers (R), Chairman of the House Armed Services Committee, was renominated 83.18%–16.82% over Terri LaPoint. Cook rates it Solid R (Feb 6, 2025) and Inside Elections Solid Republican (Dec 5, 2025); Cook PVI R+23 in both the 2025 and 2026 editions — a raw shift of exactly 0.000, which is machine-readable proof these lines did not move. ⚠ This is the first contested general election here since 2022: NO Democrat filed in 2024, when Rogers took 97.9% of candidate votes against write-ins — and 68,335 voters, 21.5% of everyone who cast a ballot, skipped the House race entirely.",
+        candidates: [
+          { name: "Mike Rogers (incumbent)", party: "R", winner: false,
+            positions: ["Peace through strength — defence spending above 4% of GDP","\"Close our borders, protect the unborn, unleash American energy\" (his own campaign framing)","Rebuild the American defence industrial base, which he ties to Army readiness"],
+            differentiators: ["The first Alabamian to chair the House Armed Services Committee; championed the Space Force and Space Command's move to Redstone","$2,590,964 cash on hand, of which $721,704 came from PACs (FEC)","Endorsed early by President Trump; won his primary 83.18%–16.82%"],
+            supporters: ["A full committee chairmanship gives a rural district outsized budget leverage — supporters point to $949M+ directed to Anniston Army Depot","He describes himself as a dealmaker who will take an 80% win over a purity fight","Roughly a 274-to-1 cash advantage over his opponent"],
+            opponents: ["His challenger says a certified town-hall invitation went unanswered, and constituents report no replies from his office — \"Where is Mike Rogers?\" is the opposing slogan","He voted twice for the One Big Beautiful Bill Act, which cut SNAP and health funding, and was silent during the shutdown-era SNAP disruption","A safe seat with no contested general since 2022 means little accountability at the ballot box [Verify — structural argument]"] },
+          { name: "Victor \"Lee\" McInnis", party: "D", winner: false,
+            positions: ["Health care for all, citing parts of AL-3 with no hospital, no pediatrician and no trauma centre","Living wages, pro-union, anti-tariff, and higher taxes on top earners","Opposes current immigration enforcement as \"illegal, unconstitutional and inhumane\"; backs red-flag laws and a ban on congressional stock trading"],
+            differentiators: ["34 years of government service — 6 in Army Intelligence and 28 in the Defence Intelligence Community, finishing as Acting Director of ISR for the Joint NATO/USA Special Operations Task Force in Kabul","No-PAC pledge confirmed independently: FEC shows $60,787 raised, 100% from individuals and $0 from PACs","Endorsed by CWA Alabama and Locals 3908/3909 and the Alabama New South Alliance; $9,461 cash on hand"],
+            supporters: ["Nearly three decades in defence intelligence gives him standing to challenge the Armed Services chairman on troop welfare on his own ground","He holds open town halls in a district where voters say they cannot reach the incumbent — \"My goal is not to lose by smaller margins, my goal is to win this seat\"","Organized labour cites his record on working families"],
+            opponents: ["A 274-to-1 cash disadvantage against a 12-term committee chairman [Verify — structural argument]","His platform tracks the national Democratic agenda in a district where no Democrat even filed in 2024 [Verify — structural argument]","This is his first run for any office [Verify — no published Republican criticism of McInnis exists in any retrievable source]"] } ] }
+    ] },
+
+  4: {
+    name: "U.S. House — AL District 4",
+    region: "Northwest Alabama — Cullman, Marshall, DeKalb, Blount, Walker, Colbert, Franklin, Marion, Winston, Fayette, Lamar, most of Lauderdale (Florence) and part of Tuscaloosa. Lines unchanged by the 2023 map.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "Lines unchanged, so no special primary here. Rep. Robert Aderholt (R), in office 30 years, was renominated on May 19 with 77.61% over Tommy Barnes. ⚠ COOK PVI R+33 — AND IT RANKS 435th OF 435, so \"the most Republican district in the United States\" is a numerical fact rather than a figure of speech. Cook and Inside Elections both rate it Solid R. ⚠ A finance oddity worth noticing: Aderholt SPENT MORE THAN HE RAISED this cycle — $1,022,664 raised against $1,239,901 spent, leaving $749,660 on hand. In 2024 no Democrat filed at all; Aderholt took 98.8% of candidate votes and 43,955 voters (13.7%) skipped the race.",
+        candidates: [
+          { name: "Robert Aderholt (incumbent)", party: "R", winner: false,
+            positions: ["Make Washington \"live within its means\"","Strict border enforcement, including backing $70B for Customs and Border Protection and ICE","Rural health care delivered through appropriations earmarks"],
+            differentiators: ["Chairman of the Appropriations Subcommittee on Labor, Health and Human Services and Education — the largest non-defence segment of the federal budget","Directed $56.3M in FY26 district project funding, plus $22.1M for 4th-District rural hospitals","⚠ He outspent his receipts this cycle by about $217,000 (FEC); his campaign domain is a parked page with no content and no 2026 endorsements are listed anywhere"],
+            supporters: ["He converts a senior gavel into concrete local dollars a freshman could not","He restored Community Project Funding to the Labor-HHS bill — roughly 500 projects across 200+ members — and created the Rural Hospital Provider Assistance Program, with about 30 Alabama hospitals eligible","He argues all twelve FY26 appropriations bills moved through a bipartisan, member-driven process"],
+            opponents: ["Alabama Reflector's Brian Lyman called his July 2026 push on a DAR transgender-participation bill an \"unforced error\" and a \"niche obsession\" set against grocery and health-care costs","On the education budget he chairs, he was noncommittal about a proposed ~$1,700 Pell Grant cut, saying only that it is \"certainly something we're going to look at\"","Nearly a quarter of his own primary electorate voted against him after 30 years in office"] },
+          { name: "Amanda Pusczek", party: "D", winner: false,
+            positions: ["Rural hospital rescue — emergency grants, reversing Disproportionate Share Hospital cuts, and funding EMS as a public utility","A $15 federal minimum wage, the PRO Act, and breaking up meatpacking monopolies","Reproductive freedom and medical privacy, including 12-month postpartum Medicaid"],
+            differentiators: ["A registered nurse with 12+ years across hospitals, clinics, schools and correctional facilities; worked the New York City front lines at the COVID peak","Signed the Balance and Accountability Candidates coalition — 12-year term limits, a congressional stock-trading ban and a 5-year lobbying moratorium — and rejects corporate PAC money","$15,591 raised, $395.79 cash on hand and $12,000 in debts (FEC)"],
+            supporters: ["A working nurse is the right messenger on the district's most acute problem — she argues ten hospitals across her 13 counties may close within two years","She runs on an unusually detailed written platform rather than on biography","She has joined a structural-reform coalition against incumbency itself, while facing a 30-year member"],
+            opponents: ["⚠ 1819 News documented confusion over which seat she sought — she filed for AL-5 in April 2025 and switched to AL-4 that August while her social accounts disagreed, and did not respond to the outlet. Her FEC candidate ID is still an AL-5 ID","$395.79 on hand against $749,660 — the widest resource gap in the Alabama delegation","Cook PVI R+33, the most Republican district in the country; no Democrat is competitive here on any published measure [Verify — structural argument]"] } ] }
+    ] },
+
+  5: {
+    name: "U.S. House — AL District 5",
+    region: "The Tennessee Valley — Madison (Huntsville), Limestone, Morgan (Decatur), Jackson, Lawrence and part of Lauderdale. Lines unchanged by the 2023 map.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "Lines unchanged, and the ONLY Alabama district whose November ballot was already settled before Aug 11 — Rep. Dale Strong (R) drew no primary opponent at all. Democrat Andrew Sneed won the June 16 runoff 78.37%–21.63% over Candice Duvieilh. Cook and Inside Elections both rate it Solid R; Cook PVI R+15, unchanged between the 2025 and 2026 editions. ⚠ THE UNDER-VOTE HERE IS THE LARGEST IN THE STATE: in 2024, 91,932 people — 25.9% of everyone who cast a ballot in AL-5 — skipped the U.S. House race entirely, with no Democrat on the ballot to vote for.",
+        candidates: [
+          { name: "Dale Strong (incumbent)", party: "R", winner: false,
+            positions: ["National defence, and directing federal dollars to Redstone — $450M for Space Command headquarters and $2.05B in Air Force construction in the FY27 NDAA","Mandating the Pledge of Allegiance in public schools as a condition of federal funding","His official issue set lists gun rights, conservative family values, fiscal responsibility, veterans and agriculture"],
+            differentiators: ["On Appropriations as Vice Chair of Commerce-Justice-Science, plus Transportation-HUD and Legislative Branch; and Chairman of the Homeland Security Subcommittee on Emergency Management and Technology","41 years as a volunteer firefighter and 35 as an EMT — he still answers calls — after 26 years in Madison County government as its first Republican commission chair","$1,477,819 raised and $1,424,334 on hand, but $631,300 of it from PACs and $240,000 in outstanding campaign loans (FEC). ⚠ His widely repeated Trump endorsement traces only to the 2022 cycle; no 2026 endorsement could be located [Verify]"],
+            supporters: ["He converts an Appropriations seat into hard local dollars, and fought to keep Space Command at Redstone","Constituent service is a documented record — about 1,200 cases in 2024, recovering over $3M in delayed refunds and VA and Social Security benefits","Four decades as a first responder underwrite his emergency-management chairmanship"],
+            opponents: ["He defended DOGE job losses in Huntsville — \"we may lose a couple, we will gain many of them in the end\" — and had not publicly commented when the FY26 budget proposed cutting NASA about 25% and phasing out SLS, which supports roughly 15,000 Alabama jobs","In the Apr 30–Jun 30 filing he reported just 37 individual donors, only 15 of them from the district, with over 90% of receipts from PACs, lobbyists and executives","His office had not responded to a July 27 town-hall invitation as of Aug 3"] },
+          { name: "Andrew Sneed", party: "D", winner: false,
+            positions: ["Health care — expand Medicaid availability, negotiate drug prices, and keep rural hospitals open","Affordability — \"repeal unjustified tariffs,\" expand rental assistance and affordable housing","Congressional reform — 12-year term limits, a ban on congressional stock trading, overturning Citizens United and an enforceable Supreme Court ethics code"],
+            differentiators: ["A master plumber and gas fitter who founded Whole Home Solutions in 2019 — now 7 employees and 6 trucks — after starting as a $10-an-hour plumber's helper at 32","Raised $646,512, of which $618,618 (95.7%) came from individuals against just $2,350 in PAC money (FEC) — the strongest fundraising of any Alabama Democratic House challenger this cycle","Founded the Balance and Accountability Candidates reform coalition, now signed by 120+ candidates nationally, with Rep. Greg Landsman the first sitting member to endorse it"],
+            supporters: ["He out-raised a well-funded incumbent for two straight reporting periods, almost entirely on small in-district donations","He is holding four free open town halls across Scottsboro, Decatur, Athens and Huntsville while the incumbent's office has not replied to an invitation","A tradesman with a payroll speaks credibly on costs — he cites fuel up 40% across six work trucks"],
+            opponents: ["Strong took 95.4% in 2024 running effectively unopposed, and reporting still calls him favoured given the district's Republican lean [Verify — structural argument]","Despite out-raising per quarter, Sneed trails roughly 8-to-1 on cash on hand [Verify — structural argument]","He has never held elected office, and his signature items — term limits, overturning Citizens United, a binding Supreme Court ethics code — mostly require constitutional amendments a freshman in the minority could not deliver [Verify — structural argument]"] } ] }
+    ] },
+
+  6: {
+    name: "U.S. House — AL District 6",
+    region: "Birmingham's southern suburbs and the central counties — Shelby, Autauga, Bibb, Chilton, Coosa, Elmore, a large share of Jefferson (Hoover, Vestavia Hills, Mountain Brook) and a sliver of Talladega.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "Rep. Gary Palmer (R), in office since 2014, took the Aug 11 special Republican primary with 86.98%. On the Democratic side, former Pelham City Council President MAURICE MERCER won a four-way special primary with 64.17% — beating Keith Pilkington, who had already won the nullified May primary. ⚠ Pilkington edged Jacob Bouma-Sims for third by FOUR VOTES; that order could flip on certification. Cook PVI R+17, from R+20 on the old lines. Considered strongly Republican.",
+        candidates: [
+          { name: "Gary Palmer (incumbent)", party: "R", winner: false,
+            positions: ["Repeal of the Affordable Care Act","Reducing the EPA's regulatory power","Gun rights and abortion restrictions"],
+            differentiators: ["In Congress since 2014; seeking a sixth term","Raised $1M and spent $946,000 through July 22, 2026 (FEC)","Won the Aug 11 special primary 86.98%–13.02% over Case Dixon"],
+            supporters: ["Describes his constituents as \"small business owners, farmers, parents, veterans...That is who I work for\"","Took nearly 87% against a repeat challenger","A safely Republican suburban district he has held for six cycles"],
+            opponents: ["⚠ He drew criticism from candidates in BOTH parties for seeking a sixth term after saying in 2014 he would serve only ten years — he said God gave him clarity to do so","Dixon: \"My hope is that this campaign...might cause Congressman Palmer to think twice the next time he is asked to increase federal spending or raise the debt ceiling\"","Repealing the ACA without a named replacement is the line Democrats will run on here [Verify]"] },
+          { name: "Maurice Mercer", party: "D", winner: false,
+            positions: ["Raising the minimum wage — his stated top priority","Affordability","[Verify] No further detailed positions could be sourced"],
+            differentiators: ["Former President of the Pelham City Council — the only candidate in the four-way Democratic field with elected experience","Won the Aug 11 special primary with 64.17%","Raised $6,500 and spent $4,700 — the thinnest resources of any Alabama major-party House nominee"],
+            supporters: ["The only Democrat in the field who has actually held and won elected office","Took nearly two thirds of the vote against three rivals, including the man who won the nullified May primary","A concrete, testable headline issue in the minimum wage"],
+            opponents: ["$6,500 raised against an incumbent who has spent nearly a million dollars","⚠ Politics1 miscodes him as a Republican — a data error voters may encounter","Very little press coverage of his campaign exists at all, which is itself the finding [Verify]"] } ] },
+      { date: "Aug 11, 2026", type: "past",
+        note: "Both parties re-ran this primary. Republican: Palmer 24,482 (86.98%) to Case Dixon 3,665 (13.02%), of 28,147 votes cast. The Democratic result below drew 8,412 votes. ⚠ Third place is separated by FOUR VOTES and could flip on certification; some outlets, including WBHM, placed Bouma-Sims third. UNOFFICIAL.",
+        candidates: [
+          { name: "Maurice Mercer", party: "D", winner: true, positions: [], differentiators: ["64.17% — 5,398 votes"], supporters: [], opponents: [] },
+          { name: "Ashtyn Kennedy", party: "D", winner: false, positions: [], differentiators: ["21.35% — 1,796 votes"], supporters: [], opponents: [] },
+          { name: "Keith Pilkington", party: "D", winner: false, positions: [], differentiators: ["7.26% — 611 votes. He had already won the May 19 primary that Gov. Ivey nullified"], supporters: [], opponents: [] },
+          { name: "Jacob Bouma-Sims", party: "D", winner: false, positions: [], differentiators: ["7.22% — 607 votes, four behind third place"], supporters: [], opponents: [] } ] }
+    ] },
+
+  7: {
+    name: "U.S. House — AL District 7",
+    region: "Birmingham's core plus the Black Belt — most of Jefferson, most of Tuscaloosa, and Dallas (Selma), Greene, Hale, Marengo, Perry, Pickens, Sumter, Wilcox, Choctaw, Clarke, Conecuh, Monroe and Washington. Alabama's only majority-Black district; the 2023 map cuts its Black voting-age population only slightly, from about 52% to 50.6%.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "Rep. Terri Sewell (D) was the sole Democratic filer — the Alabama Democratic Party's certification of May 26, 2026 lists no one else — so she is the nominee without a contest, and the special primary here was Republican-only. Former educator AMMIE AKIN won it with 73.37%. Sewell is the Alabama delegation's only member of the House Ways and Means Committee and reported $3.65M on hand. Cook PVI D+10, from D+13 on the old lines. Considered strongly Democratic — it is the only Alabama district Democrats hold on this measure.",
+        candidates: [
+          { name: "Terri Sewell (incumbent)", party: "D", winner: false,
+            positions: ["[Verify] A detailed 2026 issue platform could not be sourced this pass","",""],
+            differentiators: ["The Alabama delegation's only member of the House Ways and Means Committee","$3.65M cash on hand — the largest war chest of any Alabama House candidate (FEC)","Sole Democratic filer; nominee without a primary"],
+            supporters: ["A Ways and Means seat is the single most consequential committee post held by anyone in the Alabama delegation [Verify — structural argument]","Roughly a 24-to-1 cash advantage","Not a single Democrat filed against her"],
+            opponents: ["An unopposed primary means her record went untested inside her own party [Verify — structural argument]","⚠ She joined Republican Rep. Robert Aderholt in urging the state treasurer to reverse the Birmingham-Southern College loan denial — an unusual bipartisan intervention that critics of the college's finances questioned","[Verify] No further sourced criticism of Sewell was located this pass"] },
+          { name: "Ammie Akin", party: "R", winner: false,
+            positions: ["\"Responsive leadership, strengthening economic opportunity, supporting Alabama's agricultural and industrial sectors\" — her own framing","Says the district \"deserve[s] a representative who is innovative, forward thinking and courageous\"","[Verify] No further detailed positions could be sourced"],
+            differentiators: ["A former educator","Won the Aug 11 special Republican primary 73.37%–26.63% over David W. Perry","Raised $150,730.44 and spent $34,794.29 — against an opponent who had reported no finances at all"],
+            supporters: ["Outraised and out-organised her primary opponent by a wide margin in a district Republicans rarely contest seriously","Took nearly three quarters of the Republican vote","Runs on economic opportunity rather than national culture-war framing [Verify — her own framing]"],
+            opponents: ["Faces a nine-term incumbent with roughly 24 times her fundraising","AL-7 is Alabama's only majority-Black district and has elected a Democrat in every cycle since it was drawn [Verify — structural argument]","[Verify] No critical coverage of Akin was located at all"] } ] },
+      { date: "Aug 11, 2026", type: "past",
+        note: "Republican special primary only — Terri Sewell was unopposed for the Democratic nomination. 12,692 votes cast; UNOFFICIAL.",
+        candidates: [
+          { name: "Ammie Akin", party: "R", winner: true, positions: [], differentiators: ["73.37% — 9,312 votes"], supporters: [], opponents: [] },
+          { name: "David W. Perry", party: "R", winner: false, positions: [], differentiators: ["26.63% — 3,380 votes; reported no campaign finances"], supporters: [], opponents: [] } ] }
+    ] }
+};
+
+const SITE_META = { name: "Alabama Elections Hub", lastUpdated: "August 12, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — Alabama county-level down-ballot research has not started.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Alabama has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them,
+  // otherwise a district with no plurality county is unreachable from the map.
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const AL_STATE_FIPS = "01";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#almap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(AL_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Hartford ----
+  drawCapital(g, projection, { name: "Montgomery", lng: -86.3009, lat: 32.3792 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in AL";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our Alabama dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>

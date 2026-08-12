@@ -64,7 +64,8 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 | `pa.html` | Pennsylvania — thirty-first fully built state (67 counties, 17 districts, May 19 primary results). Built Aug 10, 2026 from il.html, the other 17-district `ds` state. ⚠ **PA-2 AND PA-3 SIT WHOLLY INSIDE PHILADELPHIA COUNTY, and PA-3 is the plurality district of NO county in the state** — without `ds` it would be unreachable statewide (lesson #12). Philadelphia's own plurality is decided by ONE PERSON (PA-2 764,865 vs PA-3 764,864), so its shading is effectively a coin toss. NO U.S. Senate race (McCormick 2030, Fetterman 2028); the row offices (AG/Auditor General/Treasurer) are presidential-year offices; PA is the only state electing appellate judges SOLELY in odd years, so no judicial race and no ballot question — **the entire statewide ballot is the Governor/Lt. Gov ticket** (Shapiro–Davis vs. Garrity–Richey, Solid D, plus qualified Libertarian and Green tickets). Marquee: PA-7 (Mackenzie–Brooks) and PA-8 (Bresnahan–Cognetti), both Toss Up by all three raters; PA-1 Fitzpatrick is the crossover seat Harris carried; PA-10 Perry–Stelson is a Toss Up rematch; PA-3 is an OPEN D+40 seat with NO Republican on the ballot. No LOCAL_RACES yet |
 | `tn.html` | Tennessee — thirty-second fully built state (95 counties, 9 districts, Aug 6, 2026 primary). Built Aug 11, 2026 from il.html. ⚠⚠ **BUILT ON A BRAND-NEW MID-DECADE MAP** — Public Chapter 3, Second Extraordinary Session, signed May 7, 2026 after *Louisiana v. Callais*; building on the 2022 plan would have been wrong on every district. **Nashville/Davidson is split 4/6/7 (NOT the old 5/6/7) and Memphis/Shelby is carved three ways 5/8/9**, eliminating the state's only majority-minority district. 12 split counties, all carrying `ds`; Knox, Hamilton and Wilson are whole. ⚠ The 2026 U.S. Senate seat is **HAGERTY's Class 2 seat** (he is running; Bradshaw D) — NOT Blackburn's, whose Class 1 seat is next up in 2030. Open Governor (Blackburn R vs. Jerri Green D — Tennessee gets its first female governor either way). ⚠ **TN-5 is no longer a Nashville seat** (runs Williamson/Maury to downtown Memphis) and **Ogles LOST his primary** to Charlie Hatcher; **TN-9 flipped D+43 → R+21 and Cohen was drawn out** (withdrew May 15; Pearson is the nominee); **TN-6 open** (Rose ran for governor and lost). Three certified constitutional amendments. NO other statewide executive office is elected (SoS/Comptroller/Treasurer by the General Assembly, AG by the Supreme Court) and NO statewide judicial race (retention is an August 8-year cycle, next 2030). No LOCAL_RACES yet |
 | `hi.html` | Hawaii — thirty-third fully built state (5 county-equivalents, 2 districts, Aug 8, 2026 primary). Built Aug 11, 2026 from tn.html — the site's FIRST non-contiguous state and its smallest county count. ⚠ **NO 2026 U.S. Senate race** (Schatz 2028, Hirono 2030), triple-confirmed against all 87 primary contest titles. ⚠ **Hawaii does NOT elect judges** — the Judicial Selection Commission decides retention, so there is no judicial contest to card. **Honolulu is the ONLY split county** and HI-1 sits entirely inside it, holding it as an outright **71.46% majority**; Kalawao (pop 82) and the neighbor islands are wholly HI-2, which is ~40% Oahu by population. Governor and Lt. Governor are nominated SEPARATELY in the primary but locked into one ticket in November (Const. Art. V §2, HRS §11-115) — Green/Kawakami vs. Cordery/Anthony, Solid/Safe D by all three raters. ⚠ The LG seat was open because **Lt. Gov. Sylvia Luke quit her re-election bid Apr 19, 2026 and took indefinite unpaid leave Apr 23 as the TARGET of a state AG bribery investigation** (she denies it; Comptroller Keith Regan is acting LG) — status unconfirmed past Apr 24 [Verify]. Exactly ONE ballot measure (SB3219 CD1, county resilient-infrastructure bonds), quoted verbatim. ⚠ The November House field is DERIVED from HRS §12-41(b) applied to certified primary counts — no certified general-election candidate list was published as of Aug 11. **The five OHA trustee seats are deliberately NOT carded** — see the ledger. No LOCAL_RACES yet |
-| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH/KY/IN/IA/IL/MS/AR/NE/NM/CO/OR/NV/SD/ID/MT/PA/TN/HI redirect to their dedicated pages |
+| `al.html` | Alabama — thirty-fourth fully built state (67 counties, 7 districts, May 19 primary + a **special primary Aug 11, 2026** in districts 1/2/6/7). Built Aug 12, 2026 from tn.html. ⚠ **BUILT ON THE 2023 LEGISLATURE-DRAWN MAP, NOT THE COURT-DRAWN *ALLEN v. MILLIGAN* PLAN** — after *Louisiana v. Callais*, SCOTUS set aside the blocking rulings May 11, 2026 and overturned a further panel block June 2, so the Census CD119 relationship file describes the WRONG map for Alabama. Gov. Ivey VOIDED the May 19 results in the four districts whose lines moved and called an Aug 11 special primary **with no runoff**. ⚠ **AL-2 IS THE MARQUEE AND THE REDRAW POINTED IT THE OTHER WAY** — Mobile moved out, the Black share fell ~47%→~40%, Cook PVI went **D+5 → R+7**, and every rater now has Likely R (flip) against freshman Rep. Shomari Figures; **Rhett Marques won the six-way special primary with 50.03%**, eleven votes above a majority. **Jerry Carl won back AL-1**, the seat he lost in 2024. ⚠ Alabama elects **all seven executive constitutional officers together**, so the ballot is long; the marquee down-ballot race is Agriculture Commissioner, where **Ron Sparks (D) held that exact office 2003–2011**. ⚠ **BOTH Republican PSC incumbents were fired by their own primary voters**, and **HB 475 (signed Apr 2, 2026) then expanded the PSC 3→7, put it under a governor-appointed secretary of energy and barred rate cases until 2029** — the page carries that context or the races mislead. ⚠ **Six appellate seats, only ONE contested** (Supreme Court Place 8, Shaw vs. Dunham, an IVF-ruling race). ⚠ **Tuberville's eligibility for governor is live at the Alabama Supreme Court**; briefing closes Aug 28, AFTER the Aug 19 replacement deadline and Aug 26 certification. **Four constitutional amendments** in November, numbering provisional. No LOCAL_RACES yet |
+| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH/KY/IN/IA/IL/MS/AR/NE/NM/CO/OR/NV/SD/ID/MT/PA/TN/HI/AL redirect to their dedicated pages |
 | `favicon.svg` | Gold-gradient circle + white checkmark (primary favicon, matches site crest) |
 | `favicon.png` | 32px PNG fallback |
 | `favicon.ico` | Multi-size ICO (16/32/48) at root for legacy auto-discovery |
@@ -162,10 +163,10 @@ must appear AFTER its declaration; a top-level TDZ error kills the whole script 
 ### index.html (national)
 ```
 ST / NAME     : fips → abbr / full name             CAP: capitals (currently unused on this page)
-BUILT         : 31 fips -> page (37 nc, 45 sc, 13 ga, 51 va, 24 md, 10 de, 34 nj, 36 ny, 44 ri, 33 nh,
+BUILT         : 34 fips -> page (37 nc, 45 sc, 13 ga, 51 va, 24 md, 10 de, 34 nj, 36 ny, 44 ri, 33 nh,
                 09 ct, 50 vt, 23 me, 25 ma, 54 wv, 39 oh, 21 ky, 18 in, 19 ia, 17 il, 28 ms, 05 ar, 31 ne, 35 nm, 08 co,
-                41 or, 32 nv, 46 sd, 16 id, 30 mt, 42 pa)
-PARTIAL       : Set of 3 fips (DC FL AL) → lighter gold tier
+                41 or, 32 nv, 46 sd, 16 id, 30 mt, 42 pa, 47 tn, 15 hi, 01 al)
+PARTIAL       : Set of 2 fips (DC FL) → lighter gold tier
 CALLOUTS      : label anchor coords for 9 small states + DC
 destFor(fips) : BUILT[fips] if fully built, else state.html?state=XX
 
@@ -198,7 +199,7 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of August 7, 2026)
+## Current state (as of August 12, 2026)
 
 - **NC (full):** 2024 statewide results (Gov, Lt Gov, AG, Supreme Court Seat 6) + all 14 US House
   districts (2024 + 2026) + 2026 US Senate (Cooper vs. Whatley vs. Bray, rated Lean D). NC primary
@@ -475,6 +476,39 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
    `<XX>_STATE_FIPS` back OUT of the built page, filter the real us-atlas geometry with it, and compare the bounding
    box to the state's true lat/lng extent. Tennessee matched to two decimals on all four bounds.
 
+19. **A RE-RUN PRIMARY IS A FREE, DECISIVE MAP-CURRENCY TEST — and Alabama gave the cleanest one yet.**
+   Established Aug 12, 2026. Lesson #17 says to prove map CURRENCY against the Secretary of State's own election
+   returns. Alabama offered a sharper version: because Gov. Ivey voided the May 19 results **only in the districts
+   whose lines moved**, the set of counties that received an Aug 11 special-primary ballot is a direct, falsifiable
+   prediction of the county→district table. Before publishing, the derived table was used to predict exactly which
+   **40 of 67 counties voted and which 27 did not**, and that prediction was checked against the SoS's own county
+   picker, which hyperlinks only counties that reported. **Result: 40/40 and 27/27, zero disagreement**, including
+   the discriminating case — **Lauderdale, a SPLIT county spanning only districts 4 and 5, correctly did NOT vote**,
+   while the five split counties touching 1/2/6/7 all did.
+   ➤ **Why this beats an arithmetic proof:** a population check proves TRANSCRIPTION; this proves CURRENCY, and it
+   costs one page fetch. Whenever a state re-runs a primary mid-cycle, derive the affected-county set first and
+   check it before writing a line of data.
+
+20. **AGENTS CAN REPORT A COMPLETION SIGNAL AS IF IT WERE A FINDING. Treat "an agent found X" as unsourced until X arrives.**
+   Found Aug 12, 2026, and it self-corrected. A coordinating agent told the main loop that two sub-agents had
+   "completed with strong findings" and that one had "flagged an important correction on Sparks" — then, on being
+   re-queried, retracted it in full: it had received completion *signals*, not report text, and the findings had
+   never entered its context. It refused to relay them rather than reconstruct them, and said so plainly.
+   ➤ **The correction was right and the instinct was right.** Had it invented the Sparks item, a fabricated
+   criticism of a real candidate would have gone onto a live page under this project's own byline.
+   ➤ **Practical rule: a claim is publishable only when the sourced text is in front of you.** "An agent found it"
+   is not sourcing, and neither is a task-completion notification. When a relay is second-hand, re-query for the
+   verbatim report — that is exactly what recovered all four missing Alabama races this run.
+
+21. **THE `WebSearch` BUDGET IS A HARD 200-CALL PER-SESSION CAP AND PARALLEL AGENTS BURN IT FAST.**
+   Hit again Aug 12, 2026 — exhausted before the main loop issued its *first* search, because seven agents launched
+   at once consumed it. Everything after that point was fetch-only, and it still worked: the CT and VT results came
+   from the states' own JSON election feeds, Alabama's from `www2.alabamavotes.gov/electionNight/` via `curl -k`,
+   South Dakota's from `vip.sdsos.gov/candidatelist.aspx?eid=774`, and Cook PVI from the Datawrapper CSV.
+   ➤ **Practical rule (reinforcing the Aug 10 note): spend searches on DISCOVERY and fetches on CONFIRMATION.**
+   State election-night portals are almost always a predictable URL plus a JSON or ASPX endpoint behind the
+   JavaScript, and they are the authoritative source anyway.
+
 ## Testing (`tests/` — plain Node.js, zero dependencies)
 
 Requires Node.js (any recent LTS). Run the whole suite from the site root:
@@ -686,7 +720,13 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
    built once and never re-derived. **Every legacy page's map deserves the same audit nc.html just got** — sc.html and
    ga.html are the oldest and were built the same week under the same assumptions.
 
-**Queue status (as of Aug 6, 2026): items 1, 2, 3 and 5 are COMPLETE, and item 4 has been at ZERO gaps
+**Queue status (as of Aug 12, 2026): every numbered item 1–9 is COMPLETE.** Item 4 (voices) read
+**0 missing / 1,005 candidates across 34 pages** at the end of the Aug 12 run — Alabama shipped with 41 candidates
+and 0 gaps. The landing page was reviewed in a REAL BROWSER this run (see lesson #18b for the method): Alabama
+renders gold, only FL and DC remain in the lighter tier, the legend reads "Fully built (34 states)", and the
+footer reads August 2026. The queue is empty of owner-requested work; what remains is maintenance.
+
+Superseded: **Queue status (as of Aug 6, 2026): items 1, 2, 3 and 5 are COMPLETE, and item 4 has been at ZERO gaps
 site-wide since Aug 5.** The queue is therefore empty of open work — what remains is *maintenance*: every new
 state must be built WITH voices, and `node tools/voices-report.js --summary` must read 0 at the end of every
 run. It read **0 missing / 876 candidates across 30 pages** at the end of the Aug 9 run (South Dakota shipped with 22
@@ -707,6 +747,12 @@ time-sensitive calendar, and the incumbent-status sweep.
    sheriff primary; Thompson and Hewett won commission primaries; Somers won DA-15 primary).
 3b. **East-coast full buildout — RESUMED by owner July 14, 2026** (was paused July 6 after 7 states:
    NC SC GA VA MD DE NJ; statewide + House; county LOCAL_RACES still to do for all).
+   **Built bloc = 34 as of Aug 12, 2026** (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA WV OH KY IN IA IL MS AR NE NM CO
+   OR NV SD ID MT PA TN HI **AL**). ⚠ **Only DC and FL remain in the lighter "marquee" tier.** **FL unlocks after its
+   Aug 18, 2026 primary — that is the next build, and its map ALSO changed post-*Callais*, so apply lesson #19.**
+   **DC still needs the special no-county page model.** After FL the remaining unbuilt states are the western and
+   midwestern block (TX CA AZ NV-done WA OR-done MN WI MI MO LA OK KS UT WY AK etc.) — **MI has banked research**
+   (El-Sayed beat Stevens for the Senate nomination Aug 5; Benson vs. James for governor; called, not certified).
    **Owner's standing directive (updated July 20, 2026): build MULTIPLE new states per run; the task now runs
    DAILY at 8am** (switched from weekly on July 20, 2026 after the owner restocked Netlify credits). Each run,
    complete as many full, verified states as you can — aim for 2–4, sized to complexity (on a daily cadence,
@@ -1804,7 +1850,48 @@ time-sensitive calendar, and the incumbent-status sweep.
    seats, so "Safe" is inferred by omission. Genuinely unreachable: Decision Desk HQ's own site and
    racetothewh.com.
 
-   ### ⏸ ALABAMA — RESEARCH BANKED Aug 6, 2026; BUILD GATED TO AFTER AUG 12. Do not re-research what is here.
+   ### ✅ ALABAMA — BUILT Aug 12, 2026 (34th state). The section below is now the BUILD RECORD; do not re-research it.
+   The gate lifted on both counts and the page shipped: the Aug 11 special primary settled districts 1, 2, 6 and 7,
+   and the county→district table below was proved CURRENT by the re-run-primary test (lesson #19) — 40/40 voting
+   counties and 27/27 non-voting counties, exact, including split Lauderdale correctly not voting.
+   **What the build ADDED or CORRECTED against the banked notes below:**
+   - **Judicial is SIX seats with ONE contested, not "8 seats, 3 contested."** Read off the SoS's own party
+     certifications (JBIG2 image scans, rendered and read as images): Supreme Court Places 7 and 8, Civil Appeals
+     Places 4 and 5, Criminal Appeals Places 4 and 5. Only Supreme Court Place 8 (Shaw vs. Dunham) is contested,
+     and no minor-party or independent certification exists, so none can still become contested.
+   - **The independent/minor-party deadline for the GENERAL election was MAY 19, 2026, not Aug 11.** Aug 11's 5 p.m.
+     deadline belonged to the special-primary calendar for districts 1/2/6/7 only. **Craig Jelks is therefore NOT
+     carded** — no FEC registration and no SoS certification. William Puetz (AL-6) is FEC-registered only.
+   - **FOUR statewide constitutional amendments ARE on the November ballot** (SB271 LG vacancy/salaries; HB380 school-board
+     consolidation; HB511 Pledge and student-initiated prayer; SB5 weekly national anthem). ⚠ The numbering 1–4 is
+     PROVISIONAL — the Fair Ballot Commission writes explanations, it does not certify, and the SoS has posted no
+     November amendment certification yet.
+   - **Cook PVI, 2026 edition, all seven districts** (from the Datawrapper CSV — charts `fejB0`/`rAx2t` carry both
+     vintages): AL-1 R+17 (was R+27), **AL-2 R+7 (was D+5)**, AL-3 R+23, AL-4 R+33, AL-5 R+15, AL-6 R+17 (was R+20),
+     AL-7 D+10 (was D+13). **AL-3/4/5 show a raw shift of exactly 0.000 — machine-readable proof their lines did not
+     move**, and **AL-4 ranks 435 of 435**, so "most Republican district in the country" is a fact, not a flourish.
+   - **Corrected figures:** Dale Strong's cash on hand is **$1,424,334** (the banked $1.28M was Q1); Andrew Sneed has
+     raised **$646,512** (not $453,186), 95.7% of it from individuals. ⚠ **Strong's Trump endorsement traces only to
+     the 2022 cycle** — do not print it as a 2026 fact.
+   - **The banked "no platform" pessimism was wrong in several places.** Amanda Pusczek (AL-4) has an extensive
+     itemized platform at `amandaforalabama.com/policy` (`/issues` 404s), and McInnis, Rogers, Aderholt, Strong and
+     Sneed all have sourced positions. The genuine absences that DID hold: **Jeff McLaughlin (D, AG) has no campaign
+     website at all**, **Rosilyn Houston (D, Treasurer) has no issues page**, and no platform exists for Greg Shaw,
+     Ben Bowden or Matt Fridy. Those absences are published as findings.
+   - **A sourced criticism of Young Boozer DOES exist** (the banked note said none did): the Birmingham-Southern
+     College distressed-loan denial, which drew a joint Sewell–Aderholt letter urging reconsideration.
+   - **⚠ THE BANKED SPARKS/BINGO FRAMING WAS WRONG AND WAS NOT PUBLISHED.** Ron Sparks's electronic-bingo record
+     belongs to his **2010 campaign for GOVERNOR**, where he supported **REOPENING** bingo casinos and taxing the
+     revenue — not to "bingo enforcement" during his 2003–2011 agriculture tenure. Do not reintroduce it.
+   - **A wrong AL-2 number set is circulating** (Marques 54 / Matthews 24 / Harris 11, Matthews second). The SoS
+     returns contradict it: **Hampton Harris finished second at 21.65%.**
+   - **Access notes that worked:** `www2.alabamavotes.gov/electionNight/` via `curl -k` is the authoritative results
+     source and is reachable; its county picker hyperlinks only counties that reported (the currency test);
+     alabamareflector.com and 1819 News yield to a browser User-Agent from some agents but 403 others; al.com is
+     hard-blocked; SoS certification PDFs are image scans needing rendering, not text extraction.
+
+   **The original Aug 6 banked research follows, preserved as the sourcing record.**
+   ### (historical) ALABAMA — RESEARCH BANKED Aug 6, 2026; BUILD GATED TO AFTER AUG 12.
    An Alabama build was worked all the way to a finished, arithmetic-verified county map on Aug 6 and **deliberately
    not shipped**. Two independent reasons, either of which alone is disqualifying:
    - ⚠⚠ **THE MAP I DERIVED IS THE WRONG MAP** — see lesson #13. After *Louisiana v. Callais* (decided ~Apr 29, 2026),
@@ -2435,10 +2522,40 @@ time-sensitive calendar, and the incumbent-status sweep.
      Auditor, AG, SoS and Treasurer, NOT the carded Joshua Bechhoefer; (c) **Gerald Malloy** contests the U.S. House
      Republican primary and reportedly LEADS Mark Coester, who the page treats as presumptive. Also: Auditor Democrat
      **Dan Towle** ended his campaign but stays on the ballot. Resolve all four the week of Aug 11.
-   - **CT + VT time-sensitive:** both primaries are **Aug 11, 2026**. Replace every
-     "[nominee — decided Aug 11 primary]" placeholder and resolve the pre-primary [Verify] fields that
-     week. CT's headline result to watch: the CT-1 Larson–Bronin–Gilchrest Democratic primary. VT's:
-     the Dem gubernatorial primary (Richards vs. Janoo) and the open Auditor primary (Ashe vs. Graeter).
+   - ✅ **CT + VT — DONE Aug 12, 2026, the morning after both primaries.** Both pages were refreshed off the
+     states' OWN election-night JSON feeds (CT: `ctemspublic.pcctg.net`, elections 111/112; VT:
+     `static.electionresults.vermont.gov`), which is far better sourcing than the news snapshots most outlets ran.
+     **CT: JOHN LARSON LOST.** Luke Bronin beat the 14-term incumbent 54.39%–32.69%, with Gilchrest 8.17% and
+     Fortune 4.75% — a 21.7-point margin, nowhere near Connecticut's 0.5%/20-vote recanvass trigger. Lamont beat
+     Elliott 67.91%–32.09%; Goldstein won CT-4 with 74.24% (his FOURTH run for the seat); Chris Shea won CT-5 with
+     80.47%. Only 17 contested primaries ran statewide. ⚠ **One path remains open in CT** — qualified MINOR parties
+     may certify nominees until 4 p.m. **Sept 2**; unaffiliated petitioning closed before the primary.
+     **VT: TWO UPSETS AND A LIVE PAGE ERROR CORRECTED.** Amanda Janoo beat Aly Richards 49.11%–46.56% (2,035 votes)
+     for governor — Richards was the presumptive nominee — and **Gerald Malloy crushed Mark Coester 76.49%–21.79%**
+     in the U.S. House GOP primary, vindicating the page's own pre-primary caution that Coester was not presumptive.
+     Molly Gray took LG with 60.71% over Ryan McLaren (27.63%, now carded) and Charlestin. Tim Ashe won Auditor with
+     74.89%; withdrawn candidate Dan Towle still took 12.00%, within 387 votes of the actively campaigning Graeter.
+     ⚠⚠ **`vt.html` HAD BEEN CARDING A NON-EXISTENT CANDIDATE: "Joshua Bechhoefer" appears NOWHERE in the Vermont
+     SoS results feed, for any office.** The actual Republican auditor nominee is **H. Brooke Paige**, who won the
+     GOP nomination for Auditor, AG, Secretary of State AND Treasurer on the same night — he files across offices
+     the state GOP struggles to fill so Democrats cannot capture them by write-in. **He has said he will WITHDRAW
+     from all but Secretary of State.**
+     ➤ **NEXT VT ACTION — AUG 21, 2026, 5 p.m. (17 V.S.A. § 2412):** the withdrawal window. Expect the Republican
+     lines for Auditor, AG and Treasurer to change, with the GOP State Committee naming replacements before the
+     Sept 19 ballot-delivery date. **AG, SoS and Treasurer are still NOT carded on vt.html** — add all three after
+     Aug 21, when the Republican lines are actually knowable. VT canvass certifies **Aug 18**.
+   - ✅ **SC SENATE — REFRESHED Aug 12, 2026, AND IT IS NOT OVER.** Nobody cleared 50% in the Aug 11 special
+     Republican primary: appointed Sen. **Darline Graham-Nordone 32.7%** (109,582) and **Rep. Ralph Norman 24.6%**
+     (82,523) go to an **AUG 25 RUNOFF**; Russell Fry was eliminated at 19.6%, Sanford at 14.9%. 334,870 votes cast.
+     The page now carries the Aug 11 result as a past race, the runoff as a `scheduled` race with both candidates
+     carded, and a corrected framing of the office. ⚠ **A FRAMING ERROR WAS FIXED:** there is **NO special general
+     election** — McMaster's July appointment covers the remainder of Graham's term through Jan 3, 2027, so the only
+     Senate contest on the Nov 3 ballot is the ORDINARY 2026 election for a full six-year term. Aug 11 decided only
+     who replaces Graham as the *nominee* on that ballot. ⚠ Runoff eligibility is reportedly disputed (officials
+     treat it as a new election open to all registered voters; the party wants June Democratic-primary voters
+     excluded) — unresolved. **Refresh sc.html after Aug 25**, and note positions for both runoff candidates are
+     still thin: Graham-Nordone has no sourced platform at all.
+     Superseded: **CT + VT time-sensitive:** both primaries are **Aug 11, 2026**.
    - **VA time-sensitive:** Aug 4, 2026 primaries decide most VA nominees — replace every
      "[nominee — decided Aug 4]" placeholder in va.html that week; also verify the certified
      constitutional-amendment list and the unsettled VA-3/VA-8/VA-11 GOP ballots.

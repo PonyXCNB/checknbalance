@@ -704,7 +704,13 @@ const COUNTIES = {
 // NOTE: Vermont's 2026 state primary is Aug 11, 2026. Vermont has NO U.S. Senate race
 // in 2026 (Welch up 2028; Sanders up 2030). State officers serve TWO-year terms, so
 // Governor, Lt. Governor and the other constitutional officers are all up in 2026.
-// Contested-primary nominees are not final until Aug 11 — marked [Verify — primary Aug 11].
+// ✅ The Aug 11, 2026 primary HAS BEEN HELD and this page is refreshed off the Secretary of
+// State's own results feed. Figures are UNOFFICIAL (242 of 247 towns; canvass Aug 18).
+// ⚠ One thing can still change: nominees may WITHDRAW until 5 p.m. Aug 21 (17 V.S.A. § 2412),
+// and H. Brooke Paige has said he will drop the Auditor, AG and Treasurer lines he won.
+// ⚠ AG, Secretary of State and Treasurer are NOT yet carded — the Democratic incumbents
+// (Clark, Copeland Hanzas, Pieciak) were all renominated unopposed, but their Republican
+// opponents are exactly the lines Paige says he is vacating. Add them after Aug 21.
 const STATEWIDE = [
   // UPCOMING — 2026 General Election (Nov 3, 2026)
   {
@@ -712,23 +718,18 @@ const STATEWIDE = [
     type: "upcoming",
     scope: "State · Statewide",
     office: "Governor of Vermont",
-    note: "Phil Scott (R) filed May 28, 2026 for a sixth two-year term and remains among the most popular governors in the U.S. Two Democrats compete in the Aug 11 primary. Rated Solid/Likely Republican — Scott won his last three general elections by 39+ points. [Verify — primary Aug 11].",
+    note: "✅ THE FIELD IS SET. Phil Scott (R) was renominated unopposed on Aug 11 and seeks a sixth two-year term; he remains among the most popular governors in the U.S. ⚠ THE DEMOCRATIC PRIMARY WAS AN UPSET: economist Amanda Janoo beat Aly Richards 49.11%–46.56%, a margin of 2,035 votes — Richards had led in fundraising and was the presumed nominee. Rated Solid/Likely Republican; Scott won his last three general elections by 39+ points and took 2024 with about 71%. ⚠ Figures are UNOFFICIAL — 242 of 247 towns reporting; the statewide canvass certifies Aug 18. ⚠ A Freedom and Unity Party candidate, Dean Roy, is also reported on the November ballot but could not be confirmed against the Secretary of State's certified list, so he is not carded [Verify]. Source: Vermont Secretary of State results feed (electionresults.vermont.gov).",
     candidates: [
       { name: "Phil Scott (incumbent)", party: "R", winner: false,
         positions: ["Fiscal moderation and affordability","Workforce and population growth","'Unite, not divide' moderate governance"],
-        differentiators: ["Governor since 2017; uncontested in the GOP primary","Cross-party appeal in a deep-blue state","Frequently vetoes Democratic-supermajority bills"],
-        supporters: ["Broad independent and crossover-Democratic support"],
-        opponents: ["Progressives who oppose his vetoes [Verify]"] },
-      { name: "Aly Richards (D contender)", party: "D", winner: false,
-        positions: ["Affordable childcare","Housing","Cost of living"],
-        differentiators: ["Former CEO of childcare-advocacy group Let's Grow Kids","Strong early fundraising","Aug 11 Democratic primary [Verify]"],
-        supporters: ["Led the campaign that passed Vermont's 2023 childcare law, proving she can deliver","A Shumlin-era deputy chief of staff who knows the statehouse and could govern immediately","Her economic action plan puts housing and health care affordability first"],
-        opponents: ["Janoo's camp casts her as establishment thinking when Vermont needs bigger change","A first-time candidate who has never held elected office herself","UNH polling shows Phil Scott beating either Democrat by double digits"] },
-      { name: "Amanda Janoo (D contender)", party: "D", winner: false,
-        positions: ["Expand affordable housing","Protect small and rural schools","Health care for all [Verify]"],
-        differentiators: ["Economist from Burlington; first statewide run","Runs on a progressive-economics platform","Aug 11 Democratic primary [Verify]"],
-        supporters: ["An economist arguing Vermont must do more than tinker at the edges","Would fund free primary care with a surcharge on incomes above $500,000","Draws progressive Democrats looking for a break from conventional economic thinking"],
-        opponents: ["Richards's camp says she aims at national targets better suited to a presidential race","Raised less than her primary rival and has never held elected office","Polling shows most Democratic voters do not yet know either candidate well"] }
+        differentiators: ["Governor since 2017; renominated unopposed on Aug 11 with 98.3% of the Republican primary vote","Cross-party appeal in a deep-blue state","Frequently vetoes Democratic-supermajority bills"],
+        supporters: ["Broad independent and crossover-Democratic support","Repeatedly ranked by Morning Consult among the nation's most popular governors","Won re-election in 2024 with roughly 71% of the vote"],
+        opponents: ["Progressives who oppose his vetoes [Verify]","Democrats argue five terms of moderation have not solved housing or health-care costs [Verify — structural argument]","Faces the sharpest ideological contrast of his career now that the party picked its progressive option"] },
+      { name: "Amanda Janoo", party: "D", winner: false,
+        positions: ["State-funded universal primary and preventive care with no copays or deductibles, paying providers directly rather than through insurers","Reclassify property tax to shield primary residences while taxing luxury second homes, commercial vacation rentals and vacant investment property","Higher rates on the wealthiest Vermonters, plus new taxes on digital advertising and data monetization, to pay for it"],
+        differentiators: ["Economist; won the Aug 11 Democratic primary 49.11%–46.56% in her first run for any office","An unusually tech-forward platform: a moratorium on AI data centers, a 'Digital Bill of Rights' and a ban on Flock surveillance cameras","Would turn community schools into hubs for health care, child care and food access rather than consolidating them"],
+        supporters: ["Assembled an unusual coalition — the Vermont Progressive Party, labor unions, and former Govs. Howard Dean and Peter Shumlin","Both campaigns cited a UNH poll showing Scott's lead smaller than the undecided share, which her backers read as room for a sharp-contrast candidate","Ran as the movement candidate and beat the better-funded establishment favorite"],
+        opponents: ["A first-time candidate who was virtually unknown before entering the race this spring","Critics call the tax program and the AI data-center moratorium economically risky for a small state [Verify]","Scott won 2024 by roughly fifty points; analysts describe her path as steeply uphill"] }
     ]
   },
   {
@@ -736,23 +737,18 @@ const STATEWIDE = [
     type: "upcoming",
     scope: "State · Statewide",
     office: "Lieutenant Governor of Vermont",
-    note: "John Rodgers (R), elected 2024, seeks a second two-year term and is uncontested in the GOP primary. A crowded Democratic primary decides his challenger; former Lt. Gov. Molly Gray led early polling. ⚠ A THIRD Democrat, Ryan McLaren — a former senior adviser to Sen. Peter Welch, endorsed by Welch and David Zuckerman — is on the Aug 11 ballot and is reportedly the field's TOP fundraiser; he is not yet carded below [Verify against the Vermont Secretary of State]. Public polling shows Gray competitive with Rodgers, so this is Vermont's most competitive statewide race. [Verify — primary Aug 11].",
+    note: "✅ THE FIELD IS SET. John Rodgers (R), elected 2024, was renominated unopposed and seeks a second two-year term. Former Lt. Gov. MOLLY GRAY won the three-way Democratic primary on Aug 11 with 60.71%, over Ryan McLaren (27.63%) and Esther Charlestin (10.93%). Public polling had shown Gray competitive with Rodgers, so this is Vermont's most competitive statewide race. ⚠ Figures are UNOFFICIAL — 242 of 247 towns reporting; the statewide canvass certifies Aug 18. ⚠ A Freedom and Unity Party candidate, Charlie Bass, is also reported on the November ballot but could not be confirmed against the certified list, so he is not carded [Verify]. Source: Vermont Secretary of State results feed.",
     candidates: [
       { name: "John Rodgers (incumbent)", party: "R", winner: false,
         positions: ["Build Vermont's workforce","Affordability","Opportunity for the next generation"],
-        differentiators: ["Rural conservative; former Democrat turned Republican","One of only two Republicans to win statewide (with Scott)","Uncontested GOP primary"],
+        differentiators: ["Rural conservative; former Democrat turned Republican","One of only two Republicans to win statewide (with Scott)","Renominated unopposed on Aug 11 with 97.1% of the Republican primary vote"],
         supporters: ["A Northeast Kingdom farmer whose rural, gun-rights record draws crossover votes Republicans rarely win","Backed by Gov. Phil Scott and former Gov. Jim Douglas as a moderate partner","A longtime Democrat who said he would not vote for Trump in 2024"],
         opponents: ["Won 2024 with only a plurality — the legislature had to seat him","A leading opponent of Vermont's S.55 gun law, a stance most Democrats reject","Democrats see a favorable national climate and their best statewide pickup in years"] },
-      { name: "Molly Gray (D contender)", party: "D", winner: false,
-        positions: ["[Verify]","",""],
-        differentiators: ["Former Lieutenant Governor (2021–2023)","Early Democratic polling leader","Aug 11 Democratic primary"],
-        supporters: ["Already held the office and leads the primary field in fundraising and polling","Endorsed by former Govs. Dean and Kunin and Senate leader Phil Baruth","A human-rights attorney who resettled Afghan allies and would resist federal overreach"],
-        opponents: ["Left the lieutenant governorship after one term to run for Congress, and lost","Critics read that 2022 move as ambition ahead of finishing the job","Republicans will target her income surcharge and higher second-home tax proposals"] },
-      { name: "Esther Charlestin (D contender)", party: "D", winner: false,
-        positions: ["[Verify]","",""],
-        differentiators: ["Chair, VT Commission on Women; 2024 gubernatorial nominee","Aug 11 Democratic primary","[Verify]"],
-        supporters: ["Endorsed by Rights and Democracy Vermont and Moms Demand Action","The first Black Democrat to run statewide in Vermont; centers listening and consensus","A former Middlebury selectboard member focused on affordability and health costs"],
-        opponents: ["Lost the 2024 governor's race to Phil Scott by more than fifty points","Trails badly in both fundraising and polling in a three-way primary","Some voters say her pitch stays at talking points without specifics"] }
+      { name: "Molly Gray", party: "D", winner: false,
+        positions: ["Back the Legislature on building more housing, lowering costs and strengthening public schools","Bring hospital costs down as the lever on insurance premiums, education spending and property taxes","Support immigrants and new Americans against increasingly restrictive federal humanitarian-entrant policy"],
+        differentiators: ["Held this exact office 2021–2023 and is seeking to reclaim it","Won the Aug 11 Democratic primary with 60.71% over two credible opponents","Explicitly wants to expand a largely ceremonial office that mainly presides over the Senate and breaks ties"],
+        supporters: ["Already held the office and can be effective from day one","Endorsed by former Govs. Dean and Kunin and Senate leader Phil Baruth","A human-rights attorney who led the Vermont Afghan Alliance and would resist federal overreach"],
+        opponents: ["Left the lieutenant governorship after one term to run for Congress, and lost","McLaren argued in the primary that both rivals were falling back on this office after failing at higher office, and disputed her share of credit for the Afghan Alliance's driving program","Republicans will target her income surcharge and higher second-home tax proposals"] }
     ]
   },
   {
@@ -760,27 +756,65 @@ const STATEWIDE = [
     type: "upcoming",
     scope: "State · Statewide",
     office: "Auditor of Accounts of Vermont (open seat)",
-    note: "OPEN SEAT — Doug Hoffer (D), auditor since 2013, is retiring. A Democratic primary (Deputy Auditor Tim Ashe, Hoffer-endorsed, vs. Nick Graeter) decides the nominee. ⚠ TWO CORRECTIONS PENDING: a third Democrat, Dan Towle, ENDED his campaign but remains on the Aug 11 ballot; and the Republican line is disputed — VTDigger's and Seven Days' candidate lists show H. Brooke Paige running unopposed for this office (and for AG, Secretary of State and Treasurer), NOT Joshua Bechhoefer as carded below. Paige has a history of winning nominations and then withdrawing. [Verify both against the Vermont Secretary of State's filing list — it was not reachable this pass.] [Verify — primary Aug 11].",
+    note: "OPEN SEAT — Doug Hoffer (D), auditor since 2013, is retiring. ✅ Deputy Auditor TIM ASHE won the Democratic primary on Aug 11 with 74.89%, over Nick Graeter (12.55%) and Dan Towle (12.00%) — Towle had ENDED his campaign but stayed on the ballot and still finished within 387 votes of the actively campaigning Graeter. ⚠ CORRECTION MADE AUG 12: this page previously carded Joshua Bechhoefer as the Republican nominee. He appears nowhere in the Secretary of State's official results feed for any office; the actual Republican nominee is H. BROOKE PAIGE, who was unopposed. ⚠⚠ BUT THIS LINE IS LIKELY TO CHANGE: Paige, a longtime perennial candidate, deliberately files across offices the state GOP struggles to fill so that Democrats cannot capture Republican nominations by write-in — he won the Republican nomination for Auditor, Attorney General, Secretary of State AND Treasurer on the same night — and he has said publicly he will WITHDRAW from all of them except Secretary of State. Vermont's withdrawal window closes 5 p.m. Friday, AUG 21, 2026 (17 V.S.A. § 2412), after which the Republican State Committee would name a replacement. Treat the Republican line here as provisional until after Aug 21 [Verify]. ⚠ Figures are UNOFFICIAL — 242 of 247 towns reporting; canvass Aug 18. Sources: Vermont Secretary of State results feed; Vermont Public.",
     candidates: [
-      { name: "Tim Ashe (D contender)", party: "D", winner: false,
-        positions: ["Continue the auditor's independent watchdog role [Verify]","",""],
-        differentiators: ["Deputy State Auditor; former Senate President Pro Tempore","Endorsed by retiring auditor Doug Hoffer","Aug 11 Democratic primary"],
-        supporters: ["Deputy auditor for five years, endorsed by retiring Auditor Doug Hoffer [Verify]","Twelve years in the Vermont Senate, including president pro tempore","Also endorsed by the Vermont Progressive Party; would target premiums and property taxes"],
-        opponents: ["Graeter argues the office's audits fail to actually reach Vermonters","Ran and lost a statewide race for lieutenant governor in 2020","Deep Montpelier ties invite the charge he would audit former colleagues [Verify]"] },
-      { name: "Nick Graeter (D contender)", party: "D", winner: false,
-        positions: ["[Verify]","",""],
-        differentiators: ["Williston business owner","Aug 11 Democratic primary","[Verify]"],
-        supporters: ["An accounting specialist promising narrow, focused audits over sprawling reviews","Would use social media and Front Porch Forum so audits reach Vermonters","Proposes first audits of the School Safety Center and Corrections overtime"],
-        opponents: ["Has raised only a few hundred dollars and rejects conventional fundraising","A first-time candidate with no government audit experience against a sitting deputy auditor","A digital-outreach pitch may not offset an opponent the retiring auditor endorsed"] },
-      { name: "Joshua Bechhoefer (R)", party: "R", winner: false,
-        positions: ["[Verify]","",""],
-        differentiators: ["Republican nominee for auditor","[Verify]",""],
-        supporters: ["A credit analyst with an economics degree — the financial background the office demands","Ran statewide for treasurer in 2024, so voters have seen his fiscal pitch [Verify]"],
-        opponents: ["⚠ His ballot status is in doubt: VTDigger's and Seven Days' candidate lists show H. Brooke Paige, not Bechhoefer, as the only Republican on the auditor ballot [Verify against the Vermont Secretary of State]","No 2026 campaign presence or platform located in Vermont press coverage [Verify]","Lost his 2024 statewide race to incumbent Treasurer Mike Pieciak"] }
+      { name: "Tim Ashe", party: "D", winner: false,
+        positions: ["Audit toward four named targets: lowering health-care premiums, cost-effective affordable housing, reducing high property taxes and revitalizing rural communities","Promote 'a culture of excellence in state government,' identifying weak management commitment from agency leaders as the biggest barrier to accountability","Continue the office's independent watchdog role"],
+        differentiators: ["Deputy State Auditor since 2021 under the retiring Hoffer; former Senate President Pro Tempore","Endorsed by retiring auditor Doug Hoffer and by the Vermont Progressive Party","Won the Aug 11 Democratic primary with 74.89%"],
+        supporters: ["Five years overseeing the state's comprehensive annual financial reports and supervising performance audits","Twelve years in the Vermont Senate, including president pro tempore","A 74.89% landslide reflects broad party consensus"],
+        opponents: ["Graeter's implicit critique was that audits nobody reads do not produce accountability, and that the office needs a communicator","Ran and lost a statewide race for lieutenant governor in 2020","As the sitting deputy he represents continuity in an office being vacated after 14 years, which limits fresh scrutiny [Verify — structural argument]"] },
+      { name: "H. Brooke Paige", party: "R", winner: false,
+        positions: ["[Verify] No substantive issue platform for Paige could be located in any Vermont reporting; his stated purpose in this race is procedural, not ideological","",""],
+        differentiators: ["Washington, VT newsstand owner and Vermont's most prolific perennial candidate","Won the Republican nomination for Auditor, Attorney General, Secretary of State AND Treasurer on Aug 11, unopposed in each; he took 96.63% of the Republican auditor primary","⚠ He has said he will WITHDRAW from Auditor, AG and Treasurer by the Aug 21 deadline and campaign only for Secretary of State"],
+        supporters: ["He files across offices specifically so Democrats cannot capture Republican nominations by write-in — he cites 2016, when no Republicans filed for several offices and crossover voters wrote in Democratic incumbents","Keeping a Republican line alive preserves a real two-party choice on the November ballot"],
+        opponents: ["He does not intend to run for this office and has said he will withdraw from it, so a vote for him in the primary elects nobody","No campaign platform for the auditor's office exists to evaluate [Verify]","Whoever the Republican State Committee names in his place will start after Aug 21 with barely two months to campaign [Verify — structural argument]"] }
     ]
   },
 
-  // PAST — recent statewide result for context
+  // PAST — the Aug 11, 2026 primary, then earlier statewide results for context
+  {
+    date: "Aug 11, 2026",
+    type: "past",
+    scope: "State · Statewide",
+    office: "Democratic Primary — Governor",
+    note: "The night's upset. Economist Amanda Janoo beat Aly Richards by 2,035 votes — Richards had led in fundraising and was widely treated as the presumptive nominee. Turnout statewide was 111,012 of 502,896 registered voters (22.07%), and roughly 87,400 of those were Democratic ballots. ⚠ UNOFFICIAL — 242 of 247 towns reporting; canvass Aug 18.",
+    candidates: [
+      { name: "Amanda Janoo", party: "D", winner: true,
+        positions: [], differentiators: ["49.11% — 39,151 votes"], supporters: [], opponents: [] },
+      { name: "Aly Richards", party: "D", winner: false,
+        positions: [], differentiators: ["46.56% — 37,116 votes"], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Aug 11, 2026",
+    type: "past",
+    scope: "State · Statewide",
+    office: "Democratic Primary — Lieutenant Governor",
+    note: "Former Lt. Gov. Molly Gray took the nomination outright in a three-way field. ⚠ Ryan McLaren — a former senior adviser to Sen. Peter Welch and previously the DMV's second-in-command, who uses a wheelchair after a 2017 ski accident and campaigned on turning the office into a 'public advocate' role — was effectively tied with Gray as the field's top fundraiser, each above $275,000, against roughly $35,000 for Charlestin. He is recorded here because this page had flagged him as missing. ⚠ UNOFFICIAL — 242 of 247 towns reporting.",
+    candidates: [
+      { name: "Molly Gray", party: "D", winner: true,
+        positions: [], differentiators: ["60.71% — 50,238 votes"], supporters: [], opponents: [] },
+      { name: "Ryan McLaren", party: "D", winner: false,
+        positions: [], differentiators: ["27.63% — 22,863 votes"], supporters: [], opponents: [] },
+      { name: "Esther Charlestin", party: "D", winner: false,
+        positions: [], differentiators: ["10.93% — 9,041 votes; the 2024 Democratic nominee for governor"], supporters: [], opponents: [] }
+    ]
+  },
+  {
+    date: "Aug 11, 2026",
+    type: "past",
+    scope: "State · Statewide",
+    office: "Democratic Primary — Auditor of Accounts",
+    note: "⚠ A zombie-candidate result worth noticing: Dan Towle ENDED his campaign but remained on the ballot, and still finished within 387 votes of Nick Graeter, who was actively campaigning. ⚠ UNOFFICIAL — 242 of 247 towns reporting.",
+    candidates: [
+      { name: "Tim Ashe", party: "D", winner: true,
+        positions: [], differentiators: ["74.89% — 52,500 votes"], supporters: [], opponents: [] },
+      { name: "Nicholas Graeter", party: "D", winner: false,
+        positions: [], differentiators: ["12.55% — 8,799 votes"], supporters: [], opponents: [] },
+      { name: "Dan Towle", party: "D", winner: false,
+        positions: [], differentiators: ["12.00% — 8,412 votes, after ending his campaign but staying on the ballot"], supporters: [], opponents: [] }
+    ]
+  },
   {
     date: "Nov 5, 2024",
     type: "past",
@@ -808,18 +842,18 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "Becca Balint (D) announced re-election May 7, 2026. Cook rates the seat Solid Democratic; Vermont's at-large seat hasn't elected a Republican since 1988. ⚠ The Republican nomination is CONTESTED and Mark Coester is NOT the presumptive nominee: Gerald Malloy — a retired Army officer and the party's 2022 and 2024 U.S. Senate nominee — is also on the Aug 11 ballot and reportedly LEADS Coester in Republican primary polling. Malloy is not yet carded below [Verify against the Vermont Secretary of State]. [Verify — primary Aug 11].",
+        note: "✅ THE FIELD IS SET. Becca Balint (D) was renominated unopposed on Aug 11 with 98.3%. ⚠ THE PAGE'S EARLIER CAUTION PROVED RIGHT: Mark Coester was NOT the presumptive Republican nominee — GERALD MALLOY beat him 76.49% to 21.79%, an 11,027-vote blowout, not the narrow race polling had suggested. Cook rates the seat Solid Democratic; Vermont's at-large seat has not elected a Republican since 1988. ⚠ Figures are UNOFFICIAL — 242 of 247 towns reporting; canvass Aug 18. ⚠ A Unity Party candidate, Andrew Giusto, is also reported on the November ballot but could not be confirmed against the certified list, so he is not carded [Verify]. Source: Vermont Secretary of State results feed.",
         candidates: [
           { name: "Becca Balint (incumbent)", party: "D", winner: false,
             positions: ["Reproductive rights","Affordability and health care","Opposition to the Trump agenda [Verify]"],
-            differentiators: ["First woman and first openly gay person to represent VT in Congress","First elected 2022; large fundraising edge","Faces a minor primary [Verify]"],
-            supporters: ["A strong progressive voice for Vermont"],
-            opponents: ["[Verify GOP attack lines]"] },
-          { name: "Mark Coester (R contender)", party: "R", winner: false,
-            positions: ["[Verify — thin public platform]","",""],
-            differentiators: ["Logger and maple producer; 2024 GOP nominee","Heavily outraised","Aug 11 GOP primary [Verify]"],
-            supporters: ["The 2024 Republican nominee, with statewide name recognition already built","A self-described constitutional conservative running as a business owner and sugar-maker","Argues Vermont Republicans deserve a persistent challenger rather than a walkover"],
-            opponents: ["Lost to Becca Balint by roughly thirty-three points in 2024","Declined to answer Seven Days' 2026 voter-guide questionnaire","⚠ Trails Gerald Malloy in Republican primary polling — he is NOT the presumptive nominee [Verify]"] }
+            differentiators: ["First woman and first openly gay person to represent VT in Congress","First elected 2022; large fundraising edge","Renominated unopposed on Aug 11 with 98.27% of the Democratic primary vote"],
+            supporters: ["A strong progressive voice for Vermont","Faced no primary opposition at all, in a state where the seat has been Democratic since 2007","Vermont has not sent a Republican to the U.S. House since 1988"],
+            opponents: ["Republicans argue a safe seat produces little accountability [Verify — structural argument]","Her opponent will press cost-of-living and energy prices, the same ground the governor's race is fought on [Verify]","[Verify — no specific sourced criticism of Balint was located this pass]"] },
+          { name: "Gerald Malloy", party: "R", winner: false,
+            positions: ["[Verify] No 2026 issue platform could be sourced — his campaign domain did not resolve and neither Ballotpedia nor Vermont outlets carry policy content for him","",""],
+            differentiators: ["Retired U.S. Army officer","Won the Aug 11 Republican primary 76.49%–21.79% over 2024 nominee Mark Coester","Vermont's 2022 Republican U.S. Senate nominee, and a 2024 candidate — the most-run Republican on the ballot"],
+            supporters: ["Consolidated the Republican primary vote decisively, taking more than three quarters of it","Brings statewide name recognition from two prior federal campaigns","Voters have seen him tested in a general election before [Verify]"],
+            opponents: ["Lost the 2022 U.S. Senate general to Peter Welch 28.03% to 68.47%","No published 2026 platform is available for voters to evaluate [Verify]","No Republican has won Vermont's at-large House seat since 1988"] }
         ]
       },
       {
@@ -840,7 +874,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Vermont Elections Hub", lastUpdated: "August 3, 2026" };
+const SITE_META = { name: "Vermont Elections Hub", lastUpdated: "August 12, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Vermont county-level down-ballot research is the next phase.)

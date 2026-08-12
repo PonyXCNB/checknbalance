@@ -700,10 +700,19 @@ const COUNTIES = {
 };
 
 // ----- (2) Statewide elections every county votes in -----
-// NOTE: Connecticut's 2026 state primary is Aug 11, 2026. Contested-primary nominees
-// are NOT final until then — those fields are marked [Verify — primary Aug 11]. CT has
-// NO U.S. Senate race in 2026 (Blumenthal up 2028; Murphy up 2030). The six statewide
-// constitutional offices below are all up (4-year terms, last elected 2022).
+// NOTE: Connecticut's 2026 state primary WAS HELD Aug 11, 2026, and this page is refreshed
+// off the Secretary of the State's own election-night results feed. Figures are UNOFFICIAL
+// pending the statutory canvass. Only 17 contested primaries appeared statewide: the
+// Democratic primary for GOVERNOR, and congressional primaries in CT-1 (D), CT-4 (R) and
+// CT-5 (R). Every statewide constitutional-office primary other than governor was cancelled
+// as uncontested, so those nominees were already set. CT has NO U.S. Senate race in 2026
+// (Blumenthal up 2028; Murphy up 2030). The six statewide constitutional offices below are
+// all up (4-year terms, last elected 2022).
+// ⚠ ONE PATH REMAINS OPEN for the November field to change: qualified MINOR parties may
+// certify nominees until 4 p.m. Sept 2, 2026. Unaffiliated petitioning closed before the
+// primary (petitions were due to the Secretary of the State July 29 and to town clerks
+// Aug 5) [Verify — those two dates come from the SoS election-calendar PDF, which would
+// not parse directly].
 const STATEWIDE = [
   // UPCOMING — 2026 General Election (Nov 3, 2026)
   {
@@ -711,23 +720,18 @@ const STATEWIDE = [
     type: "upcoming",
     scope: "State · Statewide",
     office: "Governor of Connecticut",
-    note: "Ned Lamont (D) seeks a rare third consecutive term. State Sen. Ryan Fazio is the settled Republican nominee (won ~92% at the May convention). Progressive Rep. Josh Elliott forced an Aug 11 Democratic primary but trails Lamont badly. Rated Solid Democratic. [Verify — primary Aug 11].",
+    note: "✅ THE FIELD IS SET. Ned Lamont (D) beat state Rep. Josh Elliott 67.91%–32.09% on Aug 11 — a 64,126-vote margin and the first primary challenge to a sitting Connecticut governor in about fifty years. He now seeks a rare third consecutive term against state Sen. Ryan Fazio, the settled Republican nominee since the May convention (~92%). Rated Solid Democratic. ⚠ UNOFFICIAL — 740 of 760 precincts reporting; the statutory canvass is pending. AP called the race about twenty minutes after polls closed and Elliott conceded. Source: CT Secretary of the State results portal; CT Mirror.",
     candidates: [
       { name: "Ned Lamont (incumbent)", party: "D", winner: false,
         positions: ["Fiscal-moderate budgeting and statutory 'fiscal guardrails'","Protect and expand abortion access","Affordability and childcare investment"],
-        differentiators: ["Governor since 2019; seeking a rare third term","Former Greenwich entrepreneur; largely self-funds","Running mate: Lt. Gov. Susan Bysiewicz"],
-        supporters: ["Record budget surpluses and high approval"],
-        opponents: ["A third term breaks tradition; cost of living still high [Verify]"] },
-      { name: "Josh Elliott (D contender)", party: "D", winner: false,
-        positions: ["Reinstate highway tolls to fund transit","Higher taxes on the wealthy","Stronger climate and housing investment"],
-        differentiators: ["State Representative (Hamden); runs to Lamont's left","Cleared 15% at the Democratic convention","Trails badly in polling"],
-        supporters: ["A bolder progressive alternative [Verify]"],
-        opponents: ["Tolls and tax hikes are non-starters statewide [Verify]"] },
+        differentiators: ["Governor since 2019; seeking a rare third term","Former Greenwich entrepreneur; largely self-funds","Won the Aug 11 Democratic primary 67.91%–32.09%, better than two-to-one"],
+        supporters: ["Record budget surpluses and high approval","A better-than-two-to-one primary win reads as a mandate","Fiscal steadiness and the state's 'guardrails' budget framework are working, his backers argue"],
+        opponents: ["A third term breaks tradition; cost of living is still high [Verify]","Elliott ran to his left, arguing he has been too cautious and that the wealthiest residents should pay more","Republicans will fight on energy bills, where Connecticut rates are among the nation's highest [Verify]"] },
       { name: "Ryan Fazio (R)", party: "R", winner: false,
         positions: ["Cut the utility 'public benefits' surcharge; lower energy costs","Income-tax cuts and property-tax caps","Expand natural-gas and nuclear supply"],
-        differentiators: ["State Senator from Greenwich (won a 2021 special)","Former commodities trader; settled GOP nominee","Running mate: Matthew Corey"],
-        supporters: ["A young reformer focused on affordability and energy bills"],
-        opponents: ["Too conservative for blue Connecticut [Verify]"] }
+        differentiators: ["State Senator from Greenwich (won a 2021 special)","Former commodities trader; settled as GOP nominee at the May convention with about 92%","Running mate: Matthew Corey"],
+        supporters: ["A young reformer focused on affordability and energy bills","Nominated without a primary, so he has campaigned all summer while Democrats fought","Energy costs are the one issue where Connecticut Republicans have traction [Verify]"],
+        opponents: ["Too conservative for blue Connecticut [Verify]","Faces an incumbent who just won his own primary by 36 points","No Republican has won a Connecticut governor's race since 2006"] }
     ]
   },
   {
@@ -854,33 +858,32 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "14-term incumbent John Larson (D) faces the first contested primary of his career: he LOST the party endorsement at the May 2026 convention to former Hartford Mayor Luke Bronin (214–204). ⚠ FOUR Democrats are on today's ballot per the Secretary of the State's official sample ballot — Bronin (endorsed), Ruth Fortune, Gilchrest and Larson. Safe Democratic seat, so the Aug 11 primary IS the contest. Results tonight. [Verify — primary Aug 11].",
+        note: "⚠⚠ THE UPSET OF CONNECTICUT'S 2026 PRIMARY: 14-term incumbent JOHN LARSON WAS DEFEATED. Former Hartford Mayor Luke Bronin — who had already taken the party endorsement from Larson at the May convention, 214–204 — beat him on Aug 11 by 54.39% to 32.69%, an 11,347-vote, 21.7-point margin, with Jillian Gilchrest at 8.17% and Ruth Fortune at 4.75%. Larson conceded: \"The people of this district have spoken, and it's time for us to come together.\" Bronin called it \"a political earthquake in Connecticut.\" This is a Safe Democratic seat, so the Aug 11 primary WAS the contest; Bronin now faces Republican Amy Chai, who was nominated unanimously in May without a primary. Connecticut's automatic recanvass threshold (0.5% or 20 votes) was nowhere near triggered. ⚠ Figures are UNOFFICIAL — 134 of 135 precincts; the statutory canvass is pending. CT Public reported more than $2 million in outside advertising in this race [Verify — no per-committee breakdown was available]. Sources: CT Secretary of the State results portal; CT Mirror; Roll Call.",
         candidates: [
-          { name: "John Larson (incumbent)", party: "D", winner: false,
-            positions: ["Protect and expand Social Security (Social Security 2100)","Opposition to the Trump agenda","Seniority on Ways & Means"],
-            differentiators: ["14-term incumbent (since 1998)","Lost the 2026 convention endorsement (204–214)","First contested primary of his career"],
-            supporters: ["Seniority delivers for Hartford"],
-            opponents: ["Time for generational change (age 77) [Verify]"] },
-          { name: "Luke Bronin (D contender)", party: "D", winner: false,
-            positions: ["Expanded federal role in housing","Cost-of-living focus","Democratic effectiveness and reform"],
-            differentiators: ["Former Hartford mayor (2016–2024)","Won the convention endorsement; well-funded","~$1M outside boost from VoteVets [Verify]"],
-            supporters: ["Won the party convention endorsement, arguing it is time to pass the torch","Credited with stabilizing Hartford's finances during the city's fiscal crisis","Backers say new energy is needed to confront Trump and rebuild the party"],
-            opponents: ["Larson graded his Hartford mayoral record a C-minus, citing union concessions","Rivals say billionaire and data-center-linked donors are bankrolling his campaign","Labor allies question his record with city unions and the building trades"] },
-          { name: "Jillian Gilchrest (D contender)", party: "D", winner: false,
-            positions: ["Get corporate and billionaire money out of politics","Progressive social agenda","[Verify]"],
-            differentiators: ["State representative (West Hartford) since 2018","Social worker; qualified at the convention","Aug 11 Democratic primary"],
-            supporters: ["A four-term state representative and social worker centering campaign finance reform","Argues no other priority advances until money is removed from politics","Backed by Indivisible Connecticut and the national social workers' political committee"],
-            opponents: ["Raised a small fraction of what Bronin and Larson have raised","Polled in single digits behind both leading candidates in spring surveys","Critics say her Gaza and military-budget positions sit left of the district [Verify]"] },
-          { name: "Ruth Fortune (D contender)", party: "D", winner: false,
-            positions: ["[Verify — platform detail thin in available coverage]"],
-            differentiators: ["Hartford Board of Education member","Took part in both televised CT-1 debates; raised about $107K","Polled around 4% in the May survey"],
-            supporters: ["Took part in both televised debates as the fourth candidate on the ballot","Frames the race as David against Goliath given the money gap"],
-            opponents: ["Trails the two leading candidates badly in money and polling","Little name recognition outside Hartford [Verify]"] },
+          { name: "Luke Bronin", party: "D", winner: false,
+            positions: ["Affordability as the organizing frame — health care, housing and child-care costs","Federal protections for abortion access, and passage of the Equality Act","Renewable energy, infrastructure, and addressing the risks and opportunities of AI"],
+            differentiators: ["Former Mayor of Hartford (2016–2024); ran the city through its fiscal crisis","Beat a 14-term incumbent 54.39%–32.69% after also taking the convention endorsement 214–204","Ran on generational change: \"Part of leadership is knowing when to pass the torch\""],
+            supporters: ["Argues Congress needs new energy and a more confrontational posture toward Trump, whom he has called \"a conman and a criminal\"","Executive and municipal experience rather than a legislative career","Won on cost-of-living messaging, and declined to attack Larson personally — \"We don't need to tear a fellow Democrat down to say that we as a party can do better\""],
+            opponents: ["Larson's allies argued seniority delivers — his Ways and Means seat and the Social Security 2100 Act — and that a freshman lands in \"the broom closet\"","Union leaders aligned with Larson argued he favored developers over project-labor agreements as mayor","Larson questioned his commitment, noting he previously left Hartford to run for governor"] },
           { name: "Amy Chai (R)", party: "R", winner: false,
             positions: ["[Verify — a first-time candidate with thin published platform]","",""],
             differentiators: ["A physician from Prospect; nominated UNANIMOUSLY at the May convention","No Republican primary is being held here — she is already the nominee","Campaigns on affordability and national unity [Verify]"],
             supporters: ["Republicans unified behind her without a primary, so she can campaign all summer","Offers a doctor and first-time candidate rather than a career politician [Verify]"],
-            opponents: ["Every major forecaster rates this seat Safe Democratic","Faces a heavy fundraising gap against whoever wins the Democratic primary [Verify]","Democrats have held CT-1 for decades"] }
+            opponents: ["Every major forecaster rates this seat Safe Democratic","Faces a heavy fundraising gap against Bronin [Verify]","Democrats have held CT-1 for decades"] }
+        ]
+      },
+      {
+        date: "Aug 11, 2026", type: "past",
+        note: "The result that ended a 28-year congressional career. Larson had never faced a contested primary before this one. ⚠ UNOFFICIAL — 134 of 135 precincts reporting; 52,294 votes cast.",
+        candidates: [
+          { name: "Luke Bronin", party: "D", winner: true,
+            positions: [], differentiators: ["54.39% — 28,441 votes"], supporters: [], opponents: [] },
+          { name: "John Larson (incumbent)", party: "D", winner: false,
+            positions: [], differentiators: ["32.69% — 17,094 votes. Elected in 1998; served 14 terms and sat on Ways and Means, where he authored the Social Security 2100 Act"], supporters: [], opponents: [] },
+          { name: "Jillian Gilchrest", party: "D", winner: false,
+            positions: [], differentiators: ["8.17% — 4,273 votes. State representative for West Hartford since 2018"], supporters: [], opponents: [] },
+          { name: "Ruth Fortune", party: "D", winner: false,
+            positions: [], differentiators: ["4.75% — 2,486 votes. Hartford Board of Education member; took part in both televised debates"], supporters: [], opponents: [] }
         ]
       },
       {
@@ -977,18 +980,18 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "9-term incumbent Jim Himes (D) is running for re-election. Once a swing seat, it has trended Solid Democratic. The GOP nominee is decided at the Aug 11 primary. [Verify — primary Aug 11].",
+        note: "✅ THE FIELD IS SET. 9-term incumbent Jim Himes (D) is running for re-election and had no primary. Greenwich ophthalmologist and health-law attorney Michael Goldstein won the Republican primary on Aug 11 with 74.24%, all 132 precincts reporting — his fourth run for this seat. Once a swing seat, CT-4 has trended Solid Democratic. ⚠ Figures are UNOFFICIAL pending the canvass.",
         candidates: [
           { name: "Jim Himes (incumbent)", party: "D", winner: false,
             positions: ["Financial-services regulation and economic policy","Reproductive rights","Gun-safety legislation"],
             differentiators: ["In office since 2009; ranking member, House Intelligence","Senior House Financial Services member","Former Goldman Sachs banker"],
             supporters: ["Experienced, well-funded, deep policy record"],
             opponents: ["Too long in Washington [Verify]"] },
-          { name: "[Republican nominee — decided Aug 11 primary]", party: "R", winner: false,
-            positions: ["[Verify — thin field]","",""],
-            differentiators: ["A genuinely contested Aug 11 primary — the nominee is NOT yet settled","Party-endorsed Michael Goldstein, a Greenwich physician and attorney, leads the field","Daniel Miressi is the other contender"],
-            supporters: ["A contested primary gives the eventual nominee earned visibility before November [Verify]","Goldstein brings a physician-and-attorney profile to a wealthy suburban district"],
-            opponents: ["Both contenders have raised very little against Jim Himes's multimillion-dollar war chest","Every major forecaster rates the seat Safe Democratic","Himes has held this Democratic-leaning district since 2009"] }
+          { name: "Michael Goldstein", party: "R", winner: false,
+            positions: ["Opposes Medicare for All, favouring market competition and consumer choice in health insurance","Energy costs and I-95 congestion","Expand trade schools, and require universities to disclose graduate employment outcomes and salary ranges"],
+            differentiators: ["An ophthalmologist and health-law attorney from Greenwich (M.D. SUNY Downstate, J.D. Pace)","Won the Aug 11 Republican primary 74.24%–25.76% over Daniel Miressi, with all 132 precincts reporting","His FOURTH run for this seat — he was also the nominee in 2020, 2022 and 2024"],
+            supporters: ["Dual medical and legal credentials give him a substantive voice on health policy","Runs as a management-and-substance candidate rather than a movement one","Took three quarters of the primary vote as the party-endorsed candidate"],
+            opponents: ["Primary opponent Miressi argued he is out of touch with younger voters' affordability concerns despite his experience","Three prior unsuccessful runs for the same seat — he lost to Himes ~61%–37% in 2024","Every major forecaster rates the seat Safe Democratic, and Himes has held it since 2009"] }
         ]
       },
       {
@@ -1013,18 +1016,18 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "Jahana Hayes (D), first elected 2018, seeks a fifth term in CT's most competitive House seat. Her 2022/2024 opponent George Logan (R) is NOT running in 2026. GOP and Democratic-primary nominees are decided Aug 11. Rated Likely Democratic [Verify exact rating]. [Verify — primary Aug 11].",
+        note: "✅ THE FIELD IS SET. Jahana Hayes (D), first elected 2018, seeks a fifth term in CT's most competitive House seat, and had no primary. Retired Navy SEAL and North Haven firefighter CHRIS SHEA won the Republican primary on Aug 11 with 80.47% over Jonathan De Barros. ⚠ Her 2022 and 2024 opponent George Logan (R) is NOT running in 2026. Rated Likely Democratic [Verify exact rating]. ⚠ UNOFFICIAL — 144 of 162 precincts reporting, though a 60.9-point margin puts the outcome beyond doubt.",
         candidates: [
           { name: "Jahana Hayes (incumbent)", party: "D", winner: false,
             positions: ["Education and workforce","Agriculture and food assistance","Reproductive rights"],
-            differentiators: ["2016 National Teacher of the Year; former history teacher","First Black woman to represent CT in Congress","Faces a minor Democratic primary [Verify]"],
-            supporters: ["A proven vote-getter who has survived tough races"],
-            opponents: ["Repeatedly narrow winners suggest vulnerability [Verify]"] },
-          { name: "[Republican nominee — decided Aug 11 primary]", party: "R", winner: false,
-            positions: ["[Verify — thin field]","",""],
-            differentiators: ["A genuinely contested Aug 11 primary between Chris Shea and Jonathan De Barros","Shea, a firefighter and retired Navy SEAL, won the convention and carries national conservative endorsements","CT-5 is Connecticut's most competitive seat"],
-            supporters: ["The most competitive Connecticut seat — one forecaster rates it only Likely Democratic","Shea's firefighter and Navy SEAL background gives the party a strong-profile nominee"],
-            opponents: ["The primary has turned personal, including a defamation suit between Republican camps","Jahana Hayes holds a large fundraising lead over both contenders","Most forecasters still rate the seat Safe Democratic"] }
+            differentiators: ["2016 National Teacher of the Year; former history teacher","First Black woman to represent CT in Congress","Renominated without a primary"],
+            supporters: ["A proven vote-getter who has survived tough races","Her 2022 and 2024 opponent, George Logan, is not running again","Holds a large fundraising lead over her new opponent [Verify]"],
+            opponents: ["Repeatedly narrow wins suggest vulnerability — she survived 2022 by about 2,000 votes","Republicans nominated a strong-profile veteran and first responder rather than a third Logan run","Energy and grocery costs are the ground her opponent intends to fight on"] },
+          { name: "Chris Shea", party: "R", winner: false,
+            positions: ["Energy costs — supports extending the Pennsylvania natural-gas pipeline into New England","Taxes — supports the Trump-era tax law, citing specifically the SALT deduction and overtime treatment for police and firefighters","A platform of \"service, accountability, and common-sense leadership,\" restoring \"stability, affordability, and accountability\""],
+            differentiators: ["Retired U.S. Navy SEAL with 30+ years of service, and a North Haven firefighter, from Cheshire","Founder of Hero to Hero, a nonprofit steering veterans into first-responder careers","Won the May convention endorsement and then the Aug 11 primary with 80.47%"],
+            supporters: ["A service-first biography that signals accountability over partisanship","Energy and tax relief are the right affordability levers for the 5th District","Consolidated the party early — convention endorsement, then four fifths of the primary vote"],
+            opponents: ["Primary opponent De Barros accused him of distancing himself from Trump while still running on Trump's policy framework","Hayes has held the seat for four terms and leads him heavily in fundraising","Most forecasters still rate the seat Safe Democratic"] }
         ]
       },
       {
@@ -1045,7 +1048,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Connecticut Elections Hub", lastUpdated: "August 11, 2026" };
+const SITE_META = { name: "Connecticut Elections Hub", lastUpdated: "August 12, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Connecticut county-level down-ballot research is the next phase.)

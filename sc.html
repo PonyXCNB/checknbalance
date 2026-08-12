@@ -709,30 +709,30 @@ const STATEWIDE = [
     type: "upcoming",
     scope: "Federal · Statewide",
     office: "U.S. Senate — South Carolina",
-    note: "⚠ SEN. LINDSEY GRAHAM DIED ON JULY 11, 2026 of cardiac arrest, a month after winning the June 9 Republican primary with 56.8%. Gov. Henry McMaster appointed Graham's sister, DARLINE GRAHAM, on July 13 (sworn in July 14 — the first woman to represent South Carolina in the Senate); she serves only until Jan 3, 2027. Because the nominee died, Republicans pick a new one at a SPECIAL PRIMARY on Aug 11, 2026 (filing ran July 21–28; runoff Aug 25 if no one clears 50%), so the Republican candidate is NOT yet known. Ten names are on that ballot, including the appointed senator herself, U.S. Reps. Russell Fry and Ralph Norman, and former Gov. Mark Sanford. ⚠ One line was settled in court: the state GOP decertified Danny Lee Ford II under a new party rule on voting history, a Richland County judge ordered him restored on Aug 4 as \"arbitrary and capricious,\" and the SC Supreme Court denied the party's stay on Aug 5 — after early voting had already begun. Annie Andrews remains the Democratic nominee (61.5% on June 9). ⚠ POLLING POINTS TO A RUNOFF — no candidate is near 50%: Emerson College (July 28–29) had Norman 22, Darline Graham 19, Fry 12, Sanford 11 with about a quarter undecided; Trafalgar (released about Aug 7) had Graham 27, Norman 17, Fry 17; a co/efficient poll (July 31) had Graham at 30 but trailing Fry in a head-to-head runoff test. Read the trend, not the numbers: Fry and Norman have been gaining on Graham [Verify — sponsors and methods vary, and one of the four is an internal survey of party activists rather than of voters]. Sources: Office of Gov. McMaster July 13 announcement; SC Daily Gazette; Post and Courier; WMBF; League of Women Voters of SC; Emerson College Polling.",
+    note: "⚠ SEN. LINDSEY GRAHAM DIED ON JULY 11, 2026, a month after winning the June 9 Republican primary with 56.8%. Gov. Henry McMaster appointed Graham's sister, DARLINE GRAHAM-NORDONE, on July 13 (sworn in July 14 — the first woman to represent South Carolina in the Senate); she serves the remainder of his term, through Jan 3, 2027. ⚠ THERE IS NO SPECIAL GENERAL ELECTION — the appointment covers the unexpired term, so the only Senate contest on the Nov 3 ballot is the ORDINARY 2026 election for a full six-year term (Jan 2027–Jan 2033). What Aug 11 decided was only who replaces Graham as the Republican NOMINEE on that ballot. ⚠ NOBODY CLEARED 50% on Aug 11, so the Republican nominee is STILL NOT KNOWN: Graham-Nordone (32.7%) and U.S. Rep. Ralph Norman (24.6%) go to an AUG 25, 2026 RUNOFF, and Rep. Russell Fry was eliminated at 19.6%. Annie Andrews remains the Democratic nominee (61.5% on June 9). ⚠ Runoff eligibility is reportedly disputed — election officials treat a runoff as a new election open to all registered voters, while the state party has argued June Democratic-primary voters should be excluded; no final resolution was located [Verify]. Sources: SC Election Commission; Live 5 News full county totals; SC Daily Gazette; The Hill; NPR; AP via WBTV; Office of Gov. McMaster July 13 announcement.",
     candidates: [
       {
-        name: "[Republican nominee — decided in the Aug 11, 2026 special primary]",
+        name: "[Republican nominee — decided in the Aug 25, 2026 runoff]",
         party: "R",
         winner: false,
         positions: [
-          "[Verify — the nominee is not decided until the Aug 11 special primary]",
+          "[Verify — the nominee is not decided until the Aug 25 runoff between Darline Graham-Nordone and Ralph Norman]",
           "",
           ""
         ],
         differentiators: [
-          "Chosen at the Aug 11 special primary called after nominee Lindsey Graham died; runoff Aug 25 if no one clears 50%",
-          "Ten candidates on the ballot: appointed Sen. Darline Graham, Reps. Russell Fry and Ralph Norman, former Gov. Mark Sanford, Duke Buckner, Danny Lee Ford II, Mark Lynch, Mark McBride, Glenda Gail Parker and Sam Shepard — whose name is also reported as Samuel \"Sam\" Shepherd [Verify — newsroom-sourced roster, not yet checked against the SC Election Commission list]",
-          "⚠ Former Lt. Gov. André Bauer is NOT a candidate — he suspended his Senate campaign in Aug 2025, before filing opened, and never filed"
+          "Narrowed to two on Aug 11: appointed Sen. Darline Graham-Nordone 32.7% (109,582) and U.S. Rep. Ralph Norman 24.6% (82,523), out of 334,870 votes cast — see the Aug 25 runoff card and the Aug 11 result below",
+          "Eliminated Aug 11: Rep. Russell Fry 19.6%, former Gov. Mark Sanford 14.9%, Mark Lynch 5.9%, and five candidates under 1% — Danny Ford II, Duke Buckner, Glenda Gail Parker, Sam Shepherd and Mark McBride",
+          "⚠ Former Lt. Gov. André Bauer was never a candidate — he suspended his Senate campaign in Aug 2025, before filing opened, and never filed"
         ],
         supporters: [
           "South Carolina has not elected a Democrat to the Senate since 1998, so the nominee starts as a heavy favorite",
           "Whoever wins inherits a seat rated Solid/Safe Republican [Verify]",
-          "A ten-way field gives Republican voters a real choice rather than a coronation"
+          "A ten-way field, then a runoff, gives Republican voters a real choice rather than a coronation"
         ],
         opponents: [
-          "A nominee settled in August has under three months to build a general-election campaign",
-          "A contested special primary, and a possible Aug 25 runoff, risks leaving the party divided",
+          "A nominee settled in late August has barely two months to build a general-election campaign",
+          "A contested special primary and a runoff risk leaving the party divided going into November",
           "Andrews has been running and raising money since well before the vacancy [Verify]"
         ]
       },
@@ -957,7 +957,89 @@ const STATEWIDE = [
     ]
   },
 
-  // PAST — June 2026 primaries (statewide marquee contests)
+  // SCHEDULED — the Aug 25 runoff that decides the Republican Senate nominee
+  {
+    date: "Aug 25, 2026",
+    type: "scheduled",
+    scope: "Federal · Statewide",
+    office: "Republican Runoff — U.S. Senate (special primary)",
+    note: "The runoff that finally settles the Republican nomination for the Nov 3 Senate election, forced because no one reached 50% on Aug 11. Whoever wins is the nominee against Democrat Annie Andrews. ⚠ Runoff eligibility is reportedly contested — election officials treat a runoff as a new election open to all registered voters, while the state party has argued voters who cast a June DEMOCRATIC primary ballot should be excluded; no final resolution was located [Verify]. ⚠ Aug 11 totals are UNOFFICIAL pending SC Election Commission certification.",
+    candidates: [
+      { name: "Darline Graham-Nordone (appointed incumbent)", party: "R", winner: false,
+        positions: [
+          "[Verify] No itemized policy platform could be sourced — her campaign site would be the primary source and was not reachable this pass",
+          "",
+          ""
+        ],
+        differentiators: [
+          "Appointed to the seat July 13, 2026 and sworn in July 14 — the first woman to represent South Carolina in the U.S. Senate; she is Lindsey Graham's sister",
+          "Led the Aug 11 field with 32.7% (109,582 votes); also reported in some outlets simply as \"Darline Graham\"",
+          "Endorsed by President Trump, who urged Gov. McMaster to appoint her and called her a \"WINNER\"; she had never held elected office before the appointment [Verify — prior public service is reported as a term on the SC Commission for the Blind]"
+        ],
+        supporters: [
+          "Carries the President's explicit endorsement in a state he won by about 20 points",
+          "Finished eight points clear of the field on Aug 11 without ever having run for office",
+          "An incumbent, however briefly, going into a low-turnout August runoff"
+        ],
+        opponents: [
+          "Several prominent South Carolina Republicans ran against her anyway rather than defer to the Trump endorsement, and two thirds of primary voters chose someone else",
+          "Critics frame the appointment as a family succession rather than an earned candidacy [Verify — structural argument; no specific sourced attack line was located]",
+          "No legislative or executive record for voters to judge [Verify]"
+        ] },
+      { name: "Ralph Norman", party: "R", winner: false,
+        positions: [
+          "Campaigns on \"faith, family, and freedom\" — his own election-night framing",
+          "[Verify] Itemized 2026 Senate policy positions could not be sourced this pass",
+          ""
+        ],
+        differentiators: [
+          "U.S. Representative for SC-5 since a 2017 special election; a House Freedom Caucus member consistently described as among the chamber's most conservative",
+          "Took 24.6% (82,523) on Aug 11, holding second place over Rep. Russell Fry by roughly 16,800 votes",
+          "Ran for GOVERNOR first — he finished third in the June primary and missed that runoff, then entered the Senate race after Graham's death, which is why SC-5 is now an open seat"
+        ],
+        supporters: [
+          "A voting record and nine years in Congress against an appointee with no elected experience",
+          "Reported endorsements from Sens. Rick Scott and Mike Lee when he entered",
+          "Consolidating the Fry and Sanford vote would put him past 50% — those two together outpolled Graham-Nordone on Aug 11"
+        ],
+        opponents: [
+          "Running against a Trump-endorsed candidate in a Trump primary state",
+          "He is the second statewide race he has entered this cycle after losing the gubernatorial primary [Verify — opponents' framing of a well-documented sequence]",
+          "Trailed by eight points in the first round"
+        ] }
+    ]
+  },
+
+  // PAST — Aug 11, 2026 special Republican primary + the June 2026 primaries
+  {
+    date: "Aug 11, 2026",
+    type: "past",
+    scope: "Federal · Statewide",
+    office: "Republican Special Primary — U.S. Senate",
+    note: "Called after nominee Lindsey Graham died July 11, 2026. Ten candidates; no runoff-avoiding majority, so Graham-Nordone and Norman advance to an Aug 25 runoff. 334,870 votes cast. ⚠ Totals are UNOFFICIAL pending SC Election Commission certification; post-election hand-count audits of randomly selected precincts were conducted. ⚠ One line was settled in court first: the state GOP decertified Danny Ford II under a new party rule on primary-voting history, Richland County Judge Roger Coble ordered him restored on Aug 4 as too vague and inconsistently applied, and the SC Supreme Court let that stand Aug 5 — after early voting had already begun. Source: Live 5 News county totals; SC Election Commission.",
+    candidates: [
+      { name: "Darline Graham-Nordone (appointed incumbent)", party: "R", winner: false,
+        positions: [], differentiators: ["32.7% — 109,582 votes; advances to the Aug 25 runoff"], supporters: [], opponents: [] },
+      { name: "Ralph Norman", party: "R", winner: false,
+        positions: [], differentiators: ["24.6% — 82,523 votes; advances to the Aug 25 runoff"], supporters: [], opponents: [] },
+      { name: "Russell Fry", party: "R", winner: false,
+        positions: [], differentiators: ["19.6% — 65,732 votes; eliminated. He keeps his SC-7 House seat"], supporters: [], opponents: [] },
+      { name: "Mark Sanford", party: "R", winner: false,
+        positions: [], differentiators: ["14.9% — 50,001 votes; eliminated. Former governor and former SC-1 congressman"], supporters: [], opponents: [] },
+      { name: "Mark Lynch", party: "R", winner: false,
+        positions: [], differentiators: ["5.9% — 19,857 votes; eliminated. He had also taken 28.9% against Graham in the June 9 primary"], supporters: [], opponents: [] },
+      { name: "Danny Ford II", party: "R", winner: false,
+        positions: [], differentiators: ["0.8% — 2,844 votes; the candidate restored to the ballot by court order"], supporters: [], opponents: [] },
+      { name: "Duke Buckner", party: "R", winner: false,
+        positions: [], differentiators: ["0.5% — 1,580 votes"], supporters: [], opponents: [] },
+      { name: "Glenda Gail Parker", party: "R", winner: false,
+        positions: [], differentiators: ["0.3% — 1,021 votes"], supporters: [], opponents: [] },
+      { name: "Sam Shepherd", party: "R", winner: false,
+        positions: [], differentiators: ["0.3% — 929 votes"], supporters: [], opponents: [] },
+      { name: "Mark McBride", party: "R", winner: false,
+        positions: [], differentiators: ["0.2% — 801 votes"], supporters: [], opponents: [] }
+    ]
+  },
   {
     date: "Jun 23, 2026",
     type: "past",
@@ -1352,7 +1434,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "South Carolina Elections Hub", lastUpdated: "August 10, 2026" };
+const SITE_META = { name: "South Carolina Elections Hub", lastUpdated: "August 12, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — SC county-level down-ballot research is the next phase).
