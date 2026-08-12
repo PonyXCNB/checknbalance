@@ -522,6 +522,7 @@ node tests/run-all.js
 | `tests/parse-check.js` | Every inline `<script>` in every page must compile (syntax errors only) |
 | `tests/smoke-test.js` | Executes each page's scripts top-to-bottom with DOM stubs, cut at the first `d3.` usage; runs state.html for all 10 featured states + controls (TX, CA) + verifies the NC→nc.html redirect. **This is the test that catches declaration-order/TDZ bugs.** |
 | `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config, now 30 pages): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly, **and the map `<XX>_STATE_FIPS` constant matches the COUNTIES prefix** (quirk #10). Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
+| `tests/brief-render.js` | **The race note must stay OUT of the collapsed card header, and the ⚠/✅ segmentation must be LOSSLESS.** 281 checks over all 887 notes on 35 pages: no legacy `.election-note`, the brief is the first child of `.election-detail`, every brief reproduces its note's own words exactly, markup is well-formed, "Show more" appears iff the brief is clamped, and no note contains a backtick or `${` (either would break the whole drawer, since notes are interpolated into template literals). Added Aug 12, 2026 after the note shipped in the header and dwarfed the candidate data; **verified to fail on the pre-fix markup** |
 | `tests/label-fit.js` | **The national map's `LABEL_ADJ` labels must clear their state borders.** Measures clearance (anchor → nearest boundary) against baked geometry and requires 9.66px = 8.76 glyph half-diagonal + 0.4 stroke + 0.5 simplification slack. Added July 24, 2026 after the FL/LA labels shipped clipping *twice* — both earlier passes hit-tested the anchor POINT, which is inside the state even when the box around it is not. HI carries a documented exempt floor (its island cannot do better) |
 | `tests/fixtures/state-label-rings.json` | Projected, simplified state outlines for the 42 inline-label states (48KB). Built by `tools/gen-label-fixture.js`; records the projection it came from so `label-fit.js` fails loudly instead of checking stale geometry |
 | `tests/lib.js` | Shared helpers: inline-script extraction, the d3 cut, DOM stubs, vm sandbox runner |
@@ -750,17 +751,43 @@ not in it. Add every new state to ALL FOUR lists: tests/parse-check.js, tests/sm
 tests/data-logic.js, tools/verify-report.js AND tools/voices-report.js. If the owner adds nothing new, spend the freed time on state builds, the
 time-sensitive calendar, and the incumbent-status sweep.
 
-10. ~~**Race-note blurbs made collapsed accordion headers taller than the screen.**~~ **DONE (Aug 12, 2026.)**
-   ✅ **FIXED SITE-WIDE Aug 12, 2026** — owner-reported from Boise County, ID. The race `note` renders inside the
-   COLLAPSED accordion header, so a race whose note runs to several hundred words of sourcing and caveats produced a
-   header taller than the viewport (Idaho’s U.S. Senate note is 1,435 characters and rendered 450px tall, collapsed).
-   **Fix: `.election-note` is clamped to 3 lines with `-webkit-line-clamp` when collapsed and restored to full text
-   under `.election-card.open`.** Nothing is hidden from the reader — it waits for the chevron — and line-clamp
-   supplies its own ellipsis so the truncation is visible rather than silent. Applied to all 35 drawer pages by
-   `tools/clamp-notes` logic; two CSS spellings existed (multi-line on state pages, single-line on state.html) and
-   the sweep refused to write any file it could not match exactly once. Verified in a real browser on the reported
-   county: the Senate note went 450px → 54px, every collapsed card is now 147–192px instead of 560px+, and expanding
-   restores all 1,435 characters. ⚠ Do NOT “fix” long notes by deleting content — the length is deliberate.
+10. ~~**The race note (the italic blurb) rendered in the COLLAPSED card header and dominated every drawer.**~~
+   **DONE (Aug 12, 2026)** — owner-reported twice in one day, the second time as "this still looks terrible."
+   ➤ **First attempt was wrong and is worth recording.** Clamping `.election-note` to 3 lines in the header
+   reduced the symptom but kept the note in the collapsed view, which is not what the owner wanted. The real
+   instruction was: get it out of the collapsed card entirely, then make it pleasant to read once open.
+   ➤ **What shipped.** The note now renders as the first child of `.election-detail`, so a COLLAPSED card shows
+   only pill, date, scope, office and candidate count — every card on a county's ballot is now 105px (132px when
+   the office title wraps to two lines), driven purely by title length. Idaho's Boise County drawer went from
+   ~7,000px of collapsed content to 2,171px.
+   ➤ **`renderNote()` + `briefSegments()`** split a note on runs of the ⚠ / ✅ glyphs the editorial style already
+   uses, keeping the glyph that introduced each segment. Each caveat becomes its own paragraph with the glyph
+   hanging in a 21px indent, instead of one undifferentiated wall. **It is a presentation transform only — the
+   regression test proves all 887 notes reproduce their own words exactly.**
+   ➤ **Typography:** set in ROMAN, not italic. Extended italic body copy at 12.5px was the thing that actually
+   read as "terrible". 2px gold left rule, a 9.5px letter-spaced "About this race" label in gold-deep, and a
+   faint gold gradient that fades out to the right. The brief aligns flush left and right with the candidate
+   cards below it, with an 18px gap.
+   ➤ **Concision without deleting sourced content.** Briefs over 300 characters clamp to ~4 lines behind a
+   "Show more" toggle; 60% of notes are under that and render whole with no toggle at all. ⚠ **The notes
+   themselves were NOT rewritten.** Only 7% exceed 900 characters, and their length is the [Verify] discipline
+   that makes auto-publishing safe — the caveats are load-bearing. The clamp gets the same result for the reader:
+   even Montana's 2,187-character Senate note occupies ~155px before the toggle. **A happy consequence of the
+   existing house style is that the clamped preview is always useful** — notes front-load the headline fact in
+   caps, so the first four lines read as a summary rather than a truncated sentence.
+   ➤ **The real deliverable is `tests/brief-render.js`** (281 checks, 887 notes, wired into `run-all.js`). It
+   asserts the note never returns to the header, that segmentation is lossless, that markup is well-formed, that
+   "Show more" appears iff the brief is clamped, and that no note contains a backtick or `${` — which would break
+   the whole drawer, since every note is interpolated into a template literal. **Verified to FAIL on the pre-fix
+   markup** before shipping.
+   ➤ **Verified in a real browser** across 4 pages and 130+ counties, at a 1440x900 desktop viewport: Idaho
+   (the reported page), Montana and Alabama (the two longest notes on the site), and `state.html` (the
+   structurally different generic page, whose placeholder body survives intact). All 56 Montana counties and 58
+   generic-page counties swept clean — no brief in any header, no detail left uncollapsed. All 27 flag glyphs on
+   one page sit at a vertical offset of exactly 0 from their own paragraph's first line.
+   ⚠ **Measure at a real viewport width.** Two intermediate measurements looked alarming (cards at 288–426px)
+   purely because the preview pane had reset to ~536px wide and titles were wrapping. Resize before judging, and
+   note that each `navigate` to a new tab resets the viewport.
 
 ## Backlog / roadmap
 

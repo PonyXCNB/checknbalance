@@ -378,24 +378,40 @@
     font-family: var(--serif); font-size: 24px; font-weight: 500;
     letter-spacing: -0.01em; line-height: 1.15;
   }
-  /* The note renders inside the collapsed accordion header, and some notes run to
-     several hundred words of sourcing and caveats — which made a collapsed race card
-     taller than the screen (owner-reported Aug 12, 2026, on Boise County, ID).
-     Clamp to 3 lines when collapsed; restore the full text when the card is open, so
-     nothing is hidden from the reader, it just waits for the chevron. line-clamp
-     supplies its own ellipsis, so the truncation is visible rather than silent. */
-  .election-note {
-    font-size: 13px; color: var(--ink-soft);
-    margin-top: 6px; font-style: italic;
-    display: -webkit-box; -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3; line-clamp: 3;
-    overflow: hidden;
+  /* ---- Race brief (the context note) ----
+     Lives INSIDE the expanded panel only. A collapsed card shows the pill, date, office
+     and candidate count and nothing else, so a county's ballot reads as a clean list.
+     Owner-reported twice on Aug 12, 2026: as a header element these notes — 2,187
+     characters at the extreme, and 30% of them opening with a ⚠ flag — buried the
+     candidate data the page exists to show. Set in roman, not italic: extended italic
+     body copy at 12.5px is the thing that read as 'terrible'. Long briefs clamp to about
+     four lines behind a Show more toggle so they never crowd out the cards below. */
+  .election-brief {
+    margin: 2px 0 18px;
+    padding: 12px 16px 13px 17px;
+    border-left: 2px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    background: linear-gradient(90deg, rgba(232,217,184,.30), rgba(232,217,184,0) 94%);
   }
-  .election-card.open .election-note {
-    display: block;
-    -webkit-line-clamp: none; line-clamp: none;
-    overflow: visible;
+  .brief-label {
+    font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); font-weight: 700; margin-bottom: 7px;
   }
+  .brief-body { font-size: 12.5px; line-height: 1.62; color: var(--ink-soft); }
+  .brief-body p + p { margin-top: 7px; }
+  .brief-lead { color: var(--ink); }
+  /* Flag glyphs hang in the margin so the text block keeps a straight left edge. */
+  .brief-flag { position: relative; padding-left: 21px; }
+  .brief-mark { position: absolute; left: 0; top: 0; font-size: 11px; color: var(--gold-deep); }
+  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; }
+  .brief-more {
+    margin-top: 9px; padding: 0;
+    background: none; border: none; cursor: pointer;
+    font-family: var(--sans); font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-deep);
+    border-bottom: 1px solid var(--gold-soft);
+  }
+  .brief-more:hover { border-bottom-color: var(--gold); }
 
   /* ---- Accordion (collapsible seats) ---- */
   .election-summary {
@@ -1633,6 +1649,41 @@ function renderGroup(label, items) {
     ${items.map(renderElection).join("")}`;
 }
 
+// Split a race note on the ⚠ / ✅ flag glyphs the editorial style already uses, keeping
+// the glyph that introduced each segment. Text before the first flag is the lead. This is
+// presentation only — no wording is altered and nothing is dropped.
+function briefSegments(note) {
+  const out = [];
+  const re = /([\u26A0\uFE0F\u2705]+)\s*/g;
+  let last = 0, mark = "", m;
+  while ((m = re.exec(note)) !== null) {
+    const text = note.slice(last, m.index).trim();
+    if (text) out.push({ mark: mark, text: text });
+    mark = m[1].replace(/\uFE0F/g, "");
+    last = re.lastIndex;
+  }
+  const tail = note.slice(last).trim();
+  if (tail) out.push({ mark: mark, text: tail });
+  return out;
+}
+
+function renderNote(note) {
+  if (!note) return "";
+  const body = briefSegments(note).map(function (s) {
+    return s.mark
+      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${s.text}</p>`
+      : `<p class="brief-lead">${s.text}</p>`;
+  }).join("");
+  // Clamp only what actually needs clamping: the median note is 236 characters, so most
+  // briefs show whole and never render a toggle at all.
+  const long = note.length > 300;
+  return `<div class="election-brief${long ? " clamped" : ""}">
+      <div class="brief-label">About this race</div>
+      <div class="brief-body">${body}</div>
+      ${long ? `<button class="brief-more" type="button">Show more</button>` : ""}
+    </div>`;
+}
+
 function renderElection(e) {
   const count = (e.candidates && e.candidates.length) || 0;
   const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
@@ -1650,14 +1701,13 @@ function renderElection(e) {
             ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
           </div>
           <div class="election-office">${e.office || e.name || ""}</div>
-          ${e.note ? `<div class="election-note">${e.note}</div>` : ""}
         </div>
         <div class="election-toggle">
           <span class="cand-count">${countLabel}</span>
           <span class="chevron">${chevron}</span>
         </div>
       </button>
-      <div class="election-detail"><div>${candidatesHtml}</div></div>
+      <div class="election-detail"><div>${renderNote(e.note)}${candidatesHtml}</div></div>
     </div>`;
 }
 
@@ -1703,6 +1753,12 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel
 
 // Accordion: collapse/expand seats. All collapsed by default; click to expand.
 document.getElementById("panel-body").addEventListener("click", (e) => {
+  const more = e.target.closest(".brief-more");
+  if (more) {
+    const brief = more.closest(".election-brief");
+    more.textContent = brief.classList.toggle("clamped") ? "Show more" : "Show less";
+    return;
+  }
   const summary = e.target.closest(".election-summary");
   if (!summary) return;
   const card = summary.closest(".election-card");
