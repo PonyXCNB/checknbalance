@@ -689,6 +689,20 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
    notifications → Add notification → Email notification → his address.** Until (ii) is done, submissions are still
    captured in Netlify's Forms tab — nothing is lost, he just gets no email. **If a future run is asked why no
    submissions are arriving, check those two settings before touching the form.**
+   ✅ **CONFIRMED BROKEN FOR EXACTLY THIS REASON, Aug 12, 2026.** The owner reported the "Send it in" button failing
+   with the red error text. **The form markup and the submit handler were both CORRECT** — textbook Netlify Forms
+   AJAX — so nothing in the page was actually broken. Diagnosed WITHOUT creating a real submission: a POST to the
+   live site carrying `form-name=contribute` **and the honeypot field deliberately FILLED** returned **HTTP 404**.
+   That probe is side-effect-free by design — Netlify silently DISCARDS honeypot-caught submissions as spam but
+   still returns a SUCCESS status, so a success would have proved the handler was live while leaving nothing in the
+   owner's dashboard. The 404 instead means the POST fell through to the static file server and Netlify's form
+   handler never saw it — i.e. **step (i), Form detection, is still OFF.**
+   ⚠ **NO CODE CHANGE CAN FIX THIS.** It is two clicks in the Netlify dashboard and only the owner can do them.
+   ⚠ **Form detection registers forms at DEPLOY time**, so after enabling it the site must be redeployed ONCE
+   before the form starts working — flipping the setting alone does nothing to the deploy that is already live.
+   What WAS changed in code on Aug 12: the failure is no longer illegible. A 404/405 is now distinguished from a
+   transient network error, the visitor is told the form is not accepting messages rather than being invited to
+   retry a button that cannot work, and the browser console prints the precise cause and the exact fix.
    Also done in the same pass: the legend note under the map was replaced with the owner's own wording about building
    all fifty states and prioritising upcoming competitive races, with an anchor link to the form. That removed the LAST
    piece of landing-page prose that had to be re-synced with the map on every build — which is why the landing-page

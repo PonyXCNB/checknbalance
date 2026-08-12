@@ -629,17 +629,36 @@ d3.json(TOPO_URL).then((us) => {
       body: new URLSearchParams(new FormData(form)).toString()
     })
       .then(function (res) {
-        if (!res.ok) throw new Error("HTTP " + res.status);
+        if (!res.ok) { var e = new Error("HTTP " + res.status); e.status = res.status; throw e; }
         form.reset();
         button.textContent = "Sent";
         status.className = "contrib-status ok";
         status.textContent = "Thank you — that's on its way. We read every message and will reply to the address you gave.";
       })
-      .catch(function () {
+      .catch(function (err) {
         button.disabled = false;
         button.textContent = "Send it in";
         status.className = "contrib-status err";
-        status.textContent = "That didn't send. Please try again in a moment — and if it keeps failing, the problem is on our end, not yours.";
+        // A 404/405 here is NOT a transient failure and retrying will never help: it means
+        // Netlify's form handler never saw the POST, which in practice means Form detection
+        // is switched off for the site (Site configuration > Forms). Say something honest
+        // rather than inviting the visitor to keep hammering a button that cannot work.
+        var dead = err && (err.status === 404 || err.status === 405);
+        status.textContent = dead
+          ? "This form isn't accepting messages right now — that's a fault on our end, not anything you did. It's been logged and we're on it. Sorry for the wasted typing."
+          : "That didn't send. Please try again in a moment — and if it keeps failing, the problem is on our end, not yours.";
+        if (window.console && console.error) {
+          console.error(
+            "[contribute] submission failed: " + (err && err.message ? err.message : err) +
+            (dead
+              ? "\nThe POST reached the static host instead of Netlify's form handler." +
+                "\nMost likely cause: Form detection is OFF for this site." +
+                "\nFix: Netlify > Site configuration > Forms > enable Form detection, then trigger one redeploy" +
+                "\n(detection registers forms at DEPLOY time, so an existing deploy will not pick it up)." +
+                "\nThen: Forms > Form notifications > Add notification > Email notification."
+              : "")
+          );
+        }
       });
   });
 })();
