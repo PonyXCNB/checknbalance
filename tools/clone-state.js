@@ -51,18 +51,25 @@ const before = html;
 // Matches `const NAME = <open> ... <close>;` at the start of a line, non-greedily to the
 // first line that is exactly the closing bracket + semicolon. Also swallows any comment
 // block immediately above it, so the donor's provenance notes go with the donor's data.
+// ⚠ The site's pages are CRLF (a Windows checkout), so every line read here ends with "\r".
+// Comparing a line to a bare "};" therefore failed and the tool refused to write ANY page —
+// caught Aug 13, 2026 building Wisconsin. Terminators are now stripped for comparison only,
+// and the donor's own dominant line ending is reapplied to the spliced-in block so the file
+// does not end up with mixed endings.
 function spliceBlock(src, declName, close, replacement) {
+  const eol = (src.match(/\r\n/g) || []).length > (src.split("\n").length / 2) ? "\r\n" : "\n";
   const lines = src.split("\n");
-  let start = lines.findIndex(l => l.startsWith(`const ${declName} = `));
+  const bare = l => l.replace(/\r$/, "");
+  let start = lines.findIndex(l => bare(l).startsWith(`const ${declName} = `));
   if (start === -1) throw new Error(`donor has no "const ${declName} ="`);
-  const end = lines.findIndex((l, i) => i >= start && l === close);
+  const end = lines.findIndex((l, i) => i >= start && bare(l) === close);
   if (end === -1) throw new Error(`could not find the end ("${close}") of ${declName}`);
   // walk backwards over the contiguous comment block above the declaration
   let cstart = start;
-  while (cstart > 0 && lines[cstart - 1].startsWith("//")) cstart--;
-  const out = lines.slice(0, cstart)
-    .concat(replacement.replace(/\s+$/, "").split("\n"))
-    .concat(lines.slice(end + 1));
+  while (cstart > 0 && bare(lines[cstart - 1]).startsWith("//")) cstart--;
+  const repl = replacement.replace(/\s+$/, "").split(/\r?\n/)
+    .map(l => (eol === "\r\n" ? l + "\r" : l));
+  const out = lines.slice(0, cstart).concat(repl).concat(lines.slice(end + 1));
   return out.join("\n");
 }
 

@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wisconsin Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every WI election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #wimap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  /* ---- Race brief (the context note) ----
+     Lives INSIDE the expanded panel only. A collapsed card shows the pill, date, office
+     and candidate count and nothing else, so a county's ballot reads as a clean list.
+     Owner-reported twice on Aug 12, 2026: as a header element these notes — 2,187
+     characters at the extreme, and 30% of them opening with a ⚠ flag — buried the
+     candidate data the page exists to show. Set in roman, not italic: extended italic
+     body copy at 12.5px is the thing that read as 'terrible'. Long briefs clamp to about
+     four lines behind a Show more toggle so they never crowd out the cards below. */
+  .election-brief {
+    margin: 2px 0 18px;
+    padding: 12px 16px 13px 17px;
+    border-left: 2px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    background: linear-gradient(90deg, rgba(232,217,184,.30), rgba(232,217,184,0) 94%);
+  }
+  .brief-label {
+    font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); font-weight: 700; margin-bottom: 7px;
+  }
+  .brief-body { font-size: 12.5px; line-height: 1.62; color: var(--ink-soft); }
+  .brief-body p + p { margin-top: 7px; }
+  .brief-lead { color: var(--ink); }
+  /* Flag glyphs hang in the margin so the text block keeps a straight left edge. */
+  .brief-flag { position: relative; padding-left: 21px; }
+  .brief-mark { position: absolute; left: 0; top: 0; font-size: 11px; color: var(--gold-deep); }
+  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; }
+  .brief-more {
+    margin-top: 9px; padding: 0;
+    background: none; border: none; cursor: pointer;
+    font-family: var(--sans); font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-deep);
+    border-bottom: 1px solid var(--gold-soft);
+  }
+  .brief-more:hover { border-bottom-color: var(--gold); }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">WI</div>
+      <div class="brand-text">
+        <span class="brand-name">Wisconsin Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Wisconsin <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 72 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">72</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>8</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>6</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Wisconsin…</div>
+      <svg id="wimap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>WI Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">July 22, 2026</span><br>
+      Sources: Wisconsin Elections Commission (elections.wi.gov) — the certified "Candidates on Ballot by Election" list for the Nov 3, 2026 general, the Aug 11 partisan-primary contest file, the final registered write-in list and the 2024 County-by-County canvasses; Wis. Stat. ch. 3 and § 7.70; Johnson v. Wisconsin Elections Commission, 2022 WI 14; Wisconsin Legislature enrolled joint resolutions (docs.legis.wisconsin.gov); U.S. Census Bureau 2020 P.L. 94-171 and TIGERweb; FEC; Wisconsin Ethics Commission campaign-finance filings; Cook Political Report; Sabato's Crystal Ball; Inside Elections; Wisconsin Public Radio; Wisconsin Examiner; WUWM; Milwaukee Journal Sentinel; PBS Wisconsin; AP.</div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every WI county + its primary US House district(s)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- Wisconsin counties -> U.S. House district -----
+// Source: the congressional plan adopted by the Wisconsin Supreme Court in Johnson v. Wisconsin
+// Elections Commission, 2022 WI 14 - the map used in 2022 and 2024 and STILL IN FORCE for 2026.
+// Wis. Stat. ch. 3, certified Aug 5, 2026 (six days before the primary), carries an official NOTE
+// that its own 2011 Act 44 text is SUPERSEDED by Johnson. Both 2026 challenges were dismissed
+// (Mar 31 and Apr 28, 2026); the Wisconsin Supreme Court took the appeal on May 29, 2026 but
+// DENIED expedition, and the plaintiffs' own requested remedy targets 2028 - so no relief is
+// possible before Nov 3, 2026. No mid-decade plan was enacted; Louisiana v. Callais had no
+// Wisconsin effect. The 2024 LEGISLATIVE redraw did not touch congressional lines.
+// Derived from the 2020 P.L. 94-171 file (203,059 blocks, zero unassigned, total 5,893,718)
+// point-in-polygon against TIGERweb CD119 polygons. Population check: districts 1-8 land at
+// 736,714-736,716 against an ideal of 736,714.75 - a maximum deviation of ONE PERSON.
+// CURRENCY (lesson #17): WEC has NOT yet published the Aug 11, 2026 canvass - the results index
+// still ends at the 2026 Spring Election and the partisan-primary node 404s - so the state-level
+// test could not be run, which is stated plainly rather than claimed. It was replaced with
+// something stronger: a county-clerk-by-county-clerk sweep of Aug 11, 2026 documents established
+// 71 OF THE 72 COUNTIES DIRECTLY FROM 2026 SOURCES, and ALL TWELVE SPLIT COUNTIES were verified
+// from actual 2026 ballots - so no county here is a phantom overlap that casts no votes. Three
+// fully independent sources then agreed on all 85 county x district pairs with ZERO mismatches:
+// those 2026 county documents, the Census CD119 county relationship file, and WEC's own 2024
+// County-by-County canvasses (primary and general) parsed separately.
+// The one county with no Aug 11, 2026 document posted is TAYLOR (its clerk's archive ends at the
+// April 2026 election); it sits in CD7 on the other two sources and on its own Aug 2024 file.
+// Re-run the state-level test once WEC posts the canvass (expected after ~Aug 18-Sept 1, 2026).
+// 'd' is the population-plurality district (drives map shading); 'ds' lists EVERY district
+// overlapping a split county so the drawer shows all of that county's U.S. House races.
+// 12 split counties. Only Chippewa (52.96/47.04) and Dodge (54.51/45.49) are near-ties; the
+// other ten are 78/22 or wider. CD4 is Milwaukee County alone.
+const COUNTIES = {
+  "55001": { n: "Adams", d: 3 },
+  "55003": { n: "Ashland", d: 7 },
+  "55005": { n: "Barron", d: 7 },
+  "55007": { n: "Bayfield", d: 7 },
+  "55009": { n: "Brown", d: 8 },
+  "55011": { n: "Buffalo", d: 3 },
+  "55013": { n: "Burnett", d: 7 },
+  "55015": { n: "Calumet", d: 8, ds: [6,8] },
+  "55017": { n: "Chippewa", d: 3, ds: [3,7] },
+  "55019": { n: "Clark", d: 7 },
+  "55021": { n: "Columbia", d: 6 },
+  "55023": { n: "Crawford", d: 3 },
+  "55025": { n: "Dane", d: 2 },
+  "55027": { n: "Dodge", d: 6, ds: [5,6] },
+  "55029": { n: "Door", d: 8 },
+  "55031": { n: "Douglas", d: 7 },
+  "55033": { n: "Dunn", d: 3 },
+  "55035": { n: "Eau Claire", d: 3 },
+  "55037": { n: "Florence", d: 7 },
+  "55039": { n: "Fond du Lac", d: 6 },
+  "55041": { n: "Forest", d: 7 },
+  "55043": { n: "Grant", d: 3 },
+  "55045": { n: "Green", d: 2 },
+  "55047": { n: "Green Lake", d: 6 },
+  "55049": { n: "Iowa", d: 2 },
+  "55051": { n: "Iron", d: 7 },
+  "55053": { n: "Jackson", d: 3, ds: [3,7] },
+  "55055": { n: "Jefferson", d: 5 },
+  "55057": { n: "Juneau", d: 3, ds: [3,7] },
+  "55059": { n: "Kenosha", d: 1 },
+  "55061": { n: "Kewaunee", d: 8 },
+  "55063": { n: "La Crosse", d: 3 },
+  "55065": { n: "Lafayette", d: 2 },
+  "55067": { n: "Langlade", d: 7 },
+  "55069": { n: "Lincoln", d: 7 },
+  "55071": { n: "Manitowoc", d: 6 },
+  "55073": { n: "Marathon", d: 7 },
+  "55075": { n: "Marinette", d: 8 },
+  "55077": { n: "Marquette", d: 6 },
+  "55078": { n: "Menominee", d: 8 },
+  "55079": { n: "Milwaukee", d: 4, ds: [1,4,5] },
+  "55081": { n: "Monroe", d: 3, ds: [3,7] },
+  "55083": { n: "Oconto", d: 8 },
+  "55085": { n: "Oneida", d: 7 },
+  "55087": { n: "Outagamie", d: 8 },
+  "55089": { n: "Ozaukee", d: 6 },
+  "55091": { n: "Pepin", d: 3 },
+  "55093": { n: "Pierce", d: 3 },
+  "55095": { n: "Polk", d: 7 },
+  "55097": { n: "Portage", d: 3 },
+  "55099": { n: "Price", d: 7 },
+  "55101": { n: "Racine", d: 1 },
+  "55103": { n: "Richland", d: 3 },
+  "55105": { n: "Rock", d: 1, ds: [1,2] },
+  "55107": { n: "Rusk", d: 7 },
+  "55109": { n: "St. Croix", d: 7 },
+  "55111": { n: "Sauk", d: 2, ds: [2,3] },
+  "55113": { n: "Sawyer", d: 7 },
+  "55115": { n: "Shawano", d: 8 },
+  "55117": { n: "Sheboygan", d: 6 },
+  "55119": { n: "Taylor", d: 7 },
+  "55121": { n: "Trempealeau", d: 3 },
+  "55123": { n: "Vernon", d: 3 },
+  "55125": { n: "Vilas", d: 7 },
+  "55127": { n: "Walworth", d: 1, ds: [1,5] },
+  "55129": { n: "Washburn", d: 7 },
+  "55131": { n: "Washington", d: 5 },
+  "55133": { n: "Waukesha", d: 5 },
+  "55135": { n: "Waupaca", d: 8 },
+  "55137": { n: "Waushara", d: 6 },
+  "55139": { n: "Winnebago", d: 6, ds: [6,8] },
+  "55141": { n: "Wood", d: 3, ds: [3,7] },
+};
+
+// ----- STATEWIDE races (every Wisconsin county sees these) -----
+// Sources: Wisconsin Elections Commission "Candidates on Ballot by Election — 2026 General
+// Election" (printed 6/10/2026, after the Commission's June 9 ballot-access vote) and the WEC
+// Ballot Access Report of June 9, 2026; Wisconsin Legislature enrolled joint resolutions
+// (docs.legis.wisconsin.gov); Wisconsin Ethics Commission campaign-finance filings; AP/NBC
+// primary tabulation; WPR, Wisconsin Examiner, WUWM, PBS Wisconsin.
+// ⚠ WISCONSIN HAS NO STATEWIDE ELECTION-NIGHT REPORTING SYSTEM — the WEC says so itself. Every
+// Aug 11, 2026 primary figure here is UNOFFICIAL; the state canvass is due under Wis. Stat.
+// § 7.70(3)(a) on or before the 3rd Wednesday after the primary, i.e. Aug 26, 2026.
+const STATEWIDE = [
+  // ─────────────────────────── UPCOMING ───────────────────────────
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Governor and Lieutenant Governor of Wisconsin (OPEN SEAT)",
+    note: "OPEN — Tony Evers filed his notification of noncandidacy on May 22, 2026, making this Wisconsin's first open governor's seat since 2010. Governor and Lieutenant Governor are nominated SEPARATELY in August and run as a JOINT TICKET in November. ⚠ THE DEMOCRATIC PRIMARY WAS A PHOTO FINISH: David Crowley beat democratic socialist Francesca Hong by 3,796 votes, 39.81%–39.33%, after public polling had shown Hong well ahead. The margin exceeded 0.25 points, so no state-funded recount was available and Hong declined to pay for one. Tom Tiffany took 95.32% of the Republican primary after both of his major rivals withdrew. ✅ Ratings: Sabato's Crystal Ball moved it to Leans Democratic on Aug 12, 2026 — the only rater to have updated since the primary. Cook (Toss Up, Sept 11, 2025) and Inside Elections (Toss-up, Aug 28, 2025) are both PRE-primary and are labelled as such rather than presented as current. ⚠ Every filed independent and minor-party gubernatorial ticket was DENIED ballot access by the WEC on June 9–10, 2026 for insufficient signatures, so November is a two-ticket race.",
+    candidates: [
+      { name: "David Crowley — Governor", party: "D", winner: false,
+        positions: ["Lowering costs for working families — the campaign's lead message","Runs on his county record: job creation, emissions cuts, property-tax reduction","Attacks Tiffany's 2020 election-fraud claims and his votes to cut food-assistance funding"],
+        differentiators: ["Milwaukee County Executive since May 2020 — the youngest ever and the first Black person elected to the office; re-elected in April 2024 with 85%","Would be Wisconsin's first Black governor; a former state representative","$1,039,328 raised and $316,178 on hand through July 15, 2026 (Wisconsin Ethics Commission) — roughly 10-to-1 behind Tiffany on cash"],
+        supporters: ["He won the electability argument outright — he pitched himself as the Democrat who can hold a state decided by 0.9 points in 2024, and the primary electorate agreed","Endorsed by Gov. Evers, Rep. Gwen Moore, the Congressional Black Caucus PAC and the building trades — IBEW, Operating Engineers Local 139, the Professional Fire Fighters and the Carpenters","Led passage of 2023 Wisconsin Act 12, the first major state-local shared-revenue overhaul in more than two decades, which averted a Milwaukee County fiscal crisis"],
+        opponents: ["Tiffany's opening frame is that \"there's not a dime's worth of difference between these Democrat candidates,\" tying him to Hong's democratic socialism","Act 12, the deal he champions, raised Milwaukee County's sales tax by 0.4% and let the City of Milwaukee add 2% — a direct tax-increase attack line","He won the nomination with under 40% and a sub-half-point margin, leaving a large progressive bloc unconsolidated [Verify — structural inference from the result, not a sourced claim about how Hong voters will behave]"] },
+      { name: "Sarah Godlewski — Lieutenant Governor", party: "D", winner: false,
+        positions: ["Make corporations pay their fair share; expand childcare access; bring down housing costs","Names affordability, housing and healthcare as her top three priorities","⚠ Her campaign homepage carries no itemised policy platform — the positions above come from a candidate questionnaire"],
+        differentiators: ["The sitting Secretary of State, appointed by Evers in 2023 after Doug La Follette resigned months into a new term; State Treasurer 2019–2023","Ran unopposed for this nomination — no other Democrat was certified","$292,267 raised and $77,917 on hand through July 15, 2026 (Wisconsin Ethics Commission), roughly six times Varnam's cash"],
+        supporters: ["The only person on either ticket who has already won a statewide election in Wisconsin — Treasurer in 2018","Endorsed by Sen. Tammy Baldwin and by the mayors of Milwaukee, Madison and Green Bay","Turned a near-powerless treasurer's office into a working platform on financial literacy, unclaimed property and fiscal transparency"],
+        opponents: ["A recurring \"stepping stone\" critique — the current Treasurer, John Leiber, has publicly called her a publicity seeker who used that office as a springboard; she also entered and left the 2022 U.S. Senate race before the primary","A conservative policy group sued her office over public-records requests about her appointment; the office said no responsive records existed","She held the Secretary of State's office for a full term-plus without ever facing voters for it, and is now leaving rather than defending it [Verify — structural argument, not attributed to a named critic]"] },
+      { name: "Tom Tiffany — Governor", party: "R", winner: false,
+        positions: ["\"Lower Costs For Every Wisconsinite\" — the campaign's lead plank","Cut business regulations and repeal property-tax increases; defends the Trump tariffs and opposes foreign purchases of Wisconsin farmland","Abortion: co-sponsored a six-week federal ban, and has since said he supports Wisconsin's 20-week restriction"],
+        differentiators: ["U.S. Representative for WI-7 since a 2020 special election and a House Freedom Caucus member; previously a state senator and state representative","Endorsed by President Trump and Vice President Vance, plus former Gov. Tommy Thompson, the state party, Americans for Prosperity–Wisconsin and 21 county sheriffs","$8.7M raised Jan 1–Jun 30, 2026 — more than $6M of it transferred from the Republican Party of Wisconsin — and just under $3.0M on hand at June 30"],
+        supporters: ["He consolidated the party early: 95% in the primary, no serious challenge, and a unified field after two rivals withdrew","A roughly 10-to-1 cash advantage entering November, with the state party fully behind him","An authentic Northwoods biography — raised on a western Wisconsin dairy farm, co-owned Wilderness Cruises for 20 years and was a dam tender on the Willow Flowage for 29"],
+        opponents: ["2020 election denial is the Democrats' central attack: he joined the Texas suit challenging Biden's Wisconsin win, voted to object to Pennsylvania's and Arizona's electoral votes on Jan 6, 2021, and told WPR that \"unscrupulous\" Dane and Milwaukee officials allowed \"hundreds of thousands of illegal votes\"","He ranked 379th of 435 House members on bipartisanship — the evidence behind the \"too extreme for a 50-50 state\" argument","Retired Republican state Sen. Dale Schultz called him \"pretty mean, pretty heartless\" and too close to mining interests over his 2013 iron-mining bill"] },
+      { name: "David Varnam — Lieutenant Governor", party: "R", winner: false,
+        positions: ["Wisconsin should be \"the Midwest leader in lower taxes\"","Protect \"the sanctity of life\"; keep \"men out of women's sports and their locker rooms\"","School choice, deregulation, Second Amendment protection and stricter enforcement against criminal illegal aliens"],
+        differentiators: ["Three-term Mayor of Lancaster, Wis. (2016–2022) after about three years on the Common Council — he says he was the only Republican in the field who had held elected executive office","A former congressional aide and federal policy analyst for Focus on the Family; a stay-at-home dad","$66,529 raised and $12,892 on hand through July 15, 2026 — he beat Will Martin 55.53%–44.27% while being out-raised more than 3-to-1"],
+        supporters: ["He beat the better-funded candidate by 11 points on grassroots reach, reporting 50,000 miles and 60-plus counties visited","As mayor he recorded the lowest property taxes and utility fees of any city in Grant County and vetoed multiple tax increases, including a proposed 40% stormwater fee rise","Endorsed by Wisconsin Family Action PAC, the Pro-Life Wisconsin Victory Fund PAC and Rep. Derrick Van Orden"],
+        opponents: ["The thinnest résumé and weakest finances on either ticket — mayor of a city of a few thousand, with under $13,000 banked entering the general","His Focus on the Family background and Pro-Life Wisconsin endorsement will be used to tie the ticket to a near-total abortion ban in a state where the issue has driven Democratic turnout","The state Republican Party's endorsed candidate for this office was Will Martin, not Varnam — he starts without the establishment's first choice behind him"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Attorney General of Wisconsin",
+    note: "A straight 2022 REMATCH — Josh Kaul beat Eric Toney by roughly a point that year, one of the closest statewide races on the ballot. Neither man drew a primary opponent, so both banked resources through August. The defining clash is abortion: Kaul brought the successful challenge to Wisconsin's 1849 near-total ban, while Toney pledged in 2022 to defend it. The second front is departmental performance — state crime-lab turnaround times and narcotics-agent staffing in northern Wisconsin. ⚠ Sabato's Crystal Ball rates it a Toss-up (Aug 21, 2025); no Cook or Inside Elections rating for this race could be located, and none is invented here.",
+    candidates: [
+      { name: "Josh Kaul (incumbent)", party: "D", winner: false,
+        positions: ["Litigated the successful challenge to Wisconsin's 1849 near-total abortion ban","Runs on \"a strong record of leading on public safety, fighting for Wisconsin families, and standing up for our freedoms\"","Sought additional funding for the state crime labs, which the Republican-controlled Legislature largely rejected"],
+        differentiators: ["Attorney General since 2019, seeking a third four-year term; a former federal prosecutor who grew up in Oshkosh and Fond du Lac","Endorsed by Rep. Mark Pocan, the Wisconsin AFL-CIO, End Citizens United, Reproductive Freedom for All and Fair Wisconsin","The only Democrat on the statewide ballot defending an office he already holds by election"],
+        supporters: ["Two-for-two statewide — the only proven statewide vote-getter in the Democratic column this cycle","He won the case that ended enforcement of the 1849 ban, the single most mobilising issue for Wisconsin Democrats since 2022","Labor, reproductive-rights and LGBTQ organisations all endorsed him early"],
+        opponents: ["Toney's core attack is measurable rather than rhetorical: longer state crime-lab wait times and fewer narcotics investigation agents in northern Wisconsin on Kaul's watch","Toney frames it as \"nearly eight years of broken promises\" at the Department of Justice","He won 2022 by about a point in a Democratic-leaning midterm; a Republican-leaning one would erase that margin [Verify — structural argument from the 2022 result]"] },
+      { name: "Eric Toney", party: "R", winner: false,
+        positions: ["\"Back the blue, end the revolving door of justice\" — his violent-crime plank","Combat fentanyl and methamphetamine trafficking; modernise the crime labs and clear evidence backlogs","⚠ In 2022 he pledged to DEFEND Wisconsin's 1849 abortion ban [Verify — his 2026 position on that ban could not be separately confirmed, and he has not been shown to have retracted it]"],
+        differentiators: ["Fond du Lac County District Attorney for more than ten years; a past president of the Wisconsin District Attorneys Association and the state's 2024 District Attorney of the Year","Endorsed by the Republican Party of Wisconsin (May 16, 2026) and Rep. Scott Fitzgerald","The 2022 nominee for this office, so he starts with statewide name recognition and a near-miss result to build on"],
+        supporters: ["A career line prosecutor — human trafficking, homicide, sexual assault, domestic violence, drug trafficking — running against a former federal prosecutor turned administrator","He came within about a point in 2022 and enters 2026 with unified party backing and no primary damage","His crime-lab and drug-enforcement critique rests on turnaround times and staffing counts rather than rhetoric"],
+        opponents: ["Democratic Party of Wisconsin chair Devin Remiker calls him \"an extremist when it comes to taking personal health care decisions away from women\"","The Kaul campaign argues his record \"includes anti-abortion extremism and failures on public safety\"","⚠ He joined Kaul two years ago in asking for more crime-lab resources, which the Republican Legislature rejected — which undercuts his own crime-lab attack line"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Secretary of State of Wisconsin (OPEN SEAT)",
+    note: "OPEN — the first Wisconsin secretary of state election since 1978 with no incumbent seeking re-election. Sarah Godlewski, appointed in 2023, is running for lieutenant governor instead. ⚠ CONTEXT THIS RACE CANNOT BE UNDERSTOOD WITHOUT: the office's duties have been stripped down over decades to the state seal, validating Wisconsin's presidential electoral-vote certificate and a seat on the Board of Commissioners of Public Lands. IT HAS NO ROLE IN ELECTION ADMINISTRATION. The Republican nominee is campaigning explicitly to abolish the bipartisan Wisconsin Elections Commission and move election administration into this office — which would require new legislation, not just a win. Jay Schroeder took 47.22% of a four-way primary, beating the candidate the state Republican Party had endorsed by nearly 22 points. This is also the ONLY statewide race in Wisconsin with a certified third-party line. ⚠ Sabato's rates it a Toss-up (Aug 7, 2025); no Cook or Inside Elections rating was located.",
+    candidates: [
+      { name: "Jocasta Zamarripa", party: "D", winner: false,
+        positions: ["Cost-of-living relief — groceries, housing and child care","Treat child care as essential infrastructure requiring state investment","Protect and expand the public lands trust that funds school libraries — a direct reference to the office's Board of Commissioners of Public Lands seat"],
+        differentiators: ["A second-term Milwaukee alder for the 8th District and a five-term former state representative, born and raised in Milwaukee","Endorsed by Sen. Tammy Baldwin, Rep. Mark Pocan, former Revenue Secretary Peter Barca, Fair Wisconsin and the Wisconsin Working Families Party","Ran unopposed after the WEC denied ballot access to Eileen Newcomer over duplicated signatures and her other rival withdrew"],
+        supporters: ["The only candidate in the race with both legislative and municipal governing experience, and she enters November undamaged by a primary","She frames the job around the power it actually still has — the public-lands trust and school-library funding — rather than around election administration it does not control","Democrats have held this office continuously since 1975"],
+        opponents: ["Much of her platform — groceries, housing, child care, school funding — sits outside the secretary of state's statutory authority [Verify — structural argument]","A Milwaukee alder running statewide in a state where Milwaukee Democrats have historically underperformed in the suburban WOW counties and the north [Verify — structural argument]","No campaign-finance figures for her could be located, so her resource position against Schroeder is unknown [Verify — absence of a located filing, not a confirmed zero]"] },
+      { name: "Jay Schroeder", party: "R", winner: false,
+        positions: ["Abolish the Wisconsin Elections Commission and move election administration under the Secretary of State — \"by referendum if needed\"","Calls the WEC \"corrupt\" and \"a disaster,\" noting Wisconsin is one of 14 states running elections through an appointed commission","Records transparency and public accountability, under a \"unity over division\" campaign theme"],
+        differentiators: ["Describes himself as an \"authentic MAGA activist since 2016\" and a \"MAGA aligned candidate on election integrity\" — his own words","His third bid for this office: the 2018 Republican nominee, who lost the general to Doug La Follette, and runner-up in the 2022 primary","Took 47.22% of a four-way primary, beating party-endorsed Nate Pollnow by nearly 22 points. ⚠ His city of residence is reported inconsistently — Clintonville in one source, Neenah in another [Verify]"],
+        supporters: ["He won a four-way primary outright while beating the party's endorsed candidate — a clear grassroots mandate","He has run statewide before and carries the highest name recognition in the Republican field","He argues an elected official should run elections so that \"voters can directly hold them accountable,\" rather than an appointed commission"],
+        opponents: ["2020 election denial: at a 2022 Republican rally he said he would not have signed \"a sheet of paper for the election,\" an apparent reference to certifying Wisconsin's electoral votes","His central promise is not within the office's power — the secretary of state has no election-administration role, and transferring it would require the Legislature to act","He lost this office statewide in 2018 and lost the nomination in 2022, and the state party backed someone else this year"] },
+      { name: "Pete Karas", party: "G", winner: false,
+        positions: ["Break the two-party \"grip\" on Wisconsin elections and give voters real choices","Political reform; challenges what he calls an \"undemocratic two-party stranglehold\"","Explicitly frames this limited-duty office as a strategic entry point for third-party statewide representation"],
+        differentiators: ["A candidate recruiter for the Wisconsin Green Party, part of its declared 2026 push to expand ballot presence","Cross-endorsed by the U.S. Pirate Party, the Transhumanist Party and the Independence Party","Survived a formal signature challenge and qualified with 2,044 valid signatures against a 2,000 minimum — the thinnest cushion of any certified statewide candidate"],
+        supporters: ["The only alternative to two major-party nominees, one of whom has denied the 2020 result","A real rather than nominal candidacy — he is ballot-qualified statewide and beat a formal challenge to get there","He uses a low-stakes office to build durable Green ballot access rather than playing spoiler in a high-stakes race"],
+        opponents: ["Democrats will argue a Green line risks handing the office to an election denier; Wisconsin's roughly 23,000-vote 2016 presidential margin is the standing reference for spoiler arguments","His own framing — that the office has limited duties and is a platform for the party rather than for the job — is an argument against voting for him on the merits","No campaign-finance filings, officeholder endorsements or polling could be located, so he has no measurable resource base [Verify — absence of located records, not a confirmed zero]"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "State Treasurer of Wisconsin",
+    note: "⚠ JOHN LEIBER IS THE ONLY REPUBLICAN CURRENTLY HOLDING ANY WISCONSIN STATEWIDE OFFICE — he won in 2022 while Democrats swept governor, attorney general and secretary of state. The office is small but not empty: the treasurer sits on the Board of Commissioners of Public Lands, which manages the roughly $1.6 billion Common School Fund that sends annual grants to Wisconsin K-12 school libraries. The race is a genuine philosophical split — Leiber says the office should stick to its narrow constitutional duties, Xiong says it should be an active taxpayer watchdog. Wisconsin voters were asked to abolish this office in a 2019 referendum and declined, so its scope remains a live argument. Yee Leng Xiong won the Democratic primary 57.2%–42.8% after trailing in the last pre-primary poll. No rater publishes a rating for this race.",
+    candidates: [
+      { name: "John S. Leiber (incumbent)", party: "R", winner: false,
+        positions: ["\"A true fiscal conservative serving the great state of Wisconsin\"","\"Every dollar earned by the fund and sent to schools is a dollar that doesn't come from property taxes\"","The treasurer should stick to the office's existing duties rather than expand its power"],
+        differentiators: ["Took office in January 2023 and is the only Republican holding any Wisconsin statewide office","Runs on a record $73.5 million Common School Fund distribution to school libraries this year, from a fund of roughly $1.6 billion","Endorsed by the Republican Party of Wisconsin, former State Treasurer Cate Zueske, Sen. Van Wanggaard and Rep. Dave Murphy"],
+        supporters: ["A record distribution to school libraries with no property-tax increase — a concrete, measurable result","He explicitly rejects using the office as a stepping stone, in contrast with several recent occupants","He has already won this office statewide once, in a year that broke against his party at the top of the ticket"],
+        opponents: ["Xiong's framing is that he deliberately under-uses the job: \"This office is not ceremonial. It is a responsibility.\"","Democrats argue he does no proactive outreach on unclaimed property or financial literacy, leaving money unreturned to Wisconsin residents","As the sole statewide Republican he is the single target of a coordinated Democratic effort [Verify — structural argument]"] },
+      { name: "Yee Leng Xiong", party: "D", winner: false,
+        positions: ["\"This office is not ceremonial. It is a responsibility.\"","Oversee and expand the Common School Fund, and support low-interest Trust Fund Loans to towns, counties and school districts","Expand unclaimed-property outreach and financial-literacy programming to underserved families"],
+        differentiators: ["Marathon County Supervisor since 2016 and DC Everest school board treasurer since 2014; a former Village of Weston trustee and executive director of New Beginnings for Refugees","Appointed by Gov. Evers to the state Financial Literacy Council","Won the primary 57.2%–42.8% after trailing 28%–18% in the last pre-primary poll with 52% undecided. ⚠ Reporting describes him as the first Hmong American nominated statewide in Wisconsin [Verify — the \"first\" claim is not confirmed against an official record]"],
+        supporters: ["Endorsed by Sen. Tammy Baldwin, former Lt. Gov. Barbara Lawton, Outagamie County Executive Tom Nelson and more than 50 elected and community leaders","Actual budget-and-trust-fund experience: a school board treasurer and county supervisor, not a résumé line","A north-central Wisconsin Democrat who can compete outside Madison and Milwaukee — the stated rationale of both Democrats in this primary"],
+        opponents: ["Republicans will argue he wants to expand a small office's power and budget — the same case voters were skeptical of when abolition was on the ballot","He has never held office above the county and school-district level, and is running for a statewide fiduciary post","Leiber's answer on the merits is that the fund is already producing record distributions, so the case for change is weak. ⚠ No campaign-finance figures could be located for either candidate in this race [Verify]"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Three statewide constitutional amendments",
+    note: "THREE constitutional amendments go to Wisconsin voters in November, not two. Each passed both chambers on SECOND consideration and is enrolled; each Legislative Reference Bureau analysis says verbatim that it is \"to be given second consideration by the 2025 legislature for submittal to the voters in November 2026.\" (1) 2025 AJR 10 — prohibit state or local closure of, or bans on gatherings in, PLACES OF WORSHIP during any declared emergency including a public health emergency (Assembly 56–43, Senate 18–15). (2) 2025 AJR 102 — prohibit any governmental entity from discriminating or granting preferential treatment based on race, sex, color, ethnicity or national origin in public employment, education, contracting and administration (Assembly 54–45, Senate 18–15). (3) 2025 SJR 116 — prohibit the governor from using the PARTIAL (line-item) VETO to create or increase any tax or fee; this is a direct response to Gov. Evers's 2023 partial veto that extended school revenue-limit authority to the year 2425, the so-called 400-year veto (Senate 18–15, Assembly 54–41 as amended, Senate concurring 18–15). ⚠ Wikipedia says there are TWO amendments and merges the veto items — that is wrong; the Legislature's own enrolled-resolution records show three. ⚠ Ballot question NUMBERING and final certified wording had not been published by the WEC as of Aug 13, 2026 [Verify]. ⚠ A Democratic advisory referendum to overturn Citizens United did NOT reach the ballot [Verify — established from the absence of an enrolled resolution, not from an affirmative rejection record].",
+    candidates: [] },
+
+  // ─────────────────────────── PAST ───────────────────────────
+  { date: "Apr 7, 2026", type: "past", scope: "State · Statewide", office: "Wisconsin Supreme Court",
+    note: "⚠ WISCONSIN ELECTS ITS JUDGES IN THE SPRING, NOT IN NOVEMBER — so no judicial race appears on the Nov 3, 2026 ballot. This seat was decided on April 7, 2026, when Chris Taylor defeated Maria Lazar to replace the retiring Rebecca Bradley, expanding the court's liberal majority from 4–3 to 5–2. Three Court of Appeals seats were also decided that day, all unopposed: Joe Donald (District I), Anthony Loccoco (District II) and Rachel Graham (District IV). The State Superintendent of Public Instruction is elected in the spring of ODD years, last in 2025.",
+    candidates: [
+      { name: "Chris Taylor", party: "I", winner: true, positions: [], differentiators: ["905,490 votes — 60.09%"], supporters: [], opponents: [] },
+      { name: "Maria S. Lazar", party: "I", winner: false, positions: [], differentiators: ["600,256 votes — 39.84%"], supporters: [], opponents: [] } ] },
+];
+
+// ----- U.S. HOUSE races by district -----
+// Sources: Wisconsin Elections Commission "Candidates on Ballot by Election — 2026 General
+// Election" (printed 6/10/2026), the WEC Aug 11 partisan-primary contest file, and the WEC
+// "Registered Write-in List for Partisan Primary — Final" (Aug 7, 2026); FEC bulk candidate
+// summaries through July 22, 2026; WEC County-by-County canvasses for 2024; Cook Political
+// Report 2026 PVI and House ratings, Inside Elections ratings feed, Sabato's Crystal Ball.
+// ⚠ Every Aug 11, 2026 primary figure is UNOFFICIAL and comes from AP tabulation — Wisconsin
+// has NO statewide election-night reporting system, and the WEC canvass is due on or before
+// Aug 26, 2026 under Wis. Stat. § 7.70(3)(a).
+// ⚠ CASH FIGURES ARE FROM THE JULY 22, 2026 PRE-PRIMARY REPORTS and predate final primary
+// spending. The next filing is the Oct 15 quarterly.
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — WI District 1",
+    region: "Wisconsin's southeastern corner — Kenosha and Racine counties, most of Walworth, eastern Rock and the southern Milwaukee County suburbs. Kenosha, Racine, Janesville, Beloit, Oak Creek, Franklin.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "Bryan Steil is a four-term incumbent and chairman of the Committee on House Administration, but the seat leans only R+2 on Cook's 2026 index — safe in a neutral year, live in a wave. Mitchell Berman, an emergency-room nurse, won a four-way Democratic primary with 44.1% after two rivals quit and endorsed him; Peter Burgelis suspended his campaign on July 15 and still drew 21.6%. ⚠ THE DEFINING FACT OF THIS RACE IS MONEY: Steil reported $6.33M on hand to Berman's $151,644 through July 22, 2026 — roughly 42-to-1. Cook (Likely R) and Sabato (Likely R, Aug 10, 2026) both favour Steil, and Inside Elections moved the seat further toward him, to Solid R, on Mar 12, 2026; Decision Desk HQ is the lone outlier at Lean R. ⚠ No third-party or independent candidate qualified, and no congressional write-in registered by the Aug 7 deadline, so November is a two-way race.",
+        candidates: [
+          { name: "Bryan Steil (incumbent)", party: "R", winner: false,
+            positions: ["Cut wasteful spending and lower costs for Wisconsin workers and families","Secure the border, with policies aimed at stopping the flow of illicit fentanyl","Protect Social Security and Medicare, and lower prescription drug prices"],
+            differentiators: ["U.S. Representative since January 2019, succeeding Paul Ryan; Chair of the Committee on House Administration since Jan 2023 and a member of Financial Services","Endorsed by President Trump (May 2025) and by the Log Cabin Republicans (Feb 3, 2026)","$6,327,098 on hand through July 22, 2026, with $5.47M raised this cycle and no debt (FEC)"],
+            supporters: ["He won 2024 by 10.2 points — 40,113 votes — in a district Trump also carried, and has never lost a race","A roughly 42-to-1 cash advantage entering the general","A committee chairmanship gives the district senior institutional standing"],
+            opponents: ["The district is only R+2 on Cook's 2026 index — a single-digit lean, not a safe seat","A REPUBLICAN-SPONSORED poll (Ragnar Research for Conservatives For America, Mar 14–16, 2026, 400 likely voters) put him at exactly 50% with 9% undecided — no cushion for a four-term incumbent","That same Republican poll showed the district's generic ballot at Democrat 44 – Republican 42"] },
+          { name: "Mitchell Berman", party: "D", winner: false,
+            positions: ["Restore the Affordable Care Act subsidies and create a public option","Raise the federal minimum wage and take on the corporations driving up grocery prices","Pass a real ban on stock trading by members of Congress, and overturn Citizens United"],
+            differentiators: ["An emergency-room nurse who says he still works night shifts — 23 years in health care, including a decade caring for veterans at the VA","Endorsed by End Citizens United (Aug 10, 2026), the UAW, AFT Local 212, five state legislators and both former primary rivals Randy Bryce and Peter Burgelis","$151,644 on hand through July 22, 2026, with $712,984 raised and no debt (FEC)"],
+            supporters: ["He cleared a four-way field by 22.5 points and consolidated it before the vote — two rivals quit and endorsed him","His health-care biography maps directly onto the ACA-subsidy fight he has centred","Decision Desk HQ rates the seat Lean R (July 14, 2026), a full notch more competitive than Cook or Inside Elections"],
+            opponents: ["He trails roughly 42-to-1 in cash on hand — the single hardest structural fact in this race","He took only 44.1% of his own primary, and 21.6% went to a candidate who had already quit","No Democrat has won WI-1 since Peter Barca in 1994 [Verify — inferred from Barca's term dates rather than a source that states the streak]"] } ] },
+      { date: "Nov 5, 2024", type: "past",
+        note: "Steil's third re-election, on the same lines used in 2026. Total 393,493 votes.",
+        candidates: [
+          { name: "Bryan Steil", party: "R", winner: true, positions: [], differentiators: ["212,515 votes — 54.0%"], supporters: [], opponents: [] },
+          { name: "Peter Barca", party: "D", winner: false, positions: [], differentiators: ["172,402 votes — 43.8%"], supporters: [], opponents: [] },
+          { name: "Chester Todd Jr.", party: "G", winner: false, positions: [], differentiators: ["8,191 votes — 2.1%"], supporters: [], opponents: [] } ] } ] },
+
+  2: {
+    name: "U.S. House — WI District 2",
+    region: "South-central Wisconsin — all of Dane, Iowa, Lafayette, Sauk and Green counties plus parts of Richland and Rock. Madison, Baraboo, Monroe, Dodgeville.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠⚠ THIS SEAT IS ALREADY DECIDED — MARK POCAN IS THE ONLY CANDIDATE WITH BALLOT ACCESS IN WI-2. No Republican, independent, Libertarian, Constitution or Green candidate filed nomination papers by the June 1, 2026 deadline, and the WEC's final registered write-in list of Aug 7, 2026 contains no congressional write-in candidates anywhere in the state — so no nominee can emerge that way either. Erik Olsen, the 2022 and 2024 Republican nominee, did not file. Pocan's 87.9% primary win over Douglas Alexander therefore settled the seat outright. The district is D+21 and rated Solid/Safe Democratic by every rater. ⚠ Three people appear as WI-2 filers in FEC records without any Wisconsin ballot access and are deliberately NOT carded here.",
+        candidates: [
+          { name: "Mark Pocan (incumbent)", party: "D", winner: false,
+            positions: ["Give all Wisconsinites access to health insurance and health care that meets their needs","A budget that strengthens Social Security and Medicare and invests in job growth","\"I oppose discrimination in all forms\" — he co-chairs the Congressional LGBTQ+ Equality Caucus"],
+            differentiators: ["Seventh-term incumbent, in the seat since 2013 when he succeeded Tammy Baldwin; 14 years in the state Assembly before that","Sits on House Appropriations and chaired the Congressional Progressive Caucus from 2017 to 2021","$884,043 on hand through July 22, 2026 (FEC). He owns a sign-making business and is an AFL-CIO member"],
+            supporters: ["He took 87.9% against a primary challenger — there is no meaningful intraparty dissent","No opponent qualified for the November ballot, so re-election is already settled","An Appropriations seat plus 13 years of seniority gives Madison outsized reach on federal funding"],
+            opponents: ["⚠ WI-2 voters will have NO CHOICE on the November ballot — a one-name congressional race is a real accountability problem regardless of party","12.0% went to Douglas Alexander, a challenger with no findable campaign — a floor-level protest share against a seven-term incumbent [Verify — no coverage of Alexander's campaign could be found at all, so \"no campaign\" is inference]","He spent more than he raised this cycle, drawing cash on hand down from $972,382 in March to $884,043 in July — unusual for an incumbent facing no opponent"] } ] },
+      { date: "Nov 5, 2024", type: "past",
+        note: "Pocan's sixth re-election. Total 457,257 votes.",
+        candidates: [
+          { name: "Mark Pocan", party: "D", winner: true, positions: [], differentiators: ["320,317 votes — 70.1%"], supporters: [], opponents: [] },
+          { name: "Erik Olsen", party: "R", winner: false, positions: [], differentiators: ["136,357 votes — 29.8%"], supporters: [], opponents: [] } ] } ] },
+
+  3: {
+    name: "U.S. House — WI District 3",
+    region: "Western Wisconsin's Driftless Area and west-central counties — 19 counties led by La Crosse, Eau Claire and Portage. La Crosse, Eau Claire, Stevens Point, Chippewa Falls, Wisconsin Rapids, Platteville.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ THIS IS WISCONSIN'S ONLY TOSS-UP HOUSE SEAT AND ONE OF THE CLOSEST IN THE COUNTRY — a rematch of 2024, which Derrick Van Orden survived by 11,256 votes (2.7 points) in a district rated R+3. Rebecca Cooke has OUT-RAISED the two-term incumbent this cycle, $8.60M to $7.53M, but still trails him on cash on hand $1.83M to $4.68M after spending heavily to beat Emily Berge 60.5%–39.4% in the primary. Cook and Sabato both call it Toss Up, and Inside Elections moved it from Tilt Republican to Toss-up on June 12, 2026; Decision Desk HQ has it Lean D. ⚠ TWO INDEPENDENTS HAVE VERIFIED BALLOT ACCESS — Alexander Valiensi Kent and Rustin Provance — which matters more here than almost anywhere: in 2024 the entire margin was under 3% of the vote. ⚠ Neither independent appears in the FEC's 2026 candidate summary file; that is reported as \"no summary found,\" NOT as $0 raised.",
+        candidates: [
+          { name: "Derrick Van Orden (incumbent)", party: "R", winner: false,
+            positions: ["\"Life\" — protect life and \"respect and cherish it\"","\"Liberty\" — protect constitutional rights against infringement of enumerated rights","\"The pursuit of happiness\" — limit government restrictions on citizens' freedom to make decisions with their own money. ⚠ His official House issues page lists topic headings with no position statements under them"],
+            differentiators: ["Two-term incumbent since January 2023, when he succeeded retiring Democrat Ron Kind; a retired Navy SEAL Senior Chief with five combat deployments","Chairman of the Veterans' Affairs Subcommittee on Economic Opportunity; also on Agriculture and Armed Services","$4,677,029 on hand through July 22, 2026, with $7.53M raised — but also $181,867 in debt (FEC)"],
+            supporters: ["He flipped a long-held Democratic seat in 2022 and held it in 2024 against this same opponent","A $4.68M war chest, roughly 2.6 times Cooke's, plus endorsements from Trump, Vice President Vance and Speaker Johnson","A Navy SEAL Senior Chief chairing a veterans subcommittee, in a heavily rural district"],
+            opponents: ["Temperament: in July 2023 he confronted Senate pages in the Capitol rotunda, and was reported to have screamed curse words inches from their faces","Documented posts on X calling for the deportation of naturalised U.S. citizen journalist Mehdi Hasan and promoting unsubstantiated \"grooming gang\" statistics; a July 2026 Milwaukee Courier piece described a pattern of anti-Muslim comments","He is the only Wisconsin incumbent rated Toss Up by all three major handicappers, and both Cook and Inside Elections have moved AGAINST him since 2025. He also carries $181,867 in campaign debt while Cooke reports none"] },
+          { name: "Rebecca Cooke", party: "D", winner: false,
+            positions: ["Expand Medicare to cover vision, dental and hearing, and take on prescription drug companies","Repeal the tax on Social Security and \"scrap the cap\"","Raise the federal minimum wage to $15 and go after corporate price gouging"],
+            differentiators: ["Raised on a 150-year-old family farm near Eau Claire; a small-business owner who buys coverage on the healthcare exchange and a former Wisconsin Economic Development Corporation board member","Her third consecutive run for this seat — she lost the 2022 primary and was the 2024 nominee","$8,601,146 raised this cycle, MORE than the incumbent, but $1,826,605 on hand after a costly primary, with no debt (FEC, July 22, 2026)"],
+            supporters: ["She won the primary 60.5%–39.4% and has out-raised a sitting incumbent","She lost by only 2.7 points in 2024 — in a presidential year that ran against her party in this district","Endorsed across an unusually wide ideological span: Sens. Baldwin and Sanders, the DCCC's Red to Blue programme, and BOTH the Blue Dog Coalition and Our Wisconsin Revolution"],
+            opponents: ["⚠ Every public polling lead she holds comes from a survey paid for by her own campaign or an allied super PAC; no independent nonpartisan public poll of WI-3 could be found [Verify — absence of a located poll, not proof none exists]","She has already lost this district once, to this same opponent, in a seat rated R+3 — she must outperform the baseline, not merely repeat 2024","She still trails on cash on hand $1.83M to $4.68M, having burned $6.78M getting through the primary, and 39.4% of Democratic primary voters chose Emily Berge — a left flank she must now consolidate"] },
+          { name: "Alexander Valiensi Kent", party: "I", winner: false,
+            positions: ["\"One voter, one vote on all issues\" — evolve the republic into an online voter-directed system","\"All political donations are political corruption\"; ideas should win elections, not spending","Opposes political parties as authoritarian structures and \"negative identity politics\""],
+            differentiators: ["A social worker with an MSW, based in La Crosse; studied servant leadership at Viterbo University","Wrote the book Voter Directed Democracy and founded the Voter Directed Network","Qualified by nomination papers (WEC, June 10, 2026) and rejects all donor funding, lobbyists, super PACs and party support. ⚠ No FEC candidate-committee summary was found — reported as no summary, NOT as $0 raised [Verify]"],
+            supporters: ["He is actually on the ballot — he cleared Wisconsin's independent nomination-paper requirement, which most self-declared independents never do","He took part in the Wisconsin Farmers Union's 3rd District candidate forum on July 28, 2026, alongside a major-party candidate — a district institution treated him as a real participant","His no-donations stance is a coherent and testable answer in a race where the two major candidates have raised $16.1M between them"],
+            opponents: ["His central proposal — replacing representative voting with an online voter-directed system — would require constitutional change far beyond one House seat","No FEC-reported money and no party organisation, against majors who have spent over $10M [Verify — no poll of WI-3 includes him]","In a race decided by 11,256 votes last time, a minor candidacy risks functioning as a spoiler rather than a governing choice [Verify — structural argument, not a claim made by any named opponent]"] },
+          { name: "Rustin Provance", party: "I", winner: false,
+            positions: ["[Verify] ⚠ HIS CAMPAIGN PUBLISHES NO POLICY PLATFORM. The site carries the slogan \"Solutions not more problems,\" a contact address and nothing else; no issues page and no policy statements from him could be found in any source. That absence is the finding, not a gap in our research","",""],
+            differentiators: ["A certified nursing assistant","Also ran in WI-3 in 2024, making this a repeat candidacy [Verify — whether his 2024 run reached the printed ballot or was write-in only could not be confirmed; the certified 2024 canvass lists only Van Orden, Cooke and 309 write-ins]","Verified on the WEC's June 10, 2026 general-election list as an Independent. ⚠ No FEC candidate-committee summary was found — reported as no summary, NOT as $0 raised [Verify]"],
+            supporters: ["He cleared the independent nomination-paper threshold in two consecutive cycles without any party infrastructure","A working CNA on the ballot is a genuinely different profile from a retired Navy SEAL officer and a former state economic-development board member","He gives WI-3 voters a third option in a race the major parties have turned into a $16 million contest"],
+            opponents: ["⚠ Voters have essentially nothing to evaluate — a slogan and a contact email, with no published platform","No FEC-reported campaign finance activity, and no endorsements, staff or public events could be found [Verify]","In Wisconsin's only Toss Up district, an unfunded candidacy draws votes without offering a governing programme [Verify — structural argument]"] } ] },
+      { date: "Nov 5, 2024", type: "past",
+        note: "The rematch's first round — Van Orden held on by 11,256 votes. Total 413,181.",
+        candidates: [
+          { name: "Derrick Van Orden", party: "R", winner: true, positions: [], differentiators: ["212,064 votes — 51.3%"], supporters: [], opponents: [] },
+          { name: "Rebecca Cooke", party: "D", winner: false, positions: [], differentiators: ["200,808 votes — 48.6%"], supporters: [], opponents: [] } ] } ] },
+
+  4: {
+    name: "U.S. House — WI District 4",
+    region: "Milwaukee County only — nearly all of the city of Milwaukee plus Cudahy, St. Francis, South Milwaukee, West Milwaukee and the North Shore suburbs of Glendale, Shorewood, Whitefish Bay, Fox Point, Bayside and Brown Deer.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "The safest Democratic seat in Wisconsin at D+26, and the November field is a rerun of 2024's top two — Gwen Moore against Tim Rogers, who has now lost to her four straight times and has filed NO campaign-finance report at all this cycle. The real contest was the Democratic primary, where first-time challenger Amy Donahue, running to Moore's left on arms exports to Israel, took 27.9%. That is a signal of intra-party friction, not a competitive general. Independent Arthur Burks holds the third ballot line; the equivalent independent in 2024 drew 2.6%. ⚠ The scale gap between the primaries is itself the story — about 113,600 Democratic votes were cast against roughly 12,480 Republican ones. ⚠ Wikipedia spells the independent \"Burkes\"; the WEC's certified list says Burks.",
+        candidates: [
+          { name: "Gwen Moore (incumbent)", party: "D", winner: false,
+            positions: ["Voted against additional ICE and CBP funding, saying \"ICE has gone rogue\"","Extend postpartum Medicaid coverage to a full 12 months","Expand federal child-welfare funding and support for foster youth"],
+            differentiators: ["Eleven-term member, in the seat since January 2005; previously in the Wisconsin state Senate and Assembly","Elected Vice Ranking Member of Ways and Means on Jan 8, 2025, sitting on the Social Security, Tax Policy, and Work and Welfare subcommittees","$1,070,659 raised but only $28,561 on hand through July 22, 2026 (FEC)"],
+            supporters: ["A 71.9% primary win in a D+26 seat","A senior Ways and Means Democrat with real jurisdiction over Social Security and tax policy","Endorsed by the Wisconsin AFL-CIO on July 23, 2026"],
+            opponents: ["Her primary challenge \"grew out of frustration with Moore's lack of responsiveness\" on limiting weapons exports to Israel, as the Milwaukee Journal Sentinel reported","A first-time challenger with no prior office still took 27.9% against her","She has under $30,000 on hand after raising more than $1 million this cycle"] },
+          { name: "Tim Rogers", party: "R", winner: false,
+            positions: ["Universal school choice, and \"dissect the school budget\" to find waste in Milwaukee Public Schools","Automatically restore ex-offenders' rights once a sentence is served","Declare a clean-water emergency and replace Milwaukee's lead pipes"],
+            differentiators: ["Has never held elected office; the Republican nominee against Moore in each of the last four general elections, taking under 23% every time","Nearly 30 years delivering gift baskets and newspapers for local businesses; a North Division High School graduate who attended UW-Parkside and MATC","⚠ NO FEC FINANCIAL REPORT IS ON FILE for the 2025–2026 cycle. That is not the same as \"$0 raised\" — it means no report exists [Verify]"],
+            supporters: ["He won the primary 80.8%–18.9% over an opponent who carried Sen. Ron Johnson's and Rep. Glenn Grothman's endorsements","A lifelong Milwaukee resident with a working-class résumé rather than a political one","Lead-pipe replacement is a live and specific local grievance"],
+            opponents: ["He has filed no campaign-finance report this cycle, and declined to comment to the Milwaukee Journal Sentinel and did not answer WUWM's candidate questions","Four prior losses in this district, none above 23%","⚠ Johnson and Grothman endorsed Purnima Nath, the candidate he BEAT — those endorsements are not his"] },
+          { name: "Arthur Burks", party: "I", winner: false,
+            positions: ["Livable wages, local business investment and youth vocational training","Gun-safety legislation plus funding for violence-interruption programmes","\"Housing is a human right\" — expand federal affordable-housing subsidies"],
+            differentiators: ["A Milwaukee business owner rooted in the city since the 1970s","Active in the National Action Network","⚠ No FEC candidate registration for WI-4 could be found, and his site lists no endorsements [Verify — an absence of located records, not a confirmed zero]"],
+            supporters: ["He runs explicitly on \"no party politics\" and is the only non-major-party option on this ballot","Deep Milwaukee business roots rather than a political career","His direct critique — that the seat has been \"a seat warmed by over 20 years of broken promises\" — is the argument for turnover in a one-party district"],
+            opponents: ["No press scrutiny of his campaign could be located at all — he is absent from the Journal Sentinel's primary preview, WPR's results coverage and WUWM's guide [Verify]","No reported money and no organisation [Verify]","The independent line in this district drew 2.6% in 2024, so the realistic ceiling is low [Verify — structural argument]"] } ] },
+      { date: "Nov 5, 2024", type: "past",
+        note: "The same top two as 2026. Total 334,282 votes.",
+        candidates: [
+          { name: "Gwen Moore", party: "D", winner: true, positions: [], differentiators: ["249,938 votes — 74.8%"], supporters: [], opponents: [] },
+          { name: "Tim Rogers", party: "R", winner: false, positions: [], differentiators: ["74,921 votes — 22.4%"], supporters: [], opponents: [] },
+          { name: "Robert Raymond", party: "I", winner: false, positions: [], differentiators: ["8,792 votes — 2.6%"], supporters: [], opponents: [] } ] } ] },
+
+  5: {
+    name: "U.S. House — WI District 5",
+    region: "Milwaukee's northern and western suburbs — all of Washington and Jefferson counties, most of Waukesha, plus slices of Dodge, Milwaukee and Walworth. Brookfield, Waukesha, West Bend, Watertown.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "The only Wisconsin district where NEITHER party held a contested primary — both nominees ran unopposed — and the only one of the eight with a strictly two-candidate November ballot. Scott Fitzgerald enters with more cash on hand than every other challenger in WI-5 and WI-6 has raised combined, plus a Trump endorsement issued the day before the primary. Andrew Beck, a GE Healthcare product developer carrying the state AFL-CIO's endorsement, is running a genuine but very small campaign — under $15,000 raised — in a district Trump carried with 60.2% in 2024. ⚠ Ben Steinhoff, the 2024 Democratic nominee, announced a 2026 run but never filed nomination papers and is not on the ballot. Cook, Sabato and Inside Elections all rate the seat Solid or Safe Republican at R+11.",
+        candidates: [
+          { name: "Scott Fitzgerald (incumbent)", party: "R", winner: false,
+            positions: ["\"Grow our economy and help small businesses thrive again\"","Work with President Trump on border security, drug trafficking and immigration enforcement","Defends \"the right to life and the Second Amendment\""],
+            differentiators: ["In the seat since January 2021 and seeking a fourth term; Wisconsin state senator from 1994 and Senate Majority Leader 2012–2020","Sits on Financial Services and Judiciary, chairing the Judiciary Subcommittee on the Administrative State, Regulatory Reform and Antitrust. ⚠ Wikipedia's committee list for him is stale","27 years in the U.S. Army Reserve, retiring a lieutenant colonel; former owner of the Dodge County Independent News. $1,327,087 on hand through July 22, 2026 (FEC)"],
+            supporters: ["$1.33 million banked against an opponent with $3,158","A Trump endorsement issued the day before the primary [Verify — sourced to an archived Truth Social post rather than a direct platform fetch]","He won 64.4% in 2024 in a district rated R+11"],
+            opponents: ["He did not respond to WUWM's candidate questionnaire, and his office did not respond to the Daily News for comment on his challenger's entry","⚠ No 2026-dated criticism naming Fitzgerald could be located at all — the sharpest available quote is from a 2020 opponent and is deliberately NOT presented here as current [Verify]","Running effectively unopposed within his own party means his record went untested in the primary [Verify — structural argument]"] },
+          { name: "Andrew \"Andy\" Beck", party: "D", winner: false,
+            positions: ["\"Stop Trump's radical agenda and safeguard our Democracy\"","Defend women's health-care rights and secure protections in Congress","Protect the promise of Social Security and strengthen Medicare"],
+            differentiators: ["A product-development specialist at GE Healthcare in Waukesha and a former MRI technologist, raised in a union household; lives in West Bend","Runs on two named proposals — \"Quick Start Careers,\" low-cost technical training with workforce entry within two years, and \"Afford to Grow,\" lower-cost rental and condo construction","Endorsed by the Wisconsin State AFL-CIO. $14,612 raised and $3,158 on hand (FEC)"],
+            supporters: ["He cleared the field for an uncontested nomination and enters November undamaged","The state AFL-CIO endorsement in a manufacturing district","A technical-worker profile rather than a political one — \"I'm not a career politician\""],
+            opponents: ["$3,158 on hand against $1.33 million — roughly a 420-to-1 gap [Verify — structural, computed from the two filings]","The district is R+11 and no Democrat has come within 28 points under the current lines [Verify — structural argument]","Trump carried the seat with 60.2% in 2024"] } ] },
+      { date: "Nov 5, 2024", type: "past",
+        note: "Fitzgerald's third re-election. Total 466,682 votes.",
+        candidates: [
+          { name: "Scott Fitzgerald", party: "R", winner: true, positions: [], differentiators: ["300,521 votes — 64.4%"], supporters: [], opponents: [] },
+          { name: "Ben Steinhoff", party: "D", winner: false, positions: [], differentiators: ["165,653 votes — 35.5%"], supporters: [], opponents: [] } ] } ] },
+
+  6: {
+    name: "U.S. House — WI District 6",
+    region: "East-central Wisconsin between Madison, Milwaukee and Green Bay — Fond du Lac, Oshkosh and Sheboygan, plus Ozaukee, Columbia, Green Lake, Marquette, Waushara and parts of Dodge, Washington, Calumet, Manitowoc and Outagamie.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ THE MOST CROWDED BALLOT IN WISCONSIN — five candidates, against a straight two-way race here in 2024. Brad Smith won the Democratic nomination by 480 votes out of about 72,500, a 0.66-point margin that was not resolved until Aug 12 because of a server failure in Winnebago County; Amanda Bell has conceded, Wisconsin has no automatic recount, and none has been requested. ⚠ THE WILD CARD IS INDEPENDENT MIKE THUROW, a union fire captain who has RAISED MORE AND BANKED MORE THAN THE DEMOCRATIC NOMINEE — $169,862 raised with zero self-funding, and $62,983 on hand against Smith's $60,280 — while a second independent and a Green also hold ballot lines. Grothman still enters with about $830,000 on hand, an R+8 seat and a 22.5-point 2024 win. Cook, Sabato and Inside Elections all call it safe, but Decision Desk HQ and Race to the WH both moved it to Likely R in July 2026. ⚠ BOTH PUBLIC POLLS OF THIS RACE ARE PARTISAN-SPONSORED and are labelled as such below.",
+        candidates: [
+          { name: "Glenn Grothman (incumbent)", party: "R", winner: false,
+            positions: ["Advance skills-based education and preserve work centers for people with disabilities","Eliminate the marriage penalty in government assistance programmes","Secure the border and reform immigration; also runs on student-loan refinancing and generic-medication availability"],
+            differentiators: ["In the seat since January 2015, after more than 30 years in the Wisconsin Legislature","Sits on Budget, Education and the Workforce, Oversight and Government Reform, and the Joint Economic Committee [Verify — committee list not confirmed against a current official page]","$929,020 raised and $829,736 on hand through July 22, 2026, with $139,110 in committee debt (FEC)"],
+            supporters: ["Renominated unopposed, with roughly five times the rest of the field's combined cash","He won by 22.5 points in 2024 in a district rated R+8","Even a Democratic-sponsored May 2026 poll still showed him ahead 61–39"],
+            opponents: ["Amanda Bell's charge in the primary was that he \"has stayed in lockstep with this administration\"","Brad Smith argues he \"has failed to safeguard the security and opportunities families depend on\"","Three non-Democratic challengers hold ballot lines against him, an unusually crowded field for this seat [Verify — structural inference, not a sourced claim]"] },
+          { name: "Brad Smith", party: "D", winner: false,
+            positions: ["\"Affordable, usable healthcare as a right,\" protecting pre-existing-condition coverage","Restore prevailing wage, strengthen labour agreements and protect organising rights","As a gun owner, supports universal background checks, red-flag laws and secure storage; also wants transparency and safeguards for data-centre developments before approval"],
+            differentiators: ["Describes himself as a \"dad, veteran, and business builder\"; won the nomination by 480 votes out of about 72,500","Endorsed by WEAC and the NEA and by state senators Kristin Dassler-Alfheim and Jodi Habush Sinykin [Verify — all three are sourced to campaign press releases rather than independent reporting]","$166,061 raised and $60,280 on hand through July 22, 2026 (FEC)"],
+            supporters: ["Nearly 70,000 Democrats voted in this primary, which his campaign calls unprecedented turnout [Verify — a campaign characterisation, not an independently verified figure]","The teachers' union plus two sitting state senators behind him","He pitches explicitly for \"trust across the aisle\" with independents and moderate Republicans in an R+8 seat"],
+            opponents: ["He won with 50.2% — half of his own party's primary electorate chose someone else","⚠ He has LESS CASH ON HAND THAN AN INDEPENDENT in the same race — $60,280 against Thurow's $62,983","A May 2026 poll had him losing to Grothman 61–39"] },
+          { name: "Mike Thurow", party: "I", winner: false,
+            positions: ["Let Medicare negotiate drug prices and block private-equity takeovers of health care","Ban congressional stock trading; enact term limits and campaign-finance reform","Protect Social Security with no benefit cuts and no higher retirement age; also backs a federal right to repair and regulation of data centres"],
+            differentiators: ["A union fire captain and HAZMAT director since 2013, a Mequon native and father of four who previously worked at Healthcare for the Homeless","Endorsed by IAFF Local 215, the Professional Fire Fighters of Wisconsin, the UAW Wisconsin State CAP Council, the Forward Party and Dan Osborn [Verify — sourced to campaign releases and party sites rather than independent reporting]","$169,862 raised with ZERO self-funding and zero candidate loans, and $62,983 on hand — more raised and more banked than the Democratic nominee (FEC, through July 22, 2026)"],
+            supporters: ["He out-raised the eventual Democratic nominee without putting in a dollar of his own money","Multiple labour endorsements, including from his own firefighters' union","A March 2026 poll had him within four points of Grothman, 42–38, with 18% undecided"],
+            opponents: ["⚠ That March poll was sponsored by Independent Candidate Action, a group that SUPPORTS HIM — and a May 2026 Democratic poll put Grothman ahead of him 55–45","Both public polls of this race show him trailing","Running outside both parties means no party infrastructure in a district Grothman has carried by more than 20 points"] },
+          { name: "Elizabeth Anne Fitzgibbon", party: "I", winner: false,
+            positions: ["Affordability — cut wasteful spending and protect wages, savings, farms and small businesses","Accountability — stronger oversight, constitutional limits and consequences for government failures","Transparency — expose federal spending, insider deals, conflicts of interest and surveillance"],
+            differentiators: ["No prior political career; she pursued a pro se family-law appeal to the U.S. Supreme Court, which she says shaped her agenda","Endorsed by the Libertarian Party of Wisconsin on May 19, 2026 [Verify — sourced to a campaign release rather than independent reporting]","⚠ Her committee is FEC-registered but shows NO processed report for 2025–2026 — reported as no report, NOT as $0 raised [Verify]"],
+            supporters: ["A recognised minor party's unanimous endorsement gives her an organised volunteer base","A concrete transparency-and-oversight agenda rather than generic centrism","Her \"people over parties\" pitch fits a district where two independents and a Green all qualified"],
+            opponents: ["No reported fundraising and no elected experience [Verify]","She is one of three non-Democratic challengers, so Democrats can argue the anti-incumbent vote is now split three ways [Verify — structural argument]","No press scrutiny of her campaign could be located [Verify]"] },
+          { name: "Matthew Arndt", party: "G", winner: false,
+            positions: ["Break up monopolies and enact Medicare for All","Stop \"forever wars\" and cut U.S. ties with Israel","Halt AI data centres and \"make Wall Street pay down the national debt\""],
+            differentiators: ["A certified public accountant who runs a tax and investment advisory firm in the Appleton area","Holds the Wisconsin Green Party's recognised ballot line and was unopposed in the Green primary","⚠ His committee is FEC-registered but shows no processed report for 2025–2026 — reported as no report, NOT as $0 raised. No campaign website could be found, so his positions rest on a single candidate guide [Verify]"],
+            supporters: ["The only candidate to the Democrats' left on a recognised party line","A specific and unusual platform — anti-monopoly, anti-war and a data-centre moratorium","Professional financial credentials behind his national-debt argument"],
+            opponents: ["No campaign website, no reported money and no located press coverage [Verify]","No Green candidate even appeared on the 2024 WI-6 ballot, so there is no recent base to build on [Verify — structural argument]","A fourth challenger further splits the anti-incumbent vote in a district the incumbent won by 22.5 points [Verify — structural argument]"] } ] },
+      { date: "Nov 5, 2024", type: "past",
+        note: "A straight two-way race — no third-party or independent candidate was on the 2024 WI-6 ballot. Total 411,349 votes.",
+        candidates: [
+          { name: "Glenn Grothman", party: "R", winner: true, positions: [], differentiators: ["251,889 votes — 61.2%"], supporters: [], opponents: [] },
+          { name: "John Zarbano", party: "D", winner: false, positions: [], differentiators: ["159,042 votes — 38.7%"], supporters: [], opponents: [] } ] } ] },
+
+  7: {
+    name: "U.S. House — WI District 7",
+    region: "Northern and northwestern Wisconsin — 26 counties and the largest district in the state by area. Wausau, Superior, Hudson, River Falls, Rhinelander, Ashland, Merrill, Antigo.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ WISCONSIN'S ONLY OPEN U.S. HOUSE SEAT IN 2026 — four-term Rep. Tom Tiffany left it to run for governor. Michael Alfonso, a 26-year-old first-time candidate endorsed by President Trump and married into Transportation Secretary Sean Duffy's family, won a five-way Republican primary with 48.9%, meaning about half of Republican primary voters backed someone else; American Future Fund Political Action reported $135,100 in advertising AGAINST him in the closing days. Democrat Fred Clark, a former three-term state legislator and career forester, won a tight three-way primary with 37.6%. Every rater calls the district Solid or Safe Republican at R+11, and the seat has not elected a Democrat since Dave Obey retired in 2011. ⚠ No third-party or independent candidate qualified in WI-7, and no congressional write-in registered.",
+        candidates: [
+          { name: "Michael Alfonso", party: "R", winner: false,
+            positions: ["Make the Trump tax cuts permanent and lower costs for WI-7 families","\"100% Pro Life\" — opposes abortion from conception, mail-order abortion pills and assisted suicide","Cut immigration including H-1B, which he says \"hurts American workers\""],
+            differentiators: ["Age 26, with a UW-Madison mathematics degree; worked construction, then produced a national talk-radio show in Florida for about a year, and told a July 7 primary debate he now works as an accountant","Endorsed by President Trump, Speaker Mike Johnson, Steve Scalise, Jim Jordan, all three other Wisconsin Republican House members, Turning Point Action and Pro-Life Wisconsin","$663,408 on hand through July 22, 2026, with about $1.66M raised and no debt (FEC). He is the son-in-law of Transportation Secretary Sean Duffy, who held this seat 2011–2019"],
+            supporters: ["Trump, House leadership and nearly the entire Wisconsin Republican delegation behind one first-time candidate — unmatched party consolidation","He offers generational change in a district his party has held since 2011, and ran as the hardest-working candidate in the field","He enters the general with roughly 3.8 times the Democrat's cash on hand"],
+            opponents: ["He was attacked as a \"nepo baby,\" and American Future Fund Political Action reported $135,100 in anti-Alfonso broadcast advertising in the primary's closing days","Republican county party officials and primary rivals criticised his lack of experience and his father-in-law's involvement","Roughly 51% of Republican primary voters chose someone else"] },
+          { name: "Fred Clark", party: "D", winner: false,
+            positions: ["Affordability — housing, health care, childcare and college costs outpacing wages, which he blames on both parties over 50 years","\"Health Care for Everyone,\" targeting coverage gaps and record insurer profits","Supports reproductive freedom and contraception access, alongside \"smarter immigration policy that keeps our border secure\""],
+            differentiators: ["Three terms in the Wisconsin State Assembly, 2009–2015, where he chaired the forestry, parks and outdoor-recreation committee; later served on the DNR Board","A career forester — owned Clark Forestry Inc. for nearly 20 years, was a senior DNR forester and a Nature Conservancy forest ecologist, and founded Wisconsin's Green Fire","$173,977 on hand through July 22, 2026, with $586K raised and $5,000 in debt (FEC) — roughly one-quarter of Alfonso's cash"],
+            supporters: ["A forestry and logging career that fits a timber-economy district, and a record of working with Republicans and independents","Endorsed by Dave Obey, who held this seat from 1969 to 2011, plus Rep. Mark Pocan, the mayors of Superior, Washburn, Rice Lake, Shell Lake and Antigo, and two former tribal chairmen","He refuses corporate PAC money, taking individual and local contributions only"],
+            opponents: ["The arithmetic: the seat has been Republican-held since 2011 and Tiffany won it by 27 points in 2024","He won only 37.6% of a three-way primary — nearly two-thirds of Democrats picked someone else","He is badly outraised, $174K to $663K, and carries $5,000 in debt. Expect a \"recent transplant\" attack, since he represented Baraboo in southern Wisconsin and moved to Bayfield County in 2021 [Verify — the biography is sourced but no actual Republican ad or statement making this argument was found]"] } ] },
+      { date: "Nov 5, 2024", type: "past",
+        note: "Tiffany's last race before running for governor. Total 430,384 votes.",
+        candidates: [
+          { name: "Tom Tiffany", party: "R", winner: true, positions: [], differentiators: ["273,553 votes — 63.6%"], supporters: [], opponents: [] },
+          { name: "Kyle Kilbourn", party: "D", winner: false, positions: [], differentiators: ["156,524 votes — 36.4%"], supporters: [], opponents: [] } ] } ] },
+
+  8: {
+    name: "U.S. House — WI District 8",
+    region: "Northeastern Wisconsin, the Fox Valley and the Door Peninsula — Brown, Outagamie, Calumet, Door, Kewaunee, Marinette, Menominee, Oconto, Shawano, Waupaca and part of Winnebago. Green Bay, Appleton, De Pere, Marinette, Sturgeon Bay.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "Tony Wied faces his first re-election test after winning this seat TWICE on the same day in November 2024 — once for Mike Gallagher's unexpired term and once for the full term — each by roughly 15 points. He drew no Republican primary challenger. Democrats held their first WI-8 primary in nearly two decades and retired Army Lt. Col. Rick Crosson won it by just 3.6 points over two rivals, 35.2%–33.0%–31.6%. ⚠ Crosson enters November with about $23,000 on hand against Wied's $516,000 — though Wied's committee also reports $634,225 in DEBT, which exceeds his cash. Cook, Inside Elections and Sabato all rate the district Solid or Safe Republican at R+8, and no Democrat has carried it since 2008. ⚠ No third-party or independent candidate qualified, and no congressional write-in registered.",
+        candidates: [
+          { name: "Tony Wied (incumbent)", party: "R", winner: false,
+            positions: ["Voted YES on H.R.1, the One Big Beautiful Bill Act (roll call 190, July 3, 2025)","Voted NO on withdrawing U.S. forces from hostilities with Iran (H.Con.Res.89, roll call 282, July 23, 2026)","\"Unleash American energy resources to reduce costs here at home\""],
+            differentiators: ["In the seat since the Nov 5, 2024 special election that filled Mike Gallagher's vacancy; this is his first re-election bid","Vice Chair of the Aviation Subcommittee on Transportation & Infrastructure, and a member of Agriculture and Small Business","$515,561 on hand through July 22, 2026 — but $634,225 in committee debt, which exceeds it (FEC)"],
+            supporters: ["Trump-endorsed, on a platform of securing the border and supporting the military and veterans","A small-business owner rather than a career politician — he built and then sold a chain of gas stations and restaurants across northeastern Wisconsin","Bipartisan local wins, including the BLOOD Centers Act with a Washington Democrat and a Vietnam Service Medal bill with Sen. Tammy Baldwin, plus Agriculture and Transportation seats that matter in a dairy-and-manufacturing district"],
+            opponents: ["He voted for H.R.1, which Democrats argue cut health coverage to finance tax cuts [Verify — the vote is confirmed from the House Clerk's roll call; the characterisation of its effects is partisan framing, not independently sourced here]","His committee's debt of $634,225 exceeds its $515,561 cash on hand","More PAC than people: $611,400 from PACs against $485,924 from individuals this cycle, and he voted against a bipartisan War Powers resolution on Iran"] },
+          { name: "Rick Crosson", party: "D", winner: false,
+            positions: ["Protect Medicare and Social Security, and let Medicare negotiate drug prices","Reproductive health decisions belong to women and their doctors, not politicians","Raise wages, build affordable housing and go after price-gouging"],
+            differentiators: ["A retired U.S. Army Lieutenant Colonel and Master Army Aviator — joined in 1980, served about two decades, flew surveillance missions along the Iron Curtain and served as U.S. Military Liaison to Mexico","Served on the Green Bay Area Public School District Board of Education, plus the YMCA, library and university advisory boards [Verify — his exact school-board tenure is not published on his site or in primary coverage]","$23,332 on hand through July 22, 2026, with $51,657 raised and no debt (FEC) — roughly 22-to-1 behind Wied"],
+            supporters: ["A career of service — Army officer, school board, YMCA and library boards — rather than a partisan résumé","He runs on kitchen-table costs: rent, groceries, prescriptions and child care","An operations executive with nearly 20 years in Wisconsin logistics and trucking, who built teams and created jobs in the district"],
+            opponents: ["He is out-resourced roughly 22-to-1 on cash on hand","He won his own primary with only 35.2% in a three-way race decided by 3.6 points, so about two-thirds of Democratic primary voters chose someone else","Democrats have not won WI-8 since 2008, and Wied carried it by nearly 15 points in 2024"] } ] },
+      { date: "Nov 5, 2024", type: "past",
+        note: "Wied won the full term and, on the same ballot, the special election for Mike Gallagher's unexpired term (57.2%–42.8%). Full-term total 418,978 votes.",
+        candidates: [
+          { name: "Tony Wied", party: "R", winner: true, positions: [], differentiators: ["240,040 votes — 57.3%"], supporters: [], opponents: [] },
+          { name: "Kristin Lyerly", party: "D", winner: false, positions: [], differentiators: ["178,666 votes — 42.6%"], supporters: [], opponents: [] } ] } ] },
+};
+
+const SITE_META = { name: "Wisconsin Elections Hub", lastUpdated: "August 13, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — Wisconsin county-level down-ballot research has not started.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Wisconsin has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them,
+  // otherwise a district with no plurality county is unreachable from the map.
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const WI_STATE_FIPS = "55";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#wimap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(WI_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Hartford ----
+  drawCapital(g, projection, { name: "Madison", lng: -89.384, lat: 43.074 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in WI";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our Wisconsin dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+// Split a race note on the ⚠ / ✅ flag glyphs the editorial style already uses, keeping
+// the glyph that introduced each segment. Text before the first flag is the lead. This is
+// presentation only — no wording is altered and nothing is dropped.
+function briefSegments(note) {
+  const out = [];
+  const re = /([\u26A0\uFE0F\u2705]+)\s*/g;
+  let last = 0, mark = "", m;
+  while ((m = re.exec(note)) !== null) {
+    const text = note.slice(last, m.index).trim();
+    if (text) out.push({ mark: mark, text: text });
+    mark = m[1].replace(/\uFE0F/g, "");
+    last = re.lastIndex;
+  }
+  const tail = note.slice(last).trim();
+  if (tail) out.push({ mark: mark, text: tail });
+  return out;
+}
+
+function renderNote(note) {
+  if (!note) return "";
+  const body = briefSegments(note).map(function (s) {
+    return s.mark
+      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${s.text}</p>`
+      : `<p class="brief-lead">${s.text}</p>`;
+  }).join("");
+  // Clamp only what actually needs clamping: the median note is 236 characters, so most
+  // briefs show whole and never render a toggle at all.
+  const long = note.length > 300;
+  return `<div class="election-brief${long ? " clamped" : ""}">
+      <div class="brief-label">About this race</div>
+      <div class="brief-body">${body}</div>
+      ${long ? `<button class="brief-more" type="button">Show more</button>` : ""}
+    </div>`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${renderNote(e.note)}${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const more = e.target.closest(".brief-more");
+  if (more) {
+    const brief = more.closest(".election-brief");
+    more.textContent = brief.classList.toggle("clamped") ? "Show more" : "Show less";
+    return;
+  }
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>

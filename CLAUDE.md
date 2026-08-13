@@ -199,7 +199,26 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of August 12, 2026)
+## Current state (as of August 13, 2026)
+
+- **WI (full, added Aug 13, 2026):** built the day after Wisconsin's Aug 11 primary, so every primary figure is
+  UNOFFICIAL — ⚠ **Wisconsin has NO statewide election-night reporting system** (the WEC says so itself), the
+  state canvass is due on or before **Aug 26** under Wis. Stat. § 7.70(3)(a), and as of this build the WEC's
+  results index still ended at the 2026 Spring Election. Statewide: **OPEN Governor** (Evers filed noncandidacy
+  May 22 — first open seat since 2010; Crowley beat democratic socialist Francesca Hong by **3,796 votes**,
+  39.81–39.33, after polling had shown Hong well ahead; Tiffany took 95.32% and gives up WI-7), AG (Kaul–Toney,
+  a 2022 rematch), **OPEN Secretary of State** (first since 1978 with no incumbent running; the GOP nominee
+  campaigns on abolishing the WEC, an office that has NO election-administration role), Treasurer (Leiber is the
+  **only Republican holding any Wisconsin statewide office**), and **THREE constitutional amendments — not two**,
+  which is where Wikipedia is wrong. **NO 2026 U.S. Senate race** (verified negative — Wisconsin has no Class II
+  seat) and **no judicial race in November** (Wisconsin elects judges in the SPRING; the Apr 7, 2026 Supreme Court
+  race is carded as history). Districts: all 8. **WI-3 is the only Toss Up** — a Van Orden–Cooke rematch decided
+  by 11,256 votes in 2024, with TWO ballot-qualified independents. **WI-7 is the state's only open House seat.**
+  ⚠ **WI-2 has exactly ONE candidate** — no Republican, third-party or independent filed, and no write-in
+  registered, so Pocan's primary settled the seat. Map: the *Johnson v. WEC* (2022 WI 14) plan, unchanged; both
+  2026 challenges were dismissed and the state Supreme Court took the appeal but DENIED expedition. No LOCAL_RACES.
+
+## Superseded — current state as of August 12, 2026
 
 - **NC (full):** 2024 statewide results (Gov, Lt Gov, AG, Supreme Court Seat 6) + all 14 US House
   districts (2024 + 2026) + 2026 US Senate (Cooper vs. Whatley vs. Bray, rated Lean D). NC primary
@@ -509,6 +528,20 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
    State election-night portals are almost always a predictable URL plus a JSON or ASPX endpoint behind the
    JavaScript, and they are the authoritative source anyway.
 
+22. **⚠ `tools/clone-state.js` WAS BROKEN BY LINE ENDINGS AND WOULD HAVE BLOCKED EVERY FUTURE STATE BUILD.**
+   Found Aug 13, 2026 on the first clone attempt for Wisconsin. `spliceBlock` located each data block by comparing
+   a line to the literal string `"};"` — but **this checkout is CRLF**, so every line actually reads `"};\r"` and the
+   comparison never matched. The tool did exactly what lesson #16 praised it for: it **refused to write the page**
+   and named the block it could not terminate, rather than silently emitting a broken file.
+   ➤ **Fix:** terminators are now stripped for comparison only (`l.replace(/\r$/, "")`), applied to the declaration
+   search, the block terminator and the comment-walk-back alike; and the donor's own dominant line ending is
+   reapplied to the spliced-in block so a clone does not end up with mixed endings.
+   ➤ **Why it appeared only now:** earlier builds ran when the pages were LF. Nothing about the tool changed — the
+   *files* did, most likely through routine Windows-side edits. **A tool that depends on file formatting can rot
+   without anyone touching it**, which is an argument for keeping its failure loud rather than making it lenient.
+   ➤ Related: `git` reports `LF will be replaced by CRLF` when writing these files. That warning is normal here and
+   is not a sign of corruption.
+
 ## Testing (`tests/` — plain Node.js, zero dependencies)
 
 Requires Node.js (any recent LTS). Run the whole suite from the site root:
@@ -754,7 +787,20 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
    built once and never re-derived. **Every legacy page's map deserves the same audit nc.html just got** — sc.html and
    ga.html are the oldest and were built the same week under the same assumptions.
 
-**Queue status (as of Aug 12, 2026): every numbered item 1–9 is COMPLETE.** Item 4 (voices) read
+**Queue status (as of Aug 13, 2026): every numbered item 1–10 is COMPLETE and the owner has added nothing new.**
+Item 4 (voices) read **0 missing / 1,037 candidates across 35 pages** at the end of the Aug 13 run — Wisconsin
+shipped with 32 candidates and 0 gaps. The landing page was reviewed end-to-end: its prose is now fully
+state-agnostic (the Aug 12 contribution-form change removed the last passage that had to be re-synced on every
+build), so only the legend count and the footer month needed touching — 34 → **35 states**, footer already
+August 2026. What remains is maintenance: every new state built WITH voices, the time-sensitive calendar, the
+incumbent-status sweep, and the [Verify] backlog.
+⚠ **The freed time went to state builds and to two LIVE DEFECTS on published pages this run** — oh.html was
+carding a Libertarian who had withdrawn (the replacement, Nathan Weise, was certified Aug 10), and sc.html had
+the Aug 25 runoff's voter-eligibility rule INVERTED and marked unresolved when the State Election Commission had
+settled it on July 15. Neither was a [Verify] marker, so neither was visible to `verify-report.js` — the same
+structural blind spot as lesson #11.
+
+Superseded: **Queue status (as of Aug 12, 2026): every numbered item 1–9 is COMPLETE.** Item 4 (voices) read
 **0 missing / 1,005 candidates across 34 pages** at the end of the Aug 12 run — Alabama shipped with 41 candidates
 and 0 gaps. The landing page was reviewed in a REAL BROWSER this run (see lesson #18b for the method): Alabama
 renders gold, only FL and DC remain in the lighter tier, the legend reads "Fully built (34 states)", and the
@@ -819,12 +865,23 @@ time-sensitive calendar, and the incumbent-status sweep.
    sheriff primary; Thompson and Hewett won commission primaries; Somers won DA-15 primary).
 3b. **East-coast full buildout — RESUMED by owner July 14, 2026** (was paused July 6 after 7 states:
    NC SC GA VA MD DE NJ; statewide + House; county LOCAL_RACES still to do for all).
-   **Built bloc = 34 as of Aug 12, 2026** (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA WV OH KY IN IA IL MS AR NE NM CO
-   OR NV SD ID MT PA TN HI **AL**). ⚠ **Only DC and FL remain in the lighter "marquee" tier.** **FL unlocks after its
+   **Built bloc = 35 as of Aug 13, 2026** (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA WV OH KY IN IA IL MS AR NE NM CO
+   OR NV SD ID MT PA TN HI AL **WI**). ⚠ **Only DC and FL remain in the lighter "marquee" tier.** **FL unlocks after its
    Aug 18, 2026 primary — that is the next build, and its map ALSO changed post-*Callais*, so apply lesson #19.**
    **DC still needs the special no-county page model.** After FL the remaining unbuilt states are the western and
-   midwestern block (TX CA AZ NV-done WA OR-done MN WI MI MO LA OK KS UT WY AK etc.) — **MI has banked research**
-   (El-Sayed beat Stevens for the Senate nomination Aug 5; Benson vs. James for governor; called, not certified).
+   midwestern block (TX CA AZ WA MN MI MO LA OK KS UT WY AK ND etc.).
+   **MINNESOTA IS THE NEXT BUILD AND IS MOSTLY DONE — see the banked section below.** Its county table and all eight
+   districts were fully researched and written on Aug 13, 2026; only the STATEWIDE block was outstanding when that
+   run closed, so the page was deliberately NOT wired live. Finish it first next run.
+   ⚠ **MI is still gated.** Its Democratic Senate primary WAS called for Abdul El-Sayed on Aug 5 (AP; Stevens conceded
+   the same morning; margin 14,926 votes / 0.975%, about 10× the 0.1% automatic-recount threshold, and no recount
+   window has legally opened). But **nothing is certified**: county canvasses were due Aug 18 and the Board of State
+   Canvassers' Aug 17 special-meeting agenda contains NO certification item, with the Aug 24 agenda unposted as of
+   Aug 13. Governor is set (Benson vs. James) and the congressional map is unchanged from 2024 (the MICRC is dormant;
+   *Agee v. Benson* touched only state-legislative districts). ⚠ **MI-08 must be handled before publishing Michigan:**
+   Republican voters nominated **Thomas Smith, who had suspended his campaign on July 16**, over the Trump-endorsed
+   candidate; the SoS says the top vote-getter is certified regardless, and whether Smith accepts or the party
+   replaces him is unresolved. **Recheck Aug 18 and Aug 24.**
    **Owner's standing directive (updated July 20, 2026): build MULTIPLE new states per run; the task now runs
    DAILY at 8am** (switched from weekly on July 20, 2026 after the owner restocked Netlify credits). Each run,
    complete as many full, verified states as you can — aim for 2–4, sized to complexity (on a daily cadence,

@@ -85,6 +85,10 @@ const STATE_PAGES = [
   // and the county plurality) and AL-6 (the southern suburbs), so it carries `ds` and this count
   // guards the multi-district merge on the 2023 legislature map now in force.
   { page: "al.html", countyCount: 67,  sampleFips: "01073", sampleName: "Jefferson",    expectedRaces: 22 },
+  // Milwaukee is deliberately the WI sample: it is split THREE ways (WI-4 holds 78.4% of it and
+  // sits ENTIRELY inside it, with WI-1 and WI-5 reaching in), so it carries ds:[1,4,5] and this
+  // count (6 statewide + 3 districts x 2 races) guards the multi-district merge.
+  { page: "wi.html", countyCount: 72,  sampleFips: "55079", sampleName: "Milwaukee",    expectedRaces: 12 },
 ];
 
 for (const cfg of STATE_PAGES) {
