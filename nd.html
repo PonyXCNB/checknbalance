@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>North Dakota Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every ND election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #ndmap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  /* ---- Race brief (the context note) ----
+     Lives INSIDE the expanded panel only. A collapsed card shows the pill, date, office
+     and candidate count and nothing else, so a county's ballot reads as a clean list.
+     Owner-reported twice on Aug 12, 2026: as a header element these notes — 2,187
+     characters at the extreme, and 30% of them opening with a ⚠ flag — buried the
+     candidate data the page exists to show. Set in roman, not italic: extended italic
+     body copy at 12.5px is the thing that read as 'terrible'. Long briefs clamp to about
+     four lines behind a Show more toggle so they never crowd out the cards below. */
+  .election-brief {
+    margin: 2px 0 18px;
+    padding: 12px 16px 13px 17px;
+    border-left: 2px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    background: linear-gradient(90deg, rgba(232,217,184,.30), rgba(232,217,184,0) 94%);
+  }
+  .brief-label {
+    font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); font-weight: 700; margin-bottom: 7px;
+  }
+  .brief-body { font-size: 12.5px; line-height: 1.62; color: var(--ink-soft); }
+  .brief-body p + p { margin-top: 7px; }
+  .brief-lead { color: var(--ink); }
+  /* Flag glyphs hang in the margin so the text block keeps a straight left edge. */
+  .brief-flag { position: relative; padding-left: 21px; }
+  .brief-mark { position: absolute; left: 0; top: 0; font-size: 11px; color: var(--gold-deep); }
+  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; }
+  .brief-more {
+    margin-top: 9px; padding: 0;
+    background: none; border: none; cursor: pointer;
+    font-family: var(--sans); font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-deep);
+    border-bottom: 1px solid var(--gold-soft);
+  }
+  .brief-more:hover { border-bottom-color: var(--gold); }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">ND</div>
+      <div class="brand-text">
+        <span class="brand-name">North Dakota Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every North Dakota <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 53 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">53</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>1</em></div><div class="stat-label">U.S. House Seat</div></div>
+    <div class="stat"><div class="stat-num"><em>10</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of North Dakota…</div>
+      <svg id="ndmap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>ND Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">July 22, 2026</span><br>
+      Sources: North Dakota Secretary of State — the official election-results API at api.resultsnd.sos.nd.gov (June 9, 2026 primary, certified by the State Canvassing Board on June 24, 2026), the candidate calendar and the measures-on-ballot page (sos.nd.gov); North Dakota Constitution art. V (ndlegis.gov); U.S. Senate senators directory (senate.gov); U.S. Census Bureau 2020 county x congressional-district relationship file; fedorchak.house.gov; North Dakota Monitor; KFGO; InForum; FEC.</div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every ND county (all in the single at-large district)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- County -> U.S. House district (all 53 North Dakota counties) -----
+// North Dakota elects a single AT-LARGE U.S. Representative, so every county sits in the same
+// district and there are no split counties. County list and FIPS codes from the U.S. Census
+// Bureau's 2020 county x congressional-district relationship file for the 119th Congress
+// (tab20_cd11920_county20_st38.txt), which reports North Dakota as one district, code 00.
+// The at-large seat is keyed as district 1 here, the same convention vt.html uses.
+const COUNTIES = {
+  "38001": { n: "Adams", d: 1 },
+  "38003": { n: "Barnes", d: 1 },
+  "38005": { n: "Benson", d: 1 },
+  "38007": { n: "Billings", d: 1 },
+  "38009": { n: "Bottineau", d: 1 },
+  "38011": { n: "Bowman", d: 1 },
+  "38013": { n: "Burke", d: 1 },
+  "38015": { n: "Burleigh", d: 1 },
+  "38017": { n: "Cass", d: 1 },
+  "38019": { n: "Cavalier", d: 1 },
+  "38021": { n: "Dickey", d: 1 },
+  "38023": { n: "Divide", d: 1 },
+  "38025": { n: "Dunn", d: 1 },
+  "38027": { n: "Eddy", d: 1 },
+  "38029": { n: "Emmons", d: 1 },
+  "38031": { n: "Foster", d: 1 },
+  "38033": { n: "Golden Valley", d: 1 },
+  "38035": { n: "Grand Forks", d: 1 },
+  "38037": { n: "Grant", d: 1 },
+  "38039": { n: "Griggs", d: 1 },
+  "38041": { n: "Hettinger", d: 1 },
+  "38043": { n: "Kidder", d: 1 },
+  "38045": { n: "LaMoure", d: 1 },
+  "38047": { n: "Logan", d: 1 },
+  "38049": { n: "McHenry", d: 1 },
+  "38051": { n: "McIntosh", d: 1 },
+  "38053": { n: "McKenzie", d: 1 },
+  "38055": { n: "McLean", d: 1 },
+  "38057": { n: "Mercer", d: 1 },
+  "38059": { n: "Morton", d: 1 },
+  "38061": { n: "Mountrail", d: 1 },
+  "38063": { n: "Nelson", d: 1 },
+  "38065": { n: "Oliver", d: 1 },
+  "38067": { n: "Pembina", d: 1 },
+  "38069": { n: "Pierce", d: 1 },
+  "38071": { n: "Ramsey", d: 1 },
+  "38073": { n: "Ransom", d: 1 },
+  "38075": { n: "Renville", d: 1 },
+  "38077": { n: "Richland", d: 1 },
+  "38079": { n: "Rolette", d: 1 },
+  "38081": { n: "Sargent", d: 1 },
+  "38083": { n: "Sheridan", d: 1 },
+  "38085": { n: "Sioux", d: 1 },
+  "38087": { n: "Slope", d: 1 },
+  "38089": { n: "Stark", d: 1 },
+  "38091": { n: "Steele", d: 1 },
+  "38093": { n: "Stutsman", d: 1 },
+  "38095": { n: "Towner", d: 1 },
+  "38097": { n: "Traill", d: 1 },
+  "38099": { n: "Walsh", d: 1 },
+  "38101": { n: "Ward", d: 1 },
+  "38103": { n: "Wells", d: 1 },
+  "38105": { n: "Williams", d: 1 }
+};
+
+// ----- STATEWIDE races every North Dakota county sees -----
+// Sources: North Dakota Secretary of State's own election-results API (api.resultsnd.sos.nd.gov),
+// which returns isOfficial: true for the June 9, 2026 primary — the State Canvassing Board
+// certified on June 24, 2026 after all 53 county boards reported, so EVERY primary figure on this
+// page is CERTIFIED, not unofficial; sos.nd.gov (candidate calendar, measures-on-ballot, canvassing
+// press release); the North Dakota Constitution, Article V (ndlegis.gov); senate.gov's senators
+// directory; North Dakota Monitor; KFGO; InForum; candidates' own sites and official pages.
+// !! TWO VERIFIED NEGATIVES, both established from primary sources rather than assumed:
+//    (1) THERE IS NO 2026 U.S. SENATE RACE IN NORTH DAKOTA. Kevin Cramer is Class I (next up 2030)
+//        and John Hoeven is Class III (next up 2028); the Class II seats are the ones up in 2026.
+//    (2) THERE IS NO 2026 GOVERNOR'S RACE. ND Const. art. V, s. 1 sets four-year terms beginning in
+//        2000 and Kelly Armstrong was elected in Nov 2024, so the next one is 2028.
+//    Neither contest appears anywhere in the certified 2026 primary contest list.
+// !! North Dakota splits its executive offices across two cycles (art. V, s. 5). State Auditor,
+//    State Treasurer, Insurance Commissioner and Lieutenant Governor are NOT on the 2026 ballot —
+//    they sit on the presidential-year cycle and were last elected in 2024.
+// !! THE NOVEMBER FIELD IS NOT FINAL. Independent-candidate petitions may be filed until 4 p.m. on
+//    MONDAY, AUG 31, 2026, and write-in certificates until Oct 13, 2026. Re-pull the Secretary of
+//    State's contest list after Sept 1. No independent or minor-party statewide candidate had
+//    qualified as of this build.
+// !! Superintendent of Public Instruction and both Supreme Court seats are NONPARTISAN under North
+//    Dakota law — candidates appear with no party designation. They carry party "I" here only
+//    because the site's schema requires one of D/R/I/L/G, and each card says so explicitly.
+const STATEWIDE = [
+  // ─────────────────────────── UPCOMING ───────────────────────────
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Attorney General of North Dakota",
+    note: "A REMATCH OF 2022. Drew Wrigley, appointed in 2022 after Attorney General Wayne Stenehjem's death and elected that November, faces Grand Forks attorney Tim Lamb again. Both were unopposed in the certified June 9 primary — Wrigley 74,486 votes (99.23%), Lamb 33,913 (99.68%). Wrigley, like North Dakota's other statewide Republican incumbents, skipped the state party's endorsing convention and petitioned onto the ballot, campaigning at district conventions instead. Lamb is running on structures the office does not currently have — a criminal justice review panel and a citizen fraud review board — rather than on any single case. ⚠ The 2022 margin does not reconcile between two reports from the same outlet, which gives Wrigley 71% and Lamb about 31%; treat it as approximate [Verify]. ⚠ No competitive rating for this race exists from any rater.",
+    candidates: [
+      { name: "Drew Wrigley (incumbent)", party: "R", winner: false,
+        positions: ["Increase transparency and accountability within the attorney general's office","Expand state crime lab capacity — reduce the testing backlog and add firearms examiners to forensic staff","Continue the office's existing prosecution and enforcement priorities [Verify — no separate 2026 platform statement could be sourced]"],
+        differentiators: ["Appointed Attorney General by Gov. Doug Burgum in 2022 and elected that fall with about 71% of the statewide vote","U.S. Attorney for North Dakota 2001-2009 and again 2019-2021; Lieutenant Governor 2010-2016","Won the certified June primary unopposed with 99.23%"],
+        supporters: ["An unusually deep prosecutorial resume — two separate stints as the state's U.S. Attorney, plus six years as lieutenant governor","A concrete operational result: the crime lab backlog reduced and forensic staffing increased","He won his only statewide election by a margin of more than 40 points"],
+        opponents: ["Lamb argues the office needs outside review structures it does not have — a criminal justice review panel and a citizen fraud review board","He was appointed to the job before he was ever elected to it","Unopposed in the primary, so his four-year record faced no scrutiny even from within his own party"] },
+      { name: "Tim Lamb", party: "D", winner: false,
+        positions: ["Create a criminal justice review panel","Create a citizen review board for fraud","Convene a round table of attorneys and judges to recommend improvements to the legal system, and address recidivism"],
+        differentiators: ["A Grand Forks attorney, endorsed by the Democratic-NPL at its March 7, 2026 state convention","His third statewide run — Attorney General in 2022 (about 31%) and State Auditor in 2024, both unsuccessful","Won the Democratic-NPL primary unopposed with 99.68% (33,913 votes)"],
+        supporters: ["A practising attorney offering specific institutional reforms rather than simple opposition","A repeat statewide candidacy has built name recognition and a donor list [Verify — structural argument]","His oversight proposals give voters a concrete, checkable difference from the incumbent"],
+        opponents: ["He has lost two prior statewide races, including to this same opponent by roughly 40 points","Republicans hold every statewide elected office in North Dakota and legislative supermajorities","He has no experience running a large public law office [Verify — structural argument]"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Secretary of State of North Dakota",
+    note: "THE DEFINING FEATURE OF THIS RACE SO FAR IS AGREEMENT, NOT CONFLICT. Republican incumbent Michael Howe, elected in 2022 with 63%, faces Democratic-NPL state Sen. Ryan Braunberger of Fargo. Both were unopposed in the certified primary — Howe 74,102 (99.56%), Braunberger 34,180 (99.82%). Asked in July 2026 to respond to the president's national address on election integrity, BOTH said North Dakota's elections are secure, free and fair, both noted every North Dakota ballot is paper and auditable, and both said tabulators are not connected to the internet. Howe stressed that proof of citizenship is built into the state ID process; Braunberger called unproven fraud rhetoric dangerous. Their real difference is voter education about a 2025 law requiring mail ballots to be in officials' hands by the time polls close. ⚠ No competitive rating for this race exists from any rater.",
+    candidates: [
+      { name: "Michael Howe (incumbent)", party: "R", winner: false,
+        positions: ["North Dakota's elections are secure and free and fair; proof of citizenship is built into the state ID process","Finish modernising the state's online business filing portal — in his words, the work is not done","Keep the voter file protected; it has not been shared with the Department of Homeland Security"],
+        differentiators: ["Elected Secretary of State in 2022 with 63%, over a Democrat and an independent","Represented the Casselton area in the North Dakota House from 2017 to 2022","Skipped the 2026 state Republican convention and petitioned onto the primary ballot; won it with 99.56%"],
+        supporters: ["He delivered a rebuilt agency website plus new campaign-finance and statement-of-interest filing portals","He took part in CISA and FBI election-security briefings before 2024 and reports no attempted breaches in North Dakota","He defended the integrity of the state's system publicly even when a president of his own party questioned election infrastructure nationally"],
+        opponents: ["By his own account the core business-filing modernisation is still unfinished after a full term","Braunberger argues the office has not done enough voter education, particularly on the 2025 ballot-receipt deadline","He faced no primary opponent, so his record went untested inside his own party"] },
+      { name: "Ryan Braunberger", party: "D", winner: false,
+        positions: ["Boost public trust in elections; he called unproven fraud rhetoric dangerous","Expand voter education on the 2025 law requiring mail ballots to arrive by the time polls close","Protect the privacy of North Dakotans' voter data"],
+        differentiators: ["A state senator representing Fargo since 2023","Endorsed by the Democratic-NPL at the March 7, 2026 state convention in Bismarck","Won the Democratic-NPL primary unopposed with 99.82% (34,180 votes)"],
+        supporters: ["A sitting legislator with statehouse experience rather than a first-time candidate","He publicly affirmed that North Dakota's elections are secure, which cuts against the charge that challengers stoke distrust","He identified a concrete, checkable gap — voters may not know about the new ballot-receipt deadline"],
+        opponents: ["Republicans hold every statewide elected office in North Dakota, with no recent Democratic-NPL statewide breakthrough","He is challenging an incumbent who won 63% last cycle","He has never run a statewide administrative agency [Verify — structural argument]"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Agriculture Commissioner of North Dakota",
+    note: "THE LONGEST-SERVING STATEWIDE INCUMBENT ON THE BALLOT. Doug Goehring has been agriculture commissioner since 2009 and most recently won in 2022 with 76%. He faces Vern Thompson, a former Democratic-NPL legislator. Both were unopposed in the certified primary — Goehring 75,154 (99.49%), Thompson 34,146 (99.85%). ⚠ Thompson is his party's SECOND choice this cycle: he sought the Democratic-NPL U.S. House endorsement first, lost it to Trygve Hammer on March 7, then announced for this office on March 20 under a convention rule letting the party's executive committee fill the agriculture and tax slots. The office also carries one of the three seats on the state Industrial Commission, alongside the governor and attorney general, which is where oil, gas, water and infrastructure decisions are made. ⚠ No competitive rating for this race exists from any rater.",
+    candidates: [
+      { name: "Doug Goehring (incumbent)", party: "R", winner: false,
+        positions: ["Continue the department's regulatory portfolio — animal health, pesticide and fertiliser regulation, plant industries, grain and livestock licensing and agricultural marketing","Use the commissioner's Industrial Commission seat on oil and gas, water, trade and infrastructure questions","⚠ No separate 2026 platform statement could be located [Verify] — his campaign is one of continuity"],
+        differentiators: ["Appointed by then-Gov. John Hoeven in 2009, elected in 2010 and re-elected three times since","Most recently won in 2022 with 76% over Democratic-NPL candidate Fintan Dooley","Bypassed the state Republican endorsement process and petitioned onto the ballot; won the primary with 99.49%"],
+        supporters: ["Seventeen years in the job means deep institutional knowledge of North Dakota's agricultural regulatory machinery","He won his last election by roughly 52 points, the largest statewide margin of anyone on this ballot","A farmer's background plus a working seat on the Industrial Commission alongside the governor and attorney general"],
+        opponents: ["Thompson argues the Industrial Commission and the state's federal delegation have not done enough to push back on policies hurting North Dakota growers","The longest tenure of any statewide incumbent invites a straightforward case for turnover [Verify — structural argument]","He was unopposed in the primary and published no 2026 agenda, so his plans for a fifth term are largely unstated [Verify]"] },
+      { name: "Vern Thompson", party: "D", winner: false,
+        positions: ["Blames current farm distress on tariff policy shrinking crop markets and on war with Iran spiking fuel and fertiliser costs — in his words, we need a voice to speak to that","Opposes commercial and investor farming: one thing he is against is corporations coming in and buying land","Argues the Industrial Commission and North Dakota's federal lawmakers have not stood up for the state's growers"],
+        differentiators: ["North Dakota House 1989-1990 and Senate 1997-2000, representing the Minnewaukan area","A former farmer who lived through the 1980s farm crisis; he now runs an independent trucking business hauling natural gas liquids","Endorsed by the Democratic-NPL executive committee on March 20, 2026 after losing the U.S. House endorsement; won the primary with 99.85%"],
+        supporters: ["Lived experience of the 1980s farm crisis speaks directly to today's bankruptcies and foreclosures","A business owner who says that by owning and operating trucking, he knows how to make a payroll","He has pledged to hand off his trucking business and serve full time rather than dabble in other businesses"],
+        opponents: ["His legislative service ended in 2000 and he moved from Minnewaukan to Fargo in 2005, which weakens the rural-constituency claim","He was his own party's second choice this cycle, endorsed only after losing the U.S. House nod","He faces an incumbent who won 76% last time, in a state where Republicans hold every statewide office"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Tax Commissioner of North Dakota",
+    note: "BRIAN KROSHUS HAS NEVER FACED A CONTESTED GENERAL ELECTION FOR THIS OFFICE — appointed by Gov. Doug Burgum in 2021 and elected unopposed in 2022, he now draws an opponent in Mark Nelson, a retired farmer from near Rugby who filed on the April 6 deadline day. Both were unopposed in the certified primary — Kroshus 73,800 (99.58%), Nelson 33,971 (99.79%). Nelson did not seek the Democratic-NPL convention endorsement because he had not yet decided to run; the party later authorised its executive committee to fill the slot. ⚠ THE TWO ARE NOT FAR APART ON THE HEADLINE ISSUE: Nelson says he supports the $1,600 primary residence property tax credit that Republican lawmakers passed in 2025 — the same programme Kroshus administers and campaigns on. ⚠ No competitive rating for this race exists from any rater.",
+    candidates: [
+      { name: "Brian Kroshus (incumbent)", party: "R", winner: false,
+        positions: ["Built and promotes the new online application portal for the primary residence property tax credit","Administer the state tax code and taxpayer services from the commissioner's office [Verify — no full 2026 platform could be sourced]","Says he looks forward to the campaign and the chance to visit with citizens across the state"],
+        differentiators: ["Appointed Tax Commissioner by Gov. Doug Burgum in 2021 and elected unopposed in 2022","Previously served on the Public Service Commission, winning election in 2018 and again in 2020","Skipped the state Republican endorsement convention and petitioned onto the primary ballot; won it with 99.58%"],
+        supporters: ["Three prior statewide wins across two different offices","He delivered a working online portal for the primary residence credit, the state's largest recent property tax relief mechanism","His signature programme is popular enough that his Democratic opponent also supports it"],
+        opponents: ["Nelson argues one-party dominance of state government leaves it vulnerable to corruption","He has never faced a contested general election for this office — unopposed in 2022 and unopposed in both primaries","He was appointed rather than initially elected to the post"] },
+      { name: "Mark Nelson", party: "D", winner: false,
+        positions: ["Property taxes are just too high","Supports the $1,600 primary residence credit enacted by Republican lawmakers in 2025","Believes state government is vulnerable to corruption when leadership is dominated by one party"],
+        differentiators: ["A retired farmer living near Rugby; he filed on the April 6 deadline at the suggestion of other Democratic-NPL members","He has run three unsuccessful District 14 legislative races — twice for the House, once for the Senate","Did not seek the convention endorsement because he had not yet decided to run; won the primary unopposed with 99.79%"],
+        supporters: ["He ensures the office is contested at all, which his party made an explicit goal — to contest every single election up and down the ballot","Crossing party lines to back the Republican-authored residence credit signals he is not a reflexive opponent","A farm background gives him direct exposure to how North Dakota's property tax burden lands on landowners [Verify — structural argument]"],
+        opponents: ["He is nought-for-three in prior legislative races, all at district level and never statewide","A late entry with no convention endorsement and no visible campaign infrastructure [Verify — structural argument]","He faces an incumbent with three statewide wins, in a state where Republicans hold every statewide office"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Public Service Commission — six-year term",
+    note: "THE MOST SUBSTANTIVE PRIMARY CHALLENGE ON THE STATEWIDE BALLOT, AND THE INCUMBENT WON IT. Sheri Haugen-Hoffart skipped the state Republican convention, which then endorsed her challenger Deven Styczynski — and she beat him 48,222 to 26,398, 64.44% to 35.28% (certified). She faces Democratic-NPL nominee John M. Pederson, a Mayville State University history and economics professor, unopposed at 33,991 (99.84%). The PSC is a three-member body regulating utilities, siting and pipelines, and North Dakota currently has the LOWEST ELECTRICITY RATES IN THE NATION — which is the incumbent's core argument and the challenger's core problem. Live issues: carbon pipelines and eminent domain, and data-centre load growth. ⚠ Haugen-Hoffart voted AGAINST Summit Carbon Solutions in 2023, then joined a unanimous approval of the revised application in November 2024. ⚠ No competitive rating for this race exists from any rater.",
+    candidates: [
+      { name: "Sheri Haugen-Hoffart (incumbent)", party: "R", winner: false,
+        positions: ["Credits strong commission oversight for North Dakota's lowest-in-nation electricity rates and sees no great need for change","Pipelines are the safest way to transport CO2, and enhanced oil recovery is a potential benefit of carbon pipelines","Says the state has good policy right now — evaluate each rate case on its merits, reducing costs where possible while maintaining reliability"],
+        differentiators: ["A sitting commissioner now seeking a full six-year term","BEAT THE PARTY-ENDORSED CANDIDATE 64.44%-35.28% after skipping the convention and petitioning onto the ballot","Voted against Summit Carbon Solutions' application in 2023, then joined the unanimous approval of the revised application in November 2024"],
+        supporters: ["She won a genuinely contested primary against her own party's endorsed candidate by 29 points","She presides over the lowest electricity rates in the United States","She showed independence on Summit by voting no in 2023 before the revised application came back"],
+        opponents: ["Styczynski argued the commission has not done enough and wants tighter scrutiny, citing an approved Xcel increase worth about $143 a year to the average residential customer","Her Summit reversal — no in 2023, yes in 2024 — is exactly the kind of switch a challenger can run on","She limited her answers on carbon pipelines citing pending litigation, which leaves voters without a full position"] },
+      { name: "John M. Pederson", party: "D", winner: false,
+        positions: ["An all-of-the-above energy mix — coal and natural gas plus expanding wind and solar, which he says have the lowest cost of new energy","Carbon capture and storage can work if done properly, with rigorous case-by-case diligence at the commission","Landowners should not face the threat of eminent domain for carbon pipelines"],
+        differentiators: ["A history and economics professor at Mayville State University","Endorsed by the Democratic-NPL at the March 7, 2026 convention; unopposed primary at 99.84%","Says he is running in part because Republican commissioners have been too soft on the oil and gas industry"],
+        supporters: ["An economics background is directly on point for a body that adjudicates utility rate cases","His eminent-domain position aligns him with landowners who felt mistreated in the Summit hearings — a cross-partisan constituency","He frames rates in household terms, describing consumers as squeezed by everything from inflation to housing"],
+        opponents: ["Attacking commission performance is a hard sell when North Dakota already has the nation's lowest electricity rates","He has no utility regulatory or commission experience [Verify — structural argument]","Republicans hold all three PSC seats and every statewide office in North Dakota"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Public Service Commission — unexpired two-year term",
+    note: "THE CLOSEST STATEWIDE PRIMARY OF THE CYCLE. Appointed Republican incumbent Jill Kringstad edged Chris Olson 41,800 to 35,032 — 54.29% to 45.50%, under nine points (certified) — the weakest incumbent showing on the statewide ballot. Kringstad was appointed by Gov. Kelly Armstrong in 2025 to the seat Julie Fedorchak vacated on her election to Congress; the winner serves TWO YEARS and the seat returns to the ballot in 2028. She faces Democratic-NPL nominee Scot Kelsh, a former Fargo legislator of 18 years, unopposed at 33,957 (99.83%). Olson, a Baldwin farmer, ran after a Summit Carbon Solutions dispute on his own land and called for a moratorium on new data-centre development pending 2027 legislative action — issues that have outlived his candidacy. ⚠ No competitive rating for this race exists from any rater.",
+    candidates: [
+      { name: "Jill Kringstad (incumbent)", party: "R", winner: false,
+        positions: ["Says the state's lowest-in-nation rates reflect commission rigour — thousands of pages of data and hard questions before any rate increase","Carbon pipelines will have to be built in a way that respects landowners, the environment and end-users","Data-centre impacts are for the Legislature to decide — in her words, the commission are policy takers, not policy makers — but there needs to be a very serious look at grid and cost impacts"],
+        differentiators: ["Appointed by Gov. Kelly Armstrong in 2025 to fill Julie Fedorchak's vacated seat","Was the commission's director of business operations before her appointment; her background is accounting and economics","Survived the tightest statewide primary of 2026, 54.29%-45.50%, after skipping the state Republican convention"],
+        supporters: ["She knows the agency from the inside, having run its business operations before joining the commission","Accounting and economics training applied directly to interrogating utility rate filings","She has focused on regional transmission organisation reform so North Dakota-produced energy is appropriately valued on the grid"],
+        opponents: ["She won her primary by under nine points — the weakest incumbent showing anywhere on this ballot","Olson argued electricity has become more unaffordable partly because of commission-approved increases, and that the commission should be more of an advocate for the ratepayer","She declined to say how she would have voted on Summit, saying she had not heard all the testimony, leaving her position on the state's biggest pipeline case unstated"] },
+      { name: "Scot Kelsh", party: "D", winner: false,
+        positions: ["Says electric rates have gone up faster than the rate of inflation and are becoming less and less affordable for many","Carbon pipelines should not carry eminent domain — they benefit a certain number of people, not like a highway everyone can use","Permitting must not bypass local concerns; supports responsible data-centre development that does not raise utility costs"],
+        differentiators: ["Represented Fargo in the North Dakota Legislature for 18 years between 1996 and 2014","Now a tutor and special education behaviour technician for Fargo Public Schools","Endorsed by the Democratic-NPL at the March 7, 2026 convention; unopposed primary at 99.83%"],
+        supporters: ["Eighteen years of legislative experience is the longest public-service record of any challenger on this ballot","He draws the most exposed Republican on the statewide ballot — an incumbent who just won her primary by under nine points","A balanced posture on Summit: he credits the benefit to ethanol plants and corn growers while faulting the process"],
+        opponents: ["He left the Legislature in 2014, a twelve-year gap from elected office","He has no utility regulatory experience, against an opponent who ran the agency's business operations [Verify — structural argument]","Republicans hold all three PSC seats and every statewide elected office in North Dakota"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide · nonpartisan", office: "Superintendent of Public Instruction — unexpired two-year term",
+    note: "⚠ NONPARTISAN OFFICE — no party appears on the ballot. Top-two primary: appointed incumbent Levi Bachmeier led with 59,323 votes (55.50%), Grand Forks teacher Tracy Layne Foss took 31,915 (29.86%), and Charles Tuttle was eliminated with 15,353 (14.36%). Bachmeier was appointed by Gov. Kelly Armstrong in fall 2025 after Kirsten Baesler left to become an assistant secretary at the U.S. Department of Education; this is an UNEXPIRED two-year term, so the seat returns in 2028. ⚠ Bachmeier is a Republican but DECLINED a state party letter of support, saying it is clear North Dakotans do not want partisan agendas in their schools; Foss holds a Democratic-NPL letter of support. The backdrop: North Dakota's Education Standards and Practices Board has declared critical shortages in ALL teaching areas three years running, and the state ranked 41st nationally in average teacher pay at $60,704 for 2024-25.",
+    candidates: [
+      { name: "Levi Bachmeier (incumbent)", party: "I", winner: false,
+        positions: ["Raise teacher pay and attack the shortage from multiple angles","Eliminate unnecessary regulation and paperwork burdens on teachers, especially in high-burnout areas like special education and in federal Title I filings","Improve student outcomes and oppose the politicisation of schools — he says the department should be a partner, not a barrier"],
+        differentiators: ["⚠ Nonpartisan office. He identifies as a Republican but declined a state party letter of support; the party value here is a schema placeholder, not a ballot designation","Appointed superintendent by Gov. Kelly Armstrong in fall 2025","Former business manager of the West Fargo School District; policy director and education policy adviser to Gov. Doug Burgum 2016-2019; began as a high school social studies teacher with Teach for America"],
+        supporters: ["A rare combination of classroom, school-district finance and state policy experience","He refused a partisan letter for a nonpartisan office, matching practice to stated principle","He won an outright majority in a three-way primary, at 55.50%"],
+        opponents: ["He has held the job less than a year and was appointed, not elected","Foss argues the state has missed opportunities on real solutions to recruitment and retention","His deregulation-and-paperwork emphasis does not directly move North Dakota's 41st-in-nation teacher pay ranking [Verify — analytical argument]"] },
+      { name: "Tracy Layne Foss", party: "I", winner: false,
+        positions: ["Increase teacher pay and advocate for more school funding beyond the flat K-12 formula proposed for 2027-29","Rebuild recruitment and retention by auditing workload — what needs to stay, what needs to be redistributed and what needs to be removed entirely","Supports universal school meals"],
+        differentiators: ["⚠ Nonpartisan office. She holds a Democratic-NPL letter of support; the party value here is a schema placeholder, not a ballot designation","Roughly 30 years in education, about 20 of them as a classroom teacher; now a technology and engineering education teacher at Valley Middle School in Grand Forks","Has worked at every level from elementary to college, plus as a paraprofessional, grant writer and Career and Technical Education leader"],
+        supporters: ["She is currently in a classroom, unlike her opponent — in her words, she does not want the title, she wants the job","She speaks from direct experience of the shortage, having taught out of field in science at Hatton because no teacher was available","Her school meals position aligns with Constitutional Measure 2 on the same ballot, a potential turnout synergy"],
+        opponents: ["She trailed Bachmeier by nearly 26 points in the primary","She has no experience running a state agency or a district budget [Verify — structural argument]","Her party letter of support cuts against the nonpartisan framing her opponent claimed by refusing one [Verify — analytical argument]"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Judicial · Statewide · nonpartisan", office: "Justice of the North Dakota Supreme Court — ten-year term",
+    note: "⚠ NONPARTISAN OFFICE — no party appears on the ballot. THE FIRST TIME SINCE 2018 THAT A SITTING NORTH DAKOTA JUSTICE HAS FACED A CHALLENGER. Top-two primary: Justice Jerod Tufte led with 63,306 votes (63.44%) and Watford City attorney Ariston E. Johnson took 36,086 (36.16%); both advance. Tufte is the only current justice who reached the court by ELECTION rather than gubernatorial appointment, succeeding Justice Dale Sandstrom in 2016; he recently ran for chief justice and lost to Lisa Fair McEvers. Johnson applied in 2025 for the vacancy left by retiring Justice Daniel Crothers, which Gov. Armstrong instead filled with Fargo attorney Mark Friese. The argument between them is about perspective and geography rather than doctrine.",
+    candidates: [
+      { name: "Jerod Tufte (incumbent)", party: "I", winner: false,
+        positions: ["Running on his record — more than nine years serving North Dakotans on the state's highest court","Wants to help the state court system modernise its technology; he serves on the court's artificial intelligence working group","Serves on the state court task force addressing North Dakota's lawyer shortage"],
+        differentiators: ["⚠ Nonpartisan judicial office; the party value here is a schema placeholder, not a ballot designation","Elected to the court in 2016, succeeding Justice Dale Sandstrom — the only sitting justice who arrived by election rather than appointment","A former computer engineer, state's attorney and general counsel to Gov. Jack Dalrymple; he has described himself as an admirer of Justice Clarence Thomas"],
+        supporters: ["More than nine years of appellate experience on the court he seeks to rejoin","An engineering background applied to concrete institutional problems — court technology, AI policy and the lawyer shortage","He won his seat in a contested statewide election rather than receiving it by appointment"],
+        opponents: ["Johnson argues the court needs a practical perspective from someone who has litigated alongside ordinary parties, and geographic balance from western North Dakota","He recently sought and lost the chief justice position to Lisa Fair McEvers","He took 63% against a first-time judicial candidate, a softer showing than most incumbents on this ballot [Verify — comparative argument]"] },
+      { name: "Ariston E. Johnson", party: "I", winner: false,
+        positions: ["The court needs a justice who has stood up in court with people like the litigants before it — a practising litigator's perspective","Geographic balance matters: the court would benefit from a member from western North Dakota","Says the court is at its best when there is a balance of experiences"],
+        differentiators: ["⚠ Nonpartisan judicial office; the party value here is a schema placeholder, not a ballot designation","A civil litigator and partner at Johnson and Sundeen in Watford City, with a practice including oil and gas law; law degree from William and Mary, 2007","Applied in 2025 for the Crothers vacancy that went to Mark Friese; he has named Antonin Scalia among his favourite legal minds"],
+        supporters: ["Oil and gas litigation expertise is directly relevant to a court that hears Bakken-region disputes","Western North Dakota currently lacks representation on the bench, by his account","He advanced to the general election in his first judicial run, against a nine-year incumbent"],
+        opponents: ["He has never served as a judge at any level","He trailed Tufte by more than 27 points in the primary","He was passed over for the 2025 appointment by Gov. Armstrong, who chose Mark Friese instead"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Judicial · Statewide · nonpartisan", office: "Justice of the North Dakota Supreme Court — unexpired eight-year term",
+    note: "⚠ NONPARTISAN OFFICE, AND THE ONLY UNCONTESTED STATEWIDE RACE ON THE NORTH DAKOTA BALLOT. Justice Douglas A. Bahr is running unopposed, taking 97,413 votes (99.48%) in the certified June primary against 509 write-ins. Bahr was appointed to the court in 2023 after the retirement of Justice Gerald VandeWalle, the court's longest-serving member; under North Dakota practice an appointed justice stands for election after two years, and Bahr is running to complete the remaining eight years of the term. ⚠ A write-in candidate could still file a certificate of write-in candidacy through Oct 13, 2026.",
+    candidates: [
+      { name: "Douglas A. Bahr (incumbent)", party: "I", winner: false,
+        positions: ["Seeking election to complete the remaining eight years of the term he was appointed to in 2023","⚠ No contested policy platform was published; North Dakota judicial candidates campaign on record and qualifications rather than issue positions [Verify — no separate 2026 platform could be sourced]","Standing for election as required of appointed justices after two years of service"],
+        differentiators: ["⚠ Nonpartisan judicial office; the party value here is a schema placeholder, not a ballot designation","Appointed to the North Dakota Supreme Court in 2023 after the retirement of Justice Gerald VandeWalle","Running unopposed — the only uncontested statewide race on the 2026 ballot; he took 99.48% of the primary vote"],
+        supporters: ["No member of the North Dakota bar filed against him, which practitioners generally read as broad professional acceptance [Verify — structural argument]","About three years of Supreme Court service by Election Day, succeeding the court's longest-serving justice","Nearly 97,500 voters affirmed him in a primary where they could have written in anyone"],
+        opponents: ["He reached the court by gubernatorial appointment, having never won a contested election","Running unopposed means his record on the court will go entirely untested before voters","Voters get no comparative information — no debates, no alternative, and no scrutiny of his opinions [Verify — structural argument]"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide · ballot measures", office: "Two statewide constitutional measures",
+    note: "TWO constitutional measures are approved for the Nov 3, 2026 ballot. ⚠ CONSTITUTIONAL MEASURE 1 (HCR 3003, referred by the 2025 Legislative Assembly) would amend art. III, s. 9 and art. IV, s. 16 to raise the threshold for approving a constitutional amendment FROM A SIMPLE MAJORITY TO SIXTY PERCENT. It is the second of a pair: its companion, SCR 4007, requiring constitutional initiatives to be confined to a single subject, ALREADY PASSED at the June 9 primary, 77,141 to 38,995 — 66.42% yes. Together they would substantially tighten North Dakota's citizen-initiative process, and Measure 1 itself needs only a simple majority to pass, since the new threshold would apply to future amendments. ⚠ CONSTITUTIONAL MEASURE 2 would add a new section to art. VIII on FUNDING OF SCHOOL LUNCHES; it reached the ballot after the Together for School Meals campaign submitted petitions, and North Dakota constitutional initiatives require signatures equal to 4% of state population, or 31,164. ⚠ Official ballot language, the Secretary of State's analysis and the fiscal impact statements had NOT been posted as of this build [Verify]. ⚠ Note the confusing numbering — a DIFFERENT measure was also called Constitutional Measure 1 on the June ballot. ⚠ May 2025 reporting indicated the Legislature referred a third measure, on legislative term limits; it does NOT appear on the Secretary of State's official November list and whether it was never certified, withdrawn or never actually referred could not be determined [Verify].",
+    candidates: [] }
+];
+// ----- U.S. HOUSE (North Dakota's single at-large seat) -----
+// Sources: North Dakota Secretary of State election-results API (api.resultsnd.sos.nd.gov),
+// certified by the State Canvassing Board on June 24, 2026; fedorchak.house.gov issue pages;
+// North Dakota Monitor; InForum; sos.nd.gov candidate calendar.
+// North Dakota elects ONE at-large representative, so all 53 counties vote in this race and there
+// are no split counties. The seat is keyed as district 1, the same convention vt.html uses.
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — North Dakota (at-large)",
+    region: "Statewide — North Dakota's single at-large seat, covering all 53 counties. Fargo, Bismarck, Grand Forks, Minot, Williston, Dickinson, Jamestown.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "NORTH DAKOTA'S ONLY FEDERAL RACE THIS YEAR — there is no U.S. Senate contest in 2026 (both of the state's senators sit in classes that are not up) and no governor's race (Kelly Armstrong was elected in 2024 to a term running through 2028). ⚠ THE HEADLINE IS THAT THE INCUMBENT BEAT HER OWN PARTY: the state Republican convention endorsed challenger Alex Balazs, not first-term Rep. Julie Fedorchak. She skipped the convention, petitioned onto the ballot, campaigned on a statewide tour with President Trump's endorsement, and won the certified June 9 primary 59,719 to 22,196 — 72.76% to 27.04%. Democratic-NPL nominee Trygve Hammer was unopposed at 34,604 votes (99.80%), and is making his second run after losing to Fedorchak in 2024; he beat Vern Thompson and Helene Neville for the party endorsement on March 7. ⚠ INDEPENDENT PETITIONS REMAIN OPEN UNTIL 4 P.M. AUG 31, 2026, so the November field is not final. ⚠ No competitive rating for this district could be sourced from Cook, Sabato or Inside Elections, and none is asserted here.",
+        candidates: [
+          { name: "Julie Fedorchak (incumbent)", party: "R", winner: false,
+            positions: ["Energy affordability and reliability first — she argues nothing is truly sustainable if it is not affordable and reliable (her official issues page)","Balance the federal budget, and root out waste, fraud and abuse in federal spending","Farm Bill reform, stronger crop insurance, fewer agricultural regulations and fair trade practices"],
+            differentiators: ["A first-term member who sits on the House Energy and Commerce Committee","Won the certified June primary with 72.76% over the state-party-endorsed Alex Balazs, after skipping the convention and petitioning on","Endorsed by President Trump; roughly $1.1 million cash on hand as of May 28, 2026 [Verify — the FEC figure was not read directly; the FEC API rate-limited]"],
+            supporters: ["She beat her own party's endorsed candidate by 45 points, which is about as broad a primary mandate as exists","An Energy and Commerce seat gives a one-member delegation outsized leverage on grid and energy policy","She has moved her own legislation — the High-Capacity Grid Act advanced out of committee on July 21, 2026"],
+            opponents: ["Her own state party's convention endorsed her opponent rather than her","Hammer argues she has not delivered on housing and health care costs and has not checked the administration on tariffs or war powers","Her preregistration-only rallies, where the location was withheld until signup, drew criticism as not well advertised — from a Republican attendee"] },
+          { name: "Trygve Hammer", party: "D", winner: false,
+            positions: ["Congress should reassert its constitutional authority over tariffs and war powers","Support public schools, and restore and rebuild agricultural markets","Put North Dakota seniors first and protect their benefits"],
+            differentiators: ["A Naval Academy graduate and retired Marine helicopter pilot with an Iraq deployment; a former oil worker and public school science teacher","Won the Democratic-NPL endorsement on March 7, 2026 over Vern Thompson and Helene Neville; unopposed primary at 99.80%","Roughly $74,575 raised and $33,274 cash on hand as of March 31, 2026 [Verify — the FEC figure was not read directly]"],
+            supporters: ["A second run means statewide name recognition and an existing volunteer network","A veteran and teacher biography is a natural fit for a rural state with heavy military ties","He is running on concrete cost-of-living pressure — housing, health care and farm markets — rather than national culture-war framing"],
+            opponents: ["He lost to Fedorchak in 2024 and enters the rematch far behind on money","Republicans hold every statewide elected office in North Dakota plus legislative supermajorities","He has not held elected office, so his governing record is untested [Verify — structural argument]"] } ] } ] }
+};
+
+const SITE_META = { name: "North Dakota Elections Hub", lastUpdated: "August 17, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — North Dakota county-level down-ballot research has not started.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for North Dakota has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = district
+    ? district.races.map(r => ({
+        ...r,
+        office: r.office || district.name,
+        scope: r.scope || `Federal · District ${county.d}`
+      }))
+    : [];
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const ND_STATE_FIPS = "38";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#ndmap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(ND_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Montpelier ----
+  drawCapital(g, projection, { name: "Bismarck", lng: -100.7837, lat: 46.8083 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in ND";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our North Dakota dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+// Split a race note on the ⚠ / ✅ flag glyphs the editorial style already uses, keeping
+// the glyph that introduced each segment. Text before the first flag is the lead. This is
+// presentation only — no wording is altered and nothing is dropped.
+function briefSegments(note) {
+  const out = [];
+  const re = /([\u26A0\uFE0F\u2705]+)\s*/g;
+  let last = 0, mark = "", m;
+  while ((m = re.exec(note)) !== null) {
+    const text = note.slice(last, m.index).trim();
+    if (text) out.push({ mark: mark, text: text });
+    mark = m[1].replace(/\uFE0F/g, "");
+    last = re.lastIndex;
+  }
+  const tail = note.slice(last).trim();
+  if (tail) out.push({ mark: mark, text: tail });
+  return out;
+}
+
+function renderNote(note) {
+  if (!note) return "";
+  const body = briefSegments(note).map(function (s) {
+    return s.mark
+      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${s.text}</p>`
+      : `<p class="brief-lead">${s.text}</p>`;
+  }).join("");
+  // Clamp only what actually needs clamping: the median note is 236 characters, so most
+  // briefs show whole and never render a toggle at all.
+  const long = note.length > 300;
+  return `<div class="election-brief${long ? " clamped" : ""}">
+      <div class="brief-label">About this race</div>
+      <div class="brief-body">${body}</div>
+      ${long ? `<button class="brief-more" type="button">Show more</button>` : ""}
+    </div>`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${renderNote(e.note)}${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const more = e.target.closest(".brief-more");
+  if (more) {
+    const brief = more.closest(".election-brief");
+    more.textContent = brief.classList.toggle("clamped") ? "Show more" : "Show less";
+    return;
+  }
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>

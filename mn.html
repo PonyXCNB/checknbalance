@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Minnesota Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every MN election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #mnmap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  /* ---- Race brief (the context note) ----
+     Lives INSIDE the expanded panel only. A collapsed card shows the pill, date, office
+     and candidate count and nothing else, so a county's ballot reads as a clean list.
+     Owner-reported twice on Aug 12, 2026: as a header element these notes — 2,187
+     characters at the extreme, and 30% of them opening with a ⚠ flag — buried the
+     candidate data the page exists to show. Set in roman, not italic: extended italic
+     body copy at 12.5px is the thing that read as 'terrible'. Long briefs clamp to about
+     four lines behind a Show more toggle so they never crowd out the cards below. */
+  .election-brief {
+    margin: 2px 0 18px;
+    padding: 12px 16px 13px 17px;
+    border-left: 2px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    background: linear-gradient(90deg, rgba(232,217,184,.30), rgba(232,217,184,0) 94%);
+  }
+  .brief-label {
+    font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); font-weight: 700; margin-bottom: 7px;
+  }
+  .brief-body { font-size: 12.5px; line-height: 1.62; color: var(--ink-soft); }
+  .brief-body p + p { margin-top: 7px; }
+  .brief-lead { color: var(--ink); }
+  /* Flag glyphs hang in the margin so the text block keeps a straight left edge. */
+  .brief-flag { position: relative; padding-left: 21px; }
+  .brief-mark { position: absolute; left: 0; top: 0; font-size: 11px; color: var(--gold-deep); }
+  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; }
+  .brief-more {
+    margin-top: 9px; padding: 0;
+    background: none; border: none; cursor: pointer;
+    font-family: var(--sans); font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-deep);
+    border-bottom: 1px solid var(--gold-soft);
+  }
+  .brief-more:hover { border-bottom-color: var(--gold); }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">MN</div>
+      <div class="brand-text">
+        <span class="brand-name">Minnesota Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Minnesota <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 87 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">87</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>8</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>5</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Minnesota…</div>
+      <svg id="mnmap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>MN Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">July 22, 2026</span><br>
+      Sources: Minnesota Secretary of State raw election-result files (electionresultsfiles.sos.mn.gov) — the Aug 11, 2026 primary and the Nov 5, 2024 and Nov 8, 2022 generals; Minnesota Legislature GIS office county-population-by-district report for the adopted congressional plan (gis.lcc.mn.gov); Wattson v. Simon (Minn. Special Redistricting Panel, Feb 15, 2022); U.S. Census Bureau 2020 P.L. 94-171 and the CD119 county relationship file; Cook Political Report 2026 Partisan Voting Index and its Aug 13, 2026 House ratings; Sabato's Crystal Ball; FEC (bulk All Candidates file and API); candidates' own campaign and official sites; MinnPost, MPR News, Sahan Journal, Star Tribune, Minnesota Reformer, Duluth News Tribune, Post Bulletin, KAXE, KTTC, Fox 9, CBS Minnesota, NOTUS.</div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every MN county + its primary US House district(s)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- County -> U.S. House district (all 87 Minnesota counties) -----
+// MAP IN FORCE FOR NOV 3, 2026: the congressional plan adopted by the Minnesota Special
+// Redistricting Panel in Wattson v. Simon on Feb 15, 2022 (plan C2022). Minnesota did NOT
+// redraw mid-decade and is not on the 2026 new-map list.
+// DERIVATION: the Minnesota Legislature's own GIS office county-population-by-district report
+// for the adopted plan (gis.lcc.mn.gov/php/congress.php?Report=CongressCTY). It sums to
+// 5,706,494 - Minnesota's exact 2020 census population - and every district lands within ONE
+// PERSON of the 713,311.75 ideal. `d` is the population plurality and drives map shading.
+// CURRENCY PROVED THREE WAYS, 87 of 87 counties agreeing: (1) that legislature report,
+// (2) the Census CD119 county relationship file, and (3) the Secretary of State's own
+// county-level returns from the Aug 11, 2026 primary - direct evidence of which map voters
+// actually voted under.
+// SPLIT COUNTIES carry `ds` listing EVERY district they touch, so no race is hidden.
+// !! MN-3 is the population plurality of NO county - it loses Hennepin to MN-5 and Anoka to
+// MN-6 - so it is reachable ONLY through `ds`. Do not remove those entries.
+const COUNTIES = {
+  "27001": { n: "Aitkin", d: 8 },
+  "27003": { n: "Anoka", d: 6, ds: [3,5,6] },   // split: CD6 221,353, CD3 83,030, CD5 59,504
+  "27005": { n: "Becker", d: 7, ds: [7,8] },   // split: CD7 31,188, CD8 3,995
+  "27007": { n: "Beltrami", d: 8 },
+  "27009": { n: "Benton", d: 6 },
+  "27011": { n: "Big Stone", d: 7 },
+  "27013": { n: "Blue Earth", d: 1 },
+  "27015": { n: "Brown", d: 1, ds: [1,7] },   // split: CD1 21,999, CD7 3,913
+  "27017": { n: "Carlton", d: 8 },
+  "27019": { n: "Carver", d: 6 },
+  "27021": { n: "Cass", d: 8 },
+  "27023": { n: "Chippewa", d: 7 },
+  "27025": { n: "Chisago", d: 8 },
+  "27027": { n: "Clay", d: 7 },
+  "27029": { n: "Clearwater", d: 8 },
+  "27031": { n: "Cook", d: 8 },
+  "27033": { n: "Cottonwood", d: 7 },
+  "27035": { n: "Crow Wing", d: 8 },
+  "27037": { n: "Dakota", d: 2 },
+  "27039": { n: "Dodge", d: 1 },
+  "27041": { n: "Douglas", d: 7 },
+  "27043": { n: "Faribault", d: 1 },
+  "27045": { n: "Fillmore", d: 1 },
+  "27047": { n: "Freeborn", d: 1 },
+  "27049": { n: "Goodhue", d: 1 },
+  "27051": { n: "Grant", d: 7 },
+  "27053": { n: "Hennepin", d: 5, ds: [3,5,6] },   // split: CD5 650,163, CD3 630,281, CD6 1,121
+  "27055": { n: "Houston", d: 1 },
+  "27057": { n: "Hubbard", d: 7, ds: [7,8] },   // split: CD7 12,372, CD8 8,972
+  "27059": { n: "Isanti", d: 8 },
+  "27061": { n: "Itasca", d: 8 },
+  "27063": { n: "Jackson", d: 1 },
+  "27065": { n: "Kanabec", d: 8 },
+  "27067": { n: "Kandiyohi", d: 7 },
+  "27069": { n: "Kittson", d: 7 },
+  "27071": { n: "Koochiching", d: 8 },
+  "27073": { n: "Lac qui Parle", d: 7 },
+  "27075": { n: "Lake", d: 8 },
+  "27077": { n: "Lake of the Woods", d: 8 },
+  "27079": { n: "Le Sueur", d: 2 },
+  "27081": { n: "Lincoln", d: 7 },
+  "27083": { n: "Lyon", d: 7 },
+  "27085": { n: "McLeod", d: 7 },
+  "27087": { n: "Mahnomen", d: 8 },
+  "27089": { n: "Marshall", d: 7 },
+  "27091": { n: "Martin", d: 1 },
+  "27093": { n: "Meeker", d: 7 },
+  "27095": { n: "Mille Lacs", d: 8 },
+  "27097": { n: "Morrison", d: 7 },
+  "27099": { n: "Mower", d: 1 },
+  "27101": { n: "Murray", d: 7 },
+  "27103": { n: "Nicollet", d: 1 },
+  "27105": { n: "Nobles", d: 1 },
+  "27107": { n: "Norman", d: 7 },
+  "27109": { n: "Olmsted", d: 1 },
+  "27111": { n: "Otter Tail", d: 7 },
+  "27113": { n: "Pennington", d: 7 },
+  "27115": { n: "Pine", d: 8 },
+  "27117": { n: "Pipestone", d: 7 },
+  "27119": { n: "Polk", d: 7 },
+  "27121": { n: "Pope", d: 7 },
+  "27123": { n: "Ramsey", d: 4, ds: [4,5] },   // split: CD4 548,707, CD5 3,645
+  "27125": { n: "Red Lake", d: 7 },
+  "27127": { n: "Redwood", d: 7 },
+  "27129": { n: "Renville", d: 7 },
+  "27131": { n: "Rice", d: 2, ds: [1,2] },   // split: CD2 36,256, CD1 30,841
+  "27133": { n: "Rock", d: 1 },
+  "27135": { n: "Roseau", d: 7 },
+  "27137": { n: "St. Louis", d: 8 },
+  "27139": { n: "Scott", d: 2 },
+  "27141": { n: "Sherburne", d: 6 },
+  "27143": { n: "Sibley", d: 7 },
+  "27145": { n: "Stearns", d: 6, ds: [6,7] },   // split: CD6 104,017, CD7 54,275
+  "27147": { n: "Steele", d: 1 },
+  "27149": { n: "Stevens", d: 7 },
+  "27151": { n: "Swift", d: 7 },
+  "27153": { n: "Todd", d: 7 },
+  "27155": { n: "Traverse", d: 7 },
+  "27157": { n: "Wabasha", d: 1 },
+  "27159": { n: "Wadena", d: 7 },
+  "27161": { n: "Waseca", d: 1 },
+  "27163": { n: "Washington", d: 4, ds: [2,4,8] },   // split: CD4 164,605, CD2 57,572, CD8 45,391
+  "27165": { n: "Watonwan", d: 1 },
+  "27167": { n: "Wilkin", d: 7 },
+  "27169": { n: "Winona", d: 1 },
+  "27171": { n: "Wright", d: 6 },
+  "27173": { n: "Yellow Medicine", d: 7 }
+};
+
+// ----- STATEWIDE races every Minnesota county sees -----
+// Sources: Minnesota Secretary of State raw result files (electionresultsfiles.sos.mn.gov) for the
+// Aug 11, 2026 primary (USSenate.txt, Governor.txt, AttorneyGen.txt, SecOfState.txt, Auditor.txt,
+// Cand.txt, Partytbl.txt), the Nov 5, 2024 general (USSenate.txt) and the Nov 8, 2022 general
+// (Governor.txt); candidates' own campaign sites for self-described positions; MPR News, MinnPost,
+// Sahan Journal, CBS Minnesota, Duluth News Tribune, Post Bulletin, KTTC, KAXE, Fox 9, Minnesota
+// Reformer; Sabato's Crystal Ball; FEC.
+// !! ALL AUG 11, 2026 FIGURES ARE UNOFFICIAL until the State Canvassing Board certifies.
+// !! sos.mn.gov and electionresults.sos.mn.gov are bot-walled (Radware CAPTCHA); www.sos.state.mn.us
+// is the same wall. The raw result FILES above are open and are what every figure here rests on.
+// !! NO MINOR-PARTY OR INDEPENDENT CANDIDATE could be confirmed against an official Minnesota
+// general-election candidate list, because that list could not be retrieved. Minnesota minor-party
+// and independent candidates qualify by PETITION and never appear in the August primary file, so
+// the primary file cannot rule them in or out. The editorial line taken here: card a non-major-party
+// candidate only where they have a verifiable campaign presence of their own, always with [Verify]
+// on ballot certification; omit anyone known only from an aggregator listing, and say so in the note.
+const STATEWIDE = [
+  // ─────────────────────────── UPCOMING ───────────────────────────
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · Statewide", office: "U.S. Senate — Minnesota (OPEN SEAT)",
+    note: "OPEN — Tina Smith is retiring, making this Minnesota's first open U.S. Senate seat since 2006. BOTH PARTIES' PRIMARY VOTERS OVERRODE THEIR OWN ESTABLISHMENT. Lt. Gov. Peggy Flanagan beat U.S. Rep. Angie Craig 411,853 to 274,920 (59.01%-39.39%) despite being outraised, a win for the party's progressive wing over its best-funded candidate. Michele Tafoya took the Republican nomination with 52.07% (211,813) over convention-endorsed Adam Schwarze at 23.96% and Royce White at 11.15% — the second straight cycle Minnesota Republican primary voters have rejected their own convention's pick. ⚠ Sabato's Crystal Ball moved the seat from Likely to Leans Democratic on Feb 19, 2025 on Smith's retirement; that is the only rating read from a rater's own page, and it is 18 months old. Cook and Inside Elections are reported secondhand as Likely Democratic [Verify — neither rater's page was reachable]. ⚠ No Republican has won a Minnesota statewide race since 2006. ⚠ A Libertarian (Rebecca Whiting, the party's 2024 Senate nominee, who drew 1.73%) and an independent (Marisa Simonetti) are reported to be running; neither could be confirmed on an official Minnesota ballot list and neither is carded here.",
+    candidates: [
+      { name: "Peggy Flanagan", party: "D", winner: false,
+        positions: ["Medicare for All, and ending insurance prior authorization","Universal childcare, higher wages, and protecting SNAP, Medicaid and Section 8","Dismantling ICE — she opposed the Laken Riley Act"],
+        differentiators: ["Lieutenant Governor since 2019 and a citizen of the White Earth Nation; she would be the first Native American woman in the U.S. Senate [Verify — the first claim is not confirmed against an official record]","Won the DFL primary 59.01%-39.39% over U.S. Rep. Angie Craig","Endorsed by the Minnesota DFL, Sens. Bernie Sanders, Elizabeth Warren and Tina Smith, and Attorney General Keith Ellison"],
+        supporters: ["She refuses corporate PAC money and won anyway, against heavier spending — the clearest possible test of whether that pitch sells","The most experienced statewide officeholder in the race, with a governing record on childcare, the minimum wage and abortion access","She has already been elected statewide twice on the Walz ticket, in 2018 and 2022"],
+        opponents: ["Republicans will run against Medicare for All and dismantling ICE as too far left for a general electorate [Verify — structural argument]","She was outraised by more than a million dollars in the final pre-primary period and enters November behind on money [Verify — post-primary figures not available]","As sitting Lieutenant Governor she cannot separate herself from the fraud scandals in state-funded programs that have dominated Minnesota coverage this cycle"] },
+      { name: "Michele Tafoya", party: "R", winner: false,
+        positions: ["A self-described pro-choice Republican: supports abortion access to 12 weeks and opposes IVF bans","Supports red-flag laws allowing temporary removal of firearms","Opposes transgender women in women's sports; runs on anti-fraud, lower taxes and stronger immigration enforcement"],
+        differentiators: ["A former NBC Sports sideline reporter turned conservative commentator, with no prior elected office","Won the primary with 52.07% after LOSING the state convention endorsement to Adam Schwarze in May 2026","NRSC endorsement in January 2026 with a $62,000 contribution and joint fundraisers with Sen. John Thune's PAC; more than $2.6 million raised as of Aug 2026"],
+        supporters: ["Statewide name recognition no other Republican in the field could come close to","A moderate profile on abortion and guns built for the Twin Cities suburbs, where Minnesota statewide races are decided","National party money and organisation behind her from the day she launched"],
+        opponents: ["She has never held or even run for public office before this race","She wrote a 2022 open letter hoping Trump would not run again, calling his politics messy — a live problem with the base","State party delegates distrust her on red-flag laws and abortion and view the NRSC's backing as Washington picking their nominee"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Governor and Lieutenant Governor of Minnesota (OPEN SEAT)",
+    note: "OPEN — Tim Walz is not seeking a third term. Governor and Lieutenant Governor run as a JOINT TICKET and are nominated together. Sen. Amy Klobuchar won the DFL nomination with 89.69% (615,040), running with Ben Schierer. ⚠ THE REPUBLICAN PRIMARY WAS THE UPSET: House Speaker Lisa Demuth took 43.44% (179,683) and beat TRUMP-ENDORSED Mike Lindell, who took 32.47%, with convention-endorsed Kendall Qualls third at 21.38%. Demuth runs with Ryan Wilson, who lost the 2022 auditor race by roughly 8,400 votes. Fraud in state-funded programs is the organising issue of the cycle and is Demuth's core message; Klobuchar runs on costs and competent administration. ⚠ Minnesota has not elected a Republican governor since Tim Pawlenty in 2006 — the longest such streak in the country. ⚠ NO competitive rating for this race could be read from Cook, Sabato or Inside Elections; none is invented here.",
+    candidates: [
+      { name: "Amy Klobuchar — Governor", party: "D", winner: false,
+        positions: ["Lower costs on housing, childcare, health care and prescription drugs; modernise the grid with renewables","Make state government accountable — eliminate waste, root out fraud, modernise technology, streamline business permits","Double apprenticeships and expand rural broadband, the farm safety net and conservation of lakes, wetlands and public lands"],
+        differentiators: ["U.S. Senator from Minnesota since 2007; previously Hennepin County Attorney [Verify — the county attorney role was not re-confirmed against a primary source]","Won the DFL primary with 89.69% (615,040 votes), the first woman to win a DFL gubernatorial nomination","Entered the race in January 2026, after Walz ended his own re-election campaign"],
+        supporters: ["The most-tested statewide vote-getter in Minnesota politics, with a long record of carrying rural and swing counties — she took 56.20% statewide in 2024","A centrist, cost-of-living-first message rather than a factional one","She consolidated the DFL with nearly 90% of the primary vote and no meaningful intraparty fight to repair"],
+        opponents: ["She has never run a state executive branch or managed an agency budget [Verify — structural argument]","Leaving the Senate mid-term hands her seat's future to an appointment and costs Minnesota her seniority [Verify — structural argument]","Republicans argue she is a Washington figure asking for a promotion while fraud went unchecked under her own party's state government [Verify]"] },
+      { name: "Ben Schierer — Lieutenant Governor", party: "D", winner: false,
+        positions: ["Runs on the ticket's shared platform — costs, accountable government and rural investment","⚠ No separate policy platform of his own could be sourced [Verify]","⚠ No independent issue statements were located [Verify]"],
+        differentiators: ["Klobuchar's running mate, nominated on the joint ticket with 89.69%","⚠ His current office or title could NOT be confirmed from any source read [Verify] — a search snippet also placed a Ben Schierer among DFL state auditor primary filers, which may be the same person before switching races, and is not asserted here","No campaign-finance figure separate from the ticket was located [Verify]"],
+        supporters: ["He is on a ticket that consolidated nearly 90% of its own primary","Running alongside the best-known name in Minnesota politics gives the ticket reach he would not have alone [Verify — structural argument]","The office's real weight comes from the governor's delegation of it, and this ticket won its nomination without a factional fight [Verify — structural argument]"],
+        opponents: ["Almost nothing about his record is publicly documented — the thinnest candidate file on the Minnesota statewide ballot [Verify — an absence of located sources, not a finding about him]","Voters cannot evaluate a running mate whose office and record could not be established [Verify]","His opposite number on the Republican ticket has already run statewide and nearly won [Verify — structural argument]"] },
+      { name: "Lisa Demuth — Governor", party: "R", winner: false,
+        positions: ["Fight fraud in state government and make it a fiscal and moral steward of tax dollars","Lower taxes and take a tougher approach to crime","Improve educational outcomes, support rural hospitals, and create conditions for business growth"],
+        differentiators: ["Speaker of the Minnesota House — the highest-ranking Republican in the state and the leader of a chamber that has been evenly divided","Won the primary with 43.44%, beating Trump-endorsed Mike Lindell (32.47%) and convention-endorsed Kendall Qualls (21.38%)","Backed by a conservative billionaire who funded television, social and statewide mail [Verify — the donor is not named in any source read]"],
+        supporters: ["She beat Trump's own endorsed candidate, which supporters read as proof she can win voters beyond the base","An actual governing record as Speaker, against a field that included a pillow executive and a first-time statewide candidate","Fraud in state programs is the year's dominant Minnesota story and it has been her central message throughout"],
+        opponents: ["No Republican has won a Minnesota governor's race since 2006","She won the nomination with under 44% of a fractured field, leaving a substantial Lindell wing to bring back","She faces an opponent with far higher name recognition and fundraising capacity [Verify — comparative fundraising figures were not located]"] },
+      { name: "Ryan Wilson — Lieutenant Governor", party: "R", winner: false,
+        positions: ["Runs on the ticket's anti-fraud and accountability platform","⚠ No separate 2026 policy platform of his own could be sourced [Verify]","His 2022 auditor campaign centred on financial oversight of local government [Verify — described from that race, not a 2026 statement]"],
+        differentiators: ["An attorney who founded a clinical-trial auditing firm","The 2022 Republican nominee for State Auditor — he lost to Julie Blaha by just over 8,400 votes, the closest statewide race in Minnesota that year","Nominated on the joint ticket with Demuth at 43.44%"],
+        supporters: ["He came within about 8,400 votes of winning statewide in 2022 — the best Republican statewide performance in recent Minnesota history","An auditing background matched to a ticket running on rooting out fraud","He has already run and nearly won a statewide race, which no one else on either ticket except Klobuchar can say"],
+        opponents: ["He lost the one statewide race he has run [Verify — structural argument]","His auditing credentials are a better fit for the office he lost than for the one he is now seeking [Verify — structural argument]","No 2026 campaign-finance figure or independent platform for him could be located [Verify]"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Attorney General of Minnesota",
+    note: "THE MOST COMPETITIVE DOWN-BALLOT RACE ON THE MINNESOTA BALLOT, because of the last one: Keith Ellison won re-election in 2022 by less than a point, the closest statewide result in the state that year. He was renominated with 84.67% (573,186) over David J.S. Madgett; Ronald J. Schutz was unopposed for the Republican nomination with 369,353 votes. Ellison is running explicitly against the Trump administration, citing 38 lawsuits filed and roughly $2 billion in federal funding retained through court wins. Schutz runs on violent crime and on what he calls a culture of fraud in Minnesota, and wants authority to take over violent-crime prosecutions from county attorneys. ⚠ No competitive rating from any rater could be read for this race.",
+    candidates: [
+      { name: "Keith Ellison (incumbent)", party: "D", winner: false,
+        positions: ["Defending state authority against federal overreach — 38 lawsuits filed against the Trump administration","Economic fairness: lowering insulin costs and holding landlords accountable","Prosecuting Medicaid fraud, with more than 300 individuals charged, and supporting farmers hit by tariffs"],
+        differentiators: ["Attorney General since 2019 and a former U.S. Representative for MN-5","Won the DFL primary 84.67%-15.33%; DFL-endorsed at the state convention in Rochester on May 30, 2026","Won his 2022 re-election by less than one percentage point"],
+        supporters: ["He claims roughly $2 billion in federal funding preserved for Minnesota through litigation wins","A consumer-protection record voters can name — insulin pricing and landlord accountability","The office's Medicaid fraud unit has brought more than 300 prosecutions on his watch"],
+        opponents: ["He won by under a point in 2022, which opponents read as a mandate he never actually had","Schutz charges that the office has become the litigation wing of the DFL party","Critics say fraud in state-funded programs metastasised while the office reacted rather than pre-empted [Verify]"] },
+      { name: "Ronald J. Schutz", party: "R", winner: false,
+        positions: ["Seek legislative authority for the AG to take over violent-crime prosecutions from county attorneys where warranted","Use common-law and statutory powers proactively to investigate fraud rather than react to it","Move Minnesota's federal litigation out of out-of-state courts and back into Minnesota courts"],
+        differentiators: ["Named to Forbes' list of America's top 200 lawyers","A military veteran with both prosecution and civil litigation experience","Unopposed for the Republican nomination with 369,353 votes"],
+        supporters: ["Elite courtroom credentials rather than a political resume, for an office that is fundamentally a law practice","The sub-one-point 2022 result shows this specific office is genuinely winnable for a Republican","His fraud message lands in the exact cycle where fraud is Minnesota's dominant story"],
+        opponents: ["He has never held elected office and is largely unknown statewide [Verify]","No Republican has won a Minnesota statewide race since 2006","He enters the general with no reported fundraising comparable to a sitting attorney general [Verify — no FEC-equivalent state filing was located]"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Secretary of State of Minnesota",
+    note: "A clean, direct argument about election rules. Steve Simon, seeking a fourth term, was unopposed in the DFL primary with 615,129 votes; Republican Tad Jude won his primary 60.25%-39.75% (229,804 to Wendy Phillips's 151,599). Simon authored Minnesota's no-excuse absentee voting and online registration laws and created pre-registration for 16- and 17-year-olds, and campaigns on the state's repeated national-leading turnout. Jude ran on documentary proof of citizenship, photo ID at the polls and cleaning up voter rolls — as did Phillips, so the Republican primary was not a referendum on that platform. The office runs elections, voter registration and business filings. ⚠ A Green Party candidate (Seth Kuhl-Stennes) is listed by one aggregator; his candidacy could not be confirmed from any official Minnesota source and he is deliberately NOT carded. ⚠ No competitive rating from any rater could be read.",
+    candidates: [
+      { name: "Steve Simon (incumbent)", party: "D", winner: false,
+        positions: ["Expanding voter access — he authored Minnesota's no-excuse absentee voting and online registration laws","Created pre-registration for 16- and 17-year-olds so they are ready to vote at 18","Treats maximising turnout as the core mission of the office"],
+        differentiators: ["Three-term Secretary of State seeking a fourth","Unopposed in the DFL primary with 615,129 votes","Endorsed by Education Minnesota and DFL-endorsed at the state convention"],
+        supporters: ["Minnesota has repeatedly led the nation in turnout during his tenure, and led in youth turnout in 2024","He has run heavily scrutinised elections with no substantiated integrity failure [Verify]","A decade of institutional experience running the state's election machinery, in a cycle where that machinery is contested"],
+        opponents: ["Jude argues Minnesota needs documentary proof of citizenship and photo ID, both of which Simon has resisted","A fourth term invites the incumbency-fatigue argument after 12 years in one office [Verify — structural argument]","Fraud scandals elsewhere in state administration have eroded trust generally, which opponents extend to his office [Verify]"] },
+      { name: "Tad Jude", party: "R", winner: false,
+        positions: ["Require documentary proof of citizenship to register or vote","Require photo identification at the polls","Clean up voter rolls and combat fraud"],
+        differentiators: ["An unusually long public career: 16 years in the Minnesota House and Senate, then Hennepin County commissioner, then 11 years as a district court judge","Carried the Republican endorsement and won the primary 60.25%-39.75%","He was the Republican nominee against Kelly Morrison in MN-3 in 2024, taking 41.45%"],
+        supporters: ["Legislator, county commissioner and sitting judge — an unusually broad resume for an office that is part legal, part administrative","His election-integrity message lands in a cycle dominated by fraud coverage in Minnesota","He won his primary decisively with the party endorsement behind him"],
+        opponents: ["Proof-of-citizenship and photo-ID rules risk turning away eligible voters, particularly older, low-income and student voters [Verify — the standard argument against them, not a claim about Minnesota data]","At 74, with a career spanning five decades, he draws the argument that the office needs new rather than recycled leadership [Verify — structural argument]","No Republican has won this office since 2006, and he lost his most recent race, for MN-3 in 2024 [Verify — structural argument]"] } ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "State Auditor of Minnesota (OPEN SEAT)",
+    note: "OPEN — Julie Blaha is not seeking re-election [Verify — her announcement is sourced via a search summary rather than a primary document]. THE RACE FRAUD BUILT: every candidate is running on fraud in state-funded programs. Scott Jensen, the 2022 Republican nominee for governor, DROPPED OUT of the 2026 governor's race in February 2026 to run here instead, and won the Republican primary with 66.73% (258,740) over Braham Mayor Nate George at 26.19% and Will Finn at 7.08%. Zack Filipovich, a Duluth accountant and former city council president, was unopposed for the DFL nomination with 592,757 votes. ⚠ Independent Jay Reeves is carded on the strength of his own campaign and local candidate-forum coverage, but his ballot certification could NOT be confirmed against an official Minnesota list [Verify]. The office audits local governments — counties, cities, towns and special districts. ⚠ No competitive rating from any rater could be read.",
+    candidates: [
+      { name: "Zack Filipovich", party: "D", winner: false,
+        positions: ["Transparency and accountability in local government finance","Direct and support the office's audit staff rather than politicise their work","Give local finance officials the resources and guidance to prevent fraud before it happens"],
+        differentiators: ["An accountant by profession — the only candidate in the race with that credential","A former Duluth City Council president with finance committee experience","Unopposed for the DFL nomination with 592,757 votes"],
+        supporters: ["Actual accounting credentials for an office whose entire job is auditing","Hands-on experience with municipal budgets from the council side, which is what this office examines","An open seat lets him run on his own terms rather than defending a predecessor's record"],
+        opponents: ["Very little statewide name recognition against a two-time statewide candidate [Verify]","The DFL brand carries the fraud issue this cycle regardless of his personal record [Verify — structural argument]","City council finance work is a large step down in scale from auditing every local government in Minnesota [Verify — structural argument]"] },
+      { name: "Scott Jensen", party: "R", winner: false,
+        positions: ["Stop fraud and improve internal controls across state-funded programs","Eligibility, verification, recertification and absolute transparency as the office's standard","Update the office's technology while building a culture of competence"],
+        differentiators: ["A family physician and former state senator; the 2022 Republican nominee for governor, which he lost to Walz 52.27%-44.61%","Dropped out of the 2026 governor's race in February 2026 to run for this office instead","Won the Republican primary with 66.73% over Nate George (26.19%) and Will Finn (7.08%)"],
+        supporters: ["Far and away the highest name recognition in the race after a full statewide gubernatorial campaign","Fraud is the dominant Minnesota story and he has been running on it longer than anyone in this field","An open seat with no incumbent to unseat — the easiest version of this race a Republican could get"],
+        opponents: ["He lost his 2022 statewide race by nearly eight points","He has no auditing or accounting background — his own primary rival Nate George campaigned on exactly that point","No Republican has won a Minnesota statewide race since 2006"] },
+      { name: "Jay Reeves", party: "I", winner: false,
+        positions: ["A proactive, data-driven and independent approach to auditing","Leverage and reimagine technology the state already owns rather than buying new systems","Keep improvements at minimal cost to taxpayers"],
+        differentiators: ["Born and raised in St. Paul; a veteran with data-integrity expertise","Participated in candidate forums alongside the major-party field","⚠ His ballot line and certification could NOT be confirmed from any official Minnesota source [Verify] — Minnesota independents qualify by petition and do not appear in the August primary file"],
+        supporters: ["A genuinely non-partisan pitch for an office whose entire value rests on independence [Verify — structural argument]","A data-integrity background maps directly onto fraud detection, which is what this race is about","Both major nominees are running on the same issue, which leaves room for a candidate not tied to either party's record [Verify — structural argument]"],
+        opponents: ["No independent has won a Minnesota constitutional office in modern history [Verify — structural argument]","No campaign funding or organisation for him could be located [Verify — an absence of located records, not a confirmed zero]","His ballot status itself is unconfirmed, so voters cannot yet be certain he will appear [Verify]"] } ] },
+
+  // ─────────────────────────── PAST ───────────────────────────
+  { date: "Nov 5, 2024", type: "past", scope: "Federal · Statewide", office: "U.S. Senate — Minnesota (2024)",
+    note: "Amy Klobuchar's third re-election, and the benchmark for how a well-known DFL name performs statewide. She is now the DFL nominee for governor. Note the minor-party lines: Rebecca Whiting carried the Libertarian line and is reported to be running for Senate again in 2026. Total 3,189,323 votes.",
+    candidates: [
+      { name: "Amy Klobuchar", party: "D", winner: true, positions: [], differentiators: ["1,792,441 votes — 56.20%"], supporters: [], opponents: [] },
+      { name: "Royce White", party: "R", winner: false, positions: [], differentiators: ["1,291,712 votes — 40.50%"], supporters: [], opponents: [] },
+      { name: "Rebecca Whiting", party: "L", winner: false, positions: [], differentiators: ["55,215 votes — 1.73% (Libertarian)"], supporters: [], opponents: [] },
+      { name: "Joyce Lynne Lacey", party: "I", winner: false, positions: [], differentiators: ["46,377 votes — 1.45% (Independence-Alliance)"], supporters: [], opponents: [] } ] },
+
+  { date: "Nov 8, 2022", type: "past", scope: "State · Statewide", office: "Governor and Lieutenant Governor of Minnesota (2022)",
+    note: "THE MOST USEFUL PIECE OF HISTORY ON THIS BALLOT — it features two of 2026's nominees. Tim Walz and Peggy Flanagan beat Scott Jensen and Matt Birk 52.27%-44.61%; Flanagan is now the DFL nominee for U.S. Senate and Jensen is the Republican nominee for State Auditor. ⚠ Legal Marijuana Now and Grassroots-Legalize Cannabis held ballot lines in 2022 and together drew about 2.1%; NEITHER is a ballot-qualified party in Minnesota in 2026, and neither appeared in 2024. Total 2,510,661 votes.",
+    candidates: [
+      { name: "Tim Walz and Peggy Flanagan", party: "D", winner: true, positions: [], differentiators: ["1,312,349 votes — 52.27%"], supporters: [], opponents: [] },
+      { name: "Scott Jensen and Matt Birk", party: "R", winner: false, positions: [], differentiators: ["1,119,941 votes — 44.61%"], supporters: [], opponents: [] },
+      { name: "James McCaskel and David Sandbeck", party: "I", winner: false, positions: [], differentiators: ["29,346 votes — 1.17% (Legal Marijuana Now)"], supporters: [], opponents: [] },
+      { name: "Steve Patterson and Matt Huff", party: "G", winner: false, positions: [], differentiators: ["22,599 votes — 0.90% (Grassroots-Legalize Cannabis)"], supporters: [], opponents: [] } ] }
+];
+
+// ----- U.S. HOUSE districts (all 8) -----
+// Sources: Minnesota Secretary of State raw result files — electionresultsfiles.sos.mn.gov,
+// 20260811/USHouse.txt (the Aug 11, 2026 primary) and 20241105/USHouse.txt (the 2024 general);
+// Cook Political Report 2026 Partisan Voting Index, read from the Datawrapper data files behind
+// Cook's published chart (datawrapper.dwcdn.net/fejB0 and /rAx2t); Cook's 2026 House Race Ratings
+// print sheet dated Aug 13, 2026; FEC bulk "All Candidates" file weball26.zip and the FEC API;
+// candidates' own campaign sites for self-described positions; MinnPost, MPR News, KAXE, Hometown
+// Source, Duluth News Tribune, Northern News Now, Fox 9, West Central Tribune, NOTUS, Star Tribune.
+// !! ALL AUG 11, 2026 FIGURES ARE UNOFFICIAL until the canvassing boards certify. Every district
+// reported 100% of precincts.
+// !! MINOR-PARTY AND INDEPENDENT CANDIDATES qualify in Minnesota by PETITION and never appear in
+// the August primary file, and no official general-election candidate list could be retrieved
+// (sos.mn.gov is bot-walled). The primary file therefore cannot rule them in or out. Only
+// DeVelle L. Jackson (I, MN-5) is carded, on the strength of his own campaign site, and his ballot
+// certification carries an explicit [Verify].
+// !! Ballotpedia AND Wikipedia both list two MN-6 general-election candidates, Kelly Doss and
+// Austin Winkelman. Neither appears on any official Minnesota filing this project could verify.
+// They are NOT carded. Do not "discover" and add them in a later run.
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — MN District 1",
+    region: "Southern Minnesota, border to border — Rochester, Mankato, Austin, Albert Lea, Winona, Worthington. All of 19 counties plus most of Brown and part of Rice.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ THE MONEY DOES NOT MATCH THE PARTISAN LEAN, AND THAT IS THE STORY OF THIS RACE. Cook's 2026 PVI is R+6 and Brad Finstad won 2024 by 17.1 points — but through July 22, 2026 the DFL challenger had raised $2,000,547 to Finstad's $2,030,569, essentially dollar for dollar, and holds $1,011,593 on hand against Finstad's $1,283,923. Jake Johnson, a Rochester high school math teacher of 20 years, was added to the DCCC's Red to Blue programme. Finstad was renominated with 90.13% (50,523) over two minor challengers and carries a Trump endorsement issued Aug 10; Johnson won the DFL primary with 81.66% (47,255) over Alex Eaton. ⚠ A second counter-indicator: the DFL primary drew MORE total votes (57,871) than the entire Republican field (56,054). ⚠ Despite all of that, NO competitive rating for this district could be read from any rater's own page, and none is invented here.",
+        candidates: [
+          { name: "Brad Finstad (incumbent)", party: "R", winner: false,
+            positions: ["Champions H.R. 1, the Working Families Tax Cuts — making the 2017 tax cuts permanent, no tax on tips and overtime, a $6,000 senior standard deduction and a $15M estate-tax exemption (his official House issues page)","Farm policy written by farmers for farmers — enhancing crop insurance through his FARMER Act and strengthening the ARC and PLC programmes (his official House issues page)","Education decisions belong at the state and local level rather than with a one-size-fits-all federal bureaucracy (his official House issues page)"],
+            differentiators: ["U.S. Representative for MN-1, first elected in a 2022 special election; a fourth-generation farmer near New Ulm and a member of the House Small Business Committee","Endorsed by President Trump on Aug 10, 2026, the day before the primary; per his campaign site he was Minnesota director for USDA Rural Development and served in the state legislature","$2,030,569 raised and $1,283,923 on hand through July 22, 2026, with no debt (FEC)"],
+            supporters: ["He ran ahead of the presidential ticket in 2024 — a 17.1-point House margin against Trump's roughly 12.2-point district margin","90.13% of his own primary indicates no meaningful opposition inside his party","Cook's 2026 PVI of R+6 plus a Trump endorsement gives him both a partisan cushion and a consolidated base"],
+            opponents: ["He has refused to hold in-person town halls, holding virtual ones instead; he said attendees come with their pitchfork and scream and have a hissy fit in front of the cameras, and later said he did not regret saying it at all","His challenger has matched him almost dollar for dollar in fundraising, so the usual incumbent money advantage is largely absent","DFL primary turnout (57,871) exceeded Republican primary turnout (56,054) in the same election [Verify — structural inference from the Secretary of State's file]"] },
+          { name: "Jake Johnson", party: "D", winner: false,
+            positions: ["Vote to end the tariffs he says are driving up prices and shutting down export markets, and take on corporate monopolies (his own campaign site)","Anti-corruption: he refuses corporate PAC money and would ban members of Congress from trading stocks or becoming lobbyists, and supports term limits (his own campaign site)","Pass a bipartisan farm bill, establish a right to repair farm equipment, and undo the recent cuts to Medicaid and SNAP (his own campaign site)"],
+            differentiators: ["A high school math teacher in Rochester for 20 years, at Mayo High School; he grew up in Stewartville with ten siblings, the son of a garbage collector and a meter reader","Added to the DCCC's Red to Blue programme; won the DFL primary with 81.66% (47,255) over Alex Eaton","$2,000,547 raised and $1,011,593 on hand through July 22, 2026, with no debt (FEC) — within 1.5% of the incumbent's fundraising"],
+            supporters: ["He has matched a sitting incumbent almost dollar for dollar on money, which is rare in an R+6 seat","National Democrats have committed to the race through Red to Blue, so he will not be left to fund it alone","He speaks to the cuts he is running against from experience — he has said he was a SNAP kid and that his was a Medicaid family"],
+            opponents: ["Democrats lost this seat by 17.1 points in 2024 and Trump carried it by roughly 46,600 votes","He has never held elected office and this appears to be his first run for any federal office [Verify — inferred from the absence of prior FEC cycles, not from a source stating it]","National Republicans have attacked him as too far left for southern Minnesota [Verify — the NRCC's statement reached this project only through a search summary and its exact wording is not quoted here]"] } ] },
+      { date: "Nov 5, 2024", type: "past",
+        note: "Finstad's first full-term re-election, on the same lines used in 2026. Total 377,601 votes.",
+        candidates: [
+          { name: "Brad Finstad", party: "R", winner: true, positions: [], differentiators: ["220,929 votes — 58.51%"], supporters: [], opponents: [] },
+          { name: "Rachel Bohman", party: "D", winner: false, positions: [], differentiators: ["156,375 votes — 41.41%"], supporters: [], opponents: [] } ] } ] },
+
+  2: {
+    name: "U.S. House — MN District 2",
+    region: "The southern Twin Cities suburbs and exurbs — Dakota, Scott and Le Sueur counties, most of Rice and a slice of Washington. Eagan, Burnsville, Lakeville, Apple Valley, Shakopee, Northfield, Farmington.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "MINNESOTA'S ONLY OPEN U.S. HOUSE SEAT — Angie Craig gave it up to run for Senate, and lost that DFL primary to Peggy Flanagan. Eric Pratt was the unopposed Republican nominee (43,813 votes) after winning the party endorsement in May with 65% of delegates. Matt Little won a SIX-WAY DFL primary with 47.23% (41,792), ahead of Matthew D. Klein (30.40%) and Kaela Berg (16.66%) — so roughly 53% of DFL primary voters chose someone else. ✅ Cook Political Report rates the seat LIKELY DEMOCRATIC as of its Aug 13, 2026 ratings sheet. ⚠ No readable Sabato or Inside Elections rating exists for this district and none is asserted. Craig held it by 13.45 points in 2024 while Harris carried it by about 24,800 votes. ⚠ The money runs against the partisan lean: Pratt enters the fall with $254,373 on hand to Little's $127,543, both through July 22, 2026.",
+        candidates: [
+          { name: "Eric Pratt", party: "R", winner: false,
+            positions: ["Lowering costs, supporting small businesses and restoring economic stability (his own campaign site)","Supports law enforcement, first responders and public-safety policy (his own campaign site)","Anti-fraud and government accountability — he chief-authored SF 2897, creating a Government Efficiency and Ethics Commission to investigate fraud in state agencies"],
+            differentiators: ["Minnesota state senator for District 54 since 2013 and RANKING MINORITY MEMBER of the Senate Finance Committee; a former U.S. Bank vice president and Prior Lake-Savage school board member","Unopposed for the nomination with 43,813 votes, after winning the Republican endorsement May 2, 2026 with 65% of delegates","$511,213 raised and $254,373 on hand through July 22, 2026 — but $105,000 of that is a loan from himself, and the committee carries $105,000 in debt (FEC)"],
+            supporters: ["Fourteen years in the state Senate and ranking status on Finance — real budget experience from a career banker, not a first-time candidate","His chief-authored bill list is heavy with Scott and Dakota county infrastructure, wastewater, trail and school-safety projects, which supporters read as district service rather than ideology","Political scientist Ryan Dawkins, quoted by MinnPost, called him a pretty moderate, reasonable guy — a profile that fits a swing suburban seat","Endorsed by House Majority Whip Tom Emmer and by Reps. Stauber, Fischbach and Finstad, and he reaches November with more cash on hand than his opponent"],
+            opponents: ["Craig won this district by 13.45 points in 2024 and Cook rates the open seat Likely Democratic","Dawkins to MinnPost: it could be a competitive district in a good Republican year, but it is really a bad Republican year — the same piece reported Trump's disapproval at 62%","His chief-authored bills carving out exemptions from Minnesota's Paid Leave Law and earned sick-and-safe-time law, restricting union-dues allocation and barring vaccine requirements are all in the official record and are natural DFL targets"] },
+          { name: "Matt Little", party: "D", winner: false,
+            positions: ["Medicare for All — he says he would co-sponsor the Jayapal and Sanders bill guaranteeing comprehensive care with no premiums, deductibles or copayments","Getting ICE out of Minnesota; he raised his profile following federal immigration agents during Operation Metro Surge and posting the encounters","A moratorium on data centers, which he says drain aquifers and consume farmland; ending Citizens United and taxing the ultrawealthy"],
+            differentiators: ["Lakeville City Council 2010-2012, Mayor of Lakeville 2012-2016 and Minnesota state senator 2017-2020; an attorney in personal injury and malpractice","The only CD2 candidate with the Minnesota DFL endorsement; won a six-way primary with 47.23%","$923,277 raised and $127,543 on hand through July 22, 2026, with $718,907 of it from individuals and only $37,000 from other committees — but $131,000 in committee debt (FEC)"],
+            supporters: ["Elected experience at three levels of local and state office, all inside this district","He won both the party endorsement and the primary, beating a sitting state senator and a sitting state representative","Endorsed by National Nurses United, SEIU, MAPE, the postal unions, Sierra Club, Clean Water Action, MoveOn and the Congressional Progressive Caucus, plus AG Keith Ellison and Rep. Betty McCollum","A small-dollar-heavy finance profile backs his no corporate PAC money pitch"],
+            opponents: ["The Legislature's own reference record states he was DEFEATED for re-election in 2020 after one Senate term and lost a 2022 run for Dakota County Attorney — he has lost his last two races","MinnPost framed his win as expanding progressive wins in Democratic primaries; Republicans will argue Medicare for All and replacing ICE sit left of a district Angie Craig held as a moderate","He took only 47.23% of his own primary, and enters the general with half his opponent's cash on hand plus $131,000 in debt"] } ] },
+      { date: "Nov 5, 2024", type: "past",
+        note: "Angie Craig's last re-election before giving up the seat for her Senate run. Total 417,319 votes.",
+        candidates: [
+          { name: "Angie Craig", party: "D", winner: true, positions: [], differentiators: ["231,751 votes — 55.53%"], supporters: [], opponents: [] },
+          { name: "Joe Teirab", party: "R", winner: false, positions: [], differentiators: ["175,621 votes — 42.08%"], supporters: [], opponents: [] },
+          { name: "Thomas William Bowman", party: "I", winner: false, positions: [], differentiators: ["9,492 votes — 2.27%"], supporters: [], opponents: [] } ] } ] },
+
+  3: {
+    name: "U.S. House — MN District 3",
+    region: "The western and northern Twin Cities suburbs — parts of Hennepin and Anoka counties. Bloomington, Edina, Minnetonka, Plymouth, Maple Grove, Brooklyn Park, Eden Prairie.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ MN-3 IS THE POPULATION PLURALITY OF NO COUNTY — it loses Hennepin to MN-5 and Anoka to MN-6 — so it is reachable on this site only because split counties list every district they touch. Kelly Morrison was renominated UNOPPOSED with 86,217 votes, more than the entire Republican field drew combined (40,754). Republicans nominated Tyler Bass, who beat party-endorsed Quentin Wittrock 55.43%-44.57%. Morrison won the seat in 2024 by 17.0 points and Harris carried the district by roughly 90,000 votes; Cook's 2026 PVI is D+11 and Cook rates the seat SOLID DEMOCRAT as of Aug 13, 2026. ⚠ The one real vulnerability is ethics: NOTUS reported in April 2026 that Morrison was months late disclosing eight trades worth $1.41M to $2.91M under the STOCK Act, and separately that she bought defense-contractor stock nine days after the U.S. war with Iran began. Her office said an investment manager made the trades without her prior knowledge, and she has since announced she is divesting all individual stocks.",
+        candidates: [
+          { name: "Kelly Morrison (incumbent)", party: "D", winner: false,
+            positions: ["Reproductive rights — her official House site describes her as the first and only pro-choice OB-GYN in Congress, and she introduced the SAFE Training for OB-GYNs Act to protect abortion-care training for residents in ban states","Opposition to the Trump tariffs, which she called reckless, corrupt and illegal after the Supreme Court struck them down; lowering the cost of health care, housing and child care","Water quality and protection of Minnesota's lakes, rivers and wetlands"],
+            differentiators: ["An OB-GYN in practice more than 20 years; Minnesota House 2018, Minnesota Senate 2022, sworn into Congress January 2025 — a first-term member","Ranking Member of the House Small Business Subcommittee on Rural Development, Energy and Supply Chains, and a member of House Veterans' Affairs","$1,361,933 raised and $413,942 on hand through July 22, 2026 (FEC); DFL CD3 endorsement April 26, 2026 and Education Minnesota's endorsement May 6"],
+            supporters: ["A district-fit resume: a 20-year practising OB-GYN in a suburban seat where reproductive rights is a live issue","She holds a subcommittee ranking-member slot as a freshman, plus Veterans' Affairs seats in a district with roughly 28,000 veterans","She missed 2 of 553 roll-call votes from January 2025 to May 2026, and passed more than 90 bills in six years in the Minnesota Legislature","She cleared her primary unopposed and has roughly $414,000 banked against an opponent with no reported money at all"],
+            opponents: ["NOTUS reported she violated the STOCK Act, disclosing eight trades worth $1.41M to $2.91M months and in one case more than a year late; her office said she would pay the $200 fine","NOTUS separately reported she bought $15,001-$50,000 of stock in a naval-drone defense contractor nine days after the U.S. war with Iran began; a POGO analyst called it a pretty clear conflict of interest","Bass argues her wealth and trading record make her out of touch with the district. ⚠ His specific claims — a $45 million net worth, and that she signed a discharge petition without co-sponsoring a trading ban — could NOT be verified in any independent source and are not asserted here"] },
+          { name: "Tyler Bass", party: "R", winner: false,
+            positions: ["Immigration: secure the border and deport every illegal immigrant, and on his About page, pause all immigration including H-1B visas for ten years (his own campaign site)","Gun rights: says he will never vote to ban the AR-15, restrict magazine capacity or add requirements for law-abiding owners (his own campaign site)","Health insurance: favours fully underwritten policies and real group-style coverage, drawing on two years as a licensed Minnesota life-and-health agent (his own campaign site)"],
+            differentiators: ["No prior elected or appointed office; a general contractor who founded several small businesses, from in-home personal training to an exteriors company","He BEAT THE PARTY-ENDORSED CANDIDATE — the CD3 Republican convention endorsed Quentin Wittrock in April, and Bass won the primary 55.43%-44.57%","⚠ He has filed only a Statement of Candidacy with the FEC — NO receipts, disbursements or cash on hand are reported at all for the 2026 cycle, and his site lists no endorsements"],
+            supporters: ["He beat the party-endorsed, better-funded candidate by about 11 points with essentially no money, which his side reads as genuine grassroots enthusiasm","He positioned himself as the authentically pro-Trump conservative in the primary, and primary voters bought the argument","A working-class biography — food shelf, near-homelessness, building a business from a $250 paycheque — offered as a direct contrast to an incumbent physician with a seven-figure managed portfolio"],
+            opponents: ["Zero dollars in FEC-reported receipts against an incumbent with $414,000 on hand — close to disqualifying in a suburban seat","He lost the CD3 Republican endorsement to Wittrock and has no institutional party support and no governing record","His stated positions — pausing all immigration for ten years, deporting every illegal immigrant — sit far from the median voter in a district Harris carried by about 21 points","⚠ Several headline statistics on his own site carry no citation, including a claim of one million illegal immigrants in Minnesota, which is implausible against the state's population"] } ] },
+      { date: "Nov 5, 2024", type: "past",
+        note: "Morrison's first win, taking the seat Dean Phillips vacated. Her Republican opponent, Tad Jude, is the 2026 Republican nominee for Secretary of State. Total 411,140 votes.",
+        candidates: [
+          { name: "Kelly Morrison", party: "D", winner: true, positions: [], differentiators: ["240,209 votes — 58.43%"], supporters: [], opponents: [] },
+          { name: "Tad Jude", party: "R", winner: false, positions: [], differentiators: ["170,427 votes — 41.45%"], supporters: [], opponents: [] } ] } ] },
+
+  4: {
+    name: "U.S. House — MN District 4",
+    region: "St. Paul and the eastern metro — nearly all of Ramsey County plus part of Washington. St. Paul, Maplewood, Roseville, White Bear Lake, Woodbury.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "Betty McCollum, in the seat since 2001 and the longest-serving member of Minnesota's delegation, turned back a primary challenge with 85.79% (95,811) against Aswar Rahman's 14.21% — the lowest primary share of any Minnesota incumbent this cycle. Republicans nominated Paul Wikstrom with 72.62% (20,628). This is the safest seat in the state: McCollum won 2024 by 34.7 points, 67.25%-32.58%, and Harris carried it by roughly 134,000 votes; Cook's 2026 PVI is D+18. DFL primary turnout (111,680) was nearly four times the Republican primary (28,404). ⚠ Rahman's challenge was about DELIVERY, not age — he argued the district trails peers on federal contract opportunities by up to a billion dollars a year. No age-based attack could be sourced and none is repeated here. ⚠ No competitive rating could be read from any rater's own page.",
+        candidates: [
+          { name: "Betty McCollum (incumbent)", party: "D", winner: false,
+            positions: ["A permanent ban on sulfide-ore copper mining near the Boundary Waters — she sponsors H.R. 588, the Boundary Waters Wilderness Protection and Pollution Prevention Act","Aggressive Pentagon oversight; her campaign site says the Defense Secretary's leadership has been nonexistent","Opposition to the administration's economic and health-care record, which she says raised health-care and grocery costs"],
+            differentiators: ["U.S. Representative since January 3, 2001 — the longest-serving member of Minnesota's congressional delegation","RANKING MEMBER of the House Appropriations Subcommittee on Defense","$1,251,583 raised and $498,697 on hand through July 22, 2026, including $457,800 from other committees (FEC)"],
+            supporters: ["Seniority converts into influence: as Defense Appropriations ranking member she sits where the federal budget is actually written","More than 60 organisations endorsed her — the DFL plus effectively the whole Minnesota labor, environmental, reproductive-rights and LGBTQ coalition","A signature, concrete legislative cause in permanent Boundary Waters protection","Voters just ratified her decisively with 85.79% in a contested primary"],
+            opponents: ["Rahman's core charge: 25 years in the seat while the district fell significantly behind on federal contract opportunities, by up to a billion dollars a year","Rahman also attacked her career PAC fundraising; this cycle's filing shows $457,800 in other-committee receipts through July 22, 2026","She spent more than she raised this cycle — $1.31M out against $1.25M in — covered by carryover","Her 85.79% was the lowest primary share of any Minnesota incumbent, with 15,869 DFL voters backing a challenger"] },
+          { name: "Paul Wikstrom", party: "R", winner: false,
+            positions: ["Federal spending control and anti-fraud enforcement: mandatory audits for all major federal spending and no appropriation without fraud-prevention measures (his own campaign site)","Tax and cost-of-living relief: eliminate tax on tips and overtime, expand the child tax credit, repeal the estate tax, and require health-care price transparency","Jobs, energy and deregulation: domestic manufacturing and energy independence, expanded vocational training, and congressional approval for major regulations"],
+            differentiators: ["An electrical engineer with 35-plus years in Minnesota medtech and aerospace; he has never held elected office","⚠ HE WAS NOT THE 2024 NOMINEE — that was May Lor Xiong. He ran in the March 11, 2025 state House 40B special election and LOST 70.15%-29.75%, after successfully proving in court that the original DFL winner did not live in the district","$28,031 raised and $2,205 on hand through July 22, 2026 (FEC) — McCollum holds roughly 226 times his cash"],
+            supporters: ["A demonstrated record of election-integrity follow-through: he personally documented and won the residency challenge that voided a DFL state House win","That experience gives his central plank — mandatory audits and fraud controls on federal spending — a personal rather than theoretical basis","An engineer rather than a career politician, running on affordability against a 25-year incumbent","He consolidated his party decisively with 72.62% in a three-way primary"],
+            opponents: ["The district is not close — McCollum won it 67.25%-32.58% in 2024","His only head-to-head general election was a 40-point blowout loss, in a state House district inside MN-4","He has $2,205 on hand against a half-million-dollar incumbent war chest, no elected experience and no published endorsements","⚠ A wording problem critics can use: his site says he challenged a fraudulent DFL candidate and won — he won the lawsuit, not the seat, and lost the ensuing election by 40 points"] } ] },
+      { date: "Nov 5, 2024", type: "past",
+        note: "McCollum's twelfth win. Total 361,043 votes.",
+        candidates: [
+          { name: "Betty McCollum", party: "D", winner: true, positions: [], differentiators: ["242,802 votes — 67.25%"], supporters: [], opponents: [] },
+          { name: "May Lor Xiong", party: "R", winner: false, positions: [], differentiators: ["117,618 votes — 32.58%"], supporters: [], opponents: [] } ] } ] },
+
+  5: {
+    name: "U.S. House — MN District 5",
+    region: "Minneapolis and its inner-ring suburbs — most of Hennepin County plus slivers of Anoka and Ramsey. Minneapolis, St. Louis Park, Golden Valley, Richfield, Columbia Heights.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "The most Democratic district in Minnesota and the 13th most Democratic in the country at Cook PVI D+32. Ilhan Omar was renominated with 80.71% (122,640 of 151,949) in a five-way DFL primary. Retired 30-year Minnesota State Patrol trooper John Nagel won the Republican nomination with 52.16% of just 14,909 Republican ballots — the DFL primary drew more than ten times the Republican turnout. Dalia Al-Aqidi, the 2024 GOP nominee, finished second at 26.17%. Omar beat Al-Aqidi by 49.8 points in 2024. ⚠ Independent DeVelle L. Jackson is carded on the strength of his own campaign site; his ballot certification could NOT be confirmed against an official Minnesota list [Verify]. ⚠ Ratings reported as Safe D by Cook (Feb 6, 2025) and Decision Desk HQ (July 14, 2026) come from a citation table, not the raters' own pages [Verify].",
+        candidates: [
+          { name: "Ilhan Omar (incumbent)", party: "D", winner: false,
+            positions: ["Universal health coverage and a homes-for-all housing guarantee (her own campaign site)","Climate and environmental justice, and public education access (her own campaign site)","Reproductive freedom, LGBTQIA+ protections and a just immigration system (her own campaign site)"],
+            differentiators: ["Four-term incumbent, in the seat since 2019","Won the DFL primary with 80.71% over four challengers","$1,347,365 cash on hand on her most recent FEC quarterly filing [Verify — the aggregator did not state an as-of date]"],
+            supporters: ["She won four of every five DFL primary votes in the state's most Democratic district","A national profile gives the district outsized voice on housing, immigration and foreign policy","Seniority and a safe seat let her push priorities that members in marginal districts cannot"],
+            opponents: ["Roughly one in five DFL primary voters backed a challenger rather than the incumbent","Her national visibility makes her a fundraising target for Republicans nationwide [Verify — structural argument]","Critics argue a D+32 seat insulates her from accountability to swing voters [Verify — structural argument]"] },
+          { name: "John Nagel", party: "R", winner: false,
+            positions: ["Strict border security (as reported in coverage of his campaign announcement)","School curriculums focused on core academics rather than political ideology","Support for law enforcement; the campaign is framed around safety, sanity and service"],
+            differentiators: ["A 30-year Minnesota State Patrol veteran — trooper, NHTSA safety consultant and Training Academy instructor","Won the Republican primary with 52.16%, beating 2024 nominee Dalia Al-Aqidi","Previously ran for Minnesota House District 46A and lost to Rep. Larry Kraft"],
+            supporters: ["Three decades in uniform and a Patrol Meritorious Service Award give him a credible public-safety message","A lifelong St. Louis Park resident running on local crime and affordability rather than national culture war","He beat a better-known opponent in the primary despite far less name recognition"],
+            opponents: ["He won a primary of only 14,909 voters — barely a tenth of the DFL electorate in the same district","He reported $48,430 on hand against Omar's $1.35 million [Verify — as-of date not stated by the source]","No Republican has come within 24 points of this seat, which Cook puts at D+32"] },
+          { name: "DeVelle L. Jackson", party: "I", winner: false,
+            positions: ["Championing constitutional rights and accountability (his own campaign site)","Places constitutional institutions above party establishments and the common good above political convenience (his own campaign site)","Runs as an independent because representation should not require surrendering all judgment to the partisan machine (his own campaign site)"],
+            differentiators: ["Reported to be the only non-major-party U.S. House candidate on the ballot anywhere in Minnesota in 2026","⚠ His ballot certification could NOT be confirmed from an official Minnesota source [Verify] — independents qualify by petition and do not appear in the August primary file","His campaign site publishes no biography, resume or prior office [Verify — an absence noted on the site itself]"],
+            supporters: ["He gives MN-5 voters the only alternative to the two major parties on the November ballot [Verify — contingent on his ballot status being confirmed]","An independent owes nothing to a caucus or a whip operation [Verify — structural argument]","Voters dissatisfied with both nominees have somewhere to go [Verify — structural argument]"],
+            opponents: ["No verifiable public record, office history or campaign organisation could be located [Verify — nothing found]","No reported FEC fundraising for his campaign could be located [Verify]","No independent has ever won this seat, and Cook puts the district at D+32 [Verify — structural argument]"] } ] },
+      { date: "Nov 5, 2024", type: "past",
+        note: "Omar's third re-election. Her Republican opponent that year, Dalia Al-Aqidi, ran again in 2026 and lost the primary. Total 351,047 votes.",
+        candidates: [
+          { name: "Ilhan Omar", party: "D", winner: true, positions: [], differentiators: ["261,066 votes — 74.37%"], supporters: [], opponents: [] },
+          { name: "Dalia Al-Aqidi", party: "R", winner: false, positions: [], differentiators: ["86,213 votes — 24.56%"], supporters: [], opponents: [] } ] } ] },
+
+  6: {
+    name: "U.S. House — MN District 6",
+    region: "The northern exurbs and central Minnesota — Benton, Carver, Sherburne and Wright counties, most of Anoka and Stearns, and a sliver of Hennepin. St. Cloud, Blaine, Coon Rapids, Andover, Chaska, Buffalo.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "House Majority Whip Tom Emmer, the third-ranking House Republican, was renominated with 80.91% over Mike Foley (15.27%) and Chris Corey (3.81%). DFL-endorsed Doug Chapin was unopposed and took 100% with 48,394 votes. Emmer beat Jeanne Hendricks by 25.0 points in 2024; Cook's 2026 PVI is R+10. ⚠ BALLOTPEDIA AND WIKIPEDIA BOTH LIST TWO ADDITIONAL NOVEMBER CANDIDATES, Kelly Doss and Austin Winkelman. Neither appears on any official Minnesota filing this project could verify, and neither is carded. ⚠ Wikipedia also has this district's counties WRONG — it adds Washington and omits Hennepin; Emmer's own campaign site and the state's returns both show the opposite. ⚠ Ratings reported as Likely R by Decision Desk HQ (July 14, 2026) and Safe R by Cook (Feb 6, 2025) come from a citation table, not the raters' own pages [Verify].",
+        candidates: [
+          { name: "Tom Emmer (incumbent)", party: "R", winner: false,
+            positions: ["Restore energy independence and cut household costs on groceries, gas and electricity (his own campaign site)","Supports the SAVE Act requiring proof of citizenship to register to vote (his own campaign site)","School choice, and eliminating the U.S. Department of Education (his own campaign site)"],
+            differentiators: ["House Majority Whip — the third-ranking Republican in the chamber; in Congress since 2014","Won the Republican primary with 80.91%; endorsed by President Trump, per his own campaign site","$4,496,007 cash on hand on his most recent FEC quarterly filing [Verify — the aggregator did not state an as-of date]"],
+            supporters: ["The whip's gavel gives this district direct leverage over what reaches the House floor","He won 62.45% in 2024 and four in five primary votes in 2026 — his party in the district is not restless","A roughly $4.5 million war chest lets him defend the seat without national help"],
+            opponents: ["Nearly one in five Republican primary voters chose one of two little-known challengers","Leadership duties draw his time and money toward national races rather than the district [Verify — structural argument]","Decision Desk HQ has the seat at Likely R rather than safe, implying some 2026 erosion [Verify — rating not read at the rater's own site]"] },
+          { name: "Doug Chapin", party: "D", winner: false,
+            positions: ["An economy that works for all of us — good jobs, livable pay, fair taxes and open markets (his own campaign site)","Health care that puts patients first rather than insurance companies (his own campaign site)","A government that serves all of us, with a Congress that represents the people (his own campaign site)"],
+            differentiators: ["An attorney and nationally recognised election-administration expert who built the University of Minnesota Humphrey School's election administration certificate programme; prior work in Congress and at the Pew Charitable Trusts","Won the CD6 DFL endorsement April 25 with about 90% of delegates over Anson Amberson","Unopposed in the primary with 48,394 votes; $70,293 cash on hand on his latest quarterly FEC filing [Verify — as-of date not stated]"],
+            supporters: ["A genuine national subject-matter expert on elections and democracy, running in a cycle when that is a live issue","He consolidated the DFL early and spent nothing on a contested primary","Nearly 48,400 DFL voters turned out in a primary that had nothing on the ballot to decide"],
+            opponents: ["He faces the third-ranking House Republican at roughly a 64-to-1 cash disadvantage [Verify — as-of date not stated]","No Democrat has carried this seat since Emmer took it in 2014, and Cook puts it at R+10","He has never held elected office; his expertise is in administering elections, not winning them [Verify — structural argument]"] } ] },
+      { date: "Nov 5, 2024", type: "past",
+        note: "Emmer's sixth win, the cycle he briefly ran for Speaker. Total 416,496 votes.",
+        candidates: [
+          { name: "Tom Emmer", party: "R", winner: true, positions: [], differentiators: ["260,095 votes — 62.45%"], supporters: [], opponents: [] },
+          { name: "Jeanne Hendricks", party: "D", winner: false, positions: [], differentiators: ["155,836 votes — 37.42%"], supporters: [], opponents: [] } ] } ] },
+
+  7: {
+    name: "U.S. House — MN District 7",
+    region: "Western Minnesota, Canada to Iowa — 34 whole counties plus most of Becker, Hubbard and Stearns and part of Brown. Moorhead, Willmar, Alexandria, Fergus Falls, Marshall, Thief River Falls.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "MINNESOTA'S MOST REPUBLICAN SEAT — Cook PVI R+18, the 400th most Democratic of 435 districts. Michelle Fischbach drew no primary opponent and banked 69,436 votes. DFL-endorsed Erik Osberg, a Wadena small-business owner who coordinates Otter Tail County's Rural Rebound Initiative, won the DFL primary with 65.72% over perennial candidate Steve Carlson. Republican primary turnout (69,436) beat DFL turnout (42,239) by 64%. Fischbach won 2024 by 41.0 points, 70.45%-29.44% — the widest margin of any Minnesota House race that year. ⚠ Ratings reported as Safe R by Decision Desk HQ (July 14, 2026) and Cook (Feb 6, 2025) come from a citation table, not the raters' own pages [Verify].",
+        candidates: [
+          { name: "Michelle Fischbach (incumbent)", party: "R", winner: false,
+            positions: ["Opposes the Affordable Care Act, favouring patient-centred reforms that increase competition while protecting pre-existing-condition coverage (her own campaign site)","Anti-abortion and opposed to federal abortion funding; cites a 100% lifetime National Right to Life rating (her own campaign site)","Supports farmers through trade deals, infrastructure and tax policy; advocates zero-based budgeting (her own campaign site)"],
+            differentiators: ["Sits on Ways and Means, Rules, Budget and Ethics — an unusually heavy committee load for a fourth-term member","A former Lieutenant Governor of Minnesota and the first woman to serve as Minnesota Senate President","Unopposed in the primary with 100%; $919,823 cash on hand on her latest quarterly FEC filing [Verify — as-of date not stated]"],
+            supporters: ["A Ways and Means seat gives a farm district direct say over tax and trade law","She won by 41 points in 2024 and faced no primary opposition at all in 2026","She has led congressional scrutiny of Minnesota's public-fraud cases, an issue with cross-party salience in the state"],
+            opponents: ["Her ACA repeal position is a hard sell in a district heavily dependent on rural hospitals and clinics [Verify — structural argument]","A 41-point seat and no primary opponent mean her record went untested by voters this year [Verify — structural argument]","Farm-country tariff and input-cost pain is the core of her challenger's case against the majority she belongs to"] },
+          { name: "Erik Osberg", party: "D", winner: false,
+            positions: ["Rural prosperity and agricultural sustainability; he argues tariffs and war keep driving up farm input costs","Health-care affordability and access, and strengthening public education (his own campaign site and launch coverage)","Reproductive rights, gun-safety measures and reducing corporate influence in politics (his own campaign site)"],
+            differentiators: ["A small-business owner from Wadena who coordinates Otter Tail County's Rural Rebound Initiative; prior work in financial services, media, construction and marketing","Won the CD7 DFL endorsement April 25, 2026 in Granite Falls with 65% on the first ballot","Won the DFL primary with 65.72%; $114,432 cash on hand on his latest quarterly FEC filing [Verify — as-of date not stated]"],
+            supporters: ["A rural-development professional running on rural economics rather than imported national themes","He beat a repeat candidate by better than two to one after unifying the party at convention","Farm input costs and rural hospital finances are real, locally felt grievances he can run on"],
+            opponents: ["MN-7 is Cook R+18, the most Republican district in Minnesota, and Fischbach won it by 41 points in 2024","Republican primary turnout beat DFL turnout by 64% in the same election he won","He has never held elected office and trails the incumbent roughly eight to one in cash [Verify — as-of date not stated]"] } ] },
+      { date: "Nov 5, 2024", type: "past",
+        note: "Fischbach's third win, and the widest margin in any Minnesota U.S. House race that year. Total 390,510 votes.",
+        candidates: [
+          { name: "Michelle Fischbach", party: "R", winner: true, positions: [], differentiators: ["275,098 votes — 70.45%"], supporters: [], opponents: [] },
+          { name: "AJ (John) Peters", party: "D", winner: false, positions: [], differentiators: ["114,979 votes — 29.44%"], supporters: [], opponents: [] } ] } ] },
+
+  8: {
+    name: "U.S. House — MN District 8",
+    region: "Northeastern Minnesota and the Iron Range — 18 whole counties plus parts of Becker, Hubbard and Washington. Duluth, Hibbing, Virginia, Brainerd, Bemidji, Cambridge.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "THE ONE MINNESOTA HOUSE SEAT WITH A LIVE COMPETITIVE ARGUMENT. Pete Stauber took 86.44% over Anthony Hamilton. DFL-endorsed Trina Swanson — a Hermantown native who spent roughly 25 years at U.S. Citizenship and Immigration Services, rising to Director of International Operations before resigning rather than carry out directives she considered unethical — won 77.24% over Luke Gulbranson (16.87%) and John Munter (5.89%). ⚠ DFL primary turnout (70,450) EDGED Republican turnout (67,260), the only Minnesota district where that happened. Stauber beat Jen Schultz by 16.1 points in 2024; Cook's 2026 PVI is R+7, the least Republican of Minnesota's three GOP-held seats. Money as of the Q2 2026 reports filed July 16, 2026: Stauber raised $470,764 with $1,208,605 on hand, Swanson $225,302 with $117,406. ⚠ Ratings reported as Likely R by Decision Desk HQ (July 14, 2026) and Safe R by Cook (Feb 6, 2025) come from a citation table, not the raters' own pages [Verify].",
+        candidates: [
+          { name: "Pete Stauber (incumbent)", party: "R", winner: false,
+            positions: ["Supports copper-nickel and rare-earth mining development, crediting a $2 billion federal funding push for the industry (his own campaign site)","American energy independence and opposition to restrictions on domestic production (his own campaign site)","Border security and immigration enforcement; opposes taxpayer funding for abortion and defends Second Amendment rights (his own campaign site)"],
+            differentiators: ["In Congress since 2019; a 23-year Duluth police officer, former police union president and area commander, and a former St. Louis County Commissioner and Hermantown City Council member","Won the Republican primary with 86.44%","Raised $470,764 in Q2 2026 with $1,208,605 cash on hand, per FEC filings reported July 16, 2026"],
+            supporters: ["Mining and building-trades jobs are the district's economic spine, and he is the industry's most direct federal advocate","Local law-enforcement and hockey roots give him personal reach beyond partisanship on the Range","A better than ten-to-one cash-on-hand edge and 86% primary support entering the fall"],
+            opponents: ["His opponent charges he voted against the bipartisan infrastructure law while claiming credit for projects it funded","Boundary Waters advocates oppose his push to expand sulfide-ore mining near the wilderness","Cook puts the seat at R+7, the softest Republican district in Minnesota, and Decision Desk HQ has it only Likely R [Verify — rating not read at the rater's own site]"] },
+          { name: "Trina Swanson", party: "D", winner: false,
+            positions: ["Universal health care with rural hospitals and clinics kept open, and protecting insurance tax credits for roughly 90,000 Minnesotans (her own campaign site)","Supports copper-nickel mining when impartial scientists and engineers say it can be done safely, while pledging to protect the Boundary Waters from mining (her own campaign site)","Affordability through antitrust enforcement against corporate price manipulation, plus secure borders paired with Dreamer legal status and earned citizenship (her own campaign site)"],
+            differentiators: ["Roughly 25 years at U.S. Citizenship and Immigration Services, ending as Director of International Operations with postings in Germany and Kenya; later started an immigration law firm","DFL-endorsed in May 2026 with more than 70% of delegates; endorsed by Women Winning on April 29, 2026","Won the DFL primary with 77.24%; raised $225,302 in Q2 2026 with $117,406 on hand, per FEC filings reported July 16, 2026"],
+            supporters: ["A career federal executive who quit rather than execute orders she called unethical — a clean integrity story in a cycle about accountability","Her mining position tries to hold both trades jobs and Boundary Waters voters instead of choosing between them","DFL primary turnout actually exceeded Republican turnout in this district on August 11"],
+            opponents: ["She enters the general with about a tenth of Stauber's cash on hand as of July 16, 2026","A federal immigration-agency resume cuts both ways in a district Trump carried by roughly 14 points","Her qualified position on copper-nickel mining risks satisfying neither the trades nor Boundary Waters advocates [Verify — structural argument]"] } ] },
+      { date: "Nov 5, 2024", type: "past",
+        note: "Stauber's fourth win, on the same lines used in 2026. Total 421,606 votes.",
+        candidates: [
+          { name: "Pete Stauber", party: "R", winner: true, positions: [], differentiators: ["244,498 votes — 57.99%"], supporters: [], opponents: [] },
+          { name: "Jen Schultz", party: "D", winner: false, positions: [], differentiators: ["176,724 votes — 41.92%"], supporters: [], opponents: [] } ] } ] }
+};
+
+const SITE_META = { name: "Minnesota Elections Hub", lastUpdated: "August 17, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — Minnesota county-level down-ballot research has not started.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Minnesota has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them,
+  // otherwise a district with no plurality county is unreachable from the map.
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const MN_STATE_FIPS = "27";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#mnmap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(MN_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Hartford ----
+  drawCapital(g, projection, { name: "St. Paul", lng: -93.09, lat: 44.9537 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in MN";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our Minnesota dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+// Split a race note on the ⚠ / ✅ flag glyphs the editorial style already uses, keeping
+// the glyph that introduced each segment. Text before the first flag is the lead. This is
+// presentation only — no wording is altered and nothing is dropped.
+function briefSegments(note) {
+  const out = [];
+  const re = /([\u26A0\uFE0F\u2705]+)\s*/g;
+  let last = 0, mark = "", m;
+  while ((m = re.exec(note)) !== null) {
+    const text = note.slice(last, m.index).trim();
+    if (text) out.push({ mark: mark, text: text });
+    mark = m[1].replace(/\uFE0F/g, "");
+    last = re.lastIndex;
+  }
+  const tail = note.slice(last).trim();
+  if (tail) out.push({ mark: mark, text: tail });
+  return out;
+}
+
+function renderNote(note) {
+  if (!note) return "";
+  const body = briefSegments(note).map(function (s) {
+    return s.mark
+      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${s.text}</p>`
+      : `<p class="brief-lead">${s.text}</p>`;
+  }).join("");
+  // Clamp only what actually needs clamping: the median note is 236 characters, so most
+  // briefs show whole and never render a toggle at all.
+  const long = note.length > 300;
+  return `<div class="election-brief${long ? " clamped" : ""}">
+      <div class="brief-label">About this race</div>
+      <div class="brief-body">${body}</div>
+      ${long ? `<button class="brief-more" type="button">Show more</button>` : ""}
+    </div>`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${renderNote(e.note)}${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const more = e.target.closest(".brief-more");
+  if (more) {
+    const brief = more.closest(".election-brief");
+    more.textContent = brief.classList.toggle("clamped") ? "Show more" : "Show less";
+    return;
+  }
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>

@@ -89,6 +89,12 @@ const STATE_PAGES = [
   // sits ENTIRELY inside it, with WI-1 and WI-5 reaching in), so it carries ds:[1,4,5] and this
   // count (6 statewide + 3 districts x 2 races) guards the multi-district merge.
   { page: "wi.html", countyCount: 72,  sampleFips: "55079", sampleName: "Milwaukee",    expectedRaces: 12 },
+  // Minnesota: Hennepin is a THREE-district county (ds:[3,5,6]) and the sample is chosen for that
+  // reason — MN-3 is the population plurality of NO county, so this is the only kind of county
+  // through which MN-3 is reachable at all. 7 statewide (5 upcoming + 2 past) + 3 districts x 2.
+  { page: "mn.html", countyCount: 87,  sampleFips: "27053", sampleName: "Hennepin",     expectedRaces: 13 },
+  // North Dakota: one at-large district, no split counties. 10 statewide + the single House race.
+  { page: "nd.html", countyCount: 53,  sampleFips: "38015", sampleName: "Burleigh",     expectedRaces: 11 },
 ];
 
 for (const cfg of STATE_PAGES) {

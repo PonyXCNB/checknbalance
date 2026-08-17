@@ -104,8 +104,6 @@ const subs = [
   [`Click any of the ${cfg.donorCountyCount} counties`, `Click any of the ${cfg.countyCount} counties`],
   [`<div class="stat"><div class="stat-num">${cfg.donorCountyCount}</div><div class="stat-label">Counties</div></div>`,
    `<div class="stat"><div class="stat-num">${cfg.countyCount}</div><div class="stat-label">Counties</div></div>`],
-  [`<div class="stat"><div class="stat-num"><em>${cfg.donorHouseSeats}</em></div><div class="stat-label">U.S. House Seats</div></div>`,
-   `<div class="stat"><div class="stat-num"><em>${cfg.houseSeats}</em></div><div class="stat-label">U.S. House Seats</div></div>`],
   [`<div class="stat"><div class="stat-num"><em>${cfg.donorStatewideCount}</em></div><div class="stat-label">Statewide Races Tracked</div></div>`,
    `<div class="stat"><div class="stat-num"><em>${cfg.statewideCount}</em></div><div class="stat-label">Statewide Races Tracked</div></div>`],
   // map: loading text, svg id, CSS selector, d3 selector
@@ -131,6 +129,22 @@ const missed = [];
 for (const [from, to] of subs) {
   if (!html.includes(from)) { missed.push(from); continue; }
   html = html.split(from).join(to);
+}
+
+// U.S. House seat count — the LABEL is singular on an at-large page ("U.S. House Seat", vt.html)
+// and plural everywhere else, so a clone between the two kinds silently found no match and the tool
+// refused to write. Caught Aug 17, 2026 cloning North Dakota (at-large) from Vermont (at-large).
+// Accept whichever form the DONOR uses, and emit the form the TARGET needs from its own seat count.
+const seatStat = (n, label) =>
+  `<div class="stat"><div class="stat-num"><em>${n}</em></div><div class="stat-label">${label}</div></div>`;
+const donorSeatVariants = ["U.S. House Seats", "U.S. House Seat"]
+  .map(l => seatStat(cfg.donorHouseSeats, l))
+  .filter(s => html.includes(s));
+if (donorSeatVariants.length !== 1) {
+  missed.push(`${seatStat(cfg.donorHouseSeats, "U.S. House Seat(s)")} (matched ${donorSeatVariants.length} times, need exactly 1)`);
+} else {
+  html = html.split(donorSeatVariants[0])
+             .join(seatStat(cfg.houseSeats, Number(cfg.houseSeats) === 1 ? "U.S. House Seat" : "U.S. House Seats"));
 }
 
 // empty-state sentence — accept either apostrophe spelling, but require one of them

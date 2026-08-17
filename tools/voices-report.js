@@ -14,7 +14,7 @@ const path = require("path");
 const { extractInlineScripts, cutAtD3, runScript } = require(path.join(__dirname, "..", "tests", "lib"));
 
 const ALL_PAGES = ["nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html",
-  "ny.html", "ri.html", "nh.html", "ct.html", "vt.html", "me.html", "ma.html", "wv.html", "oh.html", "ky.html", "in.html", "ia.html", "il.html", "ms.html", "ar.html", "ne.html", "nm.html", "co.html", "or.html", "nv.html", "sd.html", "id.html", "mt.html", "pa.html", "tn.html", "hi.html", "al.html", "wi.html"];
+  "ny.html", "ri.html", "nh.html", "ct.html", "vt.html", "me.html", "ma.html", "wv.html", "oh.html", "ky.html", "in.html", "ia.html", "il.html", "ms.html", "ar.html", "ne.html", "nm.html", "co.html", "or.html", "nv.html", "sd.html", "id.html", "mt.html", "pa.html", "tn.html", "hi.html", "al.html", "wi.html", "mn.html", "nd.html"];
 
 const args = process.argv.slice(2);
 const summaryOnly = args.includes("--summary");

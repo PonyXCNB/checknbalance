@@ -302,6 +302,8 @@ let abbr = (params.get("state") || "CA").toUpperCase();
 if (!STATES[abbr]) abbr = "CA";
 // If someone lands here for NC, send them to the full build.
 if (abbr === "AL") { window.location.replace("al.html"); }
+if (abbr === "MN") { window.location.replace("mn.html"); }
+if (abbr === "ND") { window.location.replace("nd.html"); }
 if (abbr === "WI") { window.location.replace("wi.html"); }
 if (abbr === "NC") { window.location.replace("nc.html"); }
 if (abbr === "SC") { window.location.replace("sc.html"); }

@@ -163,9 +163,9 @@ must appear AFTER its declaration; a top-level TDZ error kills the whole script 
 ### index.html (national)
 ```
 ST / NAME     : fips → abbr / full name             CAP: capitals (currently unused on this page)
-BUILT         : 34 fips -> page (37 nc, 45 sc, 13 ga, 51 va, 24 md, 10 de, 34 nj, 36 ny, 44 ri, 33 nh,
+BUILT         : 37 fips -> page (37 nc, 45 sc, 13 ga, 51 va, 24 md, 10 de, 34 nj, 36 ny, 44 ri, 33 nh,
                 09 ct, 50 vt, 23 me, 25 ma, 54 wv, 39 oh, 21 ky, 18 in, 19 ia, 17 il, 28 ms, 05 ar, 31 ne, 35 nm, 08 co,
-                41 or, 32 nv, 46 sd, 16 id, 30 mt, 42 pa, 47 tn, 15 hi, 01 al)
+                41 or, 32 nv, 46 sd, 16 id, 30 mt, 42 pa, 47 tn, 15 hi, 01 al, 55 wi, 27 mn, 38 nd)
 PARTIAL       : Set of 2 fips (DC FL) → lighter gold tier
 CALLOUTS      : label anchor coords for 9 small states + DC
 destFor(fips) : BUILT[fips] if fully built, else state.html?state=XX
@@ -199,8 +199,46 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of August 13, 2026)
+## Current state (as of August 17, 2026)
 
+- **MN (full, added Aug 17, 2026) — 36th state.** Built six days after the Aug 11 primary, so every primary
+  figure is UNOFFICIAL pending the State Canvassing Board, and the page says so. ⚠ **THE RESEARCH FOR THIS PAGE
+  HAD ALREADY BEEN DONE ONCE, ON AUG 13, AND WAS LOST** because it was summarised in the ledger rather than
+  banked — see lesson #24. Statewide: **OPEN U.S. Senate** (Smith retiring; Lt. Gov. Peggy Flanagan beat Rep.
+  Angie Craig 59.01–39.39 despite being outraised, and Michele Tafoya took the GOP nomination at 52.07% after
+  LOSING the convention endorsement — **both parties' primary voters overrode their own establishment**);
+  **OPEN Governor** (Walz not seeking a third term; Amy Klobuchar 89.69%, and House Speaker Lisa Demuth beat
+  **Trump-endorsed Mike Lindell** 43.44–32.47); AG (Ellison, who won 2022 by under a point — the most competitive
+  down-ballot race); Secretary of State (Simon v. Tad Jude); **OPEN State Auditor** (Scott Jensen, the 2022
+  gubernatorial nominee, switched races in Feb 2026 to run for it). Districts: all 8; **MN-2 is the only open
+  seat**. ⚠ **MN-1 is the sleeper** — Cook R+6 and a 17-point 2024 margin, but DFL challenger Jake Johnson has
+  matched Finstad almost dollar for dollar ($2.00M to $2.03M) and is on the DCCC's Red to Blue list, and no
+  rater's own page could be read to check. ⚠ **MN-3 is the population plurality of NO county** and is reachable
+  only through `ds` (lesson #12); the pinned test county is Hennepin for exactly that reason. Map: Wattson v.
+  Simon (2022) plan C2022, unchanged; **currency proved three ways, 87 of 87 counties** — see the banked
+  derivation. ⚠ **NO ballot-question race is carded**: the reported MN ERA could not be confirmed as certified
+  for the ballot, and the two chambers passed different language. ⚠ **NO judicial races are carded** — three
+  Supreme Court seats are up but no candidate list could be recovered. ⚠ **No minor-party or independent
+  candidate could be confirmed against an official list** (Minnesota's is bot-walled and they qualify by
+  petition, so they never appear in the primary file). The editorial line taken, and stated on the page: card a
+  non-major-party candidate only where they have a verifiable campaign presence of their own, always with
+  [Verify] on certification; omit anyone known only from an aggregator. Only DeVelle L. Jackson (I, MN-5) and
+  Jay Reeves (I, Auditor) met that bar. No LOCAL_RACES.
+- **ND (full, added Aug 17, 2026) — 37th state, and the first page whose every figure is CERTIFIED.** The State
+  Canvassing Board certified the June 9 primary on **June 24, 2026**, and the SoS's own results API reports
+  `isOfficial: true`. **TWO VERIFIED NEGATIVES, both from primary sources: there is NO 2026 U.S. Senate race**
+  (Cramer is Class I, Hoeven Class III) **and NO 2026 governor's race** (Armstrong elected 2024). North Dakota
+  splits its executive offices across two cycles, so Auditor, Treasurer, Insurance Commissioner and Lt Governor
+  are also NOT on this ballot. What IS: the at-large U.S. House seat, AG, Secretary of State, Agriculture
+  Commissioner, Tax Commissioner, **two** PSC seats, Superintendent (nonpartisan), **two** Supreme Court seats
+  (nonpartisan) and two constitutional measures — 10 statewide races. ⚠ **THE RUNNING THEME IS INCUMBENTS BEATING
+  THEIR OWN PARTY**: Fedorchak, Howe, Goehring, Kroshus and Haugen-Hoffart ALL skipped the NDGOP endorsing
+  convention and petitioned onto the ballot, and Fedorchak (72.76%) and Haugen-Hoffart (64.44%) beat the
+  party-endorsed candidate outright. Closest primary anywhere: PSC's Jill Kringstad at 54.29–45.50. One
+  uncontested race (Justice Bahr). ⚠ **THE NOVEMBER FIELD IS NOT FINAL — independent petitions are open until
+  4 p.m. Aug 31, 2026**, write-ins until Oct 13; re-pull the contest list after Sept 1. ⚠ **No 2024 past race is
+  carded** — the ND results API holds only 2026 and the legacy portal is JS-driven. Nonpartisan candidates carry
+  party `"I"`, the ms.html convention, and each card says so. No LOCAL_RACES.
 - **WI (full, added Aug 13, 2026):** built the day after Wisconsin's Aug 11 primary, so every primary figure is
   UNOFFICIAL — ⚠ **Wisconsin has NO statewide election-night reporting system** (the WEC says so itself), the
   state canvass is due on or before **Aug 26** under Wis. Stat. § 7.70(3)(a), and as of this build the WEC's
@@ -542,6 +580,46 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
    ➤ Related: `git` reports `LF will be replaced by CRLF` when writing these files. That warning is normal here and
    is not a sign of corruption.
 
+23. **`tools/clone-state.js` COULD NOT CLONE BETWEEN AN AT-LARGE STATE AND ANY OTHER KIND.** Found Aug 17, 2026
+   cloning North Dakota (at-large) from `vt.html` (at-large). The hero stat label is **singular** on an at-large
+   page — `U.S. House Seat` — and plural everywhere else, but the tool hard-coded `U.S. House Seats`. It found no
+   match and, correctly, refused to write the page (lesson #16's behaviour earning its keep for the third time).
+   ➤ **Fixed the TOOL, not the page:** it now accepts whichever form the DONOR uses, requires exactly one to
+   match, and emits the form the TARGET needs based on its own seat count. So VT→ND, ND→VT and either→a
+   multi-district state all work now.
+   ➤ Note the shape this shares with quirks #14, #16 and #22: **every one of them was a hard-coded string that
+   assumed all donor pages are worded identically.** They are not, and they drift. When adding a substitution,
+   ask what an at-large state, a single-county state or a state with no Senate race would look like.
+
+24. **⚠⚠ A RUN'S RESEARCH EVAPORATES UNLESS THE ARTIFACT IS BANKED — MINNESOTA WAS DERIVED TWICE.**
+   Established Aug 17, 2026. On **Aug 13** a run fully derived Minnesota's county→district map, ran the currency
+   test to 87 of 87 counties, and wrote all 8 districts with voices — then did not ship the page, and recorded a
+   one-paragraph summary in `tools/research-ledger.md` ending "finish the statewide block and ship." No run
+   happened on Aug 14, 15 or 16. By Aug 17 the ledger entry still stated the CONCLUSIONS, but the county table,
+   the district data and the derivation itself were gone with that run's context, and **all of it had to be
+   redone from scratch.**
+   ➤ **The ledger records that a thing is true. It does not record the thing.** That distinction is cheap to miss
+   because the entry reads like a deliverable — it has numbers in it.
+   ➤ **Rule: if work is expensive enough to justify a ledger entry, write the ARTIFACT into `tools/banked/`** —
+   the actual table, the actual URLs, the actual failed guesses. `tools/banked/mn-nd-ks-map-2026-derivation.md`
+   is this run's, and it deliberately includes the dead ends (the `baf2020` block file is the PRE-2022 map for
+   Minnesota and disagrees on 15 of 87 counties) and the un-guessable filenames, because those cost the most time.
+   ➤ **Corollary: prefer shipping a state to preparing one.** A page in the repo cannot evaporate. If a build
+   cannot be finished, bank the data files themselves rather than a description of them.
+
+25. **A STATE'S OWN LEGISLATURE MAY PUBLISH THE COUNTY→DISTRICT TABLE OUTRIGHT — LOOK BEFORE DERIVING.**
+   Found Aug 17, 2026. Minnesota's map was budgeted as a block-level derivation (2020 P.L. 94-171 joined to a
+   block-equivalency file, the Wisconsin/Alabama method). It did not need one: the **Minnesota Legislature's own
+   GIS office** publishes county population by congressional district for the adopted plan as plain HTML at
+   `gis.lcc.mn.gov/php/congress.php?Report=CongressCTY&District=<n>` — which is precisely the `d` + `ds` input,
+   from the state's redistricting authority, and it summed to Minnesota's exact 2020 population with a
+   one-person deviation across all 8 districts.
+   ➤ **Check for this first in every state build.** Legislative GIS or redistricting offices commonly publish
+   county / MCD / school-district / ZIP crosswalks for the enacted plan. It turns a multi-hour derivation into
+   eight fetches, and it is a better source than a table you compute yourself.
+   ➤ It does NOT replace the currency test (lesson #17) — that still has to come from the Secretary of State's
+   own election returns, and it is what proves which map voters actually voted under.
+
 ## Testing (`tests/` — plain Node.js, zero dependencies)
 
 Requires Node.js (any recent LTS). Run the whole suite from the site root:
@@ -553,9 +631,9 @@ node tests/run-all.js
 | File | What it covers |
 |------|----------------|
 | `tests/parse-check.js` | Every inline `<script>` in every page must compile (syntax errors only) |
-| `tests/smoke-test.js` | Executes each page's scripts top-to-bottom with DOM stubs, cut at the first `d3.` usage; runs state.html for all 10 featured states + controls (TX, CA) + verifies the NC→nc.html redirect. **This is the test that catches declaration-order/TDZ bugs.** |
-| `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config, now 30 pages): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly, **and the map `<XX>_STATE_FIPS` constant matches the COUNTIES prefix** (quirk #10). Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
-| `tests/brief-render.js` | **The race note must stay OUT of the collapsed card header, and the ⚠/✅ segmentation must be LOSSLESS.** 281 checks over all 887 notes on 35 pages: no legacy `.election-note`, the brief is the first child of `.election-detail`, every brief reproduces its note's own words exactly, markup is well-formed, "Show more" appears iff the brief is clamped, and no note contains a backtick or `${` (either would break the whole drawer, since notes are interpolated into template literals). Added Aug 12, 2026 after the note shipped in the header and dwarfed the candidate data; **verified to fail on the pre-fix markup** |
+| `tests/smoke-test.js` | Executes each page's scripts top-to-bottom with DOM stubs, cut at the first `d3.` usage; runs state.html for the featured states + controls (TX, CA) + verifies the NC→nc.html redirect. **This is the test that catches declaration-order/TDZ bugs.** |
+| `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config, now 37 pages): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly, **and the map `<XX>_STATE_FIPS` constant matches the COUNTIES prefix** (quirk #10). Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
+| `tests/brief-render.js` | **The race note must stay OUT of the collapsed card header, and the ⚠/✅ segmentation must be LOSSLESS.** 305 checks over all 943 notes on 37 pages: no legacy `.election-note`, the brief is the first child of `.election-detail`, every brief reproduces its note's own words exactly, markup is well-formed, "Show more" appears iff the brief is clamped, and no note contains a backtick or `${` (either would break the whole drawer, since notes are interpolated into template literals). Added Aug 12, 2026 after the note shipped in the header and dwarfed the candidate data; **verified to fail on the pre-fix markup** |
 | `tests/label-fit.js` | **The national map's `LABEL_ADJ` labels must clear their state borders.** Measures clearance (anchor → nearest boundary) against baked geometry and requires 9.66px = 8.76 glyph half-diagonal + 0.4 stroke + 0.5 simplification slack. Added July 24, 2026 after the FL/LA labels shipped clipping *twice* — both earlier passes hit-tested the anchor POINT, which is inside the state even when the box around it is not. HI carries a documented exempt floor (its island cannot do better) |
 | `tests/fixtures/state-label-rings.json` | Projected, simplified state outlines for the 42 inline-label states (48KB). Built by `tools/gen-label-fixture.js`; records the projection it came from so `label-fit.js` fails loudly instead of checking stale geometry |
 | `tests/lib.js` | Shared helpers: inline-script extraction, the d3 cut, DOM stubs, vm sandbox runner |
@@ -787,7 +865,20 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
    built once and never re-derived. **Every legacy page's map deserves the same audit nc.html just got** — sc.html and
    ga.html are the oldest and were built the same week under the same assumptions.
 
-**Queue status (as of Aug 13, 2026): every numbered item 1–10 is COMPLETE and the owner has added nothing new.**
+**Queue status (as of Aug 17, 2026): every numbered item 1–10 is COMPLETE and the owner has added nothing new.**
+Item 4 (voices) reads **0 missing / 1,086 candidates across 37 pages** at the end of the Aug 17 run — Minnesota
+shipped with 30 candidates and North Dakota with 19, both 0 gaps. The landing page was reviewed end-to-end and
+needed only the legend count (35 → **37 states**); its prose has been fully state-agnostic since the Aug 12
+contribution-form change, and the footer already read August 2026. The [Verify] total rose 2,483 → **2,582**,
+which is the two new states' honest markers (MN 75, ND 24) and not a regression.
+⚠ **The incumbent-status sweep produced ONE real finding and, again, it was NOT visible to the marker report**:
+Maryland's SBE certified list (timestamped Aug 17) shows **Jonathan Burruss FAILED TO QUALIFY BY PETITION** for
+MD-05 on Aug 11 — a Wikipedia editor had called it a disqualification, which was wrong about the mechanism.
+**`md.html` never carded him, so no edit was needed** — the third instance of the Aug 11 rule: READ THE PAGE
+before acting on an agent's report. The same sweep flagged NC-11's Balkcom substitution as possibly missed;
+`nc.html` already had it, correctly, in two cards.
+
+Superseded: **Queue status (as of Aug 13, 2026): every numbered item 1–10 is COMPLETE and the owner has added nothing new.**
 Item 4 (voices) read **0 missing / 1,037 candidates across 35 pages** at the end of the Aug 13 run — Wisconsin
 shipped with 32 candidates and 0 gaps. The landing page was reviewed end-to-end: its prose is now fully
 state-agnostic (the Aug 12 contribution-form change removed the last passage that had to be re-synced on every
