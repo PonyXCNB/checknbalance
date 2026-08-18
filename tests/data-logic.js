@@ -95,6 +95,7 @@ const STATE_PAGES = [
   { page: "mn.html", countyCount: 87,  sampleFips: "27053", sampleName: "Hennepin",     expectedRaces: 13 },
   // North Dakota: one at-large district, no split counties. 10 statewide + the single House race.
   { page: "nd.html", countyCount: 53,  sampleFips: "38015", sampleName: "Burleigh",     expectedRaces: 11 },
+  { page: "ks.html", countyCount: 105, sampleFips: "20209", sampleName: "Wyandotte",    expectedRaces: 10 },
 ];
 
 for (const cfg of STATE_PAGES) {

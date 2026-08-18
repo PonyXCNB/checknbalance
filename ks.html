@@ -1,0 +1,1974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kansas Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every KS election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #ksmap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  /* ---- Race brief (the context note) ----
+     Lives INSIDE the expanded panel only. A collapsed card shows the pill, date, office
+     and candidate count and nothing else, so a county's ballot reads as a clean list.
+     Owner-reported twice on Aug 12, 2026: as a header element these notes — 2,187
+     characters at the extreme, and 30% of them opening with a ⚠ flag — buried the
+     candidate data the page exists to show. Set in roman, not italic: extended italic
+     body copy at 12.5px is the thing that read as 'terrible'. Long briefs clamp to about
+     four lines behind a Show more toggle so they never crowd out the cards below. */
+  .election-brief {
+    margin: 2px 0 18px;
+    padding: 12px 16px 13px 17px;
+    border-left: 2px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    background: linear-gradient(90deg, rgba(232,217,184,.30), rgba(232,217,184,0) 94%);
+  }
+  .brief-label {
+    font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); font-weight: 700; margin-bottom: 7px;
+  }
+  .brief-body { font-size: 12.5px; line-height: 1.62; color: var(--ink-soft); }
+  .brief-body p + p { margin-top: 7px; }
+  .brief-lead { color: var(--ink); }
+  /* Flag glyphs hang in the margin so the text block keeps a straight left edge. */
+  .brief-flag { position: relative; padding-left: 21px; }
+  .brief-mark { position: absolute; left: 0; top: 0; font-size: 11px; color: var(--gold-deep); }
+  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; }
+  .brief-more {
+    margin-top: 9px; padding: 0;
+    background: none; border: none; cursor: pointer;
+    font-family: var(--sans); font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-deep);
+    border-bottom: 1px solid var(--gold-soft);
+  }
+  .brief-more:hover { border-bottom-color: var(--gold); }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">KS</div>
+      <div class="brand-text">
+        <span class="brand-name">Kansas Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Kansas <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 105 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">105</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>4</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>8</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Kansas…</div>
+      <svg id="ksmap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>KS Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">July 22, 2026</span><br>
+      Sources: Kansas Secretary of State (ent.sos.ks.gov election-night reporting; proposed constitutional amendments), Kansas Legislative Research Department (Ad Astra 2 enacted-plan packet), U.S. Census Bureau, FEC, Kansas Governmental Ethics Commission, Kansas Bar Association, KCUR, Kansas Reflector, Johnson County Post, HPPR, KWCH, WIBW, KCTV5, Sabato's Crystal Ball</div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every KS county + its primary US House district(s)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- Kansas counties -> U.S. House district (the 2022 "Ad Astra 2" plan, which governs 2026) -----
+// Kansas did NOT redistrict mid-decade. The mid-decade push failed twice (the Nov 5, 2025 special-session
+// petition fell ~10 House signatures short; the regular session ended Apr 22, 2026 with no map), and
+// Rivera v. Schwab (2022) already upheld Ad Astra 2. Kansas is not on the 2026 new-map list.
+//
+// Derived from the Census CD119 county relationship file
+//   www2.census.gov/geo/docs/maps-data/data/rel2020/cd-sld/tab20_cd11920_county20_st20.txt
+// -> 105 counties, 109 county x district rows, exactly FOUR split counties.
+// ⚠ The Census 2020 BLOCK ASSIGNMENT file (BlockAssign_ST20_KS_CD.txt) encodes the 116th Congress —
+// the 2012 map — and shows splits in Marshall/Miami/Pawnee that no longer exist. Do not use it.
+//
+// The plurality (d) for the four split counties comes from the enacted plan's own
+// "Political Subdivision Splits Between Districts" report in the Kansas Legislative Research
+// Department Ad Astra 2 packet (klrd.gov/wp-content/uploads/2023/11/M3_AdAstra_2-packet.pdf, pp. 12-13),
+// which matches an independent Geocorr 2022 derivation TO THE PERSON:
+//   Douglas   118,785 = CD1 95,921  + CD2 22,864   (Lawrence sits in CD1 — the map's most-contested feature)
+//   Jackson    13,232 = CD1 12,542  + CD2 690
+//   Pawnee      6,253 = CD1  3,288  + CD4 2,965    (53/47 — nearly a coin toss)
+//   Wyandotte 169,245 = CD2 112,661 + CD3 56,584   (split along I-70: north CD2, south CD3)
+// The same packet's population summary puts all four districts on exactly 734,470, deviation 0,
+// totalling Kansas' 2,937,880.
+//
+// CURRENCY PROVED (lesson #17) — 105 of 105 counties agree. The Secretary of State's own election-night
+// county pages for the Aug 4, 2026 primary (ent.sos.ks.gov/<county>.html) show which U.S. House contest
+// each county's voters actually appeared in: CD1=60, CD2=27, CD3=5, CD4=17 counties, and exactly four
+// counties voted in two contests — the same four splits, the same district pairs. That is direct evidence
+// of the map voters used, not an inference. All 105 FIPS codes and names also match the us-atlas geometry.
+//
+// Every district is the population plurality of at least four counties, so all four are reachable from the
+// map even without ds (lesson #12) — ds is carried on the four splits so their voters see both races.
+const COUNTIES = {
+  "20001": { n: "Allen", d: 2 },
+  "20003": { n: "Anderson", d: 3 },
+  "20005": { n: "Atchison", d: 2 },
+  "20007": { n: "Barber", d: 4 },
+  "20009": { n: "Barton", d: 1 },
+  "20011": { n: "Bourbon", d: 2 },
+  "20013": { n: "Brown", d: 2 },
+  "20015": { n: "Butler", d: 4 },
+  "20017": { n: "Chase", d: 2 },
+  "20019": { n: "Chautauqua", d: 4 },
+  "20021": { n: "Cherokee", d: 2 },
+  "20023": { n: "Cheyenne", d: 1 },
+  "20025": { n: "Clark", d: 1 },
+  "20027": { n: "Clay", d: 1 },
+  "20029": { n: "Cloud", d: 1 },
+  "20031": { n: "Coffey", d: 2 },
+  "20033": { n: "Comanche", d: 4 },
+  "20035": { n: "Cowley", d: 4 },
+  "20037": { n: "Crawford", d: 2 },
+  "20039": { n: "Decatur", d: 1 },
+  "20041": { n: "Dickinson", d: 1 },
+  "20043": { n: "Doniphan", d: 2 },
+  "20045": { n: "Douglas", d: 1, ds: [1, 2] },
+  "20047": { n: "Edwards", d: 4 },
+  "20049": { n: "Elk", d: 4 },
+  "20051": { n: "Ellis", d: 1 },
+  "20053": { n: "Ellsworth", d: 1 },
+  "20055": { n: "Finney", d: 1 },
+  "20057": { n: "Ford", d: 1 },
+  "20059": { n: "Franklin", d: 3 },
+  "20061": { n: "Geary", d: 2 },
+  "20063": { n: "Gove", d: 1 },
+  "20065": { n: "Graham", d: 1 },
+  "20067": { n: "Grant", d: 1 },
+  "20069": { n: "Gray", d: 1 },
+  "20071": { n: "Greeley", d: 1 },
+  "20073": { n: "Greenwood", d: 4 },
+  "20075": { n: "Hamilton", d: 1 },
+  "20077": { n: "Harper", d: 4 },
+  "20079": { n: "Harvey", d: 4 },
+  "20081": { n: "Haskell", d: 1 },
+  "20083": { n: "Hodgeman", d: 1 },
+  "20085": { n: "Jackson", d: 1, ds: [1, 2] },
+  "20087": { n: "Jefferson", d: 1 },
+  "20089": { n: "Jewell", d: 1 },
+  "20091": { n: "Johnson", d: 3 },
+  "20093": { n: "Kearny", d: 1 },
+  "20095": { n: "Kingman", d: 4 },
+  "20097": { n: "Kiowa", d: 4 },
+  "20099": { n: "Labette", d: 2 },
+  "20101": { n: "Lane", d: 1 },
+  "20103": { n: "Leavenworth", d: 2 },
+  "20105": { n: "Lincoln", d: 1 },
+  "20107": { n: "Linn", d: 2 },
+  "20109": { n: "Logan", d: 1 },
+  "20111": { n: "Lyon", d: 2 },
+  "20113": { n: "McPherson", d: 1 },
+  "20115": { n: "Marion", d: 2 },
+  "20117": { n: "Marshall", d: 1 },
+  "20119": { n: "Meade", d: 1 },
+  "20121": { n: "Miami", d: 3 },
+  "20123": { n: "Mitchell", d: 1 },
+  "20125": { n: "Montgomery", d: 2 },
+  "20127": { n: "Morris", d: 2 },
+  "20129": { n: "Morton", d: 1 },
+  "20131": { n: "Nemaha", d: 2 },
+  "20133": { n: "Neosho", d: 2 },
+  "20135": { n: "Ness", d: 1 },
+  "20137": { n: "Norton", d: 1 },
+  "20139": { n: "Osage", d: 2 },
+  "20141": { n: "Osborne", d: 1 },
+  "20143": { n: "Ottawa", d: 1 },
+  "20145": { n: "Pawnee", d: 1, ds: [1, 4] },
+  "20147": { n: "Phillips", d: 1 },
+  "20149": { n: "Pottawatomie", d: 1 },
+  "20151": { n: "Pratt", d: 4 },
+  "20153": { n: "Rawlins", d: 1 },
+  "20155": { n: "Reno", d: 1 },
+  "20157": { n: "Republic", d: 1 },
+  "20159": { n: "Rice", d: 1 },
+  "20161": { n: "Riley", d: 1 },
+  "20163": { n: "Rooks", d: 1 },
+  "20165": { n: "Rush", d: 1 },
+  "20167": { n: "Russell", d: 1 },
+  "20169": { n: "Saline", d: 1 },
+  "20171": { n: "Scott", d: 1 },
+  "20173": { n: "Sedgwick", d: 4 },
+  "20175": { n: "Seward", d: 1 },
+  "20177": { n: "Shawnee", d: 2 },
+  "20179": { n: "Sheridan", d: 1 },
+  "20181": { n: "Sherman", d: 1 },
+  "20183": { n: "Smith", d: 1 },
+  "20185": { n: "Stafford", d: 4 },
+  "20187": { n: "Stanton", d: 1 },
+  "20189": { n: "Stevens", d: 1 },
+  "20191": { n: "Sumner", d: 4 },
+  "20193": { n: "Thomas", d: 1 },
+  "20195": { n: "Trego", d: 1 },
+  "20197": { n: "Wabaunsee", d: 2 },
+  "20199": { n: "Wallace", d: 1 },
+  "20201": { n: "Washington", d: 1 },
+  "20203": { n: "Wichita", d: 1 },
+  "20205": { n: "Wilson", d: 2 },
+  "20207": { n: "Woodson", d: 2 },
+  "20209": { n: "Wyandotte", d: 2, ds: [2, 3] },};
+
+// ----- STATEWIDE races every Kansas county sees -----
+// Sources: Kansas Secretary of State election-night reporting (ent.sos.ks.gov — statewide.html,
+// constitutional.html, Uncontested.html), final update Aug 7, 2026; FEC candidate summaries;
+// Kansas Governmental Ethics Commission filings; Kansas Bar Association "Your Kansas Judges";
+// candidates' own campaign sites; KCUR, Kansas Reflector, Johnson County Post, HPPR, KWCH, WIBW,
+// KCTV5, Smart Politics; Sabato's Crystal Ball (read directly for the Senate rating change).
+// ⚠ EVERY AUG 4 FIGURE IS UNOFFICIAL. The State Board of Canvassers does not certify until
+// Sept 1, 2026, and the SoS's own site is titled "Unofficial Kansas Election Results."
+// ⚠ Cook Political Report and Inside Elections could NOT be read at their own sites (both HTTP 403);
+// their ratings are carried from aggregators and marked [Verify].
+// ⚠ Kansas statewide campaign finance is filed with the Kansas Governmental Ethics Commission, not
+// the FEC, and most of those filings are image-only scans — which is why several down-ballot
+// candidates carry no cash figure at all rather than an unsourced one.
+const STATEWIDE = [
+  // ─────────────────────────── UPCOMING ───────────────────────────
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · Statewide", office: "U.S. Senate — Kansas",
+    note: "KANSAS HAS NOT ELECTED A DEMOCRAT TO THE U.S. SENATE SINCE GEORGE McGILL IN 1932, and no Democrat has come within single digits since 1974. ✅ EVEN SO, TWO RATERS MOVED OFF SAFE AFTER THE PRIMARY: Sabato's Crystal Ball shifted Safe R to Likely R on Aug 4, 2026 (read directly at the rater's own site), and Cook is reported to have moved Solid R to Likely R the same day [Verify — not read at Cook's own site]. Inside Elections last showed Solid R on Apr 23, 2026 [Verify]. What changed was money: Adam Hamilton raised roughly $3.7 million in his launch quarter against Marshall's $610,000 — a record Kansas start — though Marshall still leads on cash, $5.39M to $1.73M. Marshall took the primary with 79.9%; Hamilton won a plurality of 34.9% in an eleven-candidate field. ⚠ Aug 4 figures are unofficial until the state canvass on Sept 1, 2026.",
+    candidates: [
+      { name: "Roger Marshall (incumbent)", party: "R", winner: false,
+        positions: [
+          "Agriculture — phosphate fertilizer relief for Kansas growers, which his campaign projects at about $150 a ton",
+          "Rural health — protect the state's 82 Critical Access hospitals and cap Medicare prior-authorization denials at 72 hours",
+          "Energy — an all-of-the-above mix of oil, gas, wind and ethanol, including year-round E15"
+        ],
+        differentiators: [
+          "U.S. Senator since 2021; previously the 1st District's congressman, and an OB-GYN by training",
+          "Won the Republican primary with 79.9% (266,135 votes) over Pond Naramore [Verify — unofficial, pending the Sept 1 state canvass]",
+          "$5,388,078 cash on hand through July 15, 2026",
+          "Endorsed by President Trump (Aug 3, 2026), AIPAC and the Senate Conservatives Fund"
+        ],
+        supporters: [
+          "Points to Kansas-specific deliverables — $221.9 million to Kansas through the Rural Health Transformation Fund, crop insurance and reference-price updates, and year-round E15",
+          "A seat on the majority side with a direct line to the President, which he argues is real leverage for a small state",
+          "Dominated the primary across central and western Kansas and holds a three-to-one cash edge"
+        ],
+        opponents: [
+          "Residency questions — reporting on a $1.2 million Sarasota, Florida home and about $4,500 in taxpayer-billed 2021 Sarasota trips; both a primary rival and Hamilton pressed the point",
+          "He backed the H.R. 1 Medicaid changes, and researchers project 28 Kansas rural hospitals at immediate risk [Verify — a projection, not an outcome]",
+          "Did not respond to the Johnson County Post candidate questionnaire on Social Security, Medicare and health care"
+        ] },
+      { name: "Adam Hamilton", party: "D", winner: false,
+        positions: [
+          "Reverse the Medicaid cuts, restore ACA subsidies, and extend Medicare drug-price negotiation savings to private insurance",
+          "Bar members of Congress and their households from trading individual stocks, crypto and digital assets",
+          "End the tariffs he calls self-destructive, protect Kansas farmers from them, and expand export markets"
+        ],
+        differentiators: [
+          "Has never held elected office; founding senior pastor for 36 years of the largest United Methodist congregation in the country",
+          "Won the Democratic primary with 34.9% (76,105 votes) in an eleven-candidate field [Verify — unofficial, pending the Sept 1 state canvass]",
+          "$1,730,620 cash on hand through July 15, 2026; $4.17 million raised, including a $50,000 candidate loan",
+          "Endorsed by former Gov. and HHS Secretary Kathleen Sebelius and Sen. Tim Kaine"
+        ],
+        supporters: [
+          "Rare statewide name recognition without a partisan record — he pitches decency and bridge-building to a congregation he describes as split evenly among Republicans, Democrats and independents",
+          "His fundraising is the evidence for crossover appeal: about $3.66 million from 16,000 donors in two months, with donations from 93 of 105 counties",
+          "An affordability message on food, energy and health care aimed squarely at rural and suburban cost anxiety"
+        ],
+        opponents: [
+          "No elected experience and no prior statewide campaign; he won a plurality while losing Wichita and nearly every rural county",
+          "The structural burden is severe — the seat has been Republican since 1939 and Trump carried Kansas by more than 16 points in 2024 [Verify — structural argument]",
+          "A Main Street Fund ad calls him too far left for Kansas, citing statements on race and his church [Verify — these are the ad's characterizations, not independently verified]"
+        ] },
+      { name: "David C. Graham", party: "L", winner: false,
+        positions: [
+          "⚠ No sourced 2026 platform statement could be located [Verify]",
+          "",
+          ""
+        ],
+        differentiators: [
+          "Kansas Libertarian Party vice chair and an Overland Park attorney; was the party's 2022 Senate nominee against Jerry Moran",
+          "Nominated unopposed by convention — Kansas minor parties do not run primaries",
+          "No FEC cash-on-hand figure could be located [Verify]"
+        ],
+        supporters: [
+          "Gives voters an alternative on a ballot that otherwise offers only the two major parties [Verify — structural argument]",
+          "Runs on the Libertarian principle that decisions belong at the most local level possible",
+          "⚠ No further argument for him could be sourced, because no platform of his own could be found [Verify — an absence of located records]"
+        ],
+        opponents: [
+          "KCUR reports he has no active campaign website or social media and did not respond to requests for campaign materials",
+          "Submitted no answers to the Johnson County Post issues questionnaire, leaving voters little basis to evaluate him",
+          "No Libertarian has come close to winning a Kansas federal race [Verify — structural argument]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Governor and Lieutenant Governor of Kansas (OPEN SEAT)",
+    note: "OPEN — Laura Kelly is term-limited, and this is the Republicans' strongest gubernatorial pickup target of the cycle. ⚠ THE COMMON FRAMING IS WRONG: the last Republican ELECTED governor of Kansas was Sam Brownback in November 2014. Jeff Colyer held the office in 2018 by succession and was never elected — he lost that year's primary. Kelly then won twice, by 5.03 points in 2018 and 2.21 in 2022. Governor and Lieutenant Governor run as a JOINT TICKET; Lt. Governor candidates never appear on a primary ballot. Ty Masterson won a seven-way primary with 43.2% on a Trump endorsement; Cindy Holscher beat Kelly's preferred candidate Ethan Corson 48.6% to 38.8%, after which Kelly endorsed Holscher on Aug 5. All three raters lean Republican for a flip — Inside Elections Tilt R (Aug 6, 2026), Cook Lean R (Sept 11, 2025), Sabato Lean R (Sept 4, 2025) [Verify — none read at the raters' own sites]. ⚠ Aug 4 figures are unofficial until the state canvass on Sept 1, 2026.",
+    candidates: [
+      { name: "Ty Masterson — Governor", party: "R", winner: false,
+        positions: [
+          "Taxes — says Kansas taxes too much and delivers too little; led a roughly $2 billion tax cut and would cut more",
+          "Education — raise pay for good teachers, put parents in charge, hold the system accountable",
+          "Jobs — bring back jobs, cut red tape, and make Kansas open for business again"
+        ],
+        differentiators: [
+          "President of the Kansas Senate since 2021; in the Legislature since 2004; directs GoCreate at Wichita State University",
+          "Won the Republican primary with 43.2% (147,217 votes) over six rivals; the runner-up took 22.4% [Verify — unofficial, pending the Sept 1 state canvass]",
+          "$430,211 cash on hand as of July 23, 2026 (Kansas Governmental Ethics Commission filing)",
+          "Endorsed by President Trump, Sen. Roger Marshall, former Gov. Jeff Colyer, Americans for Prosperity and the NRA Political Victory Fund"
+        ],
+        supporters: [
+          "The only candidate with a record of actually moving a legislature — he negotiated a roughly $2 billion multi-year income and property tax cut",
+          "Elected Senate president unanimously by his own caucus, and conservatives credit him with delivering on their priorities",
+          "A presidential endorsement plus a 20-point primary win consolidated a fractured field early"
+        ],
+        opponents: [
+          "He is tied to the state's budget strain; a Republican primary rival blamed him personally, and his sharp reply is cited as a temperament issue",
+          "Holscher's core attack is that he would drag Kansas back to the Brownback years; he had earlier proposed rolling back food sales tax relief to fund a flat tax",
+          "He won only 43.2%, so a majority of Republican primary voters chose someone else [Verify — structural argument]. ✅ An ethics complaint alleging he campaigned on university time was DISMISSED on Aug 11, 2026"
+        ] },
+      { name: "Jeff Klemp — Lieutenant Governor", party: "R", winner: false,
+        positions: [
+          "Public safety, tax relief, educational improvement, and rural and healthcare innovation",
+          "Block foreign adversaries from acquiring critical Kansas farmland and infrastructure",
+          "Government should be limited, efficient and accountable"
+        ],
+        differentiators: [
+          "Kansas Senator for the 5th district (Leavenworth and part of Wyandotte), sworn in Jan 13, 2025 — his first term; Transportation vice chair",
+          "Named to the ticket June 1, 2026; Lt. Governor candidates do not run in the primary",
+          "No separate campaign committee — his finances run through the Masterson committee. No individual endorsements could be located [Verify]"
+        ],
+        supporters: [
+          "A private-sector operator rather than a career politician — he and his wife grew a struggling company into a Midwest military-relocation firm over about 25 years",
+          "Balances the ticket geographically, bringing northeast Kansas and the Fort Leavenworth military community to Masterson's south-central base",
+          "Committee seats on Taxation and Commerce align with the ticket's tax-and-jobs message"
+        ],
+        opponents: [
+          "Two sessions of state-level experience, placed one step from the governorship [Verify — structural argument]",
+          "He won his own Senate seat by 31 votes out of more than 31,000 in 2024, requiring a recount — no demonstrated broad electoral appeal",
+          "⚠ No published policy criticism of him specifically could be located; the case against him rests on the length of his record, not on any controversy [Verify — structural argument]"
+        ] },
+      { name: "Cindy Holscher — Governor", party: "D", winner: false,
+        positions: [
+          "Cut the residential property assessment rate from 11.5% to 9.0%, with exemptions for seniors and disabled veterans",
+          "Raise the state minimum wage to $16, let municipalities go higher, and guarantee paid sick time",
+          "Impose a statewide moratorium on new giant corporate data centers"
+        ],
+        differentiators: [
+          "Kansas Senator for Overland Park since 2021; state Representative 2017-2021; a career in advertising",
+          "Won the Democratic primary with 48.6% (108,489 votes), beating Ethan Corson 48.6 to 38.8 despite his holding Gov. Kelly's endorsement [Verify — unofficial, pending the Sept 1 state canvass]",
+          "$64,933 cash on hand as of July 23, 2026 [Verify — the closing figure came from a search index of an image-only official filing; the opening balance and receipts are confirmed]",
+          "Endorsed by Gov. Laura Kelly (Aug 5, 2026, switched after the primary), former Gov. John Carlin and former State Treasurer Lynn Rogers"
+        ],
+        supporters: [
+          "An affordability-first, anti-corporate message landing amid live voter anger over utility rate increases and data-center water and power demand",
+          "She beat the establishment on grassroots strength, winning by nearly ten points while the sitting Democratic governor backed her opponent",
+          "A legislative record that includes votes to end the food sales tax and to create child care tax credits"
+        ],
+        opponents: [
+          "Masterson calls her the most radical liberal nominee in Kansas history, and Republicans have amplified resurfaced 2023 social-media posts of hers on gender and religion",
+          "Kelly — a Democrat who twice won statewide in a red state — judged her the weaker general-election candidate during the primary [Verify — structural argument]",
+          "She reversed on data centers after initially supporting the enabling bill, opening a flip-flop charge, and her platform sits well left of anything Kelly ran on"
+        ] },
+      { name: "KC Ohaebosim — Lieutenant Governor", party: "D", winner: false,
+        positions: [
+          "Good-paying jobs, public schools and worker protections for Kansas families",
+          "Voted to override Gov. Brownback's veto of the 2017 tax package, ending the Brownback tax experiment",
+          "Says government should work for everyday people, not just large corporations"
+        ],
+        differentiators: [
+          "Kansas Representative for the 89th district in Wichita since 2017; a former data analyst with a Newman University MBA",
+          "Named to the ticket May 14, 2026. If elected he would be the first African-American elected to statewide office in Kansas since the 1880s",
+          "No separate committee — his finances run through the Holscher campaign. Twice named a regional Legislator of the Year by the National Black Caucus of State Legislators, which is a recognition rather than an endorsement"
+        ],
+        supporters: [
+          "Solves a real map problem for the ticket, delivering Wichita and Sedgwick County against Holscher's Johnson County base",
+          "Peer-recognised twice by the National Black Caucus of State Legislators",
+          "He and Holscher entered the Legislature in the same cycle with comparable records on taxes, Medicaid expansion and abortion rights — a coherent pairing rather than a forced one"
+        ],
+        opponents: [
+          "His entire career has been in the Kansas House minority, so his cited accomplishments are votes cast rather than bills authored [Verify — structural argument]",
+          "He lost Kansas Senate bids in 2008 and 2012 and was re-elected unopposed in 2018 — limited exposure to a broad competitive electorate [Verify — structural argument]",
+          "He broadens the ticket geographically and demographically but not ideologically [Verify — structural argument]. ⚠ No reported scandal, ethics matter or policy controversy involving him surfaced in any source checked"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Attorney General of Kansas",
+    note: "A REMATCH OF 2022, WHICH KOBACH WON NARROWLY while running well behind the rest of the Republican statewide ticket. Both men were unopposed on Aug 4 — officially 100% each on the Secretary of State's own results system. No third-party or independent candidate was located for this race; the Libertarian Party of Kansas nominated none. ⚠ Aug 4 figures are unofficial until the state canvass on Sept 1, 2026.",
+    candidates: [
+      { name: "Kris Kobach (incumbent)", party: "R", winner: false,
+        positions: [
+          "Tough-on-crime enforcement — established a state fentanyl task force and backed higher fentanyl penalties",
+          "Litigating against federal policy; his campaign claims more than 20 court wins over the previous administration, many argued personally",
+          "Suing to bar biological males from girls' sports and locker rooms"
+        ],
+        differentiators: [
+          "Kansas Attorney General since 2023; Kansas Secretary of State 2011-2019; chairman of the Republican Attorneys General Association since Oct 2024",
+          "Unopposed in the primary with 278,204 votes [Verify — unofficial, pending the Sept 1 state canvass]",
+          "$502,626 cash on hand as of Jan 1, 2026 [Verify — candidate-reported in his own press release, not checked against an ethics-commission filing]"
+        ],
+        supporters: [
+          "Endorsed by 51 Kansas sheriffs in May 2026, citing fentanyl enforcement",
+          "His campaign claims a 57-year low in the Kansas crime rate and $320 million recovered in restitution and settlements [Verify — campaign self-claim, not independently sourced]",
+          "The highest name recognition and the largest war chest in the race [Verify — structural argument]"
+        ],
+        opponents: [
+          "Mann argues the office fails to return calls from small local law-enforcement agencies seeking help [Verify — an opponent's characterization]",
+          "Critics say the office is used for national political litigation rather than Kansas casework [Verify — structural argument]",
+          "He won in 2022 by a very narrow margin, well behind the rest of the Republican statewide ticket"
+        ] },
+      { name: "Chris Mann", party: "D", winner: false,
+        positions: [
+          "Runs on Team Kansas rather than Team Red or Team Blue — refocus the office on public safety over political fights",
+          "Make the Attorney General a real partner to local law enforcement, with quarterly statewide meetings",
+          "Apply the law consistently and hold corporations accountable for consumer fraud"
+        ],
+        differentiators: [
+          "A private attorney and the 2022 Democratic nominee for this office; holds no current elected office",
+          "Unopposed in the primary with 199,541 votes [Verify — unofficial, pending the Sept 1 state canvass]",
+          "⚠ No campaign-finance figure could be located [Verify] — Kansas statewide filings are image-only scans"
+        ],
+        supporters: [
+          "A former police officer and Wyandotte County assistant district attorney who also served at the Kansas Securities Commission",
+          "Notes that 70% of Kansas law-enforcement agencies have ten or fewer officers and need the Attorney General's backup",
+          "Endorsed by the Democratic Attorneys General Association"
+        ],
+        opponents: [
+          "He lost this same race in 2022, and there is no evidence yet that he can close the gap [Verify — structural argument]",
+          "He has never held elective office [Verify — structural argument]",
+          "He faces a substantial fundraising disadvantage [Verify — no comparative figure could be located]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Secretary of State of Kansas (OPEN SEAT)",
+    note: "OPEN — Scott Schwab vacated the office to run for governor, and lost that primary with 11%. THIS IS THE SHARPEST POLICY CONTRAST ON THE KANSAS BALLOT: the three candidates disagree directly on the mail-ballot grace period, the length of advance voting, and proof of citizenship. Proctor was unopposed after his primary rival joined Schwab's gubernatorial ticket; Day beat Samuel Lane 85% to 15%. ⚠ Scott E. Morgan is the nominee of UNITED KANSAS, a recognised Kansas party formed when the Free State Party merged into it in April 2026; this site has no party tag for it, so he is carded as an independent and the label is stated here. ⚠ Aug 4 figures are unofficial until the state canvass on Sept 1, 2026.",
+    candidates: [
+      { name: "Pat Proctor", party: "R", winner: false,
+        positions: [
+          "Ensure only U.S. citizens vote, restore Election Day as the final ballot deadline, and strengthen paper audits",
+          "Secure elections from what he calls nefarious foreign and domestic actors",
+          "Use the office's business side to recruit jobs, cut regulation and lower taxes"
+        ],
+        differentiators: [
+          "Kansas Representative from Leavenworth since 2020; chairs the House Elections Committee and the Joint Committee on Kansas Security; sits on the U.S. Election Assistance Commission Board of Advisors",
+          "Unopposed in the primary with 266,853 votes [Verify — unofficial, pending the Sept 1 state canvass]",
+          "⚠ No campaign-finance figure could be located [Verify]"
+        ],
+        supporters: [
+          "A 25-year Army veteran of Iraq and Afghanistan with a doctorate in history, who teaches homeland security at Wichita State",
+          "A small-business owner who has used the Secretary of State's business-filing system as a customer",
+          "Authored the law ending the three-day mail-ballot grace period, which he frames as restoring voter confidence"
+        ],
+        opponents: [
+          "Kansas Reflector reports he has supported false claims about the 2020 election",
+          "In a campaign speech he accused an axis of ballot harvesting, including the ACLU and the League of Women Voters, of trying to turn the state blue",
+          "On a public recording he suggested young women who had not voted before stole the 2022 abortion-rights vote; he denied the comment when asked at a town hall"
+        ] },
+      { name: "Jennifer Day", party: "D", winner: false,
+        positions: [
+          "Voter education and civic engagement, working with the Legislature to protect voting rights and fair access",
+          "Keep voting systems accurate, reliable and free from political influence and disinformation",
+          "Reinstate the three-day mail-ballot grace period and expand advance voting from 20 days to 30"
+        ],
+        differentiators: [
+          "Holds no current office; served in the Kansas House 2020-2021, appointed to a vacancy, then won election by 62 votes, and resigned after moving out of the district",
+          "Won the primary with 85% (176,899 votes) over Samuel Lane [Verify — unofficial, pending the Sept 1 state canvass]",
+          "⚠ No campaign-finance figure could be located [Verify]"
+        ],
+        supporters: [
+          "Endorsed by Gov. Laura Kelly",
+          "Hands-on elections background — a Johnson County election worker at every election since 2018 and a former county League of Women Voters vice president",
+          "Frames the office as nonpartisan customer service for both voters and business filers"
+        ],
+        opponents: [
+          "A very thin elected record — roughly one year in the Legislature, ended by a move out of her district",
+          "Her League of Women Voters ties are a liability with voters who see the group as a partisan litigant [Verify — structural argument]",
+          "She starts with low statewide name recognition against an opponent who was unopposed [Verify — structural argument]"
+        ] },
+      { name: "Scott E. Morgan (United Kansas)", party: "I", winner: false,
+        positions: [
+          "The Secretary of State should be a trusted referee, not a partisan player — professional administration, secure systems, reliable audits",
+          "Encourage participation and support county election officials with practical reforms that reduce polarization",
+          "Opposes adding proof-of-citizenship requirements to registration; supports advance and mail voting and restoring the three-day grace period"
+        ],
+        differentiators: [
+          "Nominee of United Kansas, a recognised Kansas party, nominated by convention in May 2026 — minor parties do not appear on the primary ballot",
+          "Executive director of United Kansas; formerly staff to Sens. Nancy Kassebaum and Bob Dole, represented the U.S. Senate on the FEC, chief counsel to Gov. Mike Hayden, and a two-term Lawrence school board member",
+          "⚠ His ballot certification could NOT be confirmed against the Secretary of State's own list [Verify] — that list returns HTTP 403 and its year selector returns a server error, so minor-party nominees rest on party announcements and news reporting"
+        ],
+        supporters: [
+          "An unusually deep governmental resume for a third-party candidate, including federal election-administration experience",
+          "He ran for this same office as a Republican in 2014, so he knows its work",
+          "Offers a genuine third option for voters alienated by both parties' election fights"
+        ],
+        opponents: [
+          "No Kansas third party has won statewide office in modern times, so realistically this is a protest vote [Verify — structural argument]",
+          "United Kansas is brand new and has no proven turnout operation",
+          "He lost prior runs for secretary of state, U.S. House and the state Senate, and could split anti-Proctor votes with Day [Verify — structural argument]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "State Treasurer of Kansas",
+    note: "BOTH MAJOR-PARTY CANDIDATES WERE UNOPPOSED, officially 100% each on the Secretary of State's results system. Libertarian Eric Lund is also on the November ballot, nominated at his party's Apr 25, 2026 convention. ⚠ Aug 4 figures are unofficial until the state canvass on Sept 1, 2026.",
+    candidates: [
+      { name: "Steven C. Johnson (incumbent)", party: "R", winner: false,
+        positions: [
+          "Says every dollar matters — applies 30 years of investment and financial-planning work to protecting tax dollars",
+          "Improve state cash-flow operations and cut investment fees, which his office claims saves account owners more than $25 million a year",
+          "⚠ A distinctly 2026 platform statement could not be located — his campaign site's news section is dominated by 2022 material [Verify]"
+        ],
+        differentiators: [
+          "Kansas State Treasurer since 2023; Kansas House 2011-2023",
+          "Unopposed in the primary with 275,638 votes [Verify — unofficial, pending the Sept 1 state canvass]",
+          "⚠ No campaign-finance figure could be located [Verify]"
+        ],
+        supporters: [
+          "An agricultural-economics degree from Kansas State and an MBA from Chicago, plus 20 years at Ameriprise; he farms wheat, soybeans, corn and milo",
+          "Claims measurable results in office — improved cash-flow earnings, lower 529 and savings-plan fees, and an oversight upgrade",
+          "Took an early, explicit stance against ESG influence on Kansas pension investments"
+        ],
+        opponents: [
+          "That anti-ESG focus is criticised as politicising an investment office whose duty is the best return [Verify — structural argument]",
+          "He has published no distinct 2026 platform and did not complete the main candidate survey [Verify]",
+          "Incumbency in a low-salience office means little accountability scrutiny [Verify — structural argument]"
+        ] },
+      { name: "Juan C. Luengo", party: "D", winner: false,
+        positions: [
+          "Expand the Kansas 529 plan to cover four-year colleges, the trades and apprenticeships",
+          "Use linked-deposit programs to move state deposits through Kansas banks and credit unions, cutting borrowing costs for small business and farmers",
+          "Convene a nonpartisan Kansas Economic Council with plain-language public reports, and speed the return of unclaimed property"
+        ],
+        differentiators: [
+          "Holds no current office; chief executive of an Overland Park insurance group with about 20 years in risk management",
+          "Unopposed in the primary with 193,763 votes [Verify — unofficial, pending the Sept 1 state canvass]",
+          "⚠ No campaign-finance figure could be located [Verify]"
+        ],
+        supporters: [
+          "Direct private-sector risk-management experience, which he argues maps onto safeguarding public funds",
+          "Runs a fully bilingual English and Spanish platform — unusual reach in a Kansas statewide race",
+          "Serves on community boards including a regional mental-health association and a builders' association"
+        ],
+        opponents: [
+          "No public-office or public-finance experience [Verify — structural argument]",
+          "He faces an incumbent with an unopposed primary and a stronger formal finance pedigree [Verify — structural argument]",
+          "Down-ballot Kansas Democrats rarely outrun the top of their ticket [Verify — structural argument]"
+        ] },
+      { name: "Eric Lund", party: "L", winner: false,
+        positions: [
+          "⚠ No sourced 2026 platform statement could be located [Verify]",
+          "",
+          ""
+        ],
+        differentiators: [
+          "Nominated at the Libertarian Party of Kansas convention on Apr 25, 2026; the party lists this seat under ballot-access races",
+          "Minor parties do not appear on the Kansas primary ballot, so he had no primary",
+          "⚠ His ballot certification could NOT be confirmed against the Secretary of State's own list [Verify], and no campaign-finance figure could be located"
+        ],
+        supporters: [
+          "Gives voters a third option in a race the two major parties left uncontested through the primary [Verify — structural argument]",
+          "Convention nomination means the Libertarian line is reliably on the ballot without a petition fight",
+          "⚠ No further argument for him could be sourced, because no platform of his own could be found [Verify — an absence of located records]"
+        ],
+        opponents: [
+          "No locatable platform, campaign presence or funding for voters to evaluate [Verify — an absence of located records]",
+          "No Kansas Libertarian has won statewide office [Verify — structural argument]",
+          "In a low-salience office, a candidate without a campaign is unlikely to reach voters at all [Verify — structural argument]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Commissioner of Insurance of Kansas (OPEN SEAT)",
+    note: "THE MARQUEE DOWN-BALLOT RACE — THE SITTING SPEAKER OF THE KANSAS HOUSE AGAINST THE SITTING SENATE MINORITY LEADER. The seat is open because Vicki Schmidt ran for governor and lost the primary with 14%. Both nominees were unopposed on Aug 4, officially 100% each. Libertarian Ric Koehn is also on the ballot. ✅ The most striking endorsement on the Kansas ballot is here: Dinah Sykes is backed by TWO former Kansas insurance commissioners from opposite parties, Sandy Praeger (R) and Kathleen Sebelius (D). ⚠ Aug 4 figures are unofficial until the state canvass on Sept 1, 2026.",
+    candidates: [
+      { name: "Dan Hawkins", party: "R", winner: false,
+        positions: [
+          "Lower costs — recruit new carriers, demand transparency and hold companies accountable for rising rates",
+          "Hold insurers and fraudsters accountable, make insurers pay claims on time, and crack down on junk policies",
+          "Restore competition and choice by opening the Kansas market to more carriers"
+        ],
+        differentiators: [
+          "Speaker of the Kansas House since 2023; in the House since 2013, and retiring from it to run for this office",
+          "Unopposed in the primary with 272,016 votes [Verify — unofficial, pending the Sept 1 state canvass]",
+          "⚠ No campaign-finance figure could be located [Verify]"
+        ],
+        supporters: [
+          "A business owner since 1991 and a Kansas Army National Guard veteran, with top-tier legislative leadership experience",
+          "Points to a leadership record on eliminating the food sales tax, ending state income tax on Social Security, and cutting income and property taxes",
+          "Argues that deregulation and more carriers would lower costs and expand consumer options"
+        ],
+        opponents: [
+          "His own campaign site touts leading the decade-long fight to block Medicaid expansion in Kansas — critics say an insurance commissioner should expand coverage, not block it",
+          "His accomplishments page is heavily culture-war for a regulatory office [Verify — structural argument]",
+          "Deregulation as a cost-lowering theory sits awkwardly with also promising to hold insurers accountable [Verify — structural argument]"
+        ] },
+      { name: "Dinah Sykes", party: "D", winner: false,
+        positions: [
+          "Affordability — make insurance accessible and affordable for all Kansans, especially health coverage",
+          "Consumer protection — stand up for policyholders when insurers deny payment or block treatment",
+          "Transparency and fairness on policies and rates, and fight discrimination in insurance"
+        ],
+        differentiators: [
+          "Kansas Senator from Lenexa since 2017 and Senate Minority Leader since 2021; elected as a Republican, she switched to the Democratic Party in December 2018",
+          "Unopposed in the primary with 194,563 votes [Verify — unofficial, pending the Sept 1 state canvass]",
+          "⚠ No campaign-finance figure could be located [Verify]"
+        ],
+        supporters: [
+          "Cross-partisan endorsements from two former Kansas insurance commissioners, Sandy Praeger (R) and Kathleen Sebelius (D) — an unusually strong signal in this office",
+          "Her party switch gives her a real claim on moderate Republicans in Johnson County",
+          "Endorsed by Planned Parenthood Great Plains Votes PAC"
+        ],
+        opponents: [
+          "The party switch is used against her as opportunism [Verify — structural argument]",
+          "The Planned Parenthood endorsement is a liability with conservative voters in what is meant to be a regulatory race [Verify — structural argument]",
+          "As Senate Minority Leader she has led from a permanent minority, with a thinner record of enacted law than Hawkins [Verify — structural argument]"
+        ] },
+      { name: "Ric Koehn", party: "L", winner: false,
+        positions: [
+          "⚠ No sourced 2026 platform statement could be located [Verify] — no campaign site or platform page was found",
+          "",
+          ""
+        ],
+        differentiators: [
+          "Nominated at the Libertarian Party of Kansas convention on Apr 25, 2026; minor parties do not run in the Kansas primary",
+          "Kansas Reflector reported on Aug 4, 2026 that there has been little activity from his campaign",
+          "⚠ His ballot certification could NOT be confirmed against the Secretary of State's own list [Verify], and no campaign-finance figure could be located"
+        ],
+        supporters: [
+          "Gives voters a third option in a race between two sitting legislative leaders [Verify — structural argument]",
+          "Convention nomination means the Libertarian line is on the ballot without a petition fight",
+          "⚠ No further argument for him could be sourced, because no platform of his own could be found [Verify — an absence of located records]"
+        ],
+        opponents: [
+          "His own state party's reporting describes little campaign activity",
+          "No locatable platform or funding for voters to evaluate [Verify — an absence of located records]",
+          "No Kansas Libertarian has won statewide office [Verify — structural argument]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Appellate Judicial Retention — Kansas (9 jurists)",
+    note: "KANSAS KEEPS MERIT SELECTION — AND ITS VOTERS JUST SAID SO. Nine appellate jurists face YES/NO retention votes, not opponents: two Supreme Court justices and seven Court of Appeals judges. Justices stand every six years, Court of Appeals judges every four. ⚠ THE LIST COMES FROM THE KANSAS BAR ASSOCIATION, NOT THE SECRETARY OF STATE [Verify] — the SoS certified general-election ballot could not be retrieved, and the Bar's own Supreme Court page phrases it as anticipated. Kansas judges must file a declaration of candidacy for retention, so the list is near-certain but not officially confirmed here. ⚠ No organised campaign for or against any of the nine was located [Verify].",
+    candidates: [
+      { name: "Eric S. Rosen — Chief Justice (retention)", party: "I", winner: false,
+        positions: ["Retention votes ask only whether a judge should stay in office; Kansas appellate jurists do not run on policy platforms", "", ""],
+        differentiators: ["Chief Justice of the Kansas Supreme Court; on the six-year retention cycle", "⚠ Listed by the Kansas Bar Association, not confirmed against a Secretary of State certified ballot [Verify]"],
+        supporters: ["Retention votes are the public's regular check on merit-selected judges, and voters reaffirmed that system on Aug 4 [Verify — structural argument]"],
+        opponents: ["No organised opposition to his retention was located [Verify — an absence of located records]"] },
+      { name: "Larkin Walsh — Justice (retention)", party: "I", winner: false,
+        positions: ["Retention votes ask only whether a judge should stay in office; Kansas appellate jurists do not run on policy platforms", "", ""],
+        differentiators: ["Justice of the Kansas Supreme Court; on the six-year retention cycle", "⚠ Listed by the Kansas Bar Association, not confirmed against a Secretary of State certified ballot [Verify]"],
+        supporters: ["Retention votes are the public's regular check on merit-selected judges [Verify — structural argument]"],
+        opponents: ["No organised opposition to her retention was located [Verify — an absence of located records]"] },
+      { name: "Lori Bolton Fleming — Court of Appeals (retention)", party: "I", winner: false,
+        positions: ["Retention votes ask only whether a judge should stay in office", "", ""],
+        differentiators: ["Judge of the Kansas Court of Appeals; on the four-year retention cycle", "⚠ Listed by the Kansas Bar Association, not confirmed against a Secretary of State certified ballot [Verify]"],
+        supporters: ["Retention votes are the public's regular check on merit-selected judges [Verify — structural argument]"],
+        opponents: ["No organised opposition to her retention was located [Verify — an absence of located records]"] },
+      { name: "Thomas E. Malone — Court of Appeals (retention)", party: "I", winner: false,
+        positions: ["Retention votes ask only whether a judge should stay in office", "", ""],
+        differentiators: ["Judge of the Kansas Court of Appeals; on the four-year retention cycle", "⚠ Listed by the Kansas Bar Association, not confirmed against a Secretary of State certified ballot [Verify]"],
+        supporters: ["Retention votes are the public's regular check on merit-selected judges [Verify — structural argument]"],
+        opponents: ["No organised opposition to his retention was located [Verify — an absence of located records]"] },
+      { name: "Kim R. Schroeder — Court of Appeals (retention)", party: "I", winner: false,
+        positions: ["Retention votes ask only whether a judge should stay in office", "", ""],
+        differentiators: ["Judge of the Kansas Court of Appeals; on the four-year retention cycle", "⚠ Listed by the Kansas Bar Association, not confirmed against a Secretary of State certified ballot [Verify]"],
+        supporters: ["Retention votes are the public's regular check on merit-selected judges [Verify — structural argument]"],
+        opponents: ["No organised opposition to his retention was located [Verify — an absence of located records]"] },
+      { name: "Amy Fellows Cline — Court of Appeals (retention)", party: "I", winner: false,
+        positions: ["Retention votes ask only whether a judge should stay in office", "", ""],
+        differentiators: ["Judge of the Kansas Court of Appeals; on the four-year retention cycle", "⚠ Listed by the Kansas Bar Association, not confirmed against a Secretary of State certified ballot [Verify]"],
+        supporters: ["Retention votes are the public's regular check on merit-selected judges [Verify — structural argument]"],
+        opponents: ["No organised opposition to her retention was located [Verify — an absence of located records]"] },
+      { name: "Lesley Ann Isherwood — Court of Appeals (retention)", party: "I", winner: false,
+        positions: ["Retention votes ask only whether a judge should stay in office", "", ""],
+        differentiators: ["Judge of the Kansas Court of Appeals; on the four-year retention cycle", "⚠ Listed by the Kansas Bar Association, not confirmed against a Secretary of State certified ballot [Verify]"],
+        supporters: ["Retention votes are the public's regular check on merit-selected judges [Verify — structural argument]"],
+        opponents: ["No organised opposition to her retention was located [Verify — an absence of located records]"] },
+      { name: "Jacy J. Hurst — Court of Appeals (retention)", party: "I", winner: false,
+        positions: ["Retention votes ask only whether a judge should stay in office", "", ""],
+        differentiators: ["Judge of the Kansas Court of Appeals; on the four-year retention cycle", "⚠ Listed by the Kansas Bar Association, not confirmed against a Secretary of State certified ballot [Verify]"],
+        supporters: ["Retention votes are the public's regular check on merit-selected judges [Verify — structural argument]"],
+        opponents: ["No organised opposition to her retention was located [Verify — an absence of located records]"] },
+      { name: "Stephen D. Hill — Court of Appeals (retention)", party: "I", winner: false,
+        positions: ["Retention votes ask only whether a judge should stay in office", "", ""],
+        differentiators: ["Judge of the Kansas Court of Appeals; on the four-year retention cycle", "⚠ Listed by the Kansas Bar Association, not confirmed against a Secretary of State certified ballot [Verify]"],
+        supporters: ["Retention votes are the public's regular check on merit-selected judges [Verify — structural argument]"],
+        opponents: ["No organised opposition to his retention was located [Verify — an absence of located records]"] }
+    ] },
+
+  // ─────────────────────────── PAST ───────────────────────────
+  { date: "Aug 4, 2026", type: "past", scope: "State · Statewide", office: "Constitutional Amendment — partisan election of Supreme Court justices (REJECTED)",
+    note: "KANSAS VOTERS REJECTED IT 61.4% TO 38.6% — 382,395 NO to 240,799 YES across all 4,150 precincts. The amendment would have replaced merit selection with direct partisan elections for Kansas Supreme Court justices, phased in from 2028, and abolished the Supreme Court Nominating Commission. Its defeat is why nine appellate jurists face retention votes in November rather than opponents. ✅ VERIFIED NEGATIVE: THIS WAS THE ONLY 2026 CONSTITUTIONAL AMENDMENT, AND IT WAS ON THE AUGUST PRIMARY BALLOT — there is NO statewide ballot question of any kind on the Nov 3 general-election ballot, confirmed against the Secretary of State's own proposed-amendments page. Kansas has no citizen initiative for constitutional amendments, so the Legislature's list is the complete one. ⚠ Figures are unofficial until the state canvass on Sept 1, 2026.",
+    candidates: [
+      { name: "NO — keep merit selection", party: "I", winner: true,
+        positions: ["382,395 votes, 61.4%", "", ""],
+        differentiators: ["Retains the Supreme Court Nominating Commission and retention elections for Kansas Supreme Court justices"],
+        supporters: [],
+        opponents: [] },
+      { name: "YES — elect justices directly", party: "I", winner: false,
+        positions: ["240,799 votes, 38.6%", "", ""],
+        differentiators: ["Would have moved to direct partisan elections phased in from 2028 and abolished the nominating commission"],
+        supporters: [],
+        opponents: [] }
+    ] }
+];
+
+// ----- U.S. House races by district (Ad Astra 2 lines; Kansas did not redistrict for 2026) -----
+// Sources: Kansas SoS election-night county pages (ent.sos.ks.gov) for the Aug 4, 2026 primary;
+// FEC candidate summaries; candidates' own campaign sites; KCUR, Johnson County Post, KCTV5, KSN,
+// WIBW, ICT News, Kansas Reflector; Sabato's Crystal Ball (read directly for the KS-3 change).
+// ⚠ ALL AUG 4 FIGURES ARE UNOFFICIAL — the State Board of Canvassers does not certify until Sept 1, 2026,
+// and the Secretary of State's own results site is still titled "Unofficial Kansas Election Results."
+// ⚠ Cook and Inside Elections ratings could NOT be read at the raters' own sites (both return HTTP 403);
+// where they appear they are carried from an aggregator and marked [Verify].
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — KS District 1",
+    region: "The Big First — 60 counties of western and central Kansas, plus Lawrence. Manhattan, Salina, Hays, Dodge City, Garden City, Hutchinson, McPherson. All of 57 counties plus parts of Douglas, Jackson and Pawnee.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "THE MOST REPUBLICAN DISTRICT IN KANSAS — Cook PVI R+16, and Tracey Mann won it by 38 points in 2024. ⚠ THE MAP'S MOST-CONTESTED FEATURE IS HERE: the 2022 Ad Astra 2 plan moved Lawrence and the rest of Douglas County out of KS-2 and into this rural district, and both 2026 Democratic candidates were Lawrence attorneys. All three raters call it Safe or Solid Republican [Verify — Cook and Inside Elections were not read at their own sites]. ⚠ Aug 4 figures are unofficial until the state canvass on Sept 1, 2026.",
+        candidates: [
+          { name: "Tracey Mann (incumbent)", party: "R", winner: false,
+            positions: [
+              "Agriculture first — voted for the Farm, Food and National Security Act of 2026, citing producer stability, credit access and rural broadband",
+              "Moved the Kansas-born Food for Peace program permanently to USDA to keep American-grown commodities central",
+              "Cut federal spending, end what he calls weaponization of the federal government, and secure the border"
+            ],
+            differentiators: [
+              "In office since 2021, seeking a fourth term; chairs the House Agriculture Livestock, Dairy and Poultry Subcommittee",
+              "Won the Republican primary 81.0% to 19.0% over Craig Musser [Verify — unofficial, pending the Sept 1 state canvass]",
+              "$2,713,324 cash on hand as of July 15, 2026"
+            ],
+            supporters: [
+              "A subcommittee gavel gives a farm-and-ranch district direct leverage over livestock and farm bill policy",
+              "Delivered a district-specific win in the 2026 farm bill by moving Food for Peace to USDA",
+              "Fifth-generation Kansan from a Quinter-area farm — deep local roots in an agricultural district"
+            ],
+            opponents: [
+              "An R+16 seat and a four-to-one primary margin leave little pressure for accountability to constituents [Verify — structural argument]",
+              "Challengers argue federal spending and staffing cuts have hit rural services across the district",
+              "A challenger from his own party still drew nearly one in five Republican primary voters"
+            ] },
+          { name: "Lauren Reinhold", party: "D", winner: false,
+            positions: [
+              "Zero federal income tax on earnings under $100,000, paid for by higher corporate and top-bracket rates",
+              "A Rural New Deal — protect Medicare, Medicaid, Social Security and the ACA, preserve rural hospitals, add a low-cost public option",
+              "A farm bill with fully staffed USDA offices, limits on corporate concentration, stronger unions and a higher minimum wage"
+            ],
+            differentiators: [
+              "Lawrence attorney with three decades in legal aid and federal service, including the NLRB and Social Security Administration; no prior elected office",
+              "Won the Democratic primary 64.2% to 35.8% over Colin McRoberts [Verify — unofficial, pending the Sept 1 state canvass]",
+              "$3,162 cash on hand as of July 15, 2026"
+            ],
+            supporters: [
+              "Ad Astra 2 put all of Lawrence in this district, giving a Lawrence Democrat a base that did not exist before 2022 [Verify — structural argument]",
+              "Lost her own federal job to staffing cuts — a personal case study for her argument about federal services in rural Kansas",
+              "Has campaigned roughly 20,000 miles focused on rural counties and takes no corporate PAC money"
+            ],
+            opponents: [
+              "Trails the incumbent in cash on hand by roughly 850 to one, with no paid campaign infrastructure at his scale",
+              "A Lawrence attorney is a difficult fit across 60 mostly rural, heavily Republican counties [Verify — structural argument]",
+              "No Democrat has come within 30 points here under the current map; 2024 was a 38-point loss"
+            ] },
+          { name: "Steven \"Steve\" Jacob", party: "L", winner: false,
+            positions: [
+              "⚠ No sourced 2026 platform statement of any kind could be located [Verify]",
+              "",
+              ""
+            ],
+            differentiators: [
+              "Nominated at the Libertarian Party of Kansas convention on Apr 25, 2026 — Kansas Libertarians nominate by convention, not by primary",
+              "Described as a maintenance worker and rideshare driver; a repeat candidate, having run for Douglas County Commission in 2022",
+              "No FEC cash-on-hand figure could be located [Verify]"
+            ],
+            supporters: [
+              "Gives voters a third option in a district where the general election is not competitive [Verify — structural argument]",
+              "Convention-driven ballot access means the Libertarian line is reliably available to voters here",
+              "⚠ No further argument for him could be sourced, because no platform of his own could be found [Verify — an absence of located records, not a finding about him]"
+            ],
+            opponents: [
+              "No locatable 2026 policy platform for voters to evaluate [Verify — an absence of located records]",
+              "No reported fundraising or campaign organisation [Verify]",
+              "Libertarian nominees in this district have never approached a winning vote share"
+            ] }
+        ] }
+    ]
+  },
+  2: {
+    name: "U.S. House — KS District 2",
+    region: "Eastern Kansas — Topeka, Leavenworth, Emporia, Pittsburg, and the majority of Kansas City, Kansas. All of 24 counties plus parts of Douglas, Jackson and Wyandotte.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "THE SEAT IS NOT OPEN — first-term Republican Derek Schmidt is running, and he won his primary 79.9% to 20.1%. Ad Astra 2 handed this district the majority of Wyandotte County (Kansas City, Kansas) while taking Lawrence out of it, but the seat remains strongly Republican: Cook PVI R+10 and a 2024 margin of 18.9 points. ⚠ No sourced before-and-after PVI comparison for the Wyandotte shift could be located, so its magnitude is not stated here [Verify]. ⚠ Aug 4 figures are unofficial until the state canvass on Sept 1, 2026.",
+        candidates: [
+          { name: "Derek Schmidt (incumbent)", party: "R", winner: false,
+            positions: [
+              "Border security — cosponsored the Laken Riley Act and Sarah's Law",
+              "Curb federal spending and extend tax relief for Kansas families, small businesses and farmers",
+              "Defend Fort Riley, Fort Leavenworth and Forbes Field through the Armed Services Committee"
+            ],
+            differentiators: [
+              "U.S. Representative since Jan 2025; previously Kansas Attorney General for 12 years and a state senator, including six years as majority leader",
+              "Won the Republican primary 79.9% to 20.1% over Chad Young [Verify — unofficial, pending the Sept 1 state canvass]",
+              "$939,168 cash on hand through July 15, 2026; $1,457,605 raised this cycle",
+              "Endorsed by President Trump in July 2026"
+            ],
+            supporters: [
+              "Three decades in Kansas office, plus committee seats tied directly to Fort Riley and Fort Leavenworth jobs",
+              "A near four-to-one primary win shows the Republican base consolidated behind him [Verify — structural argument]",
+              "Roughly four times his opponent's cash on hand going into the fall"
+            ],
+            opponents: [
+              "Only one term in the House — a thinner federal record than his state resume implies [Verify — structural argument]",
+              "Close alignment with the President's agenda gives Democrats a nationalisation target [Verify — structural argument]",
+              "He lost the 2022 governor's race to Laura Kelly, so he has been beaten statewide before"
+            ] },
+          { name: "Don Coover", party: "D", winner: false,
+            positions: [
+              "Affordability first — housing, food and health care costs",
+              "End corruption — ban political insider trading and no-bid contracts",
+              "Protect rural hospitals through Medicare, extend ACA subsidies, and opposes tariffs he says damaged Kansas agriculture"
+            ],
+            differentiators: [
+              "No prior elected office; West Point graduate, Army captain, veterinarian and rancher from Galesburg, and a former registered Republican",
+              "Unopposed in the Democratic primary with 37,925 votes [Verify — unofficial, pending the Sept 1 state canvass]",
+              "$244,286 cash on hand through July 15, 2026; $758,823 raised, about 94.7% from individuals"
+            ],
+            supporters: [
+              "A veteran, veterinarian and rancher is an unusually good profile for a rural, military-heavy district [Verify — structural argument]",
+              "Raised over $750,000 almost entirely from individuals — real grassroots money for a Solid Republican seat",
+              "An ex-Republican running on affordability and anti-corruption rather than party, aimed at crossover voters"
+            ],
+            opponents: [
+              "Running in a district Trump carried 59-39 with a Cook PVI of R+10; no rater has moved it off Solid or Safe Republican",
+              "A first-time candidate with no legislative or governing record",
+              "Trails the incumbent by roughly $695,000 in cash on hand as of July 15, 2026"
+            ] },
+          { name: "John Hauer", party: "L", winner: false,
+            positions: [
+              "A smaller federal government, and eliminating the federal income tax",
+              "Anti-war — opposes overseas U.S. military bases, citing his two Iraq deployments",
+              "Says he represents the working class and working poor, and opposes tax cuts for the wealthy and corporations"
+            ],
+            differentiators: [
+              "Never held elected office; a Topeka warehouse and delivery worker, Iraq veteran, and the Libertarian Party's 2nd District coordinator",
+              "Nominated at the Libertarian Party of Kansas convention in May 2026, not by primary",
+              "Says he is accepting no donations; no 2026 FEC committee filing could be located [Verify]",
+              "Was the 2024 Libertarian nominee here, taking 4.7% (14,229 votes)"
+            ],
+            supporters: [
+              "The only consistently anti-war, anti-income-tax voice on this ballot",
+              "Already cleared 4.7% in this district in 2024 — a real floor for a third-party candidate",
+              "A zero-donation campaign is itself the anti-corruption message he is selling [Verify — structural argument]"
+            ],
+            opponents: [
+              "He says openly that he is not running to win, only to spread a message",
+              "No money, no staff and no FEC committee — effectively no capacity to reach voters [Verify]",
+              "In a lopsided district his votes are more likely to affect the margin than the outcome [Verify — structural argument]"
+            ] }
+        ] }
+    ]
+  },
+  3: {
+    name: "U.S. House — KS District 3",
+    region: "The Kansas City suburbs — all of Johnson, Miami, Franklin and Anderson counties, plus the part of Wyandotte County south of I-70. Overland Park, Olathe, Lenexa, Shawnee, Ottawa.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "KANSAS'S ONLY DISTRICT WITH A COMPETITIVE PARTISAN LEAN — AND ALL THREE RATERS NOW CALL IT SOLID OR SAFE DEMOCRATIC. Ad Astra 2 was drawn in 2022 specifically to weaken this seat, splitting Kansas City, Kansas along I-70 and moving the northern half into KS-2. It has not worked: Sharice Davids has won every election under it, taking 53.4% to 42.6% in 2024, and the district still carries a Cook PVI of D+2. ✅ Sabato's Crystal Ball moved the seat from Likely Democratic to Safe Democratic on July 30, 2026 — read directly at the rater's own site. The money gap is the defining fact of the general election: $1.72 million on hand to $12,284. ⚠ Aug 4 figures are unofficial until the state canvass on Sept 1, 2026.",
+        candidates: [
+          { name: "Sharice Davids (incumbent)", party: "D", winner: false,
+            positions: [
+              "Health care as a right — protect and strengthen the ACA, expand Medicaid, lower prescription drug costs",
+              "Lower everyday costs on groceries, housing and health care; blames tariffs and special-interest influence for price pressure",
+              "Agriculture as the backbone of the state economy — crop insurance and ag research; also clean-energy jobs and bipartisan gun-safety measures"
+            ],
+            differentiators: [
+              "Fourth-term incumbent, in office since 2019; Ranking Member of the House Agriculture General Farm Commodities Subcommittee",
+              "Won the Democratic primary with 83.4% over Sarah Preu [Verify — unofficial, pending the Sept 1 state canvass]",
+              "$1,724,211 cash on hand as of July 15, 2026; $3,690,439 raised this cycle"
+            ],
+            supporters: [
+              "Has won this seat four straight times, including by about 11 points in 2024, under a map drawn to defeat her",
+              "A roughly 140-to-one cash advantage lets her define the race early and go unanswered [Verify — structural argument]",
+              "Committee seats on Agriculture and Transportation give the district direct leverage on farm-bill and infrastructure money"
+            ],
+            opponents: [
+              "Midterms can punish the President's party, and a national swing could compress even a D+2 seat [Verify — structural argument]",
+              "Eight years in Washington invites a career-incumbent contrast from a first-time federal challenger [Verify — structural argument]",
+              "Her national fundraising network draws the charge that she is nationally aligned rather than Kansas-first [Verify — structural argument; no specific sourced attack line was located]"
+            ] },
+          { name: "Eric Jenkins", party: "R", winner: false,
+            positions: [
+              "Fiscal responsibility — tax cuts for Kansas families and businesses; pushed property-tax rate cuts as a Shawnee councilman",
+              "Border security and national defense; runs on safer communities, lower costs and accountable government",
+              "Support for law enforcement, and putting working families ahead of Washington politics"
+            ],
+            differentiators: [
+              "Two terms on the Shawnee City Council (2015-2023), including council president; earlier a city planning commissioner",
+              "Retired U.S. Army colonel with roughly 30 years at FEMA in emergency management",
+              "Won the Republican primary with 78.7% over Chase LaPorte [Verify — unofficial, pending the Sept 1 state canvass]",
+              "$12,283 cash on hand as of July 15, 2026; $18,916 raised this cycle"
+            ],
+            supporters: [
+              "Deep local roots and nearly three decades around Shawnee city government — a genuine Johnson County figure, not a parachute candidate",
+              "A military and FEMA career is a credible national-security and crisis-management resume",
+              "Won his primary by a wide margin, consolidating Republicans behind one nominee early [Verify — structural argument]"
+            ],
+            opponents: [
+              "Under $13,000 in the bank in mid-July against an incumbent holding $1.72 million — no realistic path to fund a competitive campaign without major outside help",
+              "No rater has moved this seat off Solid or Safe Democratic, and Sabato moved it further toward Davids on July 30, 2026",
+              "He lost his 2023 Shawnee council re-election [Verify — reported by Johnson County Post; the margin was not located]"
+            ] },
+          { name: "Steven A. Hohe", party: "L", winner: false,
+            positions: [
+              "Dramatic federal spending cuts, centred on the national debt and its interest cost",
+              "Abolish the income tax, replacing it with a flat tax combined with staged tariffs on imports",
+              "Parent-controlled education accounts, redirecting schooling toward Kansas agriculture, manufacturing, healthcare and logistics skills"
+            ],
+            differentiators: [
+              "Libertarian nominee, unopposed — Kansas Libertarians nominate by convention and go straight to the November ballot",
+              "Eleven years in the U.S. Air Force, including the alert force during Desert Shield and Desert Storm",
+              "A repeat candidate: ran for U.S. House in 2016, 2020 and 2022, and for the Kansas House in 2024. No FEC cash-on-hand figure could be located [Verify]"
+            ],
+            supporters: [
+              "The only candidate offering a full small-government alternative to both major parties",
+              "A long-standing, consistent platform and a genuine local presence as a Shawnee resident",
+              "Gives fiscal conservatives an option if they find the Republican nominee under-resourced [Verify — structural argument]"
+            ],
+            opponents: [
+              "Has never won elected office across four prior campaigns",
+              "Libertarian nominees in this seat have polled in the low single digits — 4.0% here in 2024",
+              "No detectable campaign funding or organisation, so he is unlikely to reach most voters [Verify — no 2026 FEC filing located]"
+            ] }
+        ] }
+    ]
+  },
+  4: {
+    name: "U.S. House — KS District 4",
+    region: "Wichita and south-central Kansas — Sedgwick, Butler, Cowley, Harvey, Sumner, Pratt and ten more counties, plus part of Pawnee. The state's only majority-urban district.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "A SAFE REPUBLICAN, WICHITA-CENTRED SEAT AT COOK PVI R+12, held by Ron Estes since a 2017 special election. It is Kansas's only majority-urban district, anchored by Sedgwick County and the Wichita aviation economy. Unusually for a safe seat, four candidates are reported on the November ballot, including a Libertarian and an independent. ⚠ Aug 4 figures are unofficial until the state canvass on Sept 1, 2026.",
+        candidates: [
+          { name: "Ron Estes (incumbent)", party: "R", winner: false,
+            positions: [
+              "Lower taxes and rein in federal spending; describes himself as a leader on tax reform and rolling back regulations",
+              "Defend Wichita's aviation industry — introduced and helped pass the Aviation Manufacturing Jobs Protection Act",
+              "Secure the border, strengthen national security, and support Kansas agriculture"
+            ],
+            differentiators: [
+              "In office since a 2017 special election; sits on the House Ways and Means Committee",
+              "Previously Sedgwick County treasurer (2005-2011) and Kansas State Treasurer (2011-2017)",
+              "Won the Republican primary 80.9% to 19.1% over Frank McCollum [Verify — unofficial, pending the Sept 1 state canvass]",
+              "$1,622,846 cash on hand as of March 31, 2026"
+            ],
+            supporters: [
+              "A Ways and Means seat gives the Air Capital direct input on tax and trade policy affecting aviation manufacturing",
+              "A long county and statewide record in Sedgwick County before Congress, and high name recognition",
+              "Financially dominant, with over ten times his Democratic opponent's cash on hand"
+            ],
+            opponents: [
+              "His Democratic opponent's central charge is that he does not engage with constituents",
+              "His own primary challenger ran against deficit spending and argued Congress has ceded too much power to executive action, drawing 19%",
+              "His opponent argues the administration's tariffs, which he has not broken with, have hit Kansas farmers hard"
+            ] },
+          { name: "Katy Tyndell", party: "D", winner: false,
+            positions: [
+              "End the current tariffs and restore congressional authority over them, calling them especially harmful to farmers",
+              "Guarantee access to affordable health care and make it a Washington priority for Kansas families",
+              "Supports abortion protections, noting Kansas voters have already spoken on the issue; backs renewable energy and restoring congressional war powers"
+            ],
+            differentiators: [
+              "Wichita attorney and business owner; no prior elected office",
+              "Won a four-way Democratic primary with 65.8% [Verify — unofficial, pending the Sept 1 state canvass]",
+              "$120,411 cash on hand as of March 31, 2026"
+            ],
+            supporters: [
+              "KS-4 is the state's urban-anchored district at R+12, four points less Republican than KS-1 [Verify — structural argument]",
+              "Consolidated the Democratic field decisively, clearing 65% against three opponents",
+              "Tariff damage to Kansas agriculture and aviation supply chains gives a Democrat here a locally grounded economic argument"
+            ],
+            opponents: [
+              "Outraised and out-banked by the incumbent by better than ten to one",
+              "No prior elected office and no established district-wide political base",
+              "No Democrat has cleared 35% here in recent cycles; 2024 was a 30-point loss"
+            ] },
+          { name: "Drew Cranmer", party: "L", winner: false,
+            positions: [
+              "Restore Article I war powers to Congress",
+              "End warrantless surveillance and audit the Federal Reserve",
+              "Return authority to states and communities under the Tenth Amendment"
+            ],
+            differentiators: [
+              "Data engineer and software company co-founder; no prior elected office",
+              "Libertarian nominee without a contested primary",
+              "No FEC cash-on-hand figure could be located [Verify]"
+            ],
+            supporters: [
+              "Offers the most developed third-party platform on this ballot, with four concrete structural reforms",
+              "Civil-liberties and Fed-audit positions appeal to voters in both parties who are uneasy about executive power",
+              "A genuine alternative in a district whose general election is not competitive [Verify — structural argument]"
+            ],
+            opponents: [
+              "No elected experience and no reported campaign funding [Verify]",
+              "His platform is largely structural, leaving voters little on cost of living, health care or agriculture",
+              "Libertarian nominees in KS-4 have historically drawn low single digits"
+            ] },
+          { name: "Paul Vincent Catanese", party: "I", winner: false,
+            positions: [
+              "Break the political party system's hold on the country and empower independents to run for office",
+              "Introduce a bill to simplify legislation and end oversized omnibus bills",
+              "Accept only small grassroots contributions, refusing corporate and special-interest money, and hold open town halls"
+            ],
+            differentiators: [
+              "Independent candidate who qualified by filing rather than through a primary; a 2024 presidential candidate. No prior elected office",
+              "⚠ His ballot certification could NOT be confirmed against the Kansas Secretary of State's own list [Verify] — the SoS candidate page returns 403 to automated fetch, so his candidacy rests on his own campaign site and an aggregator's table",
+              "$2,241 cash on hand as of March 31, 2026"
+            ],
+            supporters: [
+              "The only genuinely non-party option on the KS-4 ballot, which matches his central anti-partisan message [Verify — structural argument]",
+              "A small-dollar-only funding pledge that is consistent with his reported FEC totals",
+              "Voters dissatisfied with both major parties have somewhere to go [Verify — contingent on his ballot status being confirmed]"
+            ],
+            opponents: [
+              "Roughly $2,200 on hand against an incumbent with over $1.6 million — no realistic path",
+              "His platform is almost entirely process reform, with no stated positions on health care, agriculture or the economy",
+              "Independent candidacies in this district have no history of meaningful vote share [Verify — structural argument]"
+            ] }
+        ] }
+    ]
+  }
+};
+
+const SITE_META = { name: "Kansas Elections Hub", lastUpdated: "August 18, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — Kansas county-level down-ballot research has not started.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Kansas has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them,
+  // otherwise a district with no plurality county is unreachable from the map.
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const KS_STATE_FIPS = "20";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#ksmap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(KS_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Hartford ----
+  drawCapital(g, projection, { name: "Topeka", lng: -95.689, lat: 39.0473 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in KS";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our Kansas dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+// Split a race note on the ⚠ / ✅ flag glyphs the editorial style already uses, keeping
+// the glyph that introduced each segment. Text before the first flag is the lead. This is
+// presentation only — no wording is altered and nothing is dropped.
+function briefSegments(note) {
+  const out = [];
+  const re = /([\u26A0\uFE0F\u2705]+)\s*/g;
+  let last = 0, mark = "", m;
+  while ((m = re.exec(note)) !== null) {
+    const text = note.slice(last, m.index).trim();
+    if (text) out.push({ mark: mark, text: text });
+    mark = m[1].replace(/\uFE0F/g, "");
+    last = re.lastIndex;
+  }
+  const tail = note.slice(last).trim();
+  if (tail) out.push({ mark: mark, text: tail });
+  return out;
+}
+
+function renderNote(note) {
+  if (!note) return "";
+  const body = briefSegments(note).map(function (s) {
+    return s.mark
+      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${s.text}</p>`
+      : `<p class="brief-lead">${s.text}</p>`;
+  }).join("");
+  // Clamp only what actually needs clamping: the median note is 236 characters, so most
+  // briefs show whole and never render a toggle at all.
+  const long = note.length > 300;
+  return `<div class="election-brief${long ? " clamped" : ""}">
+      <div class="brief-label">About this race</div>
+      <div class="brief-body">${body}</div>
+      ${long ? `<button class="brief-more" type="button">Show more</button>` : ""}
+    </div>`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${renderNote(e.note)}${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const more = e.target.closest(".brief-more");
+  if (more) {
+    const brief = more.closest(".election-brief");
+    more.textContent = brief.classList.toggle("clamped") ? "Show more" : "Show less";
+    return;
+  }
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>

@@ -65,7 +65,8 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 | `tn.html` | Tennessee — thirty-second fully built state (95 counties, 9 districts, Aug 6, 2026 primary). Built Aug 11, 2026 from il.html. ⚠⚠ **BUILT ON A BRAND-NEW MID-DECADE MAP** — Public Chapter 3, Second Extraordinary Session, signed May 7, 2026 after *Louisiana v. Callais*; building on the 2022 plan would have been wrong on every district. **Nashville/Davidson is split 4/6/7 (NOT the old 5/6/7) and Memphis/Shelby is carved three ways 5/8/9**, eliminating the state's only majority-minority district. 12 split counties, all carrying `ds`; Knox, Hamilton and Wilson are whole. ⚠ The 2026 U.S. Senate seat is **HAGERTY's Class 2 seat** (he is running; Bradshaw D) — NOT Blackburn's, whose Class 1 seat is next up in 2030. Open Governor (Blackburn R vs. Jerri Green D — Tennessee gets its first female governor either way). ⚠ **TN-5 is no longer a Nashville seat** (runs Williamson/Maury to downtown Memphis) and **Ogles LOST his primary** to Charlie Hatcher; **TN-9 flipped D+43 → R+21 and Cohen was drawn out** (withdrew May 15; Pearson is the nominee); **TN-6 open** (Rose ran for governor and lost). Three certified constitutional amendments. NO other statewide executive office is elected (SoS/Comptroller/Treasurer by the General Assembly, AG by the Supreme Court) and NO statewide judicial race (retention is an August 8-year cycle, next 2030). No LOCAL_RACES yet |
 | `hi.html` | Hawaii — thirty-third fully built state (5 county-equivalents, 2 districts, Aug 8, 2026 primary). Built Aug 11, 2026 from tn.html — the site's FIRST non-contiguous state and its smallest county count. ⚠ **NO 2026 U.S. Senate race** (Schatz 2028, Hirono 2030), triple-confirmed against all 87 primary contest titles. ⚠ **Hawaii does NOT elect judges** — the Judicial Selection Commission decides retention, so there is no judicial contest to card. **Honolulu is the ONLY split county** and HI-1 sits entirely inside it, holding it as an outright **71.46% majority**; Kalawao (pop 82) and the neighbor islands are wholly HI-2, which is ~40% Oahu by population. Governor and Lt. Governor are nominated SEPARATELY in the primary but locked into one ticket in November (Const. Art. V §2, HRS §11-115) — Green/Kawakami vs. Cordery/Anthony, Solid/Safe D by all three raters. ⚠ The LG seat was open because **Lt. Gov. Sylvia Luke quit her re-election bid Apr 19, 2026 and took indefinite unpaid leave Apr 23 as the TARGET of a state AG bribery investigation** (she denies it; Comptroller Keith Regan is acting LG) — status unconfirmed past Apr 24 [Verify]. Exactly ONE ballot measure (SB3219 CD1, county resilient-infrastructure bonds), quoted verbatim. ⚠ The November House field is DERIVED from HRS §12-41(b) applied to certified primary counts — no certified general-election candidate list was published as of Aug 11. **The five OHA trustee seats are deliberately NOT carded** — see the ledger. No LOCAL_RACES yet |
 | `al.html` | Alabama — thirty-fourth fully built state (67 counties, 7 districts, May 19 primary + a **special primary Aug 11, 2026** in districts 1/2/6/7). Built Aug 12, 2026 from tn.html. ⚠ **BUILT ON THE 2023 LEGISLATURE-DRAWN MAP, NOT THE COURT-DRAWN *ALLEN v. MILLIGAN* PLAN** — after *Louisiana v. Callais*, SCOTUS set aside the blocking rulings May 11, 2026 and overturned a further panel block June 2, so the Census CD119 relationship file describes the WRONG map for Alabama. Gov. Ivey VOIDED the May 19 results in the four districts whose lines moved and called an Aug 11 special primary **with no runoff**. ⚠ **AL-2 IS THE MARQUEE AND THE REDRAW POINTED IT THE OTHER WAY** — Mobile moved out, the Black share fell ~47%→~40%, Cook PVI went **D+5 → R+7**, and every rater now has Likely R (flip) against freshman Rep. Shomari Figures; **Rhett Marques won the six-way special primary with 50.03%**, eleven votes above a majority. **Jerry Carl won back AL-1**, the seat he lost in 2024. ⚠ Alabama elects **all seven executive constitutional officers together**, so the ballot is long; the marquee down-ballot race is Agriculture Commissioner, where **Ron Sparks (D) held that exact office 2003–2011**. ⚠ **BOTH Republican PSC incumbents were fired by their own primary voters**, and **HB 475 (signed Apr 2, 2026) then expanded the PSC 3→7, put it under a governor-appointed secretary of energy and barred rate cases until 2029** — the page carries that context or the races mislead. ⚠ **Six appellate seats, only ONE contested** (Supreme Court Place 8, Shaw vs. Dunham, an IVF-ruling race). ⚠ **Tuberville's eligibility for governor is live at the Alabama Supreme Court**; briefing closes Aug 28, AFTER the Aug 19 replacement deadline and Aug 26 certification. **Four constitutional amendments** in November, numbering provisional. No LOCAL_RACES yet |
-| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH/KY/IN/IA/IL/MS/AR/NE/NM/CO/OR/NV/SD/ID/MT/PA/TN/HI/AL redirect to their dedicated pages |
+| `ks.html` | Kansas — thirty-eighth fully built state (105 counties, 4 districts, Aug 4, 2026 primary). Built Aug 18, 2026 from mn.html. ⚠ **KANSAS DID NOT REDISTRICT** — the mid-decade push failed twice and the 2022 *Ad Astra 2* plan governs; *Rivera v. Schwab* already upheld it. The map is the best-proved on the site: the enacted plan's own KLRD split report matches an independent Geocorr derivation TO THE PERSON, and the **currency test passed 105 of 105 counties against the SoS's own Aug 4 ballot data**. Only 4 split counties (Douglas, Jackson, Pawnee, Wyandotte); **Lawrence sits in KS-1**, the map's most-contested feature, and Wyandotte is split along I-70. ⚠ **NOTHING IS CERTIFIED — the State Board of Canvassers does not certify until Sept 1, 2026**, so every primary figure on the page says it is unofficial. Statewide: U.S. Senate (Marshall vs. Adam Hamilton — **two raters moved off Safe after a record $3.7M Democratic launch quarter**), **OPEN Governor** (Kelly term-limited; Masterson/Klemp vs. Holscher/Ohaebosim, Lean/Tilt R flip), AG (Kobach–Mann, a 2022 rematch), **OPEN Secretary of State**, Treasurer, **OPEN Insurance Commissioner** (Speaker Hawkins vs. Minority Leader Sykes — the marquee down-ballot race), and 9 appellate retentions. ⚠ **NO November ballot question** — the only 2026 amendment was on the AUGUST ballot and voters **rejected partisan election of Supreme Court justices 61.4–38.6**. KS-3 (Davids) is the only competitive-lean seat and all three raters now call it Solid/Safe D. No LOCAL_RACES yet |
+| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH/KY/IN/IA/IL/MS/AR/NE/NM/CO/OR/NV/SD/ID/MT/PA/TN/HI/AL/WI/MN/ND/KS redirect to their dedicated pages |
 | `favicon.svg` | Gold-gradient circle + white checkmark (primary favicon, matches site crest) |
 | `favicon.png` | 32px PNG fallback |
 | `favicon.ico` | Multi-size ICO (16/32/48) at root for legacy auto-discovery |
@@ -163,9 +164,9 @@ must appear AFTER its declaration; a top-level TDZ error kills the whole script 
 ### index.html (national)
 ```
 ST / NAME     : fips → abbr / full name             CAP: capitals (currently unused on this page)
-BUILT         : 37 fips -> page (37 nc, 45 sc, 13 ga, 51 va, 24 md, 10 de, 34 nj, 36 ny, 44 ri, 33 nh,
+BUILT         : 38 fips -> page (37 nc, 45 sc, 13 ga, 51 va, 24 md, 10 de, 34 nj, 36 ny, 44 ri, 33 nh,
                 09 ct, 50 vt, 23 me, 25 ma, 54 wv, 39 oh, 21 ky, 18 in, 19 ia, 17 il, 28 ms, 05 ar, 31 ne, 35 nm, 08 co,
-                41 or, 32 nv, 46 sd, 16 id, 30 mt, 42 pa, 47 tn, 15 hi, 01 al, 55 wi, 27 mn, 38 nd)
+                41 or, 32 nv, 46 sd, 16 id, 30 mt, 42 pa, 47 tn, 15 hi, 01 al, 55 wi, 27 mn, 38 nd, 20 ks)
 PARTIAL       : Set of 2 fips (DC FL) → lighter gold tier
 CALLOUTS      : label anchor coords for 9 small states + DC
 destFor(fips) : BUILT[fips] if fully built, else state.html?state=XX
@@ -199,7 +200,26 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of August 17, 2026)
+## Current state (as of August 18, 2026)
+- **KS (full, added Aug 18, 2026) — 38th state.** ⚠ **THE MAP IS THE BEST-PROVED ON THE SITE.** Kansas did NOT redistrict — the
+  mid-decade push failed twice (the Nov 5, 2025 special-session petition fell ~10 House signatures short; the regular session ended
+  Apr 22, 2026 with no map) — so the 2022 *Ad Astra 2* plan governs, and *Rivera v. Schwab* already upheld it. 105 counties, exactly
+  **4 split counties**, and the enacted plan's own KLRD "Political Subdivision Splits" report matches an independent Geocorr 2022
+  derivation **TO THE PERSON** (all four districts on exactly 734,470, deviation 0). **Currency proved 105 of 105 counties against the
+  Secretary of State's own Aug 4, 2026 ballot data** — which U.S. House contest each county actually voted in — see the banked derivation.
+  ⚠ **NOTHING IS CERTIFIED: the State Board of Canvassers does not certify until Sept 1, 2026**, and the SoS site is still titled
+  "Unofficial Kansas Election Results", so every primary figure on the page says so. Statewide: **U.S. Senate** (Marshall vs. pastor Adam
+  Hamilton — Sabato moved Safe R to **Likely R on Aug 4**, read directly at the rater's own site, after Hamilton raised ~$3.7M in a record
+  launch quarter to Marshall's $610K); **OPEN Governor** (Kelly term-limited; Masterson/Klemp vs. Holscher/Ohaebosim, Tilt/Lean R flip).
+  ⚠ **A COMMON FRAMING IS WRONG AND THE PAGE CORRECTS IT: the last Republican ELECTED governor of Kansas was Brownback in Nov 2014** —
+  Colyer held the office in 2018 by succession and never won it. Also AG (Kobach–Mann, a 2022 rematch), **OPEN SoS**, Treasurer,
+  **OPEN Insurance Commissioner** — the marquee down-ballot race, House Speaker Hawkins vs. Senate Minority Leader Sykes, who is endorsed
+  by **two former insurance commissioners of opposite parties** — and 9 appellate retentions. ⚠ **VERIFIED NEGATIVE: NO November ballot
+  question.** The only 2026 amendment was on the AUGUST ballot and voters **rejected partisan election of Supreme Court justices 61.4–38.6**
+  (not 62–38), which is why the nine jurists face retention votes. **KS-3 (Davids) is the only competitive-lean seat** — Ad Astra 2 was drawn
+  to beat her and has not, though all three raters now say Solid/Safe D. ⚠ **The SoS certified CANDIDATE list is unreachable** (403, and its
+  year selector 500s), so every minor-party and independent nominee carries a [Verify] on ballot certification. No LOCAL_RACES.
+
 
 - **MN (full, added Aug 17, 2026) — 36th state.** Built six days after the Aug 11 primary, so every primary
   figure is UNOFFICIAL pending the State Canvassing Board, and the page says so. ⚠ **THE RESEARCH FOR THIS PAGE
@@ -255,6 +275,8 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
   ⚠ **WI-2 has exactly ONE candidate** — no Republican, third-party or independent filed, and no write-in
   registered, so Pocan's primary settled the seat. Map: the *Johnson v. WEC* (2022 WI 14) plan, unchanged; both
   2026 challenges were dismissed and the state Supreme Court took the appeal but DENIED expedition. No LOCAL_RACES.
+
+## Superseded — current state as of August 17, 2026
 
 ## Superseded — current state as of August 12, 2026
 
@@ -632,8 +654,8 @@ node tests/run-all.js
 |------|----------------|
 | `tests/parse-check.js` | Every inline `<script>` in every page must compile (syntax errors only) |
 | `tests/smoke-test.js` | Executes each page's scripts top-to-bottom with DOM stubs, cut at the first `d3.` usage; runs state.html for the featured states + controls (TX, CA) + verifies the NC→nc.html redirect. **This is the test that catches declaration-order/TDZ bugs.** |
-| `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config, now 37 pages): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly, **and the map `<XX>_STATE_FIPS` constant matches the COUNTIES prefix** (quirk #10). Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
-| `tests/brief-render.js` | **The race note must stay OUT of the collapsed card header, and the ⚠/✅ segmentation must be LOSSLESS.** 305 checks over all 943 notes on 37 pages: no legacy `.election-note`, the brief is the first child of `.election-detail`, every brief reproduces its note's own words exactly, markup is well-formed, "Show more" appears iff the brief is clamped, and no note contains a backtick or `${` (either would break the whole drawer, since notes are interpolated into template literals). Added Aug 12, 2026 after the note shipped in the header and dwarfed the candidate data; **verified to fail on the pre-fix markup** |
+| `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config, now 38 pages): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly, **and the map `<XX>_STATE_FIPS` constant matches the COUNTIES prefix** (quirk #10). Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
+| `tests/brief-render.js` | **The race note must stay OUT of the collapsed card header, and the ⚠/✅ segmentation must be LOSSLESS.** 313 checks over all 955 notes on 38 pages: no legacy `.election-note`, the brief is the first child of `.election-detail`, every brief reproduces its note's own words exactly, markup is well-formed, "Show more" appears iff the brief is clamped, and no note contains a backtick or `${` (either would break the whole drawer, since notes are interpolated into template literals). Added Aug 12, 2026 after the note shipped in the header and dwarfed the candidate data; **verified to fail on the pre-fix markup** |
 | `tests/label-fit.js` | **The national map's `LABEL_ADJ` labels must clear their state borders.** Measures clearance (anchor → nearest boundary) against baked geometry and requires 9.66px = 8.76 glyph half-diagonal + 0.4 stroke + 0.5 simplification slack. Added July 24, 2026 after the FL/LA labels shipped clipping *twice* — both earlier passes hit-tested the anchor POINT, which is inside the state even when the box around it is not. HI carries a documented exempt floor (its island cannot do better) |
 | `tests/fixtures/state-label-rings.json` | Projected, simplified state outlines for the 42 inline-label states (48KB). Built by `tools/gen-label-fixture.js`; records the projection it came from so `label-fit.js` fails loudly instead of checking stale geometry |
 | `tests/lib.js` | Shared helpers: inline-script extraction, the d3 cut, DOM stubs, vm sandbox runner |
@@ -865,7 +887,24 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
    built once and never re-derived. **Every legacy page's map deserves the same audit nc.html just got** — sc.html and
    ga.html are the oldest and were built the same week under the same assumptions.
 
-**Queue status (as of Aug 17, 2026): every numbered item 1–10 is COMPLETE and the owner has added nothing new.**
+**Queue status (as of Aug 18, 2026): every numbered item 1–10 is COMPLETE and the owner has added nothing new.**
+Item 4 (voices) reads **0 missing / 1,126 candidates across 38 pages** at the end of the Aug 18 run — Kansas shipped with
+40 candidates and 0 gaps. The landing page was reviewed end-to-end and needed only the legend count (37 → **38 states**);
+its prose has been fully state-agnostic since the Aug 12 contribution-form change, the footer already read August 2026, and
+PARTIAL is still correctly {DC, FL}. The [Verify] total rose 2,582 → **2,730**, which is Kansas's 148 honest markers —
+unusually high for one state because the **Kansas SoS certified candidate list is unreachable**, so every minor-party and
+independent nominee carries a certification [Verify], and every Aug 4 figure carries an "unofficial pending the Sept 1
+canvass" marker. Both clear on their own schedule; neither is a regression.
+⚠ **The national time-sensitive sweep produced ZERO live defects — a verified negative, and the fourth consecutive run in
+which "read the page before acting on an agent's report" was the right call.** All three items it flagged were already
+correct on the pages: sc.html already carded Darline Graham-Nordone vs. Ralph Norman for the Aug 25 Senate runoff; ga.html
+already had Marcye Scott and Everton Blair Jr. in the Aug 25 GA-13 runoff with the right percentages; and al.html already
+had the Tuberville briefing schedule (Aug 21 / Aug 28, no ruling) exactly right. The one real improvement was a refinement,
+not a correction: al.html now also carries the **Aug 24** statutory date for party amendments and candidate withdrawal
+(§ 17-6-21(b)-(c)) from the Secretary of State's own 2026 administrative calendar, alongside the press-reported Aug 19
+76-day replacement date.
+
+Superseded: **Queue status (as of Aug 17, 2026): every numbered item 1–10 is COMPLETE and the owner has added nothing new.**
 Item 4 (voices) reads **0 missing / 1,086 candidates across 37 pages** at the end of the Aug 17 run — Minnesota
 shipped with 30 candidates and North Dakota with 19, both 0 gaps. The landing page was reviewed end-to-end and
 needed only the legend count (35 → **37 states**); its prose has been fully state-agnostic since the Aug 12
@@ -957,7 +996,32 @@ time-sensitive calendar, and the incumbent-status sweep.
 3b. **East-coast full buildout — RESUMED by owner July 14, 2026** (was paused July 6 after 7 states:
    NC SC GA VA MD DE NJ; statewide + House; county LOCAL_RACES still to do for all).
    **Built bloc = 35 as of Aug 13, 2026** (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA WV OH KY IN IA IL MS AR NE NM CO
-   OR NV SD ID MT PA TN HI AL **WI**). ⚠ **Only DC and FL remain in the lighter "marquee" tier.** **FL unlocks after its
+   OR NV SD ID MT PA TN HI AL **WI**). **Built bloc = 38 as of Aug 18, 2026** (add **MN ND KS**).
+   ### ➤ NEXT BUILDS — gate-checked Aug 18, 2026; the full scoping is banked in
+   ### `tools/banked/ks-map-and-next-state-gates-2026-08-18.md`. Do NOT re-scope these.
+   1. **ARIZONA — recommended next.** Map UNCHANGED (AIRC v14.0, Jan 2022), so Census CD119 is CURRENT; only **15 counties**,
+      the cheapest map left. Primary July 21, **statewide canvass Aug 6 — results are OFFICIAL**, no runoffs, all nominees known.
+      NO U.S. Senate race (first cycle since 2014). Governor NOT open (Hobbs vs. Biggs). New **Lieutenant Governor** office runs
+      on the gubernatorial ticket. ⚠ **The one blocker is the PROPOSITIONS, still being litigated** — Props 143/145 struck down in
+      late July, Prop 212's language rejected Aug 14, one initiative unresolved; Maricopa's print deadline was Aug 20.
+      ➤ **Build the offices, hold the ballot-measure race until on/after ~Aug 21.**
+   2. **OKLAHOMA — build AFTER Aug 25.** Map UNCHANGED (HB 1002, 2021), CD119 CURRENT, 77 counties / 5 districts, no litigation.
+      Very rich ballot: **OPEN Class 2 U.S. Senate** (Mullin resigned March 2026 for DHS; caretaker Armstrong not running) and
+      **OPEN Governor** (Stitt term-limited), plus seven more open statewide offices. ⚠ **Five statewide nominees do not exist
+      until the Aug 25 runoff**, including the Democratic Senate nominee — a build before then is a week of placeholders.
+      ⚠ The primary was **June 16** (one Wikipedia index page renders June 24 / Aug 4 — it is wrong).
+   3. **FLORIDA — unlocked tonight.** Its primary was **Aug 18, 2026**. Map is **HB 1D** (signed May 4, 2026 post-*Callais*);
+      a preliminary injunction was DENIED in late May, so HB 1D governs 2026. Apply lesson #19.
+   4. **UTAH — last, and it needs real engineering.** ⚠ **Its map CHANGED** (Judge Gibson adopted Plaintiffs' Map 1, Nov 2025;
+      litigation settled Feb 2026), so **CD119 IS STALE FOR UTAH** and county-part populations need a GIS/block join from the
+      UGRC "2026 to 2032" layer. Thin ballot: no Senate, no governor, no statewide executives; 4 seats + 2 amendments.
+   ⚠ **MICHIGAN is still gated** — not certified as of Aug 18 (BSC deadline Aug 24). ✅ But **MI-08 is RESOLVED: Thomas Smith
+      ACCEPTED the nomination** despite suspending his campaign July 16; no party replacement. ⚠ Beware a decoy search result —
+      "Michigan's elections panel certifies results" on Yahoo is dated **Aug 19, 2022**. michigan.gov 403s on everything.
+   ⭐ **A REUSABLE DISCOVERY:** Census **CD119 summary level 510** (`api.census.gov/data/2020/dec/cd119`) returns county-part
+      **populations**, which the plain CD119 relationship file (land area only) cannot. ⚠ It needs an API key — an unkeyed request
+      302s to `missing_key.html` — and it is only valid where the map did NOT change.
+   **DC still needs the special no-county page model.** ⚠ **Only DC and FL remain in the lighter "marquee" tier.** **FL unlocks after its
    Aug 18, 2026 primary — that is the next build, and its map ALSO changed post-*Callais*, so apply lesson #19.**
    **DC still needs the special no-county page model.** After FL the remaining unbuilt states are the western and
    midwestern block (TX CA AZ WA MN MI MO LA OK KS UT WY AK ND etc.).
