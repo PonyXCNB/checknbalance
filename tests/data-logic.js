@@ -34,7 +34,7 @@ const STATE_PAGES = [
   { page: "ri.html", countyCount: 5,   sampleFips: "44007", sampleName: "Providence",  expectedRaces: 10 },
   { page: "nh.html", countyCount: 10,  sampleFips: "33011", sampleName: "Hillsborough", expectedRaces: 6 },
   { page: "ct.html", countyCount: 8,   sampleFips: "09011", sampleName: "New London",  expectedRaces: 9 },
-  { page: "vt.html", countyCount: 14,  sampleFips: "50007", sampleName: "Chittenden",  expectedRaces: 9 },
+  { page: "vt.html", countyCount: 14,  sampleFips: "50007", sampleName: "Chittenden",  expectedRaces: 12 },
   { page: "me.html", countyCount: 16,  sampleFips: "23019", sampleName: "Penobscot",   expectedRaces: 9 },
   { page: "ma.html", countyCount: 14,  sampleFips: "25025", sampleName: "Suffolk",     expectedRaces: 15 },
   { page: "wv.html", countyCount: 55,  sampleFips: "54039", sampleName: "Kanawha",     expectedRaces: 10 },
@@ -96,6 +96,15 @@ const STATE_PAGES = [
   // North Dakota: one at-large district, no split counties. 10 statewide + the single House race.
   { page: "nd.html", countyCount: 53,  sampleFips: "38015", sampleName: "Burleigh",     expectedRaces: 11 },
   { page: "ks.html", countyCount: 105, sampleFips: "20209", sampleName: "Wyandotte",    expectedRaces: 10 },
+  // Oklahoma: Oklahoma County is the deliberate sample because it is the only THREE-district
+  // county in the state (ds:[3,4,5]) and so guards the multi-district merge. 14 statewide
+  // (12 upcoming + the 2 Aug 25 state questions) + 3 districts x 1 race each.
+  { page: "ok.html", countyCount: 77,  sampleFips: "40109", sampleName: "Oklahoma",     expectedRaces: 17 },
+  // Arizona: Maricopa is the deliberate sample and the most extreme ds case on the site — it
+  // touches EIGHT of the nine districts (all but AZ-6), and AZ-3, AZ-4, AZ-5 and AZ-8 are the
+  // population plurality of NO county, so they are reachable ONLY through it. 9 statewide +
+  // 8 districts x 1 race each.
+  { page: "az.html", countyCount: 15,  sampleFips: "04013", sampleName: "Maricopa",     expectedRaces: 17 },
 ];
 
 for (const cfg of STATE_PAGES) {

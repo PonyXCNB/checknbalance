@@ -164,9 +164,9 @@ must appear AFTER its declaration; a top-level TDZ error kills the whole script 
 ### index.html (national)
 ```
 ST / NAME     : fips → abbr / full name             CAP: capitals (currently unused on this page)
-BUILT         : 38 fips -> page (37 nc, 45 sc, 13 ga, 51 va, 24 md, 10 de, 34 nj, 36 ny, 44 ri, 33 nh,
+BUILT         : 40 fips -> page (37 nc, 45 sc, 13 ga, 51 va, 24 md, 10 de, 34 nj, 36 ny, 44 ri, 33 nh,
                 09 ct, 50 vt, 23 me, 25 ma, 54 wv, 39 oh, 21 ky, 18 in, 19 ia, 17 il, 28 ms, 05 ar, 31 ne, 35 nm, 08 co,
-                41 or, 32 nv, 46 sd, 16 id, 30 mt, 42 pa, 47 tn, 15 hi, 01 al, 55 wi, 27 mn, 38 nd, 20 ks)
+                41 or, 32 nv, 46 sd, 16 id, 30 mt, 42 pa, 47 tn, 15 hi, 01 al, 55 wi, 27 mn, 38 nd, 20 ks, 40 ok, 04 az)
 PARTIAL       : Set of 2 fips (DC FL) → lighter gold tier
 CALLOUTS      : label anchor coords for 9 small states + DC
 destFor(fips) : BUILT[fips] if fully built, else state.html?state=XX
@@ -200,7 +200,48 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of August 18, 2026)
+## Current state (as of August 27, 2026)
+- **AZ (full, added Aug 27, 2026) — 40th state.** ✅ **THE ONLY STATE BUILT THIS SUMMER WHOSE EVERY PRIMARY FIGURE IS ALREADY OFFICIAL** —
+  Arizona canvassed statewide on **Aug 6, 2026** and holds no runoffs, so nothing is provisional on a later count. Map: AIRC Official
+  Congressional Map v14.0 (Jan 2022), **UNCHANGED**; the decisive event is a public retreat, not a ruling — on **Aug 11, 2026 Senate
+  President Warren Petersen abandoned the post-*Callais* plan to sue**, saying "the lines would be very similar so a lawsuit probably
+  wouldn't make much sense," and no suit was ever filed, so the court order the AIRC would have needed to reconvene never existed (its own
+  site says it closed June 28, 2024 and is not reappointed until Jan 2031). **Currency proved 15 of 15 counties** against the SoS's own
+  *State of Arizona Registration Report — 2026 Primary Election*, which enumerates every district BY COUNTY — the map used to build the
+  July 21 ballots. ⚠ **PIMA'S PLURALITY IS CD6, NOT CD7** — CD7 holds 80.6% of Pima's LAND but only 45.2% of its PEOPLE. ⚠ **MARICOPA IS
+  THE MOST EXTREME `ds` CASE ON THE SITE**: it touches EIGHT of nine districts, and **AZ-3, AZ-4, AZ-5 and AZ-8 are the plurality of NO
+  county**, so they are reachable only through it (lesson #12 at full stretch). Maricopa's own `d` is a documented judgement call — four
+  districts sit entirely inside it and are a four-way tie decided by ONE PERSON on census data, so `d` follows the SoS's 2026 registration
+  figures instead. ⚠ **NO U.S. SENATE RACE** — a verified negative, first cycle without one since 2014. Statewide: Governor (Hobbs v Biggs,
+  **not** open) with Arizona's **BRAND-NEW LIEUTENANT GOVERNOR** office running on a joint ticket — Hobbs picked **John Giles, an
+  eleven-year REPUBLICAN mayor of Mesa**; **SoS** (Fontes v **Kolodin, who led lawsuits to overturn the 2020 and 2022 results and who
+  also SPONSORED Prop 144 on the same ballot**); **AG** (Mayes, who won in 2022 by **280 votes**, v Senate President Petersen); OPEN
+  Treasurer, OPEN Superintendent (**incumbent Tom Horne LOST his own primary to Kimberly Yee**), **Mine Inspector — the only such elected
+  office in the country**, 2 of 5 Corporation Commission seats (**incumbent Nick Myers finished THIRD**), and one retention. ⚠ **CORRECTION
+  TO A COMMON ERROR: John Lopez IV is VICE Chief Justice, not Chief Justice** — Ann Timmer has held that post since July 1, 2024.
+  ⚠ **THE BALLOT-MEASURE BLOCKER RESOLVED: 8 measures, ALL legislative referrals, NO citizen initiative** — Props 143 and 145 were struck
+  under the separate-amendment rule and the Protect Education Act (Prop 212) died on signatures Aug 18. Field final; Maricopa's print
+  deadline passed Aug 20. ⚠ The SoS's certified GENERAL candidate list is not posted and its candidate app is Cloudflare-blocked, so every
+  minor-party and write-in nominee carries a certification [Verify]. 53 candidates, 0 voices gaps. No LOCAL_RACES.
+- **OK (full, added Aug 27, 2026) — 39th state.** Built two days after the **Aug 25 runoff** that finally produced five statewide nominees.
+  Map: **HB 1002 (2021), UNCHANGED**; Oklahoma is on neither half of the mid-decade redraw wave (ten states have new 2026 maps — AL CA FL
+  LA MO NC OH TN TX UT — and Oklahoma is in none). **The timing clincher: OK's filing deadline was Apr 3, 2026, BEFORE *Callais* was decided
+  Apr 29**, and both the June 16 primary and Aug 25 runoff already ran on these lines. **Currency proved 77 of 77 counties** against the
+  Election Board's own results API. ⚠ **OUR OWN BRIEF SAID TULSA COUNTY WAS SPLIT; IT IS NOT** — Tulsa lies wholly in CD1 and the returns
+  prove it. There are **six** split counties, and **Creek and Wagoner both FLIP on the area-vs-population test**. ✅ Every district is the
+  plurality of at least one county, so nothing is hidden. ⚠⚠ **FIVE PREMISES IN OUR BUILD BRIEF WERE WRONG AND ARE CORRECTED ON THE PAGE**:
+  the **Auditor & Inspector race is NOT on the ballot** (Melissa Capps was the sole filer and won by default at the April deadline); the
+  **Treasurer's seat was NOT open** (incumbent Todd Russ ran and **LOST** to Auditor Cindy Byrd); **Dustin Rowe, not M. John Kane IV, has
+  been Chief Justice since Jan 1, 2025**; there are **TWO** November state questions (SQ 845 **and SQ 847**), not one; and **SIX** jurists
+  face retention, not two. Statewide: **OPEN U.S. Senate** (Mullin resigned March 2026 for DHS; caretaker Alan Armstrong is barred by
+  state law from running) — **Kevin Hern (R) v N'Kiyla Jasmine Thomas (D), a 31-year-old nurse, Chickasaw Nation citizen and the first
+  openly democratic-socialist Senate nominee in state history, who won the runoff 61-39 after being outspent five to one and reported
+  $456 CASH ON HAND**; **OPEN Governor** — ⚠ **THE CLOSEST STATEWIDE RESULT ANYWHERE ON THE SITE: Mike Mazzei beat sitting AG Gentner
+  Drummond by 2,047 VOTES (50.28-49.72)**, and Mazzei has loaned his own campaign **$11 million**; plus OPEN Lt Gov, AG, Superintendent,
+  Labor, Insurance and one Corporation Commission seat. ⚠⚠ **NOTHING IS CERTIFIED UNTIL SEPT 1, 2026** and every figure says so.
+  ✅ **All results were pulled from the Election Board's OWN API, not an aggregator** — see the access recipe in the banked derivation.
+  38 candidates, 0 voices gaps. No LOCAL_RACES.
+
 - **KS (full, added Aug 18, 2026) — 38th state.** ⚠ **THE MAP IS THE BEST-PROVED ON THE SITE.** Kansas did NOT redistrict — the
   mid-decade push failed twice (the Nov 5, 2025 special-session petition fell ~10 House signatures short; the regular session ended
   Apr 22, 2026 with no map) — so the 2022 *Ad Astra 2* plan governs, and *Rivera v. Schwab* already upheld it. 105 counties, exactly
@@ -642,6 +683,18 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
    ➤ It does NOT replace the currency test (lesson #17) — that still has to come from the Secretary of State's
    own election returns, and it is what proves which map voters actually voted under.
 
+26. **A DONOR PAGE'S FORMATTING CAN BREAK EVERY FUTURE CLONE, AND ONLY ONE PAGE IN FORTY WAS AFFECTED.**
+   Found Aug 27, 2026 cloning Oklahoma from `ks.html`. `tools/clone-state.js` locates each data block by scanning for a line that is
+   exactly `};`. But ks.html's `COUNTIES` block ended `..., ds: [2, 3] },};` — the terminator was GLUED to the last entry, on the same
+   line. The scan therefore ran straight past `STATEWIDE` to the next block's terminator, and the tool reported `donor has no
+   "const STATEWIDE ="`. It is valid JavaScript, every test passed on it, and it had been live since Aug 18.
+   ➤ **Fixed the DONOR, not the tool** — the tool's rule is reasonable and the page's formatting was the outlier. A sweep of all
+   40 pages found **exactly one** other instance: none. ks.html was unique.
+   ➤ **This is the FOURTH time clone-state.js's refuse-to-write behaviour has caught a real defect** (quirks #16, #22, #23 and now
+   this one), and the second time the fault was in a file rather than in the tool. Do not soften it into a warning.
+   ➤ **The general lesson is the same one as #22, sharpened: a tool that parses formatting will eventually meet a file that drifted.**
+   When a clone fails, first check whether the DONOR is malformed — that is now as likely as a tool bug.
+
 ## Testing (`tests/` — plain Node.js, zero dependencies)
 
 Requires Node.js (any recent LTS). Run the whole suite from the site root:
@@ -654,8 +707,8 @@ node tests/run-all.js
 |------|----------------|
 | `tests/parse-check.js` | Every inline `<script>` in every page must compile (syntax errors only) |
 | `tests/smoke-test.js` | Executes each page's scripts top-to-bottom with DOM stubs, cut at the first `d3.` usage; runs state.html for the featured states + controls (TX, CA) + verifies the NC→nc.html redirect. **This is the test that catches declaration-order/TDZ bugs.** |
-| `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config, now 38 pages): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly, **and the map `<XX>_STATE_FIPS` constant matches the COUNTIES prefix** (quirk #10). Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
-| `tests/brief-render.js` | **The race note must stay OUT of the collapsed card header, and the ⚠/✅ segmentation must be LOSSLESS.** 313 checks over all 955 notes on 38 pages: no legacy `.election-note`, the brief is the first child of `.election-detail`, every brief reproduces its note's own words exactly, markup is well-formed, "Show more" appears iff the brief is clamped, and no note contains a backtick or `${` (either would break the whole drawer, since notes are interpolated into template literals). Added Aug 12, 2026 after the note shipped in the header and dwarfed the candidate data; **verified to fail on the pre-fix markup** |
+| `tests/data-logic.js` | For each fully built state page (`STATE_PAGES` config, now 40 pages): sample-county race count, zero blank titles, valid types/parties, all counties merge cleanly, **and the map `<XX>_STATE_FIPS` constant matches the COUNTIES prefix** (quirk #10). Plus `STATE_RACES` + `buildSeats` merges (no duplicate offices, correct specials for OH/FL, no Senate/Gov for WA, delegate for DC) and the `type`-value audit from quirk #7 |
+| `tests/brief-render.js` | **The race note must stay OUT of the collapsed card header, and the ⚠/✅ segmentation must be LOSSLESS.** 329 checks over all 995 notes on 41 pages: no legacy `.election-note`, the brief is the first child of `.election-detail`, every brief reproduces its note's own words exactly, markup is well-formed, "Show more" appears iff the brief is clamped, and no note contains a backtick or `${` (either would break the whole drawer, since notes are interpolated into template literals). Added Aug 12, 2026 after the note shipped in the header and dwarfed the candidate data; **verified to fail on the pre-fix markup** |
 | `tests/label-fit.js` | **The national map's `LABEL_ADJ` labels must clear their state borders.** Measures clearance (anchor → nearest boundary) against baked geometry and requires 9.66px = 8.76 glyph half-diagonal + 0.4 stroke + 0.5 simplification slack. Added July 24, 2026 after the FL/LA labels shipped clipping *twice* — both earlier passes hit-tested the anchor POINT, which is inside the state even when the box around it is not. HI carries a documented exempt floor (its island cannot do better) |
 | `tests/fixtures/state-label-rings.json` | Projected, simplified state outlines for the 42 inline-label states (48KB). Built by `tools/gen-label-fixture.js`; records the projection it came from so `label-fit.js` fails loudly instead of checking stale geometry |
 | `tests/lib.js` | Shared helpers: inline-script extraction, the d3 cut, DOM stubs, vm sandbox runner |
@@ -887,7 +940,37 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
    built once and never re-derived. **Every legacy page's map deserves the same audit nc.html just got** — sc.html and
    ga.html are the oldest and were built the same week under the same assumptions.
 
-**Queue status (as of Aug 18, 2026): every numbered item 1–10 is COMPLETE and the owner has added nothing new.**
+**Queue status (as of Aug 27, 2026): every numbered item 1–10 is COMPLETE and the owner has added nothing new.**
+Item 4 (voices) reads **0 missing / 1,225 candidates across 40 pages** at the end of the Aug 27 run — Arizona shipped with 53 candidates
+and Oklahoma with 38, both 0 gaps. The landing page was reviewed end-to-end AND **verified in a real browser this run**: 40 state paths
+render gold, exactly 2 (DC, FL) render in the marquee tier, 14 render as starter framework, the legend needed only its count (38 →
+**40 states**), and the footer already read August 2026. Its prose has been fully state-agnostic since the Aug 12 contribution-form change.
+The [Verify] total rose 2,730 → **3,083**: Oklahoma 160, Arizona 153, and Vermont 18 → 57 from three newly added statewide races.
+None of that is a regression — Oklahoma's is unusually high because **nothing is certified there until Sept 1** and the Election Board's
+certified candidate list was unreachable, and Arizona's because **the SoS's certified GENERAL-election candidate list is not posted at all**.
+✅ **THE TIME-SENSITIVE CALENDAR IS NOW EMPTY** — both passed-date cards were resolved with results: **SC's Aug 25 Senate runoff**
+(Darline Graham-Nordone beat Rep. Ralph Norman 52.45–47.55, and turnout ROSE between rounds, 334,881 → 368,723) and **GA-13's Aug 25
+special runoff** (Everton Blair Jr. beat Marcye Scott 53.9–46.1 for a stub term ending Jan 3, 2027, while **Jasmine Clark remains the
+separate nominee for the full term**). sc.html's placeholder "[Republican nominee — decided in the Aug 25 runoff]" card is now a real one.
+⚠ **FIFTH CONSECUTIVE RUN IN WHICH "READ THE PAGE BEFORE ACTING ON AN AGENT'S REPORT" WAS RIGHT.** An agent reported three
+"contradictions" on published pages and **all three were the agent being wrong, not the page**: it said oh.html's OH-1 still carded the
+withdrawn Libertarian John Hancock (the page has carried his replacement Nathan Weise since Aug 13, sourced to the Hamilton County BOE's
+certified list); it said oh.html had OH-4's Tracey Tackett as a Democrat (the page correctly cards her as an INDEPENDENT and Joshua
+Kolasinski as the Democrat); and it "corrected" sc.html's framing of the Nov 3 Senate race, which the page already had exactly right.
+All three agent claims traced to Ballotpedia, whose own page carries a "may not be complete" warning; all three page versions traced to
+primary sources. **A page built from a county board's certified PDF beats an aggregator every time.**
+✅ **VERMONT'S OWN BUILD NOTE PAID OFF.** vt.html had predicted the H. Brooke Paige withdrawal in writing and left an instruction to
+"add them after Aug 21." He withdrew from three of his four nominations on **Aug 19** and the Republican State Committee named replacements
+the same day, so the Auditor race now cards **Ivar Kronick** instead of Paige, and three statewide races the page could not previously
+carry — **Attorney General, Treasurer and Secretary of State** — were added with full voices. ⚠ **The spelling is IVAR**, confirmed
+by parsing the Vermont SoS's own qualified-candidate spreadsheet; **WCAX printed "Ivan" and is wrong.** ⚠ **DELIBERATELY NOT PUBLISHED:**
+a possible identity match between Kronick and a former Pittsfield, Massachusetts city councilor. It rests on a people-search listing and a
+now-offline personal site, no Vermont outlet has reported it, and it would be unfair if wrong.
+✅ **A THIRD LIVE FIX: nh.html carded Heath Howard**, who **suspended his NH-1 campaign on Aug 24 and endorsed Carleigh Beriont** —
+two weeks before the Sept 8 primary. His card is now Beriont's, with his exit and endorsement recorded in the race note, and the note flags
+that suspending is not withdrawing so his name is still expected on the ballot.
+
+Superseded: **Queue status (as of Aug 18, 2026): every numbered item 1–10 is COMPLETE and the owner has added nothing new.**
 Item 4 (voices) reads **0 missing / 1,126 candidates across 38 pages** at the end of the Aug 18 run — Kansas shipped with
 40 candidates and 0 gaps. The landing page was reviewed end-to-end and needed only the legend count (37 → **38 states**);
 its prose has been fully state-agnostic since the Aug 12 contribution-form change, the footer already read August 2026, and
@@ -996,33 +1079,44 @@ time-sensitive calendar, and the incumbent-status sweep.
 3b. **East-coast full buildout — RESUMED by owner July 14, 2026** (was paused July 6 after 7 states:
    NC SC GA VA MD DE NJ; statewide + House; county LOCAL_RACES still to do for all).
    **Built bloc = 35 as of Aug 13, 2026** (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA WV OH KY IN IA IL MS AR NE NM CO
-   OR NV SD ID MT PA TN HI AL **WI**). **Built bloc = 38 as of Aug 18, 2026** (add **MN ND KS**).
-   ### ➤ NEXT BUILDS — gate-checked Aug 18, 2026; the full scoping is banked in
-   ### `tools/banked/ks-map-and-next-state-gates-2026-08-18.md`. Do NOT re-scope these.
-   1. **ARIZONA — recommended next.** Map UNCHANGED (AIRC v14.0, Jan 2022), so Census CD119 is CURRENT; only **15 counties**,
-      the cheapest map left. Primary July 21, **statewide canvass Aug 6 — results are OFFICIAL**, no runoffs, all nominees known.
-      NO U.S. Senate race (first cycle since 2014). Governor NOT open (Hobbs vs. Biggs). New **Lieutenant Governor** office runs
-      on the gubernatorial ticket. ⚠ **The one blocker is the PROPOSITIONS, still being litigated** — Props 143/145 struck down in
-      late July, Prop 212's language rejected Aug 14, one initiative unresolved; Maricopa's print deadline was Aug 20.
-      ➤ **Build the offices, hold the ballot-measure race until on/after ~Aug 21.**
-   2. **OKLAHOMA — build AFTER Aug 25.** Map UNCHANGED (HB 1002, 2021), CD119 CURRENT, 77 counties / 5 districts, no litigation.
-      Very rich ballot: **OPEN Class 2 U.S. Senate** (Mullin resigned March 2026 for DHS; caretaker Armstrong not running) and
-      **OPEN Governor** (Stitt term-limited), plus seven more open statewide offices. ⚠ **Five statewide nominees do not exist
-      until the Aug 25 runoff**, including the Democratic Senate nominee — a build before then is a week of placeholders.
-      ⚠ The primary was **June 16** (one Wikipedia index page renders June 24 / Aug 4 — it is wrong).
-   3. **FLORIDA — unlocked tonight.** Its primary was **Aug 18, 2026**. Map is **HB 1D** (signed May 4, 2026 post-*Callais*);
-      a preliminary injunction was DENIED in late May, so HB 1D governs 2026. Apply lesson #19.
-   4. **UTAH — last, and it needs real engineering.** ⚠ **Its map CHANGED** (Judge Gibson adopted Plaintiffs' Map 1, Nov 2025;
-      litigation settled Feb 2026), so **CD119 IS STALE FOR UTAH** and county-part populations need a GIS/block join from the
-      UGRC "2026 to 2032" layer. Thin ballot: no Senate, no governor, no statewide executives; 4 seats + 2 amendments.
-   ⚠ **MICHIGAN is still gated** — not certified as of Aug 18 (BSC deadline Aug 24). ✅ But **MI-08 is RESOLVED: Thomas Smith
-      ACCEPTED the nomination** despite suspending his campaign July 16; no party replacement. ⚠ Beware a decoy search result —
-      "Michigan's elections panel certifies results" on Yahoo is dated **Aug 19, 2022**. michigan.gov 403s on everything.
-   ⭐ **A REUSABLE DISCOVERY:** Census **CD119 summary level 510** (`api.census.gov/data/2020/dec/cd119`) returns county-part
-      **populations**, which the plain CD119 relationship file (land area only) cannot. ⚠ It needs an API key — an unkeyed request
-      302s to `missing_key.html` — and it is only valid where the map did NOT change.
-   **DC still needs the special no-county page model.** ⚠ **Only DC and FL remain in the lighter "marquee" tier.** **FL unlocks after its
-   Aug 18, 2026 primary — that is the next build, and its map ALSO changed post-*Callais*, so apply lesson #19.**
+   OR NV SD ID MT PA TN HI AL **WI**). **Built bloc = 38 as of Aug 18, 2026** (add **MN ND KS**). **Built bloc = 40 as of Aug 27, 2026** (add **OK AZ**).
+   ### ➤ NEXT BUILDS — re-gated Aug 27, 2026. **ARIZONA AND OKLAHOMA ARE NOW BUILT** (40th and 39th states);
+   ### the original scoping is banked in `tools/banked/ks-map-and-next-state-gates-2026-08-18.md`, and the two new
+   ### derivations in `tools/banked/az-map-2026-derivation.md` and `tools/banked/ok-map-2026-derivation.md`.
+   ### **NINE STATES AND DC REMAIN: AK CA LA MI MO TX UT WA WY, plus DC and the FL upgrade.**
+   1. **FLORIDA — recommended next, and the last state in the "marquee" tier besides DC.** Its primary was **Aug 18, 2026**, so the
+      gate is open and results should now be certified or close to it. Map is **HB 1D**, signed May 4, 2026 after a special session
+      following *Louisiana v. Callais*; a preliminary injunction was DENIED in late May, so **HB 1D governs 2026** — apply lesson #19,
+      and note the Fair Districts merits case continues. ⚠ A reported "Fla. Supreme Court declined 6-1 on June 10" appeared only in a
+      search-engine summary with no fetchable source — **treat as unverified**. 67 counties, 28 districts — **the largest build left
+      after Texas and California**, and a dense-metro state, so it needs the `ds` model from the start (lesson #12).
+   2. **MICHIGAN — re-check the certification gate FIRST.** As of Aug 27 the Board of State Canvassers' **Aug 24 agenda carried
+      "Canvass and certification of the August 4, 2026 primary election" as Item 2**, and the board met for about seven hours that day,
+      but **no source confirms the certification vote actually passed** — Michigan Advance's Aug 24 report covers only a 2-2 deadlock
+      on an unrelated petition, no minutes are posted, and `michigan.gov` 403s everything. ⚠ **DECOY, CONFIRMED AGAIN:** the Yahoo/AP
+      piece "Michigan's elections panel certifies results of August primary election" is dated **Aug 19, 2022** — it names canvasser
+      Jeannette Bradshaw, who is not on the current board. ✅ **MI-08 IS RESOLVED: Thomas Smith ACCEPTED the nomination** despite
+      suspending his campaign July 16, and publicly re-committed; no replacement. Senate: **Abdul El-Sayed** beat Haley Stevens and
+      faces Mike Rogers. Map unchanged from 2024.
+   3. **UTAH — it needs real engineering, and that has not changed.** ⚠ **Its map CHANGED** (Judge Gibson adopted Plaintiffs' Map 1,
+      Nov 2025; litigation settled Feb 2026), so **CD119 IS STALE FOR UTAH** and county-part populations need a GIS/block join from the
+      UGRC "Utah US Congress Districts 2026 to 2032" layer. Thin ballot: no Senate, no governor, no statewide executives; 4 seats and
+      2 amendments. ✅ The HB 267 veto referendum is OFF — the Legislature repealed HB 267 in Dec 2025.
+   4. **MISSOURI — NEWLY GATED, AND THIS IS A NEW FINDING (Aug 27).** ⚠ **Missouri has a NEW Republican congressional map for
+      November.** Cole County Circuit Judge Daniel Green ruled about Aug 19-20, 2026 that the state's referendum provisions do not reach
+      congressional redistricting, rejecting the bid to suspend the map; it targets Rep. Emanuel Cleaver's 5th District and is likely
+      headed to the Missouri Supreme Court. **Do NOT use CD119 for Missouri**, and re-check the litigation before building.
+   5. **ALASKA — gated on a genuinely strange problem.** ⚠ The Aug 18, 2026 top-four nonpartisan primary advanced **Sen. Dan Sullivan
+      (R), a SECOND candidate named Dan J. Sullivan (R), and Mary Peltola (D)**. State and federal prosecutors are investigating and a
+      **grand jury has issued subpoenas** to witnesses tied to Dan J. Sullivan's campaign. Do not build until the ballot is settled.
+   6. **TX, CA, LA, WA, WY** — unscoped. TX and CA are the two largest builds on the board and both have new 2026 maps (they are on the
+      ten-state redraw list), so both need a fresh currency determination, not CD119.
+   ⭐ **THE REUSABLE ACCESS DISCOVERIES so far:** Census **CD119 summary level 510** (`api.census.gov/data/2020/dec/cd119`) returns
+      county-part **populations** — but it is **fully key-gated** (an unkeyed request silently 302s to an HTML "Missing Key" page, so it
+      looks like success), and it is only valid where the map did NOT change. **MCDC Geocorr 2022 fully replaces it and needs no key** —
+      but its state parameter is `Az04` / `Ok40` style (Titlecase postal + FIPS), NOT the bare FIPS, and empty ring params must be passed
+      as `0` or a SAS macro throws. Both derivations banked this run document the exact working URLs.
+   **DC still needs the special no-county page model.** ⚠ **Only DC and FL remain in the lighter "marquee" tier**, and FL's gate is now OPEN — see item 1 above.
    **DC still needs the special no-county page model.** After FL the remaining unbuilt states are the western and
    midwestern block (TX CA AZ WA MN MI MO LA OK KS UT WY AK ND etc.).
    **MINNESOTA IS THE NEXT BUILD AND IS MOSTLY DONE — see the banked section below.** Its county table and all eight

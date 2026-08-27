@@ -1,0 +1,2062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Oklahoma Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every OK election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #okmap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  /* ---- Race brief (the context note) ----
+     Lives INSIDE the expanded panel only. A collapsed card shows the pill, date, office
+     and candidate count and nothing else, so a county's ballot reads as a clean list.
+     Owner-reported twice on Aug 12, 2026: as a header element these notes — 2,187
+     characters at the extreme, and 30% of them opening with a ⚠ flag — buried the
+     candidate data the page exists to show. Set in roman, not italic: extended italic
+     body copy at 12.5px is the thing that read as 'terrible'. Long briefs clamp to about
+     four lines behind a Show more toggle so they never crowd out the cards below. */
+  .election-brief {
+    margin: 2px 0 18px;
+    padding: 12px 16px 13px 17px;
+    border-left: 2px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    background: linear-gradient(90deg, rgba(232,217,184,.30), rgba(232,217,184,0) 94%);
+  }
+  .brief-label {
+    font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); font-weight: 700; margin-bottom: 7px;
+  }
+  .brief-body { font-size: 12.5px; line-height: 1.62; color: var(--ink-soft); }
+  .brief-body p + p { margin-top: 7px; }
+  .brief-lead { color: var(--ink); }
+  /* Flag glyphs hang in the margin so the text block keeps a straight left edge. */
+  .brief-flag { position: relative; padding-left: 21px; }
+  .brief-mark { position: absolute; left: 0; top: 0; font-size: 11px; color: var(--gold-deep); }
+  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; }
+  .brief-more {
+    margin-top: 9px; padding: 0;
+    background: none; border: none; cursor: pointer;
+    font-family: var(--sans); font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-deep);
+    border-bottom: 1px solid var(--gold-soft);
+  }
+  .brief-more:hover { border-bottom-color: var(--gold); }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">OK</div>
+      <div class="brand-text">
+        <span class="brand-name">Oklahoma Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Oklahoma <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 77 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">77</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>5</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>12</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Oklahoma…</div>
+      <svg id="okmap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>OK Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">July 22, 2026</span><br>
+      Sources: Oklahoma State Election Board (results.okelections.gov election-night reporting; official 2026 candidate filing book), U.S. Census Bureau, MCDC Geocorr 2022, FEC, Oklahoma Ethics Commission, NonDoc, Oklahoma Voice, Tulsa World, KOSU, News9/NewsOn6, Public Radio Tulsa, Free Press OKC, Oklahoma Farm Report, The Frontier, Bolts</div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every OK county + its primary US House district(s)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- Oklahoma counties -> U.S. House district (2020 census FIPS "40" prefix) -----
+// WHICH MAP: the 2021 plan HB 1002, the "Oklahoma Congressional Redistricting Act of 2021"
+// (House 75-19 Nov 17, Senate 36-10 Nov 19, signed by Gov. Stitt Nov 22, 2021) — UNCHANGED
+// for 2026. Oklahoma neither redrew nor was ordered to: the American Redistricting Project
+// records ZERO active legal cases in the state, the Senate's own redistricting news page has
+// nothing newer than Nov 17, 2021, and the 2026 regular session adjourned sine die on
+// May 14-15, 2026 with no redistricting measure and no special session after it.
+// ⚠ Ten states DO have new congressional maps for 2026 — AL, CA, FL, LA, MO, NC, OH, TN, TX
+// and UT — a wave that began in 2025 and that Louisiana v. Callais then widened. Oklahoma is
+// in neither half of it.
+// THE TIMING CLINCHER: Oklahoma's candidate filing deadline was Apr 3, 2026, BEFORE Callais
+// was decided (Apr 29, 2026), and the June 16 primary and Aug 25 runoff have both already
+// been conducted on these lines. The 2026 cycle is locked.
+//
+// CURRENCY PROVED, 77 of 77 counties, ZERO disagreements. County-level returns for all eight
+// CONTESTED U.S. House primaries of June 16, 2026 were pulled from the Oklahoma State
+// Election Board's own results API and each county's observed set of contests compared with
+// the set derived here: 77 exact matches, 0 contradictions, 0 subsets.
+// ⚠ Honest limitation: two of the ten district primaries were UNCONTESTED and so appear in
+// no returns (CD5 Republican, CD1 Democratic). Coverage is still complete — CD1 was observed
+// through its 11-candidate Republican primary and CD5 through its Democratic one, and CD2,
+// CD3 and CD4 were observed on BOTH party ballots, giving duplicate confirmation.
+//
+// TRANSCRIPTION PROVED separately (the two are independent questions — lesson #13): MCDC
+// Geocorr 2022 county-to-CD119 population weights put every district within one person of
+// the 791,870.6 ideal — a total range of ONE PERSON — reconciling exactly to Oklahoma's
+// 2020 population of 3,959,353.
+//
+// ⚠ TULSA COUNTY IS NOT SPLIT. Our own build brief said it was; it is wrong. Tulsa lies
+// wholly within CD1, and the returns prove it — Tulsa appeared in CD1 and only CD1 across
+// all eight contested primaries. There are SIX split counties, not two.
+//
+// ⚠ TWO COUNTIES FLIP ON THE AREA-VS-POPULATION TEST, so land area would have mis-assigned
+// both: CREEK is majority CD3 by land area (2,130 km2 to 330 km2) but majority CD1 by
+// PEOPLE (40,318 to 31,436), and WAGONER is majority CD1 by area only narrowly (891 km2 to
+// 564 km2) but 80/20 CD1 by population. The June 16 returns corroborate every split call.
+//
+// ✅ EVERY DISTRICT IS THE PLURALITY OF AT LEAST ONE COUNTY, so nothing is hidden and `ds`
+// is carried only so split-county voters see both races. CD1 is the thin one — just three
+// counties (Creek, Tulsa, Wagoner), a compact Tulsa-metro seat.
+// ⚠ Census spells it "Le Flore" (two words) and "Roger Mills"; all 77 names were asserted
+// equal to the Census values and all 77 matched.
+const COUNTIES = {
+  "40001": { n: "Adair", d: 2 },
+  "40003": { n: "Alfalfa", d: 3 },
+  "40005": { n: "Atoka", d: 2 },
+  "40007": { n: "Beaver", d: 3 },
+  "40009": { n: "Beckham", d: 3 },
+  "40011": { n: "Blaine", d: 3 },
+  "40013": { n: "Bryan", d: 2 },
+  "40015": { n: "Caddo", d: 3 },
+  "40017": { n: "Canadian", d: 5, ds: [3, 5] },
+  "40019": { n: "Carter", d: 4 },
+  "40021": { n: "Cherokee", d: 2 },
+  "40023": { n: "Choctaw", d: 2 },
+  "40025": { n: "Cimarron", d: 3 },
+  "40027": { n: "Cleveland", d: 4 },
+  "40029": { n: "Coal", d: 2 },
+  "40031": { n: "Comanche", d: 4 },
+  "40033": { n: "Cotton", d: 4 },
+  "40035": { n: "Craig", d: 2 },
+  "40037": { n: "Creek", d: 1, ds: [1, 3] },
+  "40039": { n: "Custer", d: 3 },
+  "40041": { n: "Delaware", d: 2 },
+  "40043": { n: "Dewey", d: 3 },
+  "40045": { n: "Ellis", d: 3 },
+  "40047": { n: "Garfield", d: 3 },
+  "40049": { n: "Garvin", d: 4 },
+  "40051": { n: "Grady", d: 4 },
+  "40053": { n: "Grant", d: 3 },
+  "40055": { n: "Greer", d: 3 },
+  "40057": { n: "Harmon", d: 3 },
+  "40059": { n: "Harper", d: 3 },
+  "40061": { n: "Haskell", d: 2 },
+  "40063": { n: "Hughes", d: 2 },
+  "40065": { n: "Jackson", d: 3 },
+  "40067": { n: "Jefferson", d: 4 },
+  "40069": { n: "Johnston", d: 2 },
+  "40071": { n: "Kay", d: 3 },
+  "40073": { n: "Kingfisher", d: 3 },
+  "40075": { n: "Kiowa", d: 3 },
+  "40077": { n: "Latimer", d: 2 },
+  "40079": { n: "Le Flore", d: 2 },
+  "40081": { n: "Lincoln", d: 5 },
+  "40083": { n: "Logan", d: 5, ds: [3, 5] },
+  "40085": { n: "Love", d: 4 },
+  "40087": { n: "McClain", d: 4 },
+  "40089": { n: "McCurtain", d: 2 },
+  "40091": { n: "McIntosh", d: 2 },
+  "40093": { n: "Major", d: 3 },
+  "40095": { n: "Marshall", d: 2 },
+  "40097": { n: "Mayes", d: 2 },
+  "40099": { n: "Murray", d: 4 },
+  "40101": { n: "Muskogee", d: 2 },
+  "40103": { n: "Noble", d: 3 },
+  "40105": { n: "Nowata", d: 2 },
+  "40107": { n: "Okfuskee", d: 2 },
+  "40109": { n: "Oklahoma", d: 5, ds: [3, 4, 5] },
+  "40111": { n: "Okmulgee", d: 2 },
+  "40113": { n: "Osage", d: 3 },
+  "40115": { n: "Ottawa", d: 2 },
+  "40117": { n: "Pawnee", d: 3 },
+  "40119": { n: "Payne", d: 3 },
+  "40121": { n: "Pittsburg", d: 2 },
+  "40123": { n: "Pontotoc", d: 4 },
+  "40125": { n: "Pottawatomie", d: 5 },
+  "40127": { n: "Pushmataha", d: 2 },
+  "40129": { n: "Roger Mills", d: 3 },
+  "40131": { n: "Rogers", d: 2, ds: [1, 2] },
+  "40133": { n: "Seminole", d: 5 },
+  "40135": { n: "Sequoyah", d: 2 },
+  "40137": { n: "Stephens", d: 4 },
+  "40139": { n: "Texas", d: 3 },
+  "40141": { n: "Tillman", d: 4 },
+  "40143": { n: "Tulsa", d: 1 },
+  "40145": { n: "Wagoner", d: 1, ds: [1, 2] },
+  "40147": { n: "Washington", d: 2 },
+  "40149": { n: "Washita", d: 3 },
+  "40151": { n: "Woods", d: 3 },
+  "40153": { n: "Woodward", d: 3 }
+};
+
+// ----- Statewide races every Oklahoma county sees -----
+// Sources: Oklahoma State Election Board — its own results API, read directly on Aug 27, 2026
+// (June 16 primary and Aug 25 runoff, all 1,984 precincts, 100% reporting) and its official 2026
+// candidate filing book; FEC (federal); Oklahoma Ethics Commission filings via KOKH; NonDoc;
+// Oklahoma Voice; News9/NewsOn6; Oklahoma Farm Report; NBC News; Bolts; Ballotpedia News.
+//
+// ⚠⚠ NOTHING IS CERTIFIED YET. County boards certify no earlier than 5 p.m. Friday Aug 28, and
+// state and federal results are certified TUESDAY SEPT 1, 2026. Until then every figure is
+// "subject to contest and recount" by the Election Board's own language. Every Aug 25 and June 16
+// number on this page therefore carries that marker. Re-pull after Sept 1.
+//
+// ⚠ FIVE PREMISES IN OUR OWN BUILD BRIEF WERE WRONG AND ARE CORRECTED HERE: the Auditor &
+// Inspector race is NOT on the November ballot (Melissa Capps won by default at the April filing
+// deadline, sole filer); the Treasurer's seat was NOT open (incumbent Todd Russ ran and LOST his
+// primary); Dustin Rowe, not M. John Kane IV, has been Chief Justice since Jan 1, 2025; there are
+// TWO state questions in November (SQ 845 AND SQ 847), not one; and SIX jurists face retention,
+// not two.
+//
+// ⚠ EDITORIAL LINE ON MINOR-PARTY AND INDEPENDENT CANDIDATES, following the Minnesota precedent:
+// the Election Board's certified candidate list could not be reached, so several independents are
+// known only from a News9 general-election ballot preview. Those with no verifiable campaign
+// presence of their own are NAMED IN THE RACE NOTE but not carded; those with a verifiable role
+// are carded with a [Verify] on certification. Nobody is invented and nobody real is hidden.
+const STATEWIDE = [
+  // ─────────────────────────── UPCOMING ───────────────────────────
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · Statewide", office: "U.S. Senate — Oklahoma (OPEN SEAT)",
+    note: "AN OPEN SEAT CREATED MID-TERM. Markwayne Mullin resigned in March 2026 to become Secretary of Homeland Security; Gov. Stitt appointed Alan Armstrong, the former CEO of Williams Companies, on Mar 24, 2026, and Armstrong is BARRED BY STATE LAW from running for the seat he holds. ⚠ THE DEMOCRATIC NOMINEE IS THE STORY OF THE CYCLE: N'Kiyla Jasmine Thomas, a 31-year-old nurse and citizen of the Chickasaw Nation, won the Aug 25 runoff 61.19% to 38.81% after spending roughly $57,000 against Jim Priest's $315,000, running largely on social media — and she is the first openly democratic-socialist Senate nominee in Oklahoma history. ⚠ THE STRUCTURAL GAP IS ENORMOUS: she reported $456 cash on hand on Aug 5 against Hern's $2.6 million, and no non-incumbent Democrat has won an Oklahoma Senate race since 1978. ⚠ Three more candidates appear in a News9 general-election preview — Sevier White (L), Ron Meinhardt (I) and Curtis Stinnett (I) — but their ballot certification could not be confirmed against the Election Board's own list and no campaign presence could be located for any of them, so they are named here rather than carded [Verify]. ⚠ All figures are unofficial until the Sept 1, 2026 certification.",
+    candidates: [
+      { name: "Kevin Hern", party: "R", winner: false,
+        positions: [
+          "Advance President Trump's agenda",
+          "Secure the southern border and deport people in the country illegally",
+          "A balanced-budget amendment and cuts to federal spending"
+        ],
+        differentiators: [
+          "U.S. Representative for OK-1 since 2018; chairman of the House Republican Policy Committee",
+          "Built and owned a large McDonald's franchise business before Congress",
+          "Won the June 16 primary outright with 69.76% (267,222 votes), avoiding a runoff [Verify — unofficial pending the Sept 1 certification]",
+          "$2.6 million cash on hand as of June 30, 2026, on $8.28 million raised; endorsed by President Trump (Mar 13, 2026) and Club for Growth"
+        ],
+        supporters: [
+          "A business owner turned legislator with leadership experience and the organisation to hold the seat comfortably",
+          "Won his primary outright against four opponents, so the party consolidated early and cheaply",
+          "Trump's endorsement reflects alignment with a state the President carried by roughly 34 points"
+        ],
+        opponents: [
+          "A wealthy sitting congressman moving up the ladder, with Club for Growth and leadership ties that make him the establishment pick [Verify — structural argument]",
+          "Giving up a safe House seat mid-career leaves OK-1 open and cost his party a contested primary there [Verify — structural argument]",
+          "⚠ No sourced general-election attack line specific to this race could be located [Verify — an absence of located records]"
+        ] },
+      { name: "N'Kiyla Jasmine Thomas", party: "D", winner: false,
+        positions: [
+          "Fund rural hospitals, and hospitals generally",
+          "Staff hospitals with more nurses and doctors",
+          "An explicitly anti-Trump message; she self-identifies as a democratic socialist"
+        ],
+        differentiators: [
+          "A 31-year-old working nurse from Ardmore and a citizen of the Chickasaw Nation; a first-time candidate",
+          "Won the Aug 25 runoff 61.19% (79,201) to 38.81%, after leading the June 16 primary with 45.2% in a five-way field [Verify — unofficial pending the Sept 1 certification]",
+          "⚠ Beat an opponent who outspent her roughly five to one, running her campaign largely on social media",
+          "⚠ $456 cash on hand as of Aug 5, 2026 [Verify — FEC figure reported by NBC News]"
+        ],
+        supporters: [
+          "A working nurse with direct experience of rural hospital collapse beat a far better-funded opponent twice, which is real evidence of grassroots energy",
+          "Health care is the issue she practises for a living, in a state with among the worst rural-hospital finances in the country",
+          "She won her runoff by more than 22 points, a decisive mandate from her own party's voters"
+        ],
+        opponents: [
+          "Self-described democratic socialism is a difficult fit for a state President Trump carried by roughly 34 points [Verify — structural argument]",
+          "$456 on hand against $2.6 million leaves no capacity to run a statewide campaign [Verify]",
+          "No non-incumbent Democrat has won an Oklahoma Senate race since 1978 (Inside Elections)"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Governor of Oklahoma (OPEN SEAT)",
+    note: "OPEN — Kevin Stitt is term-limited. ⚠ THE CLOSEST STATEWIDE RESULT OF THE CYCLE ANYWHERE ON THIS SITE: Mike Mazzei beat sitting Attorney General Gentner Drummond in the Aug 25 Republican runoff by 2,047 VOTES out of 371,309 — 50.28% to 49.72%. Drummond, who had led the June 16 primary, conceded on election night and no recount has been reported. ⚠ THE MONEY IS THE OTHER STORY, AND IT CUTS BOTH WAYS: Mazzei has loaned his own campaign $11 MILLION against $1.4 million in individual donations, with only about 0.43% of his individual dollars arriving in gifts under $50. Cyndi Munson is the only major candidate who has not self-funded — roughly 3,400 gifts of $50 or less, about 14% of her individual-contribution dollars — but she spent about $304,000 in the same window Mazzei spent $1.4 million. ⚠ Three independents (Robert Brooks Sr., Orlando Lynn Bush and Jerry Griffin) appear in a News9 ballot preview but could not be confirmed against the Election Board's own certified list and have no locatable campaign presence, so they are named here rather than carded [Verify]. ⚠ All figures are unofficial until Sept 1, 2026.",
+    candidates: [
+      { name: "Mike Mazzei", party: "R", winner: false,
+        positions: [
+          "Eliminate property tax for seniors and veterans — he says no Oklahoman should be taxed out of their home",
+          "Close the loopholes that let foreign adversaries acquire Oklahoma land",
+          "Education That Works — reading proficiency, accountability and stronger curriculum; since the runoff he has added making Oklahoma a no-income-tax state"
+        ],
+        differentiators: [
+          "State Senator 2004-2016 and chairman of its tax-writing committee; later Gov. Stitt's Secretary of Budget; a financial-services businessman",
+          "Won the Aug 25 runoff by 2,047 votes, 50.28% to 49.72%, after trailing Drummond by about 1,100 votes in the June primary [Verify — unofficial pending Sept 1]",
+          "⚠ Has loaned his own campaign $11 million, against $1.4 million in individual donations",
+          "Endorsed by President Trump, Gov. Stitt, Rep. Josh Brecheen and the Oklahoma Republican Party"
+        ],
+        supporters: [
+          "Budget-office and Senate tax-committee experience make his tax-elimination plan more credible than a first-time candidate's would be",
+          "Trump's endorsement carried him past a better-known and better-funded sitting attorney general",
+          "His own money means he can fund a general-election campaign without depending on donors [Verify — structural argument]"
+        ],
+        opponents: [
+          "Munson's campaign calls his the most extreme positions in the race and says his plan leaves everyday Oklahomans behind, citing his opposition to increased public-school funding and support for public dollars for private schools",
+          "⚠ An essentially self-financed campaign — barely 0.43% of his individual-donor dollars came in gifts under $50, which critics read as a lack of grassroots support",
+          "He won his own party's nomination by six-tenths of a point, so a majority of Republicans very nearly chose someone else [Verify — structural argument]"
+        ] },
+      { name: "Cyndi Munson", party: "D", winner: false,
+        positions: [
+          "Fully fund public schools to the regional average, raise teacher and support-staff pay, and repeal the voucher programs",
+          "Protect Medicaid, expand rural health access, and put the abortion ban to a vote of the people",
+          "Targeted tax relief for working and middle-income Oklahomans through expanded credits rather than income-tax cuts"
+        ],
+        differentiators: [
+          "State Representative since 2015 and House Minority Leader since late 2022",
+          "The first Asian American woman elected to the Oklahoma Legislature",
+          "Won the June 16 primary outright with 74.93% (129,225 votes), avoiding a runoff [Verify — unofficial pending Sept 1]",
+          "The only major candidate in the race who has not self-funded — about 3,400 gifts of $50 or less, roughly 14% of her individual-contribution dollars"
+        ],
+        supporters: [
+          "A small-dollar donor base and a ground-game-first campaign, against an opponent who has loaned himself $11 million",
+          "She was effectively unopposed from June onward while Republicans spent more than $3 million attacking each other",
+          "A nominee who won his own primary by six-tenths of a point is weaker than the state's partisan lean suggests"
+        ],
+        opponents: [
+          "Oklahoma has not elected a Democratic governor since 2006, and President Trump carried the state by roughly 34 points [Verify — structural argument]",
+          "Her school-funding and abortion-referendum agenda is a difficult sell in this electorate [Verify — structural argument]",
+          "She was outspent roughly four to one in the June-to-August reporting window"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Lieutenant Governor of Oklahoma (OPEN SEAT)",
+    note: "OPEN — Matt Pinnell is term-limited. Unlike Kansas or Hawaii, Oklahoma elects its Lieutenant Governor SEPARATELY from the Governor, so the two offices can be split between parties. T.W. Shannon won the six-way Republican primary outright with 53.76%, avoiding a runoff; Kelly Forbes was unopposed for the Democratic nomination. ⚠ This is the thinnest-documented statewide race on the page: no sourced 2026 platform statement could be located for Forbes, and Shannon's is drawn from his campaign site's own framing [Verify]. ⚠ Figures are unofficial until Sept 1, 2026.",
+    candidates: [
+      { name: "T.W. Shannon", party: "R", winner: false,
+        positions: [
+          "Opposing what his campaign site calls liberal bureaucrats, woke mandates and radical policies",
+          "⚠ No further sourced 2026 policy detail could be located [Verify]",
+          ""
+        ],
+        differentiators: [
+          "Speaker of the Oklahoma House 2013-2014 — the first African American and the first Chickasaw citizen to hold that office",
+          "Won the six-way Republican primary outright with 53.76% (209,377 votes) [Verify — unofficial pending Sept 1]",
+          "Endorsed by President Trump"
+        ],
+        supporters: [
+          "A former Speaker brings more statewide name recognition and legislative experience than the office usually attracts",
+          "Winning a six-candidate primary outright, with the runner-up at 13%, is an unusually clean mandate"
+        ],
+        opponents: [
+          "His published platform is framed almost entirely in opposition rather than in specific proposals [Verify]",
+          "He has lost a statewide race before — the 2014 U.S. Senate primary [Verify — structural argument]"
+        ] },
+      { name: "Kelly Forbes", party: "D", winner: false,
+        positions: [
+          "⚠ No sourced 2026 platform statement could be located [Verify]",
+          "",
+          ""
+        ],
+        differentiators: [
+          "A consultant and educator",
+          "Unopposed for the Democratic nomination",
+          "⚠ No campaign-finance figure could be located [Verify]"
+        ],
+        supporters: [
+          "Contests an office that would otherwise go to the Republican nominee without a general-election opponent [Verify — structural argument]",
+          "⚠ No further argument for her could be sourced, because no platform of her own could be found [Verify — an absence of located records, not a judgement]"
+        ],
+        opponents: [
+          "No locatable 2026 platform for voters to evaluate [Verify — an absence of located records]",
+          "No reported fundraising or campaign organisation [Verify]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Attorney General of Oklahoma (OPEN SEAT)",
+    note: "OPEN — Gentner Drummond gave up the office to run for governor, and lost that runoff by 2,047 votes. ✅ THE CLEAREST EXPERIENCE CONTRAST ON THE BALLOT: Jon Echols spent eight of his twelve House years as MAJORITY FLOOR LEADER, the chamber's chief legislative tactician, while Nick Coffey spent seven years as an ASSISTANT U.S. ATTORNEY in Oklahoma City prosecuting federal cases. It is a legislator-versus-prosecutor race, and each side argues its own background is the right preparation. Echols won the June 16 primary 55.00% to 45.00%; Coffey was unopposed. ⚠ Figures are unofficial until Sept 1, 2026.",
+    candidates: [
+      { name: "Jon Echols", party: "R", winner: false,
+        positions: [
+          "Target illicit-drug operations",
+          "Hold government officials accountable",
+          "Protect taxpayers"
+        ],
+        differentiators: [
+          "Attorney and small-business owner; twelve years in the Oklahoma House, eight of them as Majority Floor Leader",
+          "Won the Republican primary 55.00% (207,832) to 45.00% over Jeff Starling [Verify — unofficial pending Sept 1]",
+          "⚠ No cash-on-hand figure could be located — Oklahoma Ethics Commission filings were not retrievable [Verify]"
+        ],
+        supporters: [
+          "Eight years running the House floor means he knows the statutes the office enforces from the inside",
+          "A contested primary win of ten points against a well-funded opponent"
+        ],
+        opponents: [
+          "A majority floor leader is a political actor, and critics say the attorney general's job is meant to be non-political [Verify — structural argument]",
+          "No courtroom prosecution record comparable to his opponent's [Verify — structural argument]"
+        ] },
+      { name: "Nick Coffey", party: "D", winner: false,
+        positions: [
+          "Consumer protection",
+          "Keeping politics out of prosecutions",
+          "Breaking up prison-based drug networks, and backing local law enforcement with specialised expertise"
+        ],
+        differentiators: [
+          "34 years old; seven years as an Oklahoma City-based Assistant U.S. Attorney",
+          "Unopposed for the Democratic nomination",
+          "Says he ran because of what he calls corruption running rampant through the state's elected offices",
+          "⚠ No cash-on-hand figure could be located [Verify]"
+        ],
+        supporters: [
+          "A career federal prosecutor is the most directly relevant resume either party has fielded for this office",
+          "His independence-from-politics message contrasts sharply with an opponent who ran the House floor for eight years"
+        ],
+        opponents: [
+          "No statewide administrative experience — the office runs a large agency, not just a docket [Verify — structural argument]",
+          "No Democrat has won a statewide Oklahoma office since 2006 [Verify — structural argument]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "State Treasurer of Oklahoma",
+    note: "⚠ THE INCUMBENT IS ALREADY GONE — AND HE LOST TO ANOTHER STATEWIDE OFFICEHOLDER. Todd Russ was beaten in the June 16 Republican primary by State Auditor Cindy Byrd, 61.65% to 38.35%, one of only two sitting officeholders anywhere on this ballot to be denied renomination. ⚠ NO DEMOCRAT FILED for this office, so Byrd's only general-election opponent is Libertarian Kiefer Perry. ⚠ Perry appears in a News9 ballot preview and holds a verifiable party role, but his certification could not be confirmed against the Election Board's own list [Verify]. ⚠ Figures are unofficial until Sept 1, 2026.",
+    candidates: [
+      { name: "Cindy Byrd", party: "R", winner: false,
+        positions: [
+          "⚠ No sourced 2026 campaign platform statement could be located; her record is in the auditor's office rather than in a published platform [Verify]",
+          "",
+          ""
+        ],
+        differentiators: [
+          "State Auditor and Inspector since 2018, term-limited out of that office and running for this one",
+          "Beat the sitting Treasurer 61.65% (232,773) to 38.35% — a rare defeat of an incumbent statewide officeholder [Verify — unofficial pending Sept 1]",
+          "⚠ No cash-on-hand figure could be located [Verify]"
+        ],
+        supporters: [
+          "Eight years auditing state agencies is unusually direct preparation for managing state funds",
+          "A twenty-three-point win over a sitting Treasurer is a decisive verdict from her own party's voters"
+        ],
+        opponents: [
+          "Moving from auditing the books to keeping them removes the independent check she herself provided [Verify — structural argument]",
+          "No published 2026 platform for voters to hold her to [Verify]"
+        ] },
+      { name: "Kiefer Perry", party: "L", winner: false,
+        positions: [
+          "⚠ No sourced 2026 platform statement could be located; he describes himself as a Classical Libertarian [Verify]",
+          "",
+          ""
+        ],
+        differentiators: [
+          "Vice-chair of the Oklahoma Libertarian Party, from Broken Arrow",
+          "⚠ His ballot certification could NOT be confirmed against the Election Board's own certified list [Verify] — he is named in a News9 general-election preview",
+          "No campaign-finance figure could be located [Verify]"
+        ],
+        supporters: [
+          "With no Democrat on the ballot, he is the ONLY alternative Oklahoma voters have in this race",
+          "A party officer has at least an organisation behind him, unlike most minor-party candidates on this page [Verify — structural argument]"
+        ],
+        opponents: [
+          "No locatable platform and no reported fundraising [Verify]",
+          "No Libertarian has ever won statewide office in Oklahoma [Verify — structural argument]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Superintendent of Public Instruction (OPEN SEAT)",
+    note: "OPEN, AND THE OFFICE HAS ALREADY TURNED OVER ONCE THIS TERM. Ryan Walters departed mid-term; Gov. Stitt appointed Lindel Fields, who confirmed he will NOT seek election. ✅ BOTH NOMINEES ARE CAREER EDUCATORS, WHICH IS ITSELF THE STORY — after a term defined by culture-war fights, the November choice is between a 44-year school administrator and a former big-district school-board member. Robert Franklin led a seven-way primary with 22.59% and won the Aug 25 runoff 54.63% to 45.37%; Jennettie Marshall won her primary outright with 57.69%. ⚠ Figures are unofficial until Sept 1, 2026.",
+    candidates: [
+      { name: "Robert Franklin", party: "R", winner: false,
+        positions: [
+          "⚠ No sourced 2026 platform statement could be located; his candidacy is presented through his career record [Verify]",
+          "",
+          ""
+        ],
+        differentiators: [
+          "44 years in education — special-education teacher, principal, assistant superintendent, and Associate Superintendent at Tulsa Tech",
+          "Inducted into the Oklahoma Educators Hall of Fame in 2024",
+          "Led a seven-way primary with 22.59% (84,407), then won the Aug 25 runoff 54.63% (197,019) to 45.37% [Verify — unofficial pending Sept 1]"
+        ],
+        supporters: [
+          "Four decades of classroom and district administration is the deepest education resume the office has attracted in years",
+          "A Hall of Fame educator offers a deliberate contrast with the outgoing administration's approach",
+          "He won the runoff by more than nine points after leading a crowded field"
+        ],
+        opponents: [
+          "No published 2026 platform, so voters are asked to judge a career rather than a plan [Verify]",
+          "A career administrator may be slow to change a department critics say needs restructuring [Verify — structural argument]"
+        ] },
+      { name: "Jennettie Marshall", party: "D", winner: false,
+        positions: [
+          "Teacher retention and district accountability, with greater state investment in schools",
+          "More licensed counselors, which she ties to what she calls generational trauma",
+          "Says religious teaching has no place in public schools"
+        ],
+        differentiators: [
+          "Tulsa Public Schools board member from 2017 to April 2025",
+          "A pastor and a funeral director",
+          "Won the Democratic primary outright with 57.69% (97,886) over Craig McVay [Verify — unofficial pending Sept 1]"
+        ],
+        supporters: [
+          "Eight years on the board of one of the state's two largest districts, through its most contested period",
+          "A pastor arguing religious teaching does not belong in public schools is an unusually credible messenger for that position",
+          "Counselor staffing is a concrete, measurable proposal rather than a slogan"
+        ],
+        opponents: [
+          "Her Tulsa board tenure included repeated public clashes, which opponents cast as a governing style rather than a record [Verify — structural argument]",
+          "No Democrat has won this office since 2010 [Verify — structural argument]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Commissioner of Labor (OPEN SEAT)",
+    note: "OPEN — Leslie Osborn is term-limited. Kevin West led the four-way June primary with 41.78% and won the Aug 25 runoff over fellow state Rep. John Pfeiffer 58.28% to 41.72%, the widest runoff margin of the five statewide races decided that night. ⚠ THIS IS THE LEAST-DOCUMENTED RACE ON THE PAGE: no sourced 2026 platform statement from their own campaign materials could be located for ANY of the three candidates [Verify]. NonDoc's Aug 23 fact-check of the runoff covers the two Republicans' legislative records on regulation. ⚠ Mike Hall (L) is named in a News9 ballot preview but his certification could not be confirmed and no campaign presence could be located, so he is named here rather than carded [Verify]. ⚠ Figures are unofficial until Sept 1, 2026.",
+    candidates: [
+      { name: "Kevin West", party: "R", winner: false,
+        positions: [
+          "⚠ No sourced 2026 platform statement from his own campaign materials could be located [Verify]",
+          "",
+          ""
+        ],
+        differentiators: [
+          "Oklahoma state representative for District 54, from Moore, since 2016",
+          "Led the four-way June primary with 41.78% (153,384), then won the runoff 58.28% (203,938) to 41.72% [Verify — unofficial pending Sept 1]",
+          "⚠ No cash-on-hand figure could be located [Verify]"
+        ],
+        supporters: [
+          "A decade in the legislature gives him a record on workplace regulation that voters can actually look up",
+          "He beat a fellow sitting legislator by more than 16 points in the runoff"
+        ],
+        opponents: [
+          "No published platform of his own for an office that regulates workplace safety and wage claims [Verify]",
+          "A legislator moving to an executive regulatory post has no administrative track record [Verify — structural argument]"
+        ] },
+      { name: "Kevin Dawson", party: "D", winner: false,
+        positions: [
+          "⚠ No sourced 2026 platform statement could be located [Verify]",
+          "",
+          ""
+        ],
+        differentiators: [
+          "Unopposed for the Democratic nomination",
+          "⚠ No biographical detail could be confirmed from a primary source [Verify]",
+          "⚠ No cash-on-hand figure could be located [Verify]"
+        ],
+        supporters: [
+          "Contests an office that would otherwise go uncontested by his party [Verify — structural argument]",
+          "⚠ No further argument for him could be sourced, because no platform of his own could be found [Verify — an absence of located records, not a judgement]"
+        ],
+        opponents: [
+          "No locatable platform, biography or campaign organisation [Verify]",
+          "No Democrat has won this office in more than a decade [Verify — structural argument]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Insurance Commissioner of Oklahoma (OPEN SEAT)",
+    note: "OPEN — Glen Mulready is term-limited. ✅ THE MOST SUBSTANTIVE DOWN-BALLOT RACE ON THE OKLAHOMA BALLOT, because both nominees are career insurance professionals who have staked out real and opposing positions. Bob Sullivan comes from the property-and-casualty AGENT side and says Oklahoma's market is an OLIGOPOLY — he has argued that incarceration can be a fair punishment for insurance executives who act in bad faith. Craig MacIntyre comes from the CARRIER side, with three decades in actuarial work, product development and government relations, and campaigns on what he calls the three A's: affordability, acceptable claims handling and availability. Sullivan led the four-way June primary with 37.37% and won the Aug 25 runoff 55.13% to 44.87%. ⚠ MacIntyre entered only as the filing deadline neared, with no other Democrat running. ⚠ Figures are unofficial until Sept 1, 2026.",
+    candidates: [
+      { name: "Bob Sullivan", party: "R", winner: false,
+        positions: [
+          "Bring accountability to the insurance industry — he argues Oklahoma's market functions as an oligopoly",
+          "Says incarceration can be a fair punishment for insurance executives who act in bad faith",
+          "Use his own industry credentials to scrutinise rate filings from the inside"
+        ],
+        differentiators: [
+          "41, from Tulsa; holds the CPCU, CIC and CRM designations after about two decades in property and casualty insurance",
+          "Led the four-way June primary with 37.37% (137,366), then won the runoff 55.13% (194,922) to 44.87% over Marty Quinn [Verify — unofficial pending Sept 1]",
+          "⚠ No cash-on-hand figure could be located [Verify]"
+        ],
+        supporters: [
+          "NonDoc reported the runoff framing that he is not a lapdog for the industry he would regulate",
+          "Professional credentials mean he can read a rate filing without relying on the companies to explain it",
+          "Calling the market an oligopoly and floating criminal penalties is a sharper regulatory posture than the office usually sees"
+        ],
+        opponents: [
+          "Blame for recent rate increases was contested throughout the runoff, and his industry background cuts both ways [Verify — structural argument]",
+          "Talk of jailing executives is a striking claim for a regulator, and critics question whether the office has any such authority [Verify — structural argument]"
+        ] },
+      { name: "Craig MacIntyre", party: "D", winner: false,
+        positions: [
+          "Affordability — the first of the three A's his campaign is built around",
+          "Acceptable claims handling",
+          "Availability — he argues insurance is a legally mandated necessity, not a normal consumer product"
+        ],
+        differentiators: [
+          "In insurance since 1993 on the CARRIER side — actuarial work, product development, risk management and government relations",
+          "Unopposed for the Democratic nomination; entered only as the filing deadline neared",
+          "⚠ No cash-on-hand figure could be located [Verify]"
+        ],
+        supporters: [
+          "Three decades of actuarial and product experience means he knows how rates are actually built, not just how they are sold",
+          "His framing that mandated insurance is not a normal consumer product is a real regulatory philosophy, not a slogan"
+        ],
+        opponents: [
+          "A career on the carrier side invites the same industry-capture question he could raise about his opponent [Verify — structural argument]",
+          "A late entry with no primary contest means no tested campaign organisation [Verify — structural argument]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Corporation Commissioner — Oklahoma (1 of 3 seats, OPEN)",
+    note: "OPEN — Todd Hiett is term-limited. Oklahoma's three-member Corporation Commission sets electric, gas and water rates and regulates the oil and gas industry; commissioners serve six-year terms and only ONE seat is on this ballot. ✅ THE LIVE CONTRAST IS DATA CENTERS, AND BOTH CANDIDATES LEAD WITH IT: Brad Boles AUTHORED the Data Center Consumer Ratepayer Protection Act of 2026, now signed into law, and runs on protecting ratepayers inside a pro-growth framework; Rhonda Eastman campaigns against the tax breaks the data centers receive in the first place. Boles won the June primary 55.27% to 44.73%; Eastman won a three-way Democratic primary with 70.0%. ⚠ Figures are unofficial until Sept 1, 2026.",
+    candidates: [
+      { name: "Brad Boles", party: "R", winner: false,
+        positions: [
+          "Fair utility rates — he authored the Data Center Consumer Ratepayer Protection Act of 2026, signed into law",
+          "Energy independence",
+          "Streamlined regulation"
+        ],
+        differentiators: [
+          "Oklahoma state representative from Marlow",
+          "Author of the enacted 2026 ratepayer-protection law governing data-center power contracts",
+          "Won the Republican primary 55.27% (200,025) to 44.73% over Justin Hornback [Verify — unofficial pending Sept 1]"
+        ],
+        supporters: [
+          "He has already written and passed the ratepayer protection he is campaigning on — a rare case of a candidate with a delivered result",
+          "A pro-growth framework that keeps data-center investment coming while shielding household bills",
+          "A ten-point primary win in a contested race"
+        ],
+        opponents: [
+          "Critics argue protecting ratepayers from data-center costs does not address whether the tax breaks drawing them here are worth it [Verify — structural argument]",
+          "A sitting legislator moving to the commission that regulates the industries he legislated on invites conflict questions [Verify — structural argument]"
+        ] },
+      { name: "Rhonda Eastman", party: "D", winner: false,
+        positions: [
+          "Rising utility costs",
+          "Abandoned oil and gas wells, and wastewater injection pollution",
+          "Opposes the tax breaks given to data centers"
+        ],
+        differentiators: [
+          "16 years in state government followed by private-sector management",
+          "Won a three-way Democratic primary with 70.0% (116,858) [Verify — unofficial pending Sept 1]",
+          "⚠ No cash-on-hand figure could be located [Verify]"
+        ],
+        supporters: [
+          "She raises the two environmental liabilities — orphaned wells and injection-well pollution — that no one else on the ballot is campaigning on",
+          "Attacking the data-center tax breaks directly is a clearer position than regulating around them",
+          "A 70% primary win gives her an unambiguous mandate from her party"
+        ],
+        opponents: [
+          "All three current commissioners are Republicans, and no Democrat has won this office in many years [Verify — structural argument]",
+          "Opposing data-center incentives risks being cast as opposing investment and jobs [Verify — structural argument]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Judicial Retention — Oklahoma (6 jurists)",
+    note: "SIX JURISTS FACE RETENTION, NOT TWO — our own build brief had this wrong. FOUR Supreme Court justices (M. John Kane IV, Richard Darby, Dana Kuehn and Travis Jett) and TWO Court of Criminal Appeals judges (Gary Lumpkin, on the court since 1989, and Robert Hudson). ⚠ ALSO CORRECTED: M. John Kane IV is NOT the current Chief Justice — Dustin Rowe has held that post since Jan 1, 2025; Kane served 2023-25. Retention is a simple yes-or-no vote with no opponent. All six were appointed by Republican governors. ⚠ THE ONE DOCUMENTED FAULT LINE: Darby, Kane and Kuehn DISSENTED from the 2023 ruling that recognised a narrow right to abortion to save a woman's life. ✅ VERIFIED NEGATIVE: Bolts reported on Apr 20, 2026 that there is no sign of an organised effort opposed to retention this year [Verify — that was the position in April and was not re-checked closer to November]. Because there is no organised campaign either way, individual jurists are not carded here.",
+    candidates: [
+      { name: "Four Supreme Court justices — Kane, Darby, Kuehn and Jett (retention)", party: "I", winner: false,
+        positions: [
+          "Retention votes are yes-or-no, with no opponent and no campaign; judges do not run on a platform",
+          "",
+          ""
+        ],
+        differentiators: [
+          "All four were appointed by Republican governors — Kane, Kuehn and Jett by Gov. Stitt, Darby by Gov. Fallin",
+          "⚠ Darby, Kane and Kuehn dissented from the 2023 ruling recognising a narrow right to abortion to save a woman's life",
+          "⚠ No 2026 judicial-performance evaluation or organised campaign for or against any of them could be located [Verify]"
+        ],
+        supporters: [
+          "Retention is designed to remove unfit judges while insulating the bench from disagreement over individual rulings [Verify — structural argument]",
+          "Bolts found no organised opposition campaign this year, which is consistent with no serious conduct concerns [Verify — an absence of located records]"
+        ],
+        opponents: [
+          "Critics of the 2023 abortion dissents argue a retention vote is voters' only direct check on that reasoning [Verify — structural argument]",
+          "With no performance evaluation published and no campaign on either side, voters have very little information on which to judge [Verify]"
+        ] },
+      { name: "Two Court of Criminal Appeals judges — Lumpkin and Hudson (retention)", party: "I", winner: false,
+        positions: [
+          "Retention votes are yes-or-no, with no opponent and no campaign; judges do not run on a platform",
+          "",
+          ""
+        ],
+        differentiators: [
+          "Gary Lumpkin has served on the Court of Criminal Appeals since 1989 — the longest judicial tenure on this ballot",
+          "The Court of Criminal Appeals is Oklahoma's court of last resort for criminal cases; Oklahoma is one of only two states with a split high court",
+          "⚠ No 2026 organised campaign for or against either judge could be located [Verify]"
+        ],
+        supporters: [
+          "A split high court means these judges decide every capital and criminal appeal in the state, and continuity carries real institutional value [Verify — structural argument]",
+          "No organised opposition was located, consistent with no serious conduct concerns [Verify — an absence of located records]"
+        ],
+        opponents: [
+          "More than three decades on one court invites the argument that retention has become automatic [Verify — structural argument]",
+          "Voters are given no published performance evaluation on which to base the decision [Verify]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Ballot Question", office: "State Question 845 — Judicial Nominating Commission",
+    note: "A CONSTITUTIONAL AMENDMENT RESTRUCTURING THE BODY THAT PICKS OKLAHOMA'S JUDGES. The Judicial Nominating Commission screens applicants and sends the governor a shortlist for every judicial vacancy. SQ 845 would redraw its appointments to CURRENT congressional districts instead of the 1967 map still in use; have the governor and the Oklahoma Bar Association each appoint six commissioners; allow two consecutive six-year terms; and REMOVE three existing restrictions — the bar on commissioners being licensed attorneys, the bar on having family members who are licensed attorneys, and the cap of no more than three commissioners from one political party. ⚠ VERIFIED NEGATIVE, AND UNUSUAL: NO ORGANISED CAMPAIGN ON EITHER SIDE COULD BE LOCATED — no statement from the Oklahoma Bar Association, the Governor's office or any advocacy group. A for-and-against list is therefore deliberately NOT published here. ⚠ The full official ballot title could not be retrieved from the Election Board [Verify].",
+    candidates: [
+      { name: "YES — restructure the commission", party: "I", winner: false,
+        positions: [
+          "Updates the commission's districts from the 1967 congressional map to the current one",
+          "Lets any number of commissioners be licensed attorneys, and removes the family-member restriction",
+          "Removes the cap of no more than three commissioners from one political party"
+        ],
+        differentiators: [
+          "A legislative referral — it reached the ballot by act of the Legislature, not by citizen petition",
+          "⚠ No organised YES campaign or endorsing organisation could be located [Verify]",
+          "Would take effect for future judicial vacancies, not retroactively"
+        ],
+        supporters: [
+          "Using a 1967 map to draw appointments from a state that has been redistricted repeatedly since is indefensible on its face [Verify — structural argument]",
+          "Barring people from service because a family member holds a law licence is an unusually broad disqualification [Verify — structural argument]"
+        ],
+        opponents: [
+          "⚠ No organised opposition could be located, so no sourced argument against is available [Verify — an absence of located records]",
+          ""
+        ] },
+      { name: "NO — keep the current structure", party: "I", winner: false,
+        positions: [
+          "Keeps the 1967 district framework for appointments",
+          "Keeps the requirement that some commissioners not be licensed attorneys, and the family-member restriction",
+          "Keeps the cap of no more than three of the governor's commissioners from one political party"
+        ],
+        differentiators: [
+          "The party-balance cap is the provision that most directly limits a single governor's influence over judicial selection",
+          "The non-attorney requirement is what puts lay members on a commission otherwise dominated by the bar",
+          "⚠ No organised NO campaign could be located [Verify]"
+        ],
+        supporters: [
+          "Removing the three-per-party cap would let one party's governor fill the commission with appointees of a single party [Verify — structural argument]",
+          "The non-attorney seats are the public's representation on a body that otherwise belongs to the legal profession [Verify — structural argument]"
+        ],
+        opponents: [
+          "Defending a 1967 map is difficult on the merits, whatever the case for the other provisions [Verify — structural argument]",
+          "⚠ No organised campaign exists on either side, so voters have little published guidance [Verify]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Ballot Question", office: "State Question 847 — Property-Tax Valuation Caps",
+    note: "THE MEASURE MOST LIKELY TO TOUCH AN OKLAHOMA HOUSEHOLD'S BILL. SQ 847 would lower the annual cap on how fast a property's taxable value may rise — from 5% to 4% for most property, and from 3% to 1.75% for HOMESTEADS AND AGRICULTURAL LAND — effective in 2027. The caps limit growth in assessed value, not tax rates, so the effect compounds year over year for long-held homes and farms. ⚠ This measure was MISSING from our own build brief, which recorded only SQ 845 for November. ⚠ The official ballot title could not be retrieved from the Election Board, and no organised campaign on either side could be located [Verify].",
+    candidates: [
+      { name: "YES — lower the valuation caps", party: "I", winner: false,
+        positions: [
+          "Cuts the annual valuation-growth cap from 5% to 4% for most property",
+          "Cuts it from 3% to 1.75% for homesteads and agricultural land",
+          "Takes effect in 2027"
+        ],
+        differentiators: [
+          "A legislative referral, not a citizen initiative",
+          "Halving the homestead cap is the larger change — 3% to 1.75% is the steepest cut in the measure",
+          "⚠ No organised YES campaign could be located [Verify]"
+        ],
+        supporters: [
+          "Protects long-term homeowners and farmers from being taxed out of property whose market value has risen faster than their income [Verify — structural argument]",
+          "Agricultural land and homesteads get the deepest protection, which targets the relief at families rather than commercial owners [Verify — structural argument]"
+        ],
+        opponents: [
+          "⚠ No organised opposition campaign could be located [Verify — an absence of located records]",
+          ""
+        ] },
+      { name: "NO — keep the current caps", party: "I", winner: false,
+        positions: [
+          "Keeps the 5% annual valuation-growth cap for most property",
+          "Keeps the 3% cap for homesteads and agricultural land",
+          "Leaves local revenue growth as it stands"
+        ],
+        differentiators: [
+          "Property taxes in Oklahoma fund schools, county government and local services",
+          "Tighter caps shift more of the burden onto newly sold property, since values reset at sale [Verify — structural argument]",
+          "⚠ No organised NO campaign could be located [Verify]"
+        ],
+        supporters: [
+          "Compounding caps starve school and county budgets over time without any vote on the services being cut [Verify — structural argument]",
+          "Caps benefit whoever has owned longest, shifting the burden to first-time buyers [Verify — structural argument]"
+        ],
+        opponents: [
+          "Rising valuations are a real cost pressure on fixed-income homeowners, which the current caps only partly limit [Verify — structural argument]",
+          "⚠ No organised campaign exists on either side, so voters have little published guidance [Verify]"
+        ] }
+    ] },
+
+  // ─────────────────────────── PAST ───────────────────────────
+  { date: "Aug 25, 2026", type: "past", scope: "State · Ballot Question", office: "State Question 846 — Voter ID in the Constitution (APPROVED)",
+    note: "APPROVED 54.61% to 45.39% — 292,481 YES to 243,064 NO, of 535,545 votes cast, the most of any contest on the Aug 25 ballot. SQ 846 writes Oklahoma's existing statutory proof-of-identity requirement for voting into the state CONSTITUTION, which means a future Legislature cannot repeal it by ordinary statute. ⚠ Figures are official Election Board returns at 100% of precincts but are unofficial until the Sept 1, 2026 certification.",
+    candidates: [] },
+
+  { date: "Aug 25, 2026", type: "past", scope: "State · Ballot Question", office: "State Question 844 — Manufacturing Exemption Reimbursement (REJECTED)",
+    note: "REJECTED DECISIVELY — 73.75% NO to 26.25% YES, 389,735 against to 138,755 for. SQ 844 would have given the Legislature authority over the methodology and level of reimbursement paid to local governments for property-tax revenue lost to manufacturing exemptions. ✅ THE CONTRAST WITH SQ 846 ON THE SAME BALLOT IS THE POINT: voters approved the voter-ID amendment and rejected this one by nearly three to one, on almost identical turnout — 528,490 votes here against 535,545 on SQ 846. ⚠ Figures are official Election Board returns at 100% of precincts, unofficial until Sept 1, 2026.",
+    candidates: [] }
+];
+
+// ----- U.S. House races by district (HB 1002, the 2021 enacted plan) -----
+// Sources: Oklahoma State Election Board — its own results API, read directly on Aug 27, 2026
+// (all 1,984 precincts, 100% reporting) and its official 2026 candidate filing book (filing
+// period Apr 1-3, 2026), which every general-election name and party below was checked against;
+// FEC bulk file weball26 (cash on hand, coverage through June 30, 2026); News9/NewsOn6 general
+// ballot preview; NonDoc; Oklahoma Voice; Public Radio Tulsa; KSWO; Free Press OKC; Oklahoma
+// Farm Report; The Frontier; GovTrack.
+// ⚠ NO U.S. HOUSE NOMINATION WAS DECIDED AT THE AUG 25 RUNOFF. OK-1's Republican runoff was
+// scheduled but became moot when Jackson Lahmeyer withdrew on June 17, the day after the primary.
+// ⚠ NO LIBERTARIAN OR GREEN CANDIDATE FILED IN ANY DISTRICT. All four independents below ARE
+// officially certified in the filing book, so none of them carries a certification [Verify].
+// ⚠ RACE RATINGS COULD NOT BE READ AT THE RATERS' OWN SITES — cookpolitical.com and
+// insideelections.com both returned 403, and Sabato publishes the district ratings inside a chart
+// image. Every rating below is from secondary reporting and is marked [Verify] accordingly. The
+// PVI figures, 2024 margins, primary results and FEC numbers ARE directly sourced.
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — OK District 1",
+    region: "Tulsa and its suburbs — Tulsa County plus Broken Arrow, Owasso, Bixby, Jenks and Sand Springs. The most compact district in the state, and the only one anchored entirely in one metro.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "AN OPEN SEAT, AND THE ONLY ONE IN OKLAHOMA THIS CYCLE. Kevin Hern announced on March 11, 2026 that he would run for the U.S. Senate seat Markwayne Mullin vacated to become Secretary of Homeland Security; Hern won that nomination outright on June 16. ⚠ THE REPUBLICAN NOMINEE WAS SETTLED WITHOUT A SINGLE HEAD-TO-HEAD VOTE. Mark Tedford led an eleven-candidate primary with just 32.15% — far short of the 50% Oklahoma requires — but runner-up Jackson Lahmeyer WITHDREW on June 17, the day after the primary, and President Trump moved his endorsement to Tedford within 24 hours. The Aug 25 runoff was cancelled and Tedford became the nominee by default. ⚠ Figures are official Election Board returns at 100% of precincts but are UNOFFICIAL as a legal matter until the state certifies on Sept 1, 2026.",
+        candidates: [
+          { name: "Mark Tedford", party: "R", winner: false,
+            positions: [
+              "Lower costs — cut what he calls inflationary spending, reduce energy and regulatory costs, restore fiscal discipline",
+              "Strict immigration enforcement — end benefits for undocumented immigrants and deport criminal aliens",
+              "Faith, family and freedom — protect the unborn, defend the Second Amendment and parental rights"
+            ],
+            differentiators: [
+              "Two-term Oklahoma state representative (House District 69, elected 2022); Tulsa insurance-agency owner with more than 30 years in business",
+              "Led an eleven-way primary with 32.15% (23,230 votes) and became nominee when the runner-up withdrew",
+              "$173,735 cash on hand through June 30, 2026 — ⚠ against $1.20 MILLION IN DEBTS, on $1.76M in receipts, so the campaign is heavily loan-backed",
+              "Endorsed by President Trump (who switched from Lahmeyer on June 17), House Speaker Kyle Hilbert, all three Tulsa County commissioners and six suburban mayors"
+            ],
+            supporters: [
+              "He consolidated the establishment and the Trump endorsement within 24 hours of the field collapsing",
+              "A legislative record plus three decades running a Tulsa business is a conventional, low-risk profile for an open seat",
+              "The district is R+11 and has not elected a Democrat since 1986"
+            ],
+            opponents: [
+              "He won only 32% of a fractured primary — roughly two-thirds of Republican voters picked someone else",
+              "His campaign carries $1.2 million in debt against $174,000 cash on hand",
+              "He became the nominee without ever facing a one-on-one vote [Verify — structural argument]"
+            ] },
+          { name: "John Croisant", party: "D", winner: false,
+            positions: [
+              "Public education — says the goal is to improve the U.S. Department of Education, not eliminate it",
+              "Cost of living and health care — no family should have to choose between paying bills and getting care",
+              "Public safety — commonsense measures that protect both public safety and individual rights, including keeping illegal guns off the streets"
+            ],
+            differentiators: [
+              "Vice president of the Tulsa Public Schools Board of Education; former Edison Prep teacher and coach; insurance-agency owner",
+              "Unopposed for the Democratic nomination",
+              "$36,579 cash on hand through June 30, 2026",
+              "No major endorsements could be located [Verify]"
+            ],
+            supporters: [
+              "An open seat, a fractured primary and a nominee carrying $1.2 million in debt make this the best Democratic opening in Tulsa in decades",
+              "A school-board record gives him a local, non-ideological brand at a time when Oklahoma education policy is contested",
+              "He was a declared candidate a year before the seat unexpectedly opened"
+            ],
+            opponents: [
+              "Outspent roughly five to one on cash on hand",
+              "Hern won this seat by 25.9 points in 2024, and no Democrat has come within 20 since the 2021 redraw [Verify — structural argument]",
+              "Every forecaster still rates the seat Solid or Safe Republican [Verify — ratings not read at the raters' own sites]"
+            ] }
+        ] }
+    ] },
+  2: {
+    name: "U.S. House — OK District 2",
+    region: "Rural eastern and southeastern Oklahoma — the region known as Little Dixie. McAlester, Muskogee, Durant, Tahlequah and Ada, plus a slice of eastern Tulsa County. 27 counties, more than any other Oklahoma district.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "THE MOST REPUBLICAN DISTRICT IN OKLAHOMA AND ONE OF THE MOST REPUBLICAN IN THE COUNTRY — Cook PVI R+28, and Josh Brecheen won by 52.7 points in 2024. ✅ A GENUINE FISCAL-HAWK RECORD WORTH KNOWING: Brecheen voted NO on the FY2027 National Defense Authorization Act, objecting to a $263.4 billion (29.6%) increase — a rare vote against his own party's defense bill. ⚠ Both major-party candidates faced real primaries and both won decisively. This is a rematch: Brandon Wade was also the 2024 nominee. ⚠ Figures are official Election Board returns at 100% of precincts, unofficial until the Sept 1, 2026 certification.",
+        candidates: [
+          { name: "Josh Brecheen (incumbent)", party: "R", winner: false,
+            positions: [
+              "Federal spending and the debt — his stated central issue, citing a deficit close to $2 trillion",
+              "Opposition to defense-spending growth — voted against the FY2027 NDAA over a 29.6% increase",
+              "Fiscal-hawk oversight of the appropriations process"
+            ],
+            differentiators: [
+              "Second-term member; former Oklahoma state senator; aligned with the House Freedom Caucus",
+              "Won the Republican primary 79.20% (65,906) to 20.80% over Will Webb",
+              "⚠ $76,064 cash on hand through June 30, 2026 — strikingly low for a safe-seat incumbent"
+            ],
+            supporters: [
+              "He votes his stated fiscal principles even against his own party's defense bill — an unusually falsifiable claim to consistency",
+              "79% in a contested primary shows the base is firmly with him",
+              "The district gave him a 52.7-point win in 2024"
+            ],
+            opponents: [
+              "His NDAA vote has been criticised from the right as a partial stand — voting against debt while ignoring foreign entanglements [Verify — sourced to a partisan blog, not a news outlet]",
+              "$76,064 on hand is thin for an incumbent and would leave him exposed to any surprise [Verify — structural argument]",
+              "A one-in-five primary protest vote against a sitting member is small but not nothing [Verify — structural argument]"
+            ] },
+          { name: "Brandon Wade", party: "D", winner: false,
+            positions: [
+              "Modernizing the immigration system",
+              "Protecting women's health care choices",
+              "Strengthening Social Security and Medicare"
+            ],
+            differentiators: [
+              "Third-generation union worker from Copan; 26 years as committee chairman and vice president of IUOE Local 351",
+              "Secretary of the Oklahoma Democratic Party Veterans Foundation",
+              "Won the Democratic primary 73.7% (20,336) to 26.3%; this is his SECOND run — he was the 2024 nominee",
+              "⚠ $86.25 cash on hand through June 30, 2026, on $4,290 in receipts — the smallest war chest on this page"
+            ],
+            supporters: [
+              "A union-labor biography is the most plausible Democratic profile for this blue-collar, historically Democratic region",
+              "A repeat nominee starts with name recognition he did not have in 2024",
+              "He won his own primary by nearly 50 points"
+            ],
+            opponents: [
+              "He lost this seat by 52.7 points in 2024 and has raised under $5,000 this cycle",
+              "With $86 in the bank there is no campaign apparatus of any kind [Verify]",
+              "R+28 is the steepest structural climb in the state [Verify — structural argument]"
+            ] },
+          { name: "Ronnie Hopkins", party: "I", winner: false,
+            positions: [
+              "⚠ No sourced 2026 platform statement could be located [Verify]",
+              "",
+              ""
+            ],
+            differentiators: [
+              "Pastor; also ran for this seat in 2024",
+              "Officially certified on the Election Board's own filing list — his ballot status is NOT in question",
+              "No FEC filing above the reporting threshold could be located [Verify]"
+            ],
+            supporters: [
+              "Offers an alternative in a district where the general election is otherwise uncompetitive [Verify — structural argument]",
+              "A second run gives him more local familiarity than a first-time independent would have [Verify — structural argument]"
+            ],
+            opponents: [
+              "Independents in this district have never exceeded low single digits [Verify — structural argument]",
+              "No reported fundraising and no located platform [Verify]"
+            ] }
+        ] }
+    ] },
+  3: {
+    name: "U.S. House — OK District 3",
+    region: "Western Oklahoma and the Panhandle — the largest district in the state at 34,088 square miles, more than 48% of Oklahoma's land mass. Enid, Stillwater, Ponca City, Woodward, Guymon and Altus, plus part of Cleveland County. 28 counties.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "OKLAHOMA'S DEAN AGAINST A FIRST-TIME CANDIDATE. Frank Lucas has held this seat since a 1994 special election — the longest tenure in the delegation — and chaired the House Science, Space and Technology Committee (2023-25) and the House Agriculture Committee (2011-15). ✅ THE MOST TELLING NUMBER IS THE PRIMARY: 29.23% of Republican voters backed challenger Wade Burleson against a 30-year incumbent. ⚠ LUCAS HAD NO DEMOCRATIC OPPONENT AT ALL IN 2024, so there is no 2024 margin for this seat — this is the first contested general election here in four years. No independent or minor-party candidate filed. ⚠ Figures are official Election Board returns at 100% of precincts, unofficial until Sept 1, 2026.",
+        candidates: [
+          { name: "Frank Lucas (incumbent)", party: "R", winner: false,
+            positions: [
+              "⚠ No 2026 campaign-site issues page could be retrieved, so no self-described platform is published here [Verify]",
+              "",
+              ""
+            ],
+            differentiators: [
+              "In Congress since 1994 — the longest-serving member of the Oklahoma delegation",
+              "Former chairman of the House Science, Space and Technology Committee and of the House Agriculture Committee — farm policy and federal research funding are his documented portfolios",
+              "Won the Republican primary 70.77% (55,631) to 29.23% over Wade Burleson",
+              "$532,512 cash on hand through June 30, 2026"
+            ],
+            supporters: [
+              "Three decades of seniority and two committee chairmanships deliver disproportionate influence over farm-bill and research money for a rural district",
+              "He won a genuinely contested primary by more than 40 points",
+              "A better-funded incumbent than any plausible challenger in a district this large and expensive to cover"
+            ],
+            opponents: [
+              "A 29% primary protest vote against a 30-year incumbent signals real appetite for change on his own side",
+              "His disbursements this cycle ($993,000) exceeded his receipts ($907,000) [Verify — the figures are FEC-sourced; the interpretation is a structural argument]",
+              "No published 2026 platform of his own for voters to hold him to [Verify]"
+            ] },
+          { name: "Suzie Byrd", party: "D", winner: false,
+            positions: [
+              "Universal health care",
+              "Affordable housing",
+              "Immigration and education reform"
+            ],
+            differentiators: [
+              "Raised in Hennessey, lives in Enid; Oklahoma State University graduate and a former All-American hurdler",
+              "Has owned or partnered in more than 12 businesses in Oklahoma and Florida",
+              "Won the Democratic primary 67.4% (16,504) to 32.6%",
+              "⚠ No entry in the FEC 2026 bulk candidate file — no reportable committee activity could be located [Verify]"
+            ],
+            supporters: [
+              "A small-business owner running an explicitly nonpartisan campaign she calls her Purple Campaign — she says she is tired of the division in the country",
+              "She won her primary by 35 points",
+              "Lucas faced no Democrat at all in 2024, so simply contesting the seat gives voters a choice they did not have"
+            ],
+            opponents: [
+              "No reportable campaign finance activity against an incumbent holding $532,512 [Verify]",
+              "R+23 across a district covering nearly half the state's land area, which is expensive to canvass [Verify — structural argument]",
+              "A universal-health-care plank is a difficult sell in one of the most Republican rural districts in the country [Verify — structural argument]"
+            ] }
+        ] }
+    ] },
+  4: {
+    name: "U.S. House — OK District 4",
+    region: "South-central Oklahoma — Norman, Moore, Lawton and Fort Sill, Ada, Duncan, Ardmore and Newcastle. 13 counties.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "THE MOST POWERFUL OKLAHOMAN IN CONGRESS IS ON THIS BALLOT. Tom Cole has chaired the HOUSE APPROPRIATIONS COMMITTEE since April 2025 — the first Oklahoman and the first Native American to hold it — and an enrolled citizen of the Chickasaw Nation. ✅ HE NEARLY RETIRED: Oklahoma Watch and NOTUS reported in July 2025 that the Appropriations gavel is what kept him in the race. ⚠ Nearly 29% of Republican primary voters backed a little-known challenger anyway. Cook PVI R+17; Cole won by 37 points in 2024. ⚠ Figures are official Election Board returns at 100% of precincts, unofficial until Sept 1, 2026.",
+        candidates: [
+          { name: "Tom Cole (incumbent)", party: "R", winner: false,
+            positions: [
+              "Energy independence [Verify — summarised from an aggregator's account of his stated priorities, not from a 2026 campaign issues page]",
+              "Immigration and border security [Verify — same source]",
+              "National security and defense [Verify — same source]"
+            ],
+            differentiators: [
+              "Twelve-term member; CHAIRMAN of the House Appropriations Committee since April 2025",
+              "The first Oklahoman and first Native American to chair Appropriations; an enrolled Chickasaw Nation citizen",
+              "Won the Republican primary 71.12% (52,717) to 28.88% over Marcie Everhart",
+              "$2,599,733 cash on hand through June 30, 2026 — the largest war chest in the delegation"
+            ],
+            supporters: [
+              "The Appropriations gavel is the single most valuable committee post any Oklahoman holds, and voters are being asked to protect it",
+              "$2.6 million banked deters serious opposition before it starts",
+              "Twenty-four years of seniority in a district anchored by Fort Sill, where federal spending decisions are local economics"
+            ],
+            opponents: [
+              "After 24 years, nearly 29% of his own party's primary voters backed a little-known challenger",
+              "A chairman's national workload competes with district attention [Verify — structural argument]",
+              "No 2026 campaign issues page could be located, so his platform is documented only through committee work [Verify]"
+            ] },
+          { name: "Mitchell Jacob", party: "D", winner: false,
+            positions: [
+              "Affordability — argues foreign war spending is driving up fertilizer, food, gas and utility costs",
+              "Public education — notes Oklahoma's school funding is among the nation's lowest and that two-thirds of the state's fourth graders are not proficient in reading",
+              "Fiscal responsibility — eliminating the federal deficit and debt"
+            ],
+            differentiators: [
+              "34 years old; a military veteran and a University of Oklahoma law graduate; lives in Newcastle",
+              "Won a genuinely close primary, 54.4% to 45.6% — a 2,977-vote margin",
+              "$4,166 cash on hand through June 30, 2026, on $65,289 in receipts and $22,500 in debts"
+            ],
+            supporters: [
+              "A young veteran and attorney running on affordability and debt is a crossover profile in a district anchored by Fort Sill",
+              "He beat a better-funded rival in the primary",
+              "Cole's own primary showed nearly 29% of Republicans looking for an alternative [Verify — structural argument]"
+            ],
+            opponents: [
+              "He trails Cole by roughly 620 to one in cash on hand",
+              "Cole won by 37 points in 2024 in an R+17 district",
+              "His deficit-hawk framing overlaps his opponent's, which blunts the contrast [Verify — structural argument]"
+            ] },
+          { name: "Rocco Bonacci", party: "I", winner: false,
+            positions: [
+              "⚠ No sourced 2026 platform statement could be located [Verify]",
+              "",
+              ""
+            ],
+            differentiators: [
+              "Disability-community activist and a member of the Lawton Access Board",
+              "Officially certified on the Election Board's own filing list — his ballot status is NOT in question",
+              "No FEC filing could be located [Verify]"
+            ],
+            supporters: [
+              "Brings disability-access advocacy into a race where no other candidate is raising it [Verify — structural argument]",
+              "Gives voters a non-major-party option in a district that is not competitive [Verify — structural argument]"
+            ],
+            opponents: [
+              "No reported fundraising and no prior electoral base [Verify]",
+              "No locatable platform for voters to evaluate [Verify — an absence of located records]"
+            ] }
+        ] }
+    ] },
+  5: {
+    name: "U.S. House — OK District 5",
+    region: "Oklahoma City and the northern metro — most of Oklahoma County, plus Edmond, Piedmont, Guthrie, Shawnee and Seminole. 6 counties.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "THE LEAST REPUBLICAN DISTRICT IN OKLAHOMA, AND THE ONLY FOUR-WAY RACE IN THE STATE. Cook PVI R+9. ✅ THIS IS THE ONE OKLAHOMA SEAT A DEMOCRAT HAS HELD RECENTLY — Kendra Horn won it in 2018 and held it until 2021 — ⚠ BUT THE 2021 REDRAW IS PRECISELY WHAT CLOSED THAT DOOR: HB 1002 split the Oklahoma City core across districts, moving this seat sharply right, and Stephanie Bice's margin grew to 21.4 points in 2024. She drew no Republican primary challenger at all. Every major forecaster still rates it Solid or Safe Republican, though two secondary outlets moved it to Likely Republican in July 2026 — the only Oklahoma district any rater has placed outside the safest tier. ⚠ Figures are official Election Board returns at 100% of precincts, unofficial until Sept 1, 2026.",
+        candidates: [
+          { name: "Stephanie Bice (incumbent)", party: "R", winner: false,
+            positions: [
+              "Agriculture — calls the 2026 Farm Bill essential to rural economies, with expanding E15 fuel access the centerpiece of her agenda",
+              "Appropriations and government funding — supported the continuing resolution funding the government through Dec 4, 2026",
+              "Alignment with the Trump administration — voted for the 2025 reconciliation bill that passed the House 215-214"
+            ],
+            differentiators: [
+              "Third-term member and an appropriator; six years in the Oklahoma Senate before Congress",
+              "Drew NO Republican primary challenger",
+              "$2,021,981 cash on hand through June 30, 2026 — second-largest in the delegation",
+              "Hosted the EPA administrator, the HUD secretary and the CMS administrator in-district"
+            ],
+            supporters: [
+              "She flipped this seat from a Democrat in 2020 and has grown her margin every cycle since",
+              "Appropriations seniority delivers concrete federal decisions for the Oklahoma City metro",
+              "Cook's own analysis reportedly calls another upset here remote, citing her campaign record and cash [Verify — read only via a search snippet of a subscriber-gated page dated Sept 29, 2025, i.e. pre-primary and possibly stale]"
+            ],
+            opponents: [
+              "She cast a vote for a bill that passed 215-214, making her personally accountable for the margin",
+              "She has voted for nearly all Trump-backed legislation in a district a Democrat held five years ago",
+              "R+9 is the softest Republican ground in the state [Verify — structural argument]"
+            ] },
+          { name: "Jena Nelson", party: "D", winner: false,
+            positions: [
+              "Restoring good government",
+              "Strengthening the middle class",
+              "Protecting Social Security and Medicare"
+            ],
+            differentiators: [
+              "2020 Oklahoma Teacher of the Year and an award-winning public-school teacher",
+              "The 2022 Democratic nominee for State Superintendent — lost statewide to Ryan Walters 43.2% to 56.8%, a stronger showing than most Oklahoma Democrats manage",
+              "Won the primary 56.7% (26,886) to 43.3% over union president Trey Martin",
+              "⚠ $17,334 cash on hand through June 30, 2026 — she raised $449,421, by far the best Democratic fundraising in the delegation, but spent nearly all of it in the primary, and carries $38,312 in debts"
+            ],
+            supporters: [
+              "She has run and overperformed statewide before, and Oklahoma education politics have moved her way since 2022",
+              "She raised $449,000 — more than any other Oklahoma Democrat this cycle",
+              "The Frontier framed her primary as the party's one chance at flipping an Oklahoma district"
+            ],
+            opponents: [
+              "She emerged from the primary with $17,334 against Bice's $2.02 million — a 117-to-one gap",
+              "She has lost a statewide race before",
+              "No major forecaster has moved the seat off Solid or Safe Republican [Verify — ratings not read at the raters' own sites]"
+            ] },
+          { name: "Robert P. Henri", party: "I", winner: false,
+            positions: [
+              "⚠ No sourced 2026 platform statement could be located [Verify]",
+              "",
+              ""
+            ],
+            differentiators: [
+              "Cannabis businessman and a former lab technician",
+              "Officially certified on the Election Board's own filing list — his ballot status is NOT in question",
+              "$4,185 cash on hand through June 30, 2026, on $6,361 in receipts"
+            ],
+            supporters: [
+              "One of only two independents on any Oklahoma House ballot, in the state's most competitive district [Verify — structural argument]",
+              "He has at least filed and reported finances, unlike most minor candidates on this page"
+            ],
+            opponents: [
+              "Under $5,000 in reported funds gives him no way to reach a metro-wide electorate [Verify]",
+              "With two independents running, the realistic effect is to fragment the anti-incumbent vote rather than win [Verify — structural argument]"
+            ] },
+          { name: "Austin Nieves", party: "I", winner: false,
+            positions: [
+              "⚠ No sourced 2026 platform statement could be located [Verify]",
+              "",
+              ""
+            ],
+            differentiators: [
+              "⚠ Described in filings and coverage as an accountant and businessman, though one source describes him as an entertainer — the descriptions conflict [Verify]",
+              "Officially certified on the Election Board's own filing list — his ballot status is NOT in question",
+              "No FEC filing could be located [Verify]"
+            ],
+            supporters: [
+              "Adds a second non-major-party option in the only Oklahoma district where the general election is meaningfully contested [Verify — structural argument]"
+            ],
+            opponents: [
+              "No located platform, no located campaign finance filing, and conflicting accounts of his own occupation [Verify]",
+              "Two independents on one ballot split whatever protest vote exists [Verify — structural argument]"
+            ] }
+        ] }
+    ] }
+};
+
+const SITE_META = { name: "Oklahoma Elections Hub", lastUpdated: "August 27, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — Oklahoma county-level down-ballot research has not started.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Oklahoma has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them,
+  // otherwise a district with no plurality county is unreachable from the map.
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const OK_STATE_FIPS = "40";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#okmap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(OK_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Hartford ----
+  drawCapital(g, projection, { name: "Oklahoma City", lng: -97.535, lat: 35.482 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in OK";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our Oklahoma dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+// Split a race note on the ⚠ / ✅ flag glyphs the editorial style already uses, keeping
+// the glyph that introduced each segment. Text before the first flag is the lead. This is
+// presentation only — no wording is altered and nothing is dropped.
+function briefSegments(note) {
+  const out = [];
+  const re = /([\u26A0\uFE0F\u2705]+)\s*/g;
+  let last = 0, mark = "", m;
+  while ((m = re.exec(note)) !== null) {
+    const text = note.slice(last, m.index).trim();
+    if (text) out.push({ mark: mark, text: text });
+    mark = m[1].replace(/\uFE0F/g, "");
+    last = re.lastIndex;
+  }
+  const tail = note.slice(last).trim();
+  if (tail) out.push({ mark: mark, text: tail });
+  return out;
+}
+
+function renderNote(note) {
+  if (!note) return "";
+  const body = briefSegments(note).map(function (s) {
+    return s.mark
+      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${s.text}</p>`
+      : `<p class="brief-lead">${s.text}</p>`;
+  }).join("");
+  // Clamp only what actually needs clamping: the median note is 236 characters, so most
+  // briefs show whole and never render a toggle at all.
+  const long = note.length > 300;
+  return `<div class="election-brief${long ? " clamped" : ""}">
+      <div class="brief-label">About this race</div>
+      <div class="brief-body">${body}</div>
+      ${long ? `<button class="brief-more" type="button">Show more</button>` : ""}
+    </div>`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${renderNote(e.note)}${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const more = e.target.closest(".brief-more");
+  if (more) {
+    const brief = more.closest(".election-brief");
+    more.textContent = brief.classList.toggle("clamped") ? "Show more" : "Show less";
+    return;
+  }
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Arizona Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every AZ election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #azmap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  /* ---- Race brief (the context note) ----
+     Lives INSIDE the expanded panel only. A collapsed card shows the pill, date, office
+     and candidate count and nothing else, so a county's ballot reads as a clean list.
+     Owner-reported twice on Aug 12, 2026: as a header element these notes — 2,187
+     characters at the extreme, and 30% of them opening with a ⚠ flag — buried the
+     candidate data the page exists to show. Set in roman, not italic: extended italic
+     body copy at 12.5px is the thing that read as 'terrible'. Long briefs clamp to about
+     four lines behind a Show more toggle so they never crowd out the cards below. */
+  .election-brief {
+    margin: 2px 0 18px;
+    padding: 12px 16px 13px 17px;
+    border-left: 2px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    background: linear-gradient(90deg, rgba(232,217,184,.30), rgba(232,217,184,0) 94%);
+  }
+  .brief-label {
+    font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); font-weight: 700; margin-bottom: 7px;
+  }
+  .brief-body { font-size: 12.5px; line-height: 1.62; color: var(--ink-soft); }
+  .brief-body p + p { margin-top: 7px; }
+  .brief-lead { color: var(--ink); }
+  /* Flag glyphs hang in the margin so the text block keeps a straight left edge. */
+  .brief-flag { position: relative; padding-left: 21px; }
+  .brief-mark { position: absolute; left: 0; top: 0; font-size: 11px; color: var(--gold-deep); }
+  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; }
+  .brief-more {
+    margin-top: 9px; padding: 0;
+    background: none; border: none; cursor: pointer;
+    font-family: var(--sans); font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-deep);
+    border-bottom: 1px solid var(--gold-soft);
+  }
+  .brief-more:hover { border-bottom-color: var(--gold); }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">AZ</div>
+      <div class="brand-text">
+        <span class="brand-name">Arizona Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Arizona <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 15 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">15</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>9</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>9</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Arizona…</div>
+      <svg id="azmap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>AZ Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">July 22, 2026</span><br>
+      Sources: Arizona Secretary of State (July 21, 2026 primary; Aug 6, 2026 statewide canvass; 2026 ballot-measure filings; State Voter Registration Report), Maricopa County official canvass, U.S. Census Bureau, MCDC Geocorr 2022, FEC, seethemoney.az.gov, Arizona Independent Redistricting Commission, Cook Political Report, Inside Elections, Sabato’s Crystal Ball, Votebeat Arizona, Arizona Mirror, Arizona Capitol Times, AZCentral, KJZZ, KTAR, AZPM, Arizona Daily Independent</div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every AZ county + its primary US House district(s)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- Arizona counties -> U.S. House district (2020 census FIPS "04" prefix) -----
+// WHICH MAP: the AIRC Official Congressional Map v14.0, adopted Jan 18, 2022 and certified
+// Jan 21, 2022 — UNCHANGED from 2024. Arizona did NOT redraw after Louisiana v. Callais
+// (Apr 29, 2026). The decisive event is a public retreat, not a ruling: on Aug 11, 2026
+// Senate President Warren Petersen abandoned the plan to sue, saying "the lines would be
+// very similar so a lawsuit probably wouldn't make much sense" (KJZZ). No suit was ever
+// filed, so the court order the AIRC would have needed to reconvene never existed — the
+// commission's own site says it closed on June 28, 2024 and is not reappointed until
+// January 2031. Census CD119 geography therefore IS the 2026 geography for Arizona.
+//
+// CURRENCY PROVED, 15 of 15 counties. The source is better than election returns: the
+// Secretary of State's own "State of Arizona Registration Report — 2026 Primary Election,
+// July 21, 2026" enumerates every congressional district BROKEN DOWN BY COUNTY — that is
+// the map actually used to build the July 21 ballots. All 30 county-district pairs match
+// the Census CD119 relationship file exactly, with zero disagreements.
+//
+// TRANSCRIPTION PROVED separately (the two are independent questions — lesson #13):
+// MCDC Geocorr 2022 county-to-CD119 population weights put all nine districts within one
+// person of the 794,611.33 ideal, a total range of 2 people across the state (0.00025%).
+//
+// ⚠ PIMA'S PLURALITY IS CD6, NOT CD7 — the area-vs-population trap, live. CD7 holds 80.6%
+// of Pima's LAND but only 45.2% of its PEOPLE (CD6 571,618 vs CD7 471,815), and the SoS's
+// own 2026 registration figures agree (CD6 397,061 vs CD7 249,129).
+//
+// ⚠ MARICOPA'S `d` IS A JUDGEMENT CALL AND IS RECORDED AS ONE. CD1, CD3, CD4 and CD8 lie
+// ENTIRELY inside Maricopa, so by 2020 census they are a four-way tie decided by one
+// person (CD3 794,612 / CD1 794,611 / CD4 794,611 / CD8 794,610). A one-person census
+// margin is noise, so `d` follows the SoS's own 2026 registered-voter counts instead,
+// where CD1 leads decisively (CD1 508,843 / CD8 469,434 / CD4 416,152 / CD3 330,170).
+// `d` only drives map shading; every district Maricopa touches is carried in `ds`.
+//
+// ⚠ FOUR DISTRICTS ARE THE PLURALITY OF NO COUNTY — CD3, CD4, CD5 and CD8 — so they are
+// reachable ONLY through `ds` (lesson #12). Without it a Phoenix voter would click their
+// own county and never see their own U.S. House race. CD5 is never a plurality anywhere:
+// it loses Maricopa to the four in-county districts and loses Pinal to CD2.
+// ⚠ Maricopa really does touch CD2 — only 3,583 people and 6 precincts, but confirmed by
+// two independent official sources, so CD2 stays in its `ds`.
+// ⚠ FIPS 04010 DOES NOT EXIST. Greenlee is 04011 and La Paz is 04012 (created 1983).
+const COUNTIES = {
+  "04001": { n: "Apache", d: 2 },
+  "04003": { n: "Cochise", d: 6, ds: [6, 7] },
+  "04005": { n: "Coconino", d: 2 },
+  "04007": { n: "Gila", d: 2 },
+  "04009": { n: "Graham", d: 6, ds: [2, 6] },
+  "04011": { n: "Greenlee", d: 6 },
+  "04012": { n: "La Paz", d: 9 },
+  "04013": { n: "Maricopa", d: 1, ds: [1, 2, 3, 4, 5, 7, 8, 9] },
+  "04015": { n: "Mohave", d: 9, ds: [2, 9] },
+  "04017": { n: "Navajo", d: 2 },
+  "04019": { n: "Pima", d: 6, ds: [6, 7] },
+  "04021": { n: "Pinal", d: 2, ds: [2, 5, 6, 7] },
+  "04023": { n: "Santa Cruz", d: 7 },
+  "04025": { n: "Yavapai", d: 2 },
+  "04027": { n: "Yuma", d: 7, ds: [7, 9] }
+};
+
+// ----- STATEWIDE races every Arizona county sees -----
+// Sources: Arizona Secretary of State (July 21, 2026 primary; statewide canvass Aug 6, 2026;
+// ballot-measure page and 2026 For/Against argument filings, read with a browser User-Agent);
+// seethemoney.az.gov campaign-finance reports; Maricopa County official canvass; Votebeat
+// Arizona, Arizona Capitol Times, Arizona Mirror, AZCentral, KJZZ, KTAR, NBC News, Ballotpedia.
+//
+// ✅ EVERY PRIMARY FIGURE ON THIS PAGE IS OFFICIAL. Arizona canvassed statewide on Aug 6, 2026
+// and holds no runoffs, so unlike most states built this summer nothing here is provisional on a
+// later canvass.
+// ⚠ THE ONE THING THAT IS NOT CONFIRMED is the Secretary of State's certified GENERAL-election
+// candidate list, which is not posted and whose candidate app is Cloudflare-blocked. Minor-party
+// and write-in candidates therefore carry a [Verify] on ballot certification.
+// ⚠ NO U.S. SENATE RACE IN ARIZONA IN 2026 — a verified negative, and the first cycle without one
+// since 2014. Mark Kelly is Class 3 (next up 2028) and Ruben Gallego Class 1 (2030).
+// ⚠ CORRECTION TO OUR OWN BRIEF: John Lopez IV is VICE Chief Justice, not Chief Justice. Ann
+// Timmer has been Chief Justice since July 1, 2024.
+// ⚠ The 2026 Publicity Pamphlet is not published yet ("Coming in 2026" on the SoS's own page), so
+// the measure arguments below come from the For/Against filings the SoS has already posted.
+const STATEWIDE = [
+  // ─────────────────────────── UPCOMING ───────────────────────────
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Governor and Lieutenant Governor of Arizona",
+    note: "NOT AN OPEN SEAT — Katie Hobbs is seeking a second term after winning in 2022 by 17,117 votes. ✅ ARIZONA IS ELECTING A LIEUTENANT GOVERNOR FOR THE FIRST TIME: the office is new for 2026 and runs on a JOINT TICKET with the governor, with no separate primary, so the running mates below were chosen by the nominees rather than by voters. Hobbs picked JOHN GILES, the Republican mayor of Mesa from 2014 to 2025, who endorsed Kamala Harris in 2024 and spoke at that year's Democratic National Convention. Andy Biggs picked former state lawmaker Sine Kerr. ⚠ PRESIDENT TRUMP ENDORSED TWO CANDIDATES IN THIS PRIMARY — Biggs and Karrin Taylor Robson — and Robson ultimately withdrew. Biggs then won the nomination with 71.5%. ✅ A TURNOUT NUMBER WORTH NOTING: Hobbs was unopposed and still drew 443,680 votes, about 40,000 MORE than the entire contested four-way Republican primary (403,840).",
+    candidates: [
+      { name: "Katie Hobbs (incumbent) — with John Giles", party: "D", winner: false,
+        positions: [
+          "⚠ No consolidated 2026 issues page could be located on her campaign site; her record is the platform [Verify]",
+          "",
+          ""
+        ],
+        differentiators: [
+          "Governor since 2023; before that Secretary of State, and Arizona Senate Minority Leader",
+          "Won in 2022 by 17,117 votes — under half a point",
+          "Unopposed for renomination with 443,680 votes, more than the entire Republican primary field combined",
+          "Running mate John Giles was a REPUBLICAN mayor of Mesa for eleven years"
+        ],
+        supporters: [
+          "Picking an eleven-year Republican mayor as running mate is a direct, concrete bid for the crossover voters who decide Arizona statewide races",
+          "Her uncontested primary drew about 40,000 more votes than the contested Republican one, which is a real enthusiasm signal",
+          "A full term of divided government gives her a veto record to run on rather than promises"
+        ],
+        opponents: [
+          "She won in 2022 by less than half a point and has never faced a unified opposition [Verify — structural argument]",
+          "Choosing a Republican running mate invites the charge that she is running from her own party's record [Verify — structural argument]",
+          "⚠ No published 2026 policy platform of her own for voters to hold her to [Verify]"
+        ] },
+      { name: "Andy Biggs — with Sine Kerr", party: "R", winner: false,
+        positions: [
+          "⚠ No consolidated 2026 issues page could be located on his campaign site [Verify]; his record in Congress is the platform",
+          "",
+          ""
+        ],
+        differentiators: [
+          "U.S. Representative for AZ-5 since 2017, giving up that seat to run; former President of the Arizona Senate",
+          "Won the Republican primary with 71.5% (288,767) over Rep. David Schweikert's 15.6%",
+          "⚠ President Trump endorsed BOTH him and Karrin Taylor Robson; Robson later withdrew",
+          "Running mate Sine Kerr is a former state lawmaker"
+        ],
+        supporters: [
+          "A 71.5% primary win over a sitting congressman is an unusually decisive consolidation of the party",
+          "Experience running the Arizona Senate plus nine years in Congress is a longer governing resume than most challengers bring",
+          "He carried Trump's endorsement in a state the President won in 2024"
+        ],
+        opponents: [
+          "His two Republican rivals and Robson's withdrawal mean he was never tested against a fully funded opponent [Verify — structural argument]",
+          "A House Freedom Caucus record is a harder sell statewide than in an R+10 district [Verify — structural argument]",
+          "⚠ No published 2026 platform for the office he is seeking [Verify]"
+        ] },
+      { name: "Risa Lombardo", party: "G", winner: false,
+        positions: [
+          "⚠ No sourced 2026 platform statement could be located [Verify]",
+          "",
+          ""
+        ],
+        differentiators: [
+          "Won a four-way Green primary over Carlos Melendez, William Pounds and Athena Eastwood",
+          "⚠ Ballot certification could not be confirmed against the Secretary of State's own list [Verify]",
+          "No campaign-finance figure could be located [Verify]"
+        ],
+        supporters: [
+          "She won a genuinely contested four-way primary, unusual for a minor-party line [Verify — structural argument]",
+          "Gives voters a left-of-Democratic option in a race otherwise framed around crossover appeal"
+        ],
+        opponents: [
+          "No locatable platform for voters to evaluate [Verify — an absence of located records]",
+          "No reported fundraising or campaign organisation [Verify]"
+        ] },
+      { name: "Teri Hourihan", party: "I", winner: false,
+        positions: [
+          "⚠ No sourced 2026 platform statement could be located [Verify]",
+          "",
+          ""
+        ],
+        differentiators: [
+          "The No Labels Party nominee",
+          "⚠ Ballot certification could not be confirmed against the Secretary of State's own list [Verify]",
+          "No campaign-finance figure could be located [Verify]"
+        ],
+        supporters: [
+          "Offers a declared centrist alternative in a race both major parties are contesting on crossover appeal [Verify — structural argument]"
+        ],
+        opponents: [
+          "No locatable platform, funding or organisation [Verify]",
+          "No No Labels candidate has ever won statewide office in Arizona [Verify — structural argument]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Secretary of State of Arizona",
+    note: "⚠ THE SHARPEST CONTRAST ON THE ARIZONA BALLOT, BECAUSE THE OFFICE IS ELECTION ADMINISTRATION ITSELF. Adrian Fontes has resisted federal efforts to scrutinise Arizona's voting process; Alexander Kolodin LED MULTIPLE LAWSUITS TO OVERTURN THE 2020 AND 2022 ARIZONA RESULTS, drawing rebukes from judges and from the state bar. ✅ AND HE IS ON THE SAME BALLOT TWICE IN EFFECT: Kolodin is the sponsor of PROPOSITION 144, the constitutional amendment on this ballot that would write voter-ID requirements for ALL voting methods, including by mail, into the Arizona Constitution. A voter can back the man and the measure, or split them. ⚠ THE PRIMARY UPSET: Kolodin beat Gina Swoboda 58.3% to 41.7% — and Swoboda was the OTHER half of President Trump's rare dual endorsement in January 2026, alongside Jay Feely in AZ-1. Trump's pick lost this one. ⚠ Polling has Fontes 41%, Kolodin 35%, with 20% undecided [Verify — a single public poll].",
+    candidates: [
+      { name: "Adrian Fontes (incumbent)", party: "D", winner: false,
+        positions: [
+          "Resisting federal efforts to scrutinise Arizona's voting process",
+          "⚠ No fuller consolidated 2026 issues platform could be located [Verify]",
+          ""
+        ],
+        differentiators: [
+          "Secretary of State since 2023; Maricopa County Recorder 2016-2020; an attorney and former prosecutor",
+          "Unopposed for renomination with 495,572 votes",
+          "Leads 41% to 35% with 20% undecided [Verify — a single public poll]"
+        ],
+        supporters: [
+          "He has run elections in Maricopa County, by far the largest jurisdiction in the state, before running them statewide",
+          "His resistance to federal scrutiny of Arizona's voting process is the clearest available contrast with his opponent",
+          "His uncontested primary drew nearly 500,000 votes, more than any other Democratic statewide primary"
+        ],
+        opponents: [
+          "Kolodin argues election rules belong in the Constitution rather than in the hands of whoever holds this office",
+          "As Maricopa Recorder he presided over a 2018 primary with widely reported polling-place problems [Verify — structural argument; the specific findings were not re-verified for this build]"
+        ] },
+      { name: "Alexander Kolodin", party: "R", winner: false,
+        positions: [
+          "Sponsor of Proposition 144 — write citizen-only voting, government-issued ID for ALL voting methods including mail, and on-site tabulation into the Arizona Constitution",
+          "Bar foreign-national money from state elections",
+          "In his own words on Prop 144, it puts the rules where they belong: in the Constitution"
+        ],
+        differentiators: [
+          "Arizona state representative since 2022; an attorney before that",
+          "⚠ He led several lawsuits to overturn the 2020 and 2022 Arizona election results, earning rebukes from judges and the state bar association",
+          "Beat Gina Swoboda 58.3% (224,262) to 41.7% — defeating a candidate President Trump had endorsed",
+          "The sponsor of Prop 144, which appears on the same ballot he is running on"
+        ],
+        supporters: [
+          "He beat a Trump-endorsed former state party chair by 17 points, so the base clearly preferred him",
+          "A candidate running on a specific, published constitutional amendment is unusually concrete about what he would do",
+          "As a practising election lawyer he knows the statutes the office administers in detail"
+        ],
+        opponents: [
+          "He tried to overturn two Arizona elections in court and was rebuked by judges and the state bar — critics say that disqualifies him from administering elections",
+          "Opponents of his own Prop 144 say it is unclear how mail voters would show ID at all, and that it hands the Legislature power to restructure or end mail voting",
+          "He trails in the only public poll located, 35% to 41% [Verify]"
+        ] },
+      { name: "Duwayne Collier", party: "G", winner: false,
+        positions: [
+          "⚠ No sourced 2026 platform statement could be located [Verify]",
+          "",
+          ""
+        ],
+        differentiators: [
+          "Won the Green primary 66.0% with 421 votes over a write-in — a nominating electorate of 638 people in total",
+          "⚠ Ballot certification could not be confirmed against the Secretary of State's own list [Verify]",
+          "No reported fundraising [Verify]"
+        ],
+        supporters: [
+          "Gives voters a third option in a race that is otherwise a stark binary on election administration [Verify — structural argument]"
+        ],
+        opponents: [
+          "Nominated by 421 votes, with no located platform or funding [Verify]",
+          "No Green candidate has won statewide office in Arizona [Verify — structural argument]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Attorney General of Arizona",
+    note: "⚠ A REMATCH OF THE CLOSEST STATEWIDE RACE IN ARIZONA HISTORY — SORT OF. Kris Mayes won this office in 2022 by 280 VOTES after a statewide recount. Her 2022 opponent, Abe Hamadeh, is not on this ballot for AG; he is now the congressman for AZ-8, and he challenged that 280-vote result in court. Her opponent instead is Senate President WARREN PETERSEN. ✅ PETERSEN IS THE MAN WHO CLOSED ARIZONA'S REDISTRICTING QUESTION: on Aug 11, 2026 he publicly abandoned the plan to sue for a new congressional map, saying the lines would be very similar so a lawsuit probably would not make sense — which is why Arizona votes on unchanged districts this year. ⚠ THE REPUBLICAN PRIMARY WAS FOUGHT OVER HIS QUALIFICATIONS: Rodney Glassman argued Petersen had been licensed to practise law for under three years with little trial experience. Petersen won 55.9% to 44.1%. ⚠ An AARP-commissioned poll has Mayes ahead by five points among likely voters, with Petersen leading among voters 50 and up [Verify — a sponsored poll].",
+    candidates: [
+      { name: "Kris Mayes (incumbent)", party: "D", winner: false,
+        positions: [
+          "⚠ No consolidated 2026 issues page could be located [Verify]; her litigation record is the platform",
+          "",
+          ""
+        ],
+        differentiators: [
+          "Attorney General since 2023; formerly an Arizona Corporation Commissioner",
+          "Won in 2022 by 280 VOTES after a statewide recount — the closest statewide result in Arizona history",
+          "Unopposed for renomination with 501,339 votes, the largest primary vote of any Arizona candidate this year",
+          "The named defendant in Planned Parenthood Arizona v. Mayes, the 2024 case on the 1864 abortion ban"
+        ],
+        supporters: [
+          "Leads by five points among likely voters in an AARP-commissioned poll [Verify — a sponsored poll]",
+          "Her uncontested primary drew more votes than any other candidate of either party in Arizona this cycle",
+          "Four years of statewide legal work, against an opponent whose own party questioned his courtroom experience"
+        ],
+        opponents: [
+          "Both Republican primary candidates accused her of what they call lawfare — using the office to target political opponents and obstruct the administration's agenda",
+          "She won by 280 votes and has never had a comfortable statewide margin [Verify — structural argument]",
+          "Petersen leads among voters 50 and up, and among those without college degrees, in the same AARP poll [Verify]"
+        ] },
+      { name: "Warren Petersen", party: "R", winner: false,
+        positions: [
+          "Supporting law enforcement",
+          "Working with the Trump administration on border issues",
+          "⚠ No fuller sourced 2026 platform detail could be located [Verify]"
+        ],
+        differentiators: [
+          "President of the Arizona Senate; a state legislator before that",
+          "✅ Publicly ABANDONED the post-Callais plan to sue for a new congressional map on Aug 11, 2026 — the decision that settled which map Arizona uses this November",
+          "Won the Republican primary 55.9% (230,430) to 44.1% over Rodney Glassman",
+          "⚠ His own primary opponent argued he had been licensed to practise law for under three years with little trial experience"
+        ],
+        supporters: [
+          "Leading the state Senate is the most senior governing role either candidate has held",
+          "He leads among voters 50 and up and among voters without college degrees in the AARP poll [Verify]",
+          "Declining to file a redistricting suit he could have brought is a concrete instance of restraint he can point to"
+        ],
+        opponents: [
+          "His own party's primary rival made his thin legal experience the central issue — under three years licensed, little trial work",
+          "He trails by five points among all likely voters in the AARP poll [Verify — a sponsored poll]",
+          "No published 2026 platform beyond two broad commitments [Verify]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "State Treasurer of Arizona (OPEN SEAT)",
+    note: "OPEN — Kimberly Yee is term-limited and ran for Superintendent instead. ⚠ THE CLOSEST DOWN-BALLOT RACE IN ARIZONA, AND THE POLLS DISAGREE ON WHO LEADS: HighGround (Aug 15-18) had Mansour 41.8% to Norton 39.0%; Grayhouse (Aug 9-11) had Norton 41% to Mansour 39%. ⚠ NO DEMOCRAT HAS WON THIS OFFICE SINCE 1964, which makes a genuine toss-up here notable. Elijah Norton is largely self-funding — about $1.06 million on hand, mostly his own money. ⚠ Both candidates' most recent locatable finance reports are from JUNE 30, 2025, more than a year stale; seethemoney.az.gov's report links are not indexable without the site's own search [Verify].",
+    candidates: [
+      { name: "Nick Mansour", party: "D", winner: false,
+        positions: [
+          "Modernize management of roughly $31 billion in state assets and improve returns on the education endowment",
+          "Affordability — use the office to ease cost pressure on families",
+          "Transparency and accountability in investment decisions, judged on financial merit rather than politics"
+        ],
+        differentiators: [
+          "Stanford MBA with an industrial-engineering background; former Chairman and CEO of Arizona College of Nursing, which he grew from 1 campus to 24",
+          "Unopposed for the Democratic nomination with 484,646 votes",
+          "$233,310 cash on hand [Verify — as of June 30, 2025; no newer report could be located]"
+        ],
+        supporters: [
+          "An operator who scaled a large institution 24-fold, applied to a portfolio job",
+          "Higher endowment returns translate directly into money for schools, which is a concrete pitch",
+          "Leads narrowly in one of the two August polls, in an office no Democrat has won in six decades"
+        ],
+        opponents: [
+          "No prior public-finance office or elected experience [Verify — structural argument]",
+          "No Democrat has held this seat since 1964 [Verify — structural argument]",
+          "Trails in the other August poll, and is heavily outspent by a self-funding opponent"
+        ] },
+      { name: "Elijah Norton", party: "R", winner: false,
+        positions: [
+          "Bring proven investment and business experience to the office",
+          "Safety before liquidity, liquidity before yield — his stated investment priority order",
+          "Only minor tweaks to current strategy, with no risk to the state's roughly $32 billion in principal"
+        ],
+        differentiators: [
+          "Founder and CEO of Veritas Global Protection and RED Auto Protection; former treasurer of the Arizona Republican Party",
+          "Lost the 2022 AZ-1 Republican primary to Rep. David Schweikert",
+          "Won the Republican primary 54.4% (219,838) to 45.6% over Katherine Haley",
+          "$1,055,876 cash on hand — largely self-funded [Verify — as of June 30, 2025; no newer report could be located]"
+        ],
+        supporters: [
+          "Private investment-management experience at scale is directly transferable to managing state funds",
+          "An explicitly incremental approach — safety first, minor tweaks — is a low-risk pitch for a custodial office",
+          "A four-to-one cash advantage over his opponent"
+        ],
+        opponents: [
+          "The Republican primary turned on disputes over his qualifications, and his businesses drew scrutiny over legal disputes and consumer complaints [Verify — the specific findings could not be independently confirmed]",
+          "He settled a 2022 defamation suit for $50,000 over campaign material about him",
+          "A largely self-funded campaign has raised comparatively little from Arizona donors [Verify — structural argument]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Superintendent of Public Instruction (OPEN SEAT)",
+    note: "OPEN, AND THE INCUMBENT LOST HIS OWN PARTY'S PRIMARY. Tom Horne was beaten by state Treasurer Kimberly Yee, 53.3% to 46.7% — one of only two sitting officeholders in Arizona denied renomination this year. ⚠ SHE RAN TO HIS RIGHT ON THE ESA VOUCHER PROGRAM, backed by the Legislature's Freedom Caucus, which faulted Horne as too aggressive in policing Empowerment Scholarship Account spending. So the November choice is between a candidate who wants LOOSER ESA oversight and one whose central plank is an ESA audit trail. ⚠ The primary also included a dispute in which Yee accused Horne's allies of running a racist attack ad. ⚠ Two write-in candidates, Gerard Davis (G) and Stephen Neal Jr. (No Labels), are also on the ballot; neither is carded here because no platform or campaign presence could be located for either [Verify].",
+    candidates: [
+      { name: "Teresa Leyba Ruiz", party: "D", winner: false,
+        positions: [
+          "ESA transparency — a public expenditure dashboard, an end to auto-approval of ESA purchases under $2,000, and rigorous audits",
+          "Prepare every student — universal pre-K and early literacy, career-technical education, dual enrollment and mental-health access",
+          "Respect educators — teacher-recruitment pipelines, higher pay and restored professional development"
+        ],
+        differentiators: [
+          "A 35-year educator and former president of Glendale Community College",
+          "Won the Democratic primary 79.8% (298,445) to 20.2% — a nearly 60-point margin",
+          "$146,232 cash on hand as of June 30, 2026",
+          "Endorsed by former Superintendent Kathy Hoffman and Arizona List"
+        ],
+        supporters: [
+          "A career educator and community-college president against an opponent with no classroom or district experience",
+          "Her ESA audit plan is specific and measurable — a dashboard, a spending threshold, an audit requirement",
+          "A 60-point primary win gives her an undivided party behind her"
+        ],
+        opponents: [
+          "Her ESA accountability proposals are cast by school-choice supporters as hostility to the program itself",
+          "No Democrat holds any Arizona statewide office other than Governor, Attorney General and Secretary of State [Verify — structural argument]",
+          "She trails Yee on cash by about $100,000"
+        ] },
+      { name: "Kimberly Yee", party: "R", winner: false,
+        positions: [
+          "⚠ Her campaign site could not be retrieved, so no self-described 2026 platform is published here [Verify]",
+          "Reported: she ran to Tom Horne's right on ESA regulation, backed by the Legislature's Freedom Caucus, which faulted him as too aggressive in policing ESA spending",
+          ""
+        ],
+        differentiators: [
+          "Two-term State Treasurer and a former Arizona Senate majority leader",
+          "⚠ BEAT A SITTING SUPERINTENDENT OF HER OWN PARTY, 53.3% (317,711) to 46.7%",
+          "$245,613 cash on hand as of June 30, 2026 — roughly $100,000 more than her opponent"
+        ],
+        supporters: [
+          "A statewide fiscal-management record across two terms as Treasurer",
+          "She promises to protect ESA school choice from new restrictions, which is the clearest policy line in the race",
+          "Defeating a sitting superintendent in a primary is a real demonstration of political strength"
+        ],
+        opponents: [
+          "No classroom or district-administration experience for an office that runs the state's schools",
+          "Loosening ESA oversight would come exactly as fraud concerns in the program peak",
+          "⚠ Her own campaign platform could not be retrieved, so voters have only reporting to go on [Verify]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "State Mine Inspector of Arizona",
+    note: "✅ ARIZONA IS THE ONLY STATE IN THE COUNTRY THAT ELECTS A MINE INSPECTOR. The office inspects active mines for worker safety, runs miner safety training, oversees reclamation and secures Arizona's more than 100,000 abandoned mine shafts. It is a small agency — not a permitting or environmental regulator. ⚠ AND THE INCUMBENT IS A REPUBLICAN APPOINTED BY A DEMOCRATIC GOVERNOR: Katie Hobbs picked Les Presmyk from seven Republican applicants on Sept 12, 2025 after Paul Marsh resigned, and the appointment drew bipartisan praise. Both candidates were unopposed in their primaries. ⚠ No campaign-finance report could be located for either candidate [Verify].",
+    candidates: [
+      { name: "Les Presmyk (incumbent)", party: "R", winner: false,
+        positions: [
+          "⚠ No sourced 2026 campaign platform statement could be located [Verify] — his candidacy rests on his record and career",
+          "",
+          ""
+        ],
+        differentiators: [
+          "Appointed by Gov. Katie Hobbs (D) on Sept 12, 2025 from seven Republican applicants, after Paul Marsh resigned",
+          "A mining engineer trained at the University of Arizona College of Mines, with more than 44 years in Arizona mining — Magma Copper, San Manuel and Miami Copper",
+          "Principal Mining Engineer at Salt River Project 1987-2017; Gilbert Town Council 1999-2011",
+          "Unopposed for the Republican nomination with 523,952 votes"
+        ],
+        supporters: [
+          "The deepest technical resume in the office's history — 44 years of Arizona mining engineering",
+          "A Democratic governor chose him from a Republican field, and the appointment drew bipartisan praise",
+          "Eleven years on a town council means he has faced voters before"
+        ],
+        opponents: [
+          "Matlock argues the last two inspectors reached the office by appointment rather than election, so the office has drifted from public accountability",
+          "⚠ No published 2026 platform of his own for voters to evaluate [Verify]"
+        ] },
+      { name: "Brian Matlock", party: "D", winner: false,
+        positions: [
+          "Restore the office's regular public newsletters — he notes the last one was issued in March 2024",
+          "Expand state inspection capacity as federal MSHA oversight thins under staffing and funding shortfalls",
+          "Secure Arizona's abandoned mines, of which there are more than 100,000"
+        ],
+        differentiators: [
+          "Unopposed for the Democratic nomination with 478,820 votes",
+          "Argues the office should be filled by election rather than by successive appointments",
+          "⚠ No campaign-finance figure could be located [Verify]"
+        ],
+        supporters: [
+          "An office filled by appointment twice running should have to face a real election, which is his central argument",
+          "The lapse in public communication since March 2024 is a specific, checkable failure he is running on",
+          "Thinning federal mine-safety oversight is a genuine and timely reason to strengthen the state's role"
+        ],
+        opponents: [
+          "Substantially less mine-operations experience than an incumbent with 44 years in the industry [Verify — structural argument]",
+          "No Democrat has held this office in roughly 50 years [Verify — structural argument]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Corporation Commission — Arizona (2 of 5 seats)",
+    note: "⚠ READ THE BALLOT CAREFULLY: TWO SEATS ARE UP AND YOU MAY VOTE FOR TWO CANDIDATES. The five commissioners are all elected statewide to six-year terms; the two highest vote-getters win. The Commission sets electric, gas and water rates and regulates utilities. ⚠ ALL FIVE CURRENT COMMISSIONERS ARE REPUBLICANS. ✅ AND A SITTING COMMISSIONER WAS DENIED RENOMINATION: incumbent Nick Myers finished THIRD in the Republican primary with 31.2%, behind Kevin Thompson (35.8%) and Ralph Heap (33.0%) — Arizona's second incumbent casualty of the night. Heap was recruited to run by Freedom Caucus chair Sen. Jake Hoffman. Clara Pratte and Jonathon Hill are running as a JOINT DEMOCRATIC TICKET.",
+    candidates: [
+      { name: "Kevin Thompson (incumbent)", party: "R", winner: false,
+        positions: [
+          "Utilities may recover prudent costs, but the Commission must eliminate utility waste",
+          "The Commission is both a watchdog and a partner to the industry it regulates",
+          "Points to Arizona moving from the bottom to mid-pack in national regulatory-stability rankings, lowering utility borrowing costs"
+        ],
+        differentiators: [
+          "Sitting corporation commissioner",
+          "Led the Republican primary with 35.8% (325,029) in a race that unseated a fellow incumbent",
+          "⚠ No cash-on-hand figure could be located [Verify]"
+        ],
+        supporters: [
+          "Reliability-first regulation — keeping the lights on through extreme heat is the Commission's first duty",
+          "Improved regulatory-stability rankings lower utility borrowing costs, which flows through to ratepayers",
+          "He topped a primary field in which a sitting commissioner was defeated"
+        ],
+        opponents: [
+          "He presided over the rate increases now under fire, including repeated double-digit APS requests",
+          "One-party control of the Commission has produced no viewpoint diversity on those requests [Verify — structural argument]"
+        ] },
+      { name: "Ralph Heap", party: "R", winner: false,
+        positions: [
+          "⚠ No specific rate or energy policy planks from his own site could be located, and he did not respond to the Arizona Republic's candidate questionnaire [Verify]",
+          "",
+          ""
+        ],
+        differentiators: [
+          "A fourth-generation Arizonan and an East Valley orthopedic surgeon for more than 40 years",
+          "Recruited to run by Freedom Caucus chair Sen. Jake Hoffman",
+          "Took 33.0% (299,319) to finish second and unseat incumbent Nick Myers",
+          "⚠ Only an amended 2025 report could be located, showing $899 as of Sept 30, 2025 — not current [Verify]"
+        ],
+        supporters: [
+          "He beat a sitting commissioner from a standing start, which is a real demonstration of grassroots support",
+          "An outsider with no utility-sector ties cannot be accused of industry capture [Verify — structural argument]"
+        ],
+        opponents: [
+          "No utility-sector experience of any kind — a physician recruited by a legislative faction to unseat a sitting commissioner",
+          "He did not respond to the Arizona Republic's questionnaire, so voters have no published positions from him [Verify]"
+        ] },
+      { name: "Clara Pratte", party: "D", winner: false,
+        positions: [
+          "Affordability — she calls rising utility bills an actual crisis",
+          "Protect seniors and consumers from rate increases",
+          "Clean-energy development, jobs and transparency"
+        ],
+        differentiators: [
+          "Diné; grew up in Tsé Si'ání without running water or electricity, and co-founded Navajo Power",
+          "Led the Democratic primary with 53.4% (431,593)",
+          "Running as a joint ticket with Jonathon Hill",
+          "⚠ No cash-on-hand figure could be located [Verify]"
+        ],
+        supporters: [
+          "Someone who grew up without electricity brings a perspective no sitting commissioner has",
+          "Co-founding a tribal power company is direct, relevant utility-sector experience",
+          "One-party control has left repeated double-digit rate requests without a dissenting voice"
+        ],
+        opponents: [
+          "Critics argue clean-energy priorities could raise costs rather than lower them [Verify — structural argument]",
+          "Her Navajo Power role invites conflict-of-interest questions about regulating the sector she worked in [Verify — structural argument]"
+        ] },
+      { name: "Jonathon Hill", party: "D", winner: false,
+        positions: [
+          "Use an engineering background to ask tough technical questions when utilities request rate increases",
+          "Groundwater management for rural communities",
+          "Rural representation on a commission that regulates statewide"
+        ],
+        differentiators: [
+          "An Arizona State University researcher at the Mars Space Flight Facility, with a PhD in geological sciences",
+          "Took 46.6% (377,169) of the Democratic primary",
+          "Running as a joint ticket with Clara Pratte",
+          "⚠ No cash-on-hand figure could be located [Verify]"
+        ],
+        supporters: [
+          "Technical and scientific expertise is exactly what is missing when utilities file complex rate cases",
+          "Groundwater is a genuine rural Arizona crisis that no other candidate is centring"
+        ],
+        opponents: [
+          "No utility-regulation or elected experience [Verify — structural argument]",
+          "No Democrat currently holds any of the five seats [Verify — structural argument]"
+        ] },
+      { name: "Mike Cease", party: "G", winner: false,
+        positions: [
+          "⚠ No sourced 2026 platform statement could be located [Verify]",
+          "",
+          ""
+        ],
+        differentiators: [
+          "⚠ Won the Green line as a WRITE-IN with 213 votes",
+          "⚠ Ballot certification could not be confirmed against the Secretary of State's own list [Verify]",
+          "No reported fundraising [Verify]"
+        ],
+        supporters: [
+          "In a vote-for-two race, a third-party line costs a voter nothing to use alongside a major-party pick [Verify — structural argument]"
+        ],
+        opponents: [
+          "Nominated by 213 write-in votes with no located platform or funding [Verify]",
+          "No Green has won an Arizona statewide office [Verify — structural argument]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Judicial Retention — Arizona Supreme Court",
+    note: "ONE SUPREME COURT JUSTICE FACES RETENTION: JOHN R. LOPEZ IV. ⚠ CORRECTION TO A COMMON ERROR, INCLUDING OUR OWN BRIEF: Lopez is the VICE Chief Justice, not the Chief Justice. Ann Timmer has been Chief Justice since July 1, 2024, and her term runs to 2029. Retention is a simple yes-or-no vote with no opponent. ⚠ ARIZONA RETENTION VOTES HAVE BECOME GENUINELY CONTESTED: justices historically average about 73% yes, but in 2022 one fell to 56%, the first below 60% since 1990, and in 2024 NEITHER justice up for retention cleared 60%, against an organised anti-retention campaign. All three of those sub-60% justices were appointees of Gov. Doug Ducey — as is Lopez. ⚠ No 2026 Judicial Performance Review rating for Lopez is available yet; those publish in September 2026 at azjudges.info and in the Publicity Pamphlet [Verify]. ✅ No organised 2026 anti-retention campaign against Lopez could be located. Court of Appeals and Superior Court judges in Maricopa, Pima, Pinal and Coconino counties also face retention, but only this statewide seat is carded here.",
+    candidates: [
+      { name: "John R. Lopez IV — Arizona Supreme Court (retention)", party: "I", winner: false,
+        positions: [
+          "Retention votes are yes-or-no, with no opponent and no campaign; judges do not run on a platform",
+          "",
+          ""
+        ],
+        differentiators: [
+          "Vice Chief Justice of the Arizona Supreme Court; appointed by Gov. Doug Ducey in 2016 and retained in 2020",
+          "His current term expires Jan 4, 2027",
+          "⚠ He authored the 4-2 majority in Planned Parenthood Arizona v. Mayes (April 2024), holding the 1864 near-total abortion ban enforceable",
+          "⚠ His 2026 Judicial Performance Review rating is not yet published — those appear in September 2026 [Verify]"
+        ],
+        supporters: [
+          "The Commission on Judicial Performance Review evaluates each judge on surveys of litigants, jurors, staff and attorneys plus disciplinary records — a structured check voters can rely on",
+          "Retention is designed to remove unfit judges, not judges whose rulings are unpopular [Verify — structural argument]",
+          "No organised opposition campaign against him could be located this year [Verify — an absence of located records]"
+        ],
+        opponents: [
+          "He wrote the majority opinion reviving an 1864 near-total abortion ban — the ruling that drove the 2024 anti-retention campaign",
+          "Neither Ducey appointee up in 2024 cleared 60%, so the electorate has already shown willingness to punish this bench [Verify — structural argument]",
+          "⚠ With no 2026 performance rating published yet, voters currently have little formal basis on which to judge him [Verify]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Ballot Question", office: "Ballot Measures — Arizona (8 measures)",
+    note: "⚠ EIGHT MEASURES, AND ALL EIGHT ARE LEGISLATIVE REFERRALS — THERE IS NO CITIZEN INITIATIVE ON ARIZONA'S 2026 BALLOT. Ten referrals plus one initiative had advanced, and litigation cut the field to eight: PROP 143 (school-district payroll deduction) was STRUCK DOWN by Judge Greg Como in late July under the constitution's separate-amendment rule, and Republicans said they would not appeal; PROP 145 (military-family ESA funds) was STRUCK by Judge Joseph Kreamer on the same ground; and the PROTECT EDUCATION ACT, which would have appeared as Prop 212, is OFF — the Arizona Supreme Court rejected its ballot description on Aug 14 and then held on Aug 18 that it fell short of the 255,949 valid signatures required, after challenges by the Arizona Free Enterprise Club and the Goldwater Institute. Its sponsors conceded. ✅ Props 142, 144 and 318 all survived challenges and stay on the ballot. The field is now FINAL — Maricopa County's ballot-printing deadline passed on Aug 20, 2026. ⚠ Maricopa County voters will also see a local Proposition 413, which is a county measure and is not covered here.",
+    candidates: [
+      { name: "Prop 141 — ban mileage-based vehicle taxes (constitutional)", party: "I", winner: false,
+        positions: [
+          "A YES vote permanently bars the state and local governments from taxing or charging fees based on vehicle miles travelled, and from monitoring or limiting mileage without consent",
+          "A NO vote leaves a mileage-based road-funding option available to future legislatures",
+          ""
+        ],
+        differentiators: [
+          "A constitutional amendment referred by the Legislature (SCR 1004, 2025)",
+          "FOR: Arizona Free Enterprise Club, Arizona Trucking Association, Home Builders Association of Central Arizona, National Motorists Association",
+          "AGAINST: Civic Engagement Beyond Voting, Rural Arizona Action, Southern Arizona Leadership Council — whose Ted Maxwell also chairs the state Transportation Board"
+        ],
+        supporters: [
+          "A per-mile tax punishes rural drivers and people who drive for a living, who have no alternative",
+          "It keeps government out of tracking how far individuals drive"
+        ],
+        opponents: [
+          "Arizona's 18-cents-a-gallon gas tax has lost about half its buying power and electric vehicles pay none of it, so road funding is already failing",
+          "Arizona has among the worst-maintained highways in the country, and this locks a repair option out of the Constitution entirely"
+        ] },
+      { name: "Prop 142 — bar preferential treatment and DEI requirements", party: "I", winner: false,
+        positions: [
+          "A YES vote bars government from requiring anyone to endorse race or ethnicity-based preferential treatment — no DEI statements in hiring, admissions, promotion, contracting or scholarships — and bars public funds for such programs or training",
+          "A NO vote leaves current practice unchanged",
+          ""
+        ],
+        differentiators: [
+          "Referred by the Legislature (HCR 2044); survived a court challenge and was upheld for the ballot",
+          "FOR: Goldwater Institute, Heritage Action for America, Arizona Women of Action, Arizona Free Enterprise Club",
+          "AGAINST: ACLU of Arizona, League of Women Voters of Arizona, Mi Familia Vota, Our Voice Our Vote, Civic Engagement Beyond Voting"
+        ],
+        supporters: [
+          "No one should have to affirm racial preferences to get a job, a contract or a scholarship",
+          "Public money should not fund programs that treat people differently by race or ethnicity"
+        ],
+        opponents: [
+          "The ACLU's Darrell Hill argues it chills First Amendment-protected speech by faculty and students",
+          "Its catch-all language covering any related practice or concept could block teaching history, or collecting race data for medical and public-health research"
+        ] },
+      { name: "Prop 144 — election requirements, including ID for mail voting (constitutional)", party: "I", winner: false,
+        positions: [
+          "A YES vote writes into the Constitution that only citizens may vote; requires government-issued ID to vote BY ANY METHOD, INCLUDING BY MAIL; bars foreign-national money in state elections; and guarantees on-site tabulation at voting locations",
+          "A NO vote leaves these rules in statute, where they can be changed by ordinary legislation",
+          ""
+        ],
+        differentiators: [
+          "The Arizona Secure Elections Act (HCR 2001), sponsored by Rep. ALEXANDER KOLODIN — who is also the Republican nominee for Secretary of State on this same ballot",
+          "⚠ Survived TWO challenges: a separate-amendment claim failed in Maricopa Superior Court, and on about Aug 19 the Arizona Supreme Court refused to order the ballot description rewritten, holding the petitioners lacked standing",
+          "FOR: Arizona Free Enterprise Club, Heritage Action for America, Arizona Women of Action. AGAINST: ACLU of Arizona, League of Women Voters, Common Cause, Mi Familia Vota, Rural Arizona Action, Arizona Public Health Association and others"
+        ],
+        supporters: [
+          "Kolodin's own argument: it puts the rules where they belong, in the Constitution, beyond the reach of any single official",
+          "Citizen-only voting and on-site tabulation are guarantees most voters assume already exist permanently"
+        ],
+        opponents: [
+          "It is unclear how mail voters would show ID at all — signatures verify them now, and Arizona already uniquely requires documentary proof of citizenship to register",
+          "Opponents say it hands the Legislature power to restructure or end mail voting; Civic Engagement Beyond Voting asserts the sponsor designed it to eliminate mail-in voting [Verify — that is CEBV's characterization of his intent, not a sourced statement by him]"
+        ] },
+      { name: "Prop 316 — cap municipal grocery taxes at 2%", party: "I", winner: false,
+        positions: [
+          "A YES vote caps city and town taxes on food for home consumption at 2% and requires local voter approval for any increase; cities already above the cap could only go down",
+          "A NO vote leaves cities their current authority over food taxes",
+          ""
+        ],
+        differentiators: [
+          "Referred by the Legislature (HCR 2021)",
+          "⚠ UNUSUALLY, THE CITIES' OWN LOBBY IS FOR IT: the League of Arizona Cities and Towns filed the FOR argument, calling it a negotiated compromise that preserves existing revenue while giving local voters the final say",
+          "AGAINST: Civic Engagement Beyond Voting"
+        ],
+        supporters: [
+          "It protects household affordability while keeping city budgets stable, and still taxes tourists who use local services",
+          "The cities' own association negotiated it, which is why it caps rather than abolishes the tax"
+        ],
+        opponents: [
+          "It is disguised tax relief that handcuffs local budgets and erodes home rule",
+          "Gov. Hobbs vetoed a similar 2023 bill projected to cost 65 cities more than $150 million a year, and the food tax is over 30% of the town of Taylor's budget"
+        ] },
+      { name: "Prop 317 — declare drug cartels terrorist organizations", party: "I", winner: false,
+        positions: [
+          "A YES vote declares drug cartels terrorist organizations and directs the Arizona Department of Homeland Security to do everything in its authority to counter them",
+          "A NO vote means no such designation, and AZDOHS keeps its current grant-administration role",
+          ""
+        ],
+        differentiators: [
+          "Referred by the Legislature (HCR 2055)",
+          "⚠ NO MAJOR ORGANIZATION FILED AN ARGUMENT ON EITHER SIDE — the only FOR argument was filed by an individual, George Khalaf of Scottsdale, and the only AGAINST by Timothy Everhard of Arizonans for Freedom",
+          "⚠ The measure explicitly bars the designation from aiding an asylum claim by someone fleeing the same cartel"
+        ],
+        supporters: [
+          "Cartels function as terrorist organizations, and the designation makes that official regardless of who runs the department",
+          "It gives a standing mandate that survives changes of administration"
+        ],
+        opponents: [
+          "It is symbolic — Gov. Hobbs vetoed a similar bill because AZDOHS mainly administers federal grants rather than conducting law enforcement",
+          "Barring the designation from supporting an asylum claim by someone fleeing that same cartel is, critics say, the tell that it is about messaging"
+        ] },
+      { name: "Prop 318 — student athletics and private spaces (constitutional)", party: "I", winner: false,
+        positions: [
+          "A YES vote bars K-12 schools and athletic associations from letting anyone use a restroom, locker room, shower or other private space not designated for their sex; designates sports Male, Female or Co-Ed; and creates a private right to sue",
+          "A NO vote leaves these decisions to schools and athletic associations",
+          ""
+        ],
+        differentiators: [
+          "The Protect Girls Sports in Arizona Act (HCR 2003); challenged in court and upheld for the ballot",
+          "FOR: Center for Arizona Policy, Arizona Women of Action, Liberty Counsel Action",
+          "AGAINST: ACLU of Arizona, League of Women Voters, ONE Community, Civic Engagement Beyond Voting and individual educators"
+        ],
+        supporters: [
+          "Male puberty confers lasting advantages in bone density, muscle mass and lung capacity",
+          "It gives female athletes legal standing to hold schools accountable rather than relying on association policy"
+        ],
+        opponents: [
+          "Schools and athletic associations should handle this, not a constitutional-scale mandate",
+          "Enforcement invites invasive sex-checking of ALL girls, and the broad language creates lawsuit exposure for schools and educators"
+        ] },
+      { name: "Prop 319 — ban photo-radar and red-light cameras", party: "I", winner: false,
+        positions: [
+          "A YES vote bans government photo-radar and red-light camera enforcement; cities with existing contracts must win voter approval to continue, for ten years at a time, or shut down within 90 days",
+          "A NO vote leaves photo enforcement as it is",
+          ""
+        ],
+        differentiators: [
+          "Referred by the Legislature (SCR 1004, 2026)",
+          "⚠ NO ORGANIZATION FILED A FOR ARGUMENT — only two individuals did",
+          "AGAINST: AAA Arizona, the Arizona Public Health Association, the Arizona section of the Institute of Transportation Engineers, Civic Engagement Beyond Voting"
+        ],
+        supporters: [
+          "Profit-driven private camera vendors, due-process problems and warrantless surveillance of drivers — the FOR arguments themselves note that Verra Mobility, which owns two major camera vendors, has a Mesa office",
+          "Local voters, not vendors or councils, should decide whether cameras stay"
+        ],
+        opponents: [
+          "The Insurance Institute for Highway Safety finds red-light cameras cut fatal red-light-running crashes by 21%",
+          "Removing them costs lives at intersections, which is why AAA and the state public-health association both filed against it"
+        ] },
+      { name: "Prop 320 — require 60% of school budgets go to classroom instruction", party: "I", winner: false,
+        positions: [
+          "A YES vote requires districts over 7,500 students, plus ALL districts in Maricopa, Pima and Pinal counties, to spend at least 60% of the operating budget on direct instruction; failure costs 25% of state funding, rising to 100% after four more years of noncompliance",
+          "A NO vote means no such spending mandate or penalty",
+          ""
+        ],
+        differentiators: [
+          "Referred by the Legislature (SCR 1032), sponsored by Sen. Jake Hoffman",
+          "FOR: Goldwater Institute, Arizona Women of Action",
+          "AGAINST: Education Forward Arizona, League of Women Voters, Save Our Schools Arizona, Mi Familia Vota, Rural Arizona Action, Beyond Numbers Analytics"
+        ],
+        supporters: [
+          "Hoffman's argument: too much school money never reaches the classroom, and this ends administrative bloat and outsized executive perks",
+          "A hard percentage is enforceable in a way that exhortation is not"
+        ],
+        opponents: [
+          "Save Our Schools calls 60% a benchmark districts have not met at any point since 2003",
+          "Counselors, nurses, bus drivers and special-education specialists all count as non-instructional, so the penalty would defund the schools it claims to fix"
+        ] }
+    ] }
+];
+
+// ----- U.S. House races by district (AIRC Official Congressional Map v14.0, 2022) -----
+// Sources: Arizona Secretary of State (July 21, 2026 primary; statewide canvass Aug 6, 2026),
+// Maricopa County "FINAL OFFICIAL RESULTS" canvass, FEC bulk file weball26, Cook Political
+// Report / Inside Elections / Sabato's Crystal Ball (each read at the rater's own site),
+// Arizona Republic, Arizona Mirror, AZPM, KJZZ, Native News Online, The Hill, CBS News.
+// ⚠ ALL PRIMARY FIGURES ARE OFFICIAL — Arizona canvassed statewide on Aug 6, 2026, and there
+// are no runoffs. This page therefore carries none of the "unofficial pending canvass" caveats
+// that pre-canvass state pages do.
+// ⚠ The SoS's certified GENERAL-election candidate list is NOT posted and its candidate app is
+// Cloudflare-blocked, so minor-party and write-in certifications carry a [Verify].
+const HOUSE_RACES = {
+  1: {
+    name: "U.S. House — AZ District 1",
+    region: "Scottsdale and north Phoenix — entirely within Maricopa County.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ THE MOST COMPETITIVE RACE IN ARIZONA, AND AN OPEN SEAT. Cook, Inside Elections and Sabato all call it a Toss Up, and Cook PVI is R+1. ⚠ THIS IS NO LONGER DAVID SCHWEIKERT'S SEAT — he withdrew on Sept 30, 2025 to run for governor and then LOST that primary to Andy Biggs, so no incumbent is on the ballot. ✅ BOTH PRIMARIES WERE REAL CONTESTS: Jay Feely took 49.8% of a three-way Republican field, and Amish Shah won the Democratic nomination with just 39.4% — a 5.0-point win over Marlene Galan-Woods, whom national Democrats and Sen. Mark Kelly had backed, after outside groups spent heavily against him.",
+        candidates: [
+          { name: "Jay Feely", party: "R", winner: false,
+            positions: [
+              "Border — finish the wall, fund ICE and Border Patrol, and deport violent offenders",
+              "Economy — extend the Trump-era tax cuts, cut regulation and expand domestic manufacturing",
+              "Ban transgender athletes from girls' and women's sports"
+            ],
+            differentiators: [
+              "Former NFL kicker and CBS Sports analyst; has never held elected office",
+              "Won the Republican primary 49.8% (43,709) to Chaplik's 35.7%",
+              "$794,475 cash on hand, FEC coverage through July 31, 2026 [Verify — reports the same figure as his July 1 report, so it may be a carry-forward]",
+              "Endorsed by President Trump, Speaker Johnson and Rep. Scalise"
+            ],
+            supporters: [
+              "Republican pollster Mike Noble called him one of the best Republican candidates in the state and said the GOP got lucky with him",
+              "An outsider profile that puts distance between him and the national party brand in a swing seat",
+              "Holds roughly a two-to-one cash advantage over Shah coming out of the primary"
+            ],
+            opponents: [
+              "No governing record of any kind — a celebrity-first profile in a district that decides close races [Verify — structural argument]",
+              "A Trump-aligned platform is a liability in a seat Biden carried in 2020 [Verify — structural argument]",
+              "A voter guide records him as supporting Comstock Act enforcement against mailed abortion drugs [Verify — sourced to iVoterGuide, not to his own campaign]"
+            ] },
+          { name: "Amish Shah", party: "D", winner: false,
+            positions: [
+              "Roll back the Trump tariffs and lower grocery, housing and health-care costs",
+              "Protect Social Security and Medicare, and reverse the Medicaid cuts in the 2025 reconciliation law",
+              "Expand coverage, lower drug prices and protect reproductive freedom"
+            ],
+            differentiators: [
+              "Emergency physician; served in the Arizona House 2019-2024",
+              "The 2024 nominee for this seat — lost to Schweikert 51.9% to 48.1%",
+              "Won a four-way primary with 39.4% (29,002), a 5.0-point margin",
+              "$401,745 cash on hand through July 1, 2026; added to the DCCC's Red to Blue list July 28, 2026"
+            ],
+            supporters: [
+              "He beat the candidate the national party establishment and Sen. Mark Kelly had endorsed, despite millions in outside spending against him",
+              "An ER doctor carries unusual credibility on the Medicaid and ACA cuts at the center of his campaign",
+              "Came within 3.8 points in 2024 in a presidential year; midterm turnout in an R+1 seat is a friendlier map"
+            ],
+            opponents: [
+              "The NRCC calls him a socialist who has already proven he can lose, and says he underperformed both Harris and Gallego here in 2024",
+              "Exits a bruising, expensive primary with $401K on hand against Feely's $794K",
+              "Winning a nomination with 39.4% leaves a majority of his own party's primary voters behind someone else [Verify — structural argument]"
+            ] },
+          { name: "Monica Alponte", party: "L", winner: false,
+            positions: [
+              "Non-interventionist foreign policy — she campaigns on ending what she calls endless wars",
+              "Civil liberties, under the slogan NOT LEFT, NOT RIGHT, JUST FREE",
+              "⚠ No further sourced 2026 platform detail could be located [Verify]"
+            ],
+            differentiators: [
+              "Retired business writer and former political television co-host",
+              "Unopposed for the Libertarian nomination with 289 votes",
+              "$634 cash on hand (FEC)"
+            ],
+            supporters: [
+              "Offers an antiwar and civil-liberties option neither major-party nominee is running on",
+              "In a seat decided by 3.8 points last time, a third line gives dissatisfied voters somewhere to go [Verify — structural argument]"
+            ],
+            opponents: [
+              "289 primary votes and under $1,000 on hand — no capacity to reach voters [Verify]",
+              "In a genuine Toss Up, a minor-party candidacy functions as a spoiler rather than a contender [Verify — structural argument]"
+            ] }
+        ] }
+    ] },
+  2: {
+    name: "U.S. House — AZ District 2",
+    region: "Northern and northeastern Arizona — Flagstaff, Prescott and the Navajo Nation. Parts of Apache, Coconino, Gila, Graham, Maricopa, Mohave, Navajo, Pinal and Yavapai counties; about 20% Native American.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "A 2024 REMATCH IN ARIZONA'S SECOND-MOST-COMPETITIVE SEAT. Cook PVI R+7; all three raters say Likely Republican. Eli Crane beat Jonathan Nez by 9 points in 2024 in a district Harris lost by about 15 — meaning Nez ran well ahead of the top of his own ticket, which is the case for taking the rematch seriously. ⚠ THE TWO PUBLIC POLLS ARE BOTH PARTISAN AND THEY DISAGREE SHARPLY: a Peak Insights poll in August 2026 had Crane up 53-42, while a GBAO poll paid for by the Nez campaign (June 11-15, 2026, 500 likely voters) had it 44-41. Read each in light of who paid for it. Neither primary was contested.",
+        candidates: [
+          { name: "Eli Crane (incumbent)", party: "R", winner: false,
+            positions: [
+              "Election integrity",
+              "Border security",
+              "Pro-life and Second Amendment commitments, which his campaign frames as defending our values"
+            ],
+            differentiators: [
+              "In Congress since 2023; former Navy SEAL and founder of Bottle Breacher",
+              "Unopposed for renomination with 89,205 votes [Verify — AZ-2's totals rest on a Wikipedia canvass citation, not independently confirmed]",
+              "$2,841,745 cash on hand through July 1, 2026 — roughly a 1.5-to-1 edge over Nez",
+              "Endorsed by President Trump, Club for Growth PAC and Turning Point Action"
+            ],
+            supporters: [
+              "An August 2026 Peak Insights poll put him ahead 53-42, with Trump at 51% approval inside the district [Verify — a Republican-aligned pollster]",
+              "Beat Nez by 9 points in 2024 while being outraised, in his first re-election",
+              "A SEAL-and-small-business profile matched to a rural, heavily Republican district"
+            ],
+            opponents: [
+              "A poll paid for by his opponent showed the race at 44-41, well inside the margin [Verify — a campaign-sponsored poll]",
+              "Nez ran roughly 6 points ahead of Harris here in 2024, suggesting durable crossover weakness for Crane [Verify — structural argument]",
+              "His hardline style is the specific thing Nez is targeting with moderate Republicans (Native News Online)"
+            ] },
+          { name: "Jonathan Nez", party: "D", winner: false,
+            positions: [
+              "Lower health-care, housing and utility costs",
+              "Water security and affordable healthy food — his Water is Life and Food is Medicine pillar",
+              "Rural infrastructure, voting rights and tribal sovereignty"
+            ],
+            differentiators: [
+              "President of the Navajo Nation 2019-2023",
+              "The 2024 nominee for this seat — lost by 9 points",
+              "Unopposed for renomination with 65,118 votes",
+              "$1,910,990 cash on hand through July 1, 2026"
+            ],
+            supporters: [
+              "A Native turnout operation in a district about one-fifth Native American, paired with outreach to Republicans put off by Crane's style",
+              "He outran the 2024 presidential ticket here by a clear margin — the strongest evidence the seat is winnable",
+              "Statewide-scale executive experience running the Navajo Nation government"
+            ],
+            opponents: [
+              "He already lost this seat by 9 points in 2024 while outraising the incumbent — a repeat challenger with a demonstrated ceiling [Verify — structural argument]",
+              "R+7 is a real structural burden in a midterm with no presidential turnout to help",
+              "Still trails Crane on cash, $1.91M to $2.84M"
+            ] },
+          { name: "Curtis Goodwin", party: "L", winner: false,
+            positions: [
+              "⚠ No sourced 2026 platform statement of any kind could be located [Verify]",
+              "",
+              ""
+            ],
+            differentiators: [
+              "Maintenance technician and industrial painter",
+              "Won the Libertarian line with 318 votes (97.0%) over a write-in",
+              "No FEC cash-on-hand figure could be located [Verify]"
+            ],
+            supporters: [
+              "He drew 7% in the June GBAO poll — more than the gap between Crane and Nez in that same survey, making him the one minor-party candidate in Arizona with a measurable effect",
+              "Gives voters a third option in the state's second-most-competitive district"
+            ],
+            opponents: [
+              "No locatable platform for voters to evaluate [Verify — an absence of located records]",
+              "No reported fundraising or campaign organisation [Verify]"
+            ] }
+        ] }
+    ] },
+  3: {
+    name: "U.S. House — AZ District 3",
+    region: "Downtown and west Phoenix plus part of Glendale — south Phoenix, Laveen and Maryvale. Majority-Latino; entirely within Maricopa County.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "THE SAFEST DEMOCRATIC SEAT IN ARIZONA — Cook PVI D+22, and Yassamin Ansari won it by 44 points in 2024. ⚠ NO REPUBLICAN QUALIFIED FOR THE PRINTED BALLOT. The party's write-in hopeful, Nicholas Glenn, drew 437 votes and did not qualify; a second Republican, Jacob Parkman, is a general-election write-in whose name will not be printed. The November choice on paper is therefore a Democrat, a No Labels nominee and a Green. ⚠ Alan Aversa was the GREEN nominee here in 2024, when he took 5,008 votes (2.5%); he now carries the No Labels line.",
+        candidates: [
+          { name: "Yassamin Ansari (incumbent)", party: "D", winner: false,
+            positions: [
+              "Cost of living — she chairs the Congressional Progressive Caucus Lowering Costs Task Force",
+              "Housing — more housing-choice voucher funding for Phoenix and more paths to homeownership [Verify — from a Sept 2024 questionnaire republished on her own site]",
+              "Immigration — asylum processing, visa backlogs and legal status for Dreamers, TPS holders and farmworkers [Verify — same 2024 source]"
+            ],
+            differentiators: [
+              "Former vice mayor of Phoenix and a UN climate policy adviser; among the youngest women in the House",
+              "Unopposed for renomination with 37,553 votes",
+              "$547,321 cash on hand through July 1, 2026",
+              "Endorsed by End Citizens United, Giffords, Planned Parenthood Action Fund and LCV"
+            ],
+            supporters: [
+              "Won 70.9% in 2024 and drew no primary opponent in 2026",
+              "Cook's own analysis says that absent future primary trouble she should hold this seat for a long time",
+              "A task-force chairmanship on costs gives a safe-seat member a national policy role"
+            ],
+            opponents: [
+              "Her campaign site's issues page currently returns an error, so most of her published platform dates to 2024 rather than this cycle [Verify]",
+              "⚠ No substantive sourced 2026 criticism of her record could be located [Verify — an absence of located records, not an endorsement]"
+            ] },
+          { name: "Alan Aversa", party: "I", winner: false,
+            positions: [
+              "America First non-interventionism — opposes U.S. funding of foreign wars",
+              "Local sustainable farming",
+              "Parental rights in schools"
+            ],
+            differentiators: [
+              "The No Labels nominee; carries a party line for the second cycle running, after being the Green nominee here in 2024",
+              "Took 5,008 votes (2.5%) as the Green candidate in 2024 — a real if small floor",
+              "Won the No Labels line with 571 votes; $0 cash on hand (FEC)"
+            ],
+            supporters: [
+              "With no Republican on the printed ballot, he is the only alternative most voters will actually see",
+              "An antiwar, anti-establishment pitch that neither major party is making here"
+            ],
+            opponents: [
+              "2.5% in 2024 is his own demonstrated ceiling, in a district decided by 44 points [Verify — structural argument]",
+              "No money and no campaign organisation of any scale [Verify]"
+            ] },
+          { name: "David Redkey", party: "G", winner: false,
+            positions: [
+              "⚠ No sourced 2026 platform statement could be located [Verify]",
+              "",
+              ""
+            ],
+            differentiators: [
+              "Educator; originally filed in AZ-1 before appearing here",
+              "⚠ Won the Green nomination as a WRITE-IN with FIVE votes — the smallest nominating total on this page [Verify — ballot certification could not be confirmed against the Secretary of State's own list]",
+              "No reported fundraising [Verify]"
+            ],
+            supporters: [
+              "Keeps a Green line on the ballot in a district where the party drew 2.5% two years ago [Verify — structural argument]"
+            ],
+            opponents: [
+              "Nominated by five write-in votes, with no located platform and no funding [Verify]",
+              "The Green Party's own site is reported to list his campaign as actively opposed [Verify — from a search summary that could not be confirmed at greenparty.org]"
+            ] }
+        ] }
+    ] },
+  4: {
+    name: "U.S. House — AZ District 4",
+    region: "The southeast Valley — Tempe, Mesa and Chandler, in Maricopa County.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "SAFE ON PAPER, BUT THE LEAST SAFE OF ARIZONA'S SAFE SEATS — Cook PVI D+4, the narrowest margin of any district all three raters call Solid or Safe, and two secondary forecasters have it only Likely Democratic. ⚠ THE REAL STORY IS THE PRIMARY: Greg Stanton beat a democratic-socialist challenger, Kai Newkirk, 62.3% to 37.7%. Newkirk ran chiefly against Stanton's AIPAC support, and 37.7% for an underfunded challenger is a genuine signal of left-flank unrest. ⚠ Ballotpedia still shows a stale partial count for this primary; the figures here are from Maricopa County's official canvass.",
+        candidates: [
+          { name: "Greg Stanton (incumbent)", party: "D", winner: false,
+            positions: [
+              "Water — the lead item on his own issues page, in a state facing Colorado River cuts",
+              "Affordability",
+              "Abortion rights"
+            ],
+            differentiators: [
+              "Mayor of Phoenix 2012-2018; before that a Phoenix city councilman and a deputy attorney general",
+              "Won the Democratic primary 62.3% (35,551) to 37.7% over Kai Newkirk",
+              "$2,020,289 cash on hand through July 1, 2026 — roughly six times Jasser's",
+              "Endorsed by Rep. Adelita Grijalva, the Ironworkers and LCV"
+            ],
+            supporters: [
+              "Turned back a democratic-socialist challenge by 24.6 points and is widely reported to be on track to hold the seat comfortably",
+              "Two terms as mayor of the state's largest city give him unusually deep local name recognition",
+              "A six-to-one cash advantage over his general-election opponent"
+            ],
+            opponents: [
+              "From the left: Newkirk attacked his AIPAC backing and accused Israel's government of trying to interfere in U.S. elections including here — and took 37.7% doing it",
+              "From the right: Jasser names him directly, saying that unlike Stanton he would back more resources for border agents",
+              "A D+4 seat is thin cover if the national environment turns [Verify — structural argument]"
+            ] },
+          { name: "Zuhdi Jasser", party: "R", winner: false,
+            positions: [
+              "Lower the cost of living by reining in spending, cutting regulation and bringing manufacturing home",
+              "A Balanced Budget Amendment to the Constitution",
+              "Border security and more resources for border agents"
+            ],
+            differentiators: [
+              "Physician, Navy veteran and a small-business owner for more than 20 years",
+              "Ran here in 2024 and lost the Republican primary with 27.0%; unopposed this time with 39,431 votes",
+              "$341,651 cash on hand through July 1, 2026",
+              "Endorsed by Turning Point Action"
+            ],
+            supporters: [
+              "An unopposed nomination gave him a clean, well-rested runway into the general that the 2024 nominee never had",
+              "His Republican primary vote total actually exceeded Stanton's Democratic primary total, a sign of engaged turnout on his side",
+              "A physician and veteran profile aimed at the district's suburban middle"
+            ],
+            opponents: [
+              "Stanton won this seat by 7.3 points in 2024 and Harris carried it by nearly 7 — a D+4 district is an uphill climb",
+              "Outspent roughly six to one [Verify — structural argument]",
+              "He lost this district's own Republican primary two years ago with 27% [Verify — structural argument]"
+            ] },
+          { name: "Tisha Benoit", party: "I", winner: false,
+            positions: [
+              "⚠ No sourced 2026 platform statement could be located [Verify]",
+              "",
+              ""
+            ],
+            differentiators: [
+              "The No Labels nominee; an herbal medicine practitioner and acupuncturist",
+              "Won the No Labels line 65.4% (981) over former Republican state Rep. John Fillmore",
+              "No FEC filing could be located [Verify]"
+            ],
+            supporters: [
+              "Beat a former state legislator for her party's line, which is a real if small mandate",
+              "Offers a non-major-party option in a district where the general election is not expected to be close [Verify — structural argument]"
+            ],
+            opponents: [
+              "No locatable platform and no located campaign-finance filing [Verify]",
+              "⚠ Her ballot certification could not be confirmed against the Secretary of State's own list [Verify]"
+            ] }
+        ] }
+    ] },
+  5: {
+    name: "U.S. House — AZ District 5",
+    region: "The East Valley — Gilbert plus parts of Chandler, Mesa and Apache Junction. Maricopa County and a slice of Pinal.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "AN OPEN SEAT, BUT NOT A COMPETITIVE ONE — Cook PVI R+10, and Andy Biggs carried it by 20.8 points in 2024 before retiring to run for governor, a primary he won. All three raters call it Solid or Safe Republican. ⚠ THE REPUBLICAN NOMINEE FACES PUBLISHED MISCONDUCT ALLEGATIONS THAT HE DENIES: an Arizona Republic investigation, reported by CBS News on July 21, 2026, carried allegations from multiple women that Mark Lamb sent explicit messages and nude photographs and used threats or intimidation to conceal it, along with claims that he shared racist jokes. Lamb's campaign denied the allegations and his wife called it a smear campaign. He won the primary by 17.4 points the same day the story ran.",
+        candidates: [
+          { name: "Mark Lamb", party: "R", winner: false,
+            positions: [
+              "Border security and funding for ICE and Border Patrol [Verify — his own site could not be loaded; sourced to Arizona Ballot Guide and Club for Growth, both citing it]",
+              "Election integrity and government accountability [Verify — same]",
+              "America First economics and limited government [Verify — same]"
+            ],
+            differentiators: [
+              "Pinal County Sheriff 2017-2024, known nationally as The American Sheriff",
+              "Lost the 2024 Republican U.S. Senate primary to Kari Lake",
+              "Won the primary 58.7% (52,352) to 41.3% over Daniel Keenan, who put $1.65 million of his own money in",
+              "$243,426 cash on hand through July 1, 2026 — modest for a heavily favoured nominee"
+            ],
+            supporters: [
+              "President Trump endorsed him in Nov 2025 and reaffirmed in July 2026; state Sen. Jake Hoffman said the endorsement ended the primary",
+              "He won by 17 points anyway, against a self-funder and on the day a damaging investigation was published",
+              "Eight years as an elected county sheriff in a district that prizes law-enforcement credentials"
+            ],
+            opponents: [
+              "The Arizona Republic investigation described in this race's summary — allegations he denies, but now on the public record in a general election",
+              "He skipped the June 4 Clean Elections primary debate, which became a one-on-one interview with his opponent instead",
+              "$243K on hand is thin, and he has already lost one statewide primary [Verify — structural argument]"
+            ] },
+          { name: "Elizabeth Lee", party: "D", winner: false,
+            positions: [
+              "Health care is a human right — grounded in years she spent undiagnosed with a genetic disease",
+              "Affordable housing and economic equity",
+              "Reproductive freedom and access to fertility care — she is a board-certified reproductive health and infertility nurse"
+            ],
+            differentiators: [
+              "Nurse and board-certified patient advocate; the first woman to win a major-party nomination in this district",
+              "Won the Democratic primary with 66.0% (30,857) in a three-way field",
+              "Refuses all corporate PAC money",
+              "$26,740 cash on hand through July 1, 2026 — the smallest war chest of any Arizona nominee"
+            ],
+            supporters: [
+              "A two-thirds primary win and a health-care-worker profile matched to an affordability message",
+              "Her opponent enters the general with published misconduct allegations and only $243K on hand",
+              "A nurse running on fertility care is an unusually specific fit for a suburban district [Verify — structural argument]"
+            ],
+            opponents: [
+              "R+10, and Biggs carried the seat by 20.8 points in 2024 — the structural gap is severe",
+              "$27,000 on hand against a Trump-endorsed former sheriff [Verify — structural argument]",
+              "Refusing corporate PAC money is principled but leaves her without a funding base in an expensive media market [Verify — structural argument]"
+            ] }
+        ] }
+    ] },
+  6: {
+    name: "U.S. House — AZ District 6",
+    region: "Southeastern Arizona — the Tucson suburbs of Catalina Foothills, Oro Valley, Marana, Green Valley and Vail, plus all of Greenlee County and most of Cochise. The only Arizona district with no Maricopa County territory.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "⚠ ARIZONA'S PREMIER SWING SEAT, AND THE MOST EVENLY BALANCED DISTRICT IN THE STATE — Cook PVI is EVEN (R+0). Cook, Inside Elections and Sabato all rate it a Toss Up, and Sabato's chart was refreshed as recently as Aug 26, 2026. Juan Ciscomani has now survived two straight photo finishes: 50.7-49.2 in 2022 and 50.0-47.5 in 2024, a margin of 10,822 votes. ✅ THE NUMBER THAT MATTERS MOST: the Green candidate took 10,759 votes in 2024 — very nearly Ciscomani's entire margin — and a Green is on the ballot again. ⚠ Every primary here was uncontested, but JoAnna Mendoza's uncontested Democratic primary drew about 4,200 MORE votes than Ciscomani's, and she has outraised the incumbent.",
+        candidates: [
+          { name: "Juan Ciscomani (incumbent)", party: "R", winner: false,
+            positions: [
+              "More Border Patrol agents at the border",
+              "Lower taxes for Arizonans and seniors",
+              "Record cancer-research funding, and support for veterans and law enforcement"
+            ],
+            differentiators: [
+              "In Congress since 2023; formerly a senior adviser to Gov. Ducey and with the Arizona-Mexico Commission",
+              "The first Mexican-born naturalized citizen elected to the House from Arizona",
+              "$4,135,163 cash on hand through July 1, 2026",
+              "Endorsed by the Arizona Fraternal Order of Police, the National Border Patrol Council and about 20 local officials — including Sharon Bronson, a former DEMOCRATIC Pima County supervisor"
+            ],
+            supporters: [
+              "The nonpartisan Center for Effective Lawmaking ranked him Arizona's most effective lawmaker in the 118th Congress — 15th overall and 3rd among freshmen",
+              "Runs on bipartisanship and more than $60 million in local project funding",
+              "A cross-party local endorsement list is exactly the profile an EVEN district rewards"
+            ],
+            opponents: [
+              "He pledged not to cut Medicaid and then voted for the reconciliation bill cutting roughly $1 trillion from it, on a 215-214 vote (Arizona Mirror)",
+              "Those cuts are projected to cost southern Arizona hospitals about $110 million a year (Arizona Mirror, Jan 8, 2026)",
+              "He has been outraised by a first-time federal candidate for three straight quarters"
+            ] },
+          { name: "JoAnna Mendoza", party: "D", winner: false,
+            positions: [
+              "Lowering costs and protecting families and seniors",
+              "Strengthening the health-care system",
+              "Climate, water and energy security for rural Arizona"
+            ],
+            differentiators: [
+              "Retired Marine after a 20-year career; raised in a Pinal County farmworker family",
+              "Former staffer to Rep. Tom O'Halleran; lost a 2020 state Senate bid",
+              "$3,260,752 cash on hand through July 1, 2026 — and $7.35 million raised, MORE than the incumbent",
+              "Endorsed by Sens. Mark Kelly and Ruben Gallego, AG Kris Mayes and Gabby Giffords"
+            ],
+            supporters: [
+              "She has outraised a sitting congressman for three consecutive quarters — rare for a first-time federal candidate",
+              "A Marine veteran fits a district that Gallego, Kelly and Hobbs have all carried",
+              "Her health-care message is district-specific: the $110 million annual hit to southern Arizona hospitals"
+            ],
+            opponents: [
+              "Ciscomani's campaign calls her far more aligned with the priorities of the extreme left and says she would end tax cuts Arizona families use",
+              "She has never held elected office and lost the one race she has run",
+              "A Green on the ballot cuts against her, not the incumbent — Greens took more votes here in 2024 than Ciscomani's entire margin [Verify — structural argument]"
+            ] },
+          { name: "Jereme Peters", party: "L", winner: false,
+            positions: [
+              "⚠ No sourced 2026 platform statement could be located [Verify]",
+              "",
+              ""
+            ],
+            differentiators: [
+              "Unopposed for the Libertarian nomination with 231 votes",
+              "No FEC cash-on-hand figure could be located [Verify]",
+              "⚠ Ballot certification could not be confirmed against the Secretary of State's own list [Verify]"
+            ],
+            supporters: [
+              "Gives small-government voters an option in a race both major parties are contesting hard [Verify — structural argument]"
+            ],
+            opponents: [
+              "231 nominating votes and no located platform or funding [Verify]",
+              "In a genuine Toss Up, a minor-party line risks deciding the seat without winning it [Verify — structural argument]"
+            ] },
+          { name: "Gary Swing", party: "G", winner: false,
+            positions: [
+              "⚠ No sourced 2026 platform statement could be located [Verify]",
+              "",
+              ""
+            ],
+            differentiators: [
+              "⚠ Won the Green nomination as a WRITE-IN with 29 votes; the Arizona Green Party lists him as its endorsed write-in",
+              "⚠ HIS BALLOT STATUS IS THE LEAST CERTAIN ON THIS PAGE [Verify] — his claim that the Secretary of State found him certifiable traces only to his own Facebook post, and Ballotpedia's summary paragraph omits him while its candidate table includes him",
+              "No reported fundraising [Verify]"
+            ],
+            supporters: [
+              "The Green line drew 10,759 votes here in 2024, so it is the one minor-party candidacy in Arizona with a proven, decisive constituency"
+            ],
+            opponents: [
+              "Nominated by 29 write-in votes, with no located platform and unconfirmed ballot status [Verify]",
+              "Greens took more votes than the winner's margin in 2024, so critics argue the line elects the candidate its own voters like least [Verify — structural argument]"
+            ] }
+        ] }
+    ] },
+  7: {
+    name: "U.S. House — AZ District 7",
+    region: "The border district — western Tucson, parts of Yuma and Nogales, and Avondale and Tolleson in metro Phoenix. All of Santa Cruz County plus parts of Cochise, Maricopa, Pima, Pinal and Yuma.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "A SAFE DEMOCRATIC SEAT AND A THIRD MEETING OF THE SAME TWO CANDIDATES. Cook PVI D+13. ⚠ THIS SEAT CHANGED HANDS BY DEATH, NOT DEFEAT: Rep. Raul Grijalva died in March 2025 after 22 years, and his daughter Adelita Grijalva won the Sept 23, 2025 special election and was sworn in Nov 12, 2025 — the first Latina to represent Arizona in Congress. She is now running for her first full term. ✅ A DETAIL WORTH KNOWING: minutes after taking the oath she provided the decisive 218th signature on the discharge petition forcing release of the Epstein files. Daniel Butierez has now lost to a Grijalva twice — by about 27 points in 2024 and about 40 in the special — and is running a third time. Both primaries were uncontested.",
+        candidates: [
+          { name: "Adelita Grijalva (incumbent)", party: "D", winner: false,
+            positions: [
+              "⚠ No detailed 2026 issue platform could be located on her own campaign site [Verify] — it runs on keeping a progressive champion in southern Arizona rather than on a policy list",
+              "",
+              ""
+            ],
+            differentiators: [
+              "Pima County Supervisor and before that a TUSD school board member; decades of work in Pima County teen court",
+              "Won the Sept 23, 2025 special election for the remainder of her father's term; unopposed for renomination with 49,107 votes",
+              "Provided the decisive 218th signature on the Epstein-files discharge petition minutes after being sworn in, Nov 12, 2025",
+              "$427,977 cash on hand through July 1, 2026 — a roughly 37-to-1 edge over her opponent"
+            ],
+            supporters: [
+              "She beat this same opponent by about 40 points in the 2025 special election",
+              "The Epstein discharge signature gave a brand-new member immediate national visibility on a transparency issue",
+              "Deep local governing roots in Pima County independent of her father's seat"
+            ],
+            opponents: [
+              "Succeeding her father in his own seat invites the dynastic-succession critique, which Butierez has run on across three cycles [Verify — structural argument]",
+              "Her campaign spent $1.86 million of the $2.29 million it raised, leaving comparatively modest reserves (FEC)",
+              "No published 2026 policy platform of her own for voters to hold her to [Verify]"
+            ] },
+          { name: "Daniel Butierez Sr.", party: "R", winner: false,
+            positions: [
+              "Secure the southern border and give Border Patrol more resources",
+              "Cut taxes and simplify the code for small business",
+              "Promote job growth through what he calls responsible mining in southern Arizona"
+            ],
+            differentiators: [
+              "Small-business owner and third-generation Arizonan",
+              "His THIRD consecutive run for this seat — lost by about 27 points in 2024 and about 40 in the 2025 special",
+              "Unopposed for renomination with 18,181 votes",
+              "$11,399 cash on hand through July 1, 2026"
+            ],
+            supporters: [
+              "Three straight campaigns give him the highest name recognition of any Republican in the district",
+              "A border-and-mining message aimed squarely at the Yuma and Santa Cruz county economies",
+              "He debated the incumbent at a Citizens Clean Elections forum on Aug 26, 2026, giving voters a direct comparison"
+            ],
+            opponents: [
+              "Twice defeated by wide margins with no measurable improvement between attempts [Verify — structural argument]",
+              "$11,399 on hand against $427,977 — effectively unfunded [Verify]",
+              "D+13 in a district Harris carried 60.5-38.4 [Verify — structural argument]"
+            ] }
+        ] }
+    ] },
+  8: {
+    name: "U.S. House — AZ District 8",
+    region: "The northwest Valley — parts of Glendale, Peoria and Surprise, plus Sun City, Sun City West, Anthem, New River and north Phoenix. Heavily retirement-community; entirely Maricopa County.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "SOLID REPUBLICAN — Cook PVI R+8, and Abe Hamadeh won by 13 points in 2024. ⚠ THE SHARPEST DOCUMENTED ISSUE IN THIS RACE IS THE CHALLENGER'S PAPERWORK, NOT EITHER CANDIDATE'S RECORD: the FEC sent Bernadette Greene Placentia's campaign THREE compliance notices — a pre-primary report due July 9 that was never filed, incorrect year-end 2025 cumulative totals with mismatched cash balances, and an amended April report that raised receipts by $85,687 and carried $74,798 in unexplained negative transactions. No response or amended filing had appeared publicly as of Aug 26, 2026 (Arizona Daily Independent). Her most recent FEC coverage therefore ends March 31, 2026, while every other Arizona nominee's runs to July.",
+        candidates: [
+          { name: "Abraham Hamadeh (incumbent)", party: "R", winner: false,
+            positions: [
+              "Border security and immigration enforcement",
+              "Cutting taxes, and what he calls election integrity",
+              "Second Amendment protections, the military and veterans"
+            ],
+            differentiators: [
+              "In Congress since 2025; a former Maricopa County prosecutor and an Army Reserve intelligence officer",
+              "Lost the 2022 attorney general race by 280 votes and challenged the result in court",
+              "Unopposed for renomination with 61,816 votes after his primary opponent withdrew",
+              "$384,185 cash on hand through July 1, 2026; missed 7 of 645 roll-call votes (1.1%), better than the House median"
+            ],
+            supporters: [
+              "Carries President Trump's endorsement in an R+8 district — his own site leads with it",
+              "A voting-attendance record better than the chamber's median",
+              "A prosecutor and veteran profile that matches a law-and-order, retirement-heavy district"
+            ],
+            opponents: [
+              "His prolonged court challenge to the 2022 attorney general result is cited by critics as election denial",
+              "Critics say he prioritises a national media profile over district service [Verify — structural argument]",
+              "$384K on hand is modest for a sitting member of Congress [Verify — structural argument]"
+            ] },
+          { name: "Bernadette Greene Placentia", party: "D", winner: false,
+            positions: [
+              "Affordability — grocery, fuel and energy costs",
+              "Seniors — protect Social Security and expand Medicare and Medicaid, in a district full of retirees",
+              "Public schools, better law-enforcement pay and training, and a secure border paired with legal worker pathways"
+            ],
+            differentiators: [
+              "27 years and roughly 3.5 to 4 million miles as a long-haul trucker and small fleet owner",
+              "Won the Democratic primary 64.6% (25,462) to 35.4%",
+              "$190,394 cash on hand — ⚠ but FEC coverage ends March 31, 2026, months staler than any other Arizona nominee [Verify]"
+            ],
+            supporters: [
+              "A genuine working-class, non-politician profile — she frames it as not running to join the club",
+              "Won her primary by nearly two to one",
+              "A seniors-and-affordability message aimed directly at Sun City and Sun City West"
+            ],
+            opponents: [
+              "Three unanswered FEC compliance notices, including a pre-primary report never filed and $74,798 in unexplained negative transactions (Arizona Daily Independent, Aug 26, 2026)",
+              "The seat has not been competitive since redistricting — Trump carried it 57.7-41.4",
+              "No prior elected experience [Verify — structural argument]"
+            ] }
+        ] }
+    ] },
+  9: {
+    name: "U.S. House — AZ District 9",
+    region: "Western Arizona — all of La Paz County, most of Mohave (Kingman, Lake Havasu City, Bullhead City), most of Yuma, and western Maricopa (Buckeye and parts of Goodyear, Glendale and Surprise). Covers most of Arizona's western border.",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming",
+        note: "THE MOST REPUBLICAN DISTRICT IN ARIZONA — Cook PVI R+15, and Paul Gosar won by 30.6 points in 2024 while Trump carried it 65.1-34.0. All three raters call it Solid or Safe Republican. Gosar has served since 2013 and is among the most controversial members of the House: he was CENSURED by the House in November 2021 and stripped of his committees over an animated video depicting violence against a colleague, and CNN's KFile documented his ties to white-nationalist figures in 2022. ✅ IN FAIRNESS, THOSE ARE 2021-2023 EVENTS — no 2026 controversy could be located. ⚠ A third candidate, independent William Perry, is a general-election WRITE-IN, so his name will not be printed on the ballot; he is not carded here. Both printed-ballot primaries were uncontested.",
+        candidates: [
+          { name: "Paul Gosar (incumbent)", party: "R", winner: false,
+            positions: [
+              "Eliminate all taxes on Social Security benefits and end pension and income offsets",
+              "Second Amendment absolutism — he holds A ratings from the NRA and Gun Owners of America",
+              "Debt and spending — a Balanced Budget Amendment"
+            ],
+            differentiators: [
+              "In Congress since 2013; a dentist by training and former chairman of the Congressional Western Caucus",
+              "Unopposed for renomination with 67,577 votes after his primary opponent withdrew",
+              "$303,214 cash on hand through July 1, 2026"
+            ],
+            supporters: [
+              "Seniority and past Western Caucus leadership give a rural district direct leverage on water, mining and federal-lands policy",
+              "Carried the district by more than 30 points in 2024",
+              "His Social Security tax-elimination plank is aimed squarely at a district with a large retiree population"
+            ],
+            opponents: [
+              "Censured by the House in November 2021 and stripped of his committee assignments over an animated video depicting violence against Rep. Ocasio-Cortez",
+              "CNN's KFile documented long-standing ties to white-nationalist figures in March 2022, and he addressed the AFPAC conference; House Democrats sought a further censure in 2023 over a staffer's white-supremacist ties",
+              "Critics argue an R+15 seat leaves him effectively unaccountable to voters [Verify — structural argument]"
+            ] },
+          { name: "Danielle Sterbinsky", party: "D", winner: false,
+            positions: [
+              "Accountability — congressional term limits and getting big money out of politics",
+              "Education — fully funded schools and smaller class sizes",
+              "Economy — small business and rural job creation, plus tax credits for first-time homebuyers"
+            ],
+            differentiators: [
+              "Navy veteran (Operations Specialist, USS Bainbridge); certified HR professional with a master's in industrial-organizational psychology",
+              "Unopposed for the Democratic nomination with 31,371 votes",
+              "$25,745 cash on hand through July 1, 2026 — she raised $354,000 and has already spent $332,000"
+            ],
+            supporters: [
+              "A Navy veteran running on housing affordability and term limits, in a district where the incumbent's national controversies are the obvious opening",
+              "Term limits and anti-corruption are unusually cross-partisan messages for a district this Republican [Verify — structural argument]"
+            ],
+            opponents: [
+              "R+15 and a 30.6-point 2024 margin put this out of realistic reach [Verify — structural argument]",
+              "$25,745 on hand against $303,214, having already spent 94% of what she raised [Verify]"
+            ] }
+        ] }
+    ] }
+};
+
+const SITE_META = { name: "Arizona Elections Hub", lastUpdated: "August 27, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — Arizona county-level down-ballot research has not started.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Arizona has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them,
+  // otherwise a district with no plurality county is unreachable from the map.
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const AZ_STATE_FIPS = "04";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#azmap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(AZ_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Hartford ----
+  drawCapital(g, projection, { name: "Phoenix", lng: -112.097, lat: 33.448 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in AZ";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our Arizona dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+// Split a race note on the ⚠ / ✅ flag glyphs the editorial style already uses, keeping
+// the glyph that introduced each segment. Text before the first flag is the lead. This is
+// presentation only — no wording is altered and nothing is dropped.
+function briefSegments(note) {
+  const out = [];
+  const re = /([\u26A0\uFE0F\u2705]+)\s*/g;
+  let last = 0, mark = "", m;
+  while ((m = re.exec(note)) !== null) {
+    const text = note.slice(last, m.index).trim();
+    if (text) out.push({ mark: mark, text: text });
+    mark = m[1].replace(/\uFE0F/g, "");
+    last = re.lastIndex;
+  }
+  const tail = note.slice(last).trim();
+  if (tail) out.push({ mark: mark, text: tail });
+  return out;
+}
+
+function renderNote(note) {
+  if (!note) return "";
+  const body = briefSegments(note).map(function (s) {
+    return s.mark
+      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${s.text}</p>`
+      : `<p class="brief-lead">${s.text}</p>`;
+  }).join("");
+  // Clamp only what actually needs clamping: the median note is 236 characters, so most
+  // briefs show whole and never render a toggle at all.
+  const long = note.length > 300;
+  return `<div class="election-brief${long ? " clamped" : ""}">
+      <div class="brief-label">About this race</div>
+      <div class="brief-body">${body}</div>
+      ${long ? `<button class="brief-more" type="button">Show more</button>` : ""}
+    </div>`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${renderNote(e.note)}${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const more = e.target.closest(".brief-more");
+  if (more) {
+    const brief = more.closest(".election-brief");
+    more.textContent = brief.classList.toggle("clamped") ? "Show more" : "Show less";
+    return;
+  }
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>
