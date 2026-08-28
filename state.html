@@ -301,6 +301,8 @@ const params = new URLSearchParams(window.location.search);
 let abbr = (params.get("state") || "CA").toUpperCase();
 if (!STATES[abbr]) abbr = "CA";
 // If someone lands here for NC, send them to the full build.
+if (abbr === "WY") { window.location.replace("wy.html"); }
+if (abbr === "FL") { window.location.replace("fl.html"); }
 if (abbr === "AL") { window.location.replace("al.html"); }
 if (abbr === "MN") { window.location.replace("mn.html"); }
 if (abbr === "ND") { window.location.replace("nd.html"); }
@@ -425,38 +427,6 @@ const HOUSE_SEATS = {
 // Keys suppress the matching office-level entry in buildSeats.
 // ============================================================
 const STATE_RACES = {
-  FL: [
-    { key:"governor", date:"Nov 3, 2026", type:"upcoming", scope:"State · Statewide · Nov 3, 2026",
-      office:"Governor of Florida",
-      note:"Open seat — DeSantis is term-limited. PRIMARIES NOT YET HELD (Aug 18, 2026): field below reflects declared frontrunners, not nominees.",
-      candidates:[
-        { name:"Byron Donalds", party:"R", winner:false,
-          positions:["Continue the DeSantis policy agenda","School choice expansion","Property-insurance market reform"],
-          differentiators:["U.S. Representative (FL-19)","Trump endorsed him early — before DeSantis backed anyone","GOP primary frontrunner [Verify Aug 18 result]"],
-          supporters:["Trump's pick in Trump's home state","Young, effective communicator"],
-          opponents:["Thin executive experience for a huge state","Insurance crisis needs more than talking points"] },
-        { name:"David Jolly", party:"D", winner:false,
-          positions:["Property-insurance overhaul as the campaign centerpiece","Public-school funding","Abortion-rights restoration"],
-          differentiators:["Former Republican congressman, now running as a Democrat","Leading declared Democrat [Verify Aug 18 result]","MSNBC commentator profile"],
-          supporters:["Crossover appeal in a state Democrats keep losing","Insurance-first message meets voters where they hurt"],
-          opponents:["A former Republican leading the Democratic ticket alienates the base","Hasn't won an election since 2014"] },
-        { name:"Jason Pizzo", party:"I", winner:false,
-          positions:["Centrist public-safety-first platform","Insurance and affordability","Nonpartisan governance"],
-          differentiators:["State senator who dramatically quit the Democratic Party in 2025","Running as an independent","Former prosecutor"],
-          supporters:["A real lane for voters exhausted by both parties"],
-          opponents:["Independents don't win Florida; he splits the anti-GOP vote"] }
-      ]},
-    { key:"senate-special", date:"Nov 3, 2026", type:"upcoming", scope:"Federal · Statewide · Nov 3, 2026",
-      office:"U.S. Senate — Special Election",
-      note:"For the seat Marco Rubio vacated to become Secretary of State. Ashley Moody (R) was appointed and runs to finish the term. [Verify] Democratic nominee (Aug 18 primary).",
-      candidates:[
-        { name:"Ashley Moody (appointed incumbent)", party:"R", winner:false,
-          positions:["Law-enforcement-first record from her AG tenure","Border security","Anti-fraud consumer protection"],
-          differentiators:["Appointed to Rubio's seat in Jan 2025","Former Florida Attorney General and judge","First statewide test as a senator"],
-          supporters:["Proven statewide winner as AG","Serious legal résumé"],
-          opponents:["Never elected to this seat — appointed by an ally","Rubber-stamp record"] }
-      ]}
-  ],
   NY: [
     { key:"governor", date:"Nov 3, 2026", type:"upcoming", scope:"State · Statewide · Nov 3, 2026",
       office:"Governor of New York",

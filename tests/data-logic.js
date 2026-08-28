@@ -105,6 +105,16 @@ const STATE_PAGES = [
   // population plurality of NO county, so they are reachable ONLY through it. 9 statewide +
   // 8 districts x 1 race each.
   { page: "az.html", countyCount: 15,  sampleFips: "04013", sampleName: "Maricopa",     expectedRaces: 17 },
+  // Florida: Miami-Dade is the deliberate sample — it touches FIVE districts (ds:[27,28,24,26,25])
+  // and FL-24, FL-25 and FL-26 are the population plurality of NO county, so they are reachable
+  // ONLY through Miami-Dade, Broward and Palm Beach (lesson #12). 13 statewide (7 upcoming incl.
+  // the ballot-measure card + 6 Aug 18 primary cards) + 10 district races across those 5 seats.
+  { page: "fl.html", countyCount: 67,  sampleFips: "12086", sampleName: "Miami-Dade",   expectedRaces: 23 },
+  // Wyoming: ONE at-large U.S. House seat, so NO county is split and every county sees an
+  // identical ballot — the simplest map on the site and the exact opposite of Florida's.
+  // 15 statewide (8 upcoming incl. the retention and ballot-measure cards + 7 Aug 18 primary
+  // cards) + 3 at-large House races. Every one of the 23 counties returns 18.
+  { page: "wy.html", countyCount: 23,  sampleFips: "56021", sampleName: "Laramie",      expectedRaces: 18 },
 ];
 
 for (const cfg of STATE_PAGES) {
@@ -261,10 +271,13 @@ for (const abbr of ALL_TESTED) {
 {
   const oh = seatsFor("OH").seats || [];
   check(oh.some(s => officeKind(s) === "senate-special"), "OH: has the special Senate election");
+  // Florida became a fully built page (fl.html) on Aug 28, 2026 and was removed from STATE_RACES,
+  // so its special Senate election must now come from the GENERIC buildSeats path via SEN_SPECIAL.
   const fl = seatsFor("FL").seats || [];
-  check(fl.some(s => officeKind(s) === "senate-special"), "FL: has the special Senate election");
-  check(fl.filter(s => officeKind(s) === "senate-special").every(s => Array.isArray(s.candidates)),
-    "FL: the special comes from STATE_RACES (full candidate detail), not the generic entry");
+  check(fl.some(s => officeKind(s) === "senate-special"), "FL: still has the special Senate election");
+  const flRaw = runScript(stateCode, { search: "?state=FL", extra: stateExtra });
+  check(!!flRaw.sandbox && !("FL" in (flRaw.sandbox.__exports.STATE_RACES || {})),
+    "FL: removed from STATE_RACES — fl.html is the built page");
 
   const wa = seatsFor("WA").seats || [];
   check(!wa.some(s => officeKind(s) === "senate"), "WA: no Senate race (not a Class 2 state)");

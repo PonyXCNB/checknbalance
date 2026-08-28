@@ -1,0 +1,237 @@
+// Florida U.S. House districts 1-7.
+// ⚠⚠ KEY FINDING: DISTRICTS 1-7 WERE **NOT** REDRAWN BY HB 1D. The new map reworked 21 of 28
+// districts and every one of them is numbered 8 or higher. Confirmed two ways: WUSF/WFSU
+// reporting ("Districts 1-7 are unchanged"), and decisively by the county composition in the
+// state's own certified Aug 18 results file, which matches the 2022 lines exactly
+// (FL-1 = Escambia/Santa Rosa/Okaloosa/Walton; FL-3 = 12 north-central counties;
+// FL-4 = Clay/Duval/Nassau; FL-5 = Duval/St. Johns; FL-7 = Seminole/Volusia). No incumbent in
+// 1-7 was drawn out or renumbered. This independently corroborates our own county->district table.
+// The headline stories here are NOT redistricting: FL-7, where the incumbent LOST his own primary,
+// and FL-2, an open seat after Neal Dunn's retirement.
+//
+// Vote totals are the researcher's own aggregation of the state's county-level official results
+// file (20260818_ElecResultsFL.txt), summed per district; they track published press figures to
+// within ~0.2 points. Certified by the Elections Canvassing Commission Aug 27, 2026.
+// ⚠ Money figures are cycle-to-date RECEIPTS through the FEC coverage date of July 29, 2026
+// (the FEC API rate-limited on cash-on-hand). Cash-on-hand figures carry [Verify].
+// ⚠ Sabato could not be read — centerforpolitics.org returned a Cloudflare 403 to every request —
+// so NO Sabato rating is cited. Cook and Inside Elections were read at their own sites.
+// ⚠ Florida ballot parties: NPA and Florida Forward Party -> "I", Libertarian Party of Florida ->
+// "L"; the actual ballot party is named inside `differentiators`.
+// ⚠ Write-in candidates are state-certified but do NOT appear printed on the ballot, so they are
+// noted in the race note rather than given candidate cards.
+  1: { name: "U.S. House — FL District 1", region: "Pensacola, Destin and the western Panhandle (Escambia, Santa Rosa, Okaloosa, Walton)",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "FL-1 WAS NOT TOUCHED BY THE NEW HB 1D MAP — its four Panhandle counties are identical to the 2024 lines, confirmed by the county breakdown in the state's certified Aug 18 results. ✅ This is a third Patronis–Valimont-era matchup: Valimont lost to Matt Gaetz in 2024 (66–34) and to Patronis in the April 2025 special (56.9–42.3). ⚠ Valimont's money has collapsed — $174,309 raised this cycle through July 29 against roughly $6.5M in the 2025 special. Cook rates it Solid R (R+18 PVI); Inside Elections also Solid Republican. Certified Aug 27, 2026.",
+        candidates: [
+          { name: "Jimmy Patronis (incumbent)", party: "R", winner: false,
+            positions: ["Supporter of President Trump's agenda", "Defender of Second Amendment rights", "Backing first responders, law enforcement, veterans and active military"],
+            differentiators: ["Won the Aug 18 Republican primary with 71.1% over John Frankman (19.5%) and Douglas Chico (9.4%)", "Former Florida Chief Financial Officer and State Fire Marshal", "$3,789,738 raised this cycle through July 29, 2026", "Trump endorsement [Verify — reported by endorsement trackers, not confirmed at a primary source]"],
+            supporters: ["Statewide executive experience in disaster recovery and insurance — the Panhandle's dominant pocketbook issue", "Won a three-way primary with 71%, showing no meaningful Republican discontent", "Outraises his Democratic opponent roughly twenty-two to one"],
+            opponents: ["Won the 2025 special by 14.6 points in a seat Gaetz carried by 32 in 2024 — cited as evidence of soft Republican enthusiasm", "His Division of Elections qualifying paperwork lists a Tallahassee address, outside the district", "Two terms' worth of this seat has now been filled by special election rather than a full-cycle contest [Verify — structural argument]"] },
+          { name: "Gay Valimont", party: "D", winner: false,
+            positions: ["Lowering insurance costs", "Expanding health care access", "Delivering a full-service VA hospital for Panhandle veterans"],
+            differentiators: ["Unopposed for the Democratic nomination — no Democratic primary was held here", "Third run in FL-1: 34.0% in 2024, 42.3% in the 2025 special", "$174,309 raised through July 29, 2026", "Runs on zero corporate PAC money"],
+            supporters: ["Raised the Democratic share here by more than eight points between 2024 and 2025", "Highest name recognition of any Democrat in the district after three cycles", "An insurance-cost and VA-hospital message tailored to a heavily veteran district"],
+            opponents: ["Fundraising fell from about $6.5M in the 2025 special to $174K this cycle — no path to comparable paid media", "Has lost this seat twice already", "R+18 is the most Republican of these seven seats; Cook and Inside Elections both call it Solid R"] },
+          { name: "Tyler L. Davis", party: "I", winner: false,
+            positions: ["Workforce development, skilled trades and education-industry partnerships", "Ongoing constituent engagement and transparency between elections", "Infrastructure and emerging-industry investment so residents can build careers without leaving the Panhandle"],
+            differentiators: ["No-party-affiliation candidate — qualified straight to the November ballot, no primary", "Founder of A Pensacola Perspective, a civic-engagement nonprofit", "More than a decade working in the financial industry", "Not among FL-1 candidates reporting more than $20,000 in receipts to the FEC this cycle"],
+            supporters: ["Offers a non-partisan option in a seat where the general election is effectively decided by the Republican primary", "Runs on local presence and constituent service rather than national culture-war framing"],
+            opponents: ["No-party candidates drew under 1% in this district's 2025 special election", "No meaningful campaign funding could be located in FEC filings [Verify — structural argument]", "Faces a $3.8M incumbent with statewide name recognition [Verify — structural argument]"] } ] },
+      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Republican primary",
+        note: "PATRONIS WON A THREE-WAY REPUBLICAN PRIMARY WITH 71.1%. No Democratic primary was held — Gay Valimont was unopposed. Certified Aug 27, 2026.",
+        candidates: [
+          { name: "Jimmy Patronis (incumbent)", party: "R", winner: true, positions: [], differentiators: ["62,965 votes — 71.1%"], supporters: [], opponents: [] },
+          { name: "John Frankman", party: "R", winner: false, positions: [], differentiators: ["17,278 votes — 19.5%"], supporters: [], opponents: [] },
+          { name: "Douglas Chico", party: "R", winner: false, positions: [], differentiators: ["8,285 votes — 9.4%"], supporters: [], opponents: [] } ] } ] },
+  2: { name: "U.S. House — FL District 2", region: "Tallahassee, Panama City and the eastern Panhandle / Big Bend (16 counties including Leon, Bay, Gadsden and Jackson)",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "OPEN SEAT — REP. NEAL DUNN ANNOUNCED ON JAN 13, 2026 THAT HE WOULD NOT SEEK A SIXTH TERM, and he does not appear on the state's qualified-candidate list. ⚠ FL-2 was NOT redrawn by HB 1D; its 16 counties match the 2024 lines per the certified Aug 18 results. ✅ Austin Rogers emerged from an eight-way Republican field with just 30.5%, beating Florida GOP chairman Evan Power (15.8%) and self-funding attorney Keith Gross, who raised $12.3M and finished second at 16.4%. Cook rates it Solid R (R+8 PVI, the second-least-red of districts 1–7); Inside Elections also Solid Republican. Certified Aug 27, 2026.",
+        candidates: [
+          { name: "Austin Rogers", party: "R", winner: false,
+            positions: ["America First — a reliable vote for President Trump's agenda", "Secure the border and fund the military and law enforcement", "Defend freedom of faith and freedom of speech"],
+            differentiators: ["Won an eight-candidate primary with 30.5%", "Former General Counsel to U.S. Sen. Rick Scott; Duke law degree; Panama City native", "$1,010,277 raised through July 29, 2026", "His father retired from Tyndall Air Force Base, inside the district"],
+            supporters: ["Capitol Hill experience — worked on Trump-agenda legislation for Sen. Scott, so no on-the-job training", "Deep Bay County roots and a military family tied to Tyndall Air Force Base", "Republicans have not lost this seat in a decade; Dunn won by 23 points in 2024"],
+            opponents: ["Nearly seven in ten Republican primary voters chose someone else", "Was outraised twelve to one in the primary by Keith Gross, $12.3M to $1.0M, and enters the general with a modest war chest", "Campaigned heavily on national culture-war and faith themes in a district facing acute rural-hospital and hurricane-recovery pressures [Verify — structural argument]"] },
+          { name: "Amanda Marie Green", party: "D", winner: false,
+            positions: ["Lower living costs by taking on corporate price-gouging and tariffs", "Expand affordable health care, protect Medicare and Medicaid, reverse rural health cuts", "Seek a House Agriculture Committee seat and champion a strong Farm Bill"],
+            differentiators: ["Won a four-way Democratic primary with 33.5%", "Worked for a USAID subsidiary until the agency was cut in 2025", "$348,120 raised through July 29, 2026", "First FL-2 race without an incumbent since 2016"],
+            supporters: ["An agriculture and rural-health platform built for a 16-county district where one in four families uses nutrition programs", "Open-seat dynamics plus R+8 make this the least-red Panhandle seat", "Outraised the 2024 Democratic nominee, who lost by 23 points"],
+            opponents: ["Won with 33.5%; runners-up Yen Bailey and Brice Barnes together took 55% of the Democratic primary vote", "Trails the Republican nominee roughly three to one in money", "Both Cook and Inside Elections rate the seat Solid Republican"] } ] },
+      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Republican primary",
+        note: "AN EIGHT-WAY SCRAMBLE WON WITH 30.5%. ✅ Florida GOP chairman Evan Power finished third; Keith Gross, who raised $12.3M, finished second. Certified Aug 27, 2026.",
+        candidates: [
+          { name: "Austin Rogers", party: "R", winner: true, positions: [], differentiators: ["26,726 votes — 30.5%"], supporters: [], opponents: [] },
+          { name: "Keith Gross", party: "R", winner: false, positions: [], differentiators: ["14,381 votes — 16.4%; raised $12.3M"], supporters: [], opponents: [] },
+          { name: "Evan Power", party: "R", winner: false, positions: [], differentiators: ["13,842 votes — 15.8%; Republican Party of Florida chairman"], supporters: [], opponents: [] },
+          { name: "Luke Murphy", party: "R", winner: false, positions: [], differentiators: ["13,461 votes — 15.3%"], supporters: [], opponents: [] },
+          { name: "Jim Norton", party: "R", winner: false, positions: [], differentiators: ["11,420 votes — 13.0%"], supporters: [], opponents: [] },
+          { name: "Audie Rowell", party: "R", winner: false, positions: [], differentiators: ["4,773 votes — 5.4%"], supporters: [], opponents: [] },
+          { name: "Lee Jones", party: "R", winner: false, positions: [], differentiators: ["1,821 votes — 2.1%"], supporters: [], opponents: [] },
+          { name: "Nick Lewis", party: "R", winner: false, positions: [], differentiators: ["1,281 votes — 1.5%"], supporters: [], opponents: [] } ] },
+      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
+        note: "A FOUR-WAY RACE DECIDED BY 5.5 POINTS. ⚠ Yen Bailey, the party's 2024 nominee, finished second. Certified Aug 27, 2026.",
+        candidates: [
+          { name: "Amanda Marie Green", party: "D", winner: true, positions: [], differentiators: ["21,462 votes — 33.5%"], supporters: [], opponents: [] },
+          { name: "Yen Bailey", party: "D", winner: false, positions: [], differentiators: ["17,924 votes — 28.0%; the 2024 Democratic nominee, who lost 61.6–38.4"], supporters: [], opponents: [] },
+          { name: "Brice Barnes", party: "D", winner: false, positions: [], differentiators: ["17,273 votes — 27.0%"], supporters: [], opponents: [] },
+          { name: "Nicholas Zateslo", party: "D", winner: false, positions: [], differentiators: ["7,424 votes — 11.6%; raised $449,913, most of any FL-2 Democrat"], supporters: [], opponents: [] } ] } ] },
+  3: { name: "U.S. House — FL District 3", region: "Gainesville, Ocala and twelve north-central counties",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "FL-3 WAS NOT REDRAWN BY HB 1D — the same twelve north-central counties appear in the certified Aug 18 results as in 2024. ✅ Kat Cammack drew no Republican primary opponent and seeks a fourth term. ⚠ She faces a two-front general: Democrat Seth Harp, a sixth-grade civics teacher who beat the party's 2024 nominee, and independent Mike Klein, an Army veteran who has actually OUT-RAISED Harp. Cook rates it Solid R (R+10 PVI); Inside Elections also Solid Republican. Certified Aug 27, 2026.",
+        candidates: [
+          { name: "Kat Cammack (incumbent)", party: "R", winner: false,
+            positions: ["Agricultural producers and rural communities", "Energy production and health policy", "Small-business owners, veterans and military families"],
+            differentiators: ["Unopposed in the Aug 18 Republican primary", "Seeking a fourth term; represents twelve north-central counties", "$2,045,294 raised through July 29, 2026", "Won 2024 with 61.6% over Tom Wells", "Trump endorsement [Verify — reported by endorsement trackers, not confirmed at a primary source]"],
+            supporters: ["Three terms of seniority and committee position for a heavily agricultural district", "Drew no primary challenger — no visible Republican discontent", "Holds more cash than both opponents combined by a factor of roughly twenty"],
+            opponents: ["Has never faced a well-funded general-election opponent, so her record has gone largely untested at the ballot box [Verify — structural argument]", "Democratic-leaning Alachua County and Gainesville form the district's largest population centre and consistently vote against her [Verify — structural argument]", "An unopposed primary means district Republicans had no chance to weigh in on her record this cycle"] },
+          { name: "Seth Harp", party: "D", winner: false,
+            positions: ["Raise the Social Security payroll-tax cap to $250,000 to protect benefits without cutting them", "Guarantee affordable health care so no family goes bankrupt from illness", "Pass the C.U.B.S. Act — a sliding-scale child-care subsidy — and the H.E.A.R.T. Act taxing large-scale corporate home buying"],
+            differentiators: ["Won the Democratic primary with 45.2%, beating 2024 nominee Tom Wells (33.8%)", "Sixth-grade civics teacher based in Gainesville", "$37,794 raised through July 29, 2026", "⚠ NOT the former Georgia state senator of the same name — this Seth Harp was born in Auburn, Indiana"],
+            supporters: ["Runs on named, specific bills rather than generic platform language", "Beat the party's returning 2024 nominee, which shows appetite for a new face", "A civics-teacher profile fits a district anchored by a university town"],
+            opponents: ["Raised under $40,000 against a $2M incumbent — roughly one fifty-fourth of her total", "The independent in the race has raised more than he has and may split the anti-incumbent vote", "R+10; both Cook and Inside Elections call it Solid Republican"] },
+          { name: "Mike Klein", party: "I", winner: false,
+            positions: ["Get money out of politics, end gerrymandering, protect constitutional rights and due process", "Foreign policy through diplomacy and national interest; support troops and veterans", "Affordable health care, basic income for families, and economic, food and energy security"],
+            differentiators: ["No-party-affiliation candidate — qualified straight to the November ballot", "West Point class of 1989, commissioned infantry officer, Desert Storm-era Army veteran", "$58,936 raised through June 30, 2026 — more than the Democratic nominee", "Fifth-generation Floridian who grew up in Gainesville"],
+            supporters: ["The only candidate in the race campaigning explicitly against gerrymandering — pointed, given HB 1D and the pending Fair Districts litigation", "Out-raised the major-party challenger despite having no party infrastructure", "West Point and Army credentials in a district with large veteran and VA populations"],
+            opponents: ["No independent has won a Florida U.S. House seat in the modern era [Verify — structural argument]", "Risks splitting the anti-incumbent vote and helping Cammack [Verify — structural argument]", "$59K against a $2M incumbent leaves no room for district-wide paid media"] } ] },
+      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
+        note: "HARP UNSEATED THE PARTY'S OWN 2024 NOMINEE. Tom Wells carried the Democratic line against Cammack in 2024 and finished second here. The Republican primary was uncontested and is not carded. Certified Aug 27, 2026.",
+        candidates: [
+          { name: "Seth Harp", party: "D", winner: true, positions: [], differentiators: ["20,669 votes — 45.2%"], supporters: [], opponents: [] },
+          { name: "Tom Wells", party: "D", winner: false, positions: [], differentiators: ["15,444 votes — 33.8%; the 2024 Democratic nominee"], supporters: [], opponents: [] },
+          { name: "Troy Albers", party: "D", winner: false, positions: [], differentiators: ["5,187 votes — 11.3%"], supporters: [], opponents: [] },
+          { name: "George Hubac", party: "D", winner: false, positions: [], differentiators: ["4,457 votes — 9.7%"], supporters: [], opponents: [] } ] } ] },
+  4: { name: "U.S. House — FL District 4", region: "Northern and western Jacksonville, Orange Park and Fernandina Beach (Clay, Duval, Nassau)",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "AT R+5, FL-4 IS TIED FOR THE LEAST-REPUBLICAN OF DISTRICTS 1–7 — and it was not redrawn by HB 1D. ✅ LaShonda 'L.J.' Holloway won her third consecutive Democratic nomination with 57.3% while raising $27,348 — against rival Michael Kirwan's $742,680, a roughly twenty-seven-to-one money disadvantage she overcame. ⚠ Four candidates are on the November ballot: Aaron Bean (R), Holloway (D), independent Todd Schaefer and Mike Sell of the Florida Forward Party. Bean won this seat 57.3–42.7 in 2024. Cook and Inside Elections both rate it Solid R. Certified Aug 27, 2026.",
+        candidates: [
+          { name: "Aaron Bean (incumbent)", party: "R", winner: false,
+            positions: ["Defends the Medicaid and tax provisions of the Working Families Tax Cut", "Government efficiency — founder and co-chair of the DOGE Caucus", "Economy, energy and veterans' services"],
+            differentiators: ["No Republican primary opposition", "Second-term member of the Ways and Means Committee", "$2,163,376 raised through July 29, 2026", "Over $1.6M cash on hand [Verify — from a Florida Politics summary, not the FEC filing itself]", "Former community bank president; former Mayor of Fernandina Beach"],
+            supporters: ["A Ways and Means seat gives Northeast Florida a voice on tax-writing", "Won 2024 by 14.6 points and drew no primary challenger", "Small-business and community-banking background in a growth-heavy region"],
+            opponents: ["R+5 is the thinnest cushion of districts 1–7 and the most exposed if the national environment shifts", "His vote for the Working Families Tax Cut and its Medicaid provisions is the central line of attack — his own office publishes a rebuttal FAQ, which confirms it is contested", "Two additional non-major-party candidates on the ballot could scramble a low-margin race [Verify — structural argument]"] },
+          { name: "LaShonda 'L.J.' Holloway", party: "D", winner: false,
+            positions: ["Reduce the financial burden of higher education", "Expand health coverage, preventive care and mental-health access", "Guarantee access to food, employment, health care and affordable housing in every community"],
+            differentiators: ["Won the Aug 18 primary with 57.3%", "Third straight Democratic nomination here — 2022, 2024, 2026", "Raised $27,348 to Michael Kirwan's $742,680 and still won by 27 points", "University of Florida law degree; Florida Supreme Court arbitrator"],
+            supporters: ["Beat an opponent who outspent her roughly twenty-seven to one — evidence of unusual grassroots and name-recognition strength", "Best-known Democrat in the district after three cycles", "R+5 makes this the most theoretically winnable of districts 1–7"],
+            opponents: ["$27K raised against a $2M incumbent leaves essentially no paid-media capacity", "Has already lost this seat twice, most recently by 14.6 points", "Both Cook and Inside Elections rate it Solid Republican"] },
+          { name: "Todd Schaefer", party: "I", winner: false,
+            positions: ["The American Prosperity Card Act — his self-described number-one issue, to make government spending visible in real time", "End government corruption and pass a fair living wage", "Secure health care for all Americans and address housing affordability"],
+            differentiators: ["Unaffiliated candidate on the printed ballot; ran as a write-in against Bean in 2024", "U.S. Navy, 1998–2018", "Runs explicitly against both major parties", "Not among FL-4 candidates reporting more than $20,000 in receipts to the FEC this cycle"],
+            supporters: ["Ballot access without a primary gives voters a third option in a seat both parties treat as safe", "Campaigns on one concrete signature proposal rather than a slate of slogans"],
+            opponents: ["His signature American Prosperity Card Act has no congressional sponsor or published analysis that could be located [Verify — structural argument]", "Drew effectively zero recorded votes as a 2024 write-in in this district", "No meaningful campaign funding could be located in FEC filings [Verify — structural argument]"] },
+          { name: "Mike Sell", party: "I", winner: false,
+            positions: ["⚠ No published platform could be located — neither the Florida Forward Party's own materials nor any candidate site was reachable [Verify]", "Runs under the Florida Forward Party banner, a minor party recognised by the Division of Elections [Verify — party platform not confirmed at a primary source]", ""],
+            differentiators: ["Qualified for the November ballot as a Florida Forward Party candidate on the certified list", "$24,186 raised through July 29, 2026 — nearly as much as the Democratic nominee", "Jacksonville-based", "⚠ No Ballotpedia candidate page and no campaign site could be located [Verify]"],
+            supporters: ["Has raised nearly as much as the major-party challenger, which is unusual for a minor-party candidate", "Gives voters a fourth ballot line in a district where the two-party outcome is widely presumed [Verify — structural argument]"],
+            opponents: ["No campaign presence, platform or public statements could be located [Verify — an absence of located records]", "Minor-party candidates have not cleared 1% in this district in recent cycles [Verify — structural argument]", "Unfunded relative to a $2M incumbent [Verify — structural argument]"] } ] },
+      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
+        note: "HOLLOWAY WON BY 27 POINTS WHILE BEING OUTRAISED TWENTY-SEVEN TO ONE. Michael Kirwan reported $742,680 in receipts to Holloway's $27,348 and finished second. The Republican primary was uncontested and is not carded. Certified Aug 27, 2026.",
+        candidates: [
+          { name: "LaShonda 'L.J.' Holloway", party: "D", winner: true, positions: [], differentiators: ["29,772 votes — 57.3%"], supporters: [], opponents: [] },
+          { name: "Michael Kirwan", party: "D", winner: false, positions: [], differentiators: ["15,809 votes — 30.4%; raised $742,680"], supporters: [], opponents: [] },
+          { name: "Brit Robinson", party: "D", winner: false, positions: [], differentiators: ["6,358 votes — 12.2%"], supporters: [], opponents: [] } ] } ] },
+  5: { name: "U.S. House — FL District 5", region: "Southern and eastern Jacksonville, the Beaches and St. Augustine (Duval, St. Johns)",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "FL-5 WAS NOT REDRAWN BY HB 1D — still Duval plus St. Johns, per the certified Aug 18 county returns. ⚠ The notable result was on the Republican side: five-term incumbent John Rutherford took 67.7% against radio host Mark Kaye, who raised only $31,456 yet won 32.3% — a roughly one-in-three protest vote against a sitting member. ✅ Democrat Rachel Grage, a biomedical engineer, won her primary with 65.1%. A qualified write-in, William Lintag Upham, is certified but will not appear printed on the ballot. Cook rates it Solid R (R+10 PVI); Inside Elections also Solid Republican. Certified Aug 27, 2026.",
+        candidates: [
+          { name: "John Rutherford (incumbent)", party: "R", winner: false,
+            positions: ["Making life affordable again — block new taxes, cut existing ones, cut red tape on small business", "Supporting military veterans — VA reform and accountability, troop pay, PTSD and transition programmes", "Making communities safer — authored the STOP School Violence Act; voted to fund the border wall"],
+            differentiators: ["Won the Aug 18 primary with 67.7% over Mark Kaye (32.3%)", "Former Sheriff of Jacksonville; in Congress since 2017", "$726,727 raised through July 29, 2026 — the lowest total of the five incumbents in districts 1–7", "✅ Endorsed by President Trump, stated on his own campaign site"],
+            supporters: ["A long law-enforcement record as Jacksonville's former sheriff in a public-safety-focused district", "Won 63.1% in 2024 in an R+10 seat", "Concrete legislative wins to point to, including the STOP School Violence Act"],
+            opponents: ["Nearly a third of Republican primary voters backed a challenger who spent almost nothing — a warning sign of incumbent fatigue", "Raised less than any other incumbent in districts 1–7 this cycle", "In office since 2017; challengers frame the seat as overdue for turnover [Verify — structural argument]"] },
+          { name: "Rachel Grage", party: "D", winner: false,
+            positions: ["Make life more affordable and stop rubber-stamping agendas that do not serve the district", "Honesty, integrity and respect from a representative — telling constituents the truth", "Protecting constituents' rights"],
+            differentiators: ["Won the Democratic primary with 65.1%", "Biomedical engineer; bachelor's and master's degrees from Tulane", "$272,423 raised through July 29, 2026 — 37% of the incumbent's total, the best challenger ratio in districts 1–7 outside FL-7", "Ran for Florida House District 16 in 2024, losing with 39%"],
+            supporters: ["Won her primary outright with 65%, avoiding a divided party", "Raised a competitive-by-district-standards $272K against an incumbent who raised only $727K", "A STEM and public-school background paired with an affordability-and-honesty message"],
+            opponents: ["R+10; the Democratic nominee took 36.9% here in 2024", "Has never won elective office — lost a state House race in 2024 with 39%", "Both Cook and Inside Elections rate the seat Solid Republican"] } ] },
+      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Republican primary",
+        note: "A FIVE-TERM INCUMBENT HELD BELOW 68% BY A NEARLY UNFUNDED CHALLENGER. Radio host Mark Kaye reported $31,456 in receipts and still took 32.3%. Certified Aug 27, 2026.",
+        candidates: [
+          { name: "John Rutherford (incumbent)", party: "R", winner: true, positions: [], differentiators: ["54,072 votes — 67.7%"], supporters: [], opponents: [] },
+          { name: "Mark Kaye", party: "R", winner: false, positions: [], differentiators: ["25,793 votes — 32.3%; raised $31,456"], supporters: [], opponents: [] } ] },
+      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
+        note: "GRAGE WON OUTRIGHT WITH 65.1% IN A THREE-WAY FIELD. All three candidates campaigned primarily on Northeast Florida affordability. Certified Aug 27, 2026.",
+        candidates: [
+          { name: "Rachel Grage", party: "D", winner: true, positions: [], differentiators: ["27,427 votes — 65.1%"], supporters: [], opponents: [] },
+          { name: "Alex Hazen", party: "D", winner: false, positions: [], differentiators: ["9,119 votes — 21.6%"], supporters: [], opponents: [] },
+          { name: "Mark Heggestad", party: "D", winner: false, positions: [], differentiators: ["5,607 votes — 13.3%"], supporters: [], opponents: [] } ] } ] },
+  6: { name: "U.S. House — FL District 6", region: "Daytona Beach, Palm Coast and the northern Atlantic coast (Volusia, Flagler, Putnam, plus parts of Marion, Lake and St. Johns)",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "RANDY FINE WON HIS PRIMARY WITH 57.6% AGAINST DAN BILZERIAN, THE POKER AND SOCIAL-MEDIA FIGURE WHO TOOK 18.9% ON AN OPENLY ANTISEMITIC CAMPAIGN. ⚠ FL-6 was NOT redrawn by HB 1D; the same six counties appear in the certified Aug 18 returns. ✅ Fine holds this seat from an April 2025 special election he won 56.7–42.7 — a fourteen-point margin in a seat Michael Waltz carried by 33 in 2024. Four candidates are certified for November plus a qualified write-in, Alec Pavlik, who will not appear printed on the ballot. Cook rates it Solid R (R+14 PVI); Inside Elections also Solid Republican. Certified Aug 27, 2026.",
+        candidates: [
+          { name: "Randy Fine (incumbent)", party: "R", winner: false,
+            positions: ["Strengthen America's global position and stop terrorism", "Energy and resource independence; grow the economy", "Tackle immigration and secure the border; fight crime and demand justice"],
+            differentiators: ["Won the Aug 18 primary with 57.6% over Dan Bilzerian (18.9%), Aaron Baker (13.6%) and Charles Gambaro (9.8%)", "Won the April 1, 2025 special election 56.7–42.7", "$4,286,207 raised through July 29, 2026 — the largest total in districts 1–7", "Former Florida state senator", "Trump endorsement [Verify — reported by endorsement trackers, not confirmed at a primary source]"],
+            supporters: ["Decisively beat a well-funded challenger who raised $1.24M and ran an openly antisemitic campaign — a clear repudiation", "Best-funded candidate in districts 1–7 by a wide margin", "An R+14 seat Republicans have held comfortably for a decade"],
+            opponents: ["Took only 57.6% against a field containing no elected officials — well short of typical incumbent primary performance", "Won the 2025 special by fourteen points in a seat won by 33 the previous November", "One of the most polarising members of the Florida delegation; his primary drew national coverage for its tone [Verify — structural argument]"] },
+          { name: "Eric Yonce", party: "D", winner: false,
+            positions: ["Real representation, not a political career — not a career politician and not using the office as a stepping stone", "Protect communities and the environment from overdevelopment that strains resources and worsens flooding", "Tackle the cost of living — housing, energy and everyday expenses"],
+            differentiators: ["Won a four-way Democratic primary with 32.1%", "Former Ocala police officer; twenty-plus years in retail management; now in real estate", "$325,710 raised through July 29, 2026 — top Democratic fundraiser in the primary", "Thru-hiked the Appalachian Trail in 2022"],
+            supporters: ["An overdevelopment-and-flooding message that is locally specific to fast-growing Volusia and Flagler counties", "Out-raised all three Democratic primary rivals", "A law-enforcement background blunts the usual public-safety attack line"],
+            opponents: ["Won with only 32.1% — roughly two-thirds of Democratic primary voters preferred someone else", "Faces an incumbent with a thirteen-to-one fundraising advantage", "Critics have labelled his platform far left for the district, a characterisation he has publicly disputed"] },
+          { name: "Michael Gist", party: "I", winner: false,
+            positions: ["People first, not parties or elites — running as an independent because he says both parties serve elites", "'Freedom Accounts' — redirect ineffective government spending into universal personal investment accounts for education, homeownership, health care and long-term assets", "Better education outcomes, accountability and opportunity"],
+            differentiators: ["No-party-affiliation candidate — on the November ballot without a primary", "Fourteen years in the U.S. Marine Corps; former Volusia County public school teacher", "Lifelong Volusia County resident whose family has been in the area over 100 years", "Describes himself as a 'conservative Independent'"],
+            supporters: ["Offers conservative-leaning voters an alternative to a polarising incumbent without crossing to the Democrat", "Marine Corps and classroom experience in a district with large veteran and school-age populations", "Campaigns on one detailed, named signature proposal rather than slogans"],
+            opponents: ["'Freedom Accounts' has no congressional sponsor or independent cost analysis that could be located [Verify — structural argument]", "No-party candidates drew under 1% in this district's 2025 special", "No FEC filings above the reporting threshold could be located [Verify — an absence of located records]"] },
+          { name: "Andrew Parrott", party: "L", winner: false,
+            positions: ["⚠ These are the Libertarian Party of Florida's platform planks, not a platform of his own — no individual candidate platform could be located [Verify]", "Free-market economy of abundance", "Non-interventionist foreign policy and free trade"],
+            differentiators: ["Libertarian Party of Florida nominee; the party's primary was uncontested", "Also ran in the April 2025 special election, taking 701 votes — 0.4%", "Welder and Libertarian activist", "No FEC filings above the reporting threshold could be located [Verify]"],
+            supporters: ["A second consecutive run gives Libertarian voters a consistent ballot presence in the district", "Provides an anti-major-party option in a seat where the general-election outcome is widely presumed [Verify — structural argument]"],
+            opponents: ["Received 0.4% in the same district sixteen months ago", "No individual campaign platform or website could be located [Verify — an absence of located records]", "Unfunded against a $4.3M incumbent [Verify — structural argument]"] } ] },
+      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Republican primary",
+        note: "FINE HELD OFF DAN BILZERIAN 57.6% TO 18.9%. Bilzerian raised $1,241,450 and ran what national outlets described as an openly antisemitic campaign. Certified Aug 27, 2026.",
+        candidates: [
+          { name: "Randy Fine (incumbent)", party: "R", winner: true, positions: [], differentiators: ["51,109 votes — 57.6%"], supporters: [], opponents: [] },
+          { name: "Dan Bilzerian", party: "R", winner: false, positions: [], differentiators: ["16,776 votes — 18.9%; raised $1,241,450"], supporters: [], opponents: [] },
+          { name: "Aaron Baker", party: "R", winner: false, positions: [], differentiators: ["12,074 votes — 13.6%"], supporters: [], opponents: [] },
+          { name: "Charles Gambaro", party: "R", winner: false, positions: [], differentiators: ["8,716 votes — 9.8%"], supporters: [], opponents: [] } ] },
+      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
+        note: "A FOUR-WAY RACE DECIDED BY 5.2 POINTS, WITH NO CANDIDATE REACHING A THIRD OF THE VOTE. Certified Aug 27, 2026.",
+        candidates: [
+          { name: "Eric Yonce", party: "D", winner: true, positions: [], differentiators: ["13,465 votes — 32.1%"], supporters: [], opponents: [] },
+          { name: "Ronnie 'Ron' Murchinson-Rivera", party: "D", winner: false, positions: [], differentiators: ["11,260 votes — 26.9%; first responder"], supporters: [], opponents: [] },
+          { name: "Steve Morgan", party: "D", winner: false, positions: [], differentiators: ["9,763 votes — 23.3%; brewery owner"], supporters: [], opponents: [] },
+          { name: "Robert David Cooper II", party: "D", winner: false, positions: [], differentiators: ["7,414 votes — 17.7%; Marine veteran"], supporters: [], opponents: [] } ] } ] },
+  7: { name: "U.S. House — FL District 7", region: "Orlando's northern suburbs and the Volusia coast (Seminole County, New Smyrna Beach)",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "INCUMBENT REP. CORY MILLS LOST HIS OWN REPUBLICAN PRIMARY ON AUG 18, FALLING 47.3% TO 34.1% TO FORMER FOX 35 ORLANDO ANCHOR RYAN ELIJAH. Mills was under a House Ethics investigation and had been the subject of a restraining order sought by a former girlfriend; Trump, who endorsed him in 2025, left him off a later endorsement list, and Gov. DeSantis said he did not support him. ⚠ FL-7 was NOT redrawn by HB 1D — it remains Seminole plus Volusia per the certified returns. ✅ THIS IS THE ONLY ONE OF DISTRICTS 1–7 EITHER RATER CALLS COMPETITIVE: Cook moved it from Solid R to LIKELY R on Jan 15, 2026, and Inside Elections also has it Likely Republican (R+5 PVI). Democrat Bale Dalton has out-raised every Republican in the race and is in the DCCC's Red to Blue programme. Certified Aug 27, 2026.",
+        candidates: [
+          { name: "Ryan Elijah", party: "R", winner: false,
+            positions: ["Affordability — keep taxes low and achieve American energy independence", "Parental rights, school choice and curriculum transparency", "Medical innovation and lowering health care costs; enforce immigration law"],
+            differentiators: ["Defeated the sitting incumbent in the Aug 18 primary, 47.3% to 34.1%", "Fourteen-year Orlando broadcaster; former Fox 35 anchor and Emmy winner", "Endorsed by Gov. Ron DeSantis, Volusia County Sheriff Mike Chitwood and Seminole County Sheriff Dennis Lemma", "$355,955 raised through July 29, 2026 — about a quarter of his Democratic opponent's total"],
+            supporters: ["Removes the district's biggest liability by beating a scandal-plagued incumbent outright", "Near-universal local name recognition after fourteen years on Orlando television", "Endorsed by the sheriffs of both counties in the district"],
+            opponents: ["Out-raised nearly four to one by Bale Dalton, $1.38M to $356K, heading into the general", "No prior elected or governing experience — a broadcaster, not a legislator", "Inherits a seat both raters downgraded to Likely R before he was even the nominee, in a district Mills won by only thirteen points in 2024"] },
+          { name: "Bale Dalton", party: "D", winner: false,
+            positions: ["Make Florida affordable again — reverse health-premium hikes and what he calls illegal, unpredictable tariffs", "Crack down on power companies and property-insurance costs driving up household bills", "Put country over politics — fight for working families rather than corporate and billionaire tax giveaways"],
+            differentiators: ["Won the Democratic primary with 45.5%, beating fellow veteran Marialana Kinter (35.6%) and former U.S. Rep. Alan Grayson (18.9%)", "Retired Navy captain, twenty-four years of service, Naval Academy graduate; former Chief of Staff at NASA", "$1,378,109 raised through July 29, 2026; about $476,000 cash on hand at the close of the pre-primary period [Verify — from Florida Politics, not the FEC filing itself]", "First Florida candidate this cycle added to the DCCC's Red to Blue programme; endorsed by New Politics and the 314 Action Fund"],
+            supporters: ["Out-raised every Republican in the race, including the sitting incumbent", "A military and NASA resume is an unusually good fit for a district with Space Coast-adjacent workers and a heavy veteran population", "National party investment via Red to Blue signals the seat is genuinely contested"],
+            opponents: ["Has never held elective office — his record is executive and military, not legislative", "Built his campaign message around attacking Cory Mills, who is no longer on the ballot, requiring a pivot", "R+5, and no Democrat has carried this seat in its current configuration; both raters still favour Republicans"] },
+          { name: "Christopher Dennison", party: "L", winner: false,
+            positions: ["⚠ These are the Libertarian Party of Florida's platform planks, not a platform of his own — no individual candidate platform, website or survey response could be located [Verify]", "Free-market economy and limited government", ""],
+            differentiators: ["Libertarian Party of Florida nominee; the party's Aug 18 primary was cancelled for lack of opposition", "$10,500 in contributions and $10,440 in expenditures reported [Verify — via an aggregator citing FEC data]", "Has not completed a candidate survey", "On the ballot in the only district in this bloc rated competitive"],
+            supporters: ["A third ballot line in the one seat here where the two major parties are actually contesting the outcome", "A Libertarian presence can matter at the margin in a Likely-R rather than Solid-R race [Verify — structural argument]"],
+            opponents: ["Raised $10,500 against two candidates with a combined $1.7M", "No campaign website, platform statement or public positions could be located [Verify — an absence of located records]", "Third-party candidates have not been a factor in this district's recent general elections [Verify — structural argument]"] } ] },
+      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Republican primary",
+        note: "A SITTING MEMBER OF CONGRESS WAS DEFEATED. Cory Mills, facing a House Ethics investigation and a restraining-order case, lost by 13.2 points to a first-time candidate. Certified Aug 27, 2026.",
+        candidates: [
+          { name: "Ryan Elijah", party: "R", winner: true, positions: [], differentiators: ["31,558 votes — 47.3%"], supporters: [], opponents: [] },
+          { name: "Cory Mills (incumbent)", party: "R", winner: false, positions: [], differentiators: ["22,753 votes — 34.1%; two-term incumbent, defeated"], supporters: [], opponents: [] },
+          { name: "Sarah Ulrich", party: "R", winner: false, positions: [], differentiators: ["7,010 votes — 10.5%"], supporters: [], opponents: [] },
+          { name: "Michael Don Johnson", party: "R", winner: false, positions: [], differentiators: ["5,411 votes — 8.1%"], supporters: [], opponents: [] } ] },
+      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
+        note: "FORMER U.S. REP. ALAN GRAYSON FINISHED THIRD WITH 18.9%. Dalton, the top fundraiser at $1.38M, won with 45.5% in a three-way race between two veterans and a former congressman. Certified Aug 27, 2026.",
+        candidates: [
+          { name: "Bale Dalton", party: "D", winner: true, positions: [], differentiators: ["21,776 votes — 45.5%"], supporters: [], opponents: [] },
+          { name: "Marialana Kinter", party: "D", winner: false, positions: [], differentiators: ["17,022 votes — 35.6%; raised $565,078"], supporters: [], opponents: [] },
+          { name: "Alan Grayson", party: "D", winner: false, positions: [], differentiators: ["9,071 votes — 18.9%; former U.S. Representative"], supporters: [], opponents: [] } ] } ] },

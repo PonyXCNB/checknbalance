@@ -1,0 +1,27 @@
+{
+  "abbr": "FL",
+  "name": "Florida",
+  "donor": "pa.html",
+  "donorAbbr": "PA",
+  "donorCountyCount": 67,
+  "donorHouseSeats": 17,
+  "donorStatewideCount": 1,
+  "donorFips": "42",
+  "donorLastUpdated": "August 10, 2026",
+  "out": "fl.html",
+  "countyCount": 67,
+  "houseSeats": 28,
+  "statewideCount": 7,
+  "fips": "12",
+  "lastUpdated": "August 28, 2026",
+  "capital": {
+    "name": "Tallahassee",
+    "lng": -84.2807,
+    "lat": 30.4383
+  },
+  "sources": "Florida Department of State, Division of Elections (dos.fl.gov/elections) and its official Aug 18, 2026 primary results at floridaelectionwatch.gov, certified by the Elections Canvassing Commission on Aug 27, 2026; the Florida Legislature's own HB 1D (2026D) congressional plan EOGPCRP2026, its Congressional Redistricting Data Packet and block-assignment file; the Division of Elections constitutional-initiatives database; FEC; Cook Political Report (2026 PVI on the new lines); Inside Elections; Florida Politics, Tampa Bay Times, Miami Herald, Orlando Sentinel, WUSF, WLRN, WFSU, Florida Phoenix, News Service of Florida, AP.",
+  "countiesFile": "tools/banked/fl-build/counties.js",
+  "statewideFile": "tools/banked/fl-build/statewide.js",
+  "houseFile": "tools/banked/fl-build/house.js",
+  "donorName": "Pennsylvania"
+}

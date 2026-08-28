@@ -66,7 +66,9 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 | `hi.html` | Hawaii — thirty-third fully built state (5 county-equivalents, 2 districts, Aug 8, 2026 primary). Built Aug 11, 2026 from tn.html — the site's FIRST non-contiguous state and its smallest county count. ⚠ **NO 2026 U.S. Senate race** (Schatz 2028, Hirono 2030), triple-confirmed against all 87 primary contest titles. ⚠ **Hawaii does NOT elect judges** — the Judicial Selection Commission decides retention, so there is no judicial contest to card. **Honolulu is the ONLY split county** and HI-1 sits entirely inside it, holding it as an outright **71.46% majority**; Kalawao (pop 82) and the neighbor islands are wholly HI-2, which is ~40% Oahu by population. Governor and Lt. Governor are nominated SEPARATELY in the primary but locked into one ticket in November (Const. Art. V §2, HRS §11-115) — Green/Kawakami vs. Cordery/Anthony, Solid/Safe D by all three raters. ⚠ The LG seat was open because **Lt. Gov. Sylvia Luke quit her re-election bid Apr 19, 2026 and took indefinite unpaid leave Apr 23 as the TARGET of a state AG bribery investigation** (she denies it; Comptroller Keith Regan is acting LG) — status unconfirmed past Apr 24 [Verify]. Exactly ONE ballot measure (SB3219 CD1, county resilient-infrastructure bonds), quoted verbatim. ⚠ The November House field is DERIVED from HRS §12-41(b) applied to certified primary counts — no certified general-election candidate list was published as of Aug 11. **The five OHA trustee seats are deliberately NOT carded** — see the ledger. No LOCAL_RACES yet |
 | `al.html` | Alabama — thirty-fourth fully built state (67 counties, 7 districts, May 19 primary + a **special primary Aug 11, 2026** in districts 1/2/6/7). Built Aug 12, 2026 from tn.html. ⚠ **BUILT ON THE 2023 LEGISLATURE-DRAWN MAP, NOT THE COURT-DRAWN *ALLEN v. MILLIGAN* PLAN** — after *Louisiana v. Callais*, SCOTUS set aside the blocking rulings May 11, 2026 and overturned a further panel block June 2, so the Census CD119 relationship file describes the WRONG map for Alabama. Gov. Ivey VOIDED the May 19 results in the four districts whose lines moved and called an Aug 11 special primary **with no runoff**. ⚠ **AL-2 IS THE MARQUEE AND THE REDRAW POINTED IT THE OTHER WAY** — Mobile moved out, the Black share fell ~47%→~40%, Cook PVI went **D+5 → R+7**, and every rater now has Likely R (flip) against freshman Rep. Shomari Figures; **Rhett Marques won the six-way special primary with 50.03%**, eleven votes above a majority. **Jerry Carl won back AL-1**, the seat he lost in 2024. ⚠ Alabama elects **all seven executive constitutional officers together**, so the ballot is long; the marquee down-ballot race is Agriculture Commissioner, where **Ron Sparks (D) held that exact office 2003–2011**. ⚠ **BOTH Republican PSC incumbents were fired by their own primary voters**, and **HB 475 (signed Apr 2, 2026) then expanded the PSC 3→7, put it under a governor-appointed secretary of energy and barred rate cases until 2029** — the page carries that context or the races mislead. ⚠ **Six appellate seats, only ONE contested** (Supreme Court Place 8, Shaw vs. Dunham, an IVF-ruling race). ⚠ **Tuberville's eligibility for governor is live at the Alabama Supreme Court**; briefing closes Aug 28, AFTER the Aug 19 replacement deadline and Aug 26 certification. **Four constitutional amendments** in November, numbering provisional. No LOCAL_RACES yet |
 | `ks.html` | Kansas — thirty-eighth fully built state (105 counties, 4 districts, Aug 4, 2026 primary). Built Aug 18, 2026 from mn.html. ⚠ **KANSAS DID NOT REDISTRICT** — the mid-decade push failed twice and the 2022 *Ad Astra 2* plan governs; *Rivera v. Schwab* already upheld it. The map is the best-proved on the site: the enacted plan's own KLRD split report matches an independent Geocorr derivation TO THE PERSON, and the **currency test passed 105 of 105 counties against the SoS's own Aug 4 ballot data**. Only 4 split counties (Douglas, Jackson, Pawnee, Wyandotte); **Lawrence sits in KS-1**, the map's most-contested feature, and Wyandotte is split along I-70. ⚠ **NOTHING IS CERTIFIED — the State Board of Canvassers does not certify until Sept 1, 2026**, so every primary figure on the page says it is unofficial. Statewide: U.S. Senate (Marshall vs. Adam Hamilton — **two raters moved off Safe after a record $3.7M Democratic launch quarter**), **OPEN Governor** (Kelly term-limited; Masterson/Klemp vs. Holscher/Ohaebosim, Lean/Tilt R flip), AG (Kobach–Mann, a 2022 rematch), **OPEN Secretary of State**, Treasurer, **OPEN Insurance Commissioner** (Speaker Hawkins vs. Minority Leader Sykes — the marquee down-ballot race), and 9 appellate retentions. ⚠ **NO November ballot question** — the only 2026 amendment was on the AUGUST ballot and voters **rejected partisan election of Supreme Court justices 61.4–38.6**. KS-3 (Davids) is the only competitive-lean seat and all three raters now call it Solid/Safe D. No LOCAL_RACES yet |
-| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH/KY/IN/IA/IL/MS/AR/NE/NM/CO/OR/NV/SD/ID/MT/PA/TN/HI/AL/WI/MN/ND/KS redirect to their dedicated pages |
+| `fl.html` | Florida — **forty-first fully built state** (67 counties, 28 districts, Aug 18, 2026 primary CERTIFIED Aug 27). Built Aug 28, 2026 from pa.html, the other 67-county page. ⚠ **BUILT ON HB 1D, THE NEW MID-DECADE MAP** signed May 4, 2026 after *Louisiana v. Callais* — it redrew 21 of 28 districts and **CD119 is STALE for Florida, disagreeing on 20 of 67 counties**. Districts 1–7 were NOT redrawn. 19 split counties; **FL-24, FL-25 and FL-26 are the plurality of NO county** and are reachable only via `ds` (lesson #12). U.S. Senate is a **SPECIAL** for the last two years of Rubio's term (Moody appointed); OPEN Governor (DeSantis term-limited). Marquee: **FL-25 Toss Up** (Moskowitz in a renumbered seat flipped D+5→R+3) and **FL-14 Toss Up** (Castor; D+5→R+4, the largest raw-PVI shift in the state). **FL-7's Cory Mills LOST his own primary.** 3 amendments, all legislative referrals. No LOCAL_RACES yet |
+| `wy.html` | Wyoming — **forty-second fully built state** (23 counties, ONE at-large seat, Aug 18, 2026 primary CERTIFIED Aug 26). Built Aug 28, 2026 from nd.html. ⚠ **FIVE OF SEVEN TOP OFFICES ARE OPEN** — Senate (Lummis retiring), House (Hageman vacated it), Governor (Gordon declined a third term), Secretary of State (Gray vacated it) and Superintendent (Degenfelder vacated it). **NO county is split** — the simplest map on the site. ⚠ **NO DEMOCRAT FILED for Auditor or Treasurer.** Trump's endorsees SPLIT: Hageman won the Senate primary, Degenfelder LOST the governor's. Chuck Gray won the House nomination with **24.9%**. One ballot measure — the state's first citizen initiative in ~30 years. No LOCAL_RACES yet |
+| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH/KY/IN/IA/IL/MS/AR/NE/NM/CO/OR/NV/SD/ID/MT/PA/TN/HI/AL/WI/MN/ND/KS/OK/AZ/FL/WY redirect to their dedicated pages |
 | `favicon.svg` | Gold-gradient circle + white checkmark (primary favicon, matches site crest) |
 | `favicon.png` | 32px PNG fallback |
 | `favicon.ico` | Multi-size ICO (16/32/48) at root for legacy auto-discovery |
@@ -200,7 +202,59 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of August 27, 2026)
+## Current state (as of August 28, 2026)
+- **FL (full, added Aug 28, 2026) — 41st state, and the LAST state to leave the lighter "marquee" tier: only DC remains.**
+  ⚠⚠ **BUILT ON HB 1D, A BRAND-NEW MID-DECADE MAP** — plan `EOGPCRP2026`, passed Apr 29, 2026 (House 83–28, Senate 21–17) and signed
+  **May 4, 2026** in a special session after *Louisiana v. Callais*. It **redrew 21 of 28 districts**. ⚠ **THE CENSUS CD119 FILE IS STALE
+  FOR FLORIDA AND WAS PROVED SO, NOT ASSUMED: it disagrees with HB 1D on 20 of 67 counties** (Citrus 12→15, Hernando 12→15, DeSoto/Hardee
+  18→16, Glades/Highlands/Okeechobee 18→9, Hendry 18→22, Indian River 8→9, Pinellas [13,14]→[13,16], Sarasota [17]→[16,17]).
+  ✅ **CURRENCY PROVED FROM THE STATE'S OWN RETURNS:** all 67 Florida Election Watch county pages were harvested and every
+  "Representative in Congress, District N" contest extracted. **65 of 67 counties testable** (Brevard and Monroe held no congressional
+  primary), **65 consistent, ZERO conflicts** — and of those, **18 counties DISCRIMINATE between the old and new maps and ALL 18 match
+  HB 1D; zero match the old plan.** ✅ **THE MAP WAS CORROBORATED THREE WAYS.** It came from the Legislature's own published crosswalk
+  (the Senate's Congressional Redistricting Data Packet), not a computation of ours; a second agent independently confirmed FL-1/2/3/4/5/7's
+  county composition from the certified results file (FL-3 = exactly 12 north-central counties, FL-2 = 16); and a third independently found
+  FL-22 in Palm Beach/Broward/Collier/Hendry, FL-23 in Palm Beach ONLY, FL-24 in Broward+Miami-Dade, FL-25 in Palm Beach/Broward/Miami-Dade
+  and FL-20 in Broward ONLY — every one matching the `ds` arrays. ⚠ **DISTRICTS 1–7 WERE NOT REDRAWN** (their Cook PVI is identical
+  before and after), so the headline there is politics, not lines. 19 split counties. ⚠ **FL-24, FL-25 AND FL-26 ARE THE POPULATION PLURALITY
+  OF NO COUNTY** and are reachable ONLY through Miami-Dade/Broward/Palm Beach — lesson #12 at full stretch; five more districts (10, 14, 20,
+  23, 27) sit ENTIRELY inside one county. ⚠ **TWO ZERO-POPULATION OVERLAPS WERE DELIBERATELY EXCLUDED** from `ds` (Hillsborough×D16 and
+  Orange×D7, both water slivers) — carding them would tell Tampa voters they might be in FL-16 and Orlando voters FL-7, both false.
+  ✅ **EVERYTHING IS CERTIFIED**: county boards filed by noon Aug 26 and the Elections Canvassing Commission certified Aug 27, 2026.
+  Statewide: **U.S. Senate SPECIAL** for the final two years of Rubio's term ending Jan 2029 (Moody appointed, never elected to it) — ⚠ Rick
+  Scott's seat is NOT up; **OPEN Governor** (Donalds vs. Jolly, a former REPUBLICAN congressman, on joint tickets); AG, CFO and Agriculture
+  Commissioner — ⚠ **THREE OF THE FIVE STATEWIDE REPUBLICANS ARE APPOINTEES SEEKING THEIR FIRST ELECTION** to the office (Moody, Uthmeier,
+  Ingoglia); one Supreme Court retention (Muñiz); and **exactly 3 amendments, ALL legislative referrals — NO citizen initiative qualified**,
+  all 22 petition drives failed the 891,523-signature threshold. ⚠ **Amendment 3's ballot title was REWRITTEN BY COURT ORDER** on Aug 3, 2026.
+  Marquee House: **FL-25 Toss Up** (Moskowitz running in a renumbered seat the map flipped D+5→R+3) and **FL-14 Toss Up** (Castor, D+5→R+4,
+  the largest raw-PVI shift in the state); **FL-7's Cory Mills LOST his own primary** to a TV anchor; **FL-9 swung D+4→R+8**, the biggest
+  partisan move anywhere in Florida; **FL-10's Maxwell Frost was re-elected with NO opponent at all** and appears on no ballot.
+  ⚠ **DELIBERATELY NOT CARDED:** Desmond Meade and Jason Pizzo, both reported as NPA candidates for Governor but absent from two separate
+  pulls of the state's own certified list. 249 candidate cards, 0 voices gaps, 184 [Verify]. No LOCAL_RACES.
+- **WY (full, added Aug 28, 2026) — 42nd state, and the SIMPLEST MAP ON THE SITE.** ⚠ **ONE AT-LARGE U.S. HOUSE SEAT AND NO SPLIT COUNTY** —
+  every `d` is 1 by definition and all 23 counties see an identical ballot, the exact opposite of Florida's 19 splits. Confirmed two ways: the
+  SoS's "2026 Offices Up for Election" lists the House seat with NO district number, and the official results summary tabulates a single
+  statewide contest across all 23 counties. ✅ **EVERY FIGURE IS OFFICIAL** — the State Canvassing Board (SoS Gray, Gov. Gordon, Auditor
+  Racines, Treasurer Meier) certified on **Aug 26, 2026**, and all totals were read from the SoS's own
+  `2026 Primary Results Summaries - OFFICIAL.xlsx`, not an election-night tally.
+  ⚠⚠ **FIVE OF SEVEN TOP OFFICES ARE OPEN** — U.S. Senate (Lummis retiring, announced Dec 19, 2025), U.S. House (Hageman vacated it for the
+  Senate), Governor (Gordon declined a third term in April 2026), Secretary of State (Gray vacated it for the House) and Superintendent
+  (Degenfelder vacated it for Governor). Only Auditor and Treasurer have incumbents running — and ⚠ **NO DEMOCRAT FILED against either**, with
+  no statewide write-in reaching the 25-vote threshold, so those two races have no Democratic nominee at all.
+  ⚠ **GORDON WAS NOT TERM-LIMITED BY ANY COURT-TESTED RULE** — the Wyoming Supreme Court struck down term limits for legislators and other
+  offices but NEVER ruled on the gubernatorial statute, which was never challenged; Gordon weighed a challenge and declined. Do not write that
+  he was term-limited. ⚠ **BARRASSO IS NOT UP** (Class 1, to Jan 2031); the 2026 seat is Lummis's Class 2.
+  ✅ **TRUMP'S ENDORSEES SPLIT ON THE SAME NIGHT**: Hageman won the Senate primary with 64.7%, while his pick for governor, Degenfelder, LOST to
+  state Sen. Eric Barlow 45.0–29.6 — and he endorsed NOBODY in the nine-way House primary, which **Chuck Gray won with just 24.9%**.
+  ⚠ **NO Lieutenant Governor exists in Wyoming**, so the Secretary of State is first in gubernatorial succession. Three jurists face statewide
+  retention (2 Supreme Court + the single Chancery Court judge — that court is statewide, so its one judge is on every ballot). **One ballot
+  measure: Proposition One, Wyoming's first citizen initiative in ~30 years and its first ever on tax policy** — a 50% homestead exemption whose
+  official fiscal note is −$92.6M (FY2028) to the STATE ONLY, expressly excluding counties and schools; ⚠ it needs a majority of ALL voters
+  voting in the election, so an abstention is an effective NO. ⚠ **THE MINOR-PARTY/INDEPENDENT FIELD IS NOT FULLY KNOWN** — filing closed
+  Aug 17/24 but the SoS had not published the general-election roster as of Aug 28 (the links 404). Only Rebecca Bextel (Constitution Party,
+  Governor) is confirmed. **RE-PULL the roster after Sept 1.** 45 candidate cards, 0 voices gaps, 44 [Verify]. No LOCAL_RACES.
+
+## Superseded — current state as of August 27, 2026
 - **AZ (full, added Aug 27, 2026) — 40th state.** ✅ **THE ONLY STATE BUILT THIS SUMMER WHOSE EVERY PRIMARY FIGURE IS ALREADY OFFICIAL** —
   Arizona canvassed statewide on **Aug 6, 2026** and holds no runoffs, so nothing is provisional on a later count. Map: AIRC Official
   Congressional Map v14.0 (Jan 2022), **UNCHANGED**; the decisive event is a public retreat, not a ruling — on **Aug 11, 2026 Senate
@@ -695,6 +749,25 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
    ➤ **The general lesson is the same one as #22, sharpened: a tool that parses formatting will eventually meet a file that drifted.**
    When a clone fails, first check whether the DONOR is malformed — that is now as likely as a tool bug.
 
+27. **⚠⚠ AN AGENT'S CONFIDENT *NEGATIVE* IS AS DANGEROUS AS ITS CONFIDENT POSITIVE — AND HARDER TO CATCH.**
+   Found Aug 28, 2026 building Florida. Lesson #20 says treat "an agent found X" as unsourced until X arrives. This is its mirror image:
+   the districts 15–21 researcher reported that **Cook had published NO post-HB 1D PVI**, and on that basis marked every PVI in its bloc as
+   old-lines-with-[Verify]. **It was simply wrong.** Cook had recalculated PVI for the new map and publishes it in its own Datawrapper files
+   (`fejB0`, and the fuller `rAx2t` which also carries raw 2020/2024 presidential vote by district). One `curl` of
+   `https://datawrapper.dwcdn.net/rAx2t/1/dataset.csv` settled it, and all 28 Florida values were corrected before publishing.
+   ➤ **Why a negative is worse: it is unfalsifiable from the report alone.** A positive claim names a source you can go and check. "No such
+   source exists" names nothing, reads as diligence, and produces text that looks appropriately cautious — the [Verify] markers it generates
+   are indistinguishable from honest ones. Nothing in the marker report, the voices report or any test can see it.
+   ➤ **What actually caught it was REDUNDANCY.** Four agents were run over adjacent ground, and two of the other three had independently
+   found the 2026 PVI file. The disagreement was visible in the reports sitting side by side. **When the failure mode is silence, overlapping
+   coverage is not waste — it is the only detector.**
+   ➤ **Practical rules:** (a) when an agent reports that a source does not exist, and that source is one a rater/agency plausibly publishes,
+   spend the one fetch to check yourself; (b) prefer several agents with overlapping scope to one agent per topic, precisely so negatives can
+   disagree; (c) a negative that would materially change the page — "no PVI", "no ballot measure", "no candidate filed" — is worth the
+   verification cost every time. The genuine verified negatives on this site (Rick Scott's seat is not up, no Florida citizen initiative
+   qualified, no Democrat filed for Wyoming Auditor) are all backed by a POSITIVE document: the state's own offices-up list or write-in roster.
+   **A negative is only publishable when some affirmative source says so.**
+
 ## Testing (`tests/` — plain Node.js, zero dependencies)
 
 Requires Node.js (any recent LTS). Run the whole suite from the site root:
@@ -940,7 +1013,28 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
    built once and never re-derived. **Every legacy page's map deserves the same audit nc.html just got** — sc.html and
    ga.html are the oldest and were built the same week under the same assumptions.
 
-**Queue status (as of Aug 27, 2026): every numbered item 1–10 is COMPLETE and the owner has added nothing new.**
+**Queue status (as of Aug 28, 2026): every numbered item 1–10 is COMPLETE and the owner has added nothing new.**
+Item 4 (voices) reads **0 missing / 1,329 candidates across 42 pages** at the end of the Aug 28 run — Florida shipped with 91 upcoming-race
+candidates (249 candidate cards in total, the largest state on the site) and Wyoming with 17, both 0 gaps. The landing page was reviewed
+end-to-end and its dependent facts reconcile: the legend needed only its count (40 → **42 states**), the footer already read August 2026, and
+**PARTIAL is now {DC} alone** — Florida's build emptied the "marquee" tier of everything but DC. The tier arithmetic checks out: 42 built +
+1 marquee + 8 starter = 51. The [Verify] total rose 3,083 → **3,316**, which is EXACTLY the two new states' markers (FL 184, WY 44) and not a
+regression anywhere else. ✅ **The time-sensitive calendar is still EMPTY.**
+✅ **THE FLORIDA MAP IS THE BEST-CORROBORATED ON THE SITE AFTER KANSAS** — and, unlike Kansas, it was corroborated by three *independent*
+agents who were not told each other's answers: the Legislature's own published crosswalk supplied it, one agent reproduced FL-1–7's county
+composition from the certified returns, and another reproduced the South Florida `ds` arrays from which counties actually ran which primary.
+⚠ **A RESEARCHER'S NEGATIVE WAS WRONG AND WAS CAUGHT BY CROSS-CHECKING.** The districts 15–21 agent reported that **no post-HB 1D Cook PVI
+existed** and marked every PVI in its bloc as stale-with-[Verify]. Two other agents had independently found Cook's 2026 PVI file, so the
+disagreement was visible; fetching `datawrapper.dwcdn.net/rAx2t/1/dataset.csv` directly settled it in one call — **Cook HAS recalculated PVI
+on the new lines**, and all 28 Florida values were re-read from Cook's own file and corrected on the page before publishing.
+➤ **The general lesson, and it is the mirror image of lesson #20: an agent's confident NEGATIVE ("no such source exists") deserves the same
+scepticism as its confident positive.** A negative is unfalsifiable from the report alone. What made this one catchable was running several
+agents over adjacent ground and noticing they disagreed — redundancy is not waste when the failure mode is silence.
+⚠ **TWO CANDIDATES WERE DELIBERATELY NOT PUBLISHED.** Desmond Meade and Jason Pizzo were both reported as NPA candidates for Florida
+governor — Meade with a live campaign site and a post-qualifying voter guide listing him — but NEITHER appears in two separate pulls of the
+Division of Elections' own certified general-election list. Carding a candidate the state's list does not carry is worse than omitting them.
+
+Superseded: **Queue status (as of Aug 27, 2026): every numbered item 1–10 is COMPLETE and the owner has added nothing new.**
 Item 4 (voices) reads **0 missing / 1,225 candidates across 40 pages** at the end of the Aug 27 run — Arizona shipped with 53 candidates
 and Oklahoma with 38, both 0 gaps. The landing page was reviewed end-to-end AND **verified in a real browser this run**: 40 state paths
 render gold, exactly 2 (DC, FL) render in the marquee tier, 14 render as starter framework, the legend needed only its count (38 →
@@ -1079,12 +1173,39 @@ time-sensitive calendar, and the incumbent-status sweep.
 3b. **East-coast full buildout — RESUMED by owner July 14, 2026** (was paused July 6 after 7 states:
    NC SC GA VA MD DE NJ; statewide + House; county LOCAL_RACES still to do for all).
    **Built bloc = 35 as of Aug 13, 2026** (NC SC GA VA MD DE NJ NY RI NH CT VT ME MA WV OH KY IN IA IL MS AR NE NM CO
-   OR NV SD ID MT PA TN HI AL **WI**). **Built bloc = 38 as of Aug 18, 2026** (add **MN ND KS**). **Built bloc = 40 as of Aug 27, 2026** (add **OK AZ**).
-   ### ➤ NEXT BUILDS — re-gated Aug 27, 2026. **ARIZONA AND OKLAHOMA ARE NOW BUILT** (40th and 39th states);
+   OR NV SD ID MT PA TN HI AL **WI**). **Built bloc = 38 as of Aug 18, 2026** (add **MN ND KS**). **Built bloc = 40 as of Aug 27, 2026** (add **OK AZ**). **Built bloc = 42 as of Aug 28, 2026** (add **FL WY**).
+   ### ➤ NEXT BUILDS — re-gated **Aug 28, 2026**. **FLORIDA AND WYOMING ARE NOW BUILT** (41st and 42nd states), and the
+   ### derivations are banked in `tools/banked/fl-build/` (counties.js carries the full currency proof) and `tools/banked/wy-build/`.
+   ### **SEVEN STATES AND DC REMAIN: AK CA LA MI MO TX UT WA — minus none; that is 8 states — plus DC.**
+   ### ✅ **FLORIDA IS DONE, so DC is now the ONLY entry left in the lighter "marquee" tier.**
+   ### 1. **MICHIGAN — the strongest remaining candidate, and its gate MOVED but did not open.** As of Aug 28 the certification of the
+   ###    Aug 4 primary is **STILL UNCONFIRMABLE**, but the picture is much better understood: the Board of State Canvassers' **Aug 24
+   ###    agenda PDF was pulled directly and lists Item 2 as "Canvass and certification of the August 4, 2026 primary election"**, and the
+   ###    board met that day. What blocks confirmation is that **NO minutes are posted** (the BSC index has exactly ONE set of 2026 minutes,
+   ###    Feb 23) and **three independent detailed accounts of the Aug 24 meeting — Votebeat, Michigan Public and Michigan Advance — cover
+   ###    only the Americans for Citizen Voting petition deadlock and never mention the canvass.** A forensic check of the state's own
+   ###    county-canvass file came back NULL: its `Nominated(N)/Elected(E)` column is empty for 2026 **and also empty in the certified 2024
+   ###    file**, so it carries no signal either way. **Next meeting is Sept 4, 2026 — re-check that agenda and the eventual minutes.**
+   ###    ⚠ **THE 2022 AP DECOY IS CONFIRMED BOGUS AGAIN**: the current board is Houskamp, Gurewitz, Cummings and Cordes — no Jeannette
+   ###    Bradshaw. ✅ **MI-08 IS RESOLVED AND HOLDS**: Thomas J. Smith won the primary 50.4% and is listed on the general-election ballot
+   ###    against Kristen McDonald Rivet; no withdrawal, no replacement. ✅ Map CONFIRMED UNCHANGED (13 districts in 2022, 2024 and 2026;
+   ###    Michigan is not on the ten-state redraw list). Senate: **El-Sayed (D) vs. Rogers (R)**, Cook toss-up. Governor: **Benson/Brinks (D)
+   ###    vs. James/DeBoyer (R)**, a JOINT ticket. AG and SoS are nominated at CONVENTIONS and **both conventions have HAPPENED** (Dem Apr 19,
+   ###    GOP Aug 22): AG **Savit (D) vs. Lloyd (R)**, SoS **Gilchrist (D) vs. Forlini (R)**. Competitive House seats, in order: **MI-07
+   ###    (Toss-up at all three raters), MI-10 (open, Lean/Tilt R), MI-04, MI-08.** ⚠ Two ballot-measure open questions: the Constitutional
+   ###    Convention question is definitely on; **"Money Out of Politics" is UNRESOLVED** (Michigan Advance says the BSC approved ballot
+   ###    language Aug 17, an aggregator still lists it as merely potential) and the **rejected proof-of-citizenship amendment is a live
+   ###    wildcard — ACV filed with the Michigan Supreme Court on Aug 27.** ⚠ One single-source claim to re-read before publishing: that
+   ###    **Noah Hood was nominated at the DEMOCRATIC convention** — counterintuitive and worth a second confirmation.
+   ###    ⭐ **REUSABLE ACCESS UNLOCK FOUND THIS RUN: `michigan.gov` 403s are USER-AGENT-BASED ONLY.**
+   ###    `curl -sL -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"`
+   ###    returns 200 for the SoS site, its PDFs and `mvic.sos.state.mi.us`. The same trick defeats michiganadvance.com, bridgemi.com and
+   ###    votebeat.org, which 403 WebFetch but not curl. **This retires a dead end recorded against Michigan since Aug 9.**
+   ### (historical) ➤ NEXT BUILDS — re-gated Aug 27, 2026. **ARIZONA AND OKLAHOMA ARE NOW BUILT** (40th and 39th states);
    ### the original scoping is banked in `tools/banked/ks-map-and-next-state-gates-2026-08-18.md`, and the two new
    ### derivations in `tools/banked/az-map-2026-derivation.md` and `tools/banked/ok-map-2026-derivation.md`.
    ### **NINE STATES AND DC REMAIN: AK CA LA MI MO TX UT WA WY, plus DC and the FL upgrade.**
-   1. **FLORIDA — recommended next, and the last state in the "marquee" tier besides DC.** Its primary was **Aug 18, 2026**, so the
+   1. ~~**FLORIDA — recommended next, and the last state in the "marquee" tier besides DC.**~~ ✅ **BUILT Aug 28, 2026.** Every premise below held up: HB 1D governs, the injunction was denied, and the reported **June 10 Florida Supreme Court denial is now VERIFIED** against the Brennan Center's case tracker and an NBC News report — though it was a denial **for lack of jurisdiction**, not a ruling on the merits, and the Fair Districts appeal is still pending (re-check the docket in early October). Its primary was **Aug 18, 2026**, so the
       gate is open and results should now be certified or close to it. Map is **HB 1D**, signed May 4, 2026 after a special session
       following *Louisiana v. Callais*; a preliminary injunction was DENIED in late May, so **HB 1D governs 2026** — apply lesson #19,
       and note the Fair Districts merits case continues. ⚠ A reported "Fla. Supreme Court declined 6-1 on June 10" appeared only in a
@@ -1116,7 +1237,7 @@ time-sensitive calendar, and the incumbent-status sweep.
       looks like success), and it is only valid where the map did NOT change. **MCDC Geocorr 2022 fully replaces it and needs no key** —
       but its state parameter is `Az04` / `Ok40` style (Titlecase postal + FIPS), NOT the bare FIPS, and empty ring params must be passed
       as `0` or a SAS macro throws. Both derivations banked this run document the exact working URLs.
-   **DC still needs the special no-county page model.** ⚠ **Only DC and FL remain in the lighter "marquee" tier**, and FL's gate is now OPEN — see item 1 above.
+   **DC still needs the special no-county page model.** ✅ **FL IS BUILT, so DC is now the ONLY entry in the lighter "marquee" tier.**
    **DC still needs the special no-county page model.** After FL the remaining unbuilt states are the western and
    midwestern block (TX CA AZ WA MN MI MO LA OK KS UT WY AK ND etc.).
    **MINNESOTA IS THE NEXT BUILD AND IS MOSTLY DONE — see the banked section below.** Its county table and all eight
