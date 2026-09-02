@@ -115,6 +115,16 @@ const STATE_PAGES = [
   // 15 statewide (8 upcoming incl. the retention and ballot-measure cards + 7 Aug 18 primary
   // cards) + 3 at-large House races. Every one of the 23 counties returns 18.
   { page: "wy.html", countyCount: 23,  sampleFips: "56021", sampleName: "Laramie",      expectedRaces: 18 },
+  // Utah: the court-drawn Map 1A. Only THREE split counties (Salt Lake [1,4], Utah [3,4],
+  // Weber [2,3]) and an unusually THIN statewide ballot — no U.S. Senate, no Governor, no
+  // statewide executive office at all, so STATEWIDE is just 2 constitutional amendments plus
+  // the appellate judicial retention card. Salt Lake carries ds, so it returns 3 + 2 = 5.
+  { page: "ut.html", countyCount: 29,  sampleFips: "49035", sampleName: "Salt Lake",    expectedRaces: 5 },
+  // King is deliberately the WA sample: it touches FOUR districts (1, 7, 8, 9) via `ds`, and
+  // BOTH WA-7 AND WA-9 SIT ENTIRELY INSIDE IT — WA-9 is the population plurality of no county at
+  // all, so without `ds` a voter in south Seattle or Renton would never see their own U.S. House
+  // race (lesson #12). 8 statewide (5 Supreme Court seats + 3 initiatives) + 4 districts = 12.
+  { page: "wa.html", countyCount: 39,  sampleFips: "53033", sampleName: "King",         expectedRaces: 12 },
 ];
 
 for (const cfg of STATE_PAGES) {
@@ -165,6 +175,24 @@ for (const cfg of STATE_PAGES) {
     (x.SITE_META.name || "").startsWith(footerName + " ");
   check(footerOk,
     `${cfg.page}: footer says "${footerName} Elections Hub", matching the page's own state`);
+
+  // ⚠ THIRD instance of the SAME clone bug, found Sept 2, 2026 — and it had been live on FIVE
+  // pages. The Aug 9 fix above covered the crest and the footer, but the county drawer's
+  // empty-state TITLE was never checked, so `id.html mt.html nv.html or.html sd.html` — the whole
+  // ms.html clone lineage — all told a voter clicking an out-of-state county "Not in MS".
+  // Lesson #16 made `"Not in <XX>"` a checked substitution in clone-state.js, which protects NEW
+  // clones; nothing protected the pages that already existed. It surfaced only because
+  // clone-state.js refused to write ut.html when it could not find "Not in NV" in the donor.
+  // ➤ The general shape, for the third time: a pure-presentation string that no data test, parse
+  //   check or runtime check can see. Every such string needs a filename-derived assertion.
+  const notIn = rawPage.match(/title\.textContent\s*=\s*"Not in ([A-Z]{2})"/);
+  check(!!notIn && notIn[1] === expectAbbr,
+    `${cfg.page}: county drawer empty state reads "Not in ${expectAbbr}" (got "${notIn ? notIn[1] : "MISSING"}")`);
+  // Same class of bug, same sentence: the empty-state body names the state in words.
+  const emptyBody = rawPage.match(/This county isn(?:&#39;|')t in our ([A-Za-z ]+) dataset\./);
+  const emptyName = emptyBody ? emptyBody[1].trim() : "";
+  check(!!emptyBody && (x.SITE_META.name || "").startsWith(emptyName + " "),
+    `${cfg.page}: county drawer empty state names "${emptyName}", matching the page's own state`);
 
   const result = x.getCountyElections(cfg.sampleFips);
   const races = (result && result.elections) || [];
@@ -294,8 +322,14 @@ for (const abbr of ALL_TESTED) {
 // type-value audit across every page (quirk #7: a typo like "upcooming"
 // makes a race silently vanish from the grouped drawer)
 // ---------------------------------------------------------------
+// ⚠ This list used to be hard-coded and it SILENTLY ROTTED: it stopped at nv.html, so the
+// 15 pages built after Aug 9, 2026 (sd id mt pa tn hi al wi mn nd ks ok az fl wy) were never
+// audited at all — the section still printed a wall of passes, which is indistinguishable from
+// a section that is actually covering the site (the same failure shape as quirk #15). It is now
+// DERIVED from STATE_PAGES, the one list a new state build is already required to update, so it
+// cannot drift out of sync again. Found and fixed Aug 31, 2026.
 console.log("\n— type-value audit —");
-for (const page of ["index.html", "nc.html", "sc.html", "ga.html", "va.html", "md.html", "de.html", "nj.html", "ny.html", "ri.html", "nh.html", "ct.html", "vt.html", "me.html", "ma.html", "wv.html", "oh.html", "ky.html", "in.html", "ia.html", "il.html", "ms.html", "ar.html", "ne.html", "nm.html", "co.html", "or.html", "nv.html", "state.html"]) {
+for (const page of ["index.html", ...STATE_PAGES.map(p => p.page), "state.html"]) {
   const bad = [];
   for (const code of extractInlineScripts(page)) {
     for (const m of code.matchAll(/type\s*:\s*"([a-z]+)"/g)) {

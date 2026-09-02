@@ -1,0 +1,113 @@
+# Source: https://results.votewa.gov/results/public/api/elections/washington/20260804/data (isOfficialResults: true; SoS certified Aug 21, 2026)
+election: 2026 Primary | date 2026-08-04 | isOfficialResults=true | asOf=2026-08-21T13:19:17.5894858Z
+=== U.S. Representative - Congressional District 1 | total 160573 | Candidate
+   Suzan DelBene | (Prefers Democratic Party) | 85156 | 53.03%
+   Mary Silva | (Prefers Republican Party) | 42088 | 26.21%
+   James Etzkorn | (Prefers Independent Party) | 12023 | 7.49%
+   Hunter Gordon | (Prefers Democratic Party) | 10014 | 6.24%
+   Bryce Nickel | (Prefers Democratic Party) | 3929 | 2.45%
+   Benjamin Kincaid | (Prefers Democratic Party) | 3580 | 2.23%
+   Catherine Hildebrand | (Prefers Democratic Party) | 3562 | 2.22%
+   Write-In |  | 221 | 0.14%
+=== U.S. Representative - Congressional District 2 | total 209510 | Candidate
+   Rick Larsen | (Prefers Democratic Party) | 88708 | 42.34%
+   Edwin H. Feller | (Prefers Republican Party) | 68713 | 32.80%
+   Tomas Scheel | (Prefers Democratic Party) | 29133 | 13.91%
+   Devin Hermanson | (Prefers Democratic Party) | 22775 | 10.87%
+   Write-In |  | 181 | 0.09%
+=== U.S. Representative - Congressional District 3 | total 214491 | Candidate
+   John Braun | (Prefers Republican Party) | 85064 | 39.66%
+   Marie Gluesenkamp Perez | (Prefers Democratic Party) | 78025 | 36.38%
+   Brent Hennrich | (Prefers Democratic Party) | 35820 | 16.70%
+   John P. Roco | (Prefers Republican Party) | 4102 | 1.91%
+   John Saulie-Rohman | (Prefers Independent Party) | 3549 | 1.65%
+   Lawrence Kellogg | (Prefers Republican Party) | 2727 | 1.27%
+   Troy Rasband | (Prefers Democratic Party) | 2058 | 0.96%
+   Austin Braswell | (Prefers Democratic Party) | 1656 | 0.77%
+   Antony Barran | (Prefers Cascade Party) | 1345 | 0.63%
+   Write-in |  | 145 | 0.07%
+=== U.S. Representative - Congressional District 4 | total 142661 | Candidate
+   Amanda McKinney | (Prefers Republican Party) | 49652 | 34.80%
+   John Duresky | (Prefers Democratic Party) | 42681 | 29.92%
+   Jerrod Sessler | (Prefers Republican Party) | 20808 | 14.59%
+   Matt Boehnke | (Prefers Republican Party) | 15013 | 10.52%
+   Favian Valencia | (Prefers Independent Party) | 5776 | 4.05%
+   Jacek "Jack" Kobiesa | (States No Party Preference) | 2214 | 1.55%
+   Devin Poore | (Prefers Cascade Party) | 1956 | 1.37%
+   John C. Hughs | (Prefers Republican Party) | 1695 | 1.19%
+   Elpidia Saavedra | (Prefers Republican Party) | 1393 | 0.98%
+   Zac Rossi | (States No Party Preference) | 879 | 0.62%
+   Ken Vaz | (Prefers Republican Party) | 477 | 0.33%
+   Write-In |  | 117 | 0.08%
+=== U.S. Representative - Congressional District 5 | total 204209 | Candidate
+   Michael Baumgartner | (Prefers Republican Party) | 96791 | 47.40%
+   Carmela Conroy | (Prefers Democratic Party) | 38487 | 18.85%
+   Nate Powell | (Prefers Independent Party) | 33443 | 16.38%
+   Kevin Fagan | (Prefers Democratic Party) | 9048 | 4.43%
+   David Womack | (Prefers Democratic Party) | 7242 | 3.55%
+   Bajun R. Mavalwalla | (Prefers Democratic Party) | 6482 | 3.17%
+   Ann Marie Danimus | (Prefers Independent Party) | 2920 | 1.43%
+   Richard Freudenberg | (Prefers Democratic Party) | 2866 | 1.40%
+   Matthew Hayes | (Prefers Independent Party) | 2417 | 1.18%
+   Kyle Usrey | (Prefers Independent Party) | 2274 | 1.11%
+   Michael McGarr | (Prefers Democratic Party) | 1152 | 0.56%
+   Andrew Bartleson | (Prefers Independent Party) | 915 | 0.45%
+   Write-in |  | 172 | 0.08%
+=== U.S. Representative - Congressional District 6 | total 225962 | Candidate
+   Emily Randall | (Prefers Democratic Party) | 132805 | 58.77%
+   Teresa Fox | (Prefers Republican Party) | 57700 | 25.54%
+   Leon Lawson | (Prefers Trump Republican Party) | 21965 | 9.72%
+   Brian P. O'Gorman | (Prefers Independent Party) | 7307 | 3.23%
+   Macy Jones | (States No Party Preference) | 6044 | 2.67%
+   Write-In |  | 141 | 0.06%
+=== U.S. Representative - Congressional District 7 | total 216741 | Candidate
+   Pramila Jayapal | (Prefers Democratic Party) | 182844 | 84.36%
+   Nirav Sheth | (Prefers Republican Party) | 21282 | 9.82%
+   Gwen Kirkland | (Prefers Democratic Party) | 7519 | 3.47%
+   David W. Blomstrom | (Prefers Fifth Republic Party) | 4294 | 1.98%
+   Write-in |  | 802 | 0.37%
+=== U.S. Representative - Congressional District 8 | total 191585 | Candidate
+   Kim Schrier | (Prefers Democratic Party) | 102853 | 53.69%
+   Spencer Meline | (Prefers Republican Party) | 30324 | 15.83%
+   Trinh Ha | (Prefers Republican Party) | 28340 | 14.79%
+   Bob Hagglund | (Prefers Republican Party) | 20382 | 10.64%
+   Keith Arnold | (Prefers Democratic Party) | 4777 | 2.49%
+   Andres Valleza | (Prefers Republican Party) | 4549 | 2.37%
+   Write-in |  | 360 | 0.19%
+=== U.S. Representative - Congressional District 9 | total 142356 | Candidate
+   Adam Smith | (Prefers Democratic Party) | 67095 | 47.13%
+   Doug Basler | (Prefers Republican Party) | 31070 | 21.83%
+   Kshama Sawant | (Prefers Independent Party) | 24583 | 17.27%
+   Melissa Chaudhry | (Prefers Democratic Party) | 17811 | 12.51%
+   Jacob Perasso | (Prefers Socialist Workers Party) | 1588 | 1.12%
+   Write-in |  | 209 | 0.15%
+=== U.S. Representative - Congressional District 10 | total 155922 | Candidate
+   Marilyn Strickland | (Prefers Democratic Party) | 73689 | 47.26%
+   Chris D. Chung | (Prefers Republican Party) | 48953 | 31.40%
+   Alex Scheel | (Prefers Democratic Party) | 16074 | 10.31%
+   Adam Arafat | (Prefers Democratic Party) | 14695 | 9.42%
+   Derek Maynes | (States No Party Preference) | 1431 | 0.92%
+   Kurtis Engle | (Prefers Union Party) | 713 | 0.46%
+   Write-In |  | 367 | 0.24%
+=== Justice Position #01 - Supreme Court | total 1746550 | Candidate
+   Colleen Melody |  | 923965 | 52.90%
+   Scott Edwards |  | 513394 | 29.39%
+   Laura Christensen Colberg |  | 305110 | 17.47%
+   Write-in |  | 4081 | 0.23%
+=== Justice Position #03 - Supreme Court | total 1740028 | Candidate
+   David Stevens |  | 612267 | 35.19%
+   Jaime Michelle Hawk |  | 578979 | 33.27%
+   Mike Diaz |  | 543721 | 31.25%
+   Write-in |  | 5061 | 0.29%
+=== Justice Position #05 - Supreme Court | total 1739425 | Candidate
+   Theo Angelis |  | 623396 | 35.84%
+   Dave Larson |  | 559629 | 32.17%
+   Sharonda Amamilo |  | 371059 | 21.33%
+   Greg Miller |  | 181542 | 10.44%
+   Write-in |  | 3799 | 0.22%
+=== Justice Position #07 - Supreme Court | total 1726167 | Candidate
+   Debra L. Stephens |  | 938584 | 54.37%
+   Todd A. Bloom |  | 468347 | 27.13%
+   Karim A. Merchant |  | 207603 | 12.03%
+   David R Shelvey |  | 107635 | 6.24%
+   Write-in |  | 3998 | 0.23%

@@ -166,10 +166,12 @@ must appear AFTER its declaration; a top-level TDZ error kills the whole script 
 ### index.html (national)
 ```
 ST / NAME     : fips → abbr / full name             CAP: capitals (currently unused on this page)
-BUILT         : 40 fips -> page (37 nc, 45 sc, 13 ga, 51 va, 24 md, 10 de, 34 nj, 36 ny, 44 ri, 33 nh,
+BUILT         : 44 fips -> page (37 nc, 45 sc, 13 ga, 51 va, 24 md, 10 de, 34 nj, 36 ny, 44 ri, 33 nh,
                 09 ct, 50 vt, 23 me, 25 ma, 54 wv, 39 oh, 21 ky, 18 in, 19 ia, 17 il, 28 ms, 05 ar, 31 ne, 35 nm, 08 co,
-                41 or, 32 nv, 46 sd, 16 id, 30 mt, 42 pa, 47 tn, 15 hi, 01 al, 55 wi, 27 mn, 38 nd, 20 ks, 40 ok, 04 az)
-PARTIAL       : Set of 2 fips (DC FL) → lighter gold tier
+                41 or, 32 nv, 46 sd, 16 id, 30 mt, 42 pa, 47 tn, 15 hi, 01 al, 55 wi, 27 mn, 38 nd, 20 ks, 40 ok, 04 az,
+                12 fl, 56 wy, 49 ut, 53 wa)
+PARTIAL       : Set of 1 fips (DC) → lighter gold tier. The 6 remaining starter states are
+                AK CA LA MI MO TX. Tier arithmetic: 44 built + 1 marquee + 6 starter = 51.
 CALLOUTS      : label anchor coords for 9 small states + DC
 destFor(fips) : BUILT[fips] if fully built, else state.html?state=XX
 
@@ -202,7 +204,72 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of August 28, 2026)
+## Current state (as of September 2, 2026)
+- **UT (full, added Sept 2, 2026) — 43rd state.** ⚠⚠ **UTAH RUNS ON A COURT-DRAWN MAP AND THE DISTRICT NUMBERS ALL SHIFTED, which is the single
+  easiest thing to get wrong here.** Judge Dianna M. Gibson (Third Judicial District) struck the 2021 plan under Proposition 4 on **Aug 25, 2025**,
+  enjoined the Legislature's replacement SB 1012 ("Map C") on Nov 10, 2025, and adopted **Plaintiffs' Map 1 as adjusted — "Map 1A"** for 2026.
+  ✅ **FINAL FOR 2026:** the Utah Supreme Court dismissed the Legislature's appeal on PROCEDURAL grounds Feb 20, 2026 and a federal three-judge panel
+  denied an Elections Clause injunction Feb 23, 2026. ⚠⚠ **THE CENSUS CD119 FILE IS STALE FOR UTAH AND WAS PROVED SO, NOT ASSUMED** — its tell is
+  that SALT LAKE COUNTY APPEARS IN ALL FOUR DISTRICTS (the old "pizza slice"), and it puts Washington/Iron/Beaver/Kane/Garfield in CD2 where Map 1A
+  puts them in CD3. ✅ **CURRENCY PROVED FROM ACTUAL BALLOTS AND IT REFUTES THE OLD MAP:** all 29 county feeds were pulled from
+  electionresults.utah.gov and **24 of 29 counties are testable with ZERO conflicts**; the decisive observation is that **SALT LAKE SHOWED EXACTLY
+  ONE CONGRESSIONAL CONTEST** (the Democratic CD1 primary) — under the 2021 map the CD2 and CD3 primaries would necessarily have appeared there too.
+  The 5 blind counties (Juab, Millard, Sanpete, Sevier, Tooele) held no congressional primary and are placed in CD4 by elimination. ⚠ **ONLY THREE
+  SPLIT COUNTIES** — Salt Lake [1,4], Utah [3,4], Weber [2,3] — and **CD1 SITS WHOLLY INSIDE SALT LAKE COUNTY**, so without `ds` the ~31% of that
+  county who vote CD4 would never see their own House race.
+  ⚠⚠ **THE NUMBERING SHIFTED ONE SEAT DOWN THE LINE:** old CD1 (Blake Moore) → **new CD2**, old CD2 (Celeste Maloy) → **new CD3**, old CD3
+  (Mike Kennedy) → **new CD4**, and the new CD1 is the OPEN Salt Lake seat. **Moore did NOT choose to switch districts — his district was renumbered
+  under him.** ⚠ **BURGESS OWENS IS NOT RUNNING** (announced Mar 4, 2026).
+  ⚠⚠ **UTAH'S 2026 BALLOT HAS NO U.S. SENATE RACE, NO GOVERNOR AND NO STATEWIDE EXECUTIVE OFFICE AT ALL** — a verified negative established from the
+  state's own documents: the Lieutenant Governor's `2026 Candidate Filings` page has exactly five sections (Federal Offices, State Senate, State
+  House, State School Board, Judicial Retention) and **no State Offices section**, and the LG's own 2026 Candidate Manual is subtitled "A guide for
+  U.S. House, state legislative, and state board of education candidates." Statewide content is therefore **2 constitutional amendments + appellate
+  judicial retention**, and nothing else. ✅ **HB 267's veto referendum is OFF the ballot** (the Legislature repealed HB 267 via HB 2001 on Dec 9,
+  2025, voiding the largest successful referendum drive in Utah history) and **NO citizen initiative qualified** (the Prop 4 repeal drive verified
+  160,000+ signatures but SIGNATURE-REMOVAL REQUESTS dropped it below 8% in enough Senate districts; declared insufficient Apr 30, 2026).
+  ⚠ **THE RETENTION RACE IS NOT ROUTINE:** the Utah Republican Party is campaigning for a NO vote on **Justice Jill M. Pohlman** over the very
+  Prop 4 ruling that produced this map; the State Bar has pushed back and Gov. Cox called the campaign a legitimate check on judicial power.
+  Justice Diana Hagen resigned May 8, 2026 and is off the ballot, so Pohlman is alone from the high court, joined by six Court of Appeals judges.
+  ⚠ **JPEC (judges.utah.gov) RETURNS HTTP 401 TO EVERY AUTOMATED CLIENT**, so no 2026 retain/do-not-retain recommendation is carried — the single
+  best source for this race is unreadable and the page says so plainly. ⚠ **State School Board is DISTRICT-elected**, so it is deliberately absent.
+  ⚠ **NOT CARDED ON PURPOSE:** Babak "Bobby" Darvish (CD1, status `Write-In`) and Jacob Paul Gottfredson (CD4, status `Disqualified`).
+  ✅ **AYDEN SCOTT (CD3) IS CARDED ON PURPOSE** — absent from politics1.com and every news roundup, but the STATE'S OWN LIST carries him as
+  `Election Candidate`; a primary source beats an aggregator's silence. 30 candidate cards, 0 voices gaps, 131 [Verify]. No LOCAL_RACES.
+- **WA (full, added Sept 2, 2026) — 44th state.** ✅ **MAP UNCHANGED** — the 2021 Redistricting Commission plan as amended by HCR 4407, in force
+  since 2022. Washington is on NEITHER half of the post-*Callais* wave: **HJR 4209 needed two-thirds in each chamber and never reached the ballot**.
+  ⚠ ***SOTO PALMER v. HOBBS* IS NOT A CONGRESSIONAL CASE** — it redrew LD-15, a STATE LEGISLATIVE district; Washington's congressional plan has
+  never been challenged in court. ✅ **CURRENCY PROVED 39 OF 39 COUNTIES, ZERO CONTRADICTIONS**, against the Secretary of State's own certified
+  Aug 4 primary feed (isOfficialResults: true) — every county's real ballot matches the table EXACTLY, not merely as a subset, including all seven
+  splits and King's four-district `ds`. ⚠ **`ds` IS NOT OPTIONAL HERE: WA-9 IS THE POPULATION PLURALITY OF NO COUNTY**, and both WA-7 and WA-9 sit
+  ENTIRELY inside King — lesson #12 at full stretch. ⚠ **King's `d` is a documented judgement call**: Geocorr reads WA-7 at 769,663 and WA-9 at
+  768,838, 0.05% apart, which is block-allocation noise rather than a real margin; `d: 7` follows Geocorr and is corroborated by turnout (216,741
+  primary ballots to 142,356). Nothing is hidden by the call — `ds` carries all four King districts.
+  ⚠⚠ **WASHINGTON'S TOP-TWO PRIMARY CHANGES HOW EVERY RACE READS.** The top two advance REGARDLESS OF PARTY — there are no party nominations, and
+  the party beside a name is a **self-declared ballot preference** the candidate wrote on their own filing form ("Prefers Trump Republican Party",
+  "States No Party Preference"). ⚠ **MARIE GLUESENKAMP PEREZ FINISHED SECOND IN HER OWN PRIMARY** (Braun 39.66% to her 36.38%) even though Democrats
+  out-polled Republicans 55–43 across the whole field — the marquee race. ⚠ **WA-4 IS OPEN: Dan Newhouse announced Dec 17, 2025 he would not seek a
+  seventh term** (four independent confirmations; he did not lose, withdraw, resign or die), **a DEMOCRAT placed second there**, and **Jerrod
+  Sessler, Trump's 2024 endorsee, ran THIRD and is eliminated**. ⚠ **Kshama Sawant ran in WA-9 and placed THIRD — Washington has no runoff, so she
+  is eliminated** and gets no candidate card. ⚠ **WA-10's Republican, Chris D. Chung, sought insurance commissioner as a DEMOCRAT in 2024.**
+  ⚠⚠ **THERE IS NO FEDERAL OR EXECUTIVE STATEWIDE RACE IN WASHINGTON IN 2026** — a verified negative. **NO U.S. SENATE:** Murray is Class 3 (to
+  Jan 2029), Cantwell Class 1 (to Jan 2031), and **CLASS 2 is the class up in 2026 — Washington has no Class 2 seat**; corroborated by The Green
+  Papers. Every statewide executive was filled in Nov 2024 for four years (Ferguson, Heck, Hobbs, Brown, Pellicciotti, McCarthy, Kuderer, Public
+  Lands, and the nonpartisan Superintendent), all next up 2028. **No constitutional amendment** and **no advisory votes** (repealed 2023).
+  ⚠ **SJR 8201 was on the NOVEMBER 2025 ballot, not 2026** — do not confuse the two.
+  ⚠⚠ **THERE ARE FIVE SUPREME COURT SEATS ON THE BALLOT, NOT FOUR, AND THE FIFTH APPEARS ON NO AUGUST RESULTS SHEET.** **Position 4 held NO PRIMARY**
+  because **RCW 29A.52.220** bars one for a nonpartisan position when no more than two candidates file — Ian Birk vs. Sean O'Donnell go straight to
+  November for **Justice Charles W. Johnson's seat, open on mandatory retirement at 75**. Confirmed three independent ways: the statute itself, the
+  certified feed (which holds Positions 1/3/5/7 and no 4), and Wikipedia's article opening "to elect five members."
+  ⚠ **A PREMISE IN OUR OWN BUILD BRIEF WAS WRONG AND WAS REFUTED BY READING THE STATUTE:** RCW 29A.52.231 does **NOT** elect a judicial candidate
+  outright on a primary majority — it contains only the designation that those offices are nonpartisan. So Melody's 52.90% and Chief Justice
+  Stephens's 54.37% did **not** end their races. **Three statewide initiatives**, all from Let's Go Washington: **I-645** (repeal the 9.9%
+  million-dollar income tax — ⚠ it does NOT repeal the capital gains tax), **I-638** (girls' athletics eligibility) and **I-1** (re-enacting the 2024
+  parental-rights law the Legislature partly repealed in May 2025). 36 candidate cards, 0 voices gaps, 68 [Verify]. No LOCAL_RACES.
+- **⚠⚠ NINE PUBLISHED PAGES WERE TELLING VOTERS THE WRONG STATE'S NAME, AND HAD BEEN FOR WEEKS.** Found Sept 2, 2026 — see lesson #28. Five pages
+  (`id mt nv or sd`) said **"Not in MS"** in the county drawer and four (`oh ky in ia`) said **"our West Virginia dataset"**. All nine are fixed and
+  `tests/data-logic.js` now asserts both strings against the filename.
+
+## Superseded — current state as of August 28, 2026
 - **FL (full, added Aug 28, 2026) — 41st state, and the LAST state to leave the lighter "marquee" tier: only DC remains.**
   ⚠⚠ **BUILT ON HB 1D, A BRAND-NEW MID-DECADE MAP** — plan `EOGPCRP2026`, passed Apr 29, 2026 (House 83–28, Senate 21–17) and signed
   **May 4, 2026** in a special session after *Louisiana v. Callais*. It **redrew 21 of 28 districts**. ⚠ **THE CENSUS CD119 FILE IS STALE
@@ -768,6 +835,30 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
    qualified, no Democrat filed for Wyoming Auditor) are all backed by a POSITIVE document: the state's own offices-up list or write-in roster.
    **A negative is only publishable when some affirmative source says so.**
 
+
+28. **⚠⚠ THE SAME CLONE BUG HAD SHIPPED A THIRD AND FOURTH TIME, AND IT WAS LIVE ON NINE PAGES.**
+   Found Sept 2, 2026 building Utah. Quirk #14 (Aug 9) fixed `or.html` and `nv.html` showing Mississippi's
+   initials in the **crest** and the **footer**, and added a filename-derived test for exactly those two
+   strings. Lesson #16 (Aug 10) made `"Not in <XX>"` a checked substitution in `clone-state.js`.
+   **Neither touched the pages that already existed**, and nobody ever checked the county drawer.
+   ➤ **The damage:** five pages — `id mt nv or sd`, the whole `ms.html` clone lineage — told a voter who
+   clicked an out-of-state county **"Not in MS"**. And four more — `oh ky in ia`, the `wv.html` lineage —
+   said **"This county isn't in our West Virginia dataset."** Nine pages, live for weeks.
+   ➤ **How it surfaced, and this is the point: `clone-state.js` REFUSED TO WRITE `ut.html`** because it
+   could not find `"Not in NV"` in the donor. The tool was not broken and the config was not wrong — the
+   DONOR was, and the tool's refusal is what exposed it. **Fifth time the refuse-to-write behaviour has
+   caught a real defect** (quirks #16, #22, #23, #26, now #28) and the third time the fault was a file.
+   ➤ **The second half was found by the fix itself.** The new assertion on the *body* sentence was written
+   at the same time as the one on the drawer title, and it failed immediately on four pages nobody had
+   suspected. A test written to lock in one fix found a second, unrelated instance in the same run.
+   ➤ **Fixed both, and `tests/data-logic.js` now asserts BOTH strings against the filename** — the drawer
+   title (`"Not in <XX>"`) and the empty-state body (`our <State> dataset`). Verified to fail on all nine
+   pre-fix pages.
+   ➤ **THE GENERAL LESSON, now proven three times over: a pure-presentation string that names the state is
+   invisible to every data test, parse check and runtime check.** Enumerate them and give each one a
+   filename-derived assertion. When you fix one instance of a cosmetic clone bug, **sweep every page for
+   the same class immediately** — quirk #14 fixed two strings on two pages and left four more strings on
+   nine pages, because it fixed the *instances* rather than the *class*.
 ## Testing (`tests/` — plain Node.js, zero dependencies)
 
 Requires Node.js (any recent LTS). Run the whole suite from the site root:
@@ -1013,7 +1104,33 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
    built once and never re-derived. **Every legacy page's map deserves the same audit nc.html just got** — sc.html and
    ga.html are the oldest and were built the same week under the same assumptions.
 
-**Queue status (as of Aug 28, 2026): every numbered item 1–10 is COMPLETE and the owner has added nothing new.**
+**Queue status (as of Sept 2, 2026): every numbered item 1–10 is COMPLETE and the owner has added nothing new.**
+Item 4 (voices) reads **0 missing / 1,395 candidates across 44 pages** at the end of the Sept 2 run — Utah shipped with 30 candidates and
+Washington with 36, both 0 gaps. The landing page was reviewed end-to-end and its dependent facts reconcile: the legend needed only its count
+(42 → **44 states**), the footer was bumped August → **September 2026**, PARTIAL is still **{DC} alone**, and the tier arithmetic checks out —
+44 built + 1 marquee + 6 starter = 51. **The six states left to build are AK CA LA MI MO TX, plus DC's special no-county page model.**
+The [Verify] total rose 3,316 → **3,515**, which is EXACTLY the two new states' markers (UT 131, WA 68) and not a regression anywhere else.
+✅ **The time-sensitive calendar is still EMPTY.**
+✅ **BOTH MAPS WERE VERIFIED GEOMETRICALLY** (lesson #18b): reading `<XX>_STATE_FIPS` back out of each page and filtering the real us-atlas
+`counties-10m` geometry gives **ut.html → 29 counties, lon [-114.05,-109.04] lat [37.00,42.00]** and **wa.html → 39 counties,
+lon [-124.73,-116.92] lat [45.55,49.00]** — Utah's is exactly its true 109–114°W / 37–42°N rectangle, and both declared county counts match the
+geometry exactly (29/29, 39/39).
+⚠⚠ **THE RUN'S BIGGEST FINDING WAS NOT A STATE BUILD — IT WAS NINE PUBLISHED PAGES NAMING THE WRONG STATE.** See lesson #28: `id mt nv or sd`
+said "Not in MS" and `oh ky in ia` said "our West Virginia dataset". All nine are fixed and both strings are now asserted against the filename.
+It surfaced only because `clone-state.js` refused to write `ut.html` — the fifth time that refusal has caught a real defect.
+⚠⚠ **TWO PREMISES IN OUR OWN BUILD BRIEFS WERE WRONG AND BOTH WERE REFUTED BY GOING TO THE PRIMARY SOURCE.** (a) The brief said **RCW 29A.52.231**
+elects a judicial candidate outright on a primary majority; **reading the statute showed it contains only the nonpartisan designation**, and the
+operative rule is **RCW 29A.52.220** — which is why **Washington has FIVE Supreme Court races, not four**, and why the fifth (Position 4, Birk vs.
+O'Donnell) appears on NO August results sheet. A voter reading only the primary returns would never know that race exists. (b) The brief said Blake
+Moore **left** UT-1 to run in UT-2; in fact **Map 1A renumbered his district under him**. ➤ The Kansas and Oklahoma lesson holds for a third and
+fourth time: **brief premises are LEADS, not facts — tell agents to refute them, and they will.**
+✅ **THE LIEUTENANT GOVERNOR'S OWN CANDIDATE LIST SETTLED UTAH OUTRIGHT.** `vote.utah.gov/2026-candidate-filings/` carries a **STATUS column**
+(`Election Candidate` / `Out in Convention` / `Out in Primary` / `Withdrew` / `Disqualified` / `Write-In`), so it answers "who is actually on the
+November ballot" directly — including the two nominees who never appeared in primary results because their nominations were uncontested
+(**Riley Owen**, R, CD1 and **Peter Crosby**, D, CD2). ➤ **Look for this list in every state build before researching candidates one by one.**
+It is lesson #25's sibling: the state may publish the answer outright.
+
+Superseded: **Queue status (as of Aug 28, 2026): every numbered item 1–10 is COMPLETE and the owner has added nothing new.**
 Item 4 (voices) reads **0 missing / 1,329 candidates across 42 pages** at the end of the Aug 28 run — Florida shipped with 91 upcoming-race
 candidates (249 candidate cards in total, the largest state on the site) and Wyoming with 17, both 0 gaps. The landing page was reviewed
 end-to-end and its dependent facts reconcile: the legend needed only its count (40 → **42 states**), the footer already read August 2026, and

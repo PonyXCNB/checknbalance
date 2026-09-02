@@ -1,0 +1,41 @@
+# Source: https://electionresults.utah.gov/results/public/api/elections/utah/Primary06232026/data
+election: 2026 Utah Primary Election | date 2026-06-23 | isOfficialResults=false | asOf=2026-07-22T16:16:23.6714348Z
+=== DEM U.S. House District 1 | total 57295 | Candidate
+   BEN MCADAMS | Democratic | 29737 | 51.90%
+   NATE BLOUIN | Democratic | 15771 | 27.53%
+   LIBAN MOHAMED | Democratic | 9542 | 16.65%
+   MICHAEL FARRELL | Democratic | 2245 | 3.92%
+=== REP U.S. House District 2 | total 92944 | Candidate
+   BLAKE D. MOORE | Republican | 52673 | 56.67%
+   KARIANNE LISONBEE | Republican | 40271 | 43.33%
+=== REP U.S. House District 3 | total 102169 | Candidate
+   CELESTE MALOY | Republican | 67135 | 65.71%
+   PHIL LYMAN | Republican | 35034 | 34.29%
+=== DEM State Senate District 5 | total 3700 | Candidate
+   "CJ" CHRISTINA HERNANDEZ | Democratic | 2120 | 57.30%
+   DAKOTA WURTH | Democratic | 1580 | 42.70%
+=== REP State Senate District 7 | total 17913 | Candidate
+   STEPHANIE HOLLIST | Republican | 7726 | 43.13%
+   STUART ADAMS | Republican | 6113 | 34.13%
+   BRADEN HESS |  | 4074 | 22.74%
+=== REP State Senate District 18 | total 10126 | Candidate
+   DOUG FIEFIA | Republican | 7038 | 69.50%
+   DANIEL MCCAY | Republican | 3088 | 30.50%
+=== REP State House District 29 | total 5869 | Candidate
+   SHELDON BIRCH | Republican | 3789 | 64.56%
+   ALEXIS WHEELER | Republican | 2080 | 35.44%
+=== REP State House District 59 | total 6167 | Candidate
+   LUKE SEARLE | Republican | 3397 | 55.08%
+   JEFFREY PIERCE | Republican | 2770 | 44.92%
+=== REP State House District 67 | total 6880 | Candidate
+   JR BIRD | Republican | 4662 | 67.76%
+   YVONNE H JENSEN | Republican | 2218 | 32.24%
+=== REP State House District 69 | total 7122 | Candidate
+   LOGAN J. MONSON | Republican | 4530 | 63.61%
+   DANIEL GARDNER | Republican | 2592 | 36.39%
+=== REP State Board of Education District 11 | total 20317 | Candidate
+   TRACY J. NUTTALL | Republican | 10297 | 50.68%
+   TERRY L. HUTCHINSON | Republican | 10020 | 49.32%
+=== REP State Board of Education District 14 | total 31476 | Candidate
+   LINDA HANKS | Republican | 21646 | 68.77%
+   NICHOLE BEECHER ISOM | Republican | 9830 | 31.23%

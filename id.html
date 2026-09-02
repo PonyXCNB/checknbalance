@@ -1844,7 +1844,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Idaho Elections Hub", lastUpdated: "August 9, 2026" };
+const SITE_META = { name: "Idaho Elections Hub", lastUpdated: "September 2, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Idaho county-level down-ballot research has not started.)
@@ -1990,7 +1990,7 @@ function openPanel(fips) {
 
   if (!built) {
     eyebrow.textContent = "County FIPS " + fips;
-    title.textContent   = "Not in MS";
+    title.textContent   = "Not in ID";
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn&#39;t in our Idaho dataset.</p></div>`;
   } else {

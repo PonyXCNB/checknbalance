@@ -1,0 +1,210 @@
+{
+  "races": [
+    {
+      "date": "Nov 3, 2026",
+      "type": "upcoming",
+      "scope": "Federal · District",
+      "office": "U.S. House — Washington District 4",
+      "note": "OPEN SEAT: REP. DAN NEWHOUSE (R) ANNOUNCED DEC 17, 2025 HE WOULD NOT SEEK A SEVENTH TERM. ⚠ Top-two primary: the two highest finishers advance regardless of party. ✅ Certified Aug 21: McKinney 34.80%, Duresky 29.92% — a Democrat placed second in a district that has not elected one since Jay Inslee in 1992 [Verify — a historical claim from press summaries]. Jerrod Sessler, Trump's 2024 endorsee, ran third at 14.59% and is eliminated.",
+      "candidates": [
+        {
+          "name": "Amanda McKinney",
+          "party": "R",
+          "winner": false,
+          "positions": [
+            "Commonsense water policy protecting Central Washington farms",
+            "Backs Trump on border security and immigration enforcement",
+            "Second Amendment, ending DEI, barring trans women from women's sports"
+          ],
+          "differentiators": [
+            "Yakima County commissioner since 2020",
+            "Endorsed by President Trump and Speaker Mike Johnson",
+            "Raised over 981,000 dollars by July 15, most in the field",
+            "Opposed prolonged COVID shutdowns and vaccine mandates"
+          ],
+          "supporters": [
+            "Say she pairs America First politics with genuine water and agriculture expertise.",
+            "Point to Trump and Johnson endorsements as evidence she can deliver for the district.",
+            "Credit her county record of pushing back on federal regulation of farms and dairies."
+          ],
+          "opponents": [
+            "Local letters to the editor question what her large financial backers expect in return.",
+            "Say she would replace an independent-minded Republican with a straight party-line vote [Verify — structural argument].",
+            "Argue a national culture-war focus crowds out district-specific problems like water and labor [Verify — structural argument]."
+          ]
+        },
+        {
+          "name": "John Duresky",
+          "party": "D",
+          "winner": false,
+          "positions": [
+            "Affordability is the district's top problem",
+            "Supports some form of universal health care",
+            "Raise Medicare and Medicaid rates for rural hospitals"
+          ],
+          "differentiators": [
+            "Retired Air Force major, roughly 37 years of federal service",
+            "Former project control officer at the Hanford site",
+            "Only Democrat among 11 primary candidates",
+            "Endorsed by WA State Labor Council and Washington Education Association"
+          ],
+          "supporters": [
+            "Say a career veteran and federal worker can reach rural voters other Democrats cannot.",
+            "Point to his second-place finish as real crossover appeal in a deep-red seat.",
+            "Credit town halls in small Klickitat County towns as genuine district outreach."
+          ],
+          "opponents": [
+            "Note the seat has not elected a Democrat since 1992 and rates about R+10 [Verify — both figures via aggregators; Cook's own site returned 403].",
+            "Say he was heavily outraised in the primary and starts far behind on money.",
+            "Argue universal health care is a hard sell in Central Washington [Verify — structural argument]."
+          ]
+        }
+      ]
+    },
+    {
+      "date": "Nov 3, 2026",
+      "type": "upcoming",
+      "scope": "Federal · District",
+      "office": "U.S. House — Washington District 5",
+      "note": "FIRST-TERM INCUMBENT MICHAEL BAUMGARTNER (R) DREW 11 CHALLENGERS AND FINISHED UNDER HALF AT 47.40%. ⚠ Top-two primary: party labels are self-declared ballot preferences, not nominations. ✅ Certified Aug 21: Baumgartner 47.40%, Carmela Conroy 18.85%, independent Nate Powell a close third at 16.38%. This is a 2024 rematch; Cook PVI R+5 [Verify — via Ballotpedia and Wikipedia; Cook's own site returned 403].",
+      "candidates": [
+        {
+          "name": "Michael Baumgartner (incumbent)",
+          "party": "R",
+          "winner": false,
+          "positions": [
+            "Supports the administration's military action against Iran",
+            "Aligned with Trump on tariffs and immigration",
+            "Sponsored a ban on prediction-market betting on wildfires"
+          ],
+          "differentiators": [
+            "First-term incumbent, elected 2024",
+            "Former state senator and Spokane County treasurer",
+            "Sits on Judiciary, Foreign Affairs, and Education and Workforce",
+            "Beat Conroy 60.6 percent to 39.3 percent in 2024"
+          ],
+          "supporters": [
+            "Say three substantive committee seats give Eastern Washington unusual early influence.",
+            "Point to a 21-point 2024 win as proof the district is comfortable with him.",
+            "Credit locally targeted bills such as his wildfire betting ban."
+          ],
+          "opponents": [
+            "The Spokesman-Review has described him as a party-line Trump vote on tariffs and Iran, both unpopular at home.",
+            "Note that 11 challengers ran against him and he still finished below 50 percent.",
+            "Argue a 47 percent primary showing signals softness in a midterm against the president's party [Verify — structural argument]."
+          ]
+        },
+        {
+          "name": "Carmela Conroy",
+          "party": "D",
+          "winner": false,
+          "positions": [
+            "Opposes the war with Iran",
+            "Runs on diplomatic and prosecutorial experience over party loyalty",
+            "No detailed domestic platform beyond her campaign site could be located [Verify — an absence of located records]"
+          ],
+          "differentiators": [
+            "Retired U.S. consul general, foreign service 1996 to 2020",
+            "Former Spokane County deputy prosecutor",
+            "Former chair of the Spokane County Democratic Party, 2022 to 2024",
+            "Second run against Baumgartner after losing in 2024"
+          ],
+          "supporters": [
+            "Say decades of diplomatic service are exactly the check Congress needs during a war.",
+            "Argue her 2024 run gave her name recognition a first-time challenger would lack.",
+            "Point to an R+5 seat as reachable in a midterm against the president's party."
+          ],
+          "opponents": [
+            "Note she lost this same matchup by more than 21 points in 2024.",
+            "Say she took under 19 percent in the primary while other Democrats and independents split the rest.",
+            "Argue her published platform is thin on the local economy [Verify — structural argument from limited located policy detail]."
+          ]
+        }
+      ]
+    },
+    {
+      "date": "Nov 3, 2026",
+      "type": "upcoming",
+      "scope": "Federal · District",
+      "office": "U.S. House — Washington District 6",
+      "note": "INCUMBENT EMILY RANDALL (D) TOOK 58.77% IN THE PRIMARY, MORE THAN HER FOUR OPPONENTS COMBINED. ⚠ Top-two primary: the two highest finishers advance regardless of party. ✅ Certified Aug 21: Randall 58.77%, Republican Teresa Fox 25.54%; Leon Lawson, who prefers the Trump Republican Party, took 9.72%. Cook PVI D+10 [Verify — via Ballotpedia; Cook's own site returned 403].",
+      "candidates": [
+        {
+          "name": "Emily Randall (incumbent)",
+          "party": "D",
+          "winner": false,
+          "positions": [
+            "Protect and strengthen the Affordable Care Act",
+            "Lower out-of-pocket prescription drug costs",
+            "Defend reproductive, mental and culturally relevant health care"
+          ],
+          "differentiators": [
+            "First term; won the open seat in 2024 with 56.8 percent",
+            "First queer Latina to serve in the U.S. House",
+            "Says she secured 17.9 million dollars for district projects [Verify — self-reported]",
+            "Founded and co-chairs the Congressional Ferry Caucus"
+          ],
+          "supporters": [
+            "Point to federal money delivered for ferries, transit and wastewater across the district.",
+            "Say she is a dependable vote for the ACA and reproductive rights.",
+            "Credit her attention to Puget Sound Naval Shipyard commuting and workforce needs."
+          ],
+          "opponents": [
+            "Note she graded her own first-term work bringing money home only a B-plus.",
+            "Say a first-term minority-party member has limited leverage to deliver [Verify — structural argument].",
+            "Argue her emphasis fits urban Kitsap better than the rural Olympic Peninsula [Verify — structural argument]."
+          ]
+        },
+        {
+          "name": "Teresa Fox",
+          "party": "R",
+          "winner": false,
+          "positions": [
+            "Cut federal spending to bring down inflation",
+            "Staff and fund rural law enforcement",
+            "Fiscal restraint paired with naval readiness"
+          ],
+          "differentiators": [
+            "Occupational safety professional and emergency manager",
+            "Worked in shipyards, naval facilities and at Olympic College",
+            "Unanimously endorsed by all six county Republican parties in the district",
+            "Runs explicitly as a non-politician against career politics"
+          ],
+          "supporters": [
+            "Say a shipyard safety career speaks directly to the district's largest employer.",
+            "Point to unified backing from every county Republican organization in the district.",
+            "Argue voters want a citizen candidate focused on costs and public safety."
+          ],
+          "opponents": [
+            "Note she trailed Randall by 33 points in the primary in a D+10 seat.",
+            "Say she has never held elected office and no significant fundraising base was located [Verify — an absence of located records].",
+            "Argue county-party endorsements do not translate in a district Randall carried with 56.8 percent in 2024."
+          ]
+        }
+      ]
+    }
+  ],
+  "sources": [
+    "results.votewa.gov certified primary canvass, certified Aug 21, 2026 by SoS Steve Hobbs",
+    "Washington State Standard, Spokesman-Review, KING 5 and Ballotpedia News on Newhouse's Dec 17, 2025 retirement",
+    "Spokesman-Review election coverage and candidate pages; Yakima Herald; NBC Right Now; Inlander; Kitsap Daily News; The Hill",
+    "mckinneyforwashington.com/about and johnduresky4congress.com/issues — candidates' own sites, for self-described positions",
+    "kitsaprepublicans.com (partisan) quoting Teresa Fox's priorities; electemilyrandall.com/about",
+    "Ballotpedia and Wikipedia — aggregators, used only for leads and marked where relied on"
+  ],
+  "deadEnds": [
+    "cookpolitical.com/house/race/485506 (WA-04) 403 Forbidden; the Cook domain is blocked to fetching, so PVI and Cook ratings could not be read from Cook's own site.",
+    "270towin.com/2026-house-election/cook-political-report-2026-house-ratings 403 — the fallback full-ratings table.",
+    "ballotpedia.org WA-4 2026 page fetches but returns an EMPTY body; only search snippets of it are usable.",
+    "myclallamcounty.com Teresa Fox launch article 403 — the intended neutral source for her platform.",
+    "civoren.com/candidate/teresa-fox 429 Too Many Requests."
+  ],
+  "uncertainties": [
+    "Newhouse is RESOLVED, not uncertain: announced Dec 17, 2025 he would not seek re-election after six terms; four independent confirmations. WA-4 is an open seat.",
+    "Cook PVI (WA-4 R+10, WA-5 R+5, WA-6 D+10) is aggregator-sourced only. WA-5 has two aggregators; WA-4 and WA-6 one each. Every use on the page carries [Verify].",
+    "Race ratings: a Ballotpedia SNIPPET indicated Cook Solid R / Sabato Safe R for WA-4, but the page body was empty on fetch. No Inside Elections rating located for any of the three. NOT asserted on the page.",
+    "Teresa Fox's three priorities come from a Kitsap County Republicans post quoting her — partisan — because the neutral launch article 403s. Her campaign website was not located.",
+    "Election-night figures (Duresky 30.8, McKinney 34.9) are stale; the certified Aug 21 canvass is used.",
+    "No claim written about whether Baumgartner skipped the July 5 candidate forum — coverage says only that ten of eleven challengers attended."
+  ]
+}

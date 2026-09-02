@@ -1,0 +1,270 @@
+{
+  "races": [
+    {
+      "date": "Nov 3, 2026",
+      "type": "upcoming",
+      "scope": "Federal · District",
+      "office": "U.S. House — Utah District 1",
+      "note": "OPEN SEAT: THE NEW CD1 LIES WHOLLY INSIDE SALT LAKE COUNTY UNDER COURT-DRAWN MAP 1A, and it is the only Democratic-leaning U.S. House seat Utah has. ✅ The Utah Supreme Court dismissed the Legislature's appeal Feb 20, 2026 and a federal three-judge panel refused to block the map Feb 23, so the map is final for 2026. ⚠ Cook PVI D+12, and Harris carried this territory by roughly 24 points [Verify — PVI via Wikipedia's Cook table, corroborated by Deseret News; Cook's own site returned 403]. ⚠ Ben McAdams won the June 23 primary with 51.90%, 29,737 of 57,295 [Verify — the state feed was still marked unofficial when pulled].",
+      "candidates": [
+        {
+          "name": "Ben McAdams",
+          "party": "D",
+          "winner": false,
+          "positions": [
+            "Save the Great Salt Lake as top priority",
+            "Lower housing and health care costs",
+            "Protect and expand Affordable Care Act coverage"
+          ],
+          "differentiators": [
+            "Former one-term U.S. Representative, 2019-2021, old UT-4",
+            "Former two-term Salt Lake County mayor",
+            "Lost the Democratic convention, then qualified by signature",
+            "Raised about 2.26 million dollars through June 30, 2026"
+          ],
+          "supporters": [
+            "Say his county-mayor record shows he can actually deliver on housing and the lake.",
+            "Argue a proven moderate is the safest fit for a blue-but-not-deep-blue seat.",
+            "Point to a roughly 17-to-1 fundraising edge as evidence of broad backing."
+          ],
+          "opponents": [
+            "Argue he is a retread who already lost a House seat to Burgess Owens in 2020.",
+            "Progressives say his centrism, including hedging on impeachment, blunts the message.",
+            "Note he lost the Democratic convention vote to Liban Mohamed before petitioning on."
+          ]
+        },
+        {
+          "name": "Riley Owen",
+          "party": "R",
+          "winner": false,
+          "positions": [
+            "Term limits and an age cap for Congress",
+            "Ban congressional stock trading",
+            "Tax credits for employer-paid maternity leave"
+          ],
+          "differentiators": [
+            "27-year-old Naval Reserve intelligence officer",
+            "Former Trump White House policy staffer",
+            "Won the GOP convention outright with 71.2 percent",
+            "Calls his approach community conservatism"
+          ],
+          "supporters": [
+            "Say a young reform-minded Republican can win over unaffiliated Salt Lake voters.",
+            "Point to his convention landslide as evidence the party is unified behind him.",
+            "Argue Utah Republicans downballot still run well ahead of Trump in this district."
+          ],
+          "opponents": [
+            "Had about 9,500 dollars cash on hand to McAdams' 300,000 [Verify — Deseret News, Aug 11, 2026].",
+            "Say a Trump White House resume is a liability in a district Harris carried decisively.",
+            "Note he has never held elected office."
+          ]
+        },
+        {
+          "name": "Jesse West",
+          "party": "L",
+          "winner": false,
+          "positions": [
+            "Stop funding foreign wars with U.S. tax dollars",
+            "Shrink the federal government's reach into daily life",
+            "Keep congressional focus on Utah's own priorities"
+          ],
+          "differentiators": [
+            "Salt Lake County family law attorney",
+            "Vice chair of the Salt Lake County Libertarian Party",
+            "Campaign slogan is Ski, Not War",
+            "Nominated at the Libertarian convention on April 18, 2026"
+          ],
+          "supporters": [
+            "Offer an explicitly antiwar choice for voters unhappy with both major parties.",
+            "Say a convention-only, low-cost campaign keeps him free of donor obligations [Verify — structural argument]."
+          ],
+          "opponents": [
+            "FEC totals show no reported fundraising through June 30, 2026.",
+            "No Utah Libertarian has ever come close to winning a U.S. House seat [Verify — structural argument]."
+          ]
+        },
+        {
+          "name": "Elias Henry Montgomery",
+          "party": "I",
+          "winner": false,
+          "positions": [
+            "Legalize duplexes and townhomes to expand housing supply",
+            "Independent redistricting to end gerrymandering",
+            "A universal catastrophic health coverage floor"
+          ],
+          "differentiators": [
+            "Unaffiliated graduate researcher and data analyst [Verify — self-described on his campaign site]",
+            "Would shift federal income taxation to the states over ten years",
+            "Wants omnibus bills replaced with real-time public spending tracking",
+            "Runs with no party organization behind him"
+          ],
+          "supporters": [
+            "Say his structural reform agenda is more concrete than either major party's [Verify — self-described on his campaign site].",
+            "Argue an independent gives Utahns a genuine choice outside the red-blue split [Verify — structural argument]."
+          ],
+          "opponents": [
+            "No FEC fundraising record for his campaign could be located [Verify — an absence of located records].",
+            "Devolving federal income tax to the states sits far outside both parties' mainstream [Verify — structural argument]."
+          ]
+        }
+      ]
+    },
+    {
+      "date": "Nov 3, 2026",
+      "type": "upcoming",
+      "scope": "Federal · District",
+      "office": "U.S. House — Utah District 2",
+      "note": "BLAKE MOORE DID NOT CHOOSE TO SWITCH SEATS: MAP 1A RENUMBERED HIS NORTHERN UTAH DISTRICT FROM 1 TO 2. It gained Davis County and lost Morgan and Summit. ⚠ Celeste Maloy, the old CD2 incumbent, was drawn into CD3, so Utah's numbering shifted one seat down the line. ✅ Moore beat state Rep. Karianne Lisonbee 56.67% to 43.33% on June 23 [Verify — the state feed was still marked unofficial when pulled]. ⚠ Cook PVI R+15 [Verify — via Wikipedia's Cook table; Cook's own site returned 403]; Inside Elections baselines it R+38, Solid Republican [Verify — headline figure only, the page returned 403].",
+      "candidates": [
+        {
+          "name": "Blake D. Moore (incumbent, currently 1st District)",
+          "party": "R",
+          "winner": false,
+          "positions": [
+            "Make the 2017 tax cuts permanent",
+            "Address mandatory spending to cut the debt",
+            "Put downward pressure on health care costs"
+          ],
+          "differentiators": [
+            "House Republican Conference vice chair, fifth-ranking Republican",
+            "First Utah Republican on the Ways and Means Committee",
+            "Represents the old 1st District, renumbered as CD2 by Map 1A",
+            "Beat a sitting state House majority whip in the primary"
+          ],
+          "supporters": [
+            "Say a leadership post gives Utah outsized influence in the House.",
+            "Credit him with making the 2017 tax cuts permanent in the 2025 reconciliation law.",
+            "Speaker Mike Johnson endorsed him in the primary [Verify — Deseret News headline, Mar 30, 2026]."
+          ],
+          "opponents": [
+            "Lisonbee blamed him for Republicans losing the redistricting fight.",
+            "About 43 percent of GOP primary voters backed a challenger, an unusual soft spot.",
+            "Crosby says his votes on public media cuts and Trump Accounts miss working families."
+          ]
+        },
+        {
+          "name": "Peter Crosby",
+          "party": "D",
+          "winner": false,
+          "positions": [
+            "Single-payer health care",
+            "End tariffs and attack housing costs",
+            "Federal water funding to restore the Great Salt Lake"
+          ],
+          "differentiators": [
+            "Won the Democratic nomination at convention with 76.6 percent",
+            "Family tradition of military and public service [Verify — self-described on his campaign site]",
+            "Opposes the Stratos data center absent community consent",
+            "Raised about 60,000 dollars through June 30, 2026"
+          ],
+          "supporters": [
+            "Say he has canvassed northern Utah door to door since mid-2025.",
+            "Argue federal job cuts and the shrinking lake give Democrats real local traction.",
+            "Credit him with a clear affordability-first platform."
+          ],
+          "opponents": [
+            "Faces a district Inside Elections baselines at R+38.",
+            "Raised roughly one fortieth of Moore's total through June 30.",
+            "Single-payer health care is a hard sell in a deeply Republican district [Verify — structural argument]."
+          ]
+        },
+        {
+          "name": "Daniel R. Cottam",
+          "party": "L",
+          "winner": false,
+          "positions": [
+            "Reduce federal spending and taxes [Verify — Libertarian Party platform; no Cottam statement located]",
+            "Oppose federal intrusion into personal choices [Verify — Libertarian Party platform; no Cottam statement located]",
+            "Non-interventionist foreign policy [Verify — Libertarian Party platform; no Cottam statement located]"
+          ],
+          "differentiators": [
+            "Bariatric surgeon by profession",
+            "Has run previously for both Congress and governor",
+            "Nominated at the Libertarian convention on April 18, 2026",
+            "FEC totals show no reported fundraising through June 30, 2026"
+          ],
+          "supporters": [
+            "Say a practicing physician brings real health-system experience to the race.",
+            "Offer a limited-government alternative for Republicans unhappy with Moore [Verify — structural argument]."
+          ],
+          "opponents": [
+            "No reported federal fundraising could be located for this cycle [Verify — an absence of located records in FEC totals].",
+            "His earlier statewide and congressional bids did not win [Verify — structural argument]."
+          ]
+        },
+        {
+          "name": "Carlton E. Bowen",
+          "party": "I",
+          "winner": false,
+          "positions": [
+            "Constitutionally limited federal government [Verify — Independent American Party platform; no Bowen statement located]",
+            "Strict immigration and border enforcement [Verify — Independent American Party platform; no Bowen statement located]",
+            "More state control over federal lands in Utah [Verify — Independent American Party platform; no Bowen statement located]"
+          ],
+          "differentiators": [
+            "Air Force veteran",
+            "Former American Fork City Council member",
+            "Nominated at the Independent American Party convention on April 10, 2026",
+            "FEC totals show no reported fundraising through June 30, 2026"
+          ],
+          "supporters": [
+            "Point to his military service and municipal governing experience.",
+            "Offer a constitutionalist option to the right of Moore [Verify — structural argument]."
+          ],
+          "opponents": [
+            "No reported federal fundraising could be located for this cycle [Verify — an absence of located records in FEC totals].",
+            "Independent American Party nominees routinely finish in low single digits in Utah [Verify — structural argument]."
+          ]
+        },
+        {
+          "name": "Robert M. Moesinger",
+          "party": "I",
+          "winner": false,
+          "positions": [
+            "Filed as unaffiliated rather than seeking any party nomination",
+            "Running a small, largely self-financed campaign [Verify — FEC shows about 8,800 dollars raised]",
+            "No published policy platform could be located [Verify — an absence of located records]"
+          ],
+          "differentiators": [
+            "General surgeon in Ogden with more than 30 years in practice",
+            "Reached the ballot on the unaffiliated petition path [Verify — inferred from Utah's unaffiliated filing rules]",
+            "Raised about 8,800 dollars through June 30, 2026",
+            "The only candidate in the race with no party structure at all"
+          ],
+          "supporters": [
+            "Say a working surgeon would bring firsthand knowledge of health system costs [Verify — structural argument].",
+            "Offer a nonpartisan option in a district with little real general-election competition [Verify — structural argument]."
+          ],
+          "opponents": [
+            "Raised well under one percent of Moore's total through June 30.",
+            "No campaign website or policy platform could be located [Verify — an absence of located records]."
+          ]
+        }
+      ]
+    }
+  ],
+  "sources": [
+    "https://vote.utah.gov/2026-candidate-filings/ — the Lieutenant Governor's own list, with ballot STATUS; last updated 8/31/2026",
+    "The Green Papers (thegreenpapers.com/G26/UT)",
+    "Deseret News (Apr 20, May 11, Aug 11, 2026); KUER (Feb 20, Apr 28, 2026)",
+    "petercrosbyforcongress.org/policies and eliasmontgomery.com — candidates' own sites, for self-described positions",
+    "FEC api.open.fec.gov candidate totals, Utah CD1 and CD2, coverage through 2026-06-30",
+    "gop.gov on the House Republican Conference vice chairmanship; libertarianutah.org",
+    "Wikipedia Cook PVI table and Utah district pages — aggregator, used only where Cook itself 403s"
+  ],
+  "deadEnds": [
+    "ballotpedia.org/United_States_House_of_Representatives_elections_in_Utah,_2026 returns an EMPTY body; The Green Papers and vote.utah.gov used instead.",
+    "cookpolitical.com 2026 PVI district list AND the Utah redistricting analysis both 403. Also 403: 270towin.com/2026-house-election/states/utah, insideelections.com Utah new-map analysis, utahnewsdispatch.com June 23 CD2 story.",
+    "electionresults.utah.gov is an SPA that renders nothing on a plain fetch; /api/elections, /api/v1/elections, /api/elections/public/Utah and /electionsettings.json all 404. The isOfficialResults flag could not be read."
+  ],
+  "uncertainties": [
+    "⚠ THE BRIEF'S PREMISE WAS PARTLY WRONG AND WAS REFUTED: Blake Moore did NOT leave CD1 as a strategic choice. Map 1A RENUMBERED his northern Utah district from 1 to 2 (Deseret News, Apr 20, 2026) — it gained Davis County and lost Morgan and Summit. He filed for CD2 in the March 2026 window. Maloy, the old CD2 incumbent, was drawn into CD3.",
+    "Official status of the June 23 primary figures is UNCONFIRMED. Utah law has the lieutenant governor canvass multicounty races at noon on the fourth Monday after the primary (July 20, 2026) and certify to county clerks by Aug 1, which implies certification — but electionresults.utah.gov could not be loaded to confirm the flag flipped. Every primary figure carries [Verify].",
+    "The brief's July 8, 2026 dismissal of Powers Gardner v. Henderson could NOT be confirmed. The Feb 20, 2026 Utah Supreme Court dismissal and the February 2026 federal panel refusal WERE confirmed, so the note claims only that the map is final for 2026.",
+    "Write-in Babak (Bobby) Darvish is listed for CD1 by The Green Papers and by the state list. Write-ins are not printed on the ballot, so he is deliberately excluded from the candidate array.",
+    "New-map Cook PVI (CD1 D+12, CD2 R+15) comes from Wikipedia's 2026 PVI table; CD1 is independently corroborated by Deseret News. Treat CD2's R+15 as the weaker of the two. Both carry [Verify].",
+    "Cottam, Bowen and Moesinger have NO locatable campaign platform after two query formulations each. Their positions arrays are labelled party-platform placeholders or honest absence statements, not summaries of anything they said.",
+    "FEC figures are receipts through June 30, 2026 (Q2). The API returned null for cash on hand, so the CD1 cash-on-hand comparison is Deseret News reporting, not a direct FEC read.",
+    "Confirmed as briefed: McAdams is a former one-term U.S. Rep (2019-2021) and former Salt Lake County mayor who lost to Burgess Owens; Nate Blouin is a sitting state senator; Karianne Lisonbee is a sitting state representative and House majority whip."
+  ]
+}

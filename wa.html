@@ -1,0 +1,2087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Washington Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every WA election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #wamap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  /* ---- Race brief (the context note) ----
+     Lives INSIDE the expanded panel only. A collapsed card shows the pill, date, office
+     and candidate count and nothing else, so a county's ballot reads as a clean list.
+     Owner-reported twice on Aug 12, 2026: as a header element these notes — 2,187
+     characters at the extreme, and 30% of them opening with a ⚠ flag — buried the
+     candidate data the page exists to show. Set in roman, not italic: extended italic
+     body copy at 12.5px is the thing that read as 'terrible'. Long briefs clamp to about
+     four lines behind a Show more toggle so they never crowd out the cards below. */
+  .election-brief {
+    margin: 2px 0 18px;
+    padding: 12px 16px 13px 17px;
+    border-left: 2px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    background: linear-gradient(90deg, rgba(232,217,184,.30), rgba(232,217,184,0) 94%);
+  }
+  .brief-label {
+    font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); font-weight: 700; margin-bottom: 7px;
+  }
+  .brief-body { font-size: 12.5px; line-height: 1.62; color: var(--ink-soft); }
+  .brief-body p + p { margin-top: 7px; }
+  .brief-lead { color: var(--ink); }
+  /* Flag glyphs hang in the margin so the text block keeps a straight left edge. */
+  .brief-flag { position: relative; padding-left: 21px; }
+  .brief-mark { position: absolute; left: 0; top: 0; font-size: 11px; color: var(--gold-deep); }
+  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; }
+  .brief-more {
+    margin-top: 9px; padding: 0;
+    background: none; border: none; cursor: pointer;
+    font-family: var(--sans); font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-deep);
+    border-bottom: 1px solid var(--gold-soft);
+  }
+  .brief-more:hover { border-bottom-color: var(--gold); }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">WA</div>
+      <div class="brand-text">
+        <span class="brand-name">Washington Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Washington <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 39 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">39</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>10</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>8</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Washington…</div>
+      <svg id="wamap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>WA Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">July 22, 2026</span><br>
+      Sources: Washington Secretary of State — the certified Aug 4, 2026 primary canvass at results.votewa.gov (county boards certified Aug 18; SoS Steve Hobbs certified statewide Aug 21, 2026), the Certification of Candidates to the General Election, and the votewa initiative tracker; RCW 29A.52.220 and 29A.52.231 via app.leg.wa.gov; the 2021 Redistricting Commission congressional plan as amended by HCR 4407; MCDC Geocorr 2022 and the Census CD119 county relationship file for county-district populations; FEC; The Spokesman-Review, Everett Herald, Cascadia Daily News, Yakima Herald, OPB, KUOW, MyNorthwest, Inlander, Kitsap Daily News, Peninsula Daily News, Seattle Times, KOMO, Ballotpedia News.</div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every WA county + its primary US House district(s)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// Washington county -> U.S. House district.
+// MAP: the Washington State Redistricting Commission's congressional plan adopted Nov 15-16, 2021 AS
+// AMENDED BY HCR 4407 (House 88-7 Feb 2, 2022; Senate 35-14 Feb 8, 2022; filed with the Secretary of
+// State Feb 8, 2022). UNCHANGED since — it governed 2022, 2024 and 2026. Washington is on NEITHER
+// half of the post-*Louisiana v. Callais* mid-decade redraw wave: HJR 4209, which would have let the
+// Legislature draw a mid-decade congressional map, needed two-thirds and never reached the ballot.
+// ⚠ *SOTO PALMER v. HOBBS* IS NOT A CONGRESSIONAL CASE. It struck and redrew LD-15 in the Yakima
+// Valley — STATE LEGISLATIVE districts only. Washington's congressional plan has never been
+// challenged in court. The two live cert petitions from the Ninth Circuit's Aug 27, 2025 affirmance
+// (*Trevino v. Hobbs* No. 25-918 and *Garcia v. Hobbs* No. 25-901) are also legislative-map cases,
+// and both were distributed for the Sept 28, 2026 conference — after ballots are set.
+//
+// ✅ CURRENCY PROVED 39 OF 39 COUNTIES, ZERO CONTRADICTIONS — the strongest test available (lesson
+// #17). The Secretary of State's own certified Aug 4, 2026 primary feed was pulled for all 39
+// counties and every "U.S. Representative - Congressional District N" contest each county actually
+// voted in was extracted. Every county's real ballot matches this table exactly, including all seven
+// split counties. Source: results.votewa.gov/results/public/api/elections/<county>-county-wa/20260804/data
+// (isOfficialResults: true). County canvassing boards certified Aug 18, 2026; Secretary of State
+// Steve Hobbs certified the statewide canvass Aug 21, 2026.
+// Independently corroborated a third way: the SoS's own Aug 21 "Certification of Candidates to the
+// General Election" prints each district's county composition in its office headers, and those
+// headers match this table county for county.
+//
+// POPULATIONS: MCDC Geocorr 2022, county -> cd119, 2020 census population weights (no API key
+// needed; the state parameter is "Wa53"). Total reconciles to Washington's 2020 census population
+// of 7,705,281 exactly. Cross-checked against the Census CD119 county relationship file
+// (tab20_cd11920_county20_st53.txt), which produces the identical 50 county x district pairs.
+//
+// ⚠ SEVEN SPLIT COUNTIES, and `ds` is NOT optional here: WA-9 IS THE POPULATION PLURALITY OF NO
+// COUNTY. Both WA-7 and WA-9 lie ENTIRELY inside King County, so without `ds` on King a voter in
+// south Seattle, Renton or Federal Way could click their county and never see their own U.S. House
+// race — lesson #12 exactly.
+// ⚠ KING'S `d` IS A DOCUMENTED JUDGEMENT CALL. Geocorr reads WA-7 at 769,663 and WA-9 at 768,838 —
+// 825 people apart, or 0.05%. But both districts sit wholly inside King and an enacted congressional
+// plan is equal to within a person, so their true populations are each ~770,528 and the gap is
+// Geocorr's block-allocation noise, not a real margin. `d: 7` follows Geocorr's read and is
+// corroborated by turnout: WA-7 cast 216,741 primary ballots inside King to WA-9's 142,356. Nothing
+// is hidden by the call — `ds` carries all four King districts.
+// ⚠ Douglas County's WA-8 sliver is only 601 people, but it is REAL, not a water sliver: Douglas
+// County voters actually appeared on the CD8 ballot on Aug 4, 2026. Keep it.
+// ✅ RE-VERIFIED INDEPENDENTLY ON AUG 31, 2026, AND THE RE-RUN WAS EXACT. All 39 county feeds were
+// pulled again from results.votewa.gov and the set of "U.S. Representative - Congressional District N"
+// contests each county actually voted in was compared against this table: **39 of 39 counties matched
+// EXACTLY** — not merely as a subset — including all seven split counties and King's four-district ds.
+const COUNTIES = {
+  "53001": { n: "Adams", d: 4, ds: [4, 5] },
+  "53003": { n: "Asotin", d: 5 },
+  "53005": { n: "Benton", d: 4 },
+  "53007": { n: "Chelan", d: 8 },
+  "53009": { n: "Clallam", d: 6 },
+  "53011": { n: "Clark", d: 3 },
+  "53013": { n: "Columbia", d: 5 },
+  "53015": { n: "Cowlitz", d: 3 },
+  "53017": { n: "Douglas", d: 4, ds: [4, 8] },
+  "53019": { n: "Ferry", d: 5 },
+  "53021": { n: "Franklin", d: 4, ds: [4, 5] },
+  "53023": { n: "Garfield", d: 5 },
+  "53025": { n: "Grant", d: 4 },
+  "53027": { n: "Grays Harbor", d: 6 },
+  "53029": { n: "Island", d: 2 },
+  "53031": { n: "Jefferson", d: 6 },
+  "53033": { n: "King", d: 7, ds: [1, 7, 8, 9] },
+  "53035": { n: "Kitsap", d: 6 },
+  "53037": { n: "Kittitas", d: 8 },
+  "53039": { n: "Klickitat", d: 4 },
+  "53041": { n: "Lewis", d: 3 },
+  "53043": { n: "Lincoln", d: 5 },
+  "53045": { n: "Mason", d: 6 },
+  "53047": { n: "Okanogan", d: 4 },
+  "53049": { n: "Pacific", d: 3 },
+  "53051": { n: "Pend Oreille", d: 5 },
+  "53053": { n: "Pierce", d: 10, ds: [6, 8, 10] },
+  "53055": { n: "San Juan", d: 2 },
+  "53057": { n: "Skagit", d: 2 },
+  "53059": { n: "Skamania", d: 3 },
+  "53061": { n: "Snohomish", d: 1, ds: [1, 2, 8] },
+  "53063": { n: "Spokane", d: 5 },
+  "53065": { n: "Stevens", d: 5 },
+  "53067": { n: "Thurston", d: 10, ds: [3, 10] },
+  "53069": { n: "Wahkiakum", d: 3 },
+  "53071": { n: "Walla Walla", d: 5 },
+  "53073": { n: "Whatcom", d: 2 },
+  "53075": { n: "Whitman", d: 5 },
+  "53077": { n: "Yakima", d: 4 },
+};
+
+// Washington STATEWIDE 2026 ballot — five Supreme Court seats and three ballot measures.
+//
+// ⚠⚠ THERE IS NO FEDERAL OR EXECUTIVE STATEWIDE RACE IN WASHINGTON IN 2026, and that is the single
+// most useful thing this page can tell a voter. Established from term structure, not assumed:
+//   • U.S. SENATE: none. Patty Murray holds the Class 3 seat (term to Jan 3, 2029, next up 2028);
+//     Maria Cantwell holds Class 1 (re-elected 2024, term to Jan 3, 2031). CLASS 2 is the class up
+//     in 2026 and Washington has no Class 2 seat. Corroborated by The Green Papers' 2026 Washington
+//     page, which states outright that no Senate seat is up.
+//   • Every statewide EXECUTIVE office was filled in November 2024 for a four-year term and is next
+//     up in 2028: Governor (Ferguson), Lieutenant Governor (Heck), Secretary of State (Hobbs —
+//     who is the officer that certified the Aug 21, 2026 canvass, confirming he is still in post),
+//     Attorney General (Nick Brown), Treasurer (Pellicciotti), Auditor (McCarthy), Commissioner of
+//     Public Lands, Insurance Commissioner (Kuderer) and the nonpartisan Superintendent of Public
+//     Instruction. No 2026 statewide executive vacancy or special election was located.
+//   • NO CONSTITUTIONAL AMENDMENT. The only serious 2026 candidate, HJR 4209 (mid-decade
+//     congressional redistricting), needed two-thirds in each chamber, never got it, and the
+//     leg.wa.gov bill page shows no action past the January committee referral. ⚠ SJR 8201
+//     (long-term care fund investment) is a DIFFERENT measure and was on the NOVEMBER 2025 ballot.
+//   • NO ADVISORY VOTES. Washington repealed the tax advisory-vote requirement in 2023.
+//
+// ⚠⚠ THE COURT RACES ARE THE WHOLE STATEWIDE BALLOT, AND THERE ARE FIVE OF THEM, NOT FOUR.
+// Positions 1, 3, 5 and 7 held an Aug 4 primary. **POSITION 4 HELD NO PRIMARY AT ALL** and goes
+// straight to November, because RCW 29A.52.220 bars a primary for a nonpartisan position when no
+// more than two candidates file after the withdrawal deadline. Confirmed three independent ways:
+// the statute itself; the certified Aug 4 results feed, which contains Positions 1, 3, 5 and 7 and
+// NO Position 4; and Wikipedia's 2026 Washington Supreme Court election article, which opens
+// "to elect five members."
+// ⚠ A PREMISE IN OUR OWN BUILD BRIEF WAS WRONG AND WAS REFUTED BY READING THE STATUTE. The brief
+// said RCW 29A.52.231 elects a judicial candidate outright on a primary majority. It does not —
+// that section contains ONLY the designation that supreme, appeals, superior and district court
+// offices are nonpartisan. So Melody's 52.90% and Stephens's 54.37% did NOT end their races; all
+// four primaried seats send their top two to November regardless of share.
+//
+// ✅ EVERY PRIMARY FIGURE BELOW IS OFFICIAL — certified by Secretary of State Steve Hobbs on
+// Aug 21, 2026, read from results.votewa.gov's own certified feed (isOfficialResults: true).
+// ⚠ Wikipedia reports different Position 5 percentages (Angelis 34.23 / Larson 30.35 / Amamilo
+// 25.80 / Miller 12.68) on different raw totals. The CERTIFIED figures are used here.
+//
+// ⚠ NO BAR-ASSOCIATION RATING is carried for the candidates in Positions 1, 3, 5 or 7 — none could
+// be located. The "exceptionally well qualified" ratings for both Position 4 candidates come from an
+// advocacy group's voter guide, not from the bar associations' own sheets, and are marked.
+// ⚠ sos.wa.gov 403s every path, so the exact printed ballot titles of the three measures could not
+// be read from the Secretary of State's own pages. The measure numbers are reported in both
+// "IP26-645" and "Initiative 645" forms; both are given.
+const STATEWIDE = [
+  // ─────────────────────────── UPCOMING ───────────────────────────
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Judicial · Statewide", office: "Washington Supreme Court — Justice Position 1 (special election)",
+    note: "OFFICIAL: MELODY TOOK 52.90% IN THE AUG 4 PRIMARY, 923,965 of 1,746,550. ✅ Certified by SoS Steve Hobbs on Aug 21, 2026. ✅ The November matchup is Melody vs. Scott Edwards (29.39%); Laura Christensen Colberg (17.47%) is eliminated. ⚠ A primary majority does NOT elect a judge outright in Washington when three candidates file — the top two advance regardless of share. ⚠ This is a nonpartisan office, but a state party has endorsed in it.",
+    candidates: [
+      { name: "Colleen Melody (incumbent)", party: "I", winner: false,
+        positions: [
+          "Careful fact-based rulings, few easy answers",
+          "Civil rights and anti-discrimination enforcement focus",
+          "Says appointment plus election gives real accountability"
+        ],
+        differentiators: [
+          "Appointed by Gov. Ferguson, took the bench Jan 1, 2026",
+          "Led the state Attorney General's civil rights division for 11 years",
+          "Fills the seat vacated by Justice Mary Yu",
+          "Endorsed by the eight other sitting justices"
+        ],
+        supporters: [
+          "Eight sitting justices and two former governors back her",
+          "Eleven years enforcing state and federal civil rights law",
+          "She led the primary by more than 400,000 votes"
+        ],
+        opponents: [
+          "Critics say a Ferguson appointee owes the governor deference",
+          "She never served as a trial or appellate judge before her appointment",
+          "Union and teacher-PAC money cuts against her independence claim [Verify — the framing opponents use, not an established fact]"
+        ] },
+      { name: "Scott Edwards", party: "I", winner: false,
+        positions: [
+          "Interpret statutes exactly as written",
+          "Judges should not inject policy preferences",
+          "Restore separation of powers and principled judgment"
+        ],
+        differentiators: [
+          "Tax attorney; partner experience at Ballard Spahr and Perkins Coie",
+          "Teaches tax law at the University of Washington",
+          "Carried the Washington State Republican Party endorsement",
+          "Raised about 53,000 dollars to Melody's 205,000"
+        ],
+        supporters: [
+          "He argues the court is among the most progressive in the country",
+          "Deep tax expertise as an income tax case heads to the court",
+          "Republican organisations consolidated behind him after the primary [Verify — inferred from the party co-endorsing both challengers in the primary]"
+        ],
+        opponents: [
+          "He has never served as a judge at any level",
+          "He trailed Melody by more than 23 points in the primary",
+          "A party endorsement sits badly with a nonpartisan bench"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Judicial · Statewide", office: "Washington Supreme Court — Justice Position 3 (OPEN SEAT)",
+    note: "OPEN SEAT: JUSTICE RAQUEL MONTOYA-LEWIS IS NOT SEEKING RE-ELECTION. ✅ Certified primary: David Stevens 35.19% (612,267 of 1,740,028), Jaime Michelle Hawk 33.27%, Mike Diaz 31.25% — a near three-way tie in which no candidate came close to a majority. ✅ Stevens vs. Hawk in November. ⚠ Nonpartisan office.",
+    candidates: [
+      { name: "David Stevens", party: "I", winner: false,
+        positions: [
+          "Strict constitutional text over policy consequences",
+          "Opposes race-conscious rules in jury selection",
+          "Called the capital gains ruling the product of sophistry"
+        ],
+        differentiators: [
+          "Mason County superior court judge and Navy veteran",
+          "Former public defender, first in his family to attend college",
+          "Raised about 40,000 dollars, far less than both rivals",
+          "Aided by roughly 50,000 dollars of taxpayer-group outside spending"
+        ],
+        supporters: [
+          "He brings rural trial bench experience the court now lacks",
+          "He argues recent court rule changes overstepped the judicial role",
+          "He led the primary while being outspent about five to one"
+        ],
+        opponents: [
+          "His criticism of racial-bias jury rules alarms civil rights groups",
+          "Outside taxpayer-advocacy spending raises independence questions",
+          "He has the least appellate experience of the three primary candidates [Verify — a comparison drawn from reported biographies, not a formal assessment]"
+        ] },
+      { name: "Jaime Michelle Hawk", party: "I", winner: false,
+        positions: [
+          "Access to justice and equal treatment in court",
+          "Public defense experience should inform criminal rulings",
+          "Supports the court's work on bias in jury selection [Verify — inferred from her Minority and Justice Commission role]"
+        ],
+        differentiators: [
+          "King County superior court judge",
+          "Former ACLU of Washington attorney",
+          "Served as both a state and a federal public defender",
+          "Raised about 218,000 dollars; endorsed by Gov. Ferguson"
+        ],
+        supporters: [
+          "Broad Democratic, judicial and labor endorsements statewide",
+          "She combines public defense and civil liberties experience",
+          "She sits on the court's Minority and Justice Commission"
+        ],
+        opponents: [
+          "Critics read her ACLU background as ideological [Verify — structural argument]",
+          "She finished second in the primary despite outspending Stevens",
+          "A King County base may not travel across eastern Washington [Verify — structural argument]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Judicial · Statewide", office: "Washington Supreme Court — Justice Position 4 (OPEN SEAT, no primary was held)",
+    note: "NO PRIMARY WAS HELD IN THIS RACE, SO IT APPEARS ON NO AUGUST RESULTS SHEET. ✅ RCW 29A.52.220 bars a primary for a nonpartisan position when no more than two candidates file after the withdrawal deadline, so Ian Birk and Sean O'Donnell go straight to November. ⚠ OPEN SEAT: Justice Charles W. Johnson reached the mandatory judicial retirement age of 75 and is ineligible to run again. ⚠ Nonpartisan office. ⚠ If you looked only at the August returns you would never know this race exists — that is exactly why it is carded here.",
+    candidates: [
+      { name: "Ian Birk", party: "I", winner: false,
+        positions: [
+          "Affordability and equal access to the courts",
+          "Warns the rule of law is under strain this cycle",
+          "A consumer and tenant perspective on the bench [Verify — drawn from his practice background, not a stated plank]"
+        ],
+        differentiators: [
+          "Sitting Court of Appeals Division I judge since 2022",
+          "Twenty years in private practice for renters and consumers",
+          "Rated exceptionally well qualified by bar groups [Verify — via an advocacy group's voter guide; the bar associations' own sheets were unreachable]",
+          "Endorsed by former Gov. Inslee and four sitting justices"
+        ],
+        supporters: [
+          "He already does appellate work day to day",
+          "He has a long judicial, labor and Democratic endorsement list",
+          "He carries top bar ratings from multiple associations"
+        ],
+        opponents: [
+          "A plaintiff-side practice reads as one-sided to critics [Verify — structural argument]",
+          "He has less trial bench time than his opponent",
+          "His endorsement list skews to one party in a nonpartisan race"
+        ] },
+      { name: "Sean O'Donnell", party: "I", winner: false,
+        positions: [
+          "The legal system is too expensive for ordinary people",
+          "Consensus building across opposing groups",
+          "Trial experience should shape appellate review [Verify — inferred from his candidate-forum pitch]"
+        ],
+        differentiators: [
+          "King County superior court judge since 2013",
+          "Twelve years as a prosecutor before taking the bench",
+          "Rated exceptionally well qualified by bar groups [Verify — via an advocacy group's voter guide; the bar associations' own sheets were unreachable]",
+          "Endorsed by former Gov. Gregoire and Justice Helen Whitener"
+        ],
+        supporters: [
+          "He is endorsed by groups that usually oppose each other",
+          "Thirteen years actually running trials",
+          "He carries top bar ratings, matching his opponent"
+        ],
+        opponents: [
+          "A prosecutorial background worries defence advocates [Verify — structural argument]",
+          "He has no appellate bench experience",
+          "He has fewer progressive-organisation endorsements than Birk"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Judicial · Statewide", office: "Washington Supreme Court — Justice Position 5 (special election)",
+    note: "OFFICIAL: ANGELIS LED WITH 35.84%, 623,396 of 1,739,425 — THE WEAKEST SHOWING BY ANY INCUMBENT ON THIS BALLOT. ✅ Certified Aug 21, 2026. ✅ Angelis vs. Dave Larson (32.17%); Sharonda Amamilo (21.33%) and Greg Miller (10.44%) are eliminated. ⚠ This is the closest of the five races. ⚠ Angelis was appointed by Gov. Ferguson in 2026 to the seat of retired Justice Barbara Madsen; his exact swearing-in date is reported inconsistently. ⚠ Nonpartisan office.",
+    candidates: [
+      { name: "Theo Angelis (incumbent)", party: "I", winner: false,
+        positions: [
+          "Documents his own potential bias before each case",
+          "Appellate specialisation is the core qualification",
+          "Rejects claims the court chases public opinion"
+        ],
+        differentiators: [
+          "Appointed by Gov. Ferguson in 2026 for Justice Madsen's seat",
+          "Twenty-six years as a K and L Gates partner in appellate work",
+          "First justice of Middle Eastern descent on the court",
+          "Endorsed by the eight other sitting justices and two former governors"
+        ],
+        supporters: [
+          "A career appellate litigator matched to the court's actual work",
+          "Backed by every other sitting justice plus Inslee and Gregoire",
+          "He led a crowded four-way primary field"
+        ],
+        opponents: [
+          "He won only about 36 percent, the weakest incumbent showing on the ballot",
+          "He never served as a judge before his appointment months ago",
+          "Critics call him a governor's pick facing voters too early"
+        ] },
+      { name: "Dave Larson", party: "I", winner: false,
+        positions: [
+          "Judges must not be swayed by public pressure",
+          "Says the court has drifted from judicial ethics",
+          "Emphasises municipal and community court reform [Verify — carried over from his prior campaigns, not restated this cycle]"
+        ],
+        differentiators: [
+          "Retired Federal Way Municipal Court judge",
+          "Has run for the state Supreme Court in 2000, 2016, 2020 and 2024",
+          "Narrowly lost a high court race in 2024",
+          "Republican party organisations consolidated behind him"
+        ],
+        supporters: [
+          "A long municipal bench record and repeated statewide campaigns",
+          "He argues the court answers to opinion rather than ethics rules",
+          "He finished within four points of a sitting justice"
+        ],
+        opponents: [
+          "Four previous losing Supreme Court campaigns",
+          "Municipal court work is far removed from appellate review [Verify — structural argument]",
+          "Party backing conflicts with nonpartisan judicial norms"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Judicial · Statewide", office: "Washington Supreme Court — Justice Position 7 (Chief Justice)",
+    note: "OFFICIAL: CHIEF JUSTICE STEPHENS TOOK 54.37%, 938,584 of 1,726,167. ✅ Certified Aug 21, 2026. ✅ Stephens vs. Todd A. Bloom (27.13%); Karim A. Merchant (12.03%) and David R Shelvey (6.24%) are eliminated. ⚠ Her outright majority did NOT end the race, because four candidates filed and Washington's top-two rule sends the leading pair to November regardless. ⚠ Nonpartisan office.",
+    candidates: [
+      { name: "Debra L. Stephens (incumbent)", party: "I", winner: false,
+        positions: [
+          "Rule of law and equal justice for all",
+          "Court transparency and access to justice",
+          "A constitutional duty to fully fund public schools"
+        ],
+        differentiators: [
+          "Chief Justice; on the court since January 2008",
+          "Authored the 2012 McCleary school funding decision",
+          "Wrote the 2023 opinion upholding the capital gains tax",
+          "First woman from eastern Washington on the court"
+        ],
+        supporters: [
+          "Eighteen years of appellate opinions and court leadership",
+          "McCleary drove billions of dollars to public schools",
+          "She won an outright majority against three challengers"
+        ],
+        opponents: [
+          "Critics call McCleary judicial overreach into the state budget",
+          "The capital gains ruling drew accusations of sophistry",
+          "Long tenure invites the argument for turnover [Verify — structural argument]"
+        ] },
+      { name: "Todd A. Bloom", party: "I", winner: false,
+        positions: [
+          "An originalist reading of constitutional text",
+          "Restore public confidence in the courts",
+          "Says the Blake ruling harmed public safety"
+        ],
+        differentiators: [
+          "Tax attorney and CPA; a Navy officer for a decade",
+          "Twenty years as a FINRA arbitrator",
+          "Ran for Congress as a Republican in 2016 and 2022",
+          "Also ran for the state Supreme Court in 2024"
+        ],
+        supporters: [
+          "Tax and finance expertise as an income tax case nears the court",
+          "Military and arbitration decision-making experience",
+          "He argues appointed justices may defer to those who named them"
+        ],
+        opponents: [
+          "He has never served as a judge",
+          "He raised only about 6,500 dollars against Stephens's 110,000",
+          "Two prior Republican congressional runs undercut his nonpartisan claim"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Initiative 645 (IP26-645) — Repeal the tax on income over one million dollars",
+    note: "CERTIFIED JULY 15, 2026 AFTER 511,408 SIGNATURES WERE SUBMITTED, nearly double the requirement. ✅ It repeals the 9.9% tax on household income above one million dollars and bars state and local individual income taxes. ⚠ IT DOES NOT REPEAL THE CAPITAL GAINS TAX — a point both sides make. ⚠ Collection of the tax would not begin until 2029 either way. ⚠ Two lawsuits challenged the state's ballot-title wording. ⚠ The exact printed ballot title could not be read [Verify — sos.wa.gov returned 403 on every path].",
+    candidates: [
+      { name: "Yes — repeal the million-dollar income tax", party: "I", winner: false,
+        positions: [
+          "Repeal the 9.9 percent income tax before it takes effect",
+          "Prohibit state and local taxes on individual income",
+          "Define income for state tax purposes"
+        ],
+        differentiators: [
+          "Filed by Let's Go Washington and Brian Heywood",
+          "511,408 signatures, nearly double the requirement",
+          "Collection of the tax would not start until 2029",
+          "Leaves the existing capital gains tax in place"
+        ],
+        supporters: [
+          "Heywood says the tax threatens Washington's no-income-tax identity",
+          "Backers argue the one million dollar threshold will be lowered later",
+          "The signature total nearly doubled the legal minimum"
+        ],
+        opponents: [
+          "Gov. Ferguson says repeal defunds schools and child care",
+          "SEIU put one million dollars into the opposition campaign",
+          "Critics note it leaves the capital gains tax untouched anyway"
+        ] },
+      { name: "No — keep the million-dollar income tax", party: "I", winner: false,
+        positions: [
+          "Keep the tax on income above one million dollars",
+          "Protect K-12, child care and early learning funding",
+          "Preserve the Working Families Tax Credit"
+        ],
+        differentiators: [
+          "Backed by Gov. Ferguson and organised labor",
+          "SEIU donated one million dollars to the No campaign",
+          "The Washington State PTA formally opposes the initiative",
+          "Ferguson pledged to veto any lowering of the threshold"
+        ],
+        supporters: [
+          "Only households above one million dollars would ever pay",
+          "It funds schools, child care and the Working Families Tax Credit",
+          "The governor has pledged to veto any threshold reduction"
+        ],
+        opponents: [
+          "Voters distrust promises that the threshold will hold",
+          "Washington voters have historically rejected income taxes [Verify — structural argument]",
+          "Opponents of the tax warn high earners will leave the state [Verify — a standard argument; no specific source located]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Initiative 638 (IL26-638) — Fairness in Girls' Athletics",
+    note: "IT REACHED THE BALLOT BECAUSE THE LEGISLATURE TOOK NO ACTION BEFORE ADJOURNING MARCH 12, 2026 — an Initiative to the Legislature goes to voters if lawmakers neither pass nor amend it. ✅ Certified by SoS Hobbs Jan 22, 2026 after Let's Go Washington filed 445,187 signatures. ⚠ It would require a health provider to verify a student's biological sex for female school athletics eligibility, by anatomy, genetics or testosterone levels. ⚠ Legislative Democrats declined to hold public hearings on it.",
+    candidates: [
+      { name: "Yes — approve the athletics eligibility rule", party: "I", winner: false,
+        positions: [
+          "Bar biologically male students from female school sports",
+          "Require provider verification of biological sex",
+          "Preserve fair competition for girls"
+        ],
+        differentiators: [
+          "Filed by Let's Go Washington on June 2, 2025",
+          "445,187 signatures submitted January 2, 2026",
+          "Verification by anatomy, genetics or testosterone levels",
+          "Legislative Democrats blocked public hearings on it"
+        ],
+        supporters: [
+          "Backers say girls lose fair competition and opportunity without it",
+          "Nearly 450,000 voters signed to put it on the ballot",
+          "Lawmakers refused hearings rather than debate the measure"
+        ],
+        opponents: [
+          "The Washington Education Association calls it the most extreme sports ban in the country",
+          "Critics say it forces invasive medical exams on girls",
+          "Opponents warn students could be forcibly outed"
+        ] },
+      { name: "No — reject the athletics eligibility rule", party: "I", winner: false,
+        positions: [
+          "Keep current school athletic eligibility rules",
+          "Avoid invasive eligibility exams for students",
+          "Protect student privacy and equal protection"
+        ],
+        differentiators: [
+          "Opposed by the Washington Education Association",
+          "The No Hate in Washington State coalition leads the opposition",
+          "Critics argue it violates state privacy and equal protection guarantees",
+          "It would add eligibility checks to routine school physicals"
+        ],
+        supporters: [
+          "Educators say it would harm all girls who want to play",
+          "Opponents argue it likely violates the state constitution",
+          "The coalition warns of forced outing and student safety risks"
+        ],
+        opponents: [
+          "Backers say it simply preserves fair girls' competition",
+          "Nearly 450,000 signatures show real public demand",
+          "Critics call the blocking of legislative hearings anti-democratic [Verify — structural argument]"
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Initiative 1 (IL26-001) — Restoring Parents' Rights in Public Schools",
+    note: "IT RE-ENACTS THE 2024 PARENTAL RIGHTS LAW (I-2081) THAT THE LEGISLATURE PARTLY REPEALED IN MAY 2025 — voters passed it, lawmakers rolled part of it back, and the sponsors are asking voters again. ✅ Certified to the Legislature, which held no hearing and adjourned March 12, 2026, sending it to the ballot. ⚠ Sponsored by Let's Go Washington, the same group behind Initiatives 638 and 645, so all three measures on this ballot come from one organisation.",
+    candidates: [
+      { name: "Yes — restore the parental rights law", party: "I", winner: false,
+        positions: [
+          "Parents may review school instructional materials",
+          "Timely notification about their child's education",
+          "Opt out of sexual health education"
+        ],
+        differentiators: [
+          "Re-enacts Initiative 2081, approved by voters in 2024",
+          "Responds to the Legislature's May 2025 partial repeal",
+          "Sponsored by Let's Go Washington",
+          "Majority Democrats declined to hold a public hearing"
+        ],
+        supporters: [
+          "Voters already approved these rights once in 2024",
+          "Lawmakers repealed part of what voters had backed",
+          "The measure has drawn national parental-rights attention"
+        ],
+        opponents: [
+          "The Washington Education Association says it would force outing of LGBTQ students",
+          "Educators warn it strips protections from abused students",
+          "Critics say it limits confidential student counselling"
+        ] },
+      { name: "No — keep the Legislature's 2025 revisions", party: "I", winner: false,
+        positions: [
+          "Keep the Legislature's 2025 revisions in place",
+          "Protect confidential counselling for students",
+          "Avoid mandatory disclosure of a student's identity"
+        ],
+        differentiators: [
+          "Opposed by the Washington Education Association",
+          "The No Hate in Washington State coalition opposes it",
+          "Critics cite abuse and domestic violence protections",
+          "It adds lesson-posting workload for teachers"
+        ],
+        supporters: [
+          "Confidential counselling protects vulnerable students",
+          "Educators warn about mandated outing of LGBTQ students",
+          "New posting mandates add unfunded workload for schools"
+        ],
+        opponents: [
+          "Backers note voters passed essentially this in 2024",
+          "It is framed as lawmakers overriding a voter-approved law",
+          "Parental review rights poll broadly well [Verify — structural argument, no poll located]"
+        ] }
+    ] }
+];
+
+// Washington U.S. HOUSE — ten seats on the 2021 Redistricting Commission plan as amended by
+// HCR 4407, UNCHANGED since 2022. Washington is on neither half of the post-Callais mid-decade
+// redraw wave: HJR 4209, which would have let the Legislature draw a mid-decade congressional map,
+// needed two-thirds in each chamber and never reached the ballot.
+//
+// ⚠⚠ WASHINGTON USES A TOP-TWO PRIMARY, AND IT CHANGES HOW EVERY RACE BELOW SHOULD BE READ.
+// The two highest finishers on Aug 4 advance to November REGARDLESS OF PARTY — there are no party
+// nominations. The party shown beside each name is a SELF-DECLARED BALLOT PREFERENCE the candidate
+// wrote on their own filing form ("Prefers Democratic Party", "Prefers Trump Republican Party",
+// "States No Party Preference"), not an endorsement by that party. Two Democrats can face each
+// other in November; a third-place finisher is eliminated with no runoff.
+//
+// ✅ EVERY PRIMARY FIGURE BELOW IS OFFICIAL. County canvassing boards certified Aug 18, 2026 and
+// Secretary of State Steve Hobbs certified the statewide canvass Aug 21, 2026; the figures were read
+// from results.votewa.gov's own certified feed (isOfficialResults: true).
+// ⚠ Election-night numbers circulated widely and DISAGREE with the certified canvass in at least two
+// races — WA-3 (OPB had Gluesenkamp Perez narrowly FIRST) and WA-9 (mynorthwest had Smith at 50.9%).
+// The certified figures are what is carried here. Treat any pre-Aug-21 percentage as stale.
+//
+// ⚠⚠ EVERY COOK PVI ON THIS PAGE IS AGGREGATOR-SOURCED AND MARKED. `cookpolitical.com` returns 403
+// on every path tried — the PVI hub, the 2025 PVI district list, the Washington House analysis and
+// individual race pages — as do insideelections.com, centerforpolitics.org and 270towin. The values
+// were recovered from Ballotpedia, Wikipedia and search summaries of Cook's own pages. None of them
+// is a direct read, and every one carries a [Verify] saying so. No handicapper rating is asserted
+// anywhere except WA-8's, which is itself marked.
+const HOUSE_RACES = {
+  1: { name: "U.S. House — Washington District 1", region: "Northeastern King County and southern Snohomish County — the I-405 and Sammamish valley suburbs",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "DELBENE WON AN OUTRIGHT MAJORITY IN A SEVEN-WAY PRIMARY. ⚠ Washington uses a top-two primary: the two highest finishers advance regardless of party, and ballot party labels are self-declared preferences, not nominations. ✅ Certified Aug 21, 2026 by Secretary of State Steve Hobbs — DelBene 53.03%, Silva 26.21% of 160,573 votes.",
+        candidates: [
+          { name: "Suzan DelBene (incumbent)", party: "D", winner: false,
+            positions: [
+              "Make the expanded Child Tax Credit permanent",
+              "Expand the low-income housing tax credit",
+              "Roll back tariffs, defend the ACA and Medicaid"
+            ],
+            differentiators: [
+              "In the House since 2012, Medina resident",
+              "House Ways and Means Committee member",
+              "DCCC chair, confirmed for a second straight cycle",
+              "Raised 2.74 million dollars as of July 13"
+            ],
+            supporters: [
+              "She cleared 53 percent outright against six challengers",
+              "A Ways and Means seat gives the district real tax-writing leverage",
+              "Endorsed by Gov. Bob Ferguson, Sen. Patty Murray and labor unions"
+            ],
+            opponents: [
+              "Chairing the DCCC pulls her attention to national races, not the district",
+              "Some Democrats have publicly called for a DCCC reset after high-profile special-election losses [Verify — reported by NOTUS, not independently confirmed]",
+              "Critics cast a former Microsoft executive from Medina as distant from working-class constituents [Verify — structural argument]"
+            ] },
+          { name: "Mary Silva", party: "R", winner: false,
+            positions: [
+              "Tax incentives to attract tech and manufacturing",
+              "Break up large health insurance monopolies",
+              "Oppose vaccine mandates and public health restrictions"
+            ],
+            differentiators: [
+              "Audiologist of roughly 20 years, Everett resident",
+              "Second run; she lost the 2024 WA-1 primary",
+              "Finished second with 26.21 percent, consolidating the GOP vote",
+              "Raised about 3,200 dollars, mostly self-funded, per FEC"
+            ],
+            supporters: [
+              "She consolidated the Republican vote in a field of five Democrats",
+              "A practising clinician arguing health care consolidation drives up costs",
+              "Endorsed by Stand for Health Freedom on vaccine-mandate opposition [Verify — reported by the Everett Herald]"
+            ],
+            opponents: [
+              "Her campaign reported roughly 3,200 dollars in total receipts against DelBene's 2.74 million",
+              "The King County Republican Party withdrew its endorsement of her [Verify — reported by the Everett Herald; no reason stated]",
+              "DelBene took an outright majority in the primary, leaving little path in November [Verify — structural argument]"
+            ] }
+        ] }
+    ] },
+
+  2: { name: "U.S. House — Washington District 2", region: "The northwest corner — Whatcom, Skagit, Island and San Juan counties plus western Snohomish",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "LARSEN IS SEEKING A 14TH TERM AND TOOK ONLY 42 PERCENT IN A FOUR-WAY PRIMARY. ⚠ Top-two primary: the two highest finishers advance regardless of party; ballot labels are self-declared party preference. ✅ Certified Aug 21, 2026 — Larsen 42.34%, Feller 32.80% of 209,510; two other Democrats drew 24.8% between them, so the Democratic vote was split three ways.",
+        candidates: [
+          { name: "Rick Larsen (incumbent)", party: "D", winner: false,
+            positions: [
+              "Lower health care, housing, grocery and fuel costs",
+              "Protect the Affordable Care Act and Medicaid",
+              "Sustained federal transportation and aviation investment"
+            ],
+            differentiators: [
+              "In office since 2001, seeking a 14th term",
+              "Ranking member, House Transportation and Infrastructure Committee",
+              "Led the primary with 42.34 percent",
+              "Reported about 2 million dollars in contributions [Verify — Cascadia Daily News reporting, not a direct FEC read]"
+            ],
+            supporters: [
+              "The top Democrat on Transportation and Infrastructure matters in an aviation, ferry and port district",
+              "Democrats took roughly 67 percent of the combined primary vote",
+              "A roughly 2 million dollar war chest against an opponent with no reported receipts"
+            ],
+            opponents: [
+              "He drew only 42 percent while two fellow Democrats took a quarter of the vote",
+              "Twenty-six years in the seat invites a generational-change argument [Verify — structural argument]",
+              "Republicans argue a long-tenured incumbent owns the affordability problems he now campaigns on [Verify — structural argument]"
+            ] },
+          { name: "Edwin H. Feller", party: "R", winner: false,
+            positions: [
+              "Robust law enforcement, end sanctuary policies",
+              "Expand nuclear and hydroelectric energy",
+              "Lower taxes, cut federal spending"
+            ],
+            differentiators: [
+              "83-year-old Lynden native, first run for any office",
+              "Founded Feller Heating and Air Conditioning; roughly 60 years in the trades",
+              "Built and serviced U.S. embassy facilities in dozens of countries",
+              "No FEC financial reports filed for the 2025-2026 cycle"
+            ],
+            supporters: [
+              "He consolidated the entire Republican vote at 32.8 percent with no primary rival of his party",
+              "A lifelong district resident with decades of skilled-trades and overseas federal contracting work",
+              "He runs as an outsider against an incumbent first elected in 2000"
+            ],
+            opponents: [
+              "No campaign fundraising could be located in FEC filings [Verify — an absence of located records; his committee is registered but has filed no financials]",
+              "He served as his own campaign manager through the primary",
+              "Democrats outpolled Republicans roughly two to one in the district's primary [Verify — structural argument]"
+            ] }
+        ] }
+    ] },
+
+  3: { name: "U.S. House — Washington District 3", region: "Southwest Washington — Clark, Cowlitz, Lewis, Pacific, Skamania and Wahkiakum counties plus part of Thurston",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "THE DEMOCRATIC INCUMBENT FINISHED SECOND IN HER OWN PRIMARY. ⚠ Under Washington's top-two primary the top two advance regardless of party, so second place is not a loss — but it is a warning sign. ✅ Certified Aug 21, 2026 — Braun 39.66%, Gluesenkamp Perez 36.38% of 214,491; Democrats combined about 55 percent to Republicans' 43 percent, so the party totals and the candidate order point opposite ways. ⚠ This is the most competitive U.S. House race in Washington.",
+        candidates: [
+          { name: "Marie Gluesenkamp Perez (incumbent)", party: "D", winner: false,
+            positions: [
+              "Skilled trades and federal funding for the district",
+              "Tribal management of sea lions to protect Columbia River salmon",
+              "Worker and chemical safety, lower everyday costs"
+            ],
+            differentiators: [
+              "Has held a Trump-won district since 2022",
+              "Finished SECOND in her own certified primary, 36.38 percent",
+              "Raised 6.29 million dollars with 2.06 million on hand through July 15, per FEC",
+              "Endorsed by the Washington State Labor Council AFL-CIO and the State Building Trades Council"
+            ],
+            supporters: [
+              "Democrats out-polled Republicans about 55 to 43 percent across the whole primary field",
+              "She restored Chemical Safety Board funding and pressed a Longview mill to pay idled workers",
+              "A three-to-one fundraising edge and proven crossover appeal in a Trump district"
+            ],
+            opponents: [
+              "Nearly a third of Democratic primary voters backed progressive Brent Hennrich, who declined to endorse her",
+              "Progressives fault her support for Israel, her SAVE Act vote and her fossil-fuel positions",
+              "Finishing behind a Republican in the primary suggests eroded standing at home"
+            ] },
+          { name: "John Braun", party: "R", winner: false,
+            positions: [
+              "Keep federal income tax rates low",
+              "Broad energy production to hold down prices",
+              "Aligns with the Trump agenda except on tariffs"
+            ],
+            differentiators: [
+              "Washington State Senate Republican Leader, 20th district, Centralia",
+              "Finished FIRST in the certified primary with 39.66 percent",
+              "Endorsed by President Trump in April 2026",
+              "Army veteran; president of Braun Northwest, roughly 350 employees"
+            ],
+            supporters: [
+              "He led the primary field and enters November with Trump's endorsement",
+              "Statewide legislative leadership and a manufacturing payroll give him a governing resume",
+              "He is seen as more mainstream and less polarising than the district's prior Republican nominee"
+            ],
+            opponents: [
+              "Republicans took only about 43 percent of the combined primary vote",
+              "He was outraised roughly three to one, 2.04 million to 6.29 million dollars",
+              "Breaking with Trump on tariffs while running on his endorsement invites attacks from both directions [Verify — structural argument]"
+            ] }
+        ] }
+    ] },
+
+  4: { name: "U.S. House — Washington District 4", region: "Central Washington — Yakima, Benton, Grant, Okanogan and Klickitat counties plus parts of Adams, Douglas and Franklin",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "OPEN SEAT: REP. DAN NEWHOUSE (R) ANNOUNCED DEC 17, 2025 THAT HE WOULD NOT SEEK A SEVENTH TERM. He did not lose, withdraw or resign — he is serving out his term. ⚠ Top-two primary: the two highest finishers advance regardless of party. ✅ Certified Aug 21 — McKinney 34.80%, Duresky 29.92%. A DEMOCRAT PLACED SECOND in a district that has not elected one since Jay Inslee in 1992 [Verify — a historical claim from press summaries]. ⚠ Jerrod Sessler, Trump's 2024 endorsee who nearly beat Newhouse, ran THIRD at 14.59% and is eliminated; Trump endorsed McKinney this cycle.",
+        candidates: [
+          { name: "Amanda McKinney", party: "R", winner: false,
+            positions: [
+              "Commonsense water policy protecting Central Washington farms",
+              "Backs Trump on border security and immigration enforcement",
+              "Second Amendment, ending DEI, barring trans women from women's sports"
+            ],
+            differentiators: [
+              "Yakima County commissioner since 2020",
+              "Endorsed by President Trump and Speaker Mike Johnson",
+              "Raised over 981,000 dollars by July 15, the most in the field",
+              "Opposed prolonged COVID shutdowns and vaccine mandates"
+            ],
+            supporters: [
+              "She pairs America First politics with genuine water and agriculture expertise",
+              "Trump and Johnson endorsements are evidence she can deliver for the district",
+              "Her county record shows her pushing back on federal regulation of farms and dairies"
+            ],
+            opponents: [
+              "Local letters to the editor question what her large financial backers expect in return",
+              "She would replace an independent-minded Republican with a straight party-line vote [Verify — structural argument]",
+              "A national culture-war focus crowds out district problems like water and labor [Verify — structural argument]"
+            ] },
+          { name: "John Duresky", party: "D", winner: false,
+            positions: [
+              "Affordability is the district's top problem",
+              "Supports some form of universal health care",
+              "Raise Medicare and Medicaid rates for rural hospitals"
+            ],
+            differentiators: [
+              "Retired Air Force major, roughly 37 years of federal service",
+              "Former project control officer at the Hanford site",
+              "The only Democrat among 11 primary candidates",
+              "Endorsed by the WA State Labor Council and the Washington Education Association"
+            ],
+            supporters: [
+              "A career veteran and federal worker can reach rural voters other Democrats cannot",
+              "His second-place finish shows real crossover appeal in a deep-red seat",
+              "He held town halls in small Klickitat County towns rather than only in the cities"
+            ],
+            opponents: [
+              "The seat has not elected a Democrat since 1992 and rates about R+10 [Verify — both figures via aggregators; Cook's own site returned 403]",
+              "He was heavily outraised in the primary and starts far behind on money",
+              "Universal health care is a hard sell in Central Washington [Verify — structural argument]"
+            ] }
+        ] }
+    ] },
+
+  5: { name: "U.S. House — Washington District 5", region: "Eastern Washington — Spokane, Whitman, Walla Walla, Stevens, Asotin, Lincoln and the far northeast, plus parts of Adams and Franklin",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "FIRST-TERM INCUMBENT MICHAEL BAUMGARTNER (R) DREW 11 CHALLENGERS AND FINISHED UNDER HALF AT 47.40%. ⚠ Top-two primary: party labels are self-declared ballot preferences, not nominations. ✅ Certified Aug 21 — Baumgartner 47.40%, Carmela Conroy 18.85%, and independent Nate Powell a close third at 16.38%. This is a 2024 rematch. ⚠ Cook PVI R+5 [Verify — via Ballotpedia and Wikipedia; Cook's own site returned 403].",
+        candidates: [
+          { name: "Michael Baumgartner (incumbent)", party: "R", winner: false,
+            positions: [
+              "Supports the administration's military action against Iran",
+              "Aligned with Trump on tariffs and immigration",
+              "Sponsored a ban on prediction-market betting on wildfires"
+            ],
+            differentiators: [
+              "First-term incumbent, elected 2024",
+              "Former state senator and Spokane County treasurer",
+              "Sits on Judiciary, Foreign Affairs, and Education and Workforce",
+              "Beat Conroy 60.6 percent to 39.3 percent in 2024"
+            ],
+            supporters: [
+              "Three substantive committee seats give Eastern Washington unusual early influence",
+              "A 21-point 2024 win shows the district is comfortable with him",
+              "Locally targeted bills such as his wildfire betting ban"
+            ],
+            opponents: [
+              "The Spokesman-Review has described him as a party-line Trump vote on tariffs and Iran, both unpopular at home",
+              "Eleven challengers ran against him and he still finished below 50 percent",
+              "A 47 percent primary showing signals softness in a midterm against the president's party [Verify — structural argument]"
+            ] },
+          { name: "Carmela Conroy", party: "D", winner: false,
+            positions: [
+              "Opposes the war with Iran",
+              "Runs on diplomatic and prosecutorial experience over party loyalty",
+              "No detailed domestic platform beyond her campaign site could be located [Verify — an absence of located records]"
+            ],
+            differentiators: [
+              "Retired U.S. consul general, foreign service 1996 to 2020",
+              "Former Spokane County deputy prosecutor",
+              "Former chair of the Spokane County Democratic Party, 2022 to 2024",
+              "Second run against Baumgartner after losing in 2024"
+            ],
+            supporters: [
+              "Decades of diplomatic service are exactly the check Congress needs during a war",
+              "Her 2024 run gave her name recognition a first-time challenger would lack",
+              "An R+5 seat is reachable in a midterm against the president's party"
+            ],
+            opponents: [
+              "She lost this same matchup by more than 21 points in 2024",
+              "She took under 19 percent in the primary while other Democrats and independents split the rest",
+              "Her published platform is thin on the local economy [Verify — structural argument from limited located policy detail]"
+            ] }
+        ] }
+    ] },
+
+  6: { name: "U.S. House — Washington District 6", region: "The Olympic Peninsula and Kitsap — Clallam, Jefferson, Grays Harbor, Mason and Kitsap counties plus part of Pierce",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "INCUMBENT EMILY RANDALL (D) TOOK 58.77% IN THE PRIMARY, MORE THAN HER FOUR OPPONENTS COMBINED. ⚠ Top-two primary: the two highest finishers advance regardless of party. ✅ Certified Aug 21 — Randall 58.77%, Republican Teresa Fox 25.54%; Leon Lawson, who declared a preference for the Trump Republican Party, took 9.72%. ⚠ Cook PVI D+10 [Verify — via Ballotpedia; Cook's own site returned 403].",
+        candidates: [
+          { name: "Emily Randall (incumbent)", party: "D", winner: false,
+            positions: [
+              "Protect and strengthen the Affordable Care Act",
+              "Lower out-of-pocket prescription drug costs",
+              "Defend reproductive, mental and culturally relevant health care"
+            ],
+            differentiators: [
+              "First term; won the open seat in 2024 with 56.8 percent",
+              "First queer Latina to serve in the U.S. House",
+              "Says she secured 17.9 million dollars for district projects [Verify — self-reported]",
+              "Founded and co-chairs the Congressional Ferry Caucus"
+            ],
+            supporters: [
+              "Federal money delivered for ferries, transit and wastewater across the district",
+              "She is a dependable vote for the ACA and reproductive rights",
+              "She has given attention to Puget Sound Naval Shipyard commuting and workforce needs"
+            ],
+            opponents: [
+              "She graded her own first-term work bringing money home only a B-plus",
+              "A first-term minority-party member has limited leverage to deliver [Verify — structural argument]",
+              "Her emphasis fits urban Kitsap better than the rural Olympic Peninsula [Verify — structural argument]"
+            ] },
+          { name: "Teresa Fox", party: "R", winner: false,
+            positions: [
+              "Cut federal spending to bring down inflation",
+              "Staff and fund rural law enforcement",
+              "Fiscal restraint paired with naval readiness"
+            ],
+            differentiators: [
+              "Occupational safety professional and emergency manager",
+              "Worked in shipyards, naval facilities and at Olympic College",
+              "Unanimously endorsed by all six county Republican parties in the district",
+              "Runs explicitly as a non-politician against career politics"
+            ],
+            supporters: [
+              "A shipyard safety career speaks directly to the district's largest employer",
+              "Unified backing from every county Republican organisation in the district",
+              "Voters want a citizen candidate focused on costs and public safety"
+            ],
+            opponents: [
+              "She trailed Randall by 33 points in the primary in a D+10 seat",
+              "She has never held elected office and no significant fundraising base was located [Verify — an absence of located records]",
+              "County-party endorsements do not translate in a district Randall carried with 56.8 percent in 2024"
+            ] }
+        ] }
+    ] },
+
+  7: { name: "U.S. House — Washington District 7", region: "Seattle and its immediate neighbours — the district sits ENTIRELY inside King County",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "JAYAPAL TOOK 84% OF THE PRIMARY IN WASHINGTON'S MOST DEMOCRATIC SEAT, COOK PVI D+39 [Verify — PVI read via a search summary; Cook's own site returned 403]. ⚠ Washington's top-two primary advances the two leaders regardless of party; a listed party is a self-declared ballot preference, not a nomination. ✅ Certified Aug 21, 2026 — Jayapal 182,844 (84.36%), Nirav Sheth 21,282 (9.82%) of 216,741.",
+        candidates: [
+          { name: "Pramila Jayapal (incumbent)", party: "D", winner: false,
+            positions: [
+              "Medicare for All",
+              "Legalization and a path to citizenship",
+              "Higher minimum wage and universal childcare"
+            ],
+            differentiators: [
+              "Chair emerita of the Congressional Progressive Caucus",
+              "Ranking member on the House immigration subcommittee",
+              "Ran Kidnapped and Disappeared oversight hearings on ICE",
+              "Confirmed running for re-election to the House, not another office"
+            ],
+            supporters: [
+              "Her Medicare for All and immigration work makes her the district's clearest progressive voice",
+              "An 84 percent primary showing suggests broad satisfaction across a heavily Democratic seat",
+              "She has used ranking-member status to force oversight hearings on immigration enforcement"
+            ],
+            opponents: [
+              "Critics say a D+39 seat frees her to chase a national profile over local casework [Verify — structural argument]",
+              "A conservative Seattle outlet faulted a fundraising email calling fellow Democrats Trump-lite [Verify — one opinion outlet, not independently confirmed]",
+              "Republicans argue Medicare for All is unaffordable [Verify — a standard party critique, not a specific sourced attack]"
+            ] },
+          { name: "Nirav Sheth", party: "R", winner: false,
+            positions: [
+              "Law, order and public safety",
+              "Lower cost of living",
+              "Energy independence"
+            ],
+            differentiators: [
+              "Former Marine Corps member and police officer",
+              "Small business owner",
+              "Campaigns on accountability in Washington D.C. and on homelessness",
+              "Took under 10 percent in the certified primary"
+            ],
+            supporters: [
+              "A Marine and policing background gives weight to his law-and-order message",
+              "He puts homelessness and affordability at the centre rather than national culture fights",
+              "He gives the district's Republican minority an actual name on the November ballot [Verify — structural argument]"
+            ],
+            opponents: [
+              "He trailed Jayapal by roughly 75 points in the primary in a D+39 district",
+              "No significant independent policy reporting on him could be located [Verify — an absence of located coverage, searched by name and by district]",
+              "No campaign fundraising of any scale could be located [Verify — an absence of located records]"
+            ] }
+        ] }
+    ] },
+
+  8: { name: "U.S. House — Washington District 8", region: "The Cascade crest — Chelan and Kittitas counties plus the eastern suburbs of King, Pierce, Snohomish and part of Douglas",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "SCHRIER TOOK 53.69% OUTRIGHT AND OUTPOLLED ALL FOUR REPUBLICANS COMBINED, 102,853 to 83,595. ⚠ Long the state's most competitive seat, Cook PVI D+3 — but Cook moved it Likely D to Solid D and Sabato Likely to Safe Democratic for 2026 [Verify — both read via search summaries; both raters' sites returned 403]. ✅ Certified Aug 21 — Schrier 102,853, Spencer Meline 30,324 (15.83%).",
+        candidates: [
+          { name: "Kim Schrier (incumbent)", party: "D", winner: false,
+            positions: [
+              "Lower prescription drug and insulin costs",
+              "Expand children's access to primary care",
+              "Wildfire resilience and forest health"
+            ],
+            differentiators: [
+              "A practising pediatrician before entering Congress",
+              "Touts 18 bills signed under two presidents [Verify — self-reported]",
+              "Won 53.69 percent outright in a six-candidate primary",
+              "Flipped the seat in 2018 and has held it since"
+            ],
+            supporters: [
+              "Her bipartisan health and wildfire bills show she can pass things in a divided House",
+              "She outpolled all four Republicans combined in the August primary",
+              "Handicappers have moved the district from competitive toward safe on her record"
+            ],
+            opponents: [
+              "Republicans say she brands as a moderate but votes with her party on contested social issues",
+              "Meline points to her vote against the Protect Kids Act as evidence of that gap",
+              "Some progressives want more than incremental health legislation [Verify — structural argument]"
+            ] },
+          { name: "Spencer Meline", party: "R", winner: false,
+            positions: [
+              "Housing affordability and first-time buyer tax credits",
+              "Limit institutional investors in single-family homes",
+              "Small business support and public lands stewardship"
+            ],
+            differentiators: [
+              "Owns three Leavenworth restaurants, lives in Cashmere",
+              "Endorsed by the King County GOP",
+              "Proposes a portable-mortgage pilot for COVID-era low rates",
+              "Was outraised roughly 20 to 1 [Verify — the ratio is from local reporting, not read off FEC]"
+            ],
+            supporters: [
+              "He offers a concrete housing platform rather than only national talking points",
+              "He argues young workers are leaving for Texas and Idaho because costs priced them out",
+              "He beat three other Republicans to consolidate the district's GOP vote"
+            ],
+            opponents: [
+              "He trailed Schrier by nearly 38 points in the primary",
+              "Calling Washington a lab of the radical left may not travel in D+3 suburbs [Verify — structural argument]",
+              "Handicappers now rate the seat Solid or Safe Democratic rather than competitive"
+            ] }
+        ] }
+    ] },
+
+  9: { name: "U.S. House — Washington District 9", region: "South Seattle, Bellevue, Renton, Kent and Federal Way — the district sits ENTIRELY inside King County and is the population plurality of no county at all",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "SEATTLE SOCIALIST KSHAMA SAWANT RAN AND PLACED THIRD, AND WASHINGTON HAS NO RUNOFF, SO SHE IS ELIMINATED. ⚠ Adam Smith, in office since 1997, took only 47.13% against a split left — a majority of primary voters chose someone else. ✅ Certified Aug 21 — Smith 67,095, Doug Basler 31,070 (21.83%), Sawant 24,583 (17.27%), Melissa Chaudhry 17,811 (12.51%). ⚠ Cook PVI D+22 [Verify — via a search summary; Cook's own site returned 403].",
+        candidates: [
+          { name: "Adam Smith (incumbent)", party: "D", winner: false,
+            positions: [
+              "Stronger congressional oversight of the Pentagon",
+              "Cutting off U.S. military aid to Israel",
+              "Removing U.S.-Israel cooperation language from the NDAA"
+            ],
+            differentiators: [
+              "Ranking member of the House Armed Services Committee",
+              "Has held the seat since 1997",
+              "Won only 47.13 percent of his own primary",
+              "Shifted in 2026 to back cutting Israel aid"
+            ],
+            supporters: [
+              "As ranking Armed Services Democrat he would lead the panel if Democrats take the House",
+              "He changed his Israel position after constituent conversations, showing he listens",
+              "He still finished about 25 points clear of his nearest challenger"
+            ],
+            opponents: [
+              "A majority of primary voters picked someone other than the incumbent",
+              "Critics on the left say his Israel shift came late and only under sustained pressure",
+              "He has publicly blamed far-left activists for harassment, widening the rift with progressives"
+            ] },
+          { name: "Doug Basler", party: "R", winner: false,
+            positions: [
+              "Affordability and cost of living",
+              "Public safety",
+              "Pro-business, fewer barriers for employers"
+            ],
+            differentiators: [
+              "Sixth general-election matchup against Adam Smith",
+              "Also ran in 2014, 2016, 2018, 2020 and 2022, losing each time [Verify — the run count is from mynorthwest and Ballotpedia]",
+              "Spokane native; advertising and video production business owner",
+              "Finished ahead of Sawant on about a seventh of her fundraising"
+            ],
+            supporters: [
+              "He consolidated the anti-Smith Republican vote to finish second in a crowded field",
+              "He outran a far better funded socialist challenger on roughly 99,000 dollars raised",
+              "Six cycles on the ballot give Republicans a familiar name here [Verify — structural argument]"
+            ],
+            opponents: [
+              "He has lost to Smith five straight times, taking 29.2 percent in 2014 [Verify — the 2014 share is confirmed; later general shares were not checked]",
+              "The district is Cook PVI D+22, well outside Republican reach [Verify — structural argument]",
+              "Little detailed policy beyond a broad affordability and family frame could be located [Verify — an absence of located coverage]"
+            ] }
+        ] }
+    ] },
+
+  10: { name: "U.S. House — Washington District 10", region: "The South Sound — Olympia, Lacey and Tacoma's southern suburbs around Joint Base Lewis-McChord, spanning Thurston and Pierce counties",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "STRICKLAND TOOK ONLY 47.26% OF HER OWN PRIMARY WITH TWO OTHER DEMOCRATS ON THE BALLOT. ⚠ Republican Chris D. Chung sought Washington insurance commissioner as a DEMOCRAT in the 2024 primary — a party switch worth knowing about before you vote. ✅ Certified Aug 21 — Strickland 73,689, Chung 48,953 (31.40%), Alex Scheel (D) 16,074, Adam Arafat (D) 14,695. ⚠ Cook PVI D+9 [Verify — via a search summary; Cook's own site returned 403].",
+        candidates: [
+          { name: "Marilyn Strickland (incumbent)", party: "D", winner: false,
+            positions: [
+              "Military housing supply and full basic allowance for housing",
+              "Pay raises for junior enlisted servicemembers",
+              "Federal facility funding for Joint Base Lewis-McChord"
+            ],
+            differentiators: [
+              "Serves on the House Armed Services Committee",
+              "Secured 89 million dollars for a JBLM airfield fire and rescue station",
+              "Former mayor of Tacoma [Verify — widely reported, not re-read from a primary source]",
+              "Took 47.26 percent against two fellow Democrats"
+            ],
+            supporters: [
+              "She delivers concrete JBLM appropriations in a district built around the base",
+              "She backed a 14.5 percent pay raise for junior enlisted troops and restored full BAH",
+              "She still finished about 16 points ahead of the field"
+            ],
+            opponents: [
+              "More than half of primary voters chose someone other than the incumbent",
+              "Anti-war Democrat Alex Scheel ran against her on ending U.S. military aid to Israel",
+              "Critics say the base focus leaves civilian affordability comparatively thin [Verify — structural argument]"
+            ] },
+          { name: "Chris D. Chung", party: "R", winner: false,
+            positions: [
+              "Health care access, framed from pharmacy practice",
+              "Public safety",
+              "Better education"
+            ],
+            differentiators: [
+              "A community pharmacist for more than 30 years",
+              "Ran for insurance commissioner as a Democrat in 2024",
+              "Ran for Federal Way mayor in 2025",
+              "Best Republican primary share of Washington's four Puget Sound seats"
+            ],
+            supporters: [
+              "Three decades running a community pharmacy give him direct experience with drug costs",
+              "He was the only Republican on the ballot and consolidated 31 percent of the primary vote",
+              "Having filed under both party labels, he can claim independence from either [Verify — structural argument]"
+            ],
+            opponents: [
+              "Running as a Republican after seeking statewide office as a Democrat in 2024 invites consistency questions",
+              "He trailed Strickland by nearly 16 points in a Cook PVI D+9 district",
+              "No detailed policy platform beyond health, safety and education could be located [Verify — an absence of located records; searched by name and by district]"
+            ] }
+        ] }
+    ] }
+};
+
+const SITE_META = { name: "Washington Elections Hub", lastUpdated: "September 2, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — Washington county-level down-ballot research has not started.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Washington has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them,
+  // otherwise a district with no plurality county is unreachable from the map.
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const WA_STATE_FIPS = "53";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#wamap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(WA_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Hartford ----
+  drawCapital(g, projection, { name: "Olympia", lng: -122.9007, lat: 47.0379 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in WA";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our Washington dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+// Split a race note on the ⚠ / ✅ flag glyphs the editorial style already uses, keeping
+// the glyph that introduced each segment. Text before the first flag is the lead. This is
+// presentation only — no wording is altered and nothing is dropped.
+function briefSegments(note) {
+  const out = [];
+  const re = /([\u26A0\uFE0F\u2705]+)\s*/g;
+  let last = 0, mark = "", m;
+  while ((m = re.exec(note)) !== null) {
+    const text = note.slice(last, m.index).trim();
+    if (text) out.push({ mark: mark, text: text });
+    mark = m[1].replace(/\uFE0F/g, "");
+    last = re.lastIndex;
+  }
+  const tail = note.slice(last).trim();
+  if (tail) out.push({ mark: mark, text: tail });
+  return out;
+}
+
+function renderNote(note) {
+  if (!note) return "";
+  const body = briefSegments(note).map(function (s) {
+    return s.mark
+      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${s.text}</p>`
+      : `<p class="brief-lead">${s.text}</p>`;
+  }).join("");
+  // Clamp only what actually needs clamping: the median note is 236 characters, so most
+  // briefs show whole and never render a toggle at all.
+  const long = note.length > 300;
+  return `<div class="election-brief${long ? " clamped" : ""}">
+      <div class="brief-label">About this race</div>
+      <div class="brief-body">${body}</div>
+      ${long ? `<button class="brief-more" type="button">Show more</button>` : ""}
+    </div>`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${renderNote(e.note)}${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const more = e.target.closest(".brief-more");
+  if (more) {
+    const brief = more.closest(".election-brief");
+    more.textContent = brief.classList.toggle("clamped") ? "Show more" : "Show less";
+    return;
+  }
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "abbr": "UT",
+  "name": "Utah",
+  "donor": "nv.html",
+  "donorAbbr": "NV",
+  "donorName": "Nevada",
+  "donorCountyCount": 17,
+  "donorHouseSeats": 4,
+  "donorStatewideCount": 10,
+  "donorFips": "32",
+  "donorLastUpdated": "August 7, 2026",
+  "out": "ut.html",
+  "countyCount": 29,
+  "houseSeats": 4,
+  "statewideCount": 3,
+  "fips": "49",
+  "lastUpdated": "September 2, 2026",
+  "capital": { "name": "Salt Lake City", "lng": -111.8910, "lat": 40.7776 },
+  "sources": "Utah Lieutenant Governor / vote.utah.gov — the 2026 Candidate Filings list with ballot status (last updated Aug 31, 2026), the 2026 Candidate Manual, and the judicial-retention guidance; electionresults.utah.gov for the June 23, 2026 primary; the UGRC / Lt. Governor SGID layer 'Utah US Congress Districts 2026 to 2032' for the court-drawn Map 1A, joined to 2020 census blocks; League of Women Voters of Utah v. Utah State Legislature (Third Judicial District, Judge Dianna M. Gibson); le.utah.gov for S.J.R. 2 and H.J.R. 10; FEC; U.S. Census Bureau 2020 county FIPS file; Deseret News, KUER, Utah News Dispatch, Salt Lake Tribune, Fox 13, Moab Times, Park Record, KSL.",
+  "countiesFile": "tools/banked/ut-build/counties.js",
+  "statewideFile": "tools/banked/ut-build/statewide.js",
+  "houseFile": "tools/banked/ut-build/house.js"
+}

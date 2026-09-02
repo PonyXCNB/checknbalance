@@ -1455,7 +1455,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Oregon Elections Hub", lastUpdated: "August 7, 2026" };
+const SITE_META = { name: "Oregon Elections Hub", lastUpdated: "September 2, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Oregon county-level down-ballot research is the next phase.
@@ -1605,7 +1605,7 @@ function openPanel(fips) {
 
   if (!built) {
     eyebrow.textContent = "County FIPS " + fips;
-    title.textContent   = "Not in MS";
+    title.textContent   = "Not in OR";
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn&#39;t in our Oregon dataset.</p></div>`;
   } else {

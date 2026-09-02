@@ -1,0 +1,23 @@
+{
+  "abbr": "WA",
+  "name": "Washington",
+  "donor": "az.html",
+  "donorAbbr": "AZ",
+  "donorName": "Arizona",
+  "donorCountyCount": 15,
+  "donorHouseSeats": 9,
+  "donorStatewideCount": 9,
+  "donorFips": "04",
+  "donorLastUpdated": "August 27, 2026",
+  "out": "wa.html",
+  "countyCount": 39,
+  "houseSeats": 10,
+  "statewideCount": 8,
+  "fips": "53",
+  "lastUpdated": "September 2, 2026",
+  "capital": { "name": "Olympia", "lng": -122.9007, "lat": 47.0379 },
+  "sources": "Washington Secretary of State — the certified Aug 4, 2026 primary canvass at results.votewa.gov (county boards certified Aug 18; SoS Steve Hobbs certified statewide Aug 21, 2026), the Certification of Candidates to the General Election, and the votewa initiative tracker; RCW 29A.52.220 and 29A.52.231 via app.leg.wa.gov; the 2021 Redistricting Commission congressional plan as amended by HCR 4407; MCDC Geocorr 2022 and the Census CD119 county relationship file for county-district populations; FEC; The Spokesman-Review, Everett Herald, Cascadia Daily News, Yakima Herald, OPB, KUOW, MyNorthwest, Inlander, Kitsap Daily News, Peninsula Daily News, Seattle Times, KOMO, Ballotpedia News.",
+  "countiesFile": "tools/banked/wa-build/counties.js",
+  "statewideFile": "tools/banked/wa-build/statewide.js",
+  "houseFile": "tools/banked/wa-build/house.js"
+}

@@ -1673,7 +1673,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Ohio Elections Hub", lastUpdated: "August 11, 2026" };
+const SITE_META = { name: "Ohio Elections Hub", lastUpdated: "September 2, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Ohio county-level down-ballot research is the next phase.)
@@ -1816,7 +1816,7 @@ function openPanel(fips) {
     eyebrow.textContent = "County FIPS " + fips;
     title.textContent   = "Not in OH";
     subtitle.textContent = "";
-    body.innerHTML = `<div class="empty-state"><p>This county isn't in our West Virginia dataset.</p></div>`;
+    body.innerHTML = `<div class="empty-state"><p>This county isn't in our Ohio dataset.</p></div>`;
   } else {
     eyebrow.textContent = `Congressional District ${built.county.d}`;
     title.textContent   = built.county.n + " County";

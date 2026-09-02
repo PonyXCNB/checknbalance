@@ -1,0 +1,211 @@
+{
+  "races": [
+    {
+      "date": "Nov 3, 2026",
+      "type": "upcoming",
+      "scope": "Federal · District",
+      "office": "U.S. House — Washington District 1",
+      "note": "DELBENE WON AN OUTRIGHT MAJORITY IN A SEVEN-WAY PRIMARY. ⚠ Washington uses a top-two primary: the two highest finishers advance regardless of party, and ballot party labels are self-declared preferences, not nominations. ✅ Certified Aug 21, 2026 by Secretary of State Steve Hobbs: DelBene 53.03 percent, Silva 26.21 percent of 160,573 votes.",
+      "candidates": [
+        {
+          "name": "Suzan DelBene (incumbent)",
+          "party": "D",
+          "winner": false,
+          "positions": [
+            "Make expanded Child Tax Credit permanent",
+            "Expand low-income housing tax credit",
+            "Roll back tariffs, defend ACA and Medicaid"
+          ],
+          "differentiators": [
+            "In the House since 2012, Medina resident",
+            "House Ways and Means Committee member",
+            "DCCC chair, confirmed for a second straight cycle",
+            "Raised 2.74 million dollars as of July 13"
+          ],
+          "supporters": [
+            "Cleared 53 percent outright against six challengers.",
+            "Ways and Means seat gives the district real tax-writing leverage.",
+            "Endorsed by Gov. Bob Ferguson, Sen. Patty Murray and labor unions."
+          ],
+          "opponents": [
+            "Chairing the DCCC pulls her attention to national races, not the district.",
+            "Some Democrats have publicly called for a DCCC reset after high-profile special-election losses [Verify — reported by NOTUS, not independently confirmed].",
+            "Critics cast a former Microsoft executive from Medina as distant from working-class constituents [Verify — structural argument]."
+          ]
+        },
+        {
+          "name": "Mary Silva",
+          "party": "R",
+          "winner": false,
+          "positions": [
+            "Tax incentives to attract tech and manufacturing",
+            "Break up large health insurance monopolies",
+            "Oppose vaccine mandates and public health restrictions"
+          ],
+          "differentiators": [
+            "Audiologist of roughly 20 years, Everett resident",
+            "Second run; lost the 2024 WA-1 primary",
+            "Finished second with 26.21 percent, consolidating GOP vote",
+            "Raised about 3,200 dollars, mostly self-funded, per FEC"
+          ],
+          "supporters": [
+            "She consolidated the Republican vote in a field of five Democrats.",
+            "A practicing clinician arguing health care consolidation drives up costs.",
+            "Endorsed by Stand for Health Freedom on vaccine-mandate opposition [Verify — reported by the Everett Herald]."
+          ],
+          "opponents": [
+            "Her campaign reported roughly 3,200 dollars in total receipts against DelBene's 2.74 million.",
+            "The King County Republican Party withdrew its endorsement of her [Verify — reported by the Everett Herald, reason not stated].",
+            "DelBene took an outright majority in the primary, leaving little path in November [Verify — structural argument]."
+          ]
+        }
+      ]
+    },
+    {
+      "date": "Nov 3, 2026",
+      "type": "upcoming",
+      "scope": "Federal · District",
+      "office": "U.S. House — Washington District 2",
+      "note": "LARSEN IS SEEKING A 14TH TERM AND TOOK ONLY 42 PERCENT IN A FOUR-WAY PRIMARY. ⚠ Top-two primary: the two highest finishers advance regardless of party; ballot labels are self-declared party preference. ✅ Certified Aug 21, 2026: Larsen 42.34 percent, Feller 32.80 percent of 209,510; two other Democrats drew 24.8 percent combined.",
+      "candidates": [
+        {
+          "name": "Rick Larsen (incumbent)",
+          "party": "D",
+          "winner": false,
+          "positions": [
+            "Lower health care, housing, grocery and fuel costs",
+            "Protect the Affordable Care Act and Medicaid",
+            "Sustained federal transportation and aviation investment"
+          ],
+          "differentiators": [
+            "In office since 2001, seeking a 14th term",
+            "Ranking member, House Transportation and Infrastructure Committee",
+            "Led the primary with 42.34 percent",
+            "Reported about 2 million dollars in contributions [Verify — reported by Cascadia Daily News]"
+          ],
+          "supporters": [
+            "The top Democrat on Transportation and Infrastructure matters in an aviation, ferry and port district.",
+            "Democrats took roughly 67 percent of the combined primary vote.",
+            "A roughly 2 million dollar war chest against an opponent with no reported receipts."
+          ],
+          "opponents": [
+            "He drew only 42 percent while two fellow Democrats took a quarter of the vote.",
+            "Twenty-six years in the seat invites a generational-change argument [Verify — structural argument].",
+            "Republicans argue a long-tenured incumbent owns the affordability problems he now campaigns on [Verify — structural argument]."
+          ]
+        },
+        {
+          "name": "Edwin H. Feller",
+          "party": "R",
+          "winner": false,
+          "positions": [
+            "Robust law enforcement, end sanctuary policies",
+            "Expand nuclear and hydroelectric energy",
+            "Lower taxes, cut federal spending"
+          ],
+          "differentiators": [
+            "83-year-old Lynden native, first run for any office",
+            "Founded Feller Heating and Air Conditioning; roughly 60 years in trades",
+            "Built and serviced U.S. embassy facilities in dozens of countries",
+            "No FEC financial reports filed for the 2025-2026 cycle"
+          ],
+          "supporters": [
+            "He consolidated the entire Republican vote at 32.8 percent with no primary rival of his party.",
+            "A lifelong district resident with decades of skilled-trades and overseas federal contracting work.",
+            "Runs as an outsider against an incumbent first elected in 2000."
+          ],
+          "opponents": [
+            "No campaign fundraising could be located in FEC filings [Verify — an absence of located records].",
+            "He served as his own campaign manager through the primary.",
+            "Democrats outpolled Republicans roughly two to one in the district's primary [Verify — structural argument]."
+          ]
+        }
+      ]
+    },
+    {
+      "date": "Nov 3, 2026",
+      "type": "upcoming",
+      "scope": "Federal · District",
+      "office": "U.S. House — Washington District 3",
+      "note": "THE DEMOCRATIC INCUMBENT FINISHED SECOND IN HER OWN PRIMARY. ⚠ Under Washington's top-two primary the top two advance regardless of party, so second place is not a loss, but it is a warning sign. ✅ Certified Aug 21, 2026: Braun 39.66 percent, Gluesenkamp Perez 36.38 percent of 214,491; Democrats combined about 55 percent, Republicans about 43 percent.",
+      "candidates": [
+        {
+          "name": "Marie Gluesenkamp Perez (incumbent)",
+          "party": "D",
+          "winner": false,
+          "positions": [
+            "Skilled trades and federal funding for the district",
+            "Tribal management of sea lions to protect Columbia River salmon",
+            "Worker and chemical safety, lower everyday costs"
+          ],
+          "differentiators": [
+            "Has held a Trump-won district since 2022",
+            "Finished SECOND in her own certified primary, 36.38 percent",
+            "Raised 6.29 million dollars with 2.06 million on hand through July 15, per FEC",
+            "Endorsed by the Washington State Labor Council AFL-CIO and the State Building and Construction Trades Council"
+          ],
+          "supporters": [
+            "Democrats out-polled Republicans about 55 to 43 percent across the whole primary field.",
+            "She restored Chemical Safety Board funding and pressed a Longview mill to pay idled workers.",
+            "A three-to-one fundraising edge and proven crossover appeal in a Trump district."
+          ],
+          "opponents": [
+            "Nearly a third of Democratic primary voters backed progressive Brent Hennrich, who declined to endorse her.",
+            "Progressives fault her support for Israel, her SAVE Act vote and her fossil-fuel positions.",
+            "Finishing behind a Republican in the primary suggests eroded standing at home."
+          ]
+        },
+        {
+          "name": "John Braun",
+          "party": "R",
+          "winner": false,
+          "positions": [
+            "Keep federal income tax rates low",
+            "Broad energy production to hold down prices",
+            "Aligns with Trump agenda except on tariffs"
+          ],
+          "differentiators": [
+            "Washington State Senate Republican Leader, 20th district, Centralia",
+            "Finished FIRST in the certified primary with 39.66 percent",
+            "Endorsed by President Trump in April 2026",
+            "Army veteran; president of Braun Northwest, roughly 350 employees"
+          ],
+          "supporters": [
+            "He led the primary field and enters November with Trump's endorsement.",
+            "Statewide legislative leadership and a manufacturing payroll give him a governing resume.",
+            "Seen as more mainstream and less polarizing than the district's prior Republican nominee."
+          ],
+          "opponents": [
+            "Republicans took only about 43 percent of the combined primary vote.",
+            "He was outraised roughly three to one, 2.04 million to 6.29 million dollars.",
+            "Breaking with Trump on tariffs while running on his endorsement invites attacks from both directions [Verify — structural argument]."
+          ]
+        }
+      ]
+    }
+  ],
+  "sources": [
+    "results.votewa.gov certified primary results, certified Aug 21, 2026 by Secretary of State Steve Hobbs",
+    "OPB (opb.org) WA-3 primary and general coverage, Jul 21 / Aug 4 / Aug 7, 2026",
+    "FEC.gov candidate pages H2WA03217, H6WA03275, H4WA01282, H6WA02228",
+    "Everett Herald (heraldnet.com), Skagit Valley Herald (goskagit.com), Lynden Tribune, Cascadia Daily News",
+    "Roll Call and DCCC releases on DelBene's chairmanship; larsen.house.gov and transportation.house.gov",
+    "Ballotpedia (Mary Silva; WA 3rd CD 2026) — aggregator, used only for leads"
+  ],
+  "deadEnds": [
+    "cookpolitical.com 403s on /cook-pvi, /cook-pvi/2025-partisan-voting-index/district-map-and-list and the WA-03 race page /house/race/485501 — Cook's own PVI table could not be read.",
+    "insideelections.com 403 (/person/mary-silva/); centerforpolitics.org/crystalball/2026-rating-changes/ 403. No handicapper rating could be read from a rater's own site.",
+    "ballotpedia.org/Washington's_3rd_Congressional_District_election,_2026 returned an empty body on two URL encodings; only the search snippet was usable.",
+    "columbian.com and washingtonstatestandard.com fundraising articles 403; FEC.gov used instead.",
+    "FEC candidate browse URLs with query parameters render an unfiltered A-list; only direct candidate-ID pages work."
+  ],
+  "uncertainties": [
+    "WA-3 Cook PVI reported R+2 by Ballotpedia only; Cook's own site 403s. DELIBERATELY NOT PUBLISHED on the page.",
+    "Race ratings (Cook/Inside Elections reportedly Toss-up; Inside Elections reportedly moved Tilt D to Toss-up in May 2026) read only through secondary write-ups. NOT asserted on the page.",
+    "Election-night OPB coverage had Gluesenkamp Perez narrowly FIRST (38.9 to 38.7); the certified Aug 21 canvass reverses it. Certified figures used; the election-night ordering is stale.",
+    "Larsen's ~2 million dollar total is Cascadia Daily News reporting, not a direct FEC read; his FEC candidate ID was not located.",
+    "Mary Silva: FEC shows 3,186 dollars total receipts through Jul 15 (820 on hand); the Everett Herald reported 94 dollars as of Jul 13. FEC used.",
+    "Edwin Feller filed a statement of candidacy and registered FELLER FOR CONGRESS (C00951129) but FEC shows NO financial data for 2025-2026. Two formulations tried before asserting the negative.",
+    "A co/efficient poll showing Braun ahead 41-34 surfaced only via a partisan outlet and an NRCC memo — EXCLUDED, not published."
+  ]
+}

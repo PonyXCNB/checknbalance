@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Utah Elections Hub</title>
+<meta name="description" content="An interactive county-by-county guide to every UT election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #utmap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  /* ---- Race brief (the context note) ----
+     Lives INSIDE the expanded panel only. A collapsed card shows the pill, date, office
+     and candidate count and nothing else, so a county's ballot reads as a clean list.
+     Owner-reported twice on Aug 12, 2026: as a header element these notes — 2,187
+     characters at the extreme, and 30% of them opening with a ⚠ flag — buried the
+     candidate data the page exists to show. Set in roman, not italic: extended italic
+     body copy at 12.5px is the thing that read as 'terrible'. Long briefs clamp to about
+     four lines behind a Show more toggle so they never crowd out the cards below. */
+  .election-brief {
+    margin: 2px 0 18px;
+    padding: 12px 16px 13px 17px;
+    border-left: 2px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    background: linear-gradient(90deg, rgba(232,217,184,.30), rgba(232,217,184,0) 94%);
+  }
+  .brief-label {
+    font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); font-weight: 700; margin-bottom: 7px;
+  }
+  .brief-body { font-size: 12.5px; line-height: 1.62; color: var(--ink-soft); }
+  .brief-body p + p { margin-top: 7px; }
+  .brief-lead { color: var(--ink); }
+  /* Flag glyphs hang in the margin so the text block keeps a straight left edge. */
+  .brief-flag { position: relative; padding-left: 21px; }
+  .brief-mark { position: absolute; left: 0; top: 0; font-size: 11px; color: var(--gold-deep); }
+  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; }
+  .brief-more {
+    margin-top: 9px; padding: 0;
+    background: none; border: none; cursor: pointer;
+    font-family: var(--sans); font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-deep);
+    border-bottom: 1px solid var(--gold-soft);
+  }
+  .brief-more:hover { border-bottom-color: var(--gold); }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">UT</div>
+      <div class="brand-text">
+        <span class="brand-name">Utah Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Utah <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A county-by-county guide to the races that have shaped — and will shape — our state.
+    Click any of the 29 counties to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">29</div><div class="stat-label">Counties</div></div>
+    <div class="stat"><div class="stat-num"><em>4</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>3</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a county to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Counties shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Utah…</div>
+      <svg id="utmap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">County</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>UT Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">August 7, 2026</span><br>
+      Sources: Utah Lieutenant Governor / vote.utah.gov — the 2026 Candidate Filings list with ballot status (last updated Aug 31, 2026), the 2026 Candidate Manual, and the judicial-retention guidance; electionresults.utah.gov for the June 23, 2026 primary; the UGRC / Lt. Governor SGID layer 'Utah US Congress Districts 2026 to 2032' for the court-drawn Map 1A, joined to 2020 census blocks; League of Women Voters of Utah v. Utah State Legislature (Third Judicial District, Judge Dianna M. Gibson); le.utah.gov for S.J.R. 2 and H.J.R. 10; FEC; U.S. Census Bureau 2020 county FIPS file; Deseret News, KUER, Utah News Dispatch, Salt Lake Tribune, Fox 13, Moab Times, Park Record, KSL.</div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every UT county + its primary US House district(s)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// Utah county -> U.S. House district.
+// ⚠⚠ UTAH'S MAP CHANGED, AND EVERY OFF-THE-SHELF CENSUS PRODUCT IS WRONG FOR UTAH.
+// MAP: "Map 1A" — Plaintiffs' Map 1 as adjusted — adopted by Judge Dianna M. Gibson of Utah's Third
+// Judicial District in *League of Women Voters of Utah v. Utah State Legislature*, No. 220901712,
+// after she struck the 2021 congressional plan under Proposition 4 on Aug 25, 2025 and enjoined the
+// Legislature's replacement (SB 1012, "Map C") on Nov 10, 2025. Her Nov 21, 2025 "Order Clarifying
+// Boundary Issues Raised by Lieutenant Governor" resolved eight boundary questions raised by Lt. Gov.
+// Henderson — seven needed no change; one Sandy annexation was adjusted — and produced Map 1A, whose
+// shapefile went to the parties Nov 20, 2025. Reconsideration and a stay were denied Dec 5, 2025.
+// ✅ THE LITIGATION IS FINAL FOR 2026. The Utah Supreme Court dismissed the Legislature's appeal on
+// PROCEDURAL grounds Feb 20, 2026 (not a merits ruling). The federal Elections Clause challenge,
+// *Powers Gardner v. Henderson*, No. 2:26-cv-00084 (D. Utah, three-judge panel), was denied a
+// preliminary injunction unanimously Feb 23, 2026, voluntarily dismissed July 7 and dismissed July 8,
+// 2026, with no appeal to the Supreme Court.
+//
+// ⚠⚠ THE CENSUS CD119 FILE IS STALE FOR UTAH AND WAS PROVED SO, NOT ASSUMED. `tab20_cd11920_county20_st49.txt`
+// encodes the 2021 plan — its decisive tell is that SALT LAKE COUNTY APPEARS IN ALL FOUR DISTRICTS,
+// the old "pizza slice" split, and it puts Washington/Iron/Beaver/Kane/Garfield in CD2 where Map 1A
+// puts them in CD3. CD119 describes the map that elected the 119th Congress; Utah's court map first
+// applies to the 120th. No CD120 census product exists yet. Do not use any CD119 product for Utah.
+//
+// SOURCE OF THIS TABLE: the UGRC / Lt. Governor SGID layer "Utah US Congress Districts 2026 to 2032"
+// (ArcGIS item d3388c1f7d894ab789247f6442855d66, owner UtahAGRC), joined to all 71,207 Utah 2020
+// census blocks with their POP100 and internal points from TIGERweb, aggregated to counties.
+// ✅ THE JOIN IS EXACT, NOT APPROXIMATE: total 3,271,616 — Utah's official 2020 apportionment
+// population — with 0 blocks unassigned and ALL FOUR DISTRICTS ON EXACTLY 817,904, deviation ZERO.
+//
+// ✅ CURRENCY PROVED FROM ACTUAL BALLOTS, and it REFUTES the 2021 map. The Lt. Governor's own June 23,
+// 2026 primary results were pulled for all 29 county jurisdictions
+// (electionresults.utah.gov/results/public/api/elections/<county>/Primary06232026/data). Only three
+// congressional primaries were contested — DEM CD1, REP CD2, REP CD3 — which places 24 counties
+// directly and the remaining 5 by elimination into CD4.
+//   ⭐ THE DECISIVE OBSERVATION: SALT LAKE COUNTY SHOWED EXACTLY ONE CONGRESSIONAL CONTEST, the
+//   Democratic CD1 primary, and ZERO votes in either the CD2 or CD3 primary. Under the 2021 map Salt
+//   Lake sat in all four districts, so both of those primaries would necessarily have appeared there.
+//   They did not. Second diagnostic: Washington, Iron, Beaver, Kane and Garfield were CD2 under the
+//   2021 map and voted CD3 in June 2026.
+// ⚠ The currency test is BLIND to CD4 — no CD4 primary was contested in either party — and blind to
+// the two big splits inside Salt Lake and Utah counties. Those rest on the block-level population
+// join above, which is why that join was validated to zero deviation before being trusted.
+//
+// ⚠ ONLY THREE SPLIT COUNTIES: Salt Lake, Utah and Weber. An independent area-intersection check
+// against TIGER county polygons agreed; every other apparent "split" was under 0.02% of area and held
+// ZERO population — reprojection slivers, not real, and deliberately excluded.
+// ✅ WEBER'S 328-PERSON CD3 SLIVER IS REAL, not a sliver artefact: 73 actual Republican CD3 primary
+// votes were cast in Weber County on June 23, 2026.
+// ⚠ CD1 IS WHOLLY INSIDE SALT LAKE COUNTY — the new Salt Lake-based seat is the entire county's
+// plurality at 817,904 of 1,185,238, with the remaining 367,334 in CD4. Without `ds` on Salt Lake,
+// the ~31% of the county's residents who vote in CD4 would never see their own U.S. House race.
+// ✅ RE-VERIFIED INDEPENDENTLY ON AUG 31, 2026. All 29 county feeds were pulled again from
+// electionresults.utah.gov and compared against this table: **24 of 29 counties testable, ZERO
+// conflicts**; the 5 blind counties (Juab, Millard, Sanpete, Sevier, Tooele) held no congressional
+// primary and are placed in CD4 by elimination. Both decisive observations reproduced: Salt Lake
+// showed ONLY the CD1 contest (under the 2021 map it would necessarily have shown CD2 and CD3 too),
+// and Weber showed BOTH the CD2 and CD3 contests, confirming its 328-person CD3 sliver is real.
+const COUNTIES = {
+  "49001": { n: "Beaver", d: 3 },
+  "49003": { n: "Box Elder", d: 2 },
+  "49005": { n: "Cache", d: 2 },
+  "49007": { n: "Carbon", d: 3 },
+  "49009": { n: "Daggett", d: 3 },
+  "49011": { n: "Davis", d: 2 },
+  "49013": { n: "Duchesne", d: 3 },
+  "49015": { n: "Emery", d: 3 },
+  "49017": { n: "Garfield", d: 3 },
+  "49019": { n: "Grand", d: 3 },
+  "49021": { n: "Iron", d: 3 },
+  "49023": { n: "Juab", d: 4 },
+  "49025": { n: "Kane", d: 3 },
+  "49027": { n: "Millard", d: 4 },
+  "49029": { n: "Morgan", d: 3 },
+  "49031": { n: "Piute", d: 3 },
+  "49033": { n: "Rich", d: 2 },
+  "49035": { n: "Salt Lake", d: 1, ds: [1, 4] },
+  "49037": { n: "San Juan", d: 3 },
+  "49039": { n: "Sanpete", d: 4 },
+  "49041": { n: "Sevier", d: 4 },
+  "49043": { n: "Summit", d: 3 },
+  "49045": { n: "Tooele", d: 4 },
+  "49047": { n: "Uintah", d: 3 },
+  "49049": { n: "Utah", d: 3, ds: [3, 4] },
+  "49051": { n: "Wasatch", d: 3 },
+  "49053": { n: "Washington", d: 3 },
+  "49055": { n: "Wayne", d: 3 },
+  "49057": { n: "Weber", d: 2, ds: [2, 3] },
+};
+
+// Utah STATEWIDE 2026 ballot.
+//
+// ⚠⚠ THE HEADLINE IS WHAT IS *NOT* HERE. Utah's 2026 ballot carries NO U.S. Senate race, NO
+// Governor, and NO statewide executive office of any kind. This was established from the state's
+// own documents, not inferred:
+//   (a) The Lieutenant Governor's `2026 Candidate Filings` page (vote.utah.gov, "Last updated:
+//       8/31/2026") has exactly five sections — Federal Offices, State Senate, State House, State
+//       School Board, Judicial Retention. There is a "State Offices" NAV LINK at the top of that
+//       page and NO State Offices section in the document at all.
+//   (b) The LG's own `2026 Candidate Manual` is subtitled "A guide for U.S. House, state
+//       legislative, and state board of education candidates" and never lists U.S. Senate.
+//   (c) Seat classes: Mike Lee is Class III, term to Jan 3, 2029 (next up 2028); John Curtis is
+//       Class I, sworn in 2025, term to Jan 3, 2031 (next up 2030). Both are sitting, so there is
+//       no vacancy and no special election.
+//   (d) Cox (Gov), Henderson (Lt. Gov), Brown (AG), Cannon (Auditor) and Oaks (Treasurer) were all
+//       elected or re-elected in November 2024 to four-year terms and are next up in 2028.
+//
+// ⚠ THE STATE BOARD OF EDUCATION IS NOT STATEWIDE and is deliberately absent. Every row on the LG's
+// list reads "State School Board District N"; the districts up in 2026 are 1, 2, 4, 5, 7 (a two-year
+// unexpired term), 8, 11 and 14. Districts 11 and 14 are exactly the two that held contested
+// REPUBLICAN primaries on June 23 — Utah's board races have been partisan since a 2016 law effective
+// Jan 1, 2017, upheld by the Utah Supreme Court in September 2019.
+//
+// ✅ VERIFIED NEGATIVE — THE HB 267 VETO REFERENDUM IS OFF THE BALLOT. The petition had qualified
+// with more than 250,000 valid signatures, the largest successful referendum drive in Utah history,
+// but the Legislature REPEALED HB 267 through HB 2001 in a special session on Dec 9, 2025 (House
+// 60-9), and a pending veto referendum is void once the targeted law is repealed.
+// ✅ VERIFIED NEGATIVE — NO CITIZEN INITIATIVE QUALIFIED. The only one to submit signatures by the
+// Feb 15, 2026 deadline was the drive to repeal Proposition 4 and abolish the Independent
+// Redistricting Commission. Sponsors submitted over 200,000 signatures and more than 160,000 were
+// verified — but SIGNATURE-REMOVAL REQUESTS dropped it below the 8% threshold in enough of the 26
+// required Senate districts, and the Lieutenant Governor declared it insufficient (Apr 30, 2026).
+//
+// ⚠ THE BALLOT LETTERS (Amendment A / B) COULD NOT BE CONFIRMED. `ltgovernor.utah.gov`'s
+// "Public notice: full text of proposed constitutional amendments" page still serves the SEPTEMBER
+// 2024 notice (Amendments A-D of 2024); no 2026 equivalent was located. The two amendments below are
+// therefore named by their referring resolution, not by a letter. RE-CHECK before Nov 3.
+// ⚠ DELIBERATELY NOT PUBLISHED: a possible THIRD 2026 amendment concerning an "oath". It appeared
+// only in one search snippet attributed to Vote Smart, whose page will not resolve (DNS failure), and
+// no state source corroborates it. Fox 13's review of the 2026 session reports that the other
+// amendments floated that year — Amendment D 2.0, judicial nomination/retention changes, term limits,
+// an elected Secretary of State — did NOT advance, and Utah News Dispatch reported July 8, 2026 that
+// lawmakers dropped the initiative-power amendment.
+const STATEWIDE = [
+  // ─────────────────────────── UPCOMING ───────────────────────────
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Constitutional Amendment — 60% Vote Requirement for Tax-Raising Citizen Initiatives (S.J.R. 2)",
+    note: "RAISES THE BAR FOR TAX-RELATED CITIZEN INITIATIVES FROM A SIMPLE MAJORITY TO 60%. ✅ Referred by S.J.R. 2 of the 2025 session; Senate 21-8, House 55-17, every yes vote Republican. ⚠ The official ballot letter (Amendment A or B) could not be confirmed on any state page [Verify — no 2026 amendment notice located on ltgovernor.utah.gov, which still serves the September 2024 notice]. ⚠ The resolution's clause applying the new threshold to 2026 initiatives is moot — no citizen initiative qualified for this ballot.",
+    candidates: [
+      { name: "Yes — Require 60% for tax-raising initiatives", party: "I", winner: false,
+        positions: [
+          "60% approval for tax-raising initiatives",
+          "Covers new taxes and expanded taxes",
+          "Covers rate increases and property tax changes"
+        ],
+        differentiators: [
+          "Sponsored by Sen. Lincoln Fillmore, R-South Jordan",
+          "Passed on strictly party-line Republican votes",
+          "Part of a broader 2025 initiative-restriction push alongside S.B. 73",
+          "No separately organised Yes campaign could be located [Verify — an absence of located records]"
+        ],
+        supporters: [
+          "Raising taxes on your neighbours should require broad consensus, not a bare majority.",
+          "A supermajority guards taxpayers against narrow-margin tax hikes that are hard to undo."
+        ],
+        opponents: [
+          "Sen. Kathleen Riebe calls it an onerous threshold for the public to speak.",
+          "A 41% minority could veto what a clear majority of Utahns want.",
+          "The Legislature itself can still raise taxes by simple majority [Verify — structural argument]."
+        ] },
+      { name: "No — Keep majority rule for tax initiatives", party: "I", winner: false,
+        positions: [
+          "Keeps a simple majority for every initiative",
+          "No change to Article VI initiative power",
+          "Tax measures judged like any other initiative"
+        ],
+        differentiators: [
+          "Opposed by Senate Democrats including Kathleen Riebe",
+          "Aligned with initiative-rights groups active in 2025 [Verify — inferred from their S.B. 73 opposition, not a stated 2026 position]",
+          "Follows the 2024 Amendment D fight over initiative power",
+          "No formal No campaign committee could be located [Verify — an absence of located records]"
+        ],
+        supporters: [
+          "One person, one vote should settle tax questions the same as any other.",
+          "Utah already layered new initiative restrictions on in 2025; this compounds them."
+        ],
+        opponents: [
+          "Permanent tax increases deserve a higher bar than ordinary legislation.",
+          "Genuinely popular tax measures would still clear 60% [Verify — structural argument]."
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Constitutional Amendment — Publication Requirements for Proposed Constitutional Amendments (H.J.R. 10)",
+    note: "REPLACES THE 1895-ERA NEWSPAPER NOTICE RULE WITH PUBLICATION IN A MANNER PROVIDED BY STATUTE FOR 60 DAYS. ✅ Referred by H.J.R. 10 of 2025, sponsor Rep. Anthony Loubet, R-Kearns. ⚠ THIS IS THE LEGISLATURE ANSWERING ITS OWN 2024 DEFEAT: Utah courts voided both Amendment A and Amendment D that year partly because the old newspaper rule was not met. ⚠ Ballot letter unconfirmed [Verify — no 2026 amendment notice located on any state site]. ⚠ No legal challenge to either 2026 amendment could be located, searched two ways.",
+    candidates: [
+      { name: "Yes — Modernise how amendments are published", party: "I", winner: false,
+        positions: [
+          "Publication in a manner provided by statute",
+          "60 calendar days before the general election",
+          "Ends the county-by-county newspaper mandate"
+        ],
+        differentiators: [
+          "Sponsored by Rep. Anthony Loubet, R-Kearns",
+          "Framed as matching other states' practice",
+          "The Legislature would set the notice method by statute",
+          "No organised Yes campaign could be located [Verify — an absence of located records]"
+        ],
+        supporters: [
+          "Newspapers are no longer how most Utahns get their news.",
+          "Statutory notice can reach more voters at lower cost than county newspaper ads."
+        ],
+        opponents: [
+          "It lets the Legislature write the rules that police the Legislature.",
+          "Alliance for a Better Utah warns the constitution is supposed to be hard to change."
+        ] },
+      { name: "No — Keep the newspaper publication requirement", party: "I", winner: false,
+        positions: [
+          "Keeps the two-month newspaper publication rule",
+          "Notice in a newspaper in every county publishing one",
+          "Notice fixed in the constitution, not in statute"
+        ],
+        differentiators: [
+          "Caution voiced by Alliance for a Better Utah",
+          "The rule dates to 1895 and was enforced in 2024",
+          "Its enforcement voided Amendment A and Amendment D in 2024",
+          "No formal No campaign committee could be located [Verify — an absence of located records]"
+        ],
+        supporters: [
+          "The hard notice rule is exactly what caught the 2024 failures.",
+          "Loosening notice makes it easier to rush amendments past voters."
+        ],
+        opponents: [
+          "Newspaper-only notice is outdated and expensive.",
+          "A statute can still set strict, enforceable notice standards [Verify — structural argument]."
+        ] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Judicial · Statewide", office: "Judicial Retention — Utah Supreme Court and Court of Appeals (7 jurists)",
+    note: "ONE SUPREME COURT JUSTICE AND SIX COURT OF APPEALS JUDGES FACE STATEWIDE RETAIN / DO NOT RETAIN VOTES. ⚠ THIS IS NOT A ROUTINE RETENTION YEAR: the Utah Republican Party is actively campaigning for a NO vote on Justice Pohlman over the court's 2024 Proposition 4 redistricting ruling — the ruling that produced the very map these congressional races are run on. The Utah State Bar has pushed back, and Gov. Cox has called the campaign a legitimate check on judicial power. ⚠ Justice Diana Hagen resigned May 8, 2026 and is off the ballot, leaving Pohlman alone from the high court. ⚠ The Judicial Performance Evaluation Commission publishes a formal retain / do-not-retain recommendation for each judge at judges.utah.gov — THE SINGLE BEST SOURCE FOR THIS RACE — but that site returns HTTP 401 to every automated client, so no 2026 JPEC recommendation is carried here. Open judges.utah.gov in a browser before you vote. ⚠ District and juvenile court judges also stand for retention on Nov 3 but only within their own judicial district, so which ones you see depends on your address; they are not listed here. ✅ The seven names below are read from the Lieutenant Governor's own candidate-status list.",
+    candidates: [
+      { name: "Jill M. Pohlman — Supreme Court (retain / do not retain)", party: "I", winner: false,
+        positions: [
+          "Appointed to the Supreme Court in 2022",
+          "Serves as Associate Chief Justice",
+          "Joined the 2024 Proposition 4 redistricting ruling"
+        ],
+        differentiators: [
+          "The only Supreme Court justice on the 2026 ballot",
+          "Target of an announced Utah GOP no-retention campaign",
+          "Retained to the Court of Appeals in 2020 with about 83% [Verify — Ballotpedia figure, not checked against a canvass]",
+          "Her 2026 JPEC recommendation could not be retrieved [Verify — judges.utah.gov returns HTTP 401 to fetchers]"
+        ],
+        supporters: [
+          "The Utah State Bar says disagreement with one ruling is no basis for removing a judge.",
+          "Judges should not decide cases looking over their shoulder at legislators.",
+          "Bar leaders urge voters to use JPEC's nonpartisan evaluation rather than party politics."
+        ],
+        opponents: [
+          "Utah GOP chair Rob Axson says the justices ignored the constitution.",
+          "Gov. Cox calls the retention campaign a legitimate check on judicial power.",
+          "Critics tie her to a ruling that forced Utah onto new congressional maps."
+        ] },
+      { name: "Gregory Keith Orme — Court of Appeals (retain / do not retain)", party: "I", winner: false,
+        positions: [
+          "On the Court of Appeals since 1987",
+          "The longest-serving judge on the court",
+          "Hears appeals assigned by the Supreme Court"
+        ],
+        differentiators: [
+          "Has been retained repeatedly since the court was created",
+          "Six-year term expires January 3, 2027 [Verify — Ballotpedia]",
+          "Name as it appears on the Lieutenant Governor's own ballot-question list",
+          "No 2026 JPEC recommendation retrievable [Verify — judges.utah.gov blocked]"
+        ],
+        supporters: [
+          "Nearly four decades of appellate experience anchors the court.",
+          "Retention elections are not meant to punish individual rulings."
+        ],
+        opponents: [
+          "Very long tenure invites arguments for turnover [Verify — structural argument].",
+          "No organised opposition campaign against him could be located [Verify — an absence of located records]."
+        ] },
+      { name: "Michele M. Christiansen Forster — Court of Appeals (retain / do not retain)", party: "I", winner: false,
+        positions: [
+          "Appellate judge since 2010",
+          "Former district court judge",
+          "Hears civil and criminal appeals statewide"
+        ],
+        differentiators: [
+          "Retained in 2020 with about 82% [Verify — Ballotpedia figure]",
+          "Term expires January 3, 2027 [Verify — Ballotpedia]",
+          "One of six appellate judges on a single ballot",
+          "No 2026 JPEC recommendation retrievable [Verify — judges.utah.gov blocked]"
+        ],
+        supporters: [
+          "A strong prior retention margin signals broad public confidence.",
+          "Experienced appellate judges shorten the backlog for litigants."
+        ],
+        opponents: [
+          "Voters get almost no information about appellate judges beyond the JPEC report [Verify — structural argument].",
+          "No organised opposition campaign against her could be located [Verify — an absence of located records]."
+        ] },
+      { name: "David Ned Mortensen — Court of Appeals (retain / do not retain)", party: "I", winner: false,
+        positions: [
+          "Appointed to the Court of Appeals in 2016",
+          "Previously a district court judge",
+          "Hears appeals assigned by the Supreme Court"
+        ],
+        differentiators: [
+          "Retained once before, in 2020 [Verify — Ballotpedia]",
+          "Term expires January 3, 2027 [Verify — Ballotpedia]",
+          "A full six-year appellate record for JPEC to evaluate",
+          "No 2026 JPEC recommendation retrievable [Verify — judges.utah.gov blocked]"
+        ],
+        supporters: [
+          "A full six-year record gives the evaluation commission real data to work from.",
+          "Continuity on a busy intermediate court helps litigants get consistent rulings."
+        ],
+        opponents: [
+          "An unopposed retention gives voters no alternative to weigh him against [Verify — structural argument].",
+          "No organised opposition campaign against him could be located [Verify — an absence of located records]."
+        ] },
+      { name: "Ryan M. Harris — Court of Appeals (retain / do not retain)", party: "I", winner: false,
+        positions: [
+          "Appointed to the Court of Appeals in 2017",
+          "Former civil litigator",
+          "Hears civil and criminal appeals statewide"
+        ],
+        differentiators: [
+          "Retained in 2020 with about 75% [Verify — Ballotpedia figure]",
+          "The lowest 2020 retention share among these judges [Verify — comparison of Ballotpedia figures]",
+          "Term expires January 3, 2027 [Verify — Ballotpedia]",
+          "No 2026 JPEC recommendation retrievable [Verify — judges.utah.gov blocked]"
+        ],
+        supporters: [
+          "He cleared the retention threshold comfortably last cycle.",
+          "A private-practice background broadens the experience on the bench."
+        ],
+        opponents: [
+          "A weaker prior margin invites a closer look this time [Verify — structural argument].",
+          "No organised opposition campaign against him could be located [Verify — an absence of located records]."
+        ] },
+      { name: "John David Luthy — Court of Appeals (retain / do not retain)", party: "I", winner: false,
+        positions: [
+          "Appointed to the Court of Appeals in 2019 [Verify — appointment year from an aggregator, not a Utah Courts source]",
+          "Former district court judge",
+          "Hears appeals assigned by the Supreme Court"
+        ],
+        differentiators: [
+          "Among the six judges whose terms expire January 3, 2027 [Verify — Ballotpedia]",
+          "A relatively newer appellate judge",
+          "Name as it appears on the Lieutenant Governor's own ballot-question list",
+          "No 2026 JPEC recommendation retrievable [Verify — judges.utah.gov blocked]"
+        ],
+        supporters: [
+          "Trial-bench experience informs how he reviews the record on appeal.",
+          "JPEC's minimum performance standards are the proper yardstick, not politics."
+        ],
+        opponents: [
+          "A shorter appellate record gives voters less to judge him on [Verify — structural argument].",
+          "No organised opposition campaign against him could be located [Verify — an absence of located records]."
+        ] },
+      { name: "Amy Jo Oliver — Court of Appeals (retain / do not retain)", party: "I", winner: false,
+        positions: [
+          "An appellate judge appointed this decade [Verify — appointment year not confirmed from a Utah Courts source]",
+          "Hears civil and criminal appeals statewide",
+          "Facing an early retention vote [Verify — inferred from her recent appointment, not separately confirmed]"
+        ],
+        differentiators: [
+          "Among the six judges whose terms expire January 3, 2027 [Verify — Ballotpedia]",
+          "The newest of the six on the 2026 ballot [Verify — aggregator only]",
+          "A statewide question, unlike the district court judges",
+          "No 2026 JPEC recommendation retrievable [Verify — judges.utah.gov blocked]"
+        ],
+        supporters: [
+          "New judges are measured against exactly the same JPEC standards as veterans.",
+          "Retention is how voters confirm or reject a merit-selection appointment."
+        ],
+        opponents: [
+          "She has the least public record of the six on this ballot [Verify — structural argument].",
+          "No organised opposition campaign against her could be located [Verify — an absence of located records]."
+        ] }
+    ] }
+];
+
+// Utah U.S. HOUSE — four seats, all run on the COURT-DRAWN "Map 1A", not the Legislature's plan.
+//
+// ⚠⚠ THE NUMBERING SHIFTED ONE SEAT DOWN THE LINE, AND THAT IS THE SINGLE EASIEST THING TO GET
+// WRONG ABOUT UTAH IN 2026. Map 1A created a new Salt Lake County seat as CD1, and every existing
+// member's territory was renumbered upward:
+//   old CD1 (Blake Moore, northern Utah)  → NEW CD2
+//   old CD2 (Celeste Maloy)               → NEW CD3
+//   old CD3 (Mike Kennedy)                → NEW CD4
+//   NEW CD1 is the Salt Lake County seat, OPEN, and the only Democratic-leaning seat in the state.
+// ⚠ Blake Moore did NOT choose to switch districts — his district was renumbered under him. Do not
+// write that he "left CD1 to run in CD2" (Deseret News, Apr 20, 2026: the new 2nd covers much of his
+// old 1st, gaining Davis County and losing Morgan and Summit).
+// ⚠ BURGESS OWENS IS NOT RUNNING. He announced Mar 4, 2026 that he would not seek re-election under
+// the new map. His old seat's successor territory is contested by Mike Kennedy, who currently holds
+// the 3rd District.
+//
+// ✅ EVERY CANDIDATE BELOW IS READ FROM THE LIEUTENANT GOVERNOR'S OWN CANDIDATE LIST
+// (`vote.utah.gov/2026-candidate-filings/`, "Last updated: 8/31/2026"), which carries a STATUS
+// column. Only rows marked `Election Candidate` are carded. Rows marked `Out in Convention`,
+// `Out in Primary`, `Withdrew`, `Disqualified` or `Write-In` are NOT.
+// ⚠ DELIBERATELY NOT CARDED: Babak "Bobby" Darvish (CD1), status `Write-In` — write-ins are not
+// printed on a Utah ballot. And Jacob Paul Gottfredson (CD4, Unaffiliated), status `Disqualified` —
+// the only disqualification anywhere on Utah's federal ballot; the state's list gives no reason.
+// ⚠ AYDEN SCOTT (CD3, Unaffiliated) IS CARDED ON PURPOSE. He appears in no news roundup and not on
+// politics1.com, which led one researcher to suspect he had withdrawn — but the STATE'S OWN LIST
+// carries him as `Election Candidate`. A primary source beats an aggregator's silence. Nothing else
+// about him could be found and his card says exactly that.
+//
+// ⚠ THE JUNE 23 PRIMARY FIGURES ARE MARKED UNOFFICIAL. Utah law has the lieutenant governor canvass
+// multicounty races on the fourth Monday after the primary (July 20, 2026) and certify by Aug 1,
+// which implies they are certified by now — but `electionresults.utah.gov` is a JavaScript app that
+// renders nothing to a fetcher and every API path guessed against it 404s, so the `isOfficialResults`
+// flag could not be read. RE-PULL and promote these to official when the site is readable.
+// ⚠ COOK PVI FOR THE NEW LINES: D+12 (CD1), R+15 (CD2), R+21 (CD3), R+17 (CD4). Cook HAS recalculated
+// on Map 1A, but `cookpolitical.com` 403s every path, so these were recovered from Wikipedia's Cook
+// PVI table and, for CD1, independently corroborated by Deseret News. All carry [Verify].
+const HOUSE_RACES = {
+  1: { name: "U.S. House — Utah District 1", region: "The new Salt Lake County seat — it lies wholly inside Salt Lake County and is the only Democratic-leaning U.S. House district in Utah",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "OPEN SEAT: THE NEW CD1 LIES WHOLLY INSIDE SALT LAKE COUNTY UNDER COURT-DRAWN MAP 1A, and it is the only Democratic-leaning U.S. House seat Utah has. ✅ The Utah Supreme Court dismissed the Legislature's appeal Feb 20, 2026 and a federal three-judge panel refused to block the map Feb 23, so the map is final for 2026. ⚠ Cook PVI D+12 [Verify — via Wikipedia's Cook table, corroborated by Deseret News; Cook's own site returned 403]. ⚠ Ben McAdams won the June 23 Democratic primary with 51.90%, 29,737 of 57,295 [Verify — the state feed was still marked unofficial when pulled]. ⚠ There was no contested Republican primary, so Riley Owen never appeared in primary results; he was nominated at convention.",
+        candidates: [
+          { name: "Ben McAdams", party: "D", winner: false,
+            positions: [
+              "Save the Great Salt Lake as top priority",
+              "Lower housing and health care costs",
+              "Protect and expand Affordable Care Act coverage"
+            ],
+            differentiators: [
+              "Former one-term U.S. Representative, 2019-2021, old UT-4",
+              "Former two-term Salt Lake County mayor",
+              "Lost the Democratic convention, then qualified by signature",
+              "Raised about 2.26 million dollars through June 30, 2026"
+            ],
+            supporters: [
+              "His county-mayor record shows he can actually deliver on housing and the lake",
+              "A proven moderate is the safest fit for a blue-but-not-deep-blue seat",
+              "A roughly 17-to-1 fundraising edge is evidence of broad backing"
+            ],
+            opponents: [
+              "He is a retread who already lost a House seat to Burgess Owens in 2020",
+              "Progressives say his centrism, including hedging on impeachment, blunts the message",
+              "He lost the Democratic convention vote to Liban Mohamed before petitioning on"
+            ] },
+          { name: "Riley Owen", party: "R", winner: false,
+            positions: [
+              "Term limits and an age cap for Congress",
+              "Ban congressional stock trading",
+              "Tax credits for employer-paid maternity leave"
+            ],
+            differentiators: [
+              "27-year-old Naval Reserve intelligence officer",
+              "Former Trump White House policy staffer",
+              "Won the GOP convention outright with 71.2 percent",
+              "Calls his approach community conservatism"
+            ],
+            supporters: [
+              "A young reform-minded Republican can win over unaffiliated Salt Lake voters",
+              "His convention landslide shows the party is unified behind him",
+              "Utah Republicans downballot still run well ahead of Trump in this district [Verify — structural argument]"
+            ],
+            opponents: [
+              "He had about 9,500 dollars cash on hand to McAdams' 300,000 [Verify — Deseret News, Aug 11, 2026]",
+              "A Trump White House resume is a liability in a district Harris carried decisively",
+              "He has never held elected office"
+            ] },
+          { name: "Jesse West", party: "L", winner: false,
+            positions: [
+              "Stop funding foreign wars with U.S. tax dollars",
+              "Shrink the federal government's reach into daily life",
+              "Keep congressional focus on Utah's own priorities"
+            ],
+            differentiators: [
+              "Salt Lake County family law attorney",
+              "Vice chair of the Salt Lake County Libertarian Party",
+              "Campaign slogan is Ski, Not War",
+              "Nominated at the Libertarian convention on April 18, 2026"
+            ],
+            supporters: [
+              "He offers an explicitly antiwar choice for voters unhappy with both major parties",
+              "A convention-only, low-cost campaign keeps him free of donor obligations [Verify — structural argument]"
+            ],
+            opponents: [
+              "FEC totals show no reported fundraising through June 30, 2026",
+              "No Utah Libertarian has ever come close to winning a U.S. House seat [Verify — structural argument]"
+            ] },
+          { name: "Elias Henry Montgomery", party: "I", winner: false,
+            positions: [
+              "Legalize duplexes and townhomes to expand housing supply",
+              "Independent redistricting to end gerrymandering",
+              "A universal catastrophic health coverage floor"
+            ],
+            differentiators: [
+              "Unaffiliated graduate researcher and data analyst [Verify — self-described on his campaign site]",
+              "Would shift federal income taxation to the states over ten years",
+              "Wants omnibus bills replaced with real-time public spending tracking",
+              "Runs with no party organization behind him"
+            ],
+            supporters: [
+              "His structural reform agenda is more concrete than either major party's [Verify — self-described on his campaign site]",
+              "An independent gives Utahns a genuine choice outside the red-blue split [Verify — structural argument]"
+            ],
+            opponents: [
+              "No FEC fundraising record for his campaign could be located [Verify — an absence of located records]",
+              "Devolving federal income tax to the states sits far outside both parties' mainstream [Verify — structural argument]"
+            ] }
+        ] }
+    ] },
+
+  2: { name: "U.S. House — Utah District 2", region: "Northern Utah — Box Elder, Cache, Rich and Davis counties plus most of Weber; this is the territory Blake Moore represents as the old 1st District, renumbered by Map 1A",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "BLAKE MOORE DID NOT CHOOSE TO SWITCH SEATS: MAP 1A RENUMBERED HIS NORTHERN UTAH DISTRICT FROM 1 TO 2. It gained Davis County and lost Morgan and Summit. ⚠ Celeste Maloy, the old CD2 incumbent, was drawn into CD3, so Utah's whole numbering shifted one seat down the line. ✅ Moore beat state Rep. Karianne Lisonbee 56.67% to 43.33% on June 23 [Verify — the state feed was still marked unofficial when pulled]. ⚠ Cook PVI R+15 [Verify — via Wikipedia's Cook table; Cook's own site returned 403]; Inside Elections baselines the seat R+38, Solid Republican [Verify — headline figure only, the page returned 403]. ⚠ There was no contested Democratic primary; Peter Crosby was nominated at convention.",
+        candidates: [
+          { name: "Blake D. Moore (incumbent, currently 1st District)", party: "R", winner: false,
+            positions: [
+              "Make the 2017 tax cuts permanent",
+              "Address mandatory spending to cut the debt",
+              "Put downward pressure on health care costs"
+            ],
+            differentiators: [
+              "House Republican Conference vice chair, fifth-ranking Republican",
+              "First Utah Republican on the Ways and Means Committee",
+              "Represents the old 1st District, renumbered as CD2 by Map 1A",
+              "Beat a sitting state House majority whip in the primary"
+            ],
+            supporters: [
+              "A leadership post gives Utah outsized influence in the House",
+              "He helped make the 2017 tax cuts permanent in the 2025 reconciliation law",
+              "Speaker Mike Johnson endorsed him in the primary [Verify — Deseret News headline, Mar 30, 2026]"
+            ],
+            opponents: [
+              "Lisonbee blamed him for Republicans losing the redistricting fight",
+              "About 43 percent of GOP primary voters backed a challenger, an unusual soft spot",
+              "Crosby says his votes on public media cuts and Trump Accounts miss working families"
+            ] },
+          { name: "Peter Crosby", party: "D", winner: false,
+            positions: [
+              "Single-payer health care",
+              "End tariffs and attack housing costs",
+              "Federal water funding to restore the Great Salt Lake"
+            ],
+            differentiators: [
+              "Won the Democratic nomination at convention with 76.6 percent",
+              "Family tradition of military and public service [Verify — self-described on his campaign site]",
+              "Opposes the Stratos data center absent community consent",
+              "Raised about 60,000 dollars through June 30, 2026"
+            ],
+            supporters: [
+              "He has canvassed northern Utah door to door since mid-2025",
+              "Federal job cuts and the shrinking lake give Democrats real local traction",
+              "He runs on a clear affordability-first platform"
+            ],
+            opponents: [
+              "He faces a district Inside Elections baselines at R+38",
+              "He raised roughly one fortieth of Moore's total through June 30",
+              "Single-payer health care is a hard sell in a deeply Republican district [Verify — structural argument]"
+            ] },
+          { name: "Daniel R. Cottam", party: "L", winner: false,
+            positions: [
+              "Reduce federal spending and taxes [Verify — Libertarian Party platform; no Cottam statement located]",
+              "Oppose federal intrusion into personal choices [Verify — Libertarian Party platform; no Cottam statement located]",
+              "Non-interventionist foreign policy [Verify — Libertarian Party platform; no Cottam statement located]"
+            ],
+            differentiators: [
+              "Bariatric surgeon by profession",
+              "Has run previously for both Congress and governor",
+              "Nominated at the Libertarian convention on April 18, 2026",
+              "FEC totals show no reported fundraising through June 30, 2026"
+            ],
+            supporters: [
+              "A practicing physician brings real health-system experience to the race",
+              "He offers a limited-government alternative for Republicans unhappy with Moore [Verify — structural argument]"
+            ],
+            opponents: [
+              "No reported federal fundraising could be located for this cycle [Verify — an absence of located records in FEC totals]",
+              "His earlier statewide and congressional bids did not win [Verify — structural argument]"
+            ] },
+          { name: "Carlton E. Bowen", party: "I", winner: false,
+            positions: [
+              "Constitutionally limited federal government [Verify — Independent American Party platform; no Bowen statement located]",
+              "Strict immigration and border enforcement [Verify — Independent American Party platform; no Bowen statement located]",
+              "More state control over federal lands in Utah [Verify — Independent American Party platform; no Bowen statement located]"
+            ],
+            differentiators: [
+              "Air Force veteran",
+              "Former American Fork City Council member",
+              "Independent American Party nominee, convention April 10, 2026",
+              "FEC totals show no reported fundraising through June 30, 2026"
+            ],
+            supporters: [
+              "He brings military service and municipal governing experience",
+              "He offers a constitutionalist option to the right of Moore [Verify — structural argument]"
+            ],
+            opponents: [
+              "No reported federal fundraising could be located for this cycle [Verify — an absence of located records in FEC totals]",
+              "Independent American Party nominees routinely finish in low single digits in Utah [Verify — structural argument]"
+            ] },
+          { name: "Robert M. Moesinger", party: "I", winner: false,
+            positions: [
+              "Filed as unaffiliated rather than seeking any party nomination",
+              "Running a small, largely self-financed campaign [Verify — FEC shows about 8,800 dollars raised]",
+              "No published policy platform could be located [Verify — an absence of located records]"
+            ],
+            differentiators: [
+              "General surgeon in Ogden with more than 30 years in practice",
+              "Reached the ballot on the unaffiliated path [Verify — inferred from Utah's unaffiliated filing rules]",
+              "Raised about 8,800 dollars through June 30, 2026",
+              "The only candidate in the race with no party structure at all"
+            ],
+            supporters: [
+              "A working surgeon would bring firsthand knowledge of health system costs [Verify — structural argument]",
+              "He offers a nonpartisan option in a district with little real general-election competition [Verify — structural argument]"
+            ],
+            opponents: [
+              "He raised well under one percent of Moore's total through June 30",
+              "No campaign website or policy platform could be located [Verify — an absence of located records]"
+            ] }
+        ] }
+    ] },
+
+  3: { name: "U.S. House — Utah District 3", region: "Southern and eastern Utah — Washington, Iron, Beaver, Kane and Garfield in the southwest across to San Juan, Grand, Uintah and Carbon, plus Summit, Wasatch, Morgan and part of Utah County. Under the old map the southwest was CD2",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "MAP 1A REMADE THIS SEAT: the new UT-3 runs from Washington and Iron counties across southern and eastern Utah into part of Utah County — largely old UT-2 turf. ⚠ CELESTE MALOY CURRENTLY HOLDS THE 2ND DISTRICT SEAT, NOT THE 3RD; she is seeking a district number she has never represented. ✅ She beat Phil Lyman 65.7% to 34.3% on June 23 [Verify — the state feed was still marked unofficial when pulled]. ⚠ Cook PVI R+21 [Verify — via aggregators; Cook's own site returned 403]. ⚠ Six candidates are certified here, the fullest field in the state.",
+        candidates: [
+          { name: "Celeste Maloy (incumbent, currently 2nd District)", party: "R", winner: false,
+            positions: [
+              "State and local control of public lands",
+              "Western water stability without hurting agriculture",
+              "Domestic energy, fiscal restraint, border security"
+            ],
+            differentiators: [
+              "Seats on Appropriations and Natural Resources",
+              "Chairs the Congressional Western Caucus",
+              "Former public lands and water attorney",
+              "Raised 1.45 million dollars with 322,000 on hand, per FEC through June 30, 2026"
+            ],
+            supporters: [
+              "Rural backers say she delivers on wildfire, water and public lands",
+              "An Appropriations seat gives southern Utah unusual leverage",
+              "She won every county in the new district except Lyman's home San Juan"
+            ],
+            opponents: [
+              "Party delegates nearly ousted her at convention, 50.9% to 49.0%",
+              "Critics say selling public land to fund water projects goes too far [Verify — a St. George News headline only, the article was not read]",
+              "She is seeking a district number she has never represented"
+            ] },
+          { name: "Kent S. Udell", party: "D", winner: false,
+            positions: [
+              "Protect public lands and Colorado River water",
+              "Regulate data center power and water use",
+              "Cut cost of living for rural families"
+            ],
+            differentiators: [
+              "Retired mechanical engineering professor from Moab",
+              "Refuses corporate and PAC contributions",
+              "Worked in petroleum, mining and ranching",
+              "Raised about 14,000 dollars to Maloy's 287,000 [Verify — a Moab Times snapshot, not an FEC filing]"
+            ],
+            supporters: [
+              "His energy expertise fits a district built on extraction and tourism",
+              "His small-donor-only pledge appeals to voters tired of PAC money",
+              "He argues the real divide is up and down, not left and right"
+            ],
+            opponents: [
+              "Cook rates the seat R+21; no Democrat has a realistic path here [Verify — PVI via aggregators]",
+              "His fundraising is a small fraction of the incumbent's",
+              "He has never held elected office [Verify — an absence of located records]"
+            ] },
+          { name: "Michael R. Stoddard", party: "L", winner: false,
+            positions: [
+              "Libertarian nominee; no individual platform could be located [Verify — an absence of located records]",
+              "A financial planning background suggests a fiscal focus [Verify — an inference from occupation, not a stated position]",
+              "No issue statements found in state or news sources [Verify — an absence of located records]"
+            ],
+            differentiators: [
+              "Nominated at the Libertarian convention, April 18, 2026",
+              "Financial planner and accountant [Verify — a politics1.com listing]",
+              "The only Libertarian certified on the UT-3 ballot"
+            ],
+            supporters: [
+              "He offers libertarian-leaning voters an alternative in a safe Republican seat [Verify — structural argument]",
+              "A convention nomination shows organised minor-party backing [Verify — structural argument]"
+            ],
+            opponents: [
+              "No campaign website, fundraising or press coverage could be located [Verify — an absence of located records]",
+              "Utah minor-party House candidates rarely clear low single digits [Verify — structural argument]"
+            ] },
+          { name: "Cassie Easley", party: "I", winner: false,
+            positions: [
+              "Constitution Party nominee; no individual platform could be located [Verify — an absence of located records]",
+              "The party label implies constitutional limits on federal power [Verify — a party label, not her stated position]",
+              "No issue statements located from her campaign [Verify — an absence of located records]"
+            ],
+            differentiators: [
+              "Constitution Party state vice chair [Verify — a politics1.com listing]",
+              "Southern Utah University student and community volunteer [Verify — Ballotpedia]",
+              "Nominated at the Constitution Party convention, April 25, 2026"
+            ],
+            supporters: [
+              "She gives religious-conservative voters an option to the right of the incumbent [Verify — structural argument]",
+              "A party leadership role signals organisational support [Verify — structural argument]"
+            ],
+            opponents: [
+              "No fundraising or campaign site could be located [Verify — an absence of located records]",
+              "Third-party bids in Utah House races almost never break 2% [Verify — structural argument]"
+            ] },
+          { name: "Adonis Hooslyn", party: "I", winner: false,
+            positions: [
+              "Unaffiliated candidate; no platform could be located [Verify — an absence of located records]",
+              "No stated issue positions found in any source [Verify — an absence of located records]",
+              "Ran no contested nomination race, so no primary record exists"
+            ],
+            differentiators: [
+              "Listed as a project coordinator [Verify — a politics1.com listing]",
+              "Qualified as an unaffiliated candidate, not through a party convention",
+              "Certified as an Election Candidate on the Lieutenant Governor's own list"
+            ],
+            supporters: [
+              "He offers a non-party option in a race with a near-certain outcome [Verify — structural argument]",
+              "He cleared Utah's unaffiliated ballot-access requirements on his own [Verify — structural argument]"
+            ],
+            opponents: [
+              "No campaign website, fundraising or press coverage could be located [Verify — an absence of located records]",
+              "Unaffiliated candidates without funding rarely register in polling [Verify — structural argument]"
+            ] },
+          { name: "Ayden Scott", party: "I", winner: false,
+            positions: [
+              "Unaffiliated candidate; no platform could be located [Verify — an absence of located records]",
+              "No stated issue positions found in any source [Verify — an absence of located records]",
+              "No convention or primary record; he qualified by filing"
+            ],
+            differentiators: [
+              "Carried as an Election Candidate on the Lieutenant Governor's own list",
+              "No occupation or biography could be located [Verify — an absence of located records]",
+              "Omitted from at least one candidate roundup that listed the rest of the field [Verify — politics1.com does not list him]"
+            ],
+            supporters: [
+              "He adds a second independent choice on a lopsided ballot [Verify — structural argument]",
+              "He met Utah's unaffiliated signature and filing requirements [Verify — structural argument]"
+            ],
+            opponents: [
+              "Nothing about the candidacy could be found beyond the state's own list [Verify — an absence of located records]",
+              "He faces a district Cook scores R+21 with no visible campaign [Verify — structural argument]"
+            ] }
+        ] }
+    ] },
+
+  4: { name: "U.S. House — Utah District 4", region: "The suburban seat — the rest of Salt Lake County outside CD1, plus Tooele, Juab, Millard, Sanpete and Sevier counties and part of Utah County",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "NO PRIMARY WAS HELD HERE IN EITHER PARTY. ✅ Burgess Owens announced Mar 4, 2026 that he will not seek re-election under the new map, and Rep. Mike Kennedy — who currently holds the 3rd District — took the Republican nomination with 78.7% at the April 25 convention. ⚠ Under Map 1A this seat is the rest of Salt Lake County plus Tooele, Juab, Millard, Sanpete and Sevier; Cook scores it R+17 [Verify — via aggregators; Cook's own site returned 403]. ⚠ One unaffiliated filer, Jacob Paul Gottfredson, is marked DISQUALIFIED on the state's list — the only disqualification on Utah's federal ballot — and the list gives no reason.",
+        candidates: [
+          { name: "Mike Kennedy (incumbent, currently 3rd District)", party: "R", winner: false,
+            positions: [
+              "Secure the border, streamline legal immigration",
+              "Fight inflation with tax and energy policy",
+              "Expand domestic and geothermal energy production"
+            ],
+            differentiators: [
+              "Family physician and attorney, a decade in the Legislature",
+              "Won the GOP nomination outright at convention with 78.7%",
+              "Sponsored the Utah law restricting transgender care for minors",
+              "Raised 971,000 dollars with 392,000 on hand, per FEC through June 30, 2026"
+            ],
+            supporters: [
+              "Backers cite an unusually productive freshman term on energy bills",
+              "His convention landslide showed near-total party unity",
+              "A doctor-lawyer resume reassures suburban Republicans"
+            ],
+            opponents: [
+              "He is running in a district he has never represented",
+              "Democrats call his transgender-care law out of step with suburban Salt Lake County [Verify — structural argument]",
+              "No primary means voters never got to weigh alternatives"
+            ] },
+          { name: "Jonny Larsen", party: "D", winner: false,
+            positions: [
+              "Expand VA clinics and veterans' health care",
+              "Protect Social Security and Medicare",
+              "Economic policy aimed at working families"
+            ],
+            differentiators: [
+              "Marine infantry sergeant, two Iraq deployments",
+              "Systems administrator by trade [Verify — sources differ on health care versus IT]",
+              "Loaned his own campaign 36,155 dollars",
+              "Raised 53,600 dollars with 1,100 on hand, per FEC through June 30, 2026"
+            ],
+            supporters: [
+              "Veterans say no one has pressed harder on VA access gaps in the district",
+              "His combat record gives a Democrat credibility in a conservative seat",
+              "He won the Democratic nomination without a divisive primary"
+            ],
+            opponents: [
+              "Cook scores UT-4 at R+17; the arithmetic is daunting [Verify — PVI via aggregators]",
+              "He ended June with about 1,100 dollars on hand",
+              "He has never held elected office [Verify — an absence of located records]"
+            ] },
+          { name: "Taylor Wright", party: "L", winner: false,
+            positions: [
+              "Libertarian nominee; no individual platform could be located [Verify — an absence of located records]",
+              "Hosts a podcast called Saving Humanity, contents not reviewed [Verify — described in press, not read]",
+              "No issue statements found in state or news sources [Verify — an absence of located records]"
+            ],
+            differentiators: [
+              "Nominated at the Libertarian convention, April 18, 2026",
+              "Elementary school teacher and former college football coach",
+              "Works with adults with special needs",
+              "Lives in South Salt Lake, inside the redrawn district"
+            ],
+            supporters: [
+              "He offers libertarian voters a choice in a race with no primary contest [Verify — structural argument]",
+              "A teacher and caregiver background is an unusual profile for the ballot"
+            ],
+            opponents: [
+              "No fundraising or campaign site could be located [Verify — an absence of located records]",
+              "Utah Libertarian House candidates typically finish in low single digits [Verify — structural argument]"
+            ] },
+          { name: "Steven Burt", party: "I", winner: false,
+            positions: [
+              "Unaffiliated candidate; no platform could be located [Verify — an absence of located records]",
+              "A solar industry background suggests an energy focus [Verify — an inference from career, not a stated position]",
+              "No issue statements located from his campaign [Verify — an absence of located records]"
+            ],
+            differentiators: [
+              "Attorney specialising in government affairs",
+              "Former executive and in-house counsel for solar energy companies",
+              "Qualified as an unaffiliated candidate rather than through a convention"
+            ],
+            supporters: [
+              "Energy-law experience is directly relevant to the district's growth fights [Verify — structural argument]",
+              "He gives voters a non-party option in a race with no primary [Verify — structural argument]"
+            ],
+            opponents: [
+              "No fundraising or campaign website could be located [Verify — an absence of located records]",
+              "Independents in Utah House races rarely clear low single digits [Verify — structural argument]"
+            ] }
+        ] }
+    ] }
+};
+
+const SITE_META = { name: "Utah Elections Hub", lastUpdated: "September 2, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — Utah county-level down-ballot research has not started.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Utah has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them,
+  // otherwise a district with no plurality county is unreachable from the map.
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const UT_STATE_FIPS = "49";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#utmap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(UT_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Hartford ----
+  drawCapital(g, projection, { name: "Salt Lake City", lng: -111.891, lat: 40.7776 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "County FIPS " + fips;
+    title.textContent   = "Not in UT";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This county isn&#39;t in our Utah dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " County";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+// Split a race note on the ⚠ / ✅ flag glyphs the editorial style already uses, keeping
+// the glyph that introduced each segment. Text before the first flag is the lead. This is
+// presentation only — no wording is altered and nothing is dropped.
+function briefSegments(note) {
+  const out = [];
+  const re = /([\u26A0\uFE0F\u2705]+)\s*/g;
+  let last = 0, mark = "", m;
+  while ((m = re.exec(note)) !== null) {
+    const text = note.slice(last, m.index).trim();
+    if (text) out.push({ mark: mark, text: text });
+    mark = m[1].replace(/\uFE0F/g, "");
+    last = re.lastIndex;
+  }
+  const tail = note.slice(last).trim();
+  if (tail) out.push({ mark: mark, text: tail });
+  return out;
+}
+
+function renderNote(note) {
+  if (!note) return "";
+  const body = briefSegments(note).map(function (s) {
+    return s.mark
+      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${s.text}</p>`
+      : `<p class="brief-lead">${s.text}</p>`;
+  }).join("");
+  // Clamp only what actually needs clamping: the median note is 236 characters, so most
+  // briefs show whole and never render a toggle at all.
+  const long = note.length > 300;
+  return `<div class="election-brief${long ? " clamped" : ""}">
+      <div class="brief-label">About this race</div>
+      <div class="brief-body">${body}</div>
+      ${long ? `<button class="brief-more" type="button">Show more</button>` : ""}
+    </div>`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${renderNote(e.note)}${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const more = e.target.closest(".brief-more");
+  if (more) {
+    const brief = more.closest(".election-brief");
+    more.textContent = brief.classList.toggle("clamped") ? "Show more" : "Show less";
+    return;
+  }
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>
