@@ -1,0 +1,23 @@
+{
+  "abbr": "MI",
+  "name": "Michigan",
+  "donor": "oh.html",
+  "donorAbbr": "OH",
+  "donorName": "Ohio",
+  "donorCountyCount": 88,
+  "donorHouseSeats": 15,
+  "donorStatewideCount": 8,
+  "donorFips": "39",
+  "donorLastUpdated": "September 2, 2026",
+  "out": "mi.html",
+  "countyCount": 83,
+  "houseSeats": 13,
+  "statewideCount": 0,
+  "fips": "26",
+  "lastUpdated": "September 3, 2026",
+  "capital": { "name": "Lansing", "lng": -84.5555, "lat": 42.7325 },
+  "sources": "PLACEHOLDER — replaced before build",
+  "countiesFile": "tools/banked/mi-build/counties.js",
+  "statewideFile": "tools/banked/mi-build/statewide.js",
+  "houseFile": "tools/banked/mi-build/house.js"
+}

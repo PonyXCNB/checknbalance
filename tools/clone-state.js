@@ -90,9 +90,42 @@ else {
 }
 
 // ---------------------------------------------------------------
+// 1b. The county-equivalent NOUN.
+// ---------------------------------------------------------------
+// Louisiana has PARISHES, not counties, and Alaska has boroughs. Ten user-visible strings on every
+// page hard-code the word "county"/"County"/"counties"/"Counties" — including
+// `title.textContent = built.county.n + " County"`, which would render every Louisiana parish as
+// "Acadia County" on a live page. That is the same class of pure-presentation defect as quirks #14,
+// #16 and #28: invisible to every data test, parse check and runtime check, because the DATA is
+// perfectly correct and only the label is wrong.
+//
+// So the noun is config, not a constant: set `"countyNoun": "parish"` on the target (and
+// `"donorCountyNoun"` if the donor is itself a parish/borough state). Default is "county", which
+// makes every existing config a no-op. Plurals are derived, so a future "borough" state works too.
+const NOUN_PLURAL = { county: "counties", parish: "parishes", borough: "boroughs" };
+const nounOf = (word) => {
+  const s = String(word || "county").toLowerCase();
+  if (!NOUN_PLURAL[s]) {
+    console.error(`unknown countyNoun "${word}" — add its plural to NOUN_PLURAL in clone-state.js`);
+    process.exit(1);
+  }
+  const cap = (x) => x[0].toUpperCase() + x.slice(1);
+  return { s, p: NOUN_PLURAL[s], S: cap(s), P: cap(NOUN_PLURAL[s]) };
+};
+const dn = nounOf(cfg.donorCountyNoun);   // donor's noun forms
+const tn = nounOf(cfg.countyNoun);        // target's noun forms
+
+// ---------------------------------------------------------------
 // 2. Every state-specific text replacement on the clone checklist.
 // ---------------------------------------------------------------
 const subs = [
+  // the county-equivalent noun, in every user-visible string that carries it
+  [`${dn.s}-by-${dn.s} guide`, `${tn.s}-by-${tn.s} guide`],           // meta description + hero
+  [`Click a ${dn.s} to <em>begin</em>.`, `Click a ${tn.s} to <em>begin</em>.`],
+  [`${dn.P} shaded in gold`, `${tn.P} shaded in gold`],
+  [`id="panel-eyebrow">${dn.S}</div>`, `id="panel-eyebrow">${tn.S}</div>`],
+  [`eyebrow.textContent = "${dn.S} FIPS "`, `eyebrow.textContent = "${tn.S} FIPS "`],
+  [`built.county.n + " ${dn.S}"`, `built.county.n + " ${tn.S}"`],     // the drawer's own headline
   // <title>, meta description, crest, brand name
   [`<title>${donorName} Elections Hub</title>`, `<title>${cfg.name} Elections Hub</title>`],
   [`every ${donorAB} election`, `every ${AB} election`],
@@ -101,9 +134,9 @@ const subs = [
    `<span class="brand-name">${cfg.name} Elections Hub</span>`],
   // hero
   [`Every ${donorName} <em>election</em>`, `Every ${cfg.name} <em>election</em>`],
-  [`Click any of the ${cfg.donorCountyCount} counties`, `Click any of the ${cfg.countyCount} counties`],
-  [`<div class="stat"><div class="stat-num">${cfg.donorCountyCount}</div><div class="stat-label">Counties</div></div>`,
-   `<div class="stat"><div class="stat-num">${cfg.countyCount}</div><div class="stat-label">Counties</div></div>`],
+  [`Click any of the ${cfg.donorCountyCount} ${dn.p}`, `Click any of the ${cfg.countyCount} ${tn.p}`],
+  [`<div class="stat"><div class="stat-num">${cfg.donorCountyCount}</div><div class="stat-label">${dn.P}</div></div>`,
+   `<div class="stat"><div class="stat-num">${cfg.countyCount}</div><div class="stat-label">${tn.P}</div></div>`],
   [`<div class="stat"><div class="stat-num"><em>${cfg.donorStatewideCount}</em></div><div class="stat-label">Statewide Races Tracked</div></div>`,
    `<div class="stat"><div class="stat-num"><em>${cfg.statewideCount}</em></div><div class="stat-label">Statewide Races Tracked</div></div>`],
   // map: loading text, svg id, CSS selector, d3 selector
@@ -119,7 +152,7 @@ const subs = [
   // the apostrophe (raw ' vs &#39;), so both spellings are tried and exactly one must match.
   [`"Not in ${donorAB}"`, `"Not in ${AB}"`],
   // data-layer comment
-  [`every ${donorAB} county`, `every ${AB} county`],
+  [`every ${donorAB} ${dn.s}`, `every ${AB} ${tn.s}`],
   // SITE_META
   [`const SITE_META = { name: "${donorName} Elections Hub", lastUpdated: "${cfg.donorLastUpdated}" };`,
    `const SITE_META = { name: "${cfg.name} Elections Hub", lastUpdated: "${cfg.lastUpdated}" };`],
@@ -149,11 +182,11 @@ if (donorSeatVariants.length !== 1) {
 
 // empty-state sentence — accept either apostrophe spelling, but require one of them
 const emptyVariants = [
-  [`This county isn&#39;t in our ${donorName} dataset.`, `This county isn&#39;t in our ${cfg.name} dataset.`],
-  [`This county isn't in our ${donorName} dataset.`,    `This county isn't in our ${cfg.name} dataset.`],
+  [`This ${dn.s} isn&#39;t in our ${donorName} dataset.`, `This ${tn.s} isn&#39;t in our ${cfg.name} dataset.`],
+  [`This ${dn.s} isn't in our ${donorName} dataset.`,    `This ${tn.s} isn't in our ${cfg.name} dataset.`],
 ];
 const emptyHit = emptyVariants.find(([from]) => html.includes(from));
-if (!emptyHit) missed.push(`This county isn(&#39;|')t in our ${donorName} dataset.`);
+if (!emptyHit) missed.push(`This ${dn.s} isn(&#39;|')t in our ${donorName} dataset.`);
 else html = html.split(emptyHit[0]).join(emptyHit[1]);
 
 // capital marker

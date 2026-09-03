@@ -1,0 +1,83 @@
+26001 Alcona 1
+26003 Alger 1
+26005 Allegan 4
+26007 Alpena 1
+26009 Antrim 1
+26011 Arenac 1
+26013 Baraga 1
+26015 Barry 2
+26017 Bay 8
+26019 Benzie 1
+26021 Berrien 5 4,5
+26023 Branch 5
+26025 Calhoun 4 4,5
+26027 Cass 5
+26029 Charlevoix 1
+26031 Cheboygan 1
+26033 Chippewa 1
+26035 Clare 2
+26037 Clinton 7
+26039 Crawford 1
+26041 Delta 1
+26043 Dickinson 1
+26045 Eaton 7 2,7
+26047 Emmet 1
+26049 Genesee 8 7,8
+26051 Gladwin 2
+26053 Gogebic 1
+26055 Grand_Traverse 1
+26057 Gratiot 2
+26059 Hillsdale 5
+26061 Houghton 1
+26063 Huron 9
+26065 Ingham 7
+26067 Ionia 2
+26069 Iosco 1
+26071 Iron 1
+26073 Isabella 2
+26075 Jackson 5
+26077 Kalamazoo 4 4,5
+26079 Kalkaska 1
+26081 Kent 3 2,3
+26083 Keweenaw 1
+26085 Lake 2
+26087 Lapeer 9
+26089 Leelanau 1
+26091 Lenawee 5
+26093 Livingston 7
+26095 Luce 1
+26097 Mackinac 1
+26099 Macomb 10 9,10
+26101 Manistee 2
+26103 Marquette 1
+26105 Mason 2
+26107 Mecosta 2
+26109 Menominee 1
+26111 Midland 8 2,8
+26113 Missaukee 1
+26115 Monroe 5 5,6
+26117 Montcalm 2
+26119 Montmorency 1
+26121 Muskegon 3 2,3
+26123 Newaygo 2
+26125 Oakland 11 6,7,9,10,11,12
+26127 Oceana 2
+26129 Ogemaw 1
+26131 Ontonagon 1
+26133 Osceola 2
+26135 Oscoda 1
+26137 Otsego 1
+26139 Ottawa 4 2,3,4
+26141 Presque_Isle 1
+26143 Roscommon 1
+26145 Saginaw 8
+26147 St._Clair 9
+26149 St._Joseph 5
+26151 Sanilac 9
+26153 Schoolcraft 1
+26155 Shiawassee 7
+26157 Tuscola 9 8,9
+26159 Van_Buren 4
+26161 Washtenaw 6
+26163 Wayne 13 6,12,13
+26165 Wexford 2 1,2

@@ -1,0 +1,64 @@
+22001	Acadia
+22003	Allen
+22005	Ascension
+22007	Assumption
+22009	Avoyelles
+22011	Beauregard
+22013	Bienville
+22015	Bossier
+22017	Caddo
+22019	Calcasieu
+22021	Caldwell
+22023	Cameron
+22025	Catahoula
+22027	Claiborne
+22029	Concordia
+22031	De Soto
+22033	East Baton Rouge
+22035	East Carroll
+22037	East Feliciana
+22039	Evangeline
+22041	Franklin
+22043	Grant
+22045	Iberia
+22047	Iberville
+22049	Jackson
+22051	Jefferson
+22053	Jefferson Davis
+22055	Lafayette
+22057	Lafourche
+22059	LaSalle
+22061	Lincoln
+22063	Livingston
+22065	Madison
+22067	Morehouse
+22069	Natchitoches
+22071	Orleans
+22073	Ouachita
+22075	Plaquemines
+22077	Pointe Coupee
+22079	Rapides
+22081	Red River
+22083	Richland
+22085	Sabine
+22087	St. Bernard
+22089	St. Charles
+22091	St. Helena
+22093	St. James
+22095	St. John the Baptist
+22097	St. Landry
+22099	St. Martin
+22101	St. Mary
+22103	St. Tammany
+22105	Tangipahoa
+22107	Tensas
+22109	Terrebonne
+22111	Union
+22113	Vermilion
+22115	Vernon
+22117	Washington
+22119	Webster
+22121	West Baton Rouge
+22123	West Carroll
+22125	West Feliciana
+22127	Winn
