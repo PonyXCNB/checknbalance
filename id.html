@@ -4,7 +4,15 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Idaho Elections Hub</title>
-<meta name="description" content="An interactive county-by-county guide to every ID election, past and upcoming." />
+<meta name="description" content="An interactive county-by-county guide to every Idaho election, past and upcoming." />
+<link rel="canonical" href="https://checknbalance.org/id.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Check n Balance">
+<meta property="og:title" content="Idaho Elections Hub">
+<meta property="og:description" content="An interactive county-by-county guide to every Idaho election, past and upcoming.">
+<meta property="og:url" content="https://checknbalance.org/id.html">
+<meta property="og:image" content="https://checknbalance.org/apple-touch-icon.png">
+<meta name="twitter:card" content="summary">
 
 <!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -14,6 +22,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -206,13 +215,15 @@
     box-shadow: var(--shadow);
     position: relative;
     overflow: hidden;
+    max-width: calc(min(72vh, 760px) * 0.64 + 16px);
+    margin-left: auto; margin-right: auto;
   }
   .map-frame {
     background:
       radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
       var(--paper-pure);
     border-radius: 12px;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 0.64 / 1;
     width: 100%;
     position: relative;
   }
@@ -225,25 +236,21 @@
   }
 
   .county {
-    fill: #F1E9D2;
+    fill: var(--gold-soft);
     stroke: var(--paper-pure);
-    stroke-width: 0.7;
+    stroke-width: 1px;
+    vector-effect: non-scaling-stroke;   /* screen pixels at every map size, not viewBox units */
     cursor: pointer;
     transition: fill .15s ease;
   }
-  .county.has-data       { fill: var(--gold-soft); }
-  .county.has-data:hover { fill: var(--gold); }
-  .county:hover          { fill: #E5DBBE; }
-  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+  /* Hover fills only where a pointer can hover — a phone tap must not leave a county stuck "hovered". */
+  @media (hover: hover) {
+    .county:hover { fill: var(--gold); }
+  }
+  .county:focus-visible  { outline: none; fill: var(--gold); stroke: var(--ink); stroke-width: 2px; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.5px; }
 
   /* ---- Capital city marker (muted) ---- */
-  .capital-dot {
-    fill: var(--ink);
-    fill-opacity: 0.55;
-    stroke: var(--paper-pure);
-    stroke-width: 1.5;
-    pointer-events: none;
-  }
   .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
   .capital-label {
     font-family: var(--sans);
@@ -251,16 +258,7 @@
     font-weight: 600;
     letter-spacing: 0.06em;
     fill: var(--ink);
-    fill-opacity: 0.55;
-    pointer-events: none;
-  }
-  .capital-sub {
-    font-family: var(--sans);
-    font-size: 7.5px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    fill: var(--ink);
-    fill-opacity: 0.4;
+    fill-opacity: 0.85;
     pointer-events: none;
   }
 
@@ -276,10 +274,11 @@
     opacity: 0;
     transition: opacity .12s ease;
     white-space: nowrap;
-    z-index: 10;
+    z-index: 60;
     box-shadow: 0 8px 24px rgba(0,0,0,.18);
   }
   .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip.below { transform: translate(-50%, 26px); }
   .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
 
   /* ============================================
@@ -296,15 +295,17 @@
 
   .panel {
     position: fixed; top: 0; right: 0; bottom: 0;
-    width: min(720px, 100%);
+    width: min(720px, 92vw);
     background: var(--paper-pure);
     box-shadow: -10px 0 40px rgba(14,23,38,.15);
     transform: translateX(100%);
-    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    visibility: hidden;   /* off-screen AND out of the tab order / accessibility tree */
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1), visibility 0s linear .3s;
     z-index: 101;
     display: flex; flex-direction: column;
   }
-  .panel.open { transform: translateX(0); }
+  .panel.open { transform: translateX(0); visibility: visible; transition-delay: 0s; }
+  html.drawer-open { overflow: hidden; }   /* the page behind a full-height drawer must not scroll */
 
   .panel-header {
     padding: 24px 36px;
@@ -335,7 +336,7 @@
   }
   .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
 
-  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+  .panel-body { overflow-y: auto; overscroll-behavior: contain; padding: 8px 0 60px; flex: 1; }
 
   /* Group header inside panel */
   .group-header {
@@ -366,7 +367,7 @@
     padding: 4px 10px; border-radius: 999px;
     font-weight: 700;
   }
-  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.past     { background: #F1EAD8; color: #7A561B; }
   .pill.upcoming { background: #FCE8E6; color: var(--red); }
   .pill.scheduled{ background: #E8F0F2; color: #265D69; }
   .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
@@ -397,15 +398,15 @@
     font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase;
     color: var(--gold-deep); font-weight: 700; margin-bottom: 7px;
   }
-  .brief-body { font-size: 12.5px; line-height: 1.62; color: var(--ink-soft); }
+  .brief-body { font-size: 13.5px; line-height: 1.62; color: var(--ink-soft); }
   .brief-body p + p { margin-top: 7px; }
   .brief-lead { color: var(--ink); }
   /* Flag glyphs hang in the margin so the text block keeps a straight left edge. */
   .brief-flag { position: relative; padding-left: 21px; }
   .brief-mark { position: absolute; left: 0; top: 0; font-size: 11px; color: var(--gold-deep); }
-  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; }
+  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; -webkit-mask-image: linear-gradient(#000 72%, transparent); mask-image: linear-gradient(#000 72%, transparent); }
   .brief-more {
-    margin-top: 9px; padding: 0;
+    margin-top: 6px; padding: 6px 0; min-height: 24px;
     background: none; border: none; cursor: pointer;
     font-family: var(--sans); font-size: 10.5px; font-weight: 700;
     letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-deep);
@@ -446,8 +447,9 @@
     display: grid; grid-template-rows: 0fr;
     transition: grid-template-rows .28s ease;
   }
-  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-detail > div { overflow: hidden; min-height: 0; visibility: hidden; transition: visibility 0s linear .28s; }
   .election-card.open .election-detail { grid-template-rows: 1fr; }
+  .election-card.open .election-detail > div { visibility: visible; transition-delay: 0s; }
 
   .candidates { display: grid; gap: 14px; margin-top: 18px; }
   .candidate {
@@ -464,10 +466,11 @@
   .candidate.winner::before {
     content: '★ ELECTED';
     position: absolute; top: -10px; right: 14px;
-    background: var(--gold); color: white;
-    font-size: 9px; letter-spacing: 0.16em;
+    background: var(--gold-deep); color: white;
+    font-size: 10px; letter-spacing: 0.16em;
     padding: 3px 9px; border-radius: 4px; font-weight: 700;
   }
+  .candidate.winner.nominee::before { content: '★ NOMINATED'; }
   .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
   .cand-name {
     font-family: var(--serif); font-size: 20px; font-weight: 500;
@@ -494,7 +497,7 @@
   }
   .cand-list {
     list-style: none; padding-left: 0;
-    font-size: 13px; color: var(--ink); line-height: 1.5;
+    font-size: 13.5px; color: var(--ink); line-height: 1.5;
   }
   .cand-list li {
     padding: 4px 0 4px 18px;
@@ -513,7 +516,7 @@
   .voices-block {
     border-radius: 10px;
     padding: 12px 14px;
-    font-size: 12.5px; line-height: 1.5;
+    font-size: 13px; line-height: 1.5;
   }
   .voices-block.supporters {
     background: #F2F7F0;
@@ -532,8 +535,8 @@
   }
   .voices-block ul { list-style: none; padding: 0; margin: 0; }
   .voices-block li { padding: 3px 0; }
-  .voices-block li::before { content: '"'; opacity: .4; }
-  .voices-block li::after  { content: '"'; opacity: .4; }
+  .voices-block li::before { content: '\201C'; opacity: .4; }
+  .voices-block li::after  { content: '\201D'; opacity: .4; }
 
   .empty-state {
     padding: 60px 36px; text-align: center;
@@ -568,6 +571,26 @@
   /* ============================================
      RESPONSIVE
      ============================================ */
+  /* Keyboard users get a visible, on-brand focus ring everywhere. */
+  :focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 3px; }
+  /* Anchor jumps (#map, #sources) must not land under the sticky bar. */
+  .map-section, .footer { scroll-margin-top: 84px; }
+  /* Hero stat labels wrap unevenly on narrow screens; give them a common height. */
+  .stat-label { min-height: 2.6em; }
+  .legend-star { color: var(--ink); opacity: .7; font-size: 12px; margin-right: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  }
+  /* Printing a county's ballot prints the drawer, not the hero and an empty map. */
+  @media print {
+    .topbar, .hero, .map-section, .panel-overlay, .panel-close, .brief-more { display: none !important; }
+    .panel { position: static; width: auto; transform: none; visibility: visible; box-shadow: none; }
+    .panel-body { overflow: visible; }
+    .election-detail { grid-template-rows: 1fr; }
+    .election-detail > div { visibility: visible; }
+    .election-brief.clamped .brief-body { max-height: none; -webkit-mask-image: none; mask-image: none; }
+  }
   @media (max-width: 900px) {
     .topbar-inner { grid-template-columns: 1fr auto; }
     .topnav { display: none; }
@@ -582,6 +605,7 @@
     .section-head { flex-direction: column; align-items: flex-start; }
     .panel { width: 100%; }
     .panel-header { padding: 18px 22px; }
+    .panel-close { width: 44px; height: 44px; }
     .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
     .voices { grid-template-columns: 1fr; }
   }
@@ -612,7 +636,7 @@
     <nav class="topnav">
       <a href="#map">Map</a>
       <a href="#about">About</a>
-      <a href="#data">Data</a>
+      <a href="#sources">Sources</a>
     </nav>
   </div>
 </header>
@@ -631,7 +655,7 @@
   <div class="hero-stats">
     <div class="stat"><div class="stat-num">44</div><div class="stat-label">Counties</div></div>
     <div class="stat"><div class="stat-num"><em>2</em></div><div class="stat-label">U.S. House Seats</div></div>
-    <div class="stat"><div class="stat-num"><em>9</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num"><em id="stat-statewide">–</em></div><div class="stat-label">Statewide Races, Nov&nbsp;3</div></div>
     <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
   </div>
 </section>
@@ -644,20 +668,20 @@
     <div>
       <h2 class="section-title">Click a county to <em>begin</em>.</h2>
       <p class="section-sub">
-        Counties shaded in gold have detailed election information available. Hover for a quick
-        preview; click to open the full breakdown.
+        Tap or click any county to open its full ballot — every race, every candidate, and what
+        supporters and opponents say. On a desktop, hover for a quick preview.
       </p>
     </div>
     <div class="legend">
-      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
-      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Every county is clickable</span>
+      <span class="legend-swatch"><i class="legend-star">★</i> State capital</span>
     </div>
   </div>
 
   <div class="map-shell">
     <div class="map-frame">
       <div class="map-loading" id="map-loading">Loading map of Idaho…</div>
-      <svg id="idmap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <svg id="idmap" viewBox="0 0 1000 1563" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="tooltip" id="tooltip"></div>
     </div>
   </div>
@@ -667,7 +691,7 @@
      PANEL (details drawer)
      ============================================= -->
 <div class="panel-overlay" id="overlay"></div>
-<aside class="panel" id="panel" aria-hidden="true">
+<aside class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title" aria-hidden="true">
   <div class="panel-header">
     <div>
       <div class="panel-eyebrow" id="panel-eyebrow">County</div>
@@ -687,8 +711,8 @@
     <div class="footer-crest">
       <strong>ID Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
-    <div class="footer-meta">
-      Last updated: <span id="last-updated">August 7, 2026</span><br>
+    <div class="footer-meta" id="sources">
+      Last updated: <span id="last-updated">September 3, 2026</span><br>
       Sources: Idaho Secretary of State — the CERTIFIED 2026 primary canvass report (archive.voteidaho.gov), the official results API, the candidate-filing system at run.voteidaho.gov, the historical canvass database at canvass.sos.idaho.gov, and the initiatives-and-amendments list — plus the Idaho Commission for Reapportionment&#39;s enacted Plan C03 and its Final Report appendices, U.S. Census Bureau congressional-district relationship files and 2020 PL 94-171 data, FEC filings read directly from docquery.fec.gov, Cook Political Report, Sabato&#39;s Crystal Ball and Inside Elections, the Clerk of the U.S. House roll-call records, and reporting from the Idaho Capital Sun, Idaho Ed News, Boise State Public Radio, the Spokesman-Review, East Idaho News, BoiseDev, the Coeur d&#39;Alene Press, the Sandpoint Reader, KPVI, KMVT, Gem State Chronicle and ProPublica.</div>
   </div>
 </footer>
@@ -696,8 +720,8 @@
 <!-- =============================================
      LIBRARIES
      ============================================= -->
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0"></script>
 
 <!-- =============================================
      DATA LAYER
@@ -796,52 +820,28 @@ const STATEWIDE = [
   {
     date: "Nov 3, 2026",
     type: "upcoming",
-    scope: "Statewide",
+    scope: "Federal · Statewide",
     office: "U.S. Senate — Idaho",
     note: "⚠ THE DEMOCRAT WON THE PRIMARY AND THEN QUIT — BUT HE IS STILL ON THE BALLOT. David Roth (D) took 61.9% on May 19 and announced on July 28 that he was ending his campaign. ✅ HE HAS NOW FORMALLY WITHDRAWN: the Secretary of State's own candidate system (run.voteidaho.gov) carried his status as \"Withdrawn\" when checked on Sept 3, 2026, and NO Democratic replacement was named. The complete November U.S. Senate field is Jim Risch (R), Todd Achilles (I), Natalie M. Fleming (I) and Matt Loesby (L) — there is no Democrat on Idaho's Senate ballot. ⚠ One deadline is still live: Idaho's general-election withdrawal and write-in filing deadline is 5:00 p.m. on Sept 4, 2026, so the field can still change by one day after this update [Verify after Sept 4]. ⚠ Whether the Idaho Democratic Party could then substitute a nominee is genuinely unsettled — § 34-715(1) allows a post-primary replacement only for \"death or disqualification\" and pointedly omits withdrawal, while § 34-714(2) routes withdrawal-caused vacancies into that same machinery. No Secretary of State guidance resolving it was located [Verify]. If replacement IS allowed, the deadline is Sept 11. Meanwhile the real contest is between Sen. Jim Risch and independent TODD ACHILLES, a former Democratic state representative who left the party in June 2025 — Idaho's third-party story this cycle, and one of three 2026 Senate races nationally where a Democrat stepped aside for an independent. RATINGS, all seen firsthand: Cook SOLID R (its rating stamp reads Feb 11, 2025 — 17 months before these events, and Cook has not revisited it), Inside Elections SOLID R (Aug 6, 2026), Sabato SAFE R (Aug 5, 2026 map). Cook PVI R+18 (Apr 27, 2026). ⚠ No rater has moved this seat since Roth's exit.",
     candidates: [
       { name: "Jim Risch (incumbent)", party: "R", winner: false,
-        positions: [
-          "Move health care \"significantly back into the private sector\"; calls the ACA \"a mess\"",
-          "\"Over my dead body that we sell off public lands\"",
-          "\"All in on the SAVE Act\" — proof-of-citizenship voting; opposes citizenship paths for those who entered illegally, but backs year-round H-2A farm-visa reform"
-        ],
+        positions: ["Move health care \"significantly back into the private sector\"; calls the ACA \"a mess\"","\"Over my dead body that we sell off public lands\"","\"All in on the SAVE Act\" — proof-of-citizenship voting; opposes citizenship paths for those who entered illegally, but backs year-round H-2A farm-visa reform"],
         differentiators: [
           "Chairman of the Senate Foreign Relations Committee since Jan 2025; the only Idahoan to have served as governor, lieutenant governor and U.S. senator",
           "Authored Idaho's 2008 Roadless Rule, protecting roughly 9 million acres. Won the primary with 67.3%; Trump endorsed him in March 2025, unusually early",
           "$3,535,956 cash on hand as of June 30, 2026 (FEC-filed) — he outspent his receipts in the second quarter"
         ],
-        supporters: [
-          "A small state gets outsized foreign-policy leverage from a sitting committee chairman; replacing him forfeits two decades of seniority",
-          "He has a concrete conservation record rather than rhetoric — the Roadless Rule, and a flat refusal to sell federal land",
-          "Idaho GOP chair Dorothy Moon says he \"has represented Idaho quite well, especially during President Trump's second term\""
-        ],
-        opponents: [
-          "He is 83 and would be 89 at the end of a fourth term; critics frame the bid as seniority for its own sake",
-          "Achilles argues he is a reliable confirmation vote rather than a check, citing his vote to confirm Defense Secretary Pete Hegseth",
-          "Achilles says he resisted releasing the Epstein investigation files and has done \"absolutely nothing about this ridiculous corruption\""
-        ] },
+        supporters: ["A small state gets outsized foreign-policy leverage from a sitting committee chairman; replacing him forfeits two decades of seniority","He has a concrete conservation record rather than rhetoric — the Roadless Rule, and a flat refusal to sell federal land","Idaho GOP chair Dorothy Moon says he \"has represented Idaho quite well, especially during President Trump's second term\""],
+        opponents: ["He is 83 and would be 89 at the end of a fourth term; critics frame the bid as seniority for its own sake","Achilles argues he is a reliable confirmation vote rather than a check, citing his vote to confirm Defense Secretary Pete Hegseth","Achilles says he resisted releasing the Epstein investigation files and has done \"absolutely nothing about this ridiculous corruption\""] },
       { name: "Todd Achilles", party: "I", winner: false,
         positions: [
           "\"Not One Damn Acre\" — no public-land sales; fully staff BLM and the Forest Service; raise PILT payments to rural counties",
           "Congressional term limits, a mandatory retirement age of 72, and a ban on members trading individual stocks",
           "Protect ACA premium tax credits and require itemised price transparency; calls the SAVE Act federal overreach"
         ],
-        differentiators: [
-          "Army armour officer 1992–95 with two Persian Gulf deployments; later an executive at HP and T-Mobile, CEO of Evoca, now teaches public policy at Boise State",
-          "⚠ Appointed to the Idaho House in Feb 2024 by REPUBLICAN Gov. Brad Little, chaired the House Democratic caucus in 2025, then left the party in June 2025 — and refuses to caucus with either side: \"I will not caucus with Senator Schumer, because I think he is the problem\"",
-          "$194,227 cash on hand as of June 30, 2026 (FEC-filed) on $692,245 raised — of which only $10,500 is his own money"
-        ],
-        supporters: [
-          "In a state where the Democratic label is a ceiling, an independent can reach disaffected Republicans — he says he is \"speaking to roomfuls of Republicans who are just tired of the Idaho GOP\"",
-          "Consolidating the anti-incumbent vote behind one non-Republican is the only arithmetic that works here, an argument former Rep. Larry LaRocco made publicly",
-          "He signed a pledge capping himself at two terms, and outraised the actual Democratic nominee roughly 80-to-1"
-        ],
-        opponents: [
-          "Idaho GOP chair Dorothy Moon calls him \"one of the most left-wing Democrats in the statehouse for the past two years\" and \"clearly out of step with the great majority of Idahoans\"",
-          "Risch's answer: \"Changing your party label doesn't change your record. Idaho voters won't be fooled\"",
-          "Even Democrats have withheld support — Roth did not endorse him on the way out, and Ada County Democrats discussed forgoing an endorsement entirely"
-        ] },
+        differentiators: ["Army armour officer 1992–95 with two Persian Gulf deployments; later an executive at HP and T-Mobile, CEO of Evoca, now teaches public policy at Boise State","⚠ Appointed to the Idaho House in Feb 2024 by REPUBLICAN Gov. Brad Little, chaired the House Democratic caucus in 2025, then left the party in June 2025 — and refuses to caucus with either side: \"I will not caucus with Senator Schumer, because I think he is the problem\"","$194,227 cash on hand as of June 30, 2026 (FEC-filed) on $692,245 raised — of which only $10,500 is his own money"],
+        supporters: ["In a state where the Democratic label is a ceiling, an independent can reach disaffected Republicans — he says he is \"speaking to roomfuls of Republicans who are just tired of the Idaho GOP\"","Consolidating the anti-incumbent vote behind one non-Republican is the only arithmetic that works here, an argument former Rep. Larry LaRocco made publicly","He signed a pledge capping himself at two terms, and outraised the actual Democratic nominee roughly 80-to-1"],
+        opponents: ["Idaho GOP chair Dorothy Moon calls him \"one of the most left-wing Democrats in the statehouse for the past two years\" and \"clearly out of step with the great majority of Idahoans\"","Risch's answer: \"Changing your party label doesn't change your record. Idaho voters won't be fooled\"","Even Democrats have withheld support — Roth did not endorse him on the way out, and Ada County Democrats discussed forgoing an endorsement entirely"] },
       { name: "David Roth", party: "D", winner: false,
         positions: [
           "[Verify] — no policy platform could be sourced; his 2026 coverage is entirely about the withdrawal",
@@ -857,17 +857,9 @@ const STATEWIDE = [
           "He said he could \"make the greatest difference by focusing my time and energy on helping Democrats win up and down the ballot\" — a party-building rationale rather than a personal one [Verify]",
           "He is the only candidate in the field who has already run statewide as a major-party nominee [Verify]"
         ],
-        opponents: [
-          "Ada County Democrats gave him an ultimatum to raise $50,000 and produce a campaign plan or they would consider endorsing Achilles; the county chair said his exit was \"greeted with a sigh of relief from a lot of the Dems here in Ada County\"",
-          "He raised just over $8,600 against more than $10,000 in debt — no viable campaign existed",
-          "Leaving the ballot line unresolved into September creates the risk of a Democratic name still being printed with no campaign behind it [Verify — structural argument]"
-        ] },
+        opponents: ["Ada County Democrats gave him an ultimatum to raise $50,000 and produce a campaign plan or they would consider endorsing Achilles; the county chair said his exit was \"greeted with a sigh of relief from a lot of the Dems here in Ada County\"","He raised just over $8,600 against more than $10,000 in debt — no viable campaign existed","Leaving the ballot line unresolved into September creates the risk of a Democratic name still being printed with no campaign behind it [Verify — structural argument]"] },
       { name: "Matt Loesby", party: "L", winner: false,
-        positions: [
-          "Opposes the \"Global American Empire\" and would sharply limit U.S. military intervention",
-          "Borders closed except to immigrants invited and financially sponsored by citizen landowners",
-          "Calls birthright citizenship \"an absurd misinterpretation of the 14th Amendment\""
-        ],
+        positions: ["Opposes the \"Global American Empire\" and would sharply limit U.S. military intervention","Borders closed except to immigrants invited and financially sponsored by citizen landowners","Calls birthright citizenship \"an absurd misinterpretation of the 14th Amendment\""],
         differentiators: [
           "Chair of the Libertarian Party of Idaho; a software engineer in video-game development",
           "Won the Libertarian primary unopposed with 855 votes",
@@ -903,7 +895,7 @@ const STATEWIDE = [
   {
     date: "Nov 3, 2026",
     type: "upcoming",
-    scope: "Statewide",
+    scope: "State · Statewide",
     office: "Governor of Idaho",
     note: "NOT an open seat — Idaho has no gubernatorial term limits and Brad Little (R) is seeking a THIRD term, announced Feb 24, 2026. He took 58.96% against seven primary challengers; 41% of Republican primary voters chose someone else. The race's distinctive feature is JOHN STEGNER, a former Idaho Supreme Court justice running as an independent — the lane Ammon Bundy showed was real when he took 17.2% here in 2022. Stegner has outraised the Democratic nominee nearly three to one. ⚠ The Cook (Sep 11, 2025), Sabato (Sep 4, 2025) and Inside Elections (Aug 28, 2025) ratings are all Solid/Safe R and all PRE-PRIMARY — no rater has revisited this race, and no public polling of it exists [Verify]. ⚠ Melissa-Sue Robinson is listed by several directories as a Libertarian candidate; she LOST the Libertarian primary 523–392 and is not on the ballot. Jacob Burnett is a registered WRITE-IN only.",
     candidates: [
@@ -950,11 +942,7 @@ const STATEWIDE = [
           "Her platform sits well left of a state that has given Little more than 60% twice [Verify — structural argument]"
         ] },
       { name: "John R. Stegner", party: "I", winner: false,
-        positions: [
-          "Smaller classes and higher per-student spending — Idaho is \"51st in the country as far as our per capita expenditure\"",
-          "Opposes eliminating the property tax, warning it would open a $410M education funding gap",
-          "Draw on the rainy-day fund in lean years rather than cut spending; supports the abortion initiative"
-        ],
+        positions: ["Smaller classes and higher per-student spending — Idaho is \"51st in the country as far as our per capita expenditure\"","Opposes eliminating the property tax, warning it would open a $410M education funding gap","Draw on the rainy-day fund in lean years rather than cut spending; supports the abortion initiative"],
         differentiators: [
           "25 years on the bench — Latah County district judge from 1997, then the IDAHO SUPREME COURT 2018–2023, appointed by Republican Gov. Butch Otter",
           "The top-fundraising challenger at $393,332 as of July 7, 2026 — more than the Democratic nominee and more than Little's main primary rival",
@@ -989,11 +977,7 @@ const STATEWIDE = [
           "He took 1.13% the last time he ran for this office [Verify — structural argument]"
         ] },
       { name: "Pro-Life", party: "I", winner: false,
-        positions: [
-          "Opposes the Reproductive Freedom and Privacy Act; considers abortion murder — \"I would do everything in my power; I would not allow that to be initiated\"",
-          "Would urge the Legislature to block the initiative's implementation if it passes",
-          "[Verify] — no platform beyond the single issue could be sourced"
-        ],
+        positions: ["Opposes the Reproductive Freedom and Privacy Act; considers abortion murder — \"I would do everything in my power; I would not allow that to be initiated\"","Would urge the Legislature to block the initiative's implementation if it passes","[Verify] — no platform beyond the single issue could be sourced"],
         differentiators: [
           "A farmer who LEGALLY CHANGED HIS NAME from Marvin Richardson to \"Pro-Life\"; a perennial candidate, on the Constitution Party line",
           "⚠ Explicitly NOT campaigning — he says he will work his farm and does not think anyone beats Little",
@@ -1011,7 +995,7 @@ const STATEWIDE = [
   {
     date: "Nov 3, 2026",
     type: "upcoming",
-    scope: "Statewide",
+    scope: "State · Statewide",
     office: "Attorney General of Idaho",
     note: "One of the two most substantive of Idaho's six down-ballot constitutional races — and like all six, an incumbent Republican against a Democrat, with BOTH nominated unopposed in May. Labrador's tenure has been unusually litigious toward other parts of state government, which is the substance of the race.",
     candidates: [
@@ -1037,11 +1021,7 @@ const STATEWIDE = [
           "Critics say he runs the office as a political platform rather than a legal one [Verify]"
         ] },
       { name: "Lori Hickman", party: "D", winner: false,
-        positions: [
-          "\"People-first leadership\"",
-          "Restore professionalism and steady legal judgment to the office",
-          "Rule of law over politics"
-        ],
+        positions: ["\"People-first leadership\"","Restore professionalism and steady legal judgment to the office","Rule of law over politics"],
         differentiators: [
           "Boise attorney with roughly two decades in practice",
           "First-time statewide candidate; won the Democratic nomination unopposed with 44,212 votes",
@@ -1060,37 +1040,25 @@ const STATEWIDE = [
   {
     date: "Nov 3, 2026",
     type: "upcoming",
-    scope: "Statewide",
+    scope: "State · Statewide",
     office: "Superintendent of Public Instruction — Idaho",
     note: "The best-covered down-ballot race, and the only one with a third candidate. All three appeared at the Idaho Association of School Administrators conference on Aug 4, 2026. The $50M private-school tax credit signed in 2025 is the organising dispute.",
     candidates: [
       { name: "Debbie Critchfield (incumbent)", party: "R", winner: false,
-        positions: [
-          "Literacy, mathematics and career-technical education",
-          "Close special-education funding gaps",
-          "Enrollment-based funding that is \"predictable, stable, sustainable and simple\""
-        ],
+        positions: ["Literacy, mathematics and career-technical education","Close special-education funding gaps","Enrollment-based funding that is \"predictable, stable, sustainable and simple\""],
         differentiators: [
           "Cassia County school board member for a decade before winning this office",
           "First-term incumbent; won the primary unopposed with 179,571 votes",
           "Says she built federal relationships that secured waivers and rescued grant funding during a turbulent year in Washington"
         ],
-        supporters: [
-          "She kept federal money flowing to Idaho schools through a year of federal disruption",
-          "She sets state priorities while leaving districts flexibility — \"the implementation of how, when, where needs to be maintained\"",
-          "Her focus on literacy and career-technical education gives the office measurable priorities [Verify]"
-        ],
+        supporters: ["She kept federal money flowing to Idaho schools through a year of federal disruption","She sets state priorities while leaving districts flexibility — \"the implementation of how, when, where needs to be maintained\"","Her focus on literacy and career-technical education gives the office measurable priorities [Verify]"],
         opponents: [
           "Mitchell says she has delivered \"micromanaging from top down\" rather than support",
           "She did not stop the $50M private-school tax credit [Verify]",
           "Teacher burnout and special-education funding gaps have persisted on her watch"
         ] },
       { name: "Becky Sundin Mitchell", party: "D", winner: false,
-        positions: [
-          "Oppose vouchers for private schools with \"zero accountability\"",
-          "Make enrollment-based funding permanent",
-          "Require legislators to visit classrooms, with accountability follow-up"
-        ],
+        positions: ["Oppose vouchers for private schools with \"zero accountability\"","Make enrollment-based funding permanent","Require legislators to visit classrooms, with accountability follow-up"],
         differentiators: [
           "2018 Idaho Teacher of the Year",
           "An Idaho educator since 2009, currently teaching science at Heritage Community Charter School in Caldwell",
@@ -1128,7 +1096,7 @@ const STATEWIDE = [
   {
     date: "Nov 3, 2026",
     type: "upcoming",
-    scope: "Statewide",
+    scope: "State · Statewide",
     office: "Secretary of State — Idaho",
     note: "⚠ THE MOST CONSEQUENTIAL DOWN-BALLOT RACE ON THE IDAHO BALLOT, and a REMATCH — McGrane beat Keenan 72.1%–27.4% in 2022. What has changed is that Idaho's Republican secretary of state is now being SUED BY A REPUBLICAN JUSTICE DEPARTMENT: *United States v. McGrane* was filed Apr 1, 2026 in the District of Idaho after he refused to hand over unredacted voter data — partial Social Security numbers, dates of birth and driver's licence numbers for about a million Idahoans. Idaho is one of 30 states sued; the case is currently stayed pending Ninth Circuit rulings. He is simultaneously attacked from his right: the Canyon County Republican Central Committee voted 23–13 in 2024 to censure him and demand his resignation over a legislative-district candidate-swap dispute [Verify — sourced only to two right-leaning Idaho outlets; no statewide party censure was found and no mainstream outlet covered it].",
     candidates: [
@@ -1143,22 +1111,14 @@ const STATEWIDE = [
           "⚠ A named defendant in *United States v. McGrane* (1:26-cv-00197, D. Idaho), filed Apr 1, 2026 under the Civil Rights Act of 1960",
           "Unopposed for renomination with 188,089 votes — despite winning the 2022 primary with only about 43%, edging Dorothy Moon by roughly 1.5 points"
         ],
-        supporters: [
-          "He put voter privacy above partisan pressure: of more than 130 constituents who contacted his office about the DOJ demand, exactly one backed compliance, and over half were Republicans or unaffiliated. Nine former secretaries of state filed briefs supporting his position",
-          "Idaho's own attorney general's office backed him — a deputy AG told DOJ that \"your insinuations of criminal violations are not well taken\" and to \"stop threatening your friends in Idaho\"",
-          "He works across the spectrum: \"There are even people in Ammon Bundy's circle who will call me to get advice, because they at least have confidence that I'll be straight with them\""
-        ],
+        supporters: ["He put voter privacy above partisan pressure: of more than 130 constituents who contacted his office about the DOJ demand, exactly one backed compliance, and over half were Republicans or unaffiliated. Nine former secretaries of state filed briefs supporting his position","Idaho's own attorney general's office backed him — a deputy AG told DOJ that \"your insinuations of criminal violations are not well taken\" and to \"stop threatening your friends in Idaho\"","He works across the spectrum: \"There are even people in Ammon Bundy's circle who will call me to get advice, because they at least have confidence that I'll be straight with them\""],
         opponents: [
           "From the left: the Democratic Association of Secretaries of State says he \"backed legislation that removed student IDs from the list of acceptable voter identification\" and supported purging voters whose citizenship could not be database-verified — the 2023 laws behind that criticism were upheld unanimously by the Idaho Supreme Court",
           "From the right: the Canyon County Republican Central Committee censured him 23–13 in 2024, accusing him of misleading the committee and of \"gross incompetence\" [Verify — right-leaning outlets only]",
           "From the right: that he is insufficiently aggressive on election integrity — he declined to back the 2022 registration and ID bills his primary rivals pushed, and is now stonewalling a Republican Justice Department"
         ] },
       { name: "Shawn Keenan", party: "D", winner: false,
-        positions: [
-          "Prioritise voter access, especially for young people, and push back on bills he views as disenfranchising",
-          "Uniform statewide training for clerks and poll workers — \"A solid, uniform election delivery system needs to happen, and that means proper training is done\"",
-          "Call out election misinformation by name — \"When I see candidates campaigning on conspiracy and lies, I'm going to call it out\""
-        ],
+        positions: ["Prioritise voter access, especially for young people, and push back on bills he views as disenfranchising","Uniform statewide training for clerks and poll workers — \"A solid, uniform election delivery system needs to happen, and that means proper training is done\"","Call out election misinformation by name — \"When I see candidates campaigning on conspiracy and lies, I'm going to call it out\""],
         differentiators: [
           "A North Idaho native and Coeur d'Alene resident; a senior loan consultant with a communications degree from Lewis-Clark State College who says he entered politics at nine, canvassing for Cecil Andrus",
           "⚠ This is a REMATCH — he was the 2022 Democratic nominee for this same office, losing 72.1% to 27.4%. He has never held elected office",
@@ -1179,37 +1139,25 @@ const STATEWIDE = [
   {
     date: "Nov 3, 2026",
     type: "upcoming",
-    scope: "Statewide",
+    scope: "State · Statewide",
     office: "Lieutenant Governor of Idaho",
     note: "Both nominees were unopposed in May. The substance here is Idaho's budget squeeze: Bedke has broken with the right of his own party by defending the $80M Idaho Launch scholarship programme and opposing across-the-board cuts, which he called \"fiscal avoidance dressed up as discipline.\" ⚠ NO campaign-finance figures are available for either candidate: Idaho's Sunshine portal displays a March 2026 \"last updated\" stamp but its newest transaction is from June 2024, and Myricks has no committee record in it at all.",
     candidates: [
       { name: "Scott Bedke (incumbent)", party: "R", winner: false,
-        positions: [
-          "Protect Idaho Launch scholarships amid budget cuts — \"There's still a gap between what our economy needs and what the education pipeline is producing\"",
-          "Opposes across-the-board budget cuts in favour of line-by-line review, calling uniform percentage cuts \"fiscal avoidance dressed up as discipline\"",
-          "Defend water infrastructure funding and aquifer recharge — \"You can't appropriate your way out of a depleted water table\""
-        ],
+        positions: ["Protect Idaho Launch scholarships amid budget cuts — \"There's still a gap between what our economy needs and what the education pipeline is producing\"","Opposes across-the-board budget cuts in favour of line-by-line review, calling uniform percentage cuts \"fiscal avoidance dressed up as discipline\"","Defend water infrastructure funding and aquifer recharge — \"You can't appropriate your way out of a depleted water table\""],
         differentiators: [
           "The longest-serving Speaker in Idaho House history, 2012–2022, across eleven terms; a fourth-generation Oakley cattle rancher",
           "Unopposed for renomination with 184,907 votes; endorsed by Gov. Little, Sen. Risch and two former governors",
           "In 2022 he beat hard-right Rep. Priscilla Giddings in the primary with about 52%, which established him as the establishment-wing pick"
         ],
-        supporters: [
-          "Allies read him as the adult in the room on the budget — he publicly called the shortfall \"arguably self-inflicted\" rather than giving \"an all-is-well song-and-dance routine\"",
-          "Decades of institutional knowledge on water rights and appropriations; Little's endorsement calls him a \"strong conservative partner\"",
-          "Complete Republican consolidation — every living Republican governor plus a sitting U.S. senator, and no primary opposition at all"
-        ],
+        supporters: ["Allies read him as the adult in the room on the budget — he publicly called the shortfall \"arguably self-inflicted\" rather than giving \"an all-is-well song-and-dance routine\"","Decades of institutional knowledge on water rights and appropriations; Little's endorsement calls him a \"strong conservative partner\"","Complete Republican consolidation — every living Republican governor plus a sitting U.S. senator, and no primary opposition at all"],
         opponents: [
           "From the right: JFAC co-chair Rep. Wendy Horman called his budget remarks \"accusatory and scornful\" and questioned their political wisdom — and his own $346,000 office budget was reported likely to get extra legislative attention as a result",
           "From the right: the Idaho Freedom Foundation proposed $1.9B in cuts including repealing Idaho Launch, the very programme he is defending",
           "From the left: that the legislative majority he helped build cut roughly $4B in revenue over five years and then blamed the resulting hole on everyone else [Verify — this is a synthesis of Myricks' published platform, not a quoted attack on Bedke by name]"
         ] },
       { name: "Eric Myricks", party: "D", winner: false,
-        positions: [
-          "Opposes HB 328 Medicaid work requirements, saying it \"adds work requirements that push people off coverage\" and threatens rural hospitals",
-          "Repeal the private-school voucher programme — \"repeal the voucher scheme that drains local classrooms\"",
-          "Keep public lands in public hands, science-based water planning, and support for abortion rights"
-        ],
+        positions: ["Opposes HB 328 Medicaid work requirements, saying it \"adds work requirements that push people off coverage\" and threatens rural hospitals","Repeal the private-school voucher programme — \"repeal the voucher scheme that drains local classrooms\"","Keep public lands in public hands, science-based water planning, and support for abortion rights"],
         differentiators: [
           "Founder and chair of the Elijah Rock Foundation, which funds dementia research and long-term memory care; a musician, brain-health advocate and founder of a caregiver tech startup",
           "⚠ LOST the November 2025 Nampa mayoral race, finishing second of four with 28.3%",
@@ -1230,7 +1178,7 @@ const STATEWIDE = [
   {
     date: "Nov 3, 2026",
     type: "upcoming",
-    scope: "Statewide",
+    scope: "State · Statewide",
     office: "State Controller — Idaho",
     note: "⚠ Another of the three offices with essentially no press coverage. The Controller is Idaho's chief fiscal officer, running state payroll and accounting. Both nominees were unopposed in May.",
     candidates: [
@@ -1275,7 +1223,7 @@ const STATEWIDE = [
   {
     date: "Nov 3, 2026",
     type: "upcoming",
-    scope: "Statewide",
+    scope: "State · Statewide",
     office: "State Treasurer — Idaho",
     note: "⚠ The third of the near-invisible constitutional races. The Treasurer manages Idaho's cash and investments and sits on the Land Board. Both nominees were unopposed in May.",
     candidates: [
@@ -1320,7 +1268,7 @@ const STATEWIDE = [
   {
     date: "Nov 3, 2026",
     type: "upcoming",
-    scope: "Statewide",
+    scope: "Ballot Measure · Statewide",
     office: "Ballot Measures — Idaho",
     note: "⚠ FOUR statewide items, and they are NOT all the same kind of thing. One is a citizen initiative, two are legislature-referred constitutional amendments, and one is a NON-BINDING advisory question that designates nothing by itself. ⚠ Official ballot numbering is not confirmed beyond the reported \"Proposition 1,\" and the pro/con voter-pamphlet arguments were open for submission through July 31, 2026 and are not yet published — re-check voteidaho.gov before relying on the wording. FAILED to qualify, and NOT on the ballot: the Idaho Medical Cannabis Act (58,024 valid signatures of 70,725 needed) and Decriminalize Cannabis Now. Withdrawn or replaced: the Repeal Grocery Tax Initiative and the Tax-Free Food Initiative.",
     candidates: [
@@ -1393,9 +1341,7 @@ const STATEWIDE = [
           "⚠ Absent from the Secretary of State's initiatives-and-amendments page because it is neither an initiative nor an amendment",
           "The only item on Idaho's 2026 statewide ballot that no organised campaign exists for or against"
         ],
-        supporters: [
-          "Rep. Jason Monks argues Idaho \"should have a state gun\" since \"a lot of states do have state guns\""
-        ],
+        supporters: ["Rep. Jason Monks argues Idaho \"should have a state gun\" since \"a lot of states do have state guns\""],
         opponents: [
           "Idaho Statesman opinion editor Scott McIntosh called it wasteful, asking why a ballot-printed vote was needed when an online poll would do"
         ] }
@@ -1404,7 +1350,7 @@ const STATEWIDE = [
   {
     date: "May 19, 2026",
     type: "past",
-    scope: "Statewide",
+    scope: "State · Statewide",
     office: "Idaho Appellate Courts — decided at the May primary",
     note: "⚠ THERE IS NO JUDICIAL RACE ON IDAHO'S NOVEMBER BALLOT. Idaho runs nonpartisan judicial elections AT THE MAY PRIMARY, and a candidate with a majority wins outright. All three 2026 appellate seats were uncontested, so all three were decided on May 19. Context: every Idaho Supreme Court race has been uncontested since 2018. ⚠ Separately, Chief Justice G. Richard Bevan retires Oct 30, 2026 — but his successor is APPOINTED by the governor from a Judicial Council list and serves to January 2031, with the seat's next election in May 2030. That is court news, not a ballot item.",
     candidates: [
@@ -1419,7 +1365,7 @@ const STATEWIDE = [
   {
     date: "May 19, 2026",
     type: "past",
-    scope: "Statewide",
+    scope: "State · Statewide",
     office: "Primary — Governor of Idaho",
     note: "CERTIFIED. Little won renomination with 58.96% against seven challengers; Mark Fitzpatrick consolidated most of the rest. ⚠ Wikipedia and news tallies run 40–180 votes higher than the certified canvass in several Idaho races — a gap of about 0.04% that changes no outcome. The certified figures are used here. The Libertarian primary result below appears in no press coverage and was recovered directly from the certified canvass.",
     candidates: [
@@ -1440,7 +1386,7 @@ const STATEWIDE = [
   {
     date: "Nov 8, 2022",
     type: "past",
-    scope: "Statewide",
+    scope: "State · Statewide",
     office: "Governor of Idaho — 2022",
     note: "⚠ THE MOST RELEVANT PRECEDENT ON THIS PAGE. Ammon Bundy took 17.2% running as an independent — the empirical basis for former Justice John Stegner's argument that an independent lane exists in an Idaho governor's race. Note also that Paul Sand, the Libertarian here, is on the ballot again in 2026. Official Idaho Secretary of State canvass.",
     candidates: [
@@ -1457,7 +1403,7 @@ const STATEWIDE = [
   {
     date: "May 19, 2026",
     type: "past",
-    scope: "Statewide",
+    scope: "Federal · Statewide",
     office: "Primary — U.S. Senate",
     note: "CERTIFIED. The Idaho State Board of Canvassers certified the primary on June 9, 2026; no outcomes changed and eight randomly selected county audits were reviewed. Statewide turnout was 30.1% — 312,139 ballots of 1,035,840 registered. ⚠ Note the asymmetry: the Republican Senate primary drew nearly five times the Democratic one. ⚠ Election-night figures of 29,536 / 14,868 / 3,346 still circulate in search results; the certified numbers below differ by nine votes and supersede them.",
     candidates: [
@@ -1480,7 +1426,7 @@ const STATEWIDE = [
   {
     date: "Nov 5, 2024",
     type: "past",
-    scope: "Statewide",
+    scope: "Federal · Statewide",
     office: "President — Idaho result",
     note: "Official Idaho Secretary of State canvass. Trump carried Idaho by 36.5 points — the baseline against which every 2026 race here should be read. Percentages are computed on the 905,057 total votes cast, the Secretary of State's own denominator; 917,466 ballots were cast in all, the gap being blank and spoiled ballots.",
     candidates: [
@@ -1497,7 +1443,7 @@ const STATEWIDE = [
   {
     date: "Nov 8, 2022",
     type: "past",
-    scope: "Statewide",
+    scope: "Federal · Statewide",
     office: "U.S. Senate — Idaho, 2022",
     note: "⚠ DIRECTLY RELEVANT TO 2026 IN TWO WAYS. This is Idaho's OTHER Senate seat — Mike Crapo's, not up again until 2028 — and the Democrat who lost it is DAVID ROTH, the same man who won and then abandoned the 2026 Democratic nomination. It is also the strongest recent benchmark for an Idaho independent: Scott Oh Cleveland took 8.45% here, well above the roughly 3% independents have managed in Senate races against Risch. Official Secretary of State canvass.",
     candidates: [
@@ -1514,7 +1460,7 @@ const STATEWIDE = [
   {
     date: "Nov 3, 2020",
     type: "past",
-    scope: "Statewide",
+    scope: "Federal · Statewide",
     office: "U.S. Senate — Idaho, 2020",
     note: "Risch's last election, won by 29.4 points. ⚠ Worth noting for the 2026 ballot: NATALIE M. FLEMING, the independent who took 2.95% here, is on the ballot again this year against the same incumbent. Official Secretary of State canvass.",
     candidates: [
@@ -1557,11 +1503,7 @@ const HOUSE_RACES = {
         note: "A safe Republican seat where the interesting question is whether an independent can consolidate the opposition. Russ Fulcher (R) won renomination with 78.2%. Kaylee Peterson (D) is running a THIRD time, having taken 26.3% in 2022 and 25.4% in 2024. The new entrant is SARAH ZABEL, a retired Air Force major general and a registered Republican for three decades who qualified by petition as an independent. Ratings are Solid/Safe R across Cook (Feb 6, 2025), Inside Elections (Mar 7, 2025), Sabato (Apr 10, 2025) and Decision Desk HQ (July 14, 2026) — note that three of the four predate this cycle's campaign entirely. ⚠ The only 2026 poll of this district was PAID FOR BY THE ZABEL CAMPAIGN: SurveyUSA, July 7–14, 480 likely voters, ±4.9%, showing Fulcher 45 / Peterson 35 / Zabel 6 on the initial three-way, Zabel rising to 16 after candidate information was read, and Zabel 42–Fulcher 39 in a head-to-head that excludes the Democrat. Read it as a sponsored poll, not a neutral one.",
         candidates: [
           { name: "Russ Fulcher (incumbent)", party: "R", winner: false,
-            positions: [
-              "\"Strongly and consistently pro-life… life begins at conception\"",
-              "Federal-lands rollback — \"the federal government controls 63% of Idaho's natural resources,\" which he ties to wildfire risk and lost rural jobs",
-              "Market-based health care: against mandates, for price transparency; plus border enforcement and \"Keep Our Dams\""
-            ],
+            positions: ["\"Strongly and consistently pro-life… life begins at conception\"","Federal-lands rollback — \"the federal government controls 63% of Idaho's natural resources,\" which he ties to wildfire risk and lost rural jobs","Market-based health care: against mandates, for price transparency; plus border enforcement and \"Keep Our Dams\""],
             differentiators: [
               "Vice Chair of the Energy and Commerce Subcommittee on Commerce, Manufacturing and Trade, and a member of Natural Resources",
               "A fourth-generation Idahoan raised on a Meridian dairy farm; 24 years at Micron and Preco, then ten years in the Idaho Senate; authored Idaho's grocery tax credit",
@@ -1572,11 +1514,7 @@ const HOUSE_RACES = {
               "The Republican base is fully consolidated behind him: 78% against two challengers, certified",
               "A subcommittee vice chairmanship plus a Natural Resources seat gives Idaho real leverage on lands and energy [Verify]"
             ],
-            opponents: [
-              "Peterson argues Idaho has lost 43% of its practising OB-GYNs and this district three labour-and-delivery wards since Dobbs, and that the delegation \"flatly refuses to listen to medical professionals\" [Verify — her claim, not independently confirmed]",
-              "He voted for H.R.1, the One Big Beautiful Bill Act, on July 3, 2025; Peterson runs against its Medicaid reductions",
-              "Zabel argues the Republican Party \"has flipped\" on limited government and calls recent top-earner tax cuts \"a self-inflicted wound\""
-            ] },
+            opponents: ["Peterson argues Idaho has lost 43% of its practising OB-GYNs and this district three labour-and-delivery wards since Dobbs, and that the delegation \"flatly refuses to listen to medical professionals\" [Verify — her claim, not independently confirmed]","He voted for H.R.1, the One Big Beautiful Bill Act, on July 3, 2025; Peterson runs against its Medicaid reductions","Zabel argues the Republican Party \"has flipped\" on limited government and calls recent top-earner tax cuts \"a self-inflicted wound\""] },
           { name: "Kaylee Peterson", party: "D", winner: false,
             positions: [
               "Ban congressional stock trading; term limits of six House and two Senate terms; overturn Citizens United",
@@ -1599,21 +1537,13 @@ const HOUSE_RACES = {
               "Single-payer, right-to-work repeal and higher corporate taxes sit well left of this district [Verify — inference from her platform and the 2024 margin]"
             ] },
           { name: "Sarah Zabel", party: "I", winner: false,
-            positions: [
-              "Social Security solvency before the 2033 trust-fund depletion — some new revenue, some benefit reduction, a broader base",
-              "Raise the corporate rate to 28%; calls recent top-earner cuts \"a self-inflicted wound\"",
-              "AI accountability — disclosure standards for AI-generated content and liability for deepfakes"
-            ],
+            positions: ["Social Security solvency before the 2033 trust-fund depletion — some new revenue, some benefit reduction, a broader base","Raise the corporate rate to 28%; calls recent top-earner cuts \"a self-inflicted wound\"","AI accountability — disclosure standards for AI-generated content and liability for deepfakes"],
             differentiators: [
               "A retired U.S. Air Force MAJOR GENERAL — Air Force Academy 1987, about 31 years as a communications and cyber-operations officer, retired 2018, living in Bayview",
               "⚠ A registered REPUBLICAN for three decades before filing as an independent in November 2025; ballot-qualified by petition",
               "$24,473 cash on hand as of June 30, 2026 — more than the Democrat — but roughly 78% of her money is her own"
             ],
-            supporters: [
-              "A two-star general's national-security credential against a Congress where, in her framing, \"getting the job done is not even a second priority\"",
-              "She is the only candidate offering a specific Social Security solvency mechanism rather than a pledge to protect it",
-              "Her own poll's informed ballot and head-to-head suggest a real ceiling if the race consolidates — with the sponsor disclosed"
-            ],
+            supporters: ["A two-star general's national-security credential against a Congress where, in her framing, \"getting the job done is not even a second priority\"","She is the only candidate offering a specific Social Security solvency mechanism rather than a pledge to protect it","Her own poll's informed ballot and head-to-head suggest a real ceiling if the race consolidates — with the sponsor disclosed"],
             opponents: [
               "No Idaho candidate has won a U.S. House seat as an independent since 2000",
               "The only public poll puts her at 6% on the initial three-way — and her campaign paid for it",
@@ -1693,11 +1623,7 @@ const HOUSE_RACES = {
               "$429,359 cash on hand as of June 30, 2026, on $1,118,093 raised — more than ten times the rest of the field combined, and majority PAC-funded ($611,500 from PACs)",
               "Author of the Columbia Basin Initiative on the four lower Snake River dams, which pegs replacing the dams' benefits at \"a minimum of $33.5B.\" ⚠ The dams did NOT feature in any 2026 primary coverage — do not read his primary challenges as being about them"
             ],
-            supporters: [
-              "A subcommittee chairmanship delivers Idaho money no freshman could — his FY27 requests include $2.07M for Idaho State University and $2.16M for the College of Western Idaho",
-              "He backed the farm bill because it gives \"certainty to farmers and stakeholders\"",
-              "He argues his experience working with diverse groups is a strength he uses on Idaho's behalf"
-            ],
+            supporters: ["A subcommittee chairmanship delivers Idaho money no freshman could — his FY27 requests include $2.07M for Idaho State University and $2.16M for the College of Western Idaho","He backed the farm bill because it gives \"certainty to farmers and stakeholders\"","He argues his experience working with diverse groups is a strength he uses on Idaho's behalf"],
             opponents: [
               "36% of Republican primary voters backed someone else — a persistent bloc arguing he is insufficiently confrontational. One challenger pledged \"I will not foster so-called bipartisan agreements\"; another called the SAVE Act \"grandstanding,\" and Simpson voted for it",
               "Independent Emre Houser attacks his 2003 vote for the Medicare \"noninterference clause\" barring drug-price negotiation",
@@ -1709,27 +1635,15 @@ const HOUSE_RACES = {
               "Keep public lands public and protect Idaho water rights amid drought; sceptical of proposed data centres",
               "Lower costs — fight price gouging and stop Wall Street buying Idaho homes"
             ],
-            differentiators: [
-              "63; an attorney and mediator for more than 20 years, Georgetown Law, a Ketchum resident of 23 years — and a first-time candidate: \"I am not a career politician\"",
-              "Won the primary with 72.5% after her opponent withdrew in March and endorsed her",
-              "$71,163 cash on hand as of June 30, 2026, on $106,892 raised — 100% from individuals, zero PAC money"
-            ],
-            supporters: [
-              "Her lane is process integrity over partisanship — \"The biggest divide in America is not left vs. right. It's top vs. bottom\"",
-              "Her campaign theme, \"Idaho is not for sale,\" targets outside money buying land, water and resources",
-              "She pitches overlap with Idaho conservative values rather than a national Democratic platform"
-            ],
+            differentiators: ["63; an attorney and mediator for more than 20 years, Georgetown Law, a Ketchum resident of 23 years — and a first-time candidate: \"I am not a career politician\"","Won the primary with 72.5% after her opponent withdrew in March and endorsed her","$71,163 cash on hand as of June 30, 2026, on $106,892 raised — 100% from individuals, zero PAC money"],
+            supporters: ["Her lane is process integrity over partisanship — \"The biggest divide in America is not left vs. right. It's top vs. bottom\"","Her campaign theme, \"Idaho is not for sale,\" targets outside money buying land, water and resources","She pitches overlap with Idaho conservative values rather than a national Democratic platform"],
             opponents: [
               "R+13 and a 30-point 2024 margin put the seat structurally out of reach [Verify — the ratings and PVI are sourced; the inference is not]",
               "A first-time candidate with no legislative record [Verify]",
               "She is outraised roughly ten-to-one in a district drawing no national investment [Verify]"
             ] },
           { name: "Will Johanson", party: "L", winner: false,
-            positions: [
-              "Will vote no on any budget that increases the national debt; blames inflation on monetary expansion",
-              "Energy: \"drilling, fracking, and mining essential minerals in the USA\"",
-              "In his own shorthand: \"Taxation? Theft.\" \"Second Amendment? Shall not be infringed.\" \"Abortion? Not my axe to grind.\" \"Immigration? Close the border.\""
-            ],
+            positions: ["Will vote no on any budget that increases the national debt; blames inflation on monetary expansion","Energy: \"drilling, fracking, and mining essential minerals in the USA\"","In his own shorthand: \"Taxation? Theft.\" \"Second Amendment? Shall not be infringed.\" \"Abortion? Not my axe to grind.\" \"Immigration? Close the border.\""],
             differentiators: [
               "Self-described \"Engineer - Veteran - Libertarian… a new candidate for a new generation\"; won the Libertarian primary unopposed with 336 votes",
               "The only third-party candidate in this race with a live issues platform",
@@ -1751,16 +1665,8 @@ const HOUSE_RACES = {
               "Antitrust — break up monopolies, ban corporate PACs, and ban corporate purchases of single-family homes and foreign-government purchases of farmland",
               "A billionaire minimum tax, Medicare drug negotiation, right to repair and paid family leave"
             ],
-            differentiators: [
-              "A sitting KETCHUM CITY COUNCIL member since 2024 — the only non-incumbent in this race who currently holds elected office",
-              "A large independent-media following, with campaign videos routinely drawing 30,000 to 140,000 views",
-              "$6,963 cash on hand as of June 30, 2026, on $7,565 raised — 100% individual, no PAC money. ⚠ His own platform page says the full platform is \"in the works\""
-            ],
-            supporters: [
-              "His organising claim: \"The consolidation of power, public or private, is a threat to every Idahoan and every American citizen\"",
-              "His core promise is that an Idaho family should live decently on one household income",
-              "He deliberately mixes left- and right-coded items, pitched at voters detached from both parties"
-            ],
+            differentiators: ["A sitting KETCHUM CITY COUNCIL member since 2024 — the only non-incumbent in this race who currently holds elected office","A large independent-media following, with campaign videos routinely drawing 30,000 to 140,000 views","$6,963 cash on hand as of June 30, 2026, on $7,565 raised — 100% individual, no PAC money. ⚠ His own platform page says the full platform is \"in the works\""],
+            supporters: ["His organising claim: \"The consolidation of power, public or private, is a threat to every Idahoan and every American citizen\"","His core promise is that an Idaho family should live decently on one household income","He deliberately mixes left- and right-coded items, pitched at voters detached from both parties"],
             opponents: [
               "Independents face a signature barrier and have no party infrastructure; Idaho has never elected one to Congress [Verify]",
               "His platform page is self-described as incomplete",
@@ -1777,11 +1683,7 @@ const HOUSE_RACES = {
               "Self-limits to one term, two at most",
               "Registered with the FEC but reporting no activity — below the $5,000 threshold"
             ],
-            supporters: [
-              "He pitches himself as \"beholden ONLY to the voters of Idaho, for a seat that has been too long held by career politician, Mike Simpson\"",
-              "He wants to exit culture-war politics and focus on cost of living",
-              "He cites concrete consolidation data — four beef processors control 80–85% of the market"
-            ],
+            supporters: ["He pitches himself as \"beholden ONLY to the voters of Idaho, for a seat that has been too long held by career politician, Mike Simpson\"","He wants to exit culture-war politics and focus on cost of living","He cites concrete consolidation data — four beef processors control 80–85% of the market"],
             opponents: [
               "No reportable fundraising means no paid communication [Verify — the FEC status is fact; the inference is ours]",
               "Veteran-plus-outsider is the profile that has repeatedly failed in this district [Verify]",
@@ -1870,8 +1772,16 @@ function drawCapital(g, projection, cap) {
     return "M" + pts.map(p => p.join(",")).join("L") + "Z";
   };
   const grp = g.append("g").attr("class", "capital-marker");
-  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
-  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+  grp.append("path").attr("class", "capital-star").attr("d", star(0, 0, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", 10).attr("y", 3).text(cap.name);
+  // Constant on-screen size: scale the marker by viewBox-units-per-CSS-pixel, and again on resize.
+  const svgEl = g.node().ownerSVGElement;
+  const fit = () => {
+    const k = svgEl.viewBox.baseVal.width / Math.max(1, svgEl.getBoundingClientRect().width);
+    grp.attr("transform", `translate(${x},${y}) scale(${k})`);
+  };
+  fit();
+  window.addEventListener("resize", fit);
 }
 
 
@@ -1917,22 +1827,46 @@ function getCountyElections(fips) {
 const ID_STATE_FIPS = "16";
 const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
 
-const svg     = d3.select("#idmap");
+if (typeof d3 === "undefined" || typeof topojson === "undefined" || typeof d3.json !== "function") {
+  document.getElementById("map-loading").innerHTML = "The interactive map didn\u2019t load \u2014 a script it needs was blocked. <button type=\"button\" class=\"brief-more\" onclick=\"location.reload()\">Try again</button>";
+  document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+  document.getElementById("stat-statewide").textContent = STATEWIDE.filter(r => r.type === "upcoming").length;
+  throw new Error("map libraries did not load");
+}
+const svg = d3.select("#idmap");
 const tooltip = document.getElementById("tooltip");
 const panel   = document.getElementById("panel");
 const overlay = document.getElementById("overlay");
 const loading = document.getElementById("map-loading");
+const UNIT = "County";
 
 document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+document.getElementById("stat-statewide").textContent = STATEWIDE.filter(r => r.type === "upcoming").length;
 
+// "Richmond City County" and "Baltimore City County" are not places. Independent cities and
+// Louisiana parishes get the right word; two real Virginia counties happen to end in "City".
+const placeLabel = (c) => (/\bCity$/.test(c.n) && c.fips !== "51036" && c.fips !== "51095") ? c.n : c.n + " " + UNIT;
+// Hovering re-sorted every race on every pointer move; the answer never changes per county.
+const electionsCache = new Map();
+const countyElections = (fips) => { if (!electionsCache.has(fips)) electionsCache.set(fips, getCountyElections(fips)); return electionsCache.get(fips); };
+const HOVER = window.matchMedia && window.matchMedia("(hover: hover)").matches;
+
+loadMap();
+
+function loadMap() {
 d3.json(TOPO_URL).then((us) => {
   const allCounties = topojson.feature(us, us.objects.counties).features;
   const ncCounties  = allCounties.filter(d => String(d.id).startsWith(ID_STATE_FIPS));
 
-  const width  = 1000;
-  const height = 1000;
+  // Read the drawing size from the SVG's own viewBox, so the state's shape lives in one place.
+  const { width, height } = (() => { const vb = svg.node().viewBox.baseVal; return { width: vb.width || 1000, height: vb.height || 1000 }; })();
 
-  const projection = d3.geoAlbers()
+  // A conic equal-area CENTRED ON THIS STATE, so north is up and the shape matches the official
+  // state map. d3.geoAlbers() at its default -96° meridian tilted the far states by 12–37°.
+  const [[lonMin, latMin], [lonMax, latMax]] = d3.geoBounds({ type: "FeatureCollection", features: ncCounties });
+  const projection = d3.geoConicEqualArea()
+    .rotate([-(lonMin + lonMax) / 2, 0])
+    .parallels([latMin + (latMax - latMin) / 6, latMax - (latMax - latMin) / 6])
     .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
   const path = d3.geoPath().projection(projection);
 
@@ -1948,41 +1882,59 @@ d3.json(TOPO_URL).then((us) => {
       })
       .attr("data-fips", d => String(d.id).padStart(5, "0"))
       .attr("d", path)
+      // A keyboard or screen-reader user must be able to open a county too.
+      .attr("tabindex", 0)
+      .attr("role", "button")
+      .attr("aria-label", d => { const c = COUNTIES[String(d.id).padStart(5, "0")]; return c ? placeLabel({ ...c, fips: String(d.id).padStart(5, "0") }) : "Not in this dataset"; })
       .on("mousemove", (event, d) => {
+        if (!HOVER) return;
         const fips = String(d.id).padStart(5, "0");
-        const built = getCountyElections(fips);
+        const built = countyElections(fips);
         if (built) {
           const upcoming = built.elections.filter(e => e.type === "upcoming").length;
           const past = built.elections.filter(e => e.type === "past").length;
+          const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
           tooltip.innerHTML = `
-            <strong>${built.county.n} County</strong>
-            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+            <strong>${esc(placeLabel({ ...built.county, fips }))}</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · District${ds.length > 1 ? "s" : ""} ${ds.join(" & ")}</div>`;
         } else {
-          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+          tooltip.innerHTML = `FIPS ${esc(fips)}<div class="tooltip-meta">Not in this dataset</div>`;
         }
         tooltip.style.opacity = 1;
         const rect = svg.node().getBoundingClientRect();
-        tooltip.style.left = (event.clientX - rect.left) + "px";
-        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+        const x = event.clientX - rect.left, y = event.clientY - rect.top;
+        // Flip below the cursor near the top edge; keep the box inside the map horizontally.
+        tooltip.classList.toggle("below", y < tooltip.offsetHeight + 28);
+        const half = tooltip.offsetWidth / 2 + 8;
+        tooltip.style.left = Math.max(half, Math.min(rect.width - half, x)) + "px";
+        tooltip.style.top  = y + "px";
       })
       .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("keydown", (event, d) => {
+        if (event.key === "Enter" || event.key === " ") { event.preventDefault(); event.currentTarget.dispatchEvent(new MouseEvent("click", { bubbles: true })); }
+      })
       .on("click", (event, d) => {
         const fips = String(d.id).padStart(5, "0");
+        tooltip.style.opacity = 0;
         document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
         event.currentTarget.classList.add("selected");
-        openPanel(fips);
+        openPanel(fips, event.currentTarget);
       });
 
-  // ---- Capital marker: Hartford ----
+  // ---- Capital marker: Boise ----
   drawCapital(g, projection, { name: "Boise", lng: -116.2023, lat: 43.6178 });
 
   loading.style.display = "none";
 }).catch((err) => {
-  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+  if (window.console && console.error) console.error("[map] " + (err && err.message ? err.message : err));
+  loading.innerHTML = "The interactive map didn\u2019t load. <button type=\"button\" class=\"brief-more\" id=\"map-retry\">Try again</button>";
+  document.getElementById("map-retry").addEventListener("click", () => { loading.textContent = "Loading map\u2026"; loadMap(); });
 });
+}
 
-function openPanel(fips) {
-  const built = getCountyElections(fips);
+let lastFocus = null;
+function openPanel(fips, fromEl) {
+  const built = countyElections(fips);
   const body  = document.getElementById("panel-body");
   const title = document.getElementById("panel-title");
   const eyebrow = document.getElementById("panel-eyebrow");
@@ -1994,17 +1946,29 @@ function openPanel(fips) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn&#39;t in our Idaho dataset.</p></div>`;
   } else {
-    eyebrow.textContent = `Congressional District ${built.county.d}`;
-    title.textContent   = built.county.n + " County";
-    subtitle.textContent = built.district ? built.district.region : "";
+    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    title.textContent   = placeLabel({ ...built.county, fips });
+    subtitle.textContent = ds.length > 1
+      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);
+    // A brief only needs "Show more" if the clamp actually hides something.
+    body.querySelectorAll(".election-brief.clamped").forEach(b => {
+      const t = b.querySelector(".brief-body");
+      if (t && t.scrollHeight <= t.clientHeight + 4) { b.classList.remove("clamped"); const m = b.querySelector(".brief-more"); if (m) m.remove(); }
+    });
   }
 
+  lastFocus = fromEl || document.activeElement;
+  tooltip.style.opacity = 0;
   panel.classList.add("open");
   overlay.classList.add("open");
   panel.setAttribute("aria-hidden", "false");
+  document.documentElement.classList.add("drawer-open");
   body.scrollTop = 0;
+  setTimeout(() => document.getElementById("panel-close").focus(), 320);
 }
 
 function groupByType(elections) {
@@ -2047,12 +2011,15 @@ function briefSegments(note) {
   return out;
 }
 
+// Escape data before it goes into innerHTML. Notes and card text are plain prose; an ampersand
+// or angle bracket in a future edit must render as itself rather than corrupt the card.
+const esc = (v) => String(v == null ? "" : v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 function renderNote(note) {
   if (!note) return "";
   const body = briefSegments(note).map(function (s) {
     return s.mark
-      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${s.text}</p>`
-      : `<p class="brief-lead">${s.text}</p>`;
+      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${esc(s.text)}</p>`
+      : `<p class="brief-lead">${esc(s.text)}</p>`;
   }).join("");
   // Clamp only what actually needs clamping: the median note is 236 characters, so most
   // briefs show whole and never render a toggle at all.
@@ -2060,48 +2027,53 @@ function renderNote(note) {
   return `<div class="election-brief${long ? " clamped" : ""}">
       <div class="brief-label">About this race</div>
       <div class="brief-body">${body}</div>
-      ${long ? `<button class="brief-more" type="button">Show more</button>` : ""}
+      ${long ? `<button class="brief-more" type="button" aria-expanded="false">Show more</button>` : ""}
     </div>`;
 }
 
 function renderElection(e) {
   const count = (e.candidates && e.candidates.length) || 0;
-  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  // A ballot measure is recognised by what it is called, not by one exact scope string.
+  const isMeasure = /ballot measure|ballot question|amendment|initiative|proposition|referend|\bmeasure\b|\bquestion\b/i.test((e.scope || "") + " " + (e.office || ""));
+  const isInfo = /^Also on your ballot|— eight seats, ALL UNOPPOSED/i.test(e.office || "");
+  const countLabel = count ? `${count} candidate${count === 1 ? "" : "s"}` : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
   const candidatesHtml = count
-    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
-    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+    ? `<div class="candidates">${e.candidates.map(c => renderCandidate(c, e)).join("")}</div>`
+    : (isMeasure || isInfo ? "" : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">Candidates not yet announced.</div>`);
   const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
   return `
     <div class="election-card">
       <button class="election-summary" type="button" aria-expanded="false">
-        <div class="election-summary-main">
-          <div class="election-meta">
-            <span class="pill ${e.type}">${e.type}</span>
-            <span class="election-date">${e.date}</span>
-            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
-          </div>
-          <div class="election-office">${e.office || e.name || ""}</div>
-        </div>
-        <div class="election-toggle">
+        <span class="election-summary-main">
+          <span class="election-meta">
+            <span class="pill ${esc(e.type)}">${esc(e.type)}</span>
+            <span class="election-date">${esc(e.date)}</span>
+            ${e.scope ? `<span class="election-scope">${esc(e.scope)}</span>` : ""}
+          </span>
+          <span class="election-office">${esc(e.office || e.name || "")}</span>
+        </span>
+        <span class="election-toggle">
           <span class="cand-count">${countLabel}</span>
           <span class="chevron">${chevron}</span>
-        </div>
+        </span>
       </button>
       <div class="election-detail"><div>${renderNote(e.note)}${candidatesHtml}</div></div>
     </div>`;
 }
 
-function renderCandidate(c) {
-  const winnerClass = c.winner ? "candidate winner" : "candidate";
-  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+function renderCandidate(c, race) {
+  // A primary or runoff winner was NOMINATED, not elected — the badge should say so.
+  const nominated = !!(race && /primary|runoff/i.test((race.office || "") + " " + (race.scope || "")));
+  const winnerClass = c.winner ? ("candidate winner" + (nominated ? " nominee" : "")) : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
   return `
     <div class="${winnerClass}">
       <div class="cand-head">
-        <div class="cand-name">${c.name}</div>
-        <span class="party-tag party-${c.party}">${c.party}</span>
+        <div class="cand-name">${esc(c.name)}</div>
+        <span class="party-tag party-${esc(c.party)}">${esc(c.party)}</span>
       </div>
       ${positions ? `<div class="cand-section">
           <div class="cand-section-label">Top Positions</div>
@@ -2122,10 +2094,14 @@ function renderCandidate(c) {
 }
 
 function closePanel() {
+  if (!panel.classList.contains("open")) return;
   panel.classList.remove("open");
   overlay.classList.remove("open");
   panel.setAttribute("aria-hidden", "true");
+  document.documentElement.classList.remove("drawer-open");
+  tooltip.style.opacity = 0;
   document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+  if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
 }
 document.getElementById("panel-close").addEventListener("click", closePanel);
 overlay.addEventListener("click", closePanel);
@@ -2136,7 +2112,9 @@ document.getElementById("panel-body").addEventListener("click", (e) => {
   const more = e.target.closest(".brief-more");
   if (more) {
     const brief = more.closest(".election-brief");
-    more.textContent = brief.classList.toggle("clamped") ? "Show more" : "Show less";
+    const clamped = brief.classList.toggle("clamped");
+    more.textContent = clamped ? "Show more" : "Show less";
+    more.setAttribute("aria-expanded", clamped ? "false" : "true");
     return;
   }
   const summary = e.target.closest(".election-summary");

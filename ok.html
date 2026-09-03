@@ -4,7 +4,15 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Oklahoma Elections Hub</title>
-<meta name="description" content="An interactive county-by-county guide to every OK election, past and upcoming." />
+<meta name="description" content="An interactive county-by-county guide to every Oklahoma election, past and upcoming." />
+<link rel="canonical" href="https://checknbalance.org/ok.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Check n Balance">
+<meta property="og:title" content="Oklahoma Elections Hub">
+<meta property="og:description" content="An interactive county-by-county guide to every Oklahoma election, past and upcoming.">
+<meta property="og:url" content="https://checknbalance.org/ok.html">
+<meta property="og:image" content="https://checknbalance.org/apple-touch-icon.png">
+<meta name="twitter:card" content="summary">
 
 <!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -14,6 +22,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -206,13 +215,15 @@
     box-shadow: var(--shadow);
     position: relative;
     overflow: hidden;
+    max-width: calc(min(72vh, 760px) * 2.06 + 16px);
+    margin-left: auto; margin-right: auto;
   }
   .map-frame {
     background:
       radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
       var(--paper-pure);
     border-radius: 12px;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 2.06 / 1;
     width: 100%;
     position: relative;
   }
@@ -225,25 +236,21 @@
   }
 
   .county {
-    fill: #F1E9D2;
+    fill: var(--gold-soft);
     stroke: var(--paper-pure);
-    stroke-width: 0.7;
+    stroke-width: 1px;
+    vector-effect: non-scaling-stroke;   /* screen pixels at every map size, not viewBox units */
     cursor: pointer;
     transition: fill .15s ease;
   }
-  .county.has-data       { fill: var(--gold-soft); }
-  .county.has-data:hover { fill: var(--gold); }
-  .county:hover          { fill: #E5DBBE; }
-  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+  /* Hover fills only where a pointer can hover — a phone tap must not leave a county stuck "hovered". */
+  @media (hover: hover) {
+    .county:hover { fill: var(--gold); }
+  }
+  .county:focus-visible  { outline: none; fill: var(--gold); stroke: var(--ink); stroke-width: 2px; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.5px; }
 
   /* ---- Capital city marker (muted) ---- */
-  .capital-dot {
-    fill: var(--ink);
-    fill-opacity: 0.55;
-    stroke: var(--paper-pure);
-    stroke-width: 1.5;
-    pointer-events: none;
-  }
   .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
   .capital-label {
     font-family: var(--sans);
@@ -251,16 +258,7 @@
     font-weight: 600;
     letter-spacing: 0.06em;
     fill: var(--ink);
-    fill-opacity: 0.55;
-    pointer-events: none;
-  }
-  .capital-sub {
-    font-family: var(--sans);
-    font-size: 7.5px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    fill: var(--ink);
-    fill-opacity: 0.4;
+    fill-opacity: 0.85;
     pointer-events: none;
   }
 
@@ -276,10 +274,11 @@
     opacity: 0;
     transition: opacity .12s ease;
     white-space: nowrap;
-    z-index: 10;
+    z-index: 60;
     box-shadow: 0 8px 24px rgba(0,0,0,.18);
   }
   .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip.below { transform: translate(-50%, 26px); }
   .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
 
   /* ============================================
@@ -296,15 +295,17 @@
 
   .panel {
     position: fixed; top: 0; right: 0; bottom: 0;
-    width: min(720px, 100%);
+    width: min(720px, 92vw);
     background: var(--paper-pure);
     box-shadow: -10px 0 40px rgba(14,23,38,.15);
     transform: translateX(100%);
-    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    visibility: hidden;   /* off-screen AND out of the tab order / accessibility tree */
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1), visibility 0s linear .3s;
     z-index: 101;
     display: flex; flex-direction: column;
   }
-  .panel.open { transform: translateX(0); }
+  .panel.open { transform: translateX(0); visibility: visible; transition-delay: 0s; }
+  html.drawer-open { overflow: hidden; }   /* the page behind a full-height drawer must not scroll */
 
   .panel-header {
     padding: 24px 36px;
@@ -335,7 +336,7 @@
   }
   .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
 
-  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+  .panel-body { overflow-y: auto; overscroll-behavior: contain; padding: 8px 0 60px; flex: 1; }
 
   /* Group header inside panel */
   .group-header {
@@ -366,7 +367,7 @@
     padding: 4px 10px; border-radius: 999px;
     font-weight: 700;
   }
-  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.past     { background: #F1EAD8; color: #7A561B; }
   .pill.upcoming { background: #FCE8E6; color: var(--red); }
   .pill.scheduled{ background: #E8F0F2; color: #265D69; }
   .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
@@ -397,15 +398,15 @@
     font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase;
     color: var(--gold-deep); font-weight: 700; margin-bottom: 7px;
   }
-  .brief-body { font-size: 12.5px; line-height: 1.62; color: var(--ink-soft); }
+  .brief-body { font-size: 13.5px; line-height: 1.62; color: var(--ink-soft); }
   .brief-body p + p { margin-top: 7px; }
   .brief-lead { color: var(--ink); }
   /* Flag glyphs hang in the margin so the text block keeps a straight left edge. */
   .brief-flag { position: relative; padding-left: 21px; }
   .brief-mark { position: absolute; left: 0; top: 0; font-size: 11px; color: var(--gold-deep); }
-  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; }
+  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; -webkit-mask-image: linear-gradient(#000 72%, transparent); mask-image: linear-gradient(#000 72%, transparent); }
   .brief-more {
-    margin-top: 9px; padding: 0;
+    margin-top: 6px; padding: 6px 0; min-height: 24px;
     background: none; border: none; cursor: pointer;
     font-family: var(--sans); font-size: 10.5px; font-weight: 700;
     letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-deep);
@@ -446,8 +447,9 @@
     display: grid; grid-template-rows: 0fr;
     transition: grid-template-rows .28s ease;
   }
-  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-detail > div { overflow: hidden; min-height: 0; visibility: hidden; transition: visibility 0s linear .28s; }
   .election-card.open .election-detail { grid-template-rows: 1fr; }
+  .election-card.open .election-detail > div { visibility: visible; transition-delay: 0s; }
 
   .candidates { display: grid; gap: 14px; margin-top: 18px; }
   .candidate {
@@ -464,10 +466,11 @@
   .candidate.winner::before {
     content: '★ ELECTED';
     position: absolute; top: -10px; right: 14px;
-    background: var(--gold); color: white;
-    font-size: 9px; letter-spacing: 0.16em;
+    background: var(--gold-deep); color: white;
+    font-size: 10px; letter-spacing: 0.16em;
     padding: 3px 9px; border-radius: 4px; font-weight: 700;
   }
+  .candidate.winner.nominee::before { content: '★ NOMINATED'; }
   .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
   .cand-name {
     font-family: var(--serif); font-size: 20px; font-weight: 500;
@@ -494,7 +497,7 @@
   }
   .cand-list {
     list-style: none; padding-left: 0;
-    font-size: 13px; color: var(--ink); line-height: 1.5;
+    font-size: 13.5px; color: var(--ink); line-height: 1.5;
   }
   .cand-list li {
     padding: 4px 0 4px 18px;
@@ -513,7 +516,7 @@
   .voices-block {
     border-radius: 10px;
     padding: 12px 14px;
-    font-size: 12.5px; line-height: 1.5;
+    font-size: 13px; line-height: 1.5;
   }
   .voices-block.supporters {
     background: #F2F7F0;
@@ -532,8 +535,8 @@
   }
   .voices-block ul { list-style: none; padding: 0; margin: 0; }
   .voices-block li { padding: 3px 0; }
-  .voices-block li::before { content: '"'; opacity: .4; }
-  .voices-block li::after  { content: '"'; opacity: .4; }
+  .voices-block li::before { content: '\201C'; opacity: .4; }
+  .voices-block li::after  { content: '\201D'; opacity: .4; }
 
   .empty-state {
     padding: 60px 36px; text-align: center;
@@ -568,6 +571,26 @@
   /* ============================================
      RESPONSIVE
      ============================================ */
+  /* Keyboard users get a visible, on-brand focus ring everywhere. */
+  :focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 3px; }
+  /* Anchor jumps (#map, #sources) must not land under the sticky bar. */
+  .map-section, .footer { scroll-margin-top: 84px; }
+  /* Hero stat labels wrap unevenly on narrow screens; give them a common height. */
+  .stat-label { min-height: 2.6em; }
+  .legend-star { color: var(--ink); opacity: .7; font-size: 12px; margin-right: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  }
+  /* Printing a county's ballot prints the drawer, not the hero and an empty map. */
+  @media print {
+    .topbar, .hero, .map-section, .panel-overlay, .panel-close, .brief-more { display: none !important; }
+    .panel { position: static; width: auto; transform: none; visibility: visible; box-shadow: none; }
+    .panel-body { overflow: visible; }
+    .election-detail { grid-template-rows: 1fr; }
+    .election-detail > div { visibility: visible; }
+    .election-brief.clamped .brief-body { max-height: none; -webkit-mask-image: none; mask-image: none; }
+  }
   @media (max-width: 900px) {
     .topbar-inner { grid-template-columns: 1fr auto; }
     .topnav { display: none; }
@@ -582,6 +605,7 @@
     .section-head { flex-direction: column; align-items: flex-start; }
     .panel { width: 100%; }
     .panel-header { padding: 18px 22px; }
+    .panel-close { width: 44px; height: 44px; }
     .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
     .voices { grid-template-columns: 1fr; }
   }
@@ -612,7 +636,7 @@
     <nav class="topnav">
       <a href="#map">Map</a>
       <a href="#about">About</a>
-      <a href="#data">Data</a>
+      <a href="#sources">Sources</a>
     </nav>
   </div>
 </header>
@@ -631,7 +655,7 @@
   <div class="hero-stats">
     <div class="stat"><div class="stat-num">77</div><div class="stat-label">Counties</div></div>
     <div class="stat"><div class="stat-num"><em>5</em></div><div class="stat-label">U.S. House Seats</div></div>
-    <div class="stat"><div class="stat-num"><em>12</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num"><em id="stat-statewide">–</em></div><div class="stat-label">Statewide Races, Nov&nbsp;3</div></div>
     <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
   </div>
 </section>
@@ -644,20 +668,20 @@
     <div>
       <h2 class="section-title">Click a county to <em>begin</em>.</h2>
       <p class="section-sub">
-        Counties shaded in gold have detailed election information available. Hover for a quick
-        preview; click to open the full breakdown.
+        Tap or click any county to open its full ballot — every race, every candidate, and what
+        supporters and opponents say. On a desktop, hover for a quick preview.
       </p>
     </div>
     <div class="legend">
-      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
-      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Every county is clickable</span>
+      <span class="legend-swatch"><i class="legend-star">★</i> State capital</span>
     </div>
   </div>
 
   <div class="map-shell">
     <div class="map-frame">
       <div class="map-loading" id="map-loading">Loading map of Oklahoma…</div>
-      <svg id="okmap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <svg id="okmap" viewBox="0 0 1000 485" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="tooltip" id="tooltip"></div>
     </div>
   </div>
@@ -667,7 +691,7 @@
      PANEL (details drawer)
      ============================================= -->
 <div class="panel-overlay" id="overlay"></div>
-<aside class="panel" id="panel" aria-hidden="true">
+<aside class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title" aria-hidden="true">
   <div class="panel-header">
     <div>
       <div class="panel-eyebrow" id="panel-eyebrow">County</div>
@@ -687,8 +711,8 @@
     <div class="footer-crest">
       <strong>OK Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
-    <div class="footer-meta">
-      Last updated: <span id="last-updated">July 22, 2026</span><br>
+    <div class="footer-meta" id="sources">
+      Last updated: <span id="last-updated">August 27, 2026</span><br>
       Sources: Oklahoma State Election Board (results.okelections.gov election-night reporting; official 2026 candidate filing book), U.S. Census Bureau, MCDC Geocorr 2022, FEC, Oklahoma Ethics Commission, NonDoc, Oklahoma Voice, Tulsa World, KOSU, News9/NewsOn6, Public Radio Tulsa, Free Press OKC, Oklahoma Farm Report, The Frontier, Bolts</div>
   </div>
 </footer>
@@ -696,8 +720,8 @@
 <!-- =============================================
      LIBRARIES
      ============================================= -->
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0"></script>
 
 <!-- =============================================
      DATA LAYER
@@ -957,11 +981,7 @@ const STATEWIDE = [
     note: "OPEN — Matt Pinnell is term-limited. Unlike Kansas or Hawaii, Oklahoma elects its Lieutenant Governor SEPARATELY from the Governor, so the two offices can be split between parties. T.W. Shannon won the six-way Republican primary outright with 53.76%, avoiding a runoff; Kelly Forbes was unopposed for the Democratic nomination. ⚠ This is the thinnest-documented statewide race on the page: no sourced 2026 platform statement could be located for Forbes, and Shannon's is drawn from his campaign site's own framing [Verify]. ⚠ Figures are unofficial until Sept 1, 2026.",
     candidates: [
       { name: "T.W. Shannon", party: "R", winner: false,
-        positions: [
-          "Opposing what his campaign site calls liberal bureaucrats, woke mandates and radical policies",
-          "⚠ No further sourced 2026 policy detail could be located [Verify]",
-          ""
-        ],
+        positions: ["Opposing what his campaign site calls liberal bureaucrats, woke mandates and radical policies","⚠ No further sourced 2026 policy detail could be located [Verify]"],
         differentiators: [
           "Speaker of the Oklahoma House 2013-2014 — the first African American and the first Chickasaw citizen to hold that office",
           "Won the six-way Republican primary outright with 53.76% (209,377 votes) [Verify — unofficial pending Sept 1]",
@@ -976,11 +996,7 @@ const STATEWIDE = [
           "He has lost a statewide race before — the 2014 U.S. Senate primary [Verify — structural argument]"
         ] },
       { name: "Kelly Forbes", party: "D", winner: false,
-        positions: [
-          "⚠ No sourced 2026 platform statement could be located [Verify]",
-          "",
-          ""
-        ],
+        positions: ["⚠ No sourced 2026 platform statement could be located [Verify]"],
         differentiators: [
           "A consultant and educator",
           "Unopposed for the Democratic nomination",
@@ -1044,11 +1060,7 @@ const STATEWIDE = [
     note: "⚠ THE INCUMBENT IS ALREADY GONE — AND HE LOST TO ANOTHER STATEWIDE OFFICEHOLDER. Todd Russ was beaten in the June 16 Republican primary by State Auditor Cindy Byrd, 61.65% to 38.35%, one of only two sitting officeholders anywhere on this ballot to be denied renomination. ⚠ NO DEMOCRAT FILED for this office, so Byrd's only general-election opponent is Libertarian Kiefer Perry. ⚠ Perry appears in a News9 ballot preview and holds a verifiable party role, but his certification could not be confirmed against the Election Board's own list [Verify]. ⚠ Figures are unofficial until Sept 1, 2026.",
     candidates: [
       { name: "Cindy Byrd", party: "R", winner: false,
-        positions: [
-          "⚠ No sourced 2026 campaign platform statement could be located; her record is in the auditor's office rather than in a published platform [Verify]",
-          "",
-          ""
-        ],
+        positions: ["⚠ No sourced 2026 campaign platform statement could be located; her record is in the auditor's office rather than in a published platform [Verify]"],
         differentiators: [
           "State Auditor and Inspector since 2018, term-limited out of that office and running for this one",
           "Beat the sitting Treasurer 61.65% (232,773) to 38.35% — a rare defeat of an incumbent statewide officeholder [Verify — unofficial pending Sept 1]",
@@ -1063,11 +1075,7 @@ const STATEWIDE = [
           "No published 2026 platform for voters to hold her to [Verify]"
         ] },
       { name: "Kiefer Perry", party: "L", winner: false,
-        positions: [
-          "⚠ No sourced 2026 platform statement could be located; he describes himself as a Classical Libertarian [Verify]",
-          "",
-          ""
-        ],
+        positions: ["⚠ No sourced 2026 platform statement could be located; he describes himself as a Classical Libertarian [Verify]"],
         differentiators: [
           "Vice-chair of the Oklahoma Libertarian Party, from Broken Arrow",
           "⚠ His ballot certification could NOT be confirmed against the Election Board's own certified list [Verify] — he is named in a News9 general-election preview",
@@ -1087,11 +1095,7 @@ const STATEWIDE = [
     note: "OPEN, AND THE OFFICE HAS ALREADY TURNED OVER ONCE THIS TERM. Ryan Walters departed mid-term; Gov. Stitt appointed Lindel Fields, who confirmed he will NOT seek election. ✅ BOTH NOMINEES ARE CAREER EDUCATORS, WHICH IS ITSELF THE STORY — after a term defined by culture-war fights, the November choice is between a 44-year school administrator and a former big-district school-board member. Robert Franklin led a seven-way primary with 22.59% and won the Aug 25 runoff 54.63% to 45.37%; Jennettie Marshall won her primary outright with 57.69%. ⚠ Figures are unofficial until Sept 1, 2026.",
     candidates: [
       { name: "Robert Franklin", party: "R", winner: false,
-        positions: [
-          "⚠ No sourced 2026 platform statement could be located; his candidacy is presented through his career record [Verify]",
-          "",
-          ""
-        ],
+        positions: ["⚠ No sourced 2026 platform statement could be located; his candidacy is presented through his career record [Verify]"],
         differentiators: [
           "44 years in education — special-education teacher, principal, assistant superintendent, and Associate Superintendent at Tulsa Tech",
           "Inducted into the Oklahoma Educators Hall of Fame in 2024",
@@ -1132,11 +1136,7 @@ const STATEWIDE = [
     note: "OPEN — Leslie Osborn is term-limited. Kevin West led the four-way June primary with 41.78% and won the Aug 25 runoff over fellow state Rep. John Pfeiffer 58.28% to 41.72%, the widest runoff margin of the five statewide races decided that night. ⚠ THIS IS THE LEAST-DOCUMENTED RACE ON THE PAGE: no sourced 2026 platform statement from their own campaign materials could be located for ANY of the three candidates [Verify]. NonDoc's Aug 23 fact-check of the runoff covers the two Republicans' legislative records on regulation. ⚠ Mike Hall (L) is named in a News9 ballot preview but his certification could not be confirmed and no campaign presence could be located, so he is named here rather than carded [Verify]. ⚠ Figures are unofficial until Sept 1, 2026.",
     candidates: [
       { name: "Kevin West", party: "R", winner: false,
-        positions: [
-          "⚠ No sourced 2026 platform statement from his own campaign materials could be located [Verify]",
-          "",
-          ""
-        ],
+        positions: ["⚠ No sourced 2026 platform statement from his own campaign materials could be located [Verify]"],
         differentiators: [
           "Oklahoma state representative for District 54, from Moore, since 2016",
           "Led the four-way June primary with 41.78% (153,384), then won the runoff 58.28% (203,938) to 41.72% [Verify — unofficial pending Sept 1]",
@@ -1151,11 +1151,7 @@ const STATEWIDE = [
           "A legislator moving to an executive regulatory post has no administrative track record [Verify — structural argument]"
         ] },
       { name: "Kevin Dawson", party: "D", winner: false,
-        positions: [
-          "⚠ No sourced 2026 platform statement could be located [Verify]",
-          "",
-          ""
-        ],
+        positions: ["⚠ No sourced 2026 platform statement could be located [Verify]"],
         differentiators: [
           "Unopposed for the Democratic nomination",
           "⚠ No biographical detail could be confirmed from a primary source [Verify]",
@@ -1264,11 +1260,7 @@ const STATEWIDE = [
     note: "SIX JURISTS FACE RETENTION, NOT TWO — our own build brief had this wrong. FOUR Supreme Court justices (M. John Kane IV, Richard Darby, Dana Kuehn and Travis Jett) and TWO Court of Criminal Appeals judges (Gary Lumpkin, on the court since 1989, and Robert Hudson). ⚠ ALSO CORRECTED: M. John Kane IV is NOT the current Chief Justice — Dustin Rowe has held that post since Jan 1, 2025; Kane served 2023-25. Retention is a simple yes-or-no vote with no opponent. All six were appointed by Republican governors. ⚠ THE ONE DOCUMENTED FAULT LINE: Darby, Kane and Kuehn DISSENTED from the 2023 ruling that recognised a narrow right to abortion to save a woman's life. ✅ VERIFIED NEGATIVE: Bolts reported on Apr 20, 2026 that there is no sign of an organised effort opposed to retention this year [Verify — that was the position in April and was not re-checked closer to November]. Because there is no organised campaign either way, individual jurists are not carded here.",
     candidates: [
       { name: "Four Supreme Court justices — Kane, Darby, Kuehn and Jett (retention)", party: "I", winner: false,
-        positions: [
-          "Retention votes are yes-or-no, with no opponent and no campaign; judges do not run on a platform",
-          "",
-          ""
-        ],
+        positions: ["Retention votes are yes-or-no, with no opponent and no campaign; judges do not run on a platform"],
         differentiators: [
           "All four were appointed by Republican governors — Kane, Kuehn and Jett by Gov. Stitt, Darby by Gov. Fallin",
           "⚠ Darby, Kane and Kuehn dissented from the 2023 ruling recognising a narrow right to abortion to save a woman's life",
@@ -1283,11 +1275,7 @@ const STATEWIDE = [
           "With no performance evaluation published and no campaign on either side, voters have very little information on which to judge [Verify]"
         ] },
       { name: "Two Court of Criminal Appeals judges — Lumpkin and Hudson (retention)", party: "I", winner: false,
-        positions: [
-          "Retention votes are yes-or-no, with no opponent and no campaign; judges do not run on a platform",
-          "",
-          ""
-        ],
+        positions: ["Retention votes are yes-or-no, with no opponent and no campaign; judges do not run on a platform"],
         differentiators: [
           "Gary Lumpkin has served on the Court of Criminal Appeals since 1989 — the longest judicial tenure on this ballot",
           "The Court of Criminal Appeals is Oklahoma's court of last resort for criminal cases; Oklahoma is one of only two states with a split high court",
@@ -1303,7 +1291,7 @@ const STATEWIDE = [
         ] }
     ] },
 
-  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Ballot Question", office: "State Question 845 — Judicial Nominating Commission",
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Ballot Measure · Statewide", office: "State Question 845 — Judicial Nominating Commission",
     note: "A CONSTITUTIONAL AMENDMENT RESTRUCTURING THE BODY THAT PICKS OKLAHOMA'S JUDGES. The Judicial Nominating Commission screens applicants and sends the governor a shortlist for every judicial vacancy. SQ 845 would redraw its appointments to CURRENT congressional districts instead of the 1967 map still in use; have the governor and the Oklahoma Bar Association each appoint six commissioners; allow two consecutive six-year terms; and REMOVE three existing restrictions — the bar on commissioners being licensed attorneys, the bar on having family members who are licensed attorneys, and the cap of no more than three commissioners from one political party. ⚠ VERIFIED NEGATIVE, AND UNUSUAL: NO ORGANISED CAMPAIGN ON EITHER SIDE COULD BE LOCATED — no statement from the Oklahoma Bar Association, the Governor's office or any advocacy group. A for-and-against list is therefore deliberately NOT published here. ⚠ The full official ballot title could not be retrieved from the Election Board [Verify].",
     candidates: [
       { name: "YES — restructure the commission", party: "I", winner: false,
@@ -1321,10 +1309,7 @@ const STATEWIDE = [
           "Using a 1967 map to draw appointments from a state that has been redistricted repeatedly since is indefensible on its face [Verify — structural argument]",
           "Barring people from service because a family member holds a law licence is an unusually broad disqualification [Verify — structural argument]"
         ],
-        opponents: [
-          "⚠ No organised opposition could be located, so no sourced argument against is available [Verify — an absence of located records]",
-          ""
-        ] },
+        opponents: ["⚠ No organised opposition could be located, so no sourced argument against is available [Verify — an absence of located records]"] },
       { name: "NO — keep the current structure", party: "I", winner: false,
         positions: [
           "Keeps the 1967 district framework for appointments",
@@ -1346,7 +1331,7 @@ const STATEWIDE = [
         ] }
     ] },
 
-  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Ballot Question", office: "State Question 847 — Property-Tax Valuation Caps",
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Ballot Measure · Statewide", office: "State Question 847 — Property-Tax Valuation Caps",
     note: "THE MEASURE MOST LIKELY TO TOUCH AN OKLAHOMA HOUSEHOLD'S BILL. SQ 847 would lower the annual cap on how fast a property's taxable value may rise — from 5% to 4% for most property, and from 3% to 1.75% for HOMESTEADS AND AGRICULTURAL LAND — effective in 2027. The caps limit growth in assessed value, not tax rates, so the effect compounds year over year for long-held homes and farms. ⚠ This measure was MISSING from our own build brief, which recorded only SQ 845 for November. ⚠ The official ballot title could not be retrieved from the Election Board, and no organised campaign on either side could be located [Verify].",
     candidates: [
       { name: "YES — lower the valuation caps", party: "I", winner: false,
@@ -1364,10 +1349,7 @@ const STATEWIDE = [
           "Protects long-term homeowners and farmers from being taxed out of property whose market value has risen faster than their income [Verify — structural argument]",
           "Agricultural land and homesteads get the deepest protection, which targets the relief at families rather than commercial owners [Verify — structural argument]"
         ],
-        opponents: [
-          "⚠ No organised opposition campaign could be located [Verify — an absence of located records]",
-          ""
-        ] },
+        opponents: ["⚠ No organised opposition campaign could be located [Verify — an absence of located records]"] },
       { name: "NO — keep the current caps", party: "I", winner: false,
         positions: [
           "Keeps the 5% annual valuation-growth cap for most property",
@@ -1390,11 +1372,11 @@ const STATEWIDE = [
     ] },
 
   // ─────────────────────────── PAST ───────────────────────────
-  { date: "Aug 25, 2026", type: "past", scope: "State · Ballot Question", office: "State Question 846 — Voter ID in the Constitution (APPROVED)",
+  { date: "Aug 25, 2026", type: "past", scope: "Ballot Measure · Statewide", office: "State Question 846 — Voter ID in the Constitution (APPROVED)",
     note: "APPROVED 54.61% to 45.39% — 292,481 YES to 243,064 NO, of 535,545 votes cast, the most of any contest on the Aug 25 ballot. SQ 846 writes Oklahoma's existing statutory proof-of-identity requirement for voting into the state CONSTITUTION, which means a future Legislature cannot repeal it by ordinary statute. ⚠ Figures are official Election Board returns at 100% of precincts but are unofficial until the Sept 1, 2026 certification.",
     candidates: [] },
 
-  { date: "Aug 25, 2026", type: "past", scope: "State · Ballot Question", office: "State Question 844 — Manufacturing Exemption Reimbursement (REJECTED)",
+  { date: "Aug 25, 2026", type: "past", scope: "Ballot Measure · Statewide", office: "State Question 844 — Manufacturing Exemption Reimbursement (REJECTED)",
     note: "REJECTED DECISIVELY — 73.75% NO to 26.25% YES, 389,735 against to 138,755 for. SQ 844 would have given the Legislature authority over the methodology and level of reimbursement paid to local governments for property-tax revenue lost to manufacturing exemptions. ✅ THE CONTRAST WITH SQ 846 ON THE SAME BALLOT IS THE POINT: voters approved the voter-ID amendment and rejected this one by nearly three to one, on almost identical turnout — 528,490 votes here against 535,545 on SQ 846. ⚠ Figures are official Election Board returns at 100% of precincts, unofficial until Sept 1, 2026.",
     candidates: [] }
 ];
@@ -1519,11 +1501,7 @@ const HOUSE_RACES = {
               "R+28 is the steepest structural climb in the state [Verify — structural argument]"
             ] },
           { name: "Ronnie Hopkins", party: "I", winner: false,
-            positions: [
-              "⚠ No sourced 2026 platform statement could be located [Verify]",
-              "",
-              ""
-            ],
+            positions: ["⚠ No sourced 2026 platform statement could be located [Verify]"],
             differentiators: [
               "Pastor; also ran for this seat in 2024",
               "Officially certified on the Election Board's own filing list — his ballot status is NOT in question",
@@ -1547,11 +1525,7 @@ const HOUSE_RACES = {
         note: "OKLAHOMA'S DEAN AGAINST A FIRST-TIME CANDIDATE. Frank Lucas has held this seat since a 1994 special election — the longest tenure in the delegation — and chaired the House Science, Space and Technology Committee (2023-25) and the House Agriculture Committee (2011-15). ✅ THE MOST TELLING NUMBER IS THE PRIMARY: 29.23% of Republican voters backed challenger Wade Burleson against a 30-year incumbent. ⚠ LUCAS HAD NO DEMOCRATIC OPPONENT AT ALL IN 2024, so there is no 2024 margin for this seat — this is the first contested general election here in four years. No independent or minor-party candidate filed. ⚠ Figures are official Election Board returns at 100% of precincts, unofficial until Sept 1, 2026.",
         candidates: [
           { name: "Frank Lucas (incumbent)", party: "R", winner: false,
-            positions: [
-              "⚠ No 2026 campaign-site issues page could be retrieved, so no self-described platform is published here [Verify]",
-              "",
-              ""
-            ],
+            positions: ["⚠ No 2026 campaign-site issues page could be retrieved, so no self-described platform is published here [Verify]"],
             differentiators: [
               "In Congress since 1994 — the longest-serving member of the Oklahoma delegation",
               "Former chairman of the House Science, Space and Technology Committee and of the House Agriculture Committee — farm policy and federal research funding are his documented portfolios",
@@ -1643,11 +1617,7 @@ const HOUSE_RACES = {
               "His deficit-hawk framing overlaps his opponent's, which blunts the contrast [Verify — structural argument]"
             ] },
           { name: "Rocco Bonacci", party: "I", winner: false,
-            positions: [
-              "⚠ No sourced 2026 platform statement could be located [Verify]",
-              "",
-              ""
-            ],
+            positions: ["⚠ No sourced 2026 platform statement could be located [Verify]"],
             differentiators: [
               "Disability-community activist and a member of the Lawton Access Board",
               "Officially certified on the Election Board's own filing list — his ballot status is NOT in question",
@@ -1715,11 +1685,7 @@ const HOUSE_RACES = {
               "No major forecaster has moved the seat off Solid or Safe Republican [Verify — ratings not read at the raters' own sites]"
             ] },
           { name: "Robert P. Henri", party: "I", winner: false,
-            positions: [
-              "⚠ No sourced 2026 platform statement could be located [Verify]",
-              "",
-              ""
-            ],
+            positions: ["⚠ No sourced 2026 platform statement could be located [Verify]"],
             differentiators: [
               "Cannabis businessman and a former lab technician",
               "Officially certified on the Election Board's own filing list — his ballot status is NOT in question",
@@ -1734,11 +1700,7 @@ const HOUSE_RACES = {
               "With two independents running, the realistic effect is to fragment the anti-incumbent vote rather than win [Verify — structural argument]"
             ] },
           { name: "Austin Nieves", party: "I", winner: false,
-            positions: [
-              "⚠ No sourced 2026 platform statement could be located [Verify]",
-              "",
-              ""
-            ],
+            positions: ["⚠ No sourced 2026 platform statement could be located [Verify]"],
             differentiators: [
               "⚠ Described in filings and coverage as an accountant and businessman, though one source describes him as an entertainer — the descriptions conflict [Verify]",
               "Officially certified on the Election Board's own filing list — his ballot status is NOT in question",
@@ -1781,8 +1743,16 @@ function drawCapital(g, projection, cap) {
     return "M" + pts.map(p => p.join(",")).join("L") + "Z";
   };
   const grp = g.append("g").attr("class", "capital-marker");
-  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
-  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+  grp.append("path").attr("class", "capital-star").attr("d", star(0, 0, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", 10).attr("y", 3).text(cap.name);
+  // Constant on-screen size: scale the marker by viewBox-units-per-CSS-pixel, and again on resize.
+  const svgEl = g.node().ownerSVGElement;
+  const fit = () => {
+    const k = svgEl.viewBox.baseVal.width / Math.max(1, svgEl.getBoundingClientRect().width);
+    grp.attr("transform", `translate(${x},${y}) scale(${k})`);
+  };
+  fit();
+  window.addEventListener("resize", fit);
 }
 
 
@@ -1828,22 +1798,46 @@ function getCountyElections(fips) {
 const OK_STATE_FIPS = "40";
 const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
 
-const svg     = d3.select("#okmap");
+if (typeof d3 === "undefined" || typeof topojson === "undefined" || typeof d3.json !== "function") {
+  document.getElementById("map-loading").innerHTML = "The interactive map didn\u2019t load \u2014 a script it needs was blocked. <button type=\"button\" class=\"brief-more\" onclick=\"location.reload()\">Try again</button>";
+  document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+  document.getElementById("stat-statewide").textContent = STATEWIDE.filter(r => r.type === "upcoming").length;
+  throw new Error("map libraries did not load");
+}
+const svg = d3.select("#okmap");
 const tooltip = document.getElementById("tooltip");
 const panel   = document.getElementById("panel");
 const overlay = document.getElementById("overlay");
 const loading = document.getElementById("map-loading");
+const UNIT = "County";
 
 document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+document.getElementById("stat-statewide").textContent = STATEWIDE.filter(r => r.type === "upcoming").length;
 
+// "Richmond City County" and "Baltimore City County" are not places. Independent cities and
+// Louisiana parishes get the right word; two real Virginia counties happen to end in "City".
+const placeLabel = (c) => (/\bCity$/.test(c.n) && c.fips !== "51036" && c.fips !== "51095") ? c.n : c.n + " " + UNIT;
+// Hovering re-sorted every race on every pointer move; the answer never changes per county.
+const electionsCache = new Map();
+const countyElections = (fips) => { if (!electionsCache.has(fips)) electionsCache.set(fips, getCountyElections(fips)); return electionsCache.get(fips); };
+const HOVER = window.matchMedia && window.matchMedia("(hover: hover)").matches;
+
+loadMap();
+
+function loadMap() {
 d3.json(TOPO_URL).then((us) => {
   const allCounties = topojson.feature(us, us.objects.counties).features;
   const ncCounties  = allCounties.filter(d => String(d.id).startsWith(OK_STATE_FIPS));
 
-  const width  = 1000;
-  const height = 1000;
+  // Read the drawing size from the SVG's own viewBox, so the state's shape lives in one place.
+  const { width, height } = (() => { const vb = svg.node().viewBox.baseVal; return { width: vb.width || 1000, height: vb.height || 1000 }; })();
 
-  const projection = d3.geoAlbers()
+  // A conic equal-area CENTRED ON THIS STATE, so north is up and the shape matches the official
+  // state map. d3.geoAlbers() at its default -96° meridian tilted the far states by 12–37°.
+  const [[lonMin, latMin], [lonMax, latMax]] = d3.geoBounds({ type: "FeatureCollection", features: ncCounties });
+  const projection = d3.geoConicEqualArea()
+    .rotate([-(lonMin + lonMax) / 2, 0])
+    .parallels([latMin + (latMax - latMin) / 6, latMax - (latMax - latMin) / 6])
     .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
   const path = d3.geoPath().projection(projection);
 
@@ -1859,41 +1853,59 @@ d3.json(TOPO_URL).then((us) => {
       })
       .attr("data-fips", d => String(d.id).padStart(5, "0"))
       .attr("d", path)
+      // A keyboard or screen-reader user must be able to open a county too.
+      .attr("tabindex", 0)
+      .attr("role", "button")
+      .attr("aria-label", d => { const c = COUNTIES[String(d.id).padStart(5, "0")]; return c ? placeLabel({ ...c, fips: String(d.id).padStart(5, "0") }) : "Not in this dataset"; })
       .on("mousemove", (event, d) => {
+        if (!HOVER) return;
         const fips = String(d.id).padStart(5, "0");
-        const built = getCountyElections(fips);
+        const built = countyElections(fips);
         if (built) {
           const upcoming = built.elections.filter(e => e.type === "upcoming").length;
           const past = built.elections.filter(e => e.type === "past").length;
+          const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
           tooltip.innerHTML = `
-            <strong>${built.county.n} County</strong>
-            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+            <strong>${esc(placeLabel({ ...built.county, fips }))}</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · District${ds.length > 1 ? "s" : ""} ${ds.join(" & ")}</div>`;
         } else {
-          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+          tooltip.innerHTML = `FIPS ${esc(fips)}<div class="tooltip-meta">Not in this dataset</div>`;
         }
         tooltip.style.opacity = 1;
         const rect = svg.node().getBoundingClientRect();
-        tooltip.style.left = (event.clientX - rect.left) + "px";
-        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+        const x = event.clientX - rect.left, y = event.clientY - rect.top;
+        // Flip below the cursor near the top edge; keep the box inside the map horizontally.
+        tooltip.classList.toggle("below", y < tooltip.offsetHeight + 28);
+        const half = tooltip.offsetWidth / 2 + 8;
+        tooltip.style.left = Math.max(half, Math.min(rect.width - half, x)) + "px";
+        tooltip.style.top  = y + "px";
       })
       .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("keydown", (event, d) => {
+        if (event.key === "Enter" || event.key === " ") { event.preventDefault(); event.currentTarget.dispatchEvent(new MouseEvent("click", { bubbles: true })); }
+      })
       .on("click", (event, d) => {
         const fips = String(d.id).padStart(5, "0");
+        tooltip.style.opacity = 0;
         document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
         event.currentTarget.classList.add("selected");
-        openPanel(fips);
+        openPanel(fips, event.currentTarget);
       });
 
-  // ---- Capital marker: Hartford ----
+  // ---- Capital marker: Oklahoma City ----
   drawCapital(g, projection, { name: "Oklahoma City", lng: -97.535, lat: 35.482 });
 
   loading.style.display = "none";
 }).catch((err) => {
-  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+  if (window.console && console.error) console.error("[map] " + (err && err.message ? err.message : err));
+  loading.innerHTML = "The interactive map didn\u2019t load. <button type=\"button\" class=\"brief-more\" id=\"map-retry\">Try again</button>";
+  document.getElementById("map-retry").addEventListener("click", () => { loading.textContent = "Loading map\u2026"; loadMap(); });
 });
+}
 
-function openPanel(fips) {
-  const built = getCountyElections(fips);
+let lastFocus = null;
+function openPanel(fips, fromEl) {
+  const built = countyElections(fips);
   const body  = document.getElementById("panel-body");
   const title = document.getElementById("panel-title");
   const eyebrow = document.getElementById("panel-eyebrow");
@@ -1905,17 +1917,29 @@ function openPanel(fips) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn't in our Oklahoma dataset.</p></div>`;
   } else {
-    eyebrow.textContent = `Congressional District ${built.county.d}`;
-    title.textContent   = built.county.n + " County";
-    subtitle.textContent = built.district ? built.district.region : "";
+    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    title.textContent   = placeLabel({ ...built.county, fips });
+    subtitle.textContent = ds.length > 1
+      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);
+    // A brief only needs "Show more" if the clamp actually hides something.
+    body.querySelectorAll(".election-brief.clamped").forEach(b => {
+      const t = b.querySelector(".brief-body");
+      if (t && t.scrollHeight <= t.clientHeight + 4) { b.classList.remove("clamped"); const m = b.querySelector(".brief-more"); if (m) m.remove(); }
+    });
   }
 
+  lastFocus = fromEl || document.activeElement;
+  tooltip.style.opacity = 0;
   panel.classList.add("open");
   overlay.classList.add("open");
   panel.setAttribute("aria-hidden", "false");
+  document.documentElement.classList.add("drawer-open");
   body.scrollTop = 0;
+  setTimeout(() => document.getElementById("panel-close").focus(), 320);
 }
 
 function groupByType(elections) {
@@ -1958,12 +1982,15 @@ function briefSegments(note) {
   return out;
 }
 
+// Escape data before it goes into innerHTML. Notes and card text are plain prose; an ampersand
+// or angle bracket in a future edit must render as itself rather than corrupt the card.
+const esc = (v) => String(v == null ? "" : v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 function renderNote(note) {
   if (!note) return "";
   const body = briefSegments(note).map(function (s) {
     return s.mark
-      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${s.text}</p>`
-      : `<p class="brief-lead">${s.text}</p>`;
+      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${esc(s.text)}</p>`
+      : `<p class="brief-lead">${esc(s.text)}</p>`;
   }).join("");
   // Clamp only what actually needs clamping: the median note is 236 characters, so most
   // briefs show whole and never render a toggle at all.
@@ -1971,48 +1998,53 @@ function renderNote(note) {
   return `<div class="election-brief${long ? " clamped" : ""}">
       <div class="brief-label">About this race</div>
       <div class="brief-body">${body}</div>
-      ${long ? `<button class="brief-more" type="button">Show more</button>` : ""}
+      ${long ? `<button class="brief-more" type="button" aria-expanded="false">Show more</button>` : ""}
     </div>`;
 }
 
 function renderElection(e) {
   const count = (e.candidates && e.candidates.length) || 0;
-  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  // A ballot measure is recognised by what it is called, not by one exact scope string.
+  const isMeasure = /ballot measure|ballot question|amendment|initiative|proposition|referend|\bmeasure\b|\bquestion\b/i.test((e.scope || "") + " " + (e.office || ""));
+  const isInfo = /^Also on your ballot|— eight seats, ALL UNOPPOSED/i.test(e.office || "");
+  const countLabel = count ? `${count} candidate${count === 1 ? "" : "s"}` : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
   const candidatesHtml = count
-    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
-    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+    ? `<div class="candidates">${e.candidates.map(c => renderCandidate(c, e)).join("")}</div>`
+    : (isMeasure || isInfo ? "" : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">Candidates not yet announced.</div>`);
   const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
   return `
     <div class="election-card">
       <button class="election-summary" type="button" aria-expanded="false">
-        <div class="election-summary-main">
-          <div class="election-meta">
-            <span class="pill ${e.type}">${e.type}</span>
-            <span class="election-date">${e.date}</span>
-            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
-          </div>
-          <div class="election-office">${e.office || e.name || ""}</div>
-        </div>
-        <div class="election-toggle">
+        <span class="election-summary-main">
+          <span class="election-meta">
+            <span class="pill ${esc(e.type)}">${esc(e.type)}</span>
+            <span class="election-date">${esc(e.date)}</span>
+            ${e.scope ? `<span class="election-scope">${esc(e.scope)}</span>` : ""}
+          </span>
+          <span class="election-office">${esc(e.office || e.name || "")}</span>
+        </span>
+        <span class="election-toggle">
           <span class="cand-count">${countLabel}</span>
           <span class="chevron">${chevron}</span>
-        </div>
+        </span>
       </button>
       <div class="election-detail"><div>${renderNote(e.note)}${candidatesHtml}</div></div>
     </div>`;
 }
 
-function renderCandidate(c) {
-  const winnerClass = c.winner ? "candidate winner" : "candidate";
-  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+function renderCandidate(c, race) {
+  // A primary or runoff winner was NOMINATED, not elected — the badge should say so.
+  const nominated = !!(race && /primary|runoff/i.test((race.office || "") + " " + (race.scope || "")));
+  const winnerClass = c.winner ? ("candidate winner" + (nominated ? " nominee" : "")) : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
   return `
     <div class="${winnerClass}">
       <div class="cand-head">
-        <div class="cand-name">${c.name}</div>
-        <span class="party-tag party-${c.party}">${c.party}</span>
+        <div class="cand-name">${esc(c.name)}</div>
+        <span class="party-tag party-${esc(c.party)}">${esc(c.party)}</span>
       </div>
       ${positions ? `<div class="cand-section">
           <div class="cand-section-label">Top Positions</div>
@@ -2033,10 +2065,14 @@ function renderCandidate(c) {
 }
 
 function closePanel() {
+  if (!panel.classList.contains("open")) return;
   panel.classList.remove("open");
   overlay.classList.remove("open");
   panel.setAttribute("aria-hidden", "true");
+  document.documentElement.classList.remove("drawer-open");
+  tooltip.style.opacity = 0;
   document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+  if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
 }
 document.getElementById("panel-close").addEventListener("click", closePanel);
 overlay.addEventListener("click", closePanel);
@@ -2047,7 +2083,9 @@ document.getElementById("panel-body").addEventListener("click", (e) => {
   const more = e.target.closest(".brief-more");
   if (more) {
     const brief = more.closest(".election-brief");
-    more.textContent = brief.classList.toggle("clamped") ? "Show more" : "Show less";
+    const clamped = brief.classList.toggle("clamped");
+    more.textContent = clamped ? "Show more" : "Show less";
+    more.setAttribute("aria-expanded", clamped ? "false" : "true");
     return;
   }
   const summary = e.target.closest(".election-summary");

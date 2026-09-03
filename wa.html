@@ -4,7 +4,15 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Washington Elections Hub</title>
-<meta name="description" content="An interactive county-by-county guide to every WA election, past and upcoming." />
+<meta name="description" content="An interactive county-by-county guide to every Washington election, past and upcoming." />
+<link rel="canonical" href="https://checknbalance.org/wa.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Check n Balance">
+<meta property="og:title" content="Washington Elections Hub">
+<meta property="og:description" content="An interactive county-by-county guide to every Washington election, past and upcoming.">
+<meta property="og:url" content="https://checknbalance.org/wa.html">
+<meta property="og:image" content="https://checknbalance.org/apple-touch-icon.png">
+<meta name="twitter:card" content="summary">
 
 <!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -14,6 +22,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -206,13 +215,15 @@
     box-shadow: var(--shadow);
     position: relative;
     overflow: hidden;
+    max-width: calc(min(72vh, 760px) * 1.52 + 16px);
+    margin-left: auto; margin-right: auto;
   }
   .map-frame {
     background:
       radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
       var(--paper-pure);
     border-radius: 12px;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1.52 / 1;
     width: 100%;
     position: relative;
   }
@@ -225,25 +236,21 @@
   }
 
   .county {
-    fill: #F1E9D2;
+    fill: var(--gold-soft);
     stroke: var(--paper-pure);
-    stroke-width: 0.7;
+    stroke-width: 1px;
+    vector-effect: non-scaling-stroke;   /* screen pixels at every map size, not viewBox units */
     cursor: pointer;
     transition: fill .15s ease;
   }
-  .county.has-data       { fill: var(--gold-soft); }
-  .county.has-data:hover { fill: var(--gold); }
-  .county:hover          { fill: #E5DBBE; }
-  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+  /* Hover fills only where a pointer can hover — a phone tap must not leave a county stuck "hovered". */
+  @media (hover: hover) {
+    .county:hover { fill: var(--gold); }
+  }
+  .county:focus-visible  { outline: none; fill: var(--gold); stroke: var(--ink); stroke-width: 2px; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.5px; }
 
   /* ---- Capital city marker (muted) ---- */
-  .capital-dot {
-    fill: var(--ink);
-    fill-opacity: 0.55;
-    stroke: var(--paper-pure);
-    stroke-width: 1.5;
-    pointer-events: none;
-  }
   .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
   .capital-label {
     font-family: var(--sans);
@@ -251,16 +258,7 @@
     font-weight: 600;
     letter-spacing: 0.06em;
     fill: var(--ink);
-    fill-opacity: 0.55;
-    pointer-events: none;
-  }
-  .capital-sub {
-    font-family: var(--sans);
-    font-size: 7.5px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    fill: var(--ink);
-    fill-opacity: 0.4;
+    fill-opacity: 0.85;
     pointer-events: none;
   }
 
@@ -276,10 +274,11 @@
     opacity: 0;
     transition: opacity .12s ease;
     white-space: nowrap;
-    z-index: 10;
+    z-index: 60;
     box-shadow: 0 8px 24px rgba(0,0,0,.18);
   }
   .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip.below { transform: translate(-50%, 26px); }
   .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
 
   /* ============================================
@@ -296,15 +295,17 @@
 
   .panel {
     position: fixed; top: 0; right: 0; bottom: 0;
-    width: min(720px, 100%);
+    width: min(720px, 92vw);
     background: var(--paper-pure);
     box-shadow: -10px 0 40px rgba(14,23,38,.15);
     transform: translateX(100%);
-    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    visibility: hidden;   /* off-screen AND out of the tab order / accessibility tree */
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1), visibility 0s linear .3s;
     z-index: 101;
     display: flex; flex-direction: column;
   }
-  .panel.open { transform: translateX(0); }
+  .panel.open { transform: translateX(0); visibility: visible; transition-delay: 0s; }
+  html.drawer-open { overflow: hidden; }   /* the page behind a full-height drawer must not scroll */
 
   .panel-header {
     padding: 24px 36px;
@@ -335,7 +336,7 @@
   }
   .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
 
-  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+  .panel-body { overflow-y: auto; overscroll-behavior: contain; padding: 8px 0 60px; flex: 1; }
 
   /* Group header inside panel */
   .group-header {
@@ -366,7 +367,7 @@
     padding: 4px 10px; border-radius: 999px;
     font-weight: 700;
   }
-  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.past     { background: #F1EAD8; color: #7A561B; }
   .pill.upcoming { background: #FCE8E6; color: var(--red); }
   .pill.scheduled{ background: #E8F0F2; color: #265D69; }
   .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
@@ -397,15 +398,15 @@
     font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase;
     color: var(--gold-deep); font-weight: 700; margin-bottom: 7px;
   }
-  .brief-body { font-size: 12.5px; line-height: 1.62; color: var(--ink-soft); }
+  .brief-body { font-size: 13.5px; line-height: 1.62; color: var(--ink-soft); }
   .brief-body p + p { margin-top: 7px; }
   .brief-lead { color: var(--ink); }
   /* Flag glyphs hang in the margin so the text block keeps a straight left edge. */
   .brief-flag { position: relative; padding-left: 21px; }
   .brief-mark { position: absolute; left: 0; top: 0; font-size: 11px; color: var(--gold-deep); }
-  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; }
+  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; -webkit-mask-image: linear-gradient(#000 72%, transparent); mask-image: linear-gradient(#000 72%, transparent); }
   .brief-more {
-    margin-top: 9px; padding: 0;
+    margin-top: 6px; padding: 6px 0; min-height: 24px;
     background: none; border: none; cursor: pointer;
     font-family: var(--sans); font-size: 10.5px; font-weight: 700;
     letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-deep);
@@ -446,8 +447,9 @@
     display: grid; grid-template-rows: 0fr;
     transition: grid-template-rows .28s ease;
   }
-  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-detail > div { overflow: hidden; min-height: 0; visibility: hidden; transition: visibility 0s linear .28s; }
   .election-card.open .election-detail { grid-template-rows: 1fr; }
+  .election-card.open .election-detail > div { visibility: visible; transition-delay: 0s; }
 
   .candidates { display: grid; gap: 14px; margin-top: 18px; }
   .candidate {
@@ -464,10 +466,11 @@
   .candidate.winner::before {
     content: '★ ELECTED';
     position: absolute; top: -10px; right: 14px;
-    background: var(--gold); color: white;
-    font-size: 9px; letter-spacing: 0.16em;
+    background: var(--gold-deep); color: white;
+    font-size: 10px; letter-spacing: 0.16em;
     padding: 3px 9px; border-radius: 4px; font-weight: 700;
   }
+  .candidate.winner.nominee::before { content: '★ NOMINATED'; }
   .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
   .cand-name {
     font-family: var(--serif); font-size: 20px; font-weight: 500;
@@ -494,7 +497,7 @@
   }
   .cand-list {
     list-style: none; padding-left: 0;
-    font-size: 13px; color: var(--ink); line-height: 1.5;
+    font-size: 13.5px; color: var(--ink); line-height: 1.5;
   }
   .cand-list li {
     padding: 4px 0 4px 18px;
@@ -513,7 +516,7 @@
   .voices-block {
     border-radius: 10px;
     padding: 12px 14px;
-    font-size: 12.5px; line-height: 1.5;
+    font-size: 13px; line-height: 1.5;
   }
   .voices-block.supporters {
     background: #F2F7F0;
@@ -532,8 +535,8 @@
   }
   .voices-block ul { list-style: none; padding: 0; margin: 0; }
   .voices-block li { padding: 3px 0; }
-  .voices-block li::before { content: '"'; opacity: .4; }
-  .voices-block li::after  { content: '"'; opacity: .4; }
+  .voices-block li::before { content: '\201C'; opacity: .4; }
+  .voices-block li::after  { content: '\201D'; opacity: .4; }
 
   .empty-state {
     padding: 60px 36px; text-align: center;
@@ -568,6 +571,26 @@
   /* ============================================
      RESPONSIVE
      ============================================ */
+  /* Keyboard users get a visible, on-brand focus ring everywhere. */
+  :focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 3px; }
+  /* Anchor jumps (#map, #sources) must not land under the sticky bar. */
+  .map-section, .footer { scroll-margin-top: 84px; }
+  /* Hero stat labels wrap unevenly on narrow screens; give them a common height. */
+  .stat-label { min-height: 2.6em; }
+  .legend-star { color: var(--ink); opacity: .7; font-size: 12px; margin-right: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  }
+  /* Printing a county's ballot prints the drawer, not the hero and an empty map. */
+  @media print {
+    .topbar, .hero, .map-section, .panel-overlay, .panel-close, .brief-more { display: none !important; }
+    .panel { position: static; width: auto; transform: none; visibility: visible; box-shadow: none; }
+    .panel-body { overflow: visible; }
+    .election-detail { grid-template-rows: 1fr; }
+    .election-detail > div { visibility: visible; }
+    .election-brief.clamped .brief-body { max-height: none; -webkit-mask-image: none; mask-image: none; }
+  }
   @media (max-width: 900px) {
     .topbar-inner { grid-template-columns: 1fr auto; }
     .topnav { display: none; }
@@ -582,6 +605,7 @@
     .section-head { flex-direction: column; align-items: flex-start; }
     .panel { width: 100%; }
     .panel-header { padding: 18px 22px; }
+    .panel-close { width: 44px; height: 44px; }
     .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
     .voices { grid-template-columns: 1fr; }
   }
@@ -612,7 +636,7 @@
     <nav class="topnav">
       <a href="#map">Map</a>
       <a href="#about">About</a>
-      <a href="#data">Data</a>
+      <a href="#sources">Sources</a>
     </nav>
   </div>
 </header>
@@ -631,7 +655,7 @@
   <div class="hero-stats">
     <div class="stat"><div class="stat-num">39</div><div class="stat-label">Counties</div></div>
     <div class="stat"><div class="stat-num"><em>10</em></div><div class="stat-label">U.S. House Seats</div></div>
-    <div class="stat"><div class="stat-num"><em>8</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num"><em id="stat-statewide">–</em></div><div class="stat-label">Statewide Races, Nov&nbsp;3</div></div>
     <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
   </div>
 </section>
@@ -644,20 +668,20 @@
     <div>
       <h2 class="section-title">Click a county to <em>begin</em>.</h2>
       <p class="section-sub">
-        Counties shaded in gold have detailed election information available. Hover for a quick
-        preview; click to open the full breakdown.
+        Tap or click any county to open its full ballot — every race, every candidate, and what
+        supporters and opponents say. On a desktop, hover for a quick preview.
       </p>
     </div>
     <div class="legend">
-      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
-      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Every county is clickable</span>
+      <span class="legend-swatch"><i class="legend-star">★</i> State capital</span>
     </div>
   </div>
 
   <div class="map-shell">
     <div class="map-frame">
       <div class="map-loading" id="map-loading">Loading map of Washington…</div>
-      <svg id="wamap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <svg id="wamap" viewBox="0 0 1000 658" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="tooltip" id="tooltip"></div>
     </div>
   </div>
@@ -667,7 +691,7 @@
      PANEL (details drawer)
      ============================================= -->
 <div class="panel-overlay" id="overlay"></div>
-<aside class="panel" id="panel" aria-hidden="true">
+<aside class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title" aria-hidden="true">
   <div class="panel-header">
     <div>
       <div class="panel-eyebrow" id="panel-eyebrow">County</div>
@@ -687,8 +711,8 @@
     <div class="footer-crest">
       <strong>WA Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
-    <div class="footer-meta">
-      Last updated: <span id="last-updated">July 22, 2026</span><br>
+    <div class="footer-meta" id="sources">
+      Last updated: <span id="last-updated">September 2, 2026</span><br>
       Sources: Washington Secretary of State — the certified Aug 4, 2026 primary canvass at results.votewa.gov (county boards certified Aug 18; SoS Steve Hobbs certified statewide Aug 21, 2026), the Certification of Candidates to the General Election, and the votewa initiative tracker; RCW 29A.52.220 and 29A.52.231 via app.leg.wa.gov; the 2021 Redistricting Commission congressional plan as amended by HCR 4407; MCDC Geocorr 2022 and the Census CD119 county relationship file for county-district populations; FEC; The Spokesman-Review, Everett Herald, Cascadia Daily News, Yakima Herald, OPB, KUOW, MyNorthwest, Inlander, Kitsap Daily News, Peninsula Daily News, Seattle Times, KOMO, Ballotpedia News.</div>
   </div>
 </footer>
@@ -696,8 +720,8 @@
 <!-- =============================================
      LIBRARIES
      ============================================= -->
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0"></script>
 
 <!-- =============================================
      DATA LAYER
@@ -840,7 +864,7 @@ const COUNTIES = {
 // "IP26-645" and "Initiative 645" forms; both are given.
 const STATEWIDE = [
   // ─────────────────────────── UPCOMING ───────────────────────────
-  { date: "Nov 3, 2026", type: "upcoming", scope: "Judicial · Statewide", office: "Washington Supreme Court — Justice Position 1 (special election)",
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Judicial · Statewide", office: "Washington Supreme Court — Justice Position 1 (SPECIAL ELECTION)",
     note: "OFFICIAL: MELODY TOOK 52.90% IN THE AUG 4 PRIMARY, 923,965 of 1,746,550. ✅ Certified by SoS Steve Hobbs on Aug 21, 2026. ✅ The November matchup is Melody vs. Scott Edwards (29.39%); Laura Christensen Colberg (17.47%) is eliminated. ⚠ A primary majority does NOT elect a judge outright in Washington when three candidates file — the top two advance regardless of share. ⚠ This is a nonpartisan office, but a state party has endorsed in it.",
     candidates: [
       { name: "Colleen Melody (incumbent)", party: "I", winner: false,
@@ -987,7 +1011,7 @@ const STATEWIDE = [
         ] }
     ] },
 
-  { date: "Nov 3, 2026", type: "upcoming", scope: "Judicial · Statewide", office: "Washington Supreme Court — Justice Position 5 (special election)",
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Judicial · Statewide", office: "Washington Supreme Court — Justice Position 5 (SPECIAL ELECTION)",
     note: "OFFICIAL: ANGELIS LED WITH 35.84%, 623,396 of 1,739,425 — THE WEAKEST SHOWING BY ANY INCUMBENT ON THIS BALLOT. ✅ Certified Aug 21, 2026. ✅ Angelis vs. Dave Larson (32.17%); Sharonda Amamilo (21.33%) and Greg Miller (10.44%) are eliminated. ⚠ This is the closest of the five races. ⚠ Angelis was appointed by Gov. Ferguson in 2026 to the seat of retired Justice Barbara Madsen; his exact swearing-in date is reported inconsistently. ⚠ Nonpartisan office.",
     candidates: [
       { name: "Theo Angelis (incumbent)", party: "I", winner: false,
@@ -1259,10 +1283,9 @@ const STATEWIDE = [
 // is a direct read, and every one carries a [Verify] saying so. No handicapper rating is asserted
 // anywhere except WA-8's, which is itself marked.
 const HOUSE_RACES = {
-  1: { name: "U.S. House — Washington District 1", region: "Northeastern King County and southern Snohomish County — the I-405 and Sammamish valley suburbs",
+  1: { name: "U.S. House — WA District 1", region: "Northeastern King County and southern Snohomish County — the I-405 and Sammamish valley suburbs",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "DELBENE WON AN OUTRIGHT MAJORITY IN A SEVEN-WAY PRIMARY. ⚠ Washington uses a top-two primary: the two highest finishers advance regardless of party, and ballot party labels are self-declared preferences, not nominations. ✅ Certified Aug 21, 2026 by Secretary of State Steve Hobbs — DelBene 53.03%, Silva 26.21% of 160,573 votes.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "DELBENE WON AN OUTRIGHT MAJORITY IN A SEVEN-WAY PRIMARY. ⚠ Washington uses a top-two primary: the two highest finishers advance regardless of party, and ballot party labels are self-declared preferences, not nominations. ✅ Certified Aug 21, 2026 by Secretary of State Steve Hobbs — DelBene 53.03%, Silva 26.21% of 160,573 votes.",
         candidates: [
           { name: "Suzan DelBene (incumbent)", party: "D", winner: false,
             positions: [
@@ -1311,10 +1334,9 @@ const HOUSE_RACES = {
         ] }
     ] },
 
-  2: { name: "U.S. House — Washington District 2", region: "The northwest corner — Whatcom, Skagit, Island and San Juan counties plus western Snohomish",
+  2: { name: "U.S. House — WA District 2", region: "The northwest corner — Whatcom, Skagit, Island and San Juan counties plus western Snohomish",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "LARSEN IS SEEKING A 14TH TERM AND TOOK ONLY 42 PERCENT IN A FOUR-WAY PRIMARY. ⚠ Top-two primary: the two highest finishers advance regardless of party; ballot labels are self-declared party preference. ✅ Certified Aug 21, 2026 — Larsen 42.34%, Feller 32.80% of 209,510; two other Democrats drew 24.8% between them, so the Democratic vote was split three ways.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "LARSEN IS SEEKING A 14TH TERM AND TOOK ONLY 42 PERCENT IN A FOUR-WAY PRIMARY. ⚠ Top-two primary: the two highest finishers advance regardless of party; ballot labels are self-declared party preference. ✅ Certified Aug 21, 2026 — Larsen 42.34%, Feller 32.80% of 209,510; two other Democrats drew 24.8% between them, so the Democratic vote was split three ways.",
         candidates: [
           { name: "Rick Larsen (incumbent)", party: "D", winner: false,
             positions: [
@@ -1363,10 +1385,9 @@ const HOUSE_RACES = {
         ] }
     ] },
 
-  3: { name: "U.S. House — Washington District 3", region: "Southwest Washington — Clark, Cowlitz, Lewis, Pacific, Skamania and Wahkiakum counties plus part of Thurston",
+  3: { name: "U.S. House — WA District 3", region: "Southwest Washington — Clark, Cowlitz, Lewis, Pacific, Skamania and Wahkiakum counties plus part of Thurston",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "THE DEMOCRATIC INCUMBENT FINISHED SECOND IN HER OWN PRIMARY. ⚠ Under Washington's top-two primary the top two advance regardless of party, so second place is not a loss — but it is a warning sign. ✅ Certified Aug 21, 2026 — Braun 39.66%, Gluesenkamp Perez 36.38% of 214,491; Democrats combined about 55 percent to Republicans' 43 percent, so the party totals and the candidate order point opposite ways. ⚠ This is the most competitive U.S. House race in Washington.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "THE DEMOCRATIC INCUMBENT FINISHED SECOND IN HER OWN PRIMARY. ⚠ Under Washington's top-two primary the top two advance regardless of party, so second place is not a loss — but it is a warning sign. ✅ Certified Aug 21, 2026 — Braun 39.66%, Gluesenkamp Perez 36.38% of 214,491; Democrats combined about 55 percent to Republicans' 43 percent, so the party totals and the candidate order point opposite ways. ⚠ This is the most competitive U.S. House race in Washington.",
         candidates: [
           { name: "Marie Gluesenkamp Perez (incumbent)", party: "D", winner: false,
             positions: [
@@ -1415,10 +1436,9 @@ const HOUSE_RACES = {
         ] }
     ] },
 
-  4: { name: "U.S. House — Washington District 4", region: "Central Washington — Yakima, Benton, Grant, Okanogan and Klickitat counties plus parts of Adams, Douglas and Franklin",
+  4: { name: "U.S. House — WA District 4", region: "Central Washington — Yakima, Benton, Grant, Okanogan and Klickitat counties plus parts of Adams, Douglas and Franklin",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "OPEN SEAT: REP. DAN NEWHOUSE (R) ANNOUNCED DEC 17, 2025 THAT HE WOULD NOT SEEK A SEVENTH TERM. He did not lose, withdraw or resign — he is serving out his term. ⚠ Top-two primary: the two highest finishers advance regardless of party. ✅ Certified Aug 21 — McKinney 34.80%, Duresky 29.92%. A DEMOCRAT PLACED SECOND in a district that has not elected one since Jay Inslee in 1992 [Verify — a historical claim from press summaries]. ⚠ Jerrod Sessler, Trump's 2024 endorsee who nearly beat Newhouse, ran THIRD at 14.59% and is eliminated; Trump endorsed McKinney this cycle.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "OPEN SEAT: REP. DAN NEWHOUSE (R) ANNOUNCED DEC 17, 2025 THAT HE WOULD NOT SEEK A SEVENTH TERM. He did not lose, withdraw or resign — he is serving out his term. ⚠ Top-two primary: the two highest finishers advance regardless of party. ✅ Certified Aug 21 — McKinney 34.80%, Duresky 29.92%. A DEMOCRAT PLACED SECOND in a district that has not elected one since Jay Inslee in 1992 [Verify — a historical claim from press summaries]. ⚠ Jerrod Sessler, Trump's 2024 endorsee who nearly beat Newhouse, ran THIRD at 14.59% and is eliminated; Trump endorsed McKinney this cycle.",
         candidates: [
           { name: "Amanda McKinney", party: "R", winner: false,
             positions: [
@@ -1467,10 +1487,9 @@ const HOUSE_RACES = {
         ] }
     ] },
 
-  5: { name: "U.S. House — Washington District 5", region: "Eastern Washington — Spokane, Whitman, Walla Walla, Stevens, Asotin, Lincoln and the far northeast, plus parts of Adams and Franklin",
+  5: { name: "U.S. House — WA District 5", region: "Eastern Washington — Spokane, Whitman, Walla Walla, Stevens, Asotin, Lincoln and the far northeast, plus parts of Adams and Franklin",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "FIRST-TERM INCUMBENT MICHAEL BAUMGARTNER (R) DREW 11 CHALLENGERS AND FINISHED UNDER HALF AT 47.40%. ⚠ Top-two primary: party labels are self-declared ballot preferences, not nominations. ✅ Certified Aug 21 — Baumgartner 47.40%, Carmela Conroy 18.85%, and independent Nate Powell a close third at 16.38%. This is a 2024 rematch. ⚠ Cook PVI R+5 [Verify — via Ballotpedia and Wikipedia; Cook's own site returned 403].",
+      { date: "Nov 3, 2026", type: "upcoming", note: "FIRST-TERM INCUMBENT MICHAEL BAUMGARTNER (R) DREW 11 CHALLENGERS AND FINISHED UNDER HALF AT 47.40%. ⚠ Top-two primary: party labels are self-declared ballot preferences, not nominations. ✅ Certified Aug 21 — Baumgartner 47.40%, Carmela Conroy 18.85%, and independent Nate Powell a close third at 16.38%. This is a 2024 rematch. ⚠ Cook PVI R+5 [Verify — via Ballotpedia and Wikipedia; Cook's own site returned 403].",
         candidates: [
           { name: "Michael Baumgartner (incumbent)", party: "R", winner: false,
             positions: [
@@ -1519,10 +1538,9 @@ const HOUSE_RACES = {
         ] }
     ] },
 
-  6: { name: "U.S. House — Washington District 6", region: "The Olympic Peninsula and Kitsap — Clallam, Jefferson, Grays Harbor, Mason and Kitsap counties plus part of Pierce",
+  6: { name: "U.S. House — WA District 6", region: "The Olympic Peninsula and Kitsap — Clallam, Jefferson, Grays Harbor, Mason and Kitsap counties plus part of Pierce",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "INCUMBENT EMILY RANDALL (D) TOOK 58.77% IN THE PRIMARY, MORE THAN HER FOUR OPPONENTS COMBINED. ⚠ Top-two primary: the two highest finishers advance regardless of party. ✅ Certified Aug 21 — Randall 58.77%, Republican Teresa Fox 25.54%; Leon Lawson, who declared a preference for the Trump Republican Party, took 9.72%. ⚠ Cook PVI D+10 [Verify — via Ballotpedia; Cook's own site returned 403].",
+      { date: "Nov 3, 2026", type: "upcoming", note: "INCUMBENT EMILY RANDALL (D) TOOK 58.77% IN THE PRIMARY, MORE THAN HER FOUR OPPONENTS COMBINED. ⚠ Top-two primary: the two highest finishers advance regardless of party. ✅ Certified Aug 21 — Randall 58.77%, Republican Teresa Fox 25.54%; Leon Lawson, who declared a preference for the Trump Republican Party, took 9.72%. ⚠ Cook PVI D+10 [Verify — via Ballotpedia; Cook's own site returned 403].",
         candidates: [
           { name: "Emily Randall (incumbent)", party: "D", winner: false,
             positions: [
@@ -1571,10 +1589,9 @@ const HOUSE_RACES = {
         ] }
     ] },
 
-  7: { name: "U.S. House — Washington District 7", region: "Seattle and its immediate neighbours — the district sits ENTIRELY inside King County",
+  7: { name: "U.S. House — WA District 7", region: "Seattle and its immediate neighbours — the district sits ENTIRELY inside King County",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "JAYAPAL TOOK 84% OF THE PRIMARY IN WASHINGTON'S MOST DEMOCRATIC SEAT, COOK PVI D+39 [Verify — PVI read via a search summary; Cook's own site returned 403]. ⚠ Washington's top-two primary advances the two leaders regardless of party; a listed party is a self-declared ballot preference, not a nomination. ✅ Certified Aug 21, 2026 — Jayapal 182,844 (84.36%), Nirav Sheth 21,282 (9.82%) of 216,741.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "JAYAPAL TOOK 84% OF THE PRIMARY IN WASHINGTON'S MOST DEMOCRATIC SEAT, COOK PVI D+39 [Verify — PVI read via a search summary; Cook's own site returned 403]. ⚠ Washington's top-two primary advances the two leaders regardless of party; a listed party is a self-declared ballot preference, not a nomination. ✅ Certified Aug 21, 2026 — Jayapal 182,844 (84.36%), Nirav Sheth 21,282 (9.82%) of 216,741.",
         candidates: [
           { name: "Pramila Jayapal (incumbent)", party: "D", winner: false,
             positions: [
@@ -1623,10 +1640,9 @@ const HOUSE_RACES = {
         ] }
     ] },
 
-  8: { name: "U.S. House — Washington District 8", region: "The Cascade crest — Chelan and Kittitas counties plus the eastern suburbs of King, Pierce, Snohomish and part of Douglas",
+  8: { name: "U.S. House — WA District 8", region: "The Cascade crest — Chelan and Kittitas counties plus the eastern suburbs of King, Pierce, Snohomish and part of Douglas",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "SCHRIER TOOK 53.69% OUTRIGHT AND OUTPOLLED ALL FOUR REPUBLICANS COMBINED, 102,853 to 83,595. ⚠ Long the state's most competitive seat, Cook PVI D+3 — but Cook moved it Likely D to Solid D and Sabato Likely to Safe Democratic for 2026 [Verify — both read via search summaries; both raters' sites returned 403]. ✅ Certified Aug 21 — Schrier 102,853, Spencer Meline 30,324 (15.83%).",
+      { date: "Nov 3, 2026", type: "upcoming", note: "SCHRIER TOOK 53.69% OUTRIGHT AND OUTPOLLED ALL FOUR REPUBLICANS COMBINED, 102,853 to 83,595. ⚠ Long the state's most competitive seat, Cook PVI D+3 — but Cook moved it Likely D to Solid D and Sabato Likely to Safe Democratic for 2026 [Verify — both read via search summaries; both raters' sites returned 403]. ✅ Certified Aug 21 — Schrier 102,853, Spencer Meline 30,324 (15.83%).",
         candidates: [
           { name: "Kim Schrier (incumbent)", party: "D", winner: false,
             positions: [
@@ -1675,10 +1691,9 @@ const HOUSE_RACES = {
         ] }
     ] },
 
-  9: { name: "U.S. House — Washington District 9", region: "South Seattle, Bellevue, Renton, Kent and Federal Way — the district sits ENTIRELY inside King County and is the population plurality of no county at all",
+  9: { name: "U.S. House — WA District 9", region: "South Seattle, Bellevue, Renton, Kent and Federal Way — the district sits ENTIRELY inside King County and is the population plurality of no county at all",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "SEATTLE SOCIALIST KSHAMA SAWANT RAN AND PLACED THIRD, AND WASHINGTON HAS NO RUNOFF, SO SHE IS ELIMINATED. ⚠ Adam Smith, in office since 1997, took only 47.13% against a split left — a majority of primary voters chose someone else. ✅ Certified Aug 21 — Smith 67,095, Doug Basler 31,070 (21.83%), Sawant 24,583 (17.27%), Melissa Chaudhry 17,811 (12.51%). ⚠ Cook PVI D+22 [Verify — via a search summary; Cook's own site returned 403].",
+      { date: "Nov 3, 2026", type: "upcoming", note: "SEATTLE SOCIALIST KSHAMA SAWANT RAN AND PLACED THIRD, AND WASHINGTON HAS NO RUNOFF, SO SHE IS ELIMINATED. ⚠ Adam Smith, in office since 1997, took only 47.13% against a split left — a majority of primary voters chose someone else. ✅ Certified Aug 21 — Smith 67,095, Doug Basler 31,070 (21.83%), Sawant 24,583 (17.27%), Melissa Chaudhry 17,811 (12.51%). ⚠ Cook PVI D+22 [Verify — via a search summary; Cook's own site returned 403].",
         candidates: [
           { name: "Adam Smith (incumbent)", party: "D", winner: false,
             positions: [
@@ -1727,10 +1742,9 @@ const HOUSE_RACES = {
         ] }
     ] },
 
-  10: { name: "U.S. House — Washington District 10", region: "The South Sound — Olympia, Lacey and Tacoma's southern suburbs around Joint Base Lewis-McChord, spanning Thurston and Pierce counties",
+  10: { name: "U.S. House — WA District 10", region: "The South Sound — Olympia, Lacey and Tacoma's southern suburbs around Joint Base Lewis-McChord, spanning Thurston and Pierce counties",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "STRICKLAND TOOK ONLY 47.26% OF HER OWN PRIMARY WITH TWO OTHER DEMOCRATS ON THE BALLOT. ⚠ Republican Chris D. Chung sought Washington insurance commissioner as a DEMOCRAT in the 2024 primary — a party switch worth knowing about before you vote. ✅ Certified Aug 21 — Strickland 73,689, Chung 48,953 (31.40%), Alex Scheel (D) 16,074, Adam Arafat (D) 14,695. ⚠ Cook PVI D+9 [Verify — via a search summary; Cook's own site returned 403].",
+      { date: "Nov 3, 2026", type: "upcoming", note: "STRICKLAND TOOK ONLY 47.26% OF HER OWN PRIMARY WITH TWO OTHER DEMOCRATS ON THE BALLOT. ⚠ Republican Chris D. Chung sought Washington insurance commissioner as a DEMOCRAT in the 2024 primary — a party switch worth knowing about before you vote. ✅ Certified Aug 21 — Strickland 73,689, Chung 48,953 (31.40%), Alex Scheel (D) 16,074, Adam Arafat (D) 14,695. ⚠ Cook PVI D+9 [Verify — via a search summary; Cook's own site returned 403].",
         candidates: [
           { name: "Marilyn Strickland (incumbent)", party: "D", winner: false,
             positions: [
@@ -1806,8 +1820,16 @@ function drawCapital(g, projection, cap) {
     return "M" + pts.map(p => p.join(",")).join("L") + "Z";
   };
   const grp = g.append("g").attr("class", "capital-marker");
-  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
-  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+  grp.append("path").attr("class", "capital-star").attr("d", star(0, 0, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", 10).attr("y", 3).text(cap.name);
+  // Constant on-screen size: scale the marker by viewBox-units-per-CSS-pixel, and again on resize.
+  const svgEl = g.node().ownerSVGElement;
+  const fit = () => {
+    const k = svgEl.viewBox.baseVal.width / Math.max(1, svgEl.getBoundingClientRect().width);
+    grp.attr("transform", `translate(${x},${y}) scale(${k})`);
+  };
+  fit();
+  window.addEventListener("resize", fit);
 }
 
 
@@ -1853,22 +1875,46 @@ function getCountyElections(fips) {
 const WA_STATE_FIPS = "53";
 const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
 
-const svg     = d3.select("#wamap");
+if (typeof d3 === "undefined" || typeof topojson === "undefined" || typeof d3.json !== "function") {
+  document.getElementById("map-loading").innerHTML = "The interactive map didn\u2019t load \u2014 a script it needs was blocked. <button type=\"button\" class=\"brief-more\" onclick=\"location.reload()\">Try again</button>";
+  document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+  document.getElementById("stat-statewide").textContent = STATEWIDE.filter(r => r.type === "upcoming").length;
+  throw new Error("map libraries did not load");
+}
+const svg = d3.select("#wamap");
 const tooltip = document.getElementById("tooltip");
 const panel   = document.getElementById("panel");
 const overlay = document.getElementById("overlay");
 const loading = document.getElementById("map-loading");
+const UNIT = "County";
 
 document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+document.getElementById("stat-statewide").textContent = STATEWIDE.filter(r => r.type === "upcoming").length;
 
+// "Richmond City County" and "Baltimore City County" are not places. Independent cities and
+// Louisiana parishes get the right word; two real Virginia counties happen to end in "City".
+const placeLabel = (c) => (/\bCity$/.test(c.n) && c.fips !== "51036" && c.fips !== "51095") ? c.n : c.n + " " + UNIT;
+// Hovering re-sorted every race on every pointer move; the answer never changes per county.
+const electionsCache = new Map();
+const countyElections = (fips) => { if (!electionsCache.has(fips)) electionsCache.set(fips, getCountyElections(fips)); return electionsCache.get(fips); };
+const HOVER = window.matchMedia && window.matchMedia("(hover: hover)").matches;
+
+loadMap();
+
+function loadMap() {
 d3.json(TOPO_URL).then((us) => {
   const allCounties = topojson.feature(us, us.objects.counties).features;
   const ncCounties  = allCounties.filter(d => String(d.id).startsWith(WA_STATE_FIPS));
 
-  const width  = 1000;
-  const height = 1000;
+  // Read the drawing size from the SVG's own viewBox, so the state's shape lives in one place.
+  const { width, height } = (() => { const vb = svg.node().viewBox.baseVal; return { width: vb.width || 1000, height: vb.height || 1000 }; })();
 
-  const projection = d3.geoAlbers()
+  // A conic equal-area CENTRED ON THIS STATE, so north is up and the shape matches the official
+  // state map. d3.geoAlbers() at its default -96° meridian tilted the far states by 12–37°.
+  const [[lonMin, latMin], [lonMax, latMax]] = d3.geoBounds({ type: "FeatureCollection", features: ncCounties });
+  const projection = d3.geoConicEqualArea()
+    .rotate([-(lonMin + lonMax) / 2, 0])
+    .parallels([latMin + (latMax - latMin) / 6, latMax - (latMax - latMin) / 6])
     .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
   const path = d3.geoPath().projection(projection);
 
@@ -1884,41 +1930,59 @@ d3.json(TOPO_URL).then((us) => {
       })
       .attr("data-fips", d => String(d.id).padStart(5, "0"))
       .attr("d", path)
+      // A keyboard or screen-reader user must be able to open a county too.
+      .attr("tabindex", 0)
+      .attr("role", "button")
+      .attr("aria-label", d => { const c = COUNTIES[String(d.id).padStart(5, "0")]; return c ? placeLabel({ ...c, fips: String(d.id).padStart(5, "0") }) : "Not in this dataset"; })
       .on("mousemove", (event, d) => {
+        if (!HOVER) return;
         const fips = String(d.id).padStart(5, "0");
-        const built = getCountyElections(fips);
+        const built = countyElections(fips);
         if (built) {
           const upcoming = built.elections.filter(e => e.type === "upcoming").length;
           const past = built.elections.filter(e => e.type === "past").length;
+          const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
           tooltip.innerHTML = `
-            <strong>${built.county.n} County</strong>
-            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+            <strong>${esc(placeLabel({ ...built.county, fips }))}</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · District${ds.length > 1 ? "s" : ""} ${ds.join(" & ")}</div>`;
         } else {
-          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+          tooltip.innerHTML = `FIPS ${esc(fips)}<div class="tooltip-meta">Not in this dataset</div>`;
         }
         tooltip.style.opacity = 1;
         const rect = svg.node().getBoundingClientRect();
-        tooltip.style.left = (event.clientX - rect.left) + "px";
-        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+        const x = event.clientX - rect.left, y = event.clientY - rect.top;
+        // Flip below the cursor near the top edge; keep the box inside the map horizontally.
+        tooltip.classList.toggle("below", y < tooltip.offsetHeight + 28);
+        const half = tooltip.offsetWidth / 2 + 8;
+        tooltip.style.left = Math.max(half, Math.min(rect.width - half, x)) + "px";
+        tooltip.style.top  = y + "px";
       })
       .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("keydown", (event, d) => {
+        if (event.key === "Enter" || event.key === " ") { event.preventDefault(); event.currentTarget.dispatchEvent(new MouseEvent("click", { bubbles: true })); }
+      })
       .on("click", (event, d) => {
         const fips = String(d.id).padStart(5, "0");
+        tooltip.style.opacity = 0;
         document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
         event.currentTarget.classList.add("selected");
-        openPanel(fips);
+        openPanel(fips, event.currentTarget);
       });
 
-  // ---- Capital marker: Hartford ----
+  // ---- Capital marker: Olympia ----
   drawCapital(g, projection, { name: "Olympia", lng: -122.9007, lat: 47.0379 });
 
   loading.style.display = "none";
 }).catch((err) => {
-  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+  if (window.console && console.error) console.error("[map] " + (err && err.message ? err.message : err));
+  loading.innerHTML = "The interactive map didn\u2019t load. <button type=\"button\" class=\"brief-more\" id=\"map-retry\">Try again</button>";
+  document.getElementById("map-retry").addEventListener("click", () => { loading.textContent = "Loading map\u2026"; loadMap(); });
 });
+}
 
-function openPanel(fips) {
-  const built = getCountyElections(fips);
+let lastFocus = null;
+function openPanel(fips, fromEl) {
+  const built = countyElections(fips);
   const body  = document.getElementById("panel-body");
   const title = document.getElementById("panel-title");
   const eyebrow = document.getElementById("panel-eyebrow");
@@ -1930,17 +1994,29 @@ function openPanel(fips) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn't in our Washington dataset.</p></div>`;
   } else {
-    eyebrow.textContent = `Congressional District ${built.county.d}`;
-    title.textContent   = built.county.n + " County";
-    subtitle.textContent = built.district ? built.district.region : "";
+    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    title.textContent   = placeLabel({ ...built.county, fips });
+    subtitle.textContent = ds.length > 1
+      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);
+    // A brief only needs "Show more" if the clamp actually hides something.
+    body.querySelectorAll(".election-brief.clamped").forEach(b => {
+      const t = b.querySelector(".brief-body");
+      if (t && t.scrollHeight <= t.clientHeight + 4) { b.classList.remove("clamped"); const m = b.querySelector(".brief-more"); if (m) m.remove(); }
+    });
   }
 
+  lastFocus = fromEl || document.activeElement;
+  tooltip.style.opacity = 0;
   panel.classList.add("open");
   overlay.classList.add("open");
   panel.setAttribute("aria-hidden", "false");
+  document.documentElement.classList.add("drawer-open");
   body.scrollTop = 0;
+  setTimeout(() => document.getElementById("panel-close").focus(), 320);
 }
 
 function groupByType(elections) {
@@ -1983,12 +2059,15 @@ function briefSegments(note) {
   return out;
 }
 
+// Escape data before it goes into innerHTML. Notes and card text are plain prose; an ampersand
+// or angle bracket in a future edit must render as itself rather than corrupt the card.
+const esc = (v) => String(v == null ? "" : v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 function renderNote(note) {
   if (!note) return "";
   const body = briefSegments(note).map(function (s) {
     return s.mark
-      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${s.text}</p>`
-      : `<p class="brief-lead">${s.text}</p>`;
+      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${esc(s.text)}</p>`
+      : `<p class="brief-lead">${esc(s.text)}</p>`;
   }).join("");
   // Clamp only what actually needs clamping: the median note is 236 characters, so most
   // briefs show whole and never render a toggle at all.
@@ -1996,48 +2075,53 @@ function renderNote(note) {
   return `<div class="election-brief${long ? " clamped" : ""}">
       <div class="brief-label">About this race</div>
       <div class="brief-body">${body}</div>
-      ${long ? `<button class="brief-more" type="button">Show more</button>` : ""}
+      ${long ? `<button class="brief-more" type="button" aria-expanded="false">Show more</button>` : ""}
     </div>`;
 }
 
 function renderElection(e) {
   const count = (e.candidates && e.candidates.length) || 0;
-  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  // A ballot measure is recognised by what it is called, not by one exact scope string.
+  const isMeasure = /ballot measure|ballot question|amendment|initiative|proposition|referend|\bmeasure\b|\bquestion\b/i.test((e.scope || "") + " " + (e.office || ""));
+  const isInfo = /^Also on your ballot|— eight seats, ALL UNOPPOSED/i.test(e.office || "");
+  const countLabel = count ? `${count} candidate${count === 1 ? "" : "s"}` : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
   const candidatesHtml = count
-    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
-    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+    ? `<div class="candidates">${e.candidates.map(c => renderCandidate(c, e)).join("")}</div>`
+    : (isMeasure || isInfo ? "" : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">Candidates not yet announced.</div>`);
   const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
   return `
     <div class="election-card">
       <button class="election-summary" type="button" aria-expanded="false">
-        <div class="election-summary-main">
-          <div class="election-meta">
-            <span class="pill ${e.type}">${e.type}</span>
-            <span class="election-date">${e.date}</span>
-            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
-          </div>
-          <div class="election-office">${e.office || e.name || ""}</div>
-        </div>
-        <div class="election-toggle">
+        <span class="election-summary-main">
+          <span class="election-meta">
+            <span class="pill ${esc(e.type)}">${esc(e.type)}</span>
+            <span class="election-date">${esc(e.date)}</span>
+            ${e.scope ? `<span class="election-scope">${esc(e.scope)}</span>` : ""}
+          </span>
+          <span class="election-office">${esc(e.office || e.name || "")}</span>
+        </span>
+        <span class="election-toggle">
           <span class="cand-count">${countLabel}</span>
           <span class="chevron">${chevron}</span>
-        </div>
+        </span>
       </button>
       <div class="election-detail"><div>${renderNote(e.note)}${candidatesHtml}</div></div>
     </div>`;
 }
 
-function renderCandidate(c) {
-  const winnerClass = c.winner ? "candidate winner" : "candidate";
-  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+function renderCandidate(c, race) {
+  // A primary or runoff winner was NOMINATED, not elected — the badge should say so.
+  const nominated = !!(race && /primary|runoff/i.test((race.office || "") + " " + (race.scope || "")));
+  const winnerClass = c.winner ? ("candidate winner" + (nominated ? " nominee" : "")) : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
   return `
     <div class="${winnerClass}">
       <div class="cand-head">
-        <div class="cand-name">${c.name}</div>
-        <span class="party-tag party-${c.party}">${c.party}</span>
+        <div class="cand-name">${esc(c.name)}</div>
+        <span class="party-tag party-${esc(c.party)}">${esc(c.party)}</span>
       </div>
       ${positions ? `<div class="cand-section">
           <div class="cand-section-label">Top Positions</div>
@@ -2058,10 +2142,14 @@ function renderCandidate(c) {
 }
 
 function closePanel() {
+  if (!panel.classList.contains("open")) return;
   panel.classList.remove("open");
   overlay.classList.remove("open");
   panel.setAttribute("aria-hidden", "true");
+  document.documentElement.classList.remove("drawer-open");
+  tooltip.style.opacity = 0;
   document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+  if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
 }
 document.getElementById("panel-close").addEventListener("click", closePanel);
 overlay.addEventListener("click", closePanel);
@@ -2072,7 +2160,9 @@ document.getElementById("panel-body").addEventListener("click", (e) => {
   const more = e.target.closest(".brief-more");
   if (more) {
     const brief = more.closest(".election-brief");
-    more.textContent = brief.classList.toggle("clamped") ? "Show more" : "Show less";
+    const clamped = brief.classList.toggle("clamped");
+    more.textContent = clamped ? "Show more" : "Show less";
+    more.setAttribute("aria-expanded", clamped ? "false" : "true");
     return;
   }
   const summary = e.target.closest(".election-summary");

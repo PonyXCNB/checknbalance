@@ -287,7 +287,9 @@ for (const cfg of STATE_PAGES) {
 // state.html
 // ---------------------------------------------------------------
 console.log("— state.html —");
-const stateCode = cutAtD3(extractInlineScripts("state.html")[0]);
+// state.html's first inline script is now the <head> redirect (Sept 3, 2026); the data script is
+// the one that declares STATE_RACES.
+const stateCode = cutAtD3(extractInlineScripts("state.html").find(c => c.includes("const STATE_RACES")));
 const stateExtra = `
   __exports.STATE_RACES = STATE_RACES;
   __exports.buildSeats = buildSeats;

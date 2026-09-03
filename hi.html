@@ -4,7 +4,15 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Hawaii Elections Hub</title>
-<meta name="description" content="An interactive county-by-county guide to every HI election, past and upcoming." />
+<meta name="description" content="An interactive county-by-county guide to every Hawaii election, past and upcoming." />
+<link rel="canonical" href="https://checknbalance.org/hi.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Check n Balance">
+<meta property="og:title" content="Hawaii Elections Hub">
+<meta property="og:description" content="An interactive county-by-county guide to every Hawaii election, past and upcoming.">
+<meta property="og:url" content="https://checknbalance.org/hi.html">
+<meta property="og:image" content="https://checknbalance.org/apple-touch-icon.png">
+<meta name="twitter:card" content="summary">
 
 <!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -14,6 +22,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -206,13 +215,15 @@
     box-shadow: var(--shadow);
     position: relative;
     overflow: hidden;
+    max-width: calc(min(72vh, 760px) * 1.54 + 16px);
+    margin-left: auto; margin-right: auto;
   }
   .map-frame {
     background:
       radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
       var(--paper-pure);
     border-radius: 12px;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1.54 / 1;
     width: 100%;
     position: relative;
   }
@@ -225,25 +236,21 @@
   }
 
   .county {
-    fill: #F1E9D2;
+    fill: var(--gold-soft);
     stroke: var(--paper-pure);
-    stroke-width: 0.7;
+    stroke-width: 1px;
+    vector-effect: non-scaling-stroke;   /* screen pixels at every map size, not viewBox units */
     cursor: pointer;
     transition: fill .15s ease;
   }
-  .county.has-data       { fill: var(--gold-soft); }
-  .county.has-data:hover { fill: var(--gold); }
-  .county:hover          { fill: #E5DBBE; }
-  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+  /* Hover fills only where a pointer can hover — a phone tap must not leave a county stuck "hovered". */
+  @media (hover: hover) {
+    .county:hover { fill: var(--gold); }
+  }
+  .county:focus-visible  { outline: none; fill: var(--gold); stroke: var(--ink); stroke-width: 2px; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.5px; }
 
   /* ---- Capital city marker (muted) ---- */
-  .capital-dot {
-    fill: var(--ink);
-    fill-opacity: 0.55;
-    stroke: var(--paper-pure);
-    stroke-width: 1.5;
-    pointer-events: none;
-  }
   .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
   .capital-label {
     font-family: var(--sans);
@@ -251,16 +258,7 @@
     font-weight: 600;
     letter-spacing: 0.06em;
     fill: var(--ink);
-    fill-opacity: 0.55;
-    pointer-events: none;
-  }
-  .capital-sub {
-    font-family: var(--sans);
-    font-size: 7.5px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    fill: var(--ink);
-    fill-opacity: 0.4;
+    fill-opacity: 0.85;
     pointer-events: none;
   }
 
@@ -276,10 +274,11 @@
     opacity: 0;
     transition: opacity .12s ease;
     white-space: nowrap;
-    z-index: 10;
+    z-index: 60;
     box-shadow: 0 8px 24px rgba(0,0,0,.18);
   }
   .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip.below { transform: translate(-50%, 26px); }
   .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
 
   /* ============================================
@@ -296,15 +295,17 @@
 
   .panel {
     position: fixed; top: 0; right: 0; bottom: 0;
-    width: min(720px, 100%);
+    width: min(720px, 92vw);
     background: var(--paper-pure);
     box-shadow: -10px 0 40px rgba(14,23,38,.15);
     transform: translateX(100%);
-    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    visibility: hidden;   /* off-screen AND out of the tab order / accessibility tree */
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1), visibility 0s linear .3s;
     z-index: 101;
     display: flex; flex-direction: column;
   }
-  .panel.open { transform: translateX(0); }
+  .panel.open { transform: translateX(0); visibility: visible; transition-delay: 0s; }
+  html.drawer-open { overflow: hidden; }   /* the page behind a full-height drawer must not scroll */
 
   .panel-header {
     padding: 24px 36px;
@@ -335,7 +336,7 @@
   }
   .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
 
-  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+  .panel-body { overflow-y: auto; overscroll-behavior: contain; padding: 8px 0 60px; flex: 1; }
 
   /* Group header inside panel */
   .group-header {
@@ -366,7 +367,7 @@
     padding: 4px 10px; border-radius: 999px;
     font-weight: 700;
   }
-  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.past     { background: #F1EAD8; color: #7A561B; }
   .pill.upcoming { background: #FCE8E6; color: var(--red); }
   .pill.scheduled{ background: #E8F0F2; color: #265D69; }
   .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
@@ -397,15 +398,15 @@
     font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase;
     color: var(--gold-deep); font-weight: 700; margin-bottom: 7px;
   }
-  .brief-body { font-size: 12.5px; line-height: 1.62; color: var(--ink-soft); }
+  .brief-body { font-size: 13.5px; line-height: 1.62; color: var(--ink-soft); }
   .brief-body p + p { margin-top: 7px; }
   .brief-lead { color: var(--ink); }
   /* Flag glyphs hang in the margin so the text block keeps a straight left edge. */
   .brief-flag { position: relative; padding-left: 21px; }
   .brief-mark { position: absolute; left: 0; top: 0; font-size: 11px; color: var(--gold-deep); }
-  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; }
+  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; -webkit-mask-image: linear-gradient(#000 72%, transparent); mask-image: linear-gradient(#000 72%, transparent); }
   .brief-more {
-    margin-top: 9px; padding: 0;
+    margin-top: 6px; padding: 6px 0; min-height: 24px;
     background: none; border: none; cursor: pointer;
     font-family: var(--sans); font-size: 10.5px; font-weight: 700;
     letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-deep);
@@ -446,8 +447,9 @@
     display: grid; grid-template-rows: 0fr;
     transition: grid-template-rows .28s ease;
   }
-  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-detail > div { overflow: hidden; min-height: 0; visibility: hidden; transition: visibility 0s linear .28s; }
   .election-card.open .election-detail { grid-template-rows: 1fr; }
+  .election-card.open .election-detail > div { visibility: visible; transition-delay: 0s; }
 
   .candidates { display: grid; gap: 14px; margin-top: 18px; }
   .candidate {
@@ -464,10 +466,11 @@
   .candidate.winner::before {
     content: '★ ELECTED';
     position: absolute; top: -10px; right: 14px;
-    background: var(--gold); color: white;
-    font-size: 9px; letter-spacing: 0.16em;
+    background: var(--gold-deep); color: white;
+    font-size: 10px; letter-spacing: 0.16em;
     padding: 3px 9px; border-radius: 4px; font-weight: 700;
   }
+  .candidate.winner.nominee::before { content: '★ NOMINATED'; }
   .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
   .cand-name {
     font-family: var(--serif); font-size: 20px; font-weight: 500;
@@ -494,7 +497,7 @@
   }
   .cand-list {
     list-style: none; padding-left: 0;
-    font-size: 13px; color: var(--ink); line-height: 1.5;
+    font-size: 13.5px; color: var(--ink); line-height: 1.5;
   }
   .cand-list li {
     padding: 4px 0 4px 18px;
@@ -513,7 +516,7 @@
   .voices-block {
     border-radius: 10px;
     padding: 12px 14px;
-    font-size: 12.5px; line-height: 1.5;
+    font-size: 13px; line-height: 1.5;
   }
   .voices-block.supporters {
     background: #F2F7F0;
@@ -532,8 +535,8 @@
   }
   .voices-block ul { list-style: none; padding: 0; margin: 0; }
   .voices-block li { padding: 3px 0; }
-  .voices-block li::before { content: '"'; opacity: .4; }
-  .voices-block li::after  { content: '"'; opacity: .4; }
+  .voices-block li::before { content: '\201C'; opacity: .4; }
+  .voices-block li::after  { content: '\201D'; opacity: .4; }
 
   .empty-state {
     padding: 60px 36px; text-align: center;
@@ -568,6 +571,26 @@
   /* ============================================
      RESPONSIVE
      ============================================ */
+  /* Keyboard users get a visible, on-brand focus ring everywhere. */
+  :focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 3px; }
+  /* Anchor jumps (#map, #sources) must not land under the sticky bar. */
+  .map-section, .footer { scroll-margin-top: 84px; }
+  /* Hero stat labels wrap unevenly on narrow screens; give them a common height. */
+  .stat-label { min-height: 2.6em; }
+  .legend-star { color: var(--ink); opacity: .7; font-size: 12px; margin-right: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  }
+  /* Printing a county's ballot prints the drawer, not the hero and an empty map. */
+  @media print {
+    .topbar, .hero, .map-section, .panel-overlay, .panel-close, .brief-more { display: none !important; }
+    .panel { position: static; width: auto; transform: none; visibility: visible; box-shadow: none; }
+    .panel-body { overflow: visible; }
+    .election-detail { grid-template-rows: 1fr; }
+    .election-detail > div { visibility: visible; }
+    .election-brief.clamped .brief-body { max-height: none; -webkit-mask-image: none; mask-image: none; }
+  }
   @media (max-width: 900px) {
     .topbar-inner { grid-template-columns: 1fr auto; }
     .topnav { display: none; }
@@ -582,6 +605,7 @@
     .section-head { flex-direction: column; align-items: flex-start; }
     .panel { width: 100%; }
     .panel-header { padding: 18px 22px; }
+    .panel-close { width: 44px; height: 44px; }
     .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
     .voices { grid-template-columns: 1fr; }
   }
@@ -612,7 +636,7 @@
     <nav class="topnav">
       <a href="#map">Map</a>
       <a href="#about">About</a>
-      <a href="#data">Data</a>
+      <a href="#sources">Sources</a>
     </nav>
   </div>
 </header>
@@ -631,7 +655,7 @@
   <div class="hero-stats">
     <div class="stat"><div class="stat-num">5</div><div class="stat-label">Counties</div></div>
     <div class="stat"><div class="stat-num"><em>2</em></div><div class="stat-label">U.S. House Seats</div></div>
-    <div class="stat"><div class="stat-num"><em>2</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num"><em id="stat-statewide">–</em></div><div class="stat-label">Statewide Races, Nov&nbsp;3</div></div>
     <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
   </div>
 </section>
@@ -644,20 +668,20 @@
     <div>
       <h2 class="section-title">Click a county to <em>begin</em>.</h2>
       <p class="section-sub">
-        Counties shaded in gold have detailed election information available. Hover for a quick
-        preview; click to open the full breakdown.
+        Tap or click any county to open its full ballot — every race, every candidate, and what
+        supporters and opponents say. On a desktop, hover for a quick preview.
       </p>
     </div>
     <div class="legend">
-      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
-      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Every county is clickable</span>
+      <span class="legend-swatch"><i class="legend-star">★</i> State capital</span>
     </div>
   </div>
 
   <div class="map-shell">
     <div class="map-frame">
       <div class="map-loading" id="map-loading">Loading map of Hawaii…</div>
-      <svg id="himap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <svg id="himap" viewBox="0 0 1000 649" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="tooltip" id="tooltip"></div>
     </div>
   </div>
@@ -667,7 +691,7 @@
      PANEL (details drawer)
      ============================================= -->
 <div class="panel-overlay" id="overlay"></div>
-<aside class="panel" id="panel" aria-hidden="true">
+<aside class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title" aria-hidden="true">
   <div class="panel-header">
     <div>
       <div class="panel-eyebrow" id="panel-eyebrow">County</div>
@@ -687,8 +711,8 @@
     <div class="footer-crest">
       <strong>HI Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
-    <div class="footer-meta">
-      Last updated: <span id="last-updated">July 22, 2026</span><br>
+    <div class="footer-meta" id="sources">
+      Last updated: <span id="last-updated">August 11, 2026</span><br>
       Sources: Hawaii Office of Elections (elections.hawaii.gov) official Aug 8, 2026 primary results and voter guides; Hawaii Campaign Spending Commission (csc.hawaii.gov) disclosure reports; the 2021 Reapportionment Commission plan; U.S. Census Bureau 2020 congressional-district summary files; FEC; U.S. House Clerk member roster; Cook Political Report 2025 PVI; Sabato's Crystal Ball; Inside Elections; Honolulu Civil Beat; Honolulu Star-Advertiser; Hawaii Public Radio.</div>
   </div>
 </footer>
@@ -696,8 +720,8 @@
 <!-- =============================================
      LIBRARIES
      ============================================= -->
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0"></script>
 
 <!-- =============================================
      DATA LAYER
@@ -740,7 +764,7 @@ const COUNTIES = {
 // NOTE: Hawaii does NOT elect judges. The Judicial Selection Commission decides retention, so no
 //   judicial contest appears on any Hawaii ballot.
 const STATEWIDE = [
-  { date: "Nov 3, 2026", type: "upcoming", scope: "Statewide", office: "Governor and Lieutenant Governor of Hawaii",
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Governor and Lieutenant Governor of Hawaii",
     note: "⚠ ONE VOTE, A TICKET YOU DID NOT ASSEMBLE. Hawaii nominates Governor and Lt. Governor SEPARATELY in the primary, then locks them together in November: under Hawaii Const. Art. V §2 a vote for the governor nominee is deemed cast for that party's LG nominee, and HRS §11-115 puts one box beside the pair. Neither running mate was chosen by the other. Rated Solid/Safe Democratic by Cook (Jul 10), Sabato (Jul 23) and Inside Elections (baseline D+35.6).",
     candidates: [
       { name: "Josh Green (incumbent)", party: "D", winner: false,
@@ -780,11 +804,7 @@ const STATEWIDE = [
           "Endorsed by HSTA, SHOPO, UPW, ILWU Local 142, the firefighters, the carpenters and the building trades",
           "Won the primary decisively — 139,935 votes, more than double the runner-up's 55,093"
         ],
-        opponents: [
-          "A super PAC spent more than $2 million supporting him — more than on all its other candidates combined. One strategist called it \"not a fair test of anything\"",
-          "Declined a Civil Beat candidate forum with his primary rivals and did not respond to interview requests",
-          "Leaves Kauaʻi's mayoralty mid-term for an office with few formal duties [Verify — structural argument]"
-        ] },
+        opponents: ["A super PAC spent more than $2 million supporting him — more than on all its other candidates combined. One strategist called it \"not a fair test of anything\"","Declined a Civil Beat candidate forum with his primary rivals and did not respond to interview requests","Leaves Kauaʻi's mayoralty mid-term for an office with few formal duties [Verify — structural argument]"] },
       { name: "Gary Cordery", party: "R", winner: false,
         positions: [
           "Eliminate the general excise tax on food and medicine; freeze property taxes for kūpuna at retirement (his own framing)",
@@ -796,11 +816,7 @@ const STATEWIDE = [
           "Unusually for a Republican here, would renegotiate Hawaiian Homes Act blood-quantum terms and put Hawaiian-language instruction statewide from 3rd grade",
           "$23,488.91 cash on hand as of July 24, 2026 (Campaign Spending Commission)"
         ],
-        supporters: [
-          "Frames the race on cost of government: \"Hawai'i's 20.5 billion dollar budget for 1.4 mil[lion] people is a staggering number. New Hampshire has 1.4 million people but a $7.75 billion dollar budget.\"",
-          "Won his primary decisively, 36,308 to 11,554 — a clear party mandate rather than a fractured field",
-          "Argues one-party control produced the corruption cases now shadowing the Capitol, and that only an outsider breaks it"
-        ],
+        supporters: ["Frames the race on cost of government: \"Hawai'i's 20.5 billion dollar budget for 1.4 mil[lion] people is a staggering number. New Hampshire has 1.4 million people but a $7.75 billion dollar budget.\"","Won his primary decisively, 36,308 to 11,554 — a clear party mandate rather than a fractured field","Argues one-party control produced the corruption cases now shadowing the Capitol, and that only an outsider breaks it"],
         opponents: [
           "No Republican has won a Hawaii governorship since Linda Lingle, who left office in 2010; Cook puts the seat at D+13",
           "Roughly an 82-to-1 cash-on-hand disadvantage against the incumbent as of July 24, 2026",
@@ -817,11 +833,7 @@ const STATEWIDE = [
           "Founded the nonprofit Hui Aloha ʻĀina Momona; served on the State Taro Purity and Security Task Force; organized Kuʻi at the Capitol and the annual Lā Hoʻihoʻi Ea commemoration",
           "$8,352.78 cash on hand as of July 24, 2026 (Campaign Spending Commission)"
         ],
-        supporters: [
-          "Two decades of documented community results — legalizing paʻiʻai, legalizing traditional hale building, the taro task force — without ever holding office",
-          "Argues the office needs independence: \"The lieutenant governor should be a trusted partner, not a rubber stamp\"",
-          "Won a genuinely contested four-way Republican primary, 16,930 to 10,794"
-        ],
+        supporters: ["Two decades of documented community results — legalizing paʻiʻai, legalizing traditional hale building, the taro task force — without ever holding office","Argues the office needs independence: \"The lieutenant governor should be a trusted partner, not a rubber stamp\"","Won a genuinely contested four-way Republican primary, 16,930 to 10,794"],
         opponents: [
           "By his own disclosure he has held no prior office and lists no community-organization affiliations, for a job first in line to the governorship",
           "Locked to Cordery on a ticket that all three raters call Solid or Safe Democratic; his own vote total is about a eighth of Kawakami's [Verify — structural argument]",
@@ -829,13 +841,11 @@ const STATEWIDE = [
         ] }
     ] },
 
-  { date: "Nov 3, 2026", type: "upcoming", scope: "Statewide", office: "Constitutional Amendment — County Resilient Infrastructure Bonds (SB3219 CD1)",
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Ballot Measure · Statewide", office: "Constitutional Amendment — County Resilient Infrastructure Bonds (SB3219 CD1)",
     note: "⚠ THE ONLY STATEWIDE BALLOT MEASURE IN HAWAII THIS YEAR. The Legislature passed exactly one constitutional amendment in final form in 2026. It would let counties issue bonds for public improvements in designated districts, repaid solely out of future growth in property-tax revenue inside those districts rather than by raising rates — a mechanism usually called tax-increment financing. In Hawaii a proposed amendment passes only if the YES votes are a majority of ALL ballots cast, so blank votes count effectively as no.",
     candidates: [
       { name: "The question as it appears on the ballot", party: "I", winner: false,
-        positions: [
-          "\"Shall the Hawaii State Constitution be amended to direct the legislature to authorize the counties to issue resilient infrastructure for shelter and equity bonds to fund public improvements in designated districts, repaid solely by future growth in property tax revenues within those districts, not by increasing real property tax rates, where such bonds are excluded from the counties' debt limit and are subject to accountability and oversight requirements as may be provided by law?\""
-        ],
+        positions: ["\"Shall the Hawaii State Constitution be amended to direct the legislature to authorize the counties to issue resilient infrastructure for shelter and equity bonds to fund public improvements in designated districts, repaid solely by future growth in property tax revenues within those districts, not by increasing real property tax rates, where such bonds are excluded from the counties' debt limit and are subject to accountability and oversight requirements as may be provided by law?\""],
         differentiators: [
           "Amends Article VII, sections 12 and 13; introduced as SB3219, companion HB2476; enrolled to the Governor May 8, 2026",
           "The bonds would sit OUTSIDE each county's debt limit — the central structural change",
@@ -851,22 +861,22 @@ const STATEWIDE = [
         ] }
     ] },
 
-  { date: "Aug 8, 2026", type: "past", scope: "Statewide", office: "Governor — Democratic Primary",
+  { date: "Aug 8, 2026", type: "past", scope: "State · Statewide", office: "Governor — Democratic Primary",
     note: "Green renominated. Percentages here are the Office of Elections' own, whose denominator includes blank and over votes.",
     candidates: [
       { name: "Josh Green (incumbent)", party: "D", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] }
     ] },
-  { date: "Aug 8, 2026", type: "past", scope: "Statewide", office: "Lieutenant Governor — Democratic Primary",
+  { date: "Aug 8, 2026", type: "past", scope: "State · Statewide", office: "Lieutenant Governor — Democratic Primary",
     note: "Kawakami 139,935 to Della Au Belatti's 55,093. ⚠ The seat was open because Lt. Gov. Sylvia Luke abandoned her re-election bid on Apr 19, 2026 and took indefinite unpaid leave on Apr 23 after her attorney confirmed she is the TARGET of a state Attorney General bribery investigation; she denies accepting the money. Comptroller Keith Regan was named acting lieutenant governor. [Verify — her status and the investigation's outcome as of today could not be confirmed past Apr 24, 2026.]",
     candidates: [
       { name: "Derek S. K. Kawakami", party: "D", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] }
     ] },
-  { date: "Aug 8, 2026", type: "past", scope: "Statewide", office: "Governor — Republican Primary",
+  { date: "Aug 8, 2026", type: "past", scope: "State · Statewide", office: "Governor — Republican Primary",
     note: "Cordery 36,308 to Ken Fujiyama's 11,554.",
     candidates: [
       { name: "Gary Cordery", party: "R", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] }
     ] },
-  { date: "Aug 8, 2026", type: "past", scope: "Statewide", office: "Lieutenant Governor — Republican Primary",
+  { date: "Aug 8, 2026", type: "past", scope: "State · Statewide", office: "Lieutenant Governor — Republican Primary",
     note: "Anthony 16,930 to Mejia's 10,794 in a four-way field.",
     candidates: [
       { name: "Daniel Anthony", party: "R", winner: true, positions: [], differentiators: [], supporters: [], opponents: [] }
@@ -934,11 +944,7 @@ const HOUSE_RACES = {
               "Charles Djou's May 2010 special-election win in this district was the last Republican victory in a Hawaii U.S. House race [Verify — the unbroken span rests on aggregators]"
             ] },
           { name: "Jordan S. Conley", party: "G", winner: false,
-            positions: [
-              "\"I will fight to end the Jones Act. It is unfair and stupid.\" (his own words)",
-              "An empty-homes tax and a rent cap, with government building or buying apartments to rent \"at no profit rates\"",
-              "\"Tax the rich,\" plus a new automation and AI tax to fund caregiving and youth-coaching jobs"
-            ],
+            positions: ["\"I will fight to end the Jones Act. It is unfair and stupid.\" (his own words)","An empty-homes tax and a rent cap, with government building or buying apartments to rent \"at no profit rates\"","\"Tax the rich,\" plus a new automation and AI tax to fund caregiving and youth-coaching jobs"],
             differentiators: [
               "Teacher, coach and fitness trainer; more than 12 years as a group fitness instructor for Hawaii Pacific Health",
               "Founded the nonprofit Hapa Mana in 2016; platform also includes universal basic income, ranked-choice voting and public campaign financing",
@@ -990,47 +996,27 @@ const HOUSE_RACES = {
         note: "⚠ THE RACE HAWAII REPUBLICANS ARE ACTUALLY CONTESTING. Jill Tokuda took 91.5% of her primary, but her opponent is the state Senate MINORITY LEADER, whose own Senate seat is not on the ballot — so he can run at no political risk. No Republican has ever represented HI-2. The district is a plurality-Oahu seat, not a pure neighbor-islands one: Honolulu County supplies about 40% of its people.",
         candidates: [
           { name: "Jill N. Tokuda (incumbent)", party: "D", winner: false,
-            positions: [
-              "SUPPORTS the Jones Act — says it \"protects Hawaiʻi's supply chain\" and that there is little evidence repeal would deliver meaningful savings (a direct, on-the-record split with HI-1's incumbent)",
-              "Co-led the Stop Wall Street Landlords Act to block large corporate investors buying up single-family homes",
-              "Introduced legislation to lift the income cap on Social Security contributions; opposed the Iran strikes as launched \"without clear authorization, strategy, or accountability\""
-            ],
+            positions: ["SUPPORTS the Jones Act — says it \"protects Hawaiʻi's supply chain\" and that there is little evidence repeal would deliver meaningful savings (a direct, on-the-record split with HI-1's incumbent)","Co-led the Stop Wall Street Landlords Act to block large corporate investors buying up single-family homes","Introduced legislation to lift the income cap on Social Security contributions; opposed the Iran strikes as launched \"without clear authorization, strategy, or accountability\""],
             differentiators: [
               "Twelve years in the state Senate including chair of Ways and Means before entering Congress in 2023",
               "Sits on Agriculture, Armed Services and the Select Committee on the Chinese Communist Party — defense portfolio in a state with a large military footprint",
               "$570,354.51 cash on hand as of July 19, 2026 (FEC Form 3)"
             ],
-            supporters: [
-              "An overwhelming party mandate — 91.5% of the primary vote, 91,832 votes",
-              "Bipartisan delivery record on Maui wildfire recovery, disaster-relief tax relief for survivors, and co-founding the Rural Health Caucus",
-              "Argues seniority matters and her opponent's one-term pledge forfeits it: \"There are some who simply want to run so that they can serve during this president's tenure.\""
-            ],
+            supporters: ["An overwhelming party mandate — 91.5% of the primary vote, 91,832 votes","Bipartisan delivery record on Maui wildfire recovery, disaster-relief tax relief for survivors, and co-founding the Rural Health Caucus","Argues seniority matters and her opponent's one-term pledge forfeits it: \"There are some who simply want to run so that they can serve during this president's tenure.\""],
             opponents: [
               "Her Jones Act support is the sharpest available cost-of-living attack — her own party's HI-1 incumbent calls the law the single biggest driver of Hawaii's prices",
               "Her opponent's core argument is that an all-Democratic delegation is \"on a team currently not in charge,\" leaving Hawaii sidelined in federal funding decisions",
               "She has never had to defend this seat against a serious Republican, so her general-election strength is untested [Verify — structural argument]"
             ] },
           { name: "Brenton Awa", party: "R", winner: false,
-            positions: [
-              "Cap federal housing allowances in Hawaii and require the military to prioritize on-base housing \"to protect local families from inflated rents\" (his own framing)",
-              "Require military personnel stationed in Hawaii to pay the standard vehicle registration fee, using the revenue to cut fees for residents",
-              "Reduce the blood quantum requirement for Hawaiian Home Lands so \"all Hawaiians can secure long term, generational housing\""
-            ],
+            positions: ["Cap federal housing allowances in Hawaii and require the military to prioritize on-base housing \"to protect local families from inflated rents\" (his own framing)","Require military personnel stationed in Hawaii to pay the standard vehicle registration fee, using the revenue to cut fees for residents","Reduce the blood quantum requirement for Hawaiian Home Lands so \"all Hawaiians can secure long term, generational housing\""],
             differentiators: [
               "Hawaii Senate MINORITY LEADER, one of only three Republicans in the 25-seat chamber; his own seat runs to 2028 and is not on this ballot",
               "Former TV news anchor; founded Hawaii's first roadside food forest and says he saved more than 26 million gallons of drinking water by exposing a pipeline leak",
               "$16,100.80 cash on hand as of July 19, 2026 (FEC Form 3)"
             ],
-            supporters: [
-              "Argues a Republican would have access the all-Democratic delegation lacks: \"If we only got screwdrivers and wrenches… but you need a hammer, you're out of luck\"",
-              "Independent of party orthodoxy — says plainly that Joe Biden won in 2020 (\"If your numbers don't show up as the winner, you lost. Accept it.\") and does not identify with MAGA",
-              "Runs a \"No-Gift\" policy and says he was re-elected in 2024 without raising or spending any money (his own framing)"
-            ],
-            opponents: [
-              "Pledges to serve only one term and does not want to move to Washington — which his opponent calls disqualifying in a system where seniority drives federal funding",
-              "Roughly a 35-to-1 cash disadvantage as of the same July 19, 2026 reporting date",
-              "His signature state bill, banning mainland Americans from buying Hawaii homes, \"gathered little momentum because it likely runs afoul of the Commerce Clause\""
-            ] }
+            supporters: ["Argues a Republican would have access the all-Democratic delegation lacks: \"If we only got screwdrivers and wrenches… but you need a hammer, you're out of luck\"","Independent of party orthodoxy — says plainly that Joe Biden won in 2020 (\"If your numbers don't show up as the winner, you lost. Accept it.\") and does not identify with MAGA","Runs a \"No-Gift\" policy and says he was re-elected in 2024 without raising or spending any money (his own framing)"],
+            opponents: ["Pledges to serve only one term and does not want to move to Washington — which his opponent calls disqualifying in a system where seniority drives federal funding","Roughly a 35-to-1 cash disadvantage as of the same July 19, 2026 reporting date","His signature state bill, banning mainland Americans from buying Hawaii homes, \"gathered little momentum because it likely runs afoul of the Commerce Clause\""] }
         ] },
       {
         date: "Nov 5, 2024", type: "past",
@@ -1068,8 +1054,16 @@ function drawCapital(g, projection, cap) {
     return "M" + pts.map(p => p.join(",")).join("L") + "Z";
   };
   const grp = g.append("g").attr("class", "capital-marker");
-  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
-  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+  grp.append("path").attr("class", "capital-star").attr("d", star(0, 0, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", 10).attr("y", 3).text(cap.name);
+  // Constant on-screen size: scale the marker by viewBox-units-per-CSS-pixel, and again on resize.
+  const svgEl = g.node().ownerSVGElement;
+  const fit = () => {
+    const k = svgEl.viewBox.baseVal.width / Math.max(1, svgEl.getBoundingClientRect().width);
+    grp.attr("transform", `translate(${x},${y}) scale(${k})`);
+  };
+  fit();
+  window.addEventListener("resize", fit);
 }
 
 
@@ -1115,22 +1109,46 @@ function getCountyElections(fips) {
 const HI_STATE_FIPS = "15";
 const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
 
-const svg     = d3.select("#himap");
+if (typeof d3 === "undefined" || typeof topojson === "undefined" || typeof d3.json !== "function") {
+  document.getElementById("map-loading").innerHTML = "The interactive map didn\u2019t load \u2014 a script it needs was blocked. <button type=\"button\" class=\"brief-more\" onclick=\"location.reload()\">Try again</button>";
+  document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+  document.getElementById("stat-statewide").textContent = STATEWIDE.filter(r => r.type === "upcoming").length;
+  throw new Error("map libraries did not load");
+}
+const svg = d3.select("#himap");
 const tooltip = document.getElementById("tooltip");
 const panel   = document.getElementById("panel");
 const overlay = document.getElementById("overlay");
 const loading = document.getElementById("map-loading");
+const UNIT = "County";
 
 document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+document.getElementById("stat-statewide").textContent = STATEWIDE.filter(r => r.type === "upcoming").length;
 
+// "Richmond City County" and "Baltimore City County" are not places. Independent cities and
+// Louisiana parishes get the right word; two real Virginia counties happen to end in "City".
+const placeLabel = (c) => (/\bCity$/.test(c.n) && c.fips !== "51036" && c.fips !== "51095") ? c.n : c.n + " " + UNIT;
+// Hovering re-sorted every race on every pointer move; the answer never changes per county.
+const electionsCache = new Map();
+const countyElections = (fips) => { if (!electionsCache.has(fips)) electionsCache.set(fips, getCountyElections(fips)); return electionsCache.get(fips); };
+const HOVER = window.matchMedia && window.matchMedia("(hover: hover)").matches;
+
+loadMap();
+
+function loadMap() {
 d3.json(TOPO_URL).then((us) => {
   const allCounties = topojson.feature(us, us.objects.counties).features;
   const ncCounties  = allCounties.filter(d => String(d.id).startsWith(HI_STATE_FIPS));
 
-  const width  = 1000;
-  const height = 1000;
+  // Read the drawing size from the SVG's own viewBox, so the state's shape lives in one place.
+  const { width, height } = (() => { const vb = svg.node().viewBox.baseVal; return { width: vb.width || 1000, height: vb.height || 1000 }; })();
 
-  const projection = d3.geoAlbers()
+  // A conic equal-area CENTRED ON THIS STATE, so north is up and the shape matches the official
+  // state map. d3.geoAlbers() at its default -96° meridian tilted the far states by 12–37°.
+  const [[lonMin, latMin], [lonMax, latMax]] = d3.geoBounds({ type: "FeatureCollection", features: ncCounties });
+  const projection = d3.geoConicEqualArea()
+    .rotate([-(lonMin + lonMax) / 2, 0])
+    .parallels([latMin + (latMax - latMin) / 6, latMax - (latMax - latMin) / 6])
     .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
   const path = d3.geoPath().projection(projection);
 
@@ -1146,41 +1164,59 @@ d3.json(TOPO_URL).then((us) => {
       })
       .attr("data-fips", d => String(d.id).padStart(5, "0"))
       .attr("d", path)
+      // A keyboard or screen-reader user must be able to open a county too.
+      .attr("tabindex", 0)
+      .attr("role", "button")
+      .attr("aria-label", d => { const c = COUNTIES[String(d.id).padStart(5, "0")]; return c ? placeLabel({ ...c, fips: String(d.id).padStart(5, "0") }) : "Not in this dataset"; })
       .on("mousemove", (event, d) => {
+        if (!HOVER) return;
         const fips = String(d.id).padStart(5, "0");
-        const built = getCountyElections(fips);
+        const built = countyElections(fips);
         if (built) {
           const upcoming = built.elections.filter(e => e.type === "upcoming").length;
           const past = built.elections.filter(e => e.type === "past").length;
+          const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
           tooltip.innerHTML = `
-            <strong>${built.county.n} County</strong>
-            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+            <strong>${esc(placeLabel({ ...built.county, fips }))}</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · District${ds.length > 1 ? "s" : ""} ${ds.join(" & ")}</div>`;
         } else {
-          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+          tooltip.innerHTML = `FIPS ${esc(fips)}<div class="tooltip-meta">Not in this dataset</div>`;
         }
         tooltip.style.opacity = 1;
         const rect = svg.node().getBoundingClientRect();
-        tooltip.style.left = (event.clientX - rect.left) + "px";
-        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+        const x = event.clientX - rect.left, y = event.clientY - rect.top;
+        // Flip below the cursor near the top edge; keep the box inside the map horizontally.
+        tooltip.classList.toggle("below", y < tooltip.offsetHeight + 28);
+        const half = tooltip.offsetWidth / 2 + 8;
+        tooltip.style.left = Math.max(half, Math.min(rect.width - half, x)) + "px";
+        tooltip.style.top  = y + "px";
       })
       .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("keydown", (event, d) => {
+        if (event.key === "Enter" || event.key === " ") { event.preventDefault(); event.currentTarget.dispatchEvent(new MouseEvent("click", { bubbles: true })); }
+      })
       .on("click", (event, d) => {
         const fips = String(d.id).padStart(5, "0");
+        tooltip.style.opacity = 0;
         document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
         event.currentTarget.classList.add("selected");
-        openPanel(fips);
+        openPanel(fips, event.currentTarget);
       });
 
-  // ---- Capital marker: Hartford ----
+  // ---- Capital marker: Honolulu ----
   drawCapital(g, projection, { name: "Honolulu", lng: -157.858, lat: 21.307 });
 
   loading.style.display = "none";
 }).catch((err) => {
-  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+  if (window.console && console.error) console.error("[map] " + (err && err.message ? err.message : err));
+  loading.innerHTML = "The interactive map didn\u2019t load. <button type=\"button\" class=\"brief-more\" id=\"map-retry\">Try again</button>";
+  document.getElementById("map-retry").addEventListener("click", () => { loading.textContent = "Loading map\u2026"; loadMap(); });
 });
+}
 
-function openPanel(fips) {
-  const built = getCountyElections(fips);
+let lastFocus = null;
+function openPanel(fips, fromEl) {
+  const built = countyElections(fips);
   const body  = document.getElementById("panel-body");
   const title = document.getElementById("panel-title");
   const eyebrow = document.getElementById("panel-eyebrow");
@@ -1192,17 +1228,29 @@ function openPanel(fips) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn't in our Hawaii dataset.</p></div>`;
   } else {
-    eyebrow.textContent = `Congressional District ${built.county.d}`;
-    title.textContent   = built.county.n + " County";
-    subtitle.textContent = built.district ? built.district.region : "";
+    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    title.textContent   = placeLabel({ ...built.county, fips });
+    subtitle.textContent = ds.length > 1
+      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);
+    // A brief only needs "Show more" if the clamp actually hides something.
+    body.querySelectorAll(".election-brief.clamped").forEach(b => {
+      const t = b.querySelector(".brief-body");
+      if (t && t.scrollHeight <= t.clientHeight + 4) { b.classList.remove("clamped"); const m = b.querySelector(".brief-more"); if (m) m.remove(); }
+    });
   }
 
+  lastFocus = fromEl || document.activeElement;
+  tooltip.style.opacity = 0;
   panel.classList.add("open");
   overlay.classList.add("open");
   panel.setAttribute("aria-hidden", "false");
+  document.documentElement.classList.add("drawer-open");
   body.scrollTop = 0;
+  setTimeout(() => document.getElementById("panel-close").focus(), 320);
 }
 
 function groupByType(elections) {
@@ -1245,12 +1293,15 @@ function briefSegments(note) {
   return out;
 }
 
+// Escape data before it goes into innerHTML. Notes and card text are plain prose; an ampersand
+// or angle bracket in a future edit must render as itself rather than corrupt the card.
+const esc = (v) => String(v == null ? "" : v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 function renderNote(note) {
   if (!note) return "";
   const body = briefSegments(note).map(function (s) {
     return s.mark
-      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${s.text}</p>`
-      : `<p class="brief-lead">${s.text}</p>`;
+      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${esc(s.text)}</p>`
+      : `<p class="brief-lead">${esc(s.text)}</p>`;
   }).join("");
   // Clamp only what actually needs clamping: the median note is 236 characters, so most
   // briefs show whole and never render a toggle at all.
@@ -1258,48 +1309,53 @@ function renderNote(note) {
   return `<div class="election-brief${long ? " clamped" : ""}">
       <div class="brief-label">About this race</div>
       <div class="brief-body">${body}</div>
-      ${long ? `<button class="brief-more" type="button">Show more</button>` : ""}
+      ${long ? `<button class="brief-more" type="button" aria-expanded="false">Show more</button>` : ""}
     </div>`;
 }
 
 function renderElection(e) {
   const count = (e.candidates && e.candidates.length) || 0;
-  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  // A ballot measure is recognised by what it is called, not by one exact scope string.
+  const isMeasure = /ballot measure|ballot question|amendment|initiative|proposition|referend|\bmeasure\b|\bquestion\b/i.test((e.scope || "") + " " + (e.office || ""));
+  const isInfo = /^Also on your ballot|— eight seats, ALL UNOPPOSED/i.test(e.office || "");
+  const countLabel = count ? `${count} candidate${count === 1 ? "" : "s"}` : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
   const candidatesHtml = count
-    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
-    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+    ? `<div class="candidates">${e.candidates.map(c => renderCandidate(c, e)).join("")}</div>`
+    : (isMeasure || isInfo ? "" : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">Candidates not yet announced.</div>`);
   const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
   return `
     <div class="election-card">
       <button class="election-summary" type="button" aria-expanded="false">
-        <div class="election-summary-main">
-          <div class="election-meta">
-            <span class="pill ${e.type}">${e.type}</span>
-            <span class="election-date">${e.date}</span>
-            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
-          </div>
-          <div class="election-office">${e.office || e.name || ""}</div>
-        </div>
-        <div class="election-toggle">
+        <span class="election-summary-main">
+          <span class="election-meta">
+            <span class="pill ${esc(e.type)}">${esc(e.type)}</span>
+            <span class="election-date">${esc(e.date)}</span>
+            ${e.scope ? `<span class="election-scope">${esc(e.scope)}</span>` : ""}
+          </span>
+          <span class="election-office">${esc(e.office || e.name || "")}</span>
+        </span>
+        <span class="election-toggle">
           <span class="cand-count">${countLabel}</span>
           <span class="chevron">${chevron}</span>
-        </div>
+        </span>
       </button>
       <div class="election-detail"><div>${renderNote(e.note)}${candidatesHtml}</div></div>
     </div>`;
 }
 
-function renderCandidate(c) {
-  const winnerClass = c.winner ? "candidate winner" : "candidate";
-  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+function renderCandidate(c, race) {
+  // A primary or runoff winner was NOMINATED, not elected — the badge should say so.
+  const nominated = !!(race && /primary|runoff/i.test((race.office || "") + " " + (race.scope || "")));
+  const winnerClass = c.winner ? ("candidate winner" + (nominated ? " nominee" : "")) : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
   return `
     <div class="${winnerClass}">
       <div class="cand-head">
-        <div class="cand-name">${c.name}</div>
-        <span class="party-tag party-${c.party}">${c.party}</span>
+        <div class="cand-name">${esc(c.name)}</div>
+        <span class="party-tag party-${esc(c.party)}">${esc(c.party)}</span>
       </div>
       ${positions ? `<div class="cand-section">
           <div class="cand-section-label">Top Positions</div>
@@ -1320,10 +1376,14 @@ function renderCandidate(c) {
 }
 
 function closePanel() {
+  if (!panel.classList.contains("open")) return;
   panel.classList.remove("open");
   overlay.classList.remove("open");
   panel.setAttribute("aria-hidden", "true");
+  document.documentElement.classList.remove("drawer-open");
+  tooltip.style.opacity = 0;
   document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+  if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
 }
 document.getElementById("panel-close").addEventListener("click", closePanel);
 overlay.addEventListener("click", closePanel);
@@ -1334,7 +1394,9 @@ document.getElementById("panel-body").addEventListener("click", (e) => {
   const more = e.target.closest(".brief-more");
   if (more) {
     const brief = more.closest(".election-brief");
-    more.textContent = brief.classList.toggle("clamped") ? "Show more" : "Show less";
+    const clamped = brief.classList.toggle("clamped");
+    more.textContent = clamped ? "Show more" : "Show less";
+    more.setAttribute("aria-expanded", clamped ? "false" : "true");
     return;
   }
   const summary = e.target.closest(".election-summary");

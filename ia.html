@@ -4,7 +4,15 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Iowa Elections Hub</title>
-<meta name="description" content="An interactive county-by-county guide to every IA election, past and upcoming." />
+<meta name="description" content="An interactive county-by-county guide to every Iowa election, past and upcoming." />
+<link rel="canonical" href="https://checknbalance.org/ia.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Check n Balance">
+<meta property="og:title" content="Iowa Elections Hub">
+<meta property="og:description" content="An interactive county-by-county guide to every Iowa election, past and upcoming.">
+<meta property="og:url" content="https://checknbalance.org/ia.html">
+<meta property="og:image" content="https://checknbalance.org/apple-touch-icon.png">
+<meta name="twitter:card" content="summary">
 
 <!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -14,6 +22,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -206,13 +215,15 @@
     box-shadow: var(--shadow);
     position: relative;
     overflow: hidden;
+    max-width: calc(min(72vh, 760px) * 1.52 + 16px);
+    margin-left: auto; margin-right: auto;
   }
   .map-frame {
     background:
       radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
       var(--paper-pure);
     border-radius: 12px;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1.52 / 1;
     width: 100%;
     position: relative;
   }
@@ -225,25 +236,21 @@
   }
 
   .county {
-    fill: #F1E9D2;
+    fill: var(--gold-soft);
     stroke: var(--paper-pure);
-    stroke-width: 0.7;
+    stroke-width: 1px;
+    vector-effect: non-scaling-stroke;   /* screen pixels at every map size, not viewBox units */
     cursor: pointer;
     transition: fill .15s ease;
   }
-  .county.has-data       { fill: var(--gold-soft); }
-  .county.has-data:hover { fill: var(--gold); }
-  .county:hover          { fill: #E5DBBE; }
-  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+  /* Hover fills only where a pointer can hover — a phone tap must not leave a county stuck "hovered". */
+  @media (hover: hover) {
+    .county:hover { fill: var(--gold); }
+  }
+  .county:focus-visible  { outline: none; fill: var(--gold); stroke: var(--ink); stroke-width: 2px; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.5px; }
 
   /* ---- Capital city marker (muted) ---- */
-  .capital-dot {
-    fill: var(--ink);
-    fill-opacity: 0.55;
-    stroke: var(--paper-pure);
-    stroke-width: 1.5;
-    pointer-events: none;
-  }
   .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
   .capital-label {
     font-family: var(--sans);
@@ -251,16 +258,7 @@
     font-weight: 600;
     letter-spacing: 0.06em;
     fill: var(--ink);
-    fill-opacity: 0.55;
-    pointer-events: none;
-  }
-  .capital-sub {
-    font-family: var(--sans);
-    font-size: 7.5px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    fill: var(--ink);
-    fill-opacity: 0.4;
+    fill-opacity: 0.85;
     pointer-events: none;
   }
 
@@ -276,10 +274,11 @@
     opacity: 0;
     transition: opacity .12s ease;
     white-space: nowrap;
-    z-index: 10;
+    z-index: 60;
     box-shadow: 0 8px 24px rgba(0,0,0,.18);
   }
   .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip.below { transform: translate(-50%, 26px); }
   .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
 
   /* ============================================
@@ -296,15 +295,17 @@
 
   .panel {
     position: fixed; top: 0; right: 0; bottom: 0;
-    width: min(720px, 100%);
+    width: min(720px, 92vw);
     background: var(--paper-pure);
     box-shadow: -10px 0 40px rgba(14,23,38,.15);
     transform: translateX(100%);
-    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    visibility: hidden;   /* off-screen AND out of the tab order / accessibility tree */
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1), visibility 0s linear .3s;
     z-index: 101;
     display: flex; flex-direction: column;
   }
-  .panel.open { transform: translateX(0); }
+  .panel.open { transform: translateX(0); visibility: visible; transition-delay: 0s; }
+  html.drawer-open { overflow: hidden; }   /* the page behind a full-height drawer must not scroll */
 
   .panel-header {
     padding: 24px 36px;
@@ -335,7 +336,7 @@
   }
   .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
 
-  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+  .panel-body { overflow-y: auto; overscroll-behavior: contain; padding: 8px 0 60px; flex: 1; }
 
   /* Group header inside panel */
   .group-header {
@@ -366,7 +367,7 @@
     padding: 4px 10px; border-radius: 999px;
     font-weight: 700;
   }
-  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.past     { background: #F1EAD8; color: #7A561B; }
   .pill.upcoming { background: #FCE8E6; color: var(--red); }
   .pill.scheduled{ background: #E8F0F2; color: #265D69; }
   .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
@@ -397,15 +398,15 @@
     font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase;
     color: var(--gold-deep); font-weight: 700; margin-bottom: 7px;
   }
-  .brief-body { font-size: 12.5px; line-height: 1.62; color: var(--ink-soft); }
+  .brief-body { font-size: 13.5px; line-height: 1.62; color: var(--ink-soft); }
   .brief-body p + p { margin-top: 7px; }
   .brief-lead { color: var(--ink); }
   /* Flag glyphs hang in the margin so the text block keeps a straight left edge. */
   .brief-flag { position: relative; padding-left: 21px; }
   .brief-mark { position: absolute; left: 0; top: 0; font-size: 11px; color: var(--gold-deep); }
-  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; }
+  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; -webkit-mask-image: linear-gradient(#000 72%, transparent); mask-image: linear-gradient(#000 72%, transparent); }
   .brief-more {
-    margin-top: 9px; padding: 0;
+    margin-top: 6px; padding: 6px 0; min-height: 24px;
     background: none; border: none; cursor: pointer;
     font-family: var(--sans); font-size: 10.5px; font-weight: 700;
     letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-deep);
@@ -446,8 +447,9 @@
     display: grid; grid-template-rows: 0fr;
     transition: grid-template-rows .28s ease;
   }
-  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-detail > div { overflow: hidden; min-height: 0; visibility: hidden; transition: visibility 0s linear .28s; }
   .election-card.open .election-detail { grid-template-rows: 1fr; }
+  .election-card.open .election-detail > div { visibility: visible; transition-delay: 0s; }
 
   .candidates { display: grid; gap: 14px; margin-top: 18px; }
   .candidate {
@@ -464,10 +466,11 @@
   .candidate.winner::before {
     content: '★ ELECTED';
     position: absolute; top: -10px; right: 14px;
-    background: var(--gold); color: white;
-    font-size: 9px; letter-spacing: 0.16em;
+    background: var(--gold-deep); color: white;
+    font-size: 10px; letter-spacing: 0.16em;
     padding: 3px 9px; border-radius: 4px; font-weight: 700;
   }
+  .candidate.winner.nominee::before { content: '★ NOMINATED'; }
   .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
   .cand-name {
     font-family: var(--serif); font-size: 20px; font-weight: 500;
@@ -494,7 +497,7 @@
   }
   .cand-list {
     list-style: none; padding-left: 0;
-    font-size: 13px; color: var(--ink); line-height: 1.5;
+    font-size: 13.5px; color: var(--ink); line-height: 1.5;
   }
   .cand-list li {
     padding: 4px 0 4px 18px;
@@ -513,7 +516,7 @@
   .voices-block {
     border-radius: 10px;
     padding: 12px 14px;
-    font-size: 12.5px; line-height: 1.5;
+    font-size: 13px; line-height: 1.5;
   }
   .voices-block.supporters {
     background: #F2F7F0;
@@ -532,8 +535,8 @@
   }
   .voices-block ul { list-style: none; padding: 0; margin: 0; }
   .voices-block li { padding: 3px 0; }
-  .voices-block li::before { content: '"'; opacity: .4; }
-  .voices-block li::after  { content: '"'; opacity: .4; }
+  .voices-block li::before { content: '\201C'; opacity: .4; }
+  .voices-block li::after  { content: '\201D'; opacity: .4; }
 
   .empty-state {
     padding: 60px 36px; text-align: center;
@@ -568,6 +571,26 @@
   /* ============================================
      RESPONSIVE
      ============================================ */
+  /* Keyboard users get a visible, on-brand focus ring everywhere. */
+  :focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 3px; }
+  /* Anchor jumps (#map, #sources) must not land under the sticky bar. */
+  .map-section, .footer { scroll-margin-top: 84px; }
+  /* Hero stat labels wrap unevenly on narrow screens; give them a common height. */
+  .stat-label { min-height: 2.6em; }
+  .legend-star { color: var(--ink); opacity: .7; font-size: 12px; margin-right: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  }
+  /* Printing a county's ballot prints the drawer, not the hero and an empty map. */
+  @media print {
+    .topbar, .hero, .map-section, .panel-overlay, .panel-close, .brief-more { display: none !important; }
+    .panel { position: static; width: auto; transform: none; visibility: visible; box-shadow: none; }
+    .panel-body { overflow: visible; }
+    .election-detail { grid-template-rows: 1fr; }
+    .election-detail > div { visibility: visible; }
+    .election-brief.clamped .brief-body { max-height: none; -webkit-mask-image: none; mask-image: none; }
+  }
   @media (max-width: 900px) {
     .topbar-inner { grid-template-columns: 1fr auto; }
     .topnav { display: none; }
@@ -582,6 +605,7 @@
     .section-head { flex-direction: column; align-items: flex-start; }
     .panel { width: 100%; }
     .panel-header { padding: 18px 22px; }
+    .panel-close { width: 44px; height: 44px; }
     .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
     .voices { grid-template-columns: 1fr; }
   }
@@ -612,7 +636,7 @@
     <nav class="topnav">
       <a href="#map">Map</a>
       <a href="#about">About</a>
-      <a href="#data">Data</a>
+      <a href="#sources">Sources</a>
     </nav>
   </div>
 </header>
@@ -631,7 +655,7 @@
   <div class="hero-stats">
     <div class="stat"><div class="stat-num">99</div><div class="stat-label">Counties</div></div>
     <div class="stat"><div class="stat-num"><em>4</em></div><div class="stat-label">U.S. House Seats</div></div>
-    <div class="stat"><div class="stat-num"><em>8</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num"><em id="stat-statewide">–</em></div><div class="stat-label">Statewide Races, Nov&nbsp;3</div></div>
     <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
   </div>
 </section>
@@ -644,20 +668,20 @@
     <div>
       <h2 class="section-title">Click a county to <em>begin</em>.</h2>
       <p class="section-sub">
-        Counties shaded in gold have detailed election information available. Hover for a quick
-        preview; click to open the full breakdown.
+        Tap or click any county to open its full ballot — every race, every candidate, and what
+        supporters and opponents say. On a desktop, hover for a quick preview.
       </p>
     </div>
     <div class="legend">
-      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
-      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Every county is clickable</span>
+      <span class="legend-swatch"><i class="legend-star">★</i> State capital</span>
     </div>
   </div>
 
   <div class="map-shell">
     <div class="map-frame">
       <div class="map-loading" id="map-loading">Loading map of Iowa…</div>
-      <svg id="iamap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <svg id="iamap" viewBox="0 0 1000 658" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="tooltip" id="tooltip"></div>
     </div>
   </div>
@@ -667,7 +691,7 @@
      PANEL (details drawer)
      ============================================= -->
 <div class="panel-overlay" id="overlay"></div>
-<aside class="panel" id="panel" aria-hidden="true">
+<aside class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title" aria-hidden="true">
   <div class="panel-header">
     <div>
       <div class="panel-eyebrow" id="panel-eyebrow">County</div>
@@ -685,11 +709,11 @@
 <footer class="footer" id="about">
   <div class="footer-inner">
     <div class="footer-crest">
-      <strong>Iowa Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+      <strong>IA Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
-    <div class="footer-meta">
-      Last updated: <span id="last-updated">August 3, 2026</span><br>
-      Sources: Ohio Secretary of State, Ohio Redistricting Commission, Ballotpedia, Wikipedia, Cook Political Report, Sabato's Crystal Ball, Inside Elections, Ohio Capital Journal, Cleveland.com / The Plain Dealer, The Columbus Dispatch, Cincinnati Enquirer, Signal Ohio, WOSU, Spectrum News 1, AP/NBC.
+    <div class="footer-meta" id="sources">
+      Last updated: <span id="last-updated">September 3, 2026</span><br>
+      Sources: Iowa Secretary of State (candidate filings and certifications), AP-called primary results, FEC filings, campaign sites, The Gazette, Iowa Public Radio, Ballotpedia, Wikipedia, Cook Political Report, Sabato's Crystal Ball, Inside Elections.
     </div>
   </div>
 </footer>
@@ -697,8 +721,8 @@
 <!-- =============================================
      LIBRARIES
      ============================================= -->
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0"></script>
 
 <!-- =============================================
      DATA LAYER
@@ -836,7 +860,7 @@ const STATEWIDE = [
     date: "Nov 3, 2026",
     type: "upcoming",
     scope: "Federal · Statewide",
-    office: "U.S. Senate — Iowa (open seat)",
+    office: "U.S. Senate — Iowa (OPEN SEAT)",
     note: "⚠ OPEN SEAT — Joni Ernst is not seeking a third term. Combined with the open governorship, this is the FIRST TIME SINCE 1968 that Iowa has had no incumbent at the top of either statewide ticket. Every major forecaster has moved this race toward Democrats over the past year: Cook, Sabato and Inside Elections all went Solid/Safe R → Likely R → LEAN REPUBLICAN, with Sabato making the move on June 3, 2026 after Turek won his primary by 26 points. Charlie Cook separately put the odds of a flip at about one in four. Notably, MORE Democrats than Republicans voted in the June 2 Senate primary (114,408 to 94,651), and Turek out-raised Hinson in the second quarter. [Verify rating dates — Cook, Sabato and Inside Elections all block automated access, so these are routed through their own articles and reporting that cites them.]",
     candidates: [
       { name: "Ashley Hinson", party: "R", winner: false,
@@ -860,7 +884,7 @@ const STATEWIDE = [
     date: "Nov 3, 2026",
     type: "upcoming",
     scope: "State · Statewide",
-    office: "Governor of Iowa (open seat)",
+    office: "Governor of Iowa (OPEN SEAT)",
     note: "⚠ OPEN SEAT and a TOSS-UP by all three major forecasters — Cook moved it to Toss-Up on Apr 9, 2026, Sabato on June 3 and Inside Elections on June 25. The Republican primary produced the cycle's biggest upset: businessman Zach Lahn beat U.S. Rep. Randy Feenstra by 1,652 votes, 37.8%–37.0%, DESPITE Trump's late endorsement of Feenstra — reported as the first Trump-backed primary loss of the 2026 midterms. Lahn cleared Iowa's 35% threshold, so the scheduled June 13 convention did not decide it. Rob Sand was effectively unopposed and has raised $37.8M this cycle, an Iowa record. Iowa elects governor and lieutenant governor on a joint ticket. ⚠ The Libertarian ticket was REMOVED from the ballot on June 16 over defective lieutenant-governor paperwork, so there is no third-party candidate. Public polling has consistently shown Sand ahead: 53–44 (Beacon/Shaw), 48–47 (Fox News/Siena) and 47.7–43.4 (Cygnal, for a conservative group).",
     candidates: [
       { name: "Zach Lahn", party: "R", winner: false,
@@ -879,7 +903,7 @@ const STATEWIDE = [
     date: "Nov 3, 2026",
     type: "upcoming",
     scope: "State · Statewide",
-    office: "Auditor of State — Iowa (open seat)",
+    office: "Auditor of State — Iowa (OPEN SEAT)",
     note: "OPEN SEAT — Rob Sand vacated it to run for governor. This is the office that has been Democrats' single exception in Iowa: Republicans have won every statewide race since 2018 EXCEPT this one. If Cournoyer wins it, Republicans would hold every statewide office for the first time in eight years. She is the sitting Lieutenant Governor. [Verify the Republican primary percentages — exact figures could not be sourced.]",
     candidates: [
       { name: "Chris Cournoyer", party: "R", winner: false,
@@ -988,11 +1012,11 @@ const STATEWIDE = [
     note: "The last election for this same seat. Joni Ernst won a second term 51.8%–45.2% over Theresa Greenfield, in what was then one of the most expensive Senate races in the country. Ernst is not seeking a third term.",
     candidates: [
       { name: "Joni Ernst", party: "R", winner: true,
-        positions: ["Won 51.8%","",""],
+        positions: ["Won 51.8%"],
         differentiators: ["Retiring rather than seeking a third term, creating the 2026 open seat"],
         supporters: [], opponents: [] },
       { name: "Theresa Greenfield", party: "D", winner: false,
-        positions: ["Won 45.2%","",""],
+        positions: ["Won 45.2%"],
         differentiators: ["A 6.6-point margin"],
         supporters: [], opponents: [] }
     ]
@@ -1005,11 +1029,11 @@ const STATEWIDE = [
     note: "Kim Reynolds won a second full term 58.0%–39.5% over Deidre DeJear — an 18.5-point margin. She is not seeking re-election, and forecasters now rate the open seat a toss-up, a swing of remarkable size.",
     candidates: [
       { name: "Kim Reynolds", party: "R", winner: true,
-        positions: ["Won 58.0% — 709,198 votes","",""],
+        positions: ["Won 58.0% — 709,198 votes"],
         differentiators: ["Retiring rather than seeking another term"],
         supporters: [], opponents: [] },
       { name: "Deidre DeJear", party: "D", winner: false,
-        positions: ["Won 39.5% — 482,950 votes","",""],
+        positions: ["Won 39.5% — 482,950 votes"],
         differentiators: ["An 18.5-point margin, against a toss-up rating in 2026"],
         supporters: [], opponents: [] }
     ]
@@ -1022,11 +1046,11 @@ const STATEWIDE = [
     note: "Iowa's OTHER Senate seat, not the one on the ballot in 2026. Chuck Grassley won an eighth term 56.0%–43.8% over Michael Franken. That seat is next up in 2028.",
     candidates: [
       { name: "Chuck Grassley", party: "R", winner: true,
-        positions: ["Won 56.0% — 681,501 votes","",""],
+        positions: ["Won 56.0% — 681,501 votes"],
         differentiators: ["Next up for re-election in 2028"],
         supporters: [], opponents: [] },
       { name: "Michael Franken", party: "D", winner: false,
-        positions: ["Won 43.8% — 533,330 votes","",""],
+        positions: ["Won 43.8% — 533,330 votes"],
         differentiators: ["A 12.2-point margin"],
         supporters: [], opponents: [] }
     ]
@@ -1076,11 +1100,11 @@ const HOUSE_RACES = {
         note: "Miller-Meeks won renomination 71.6% over David Pautsch at 28.4% — a much stronger showing than 2024, when Pautsch held her to 56%. Bohannan won the Democratic nomination 81.5% over Travis Terrell. [Verify exact totals — the Iowa Secretary of State's site returns 403 to automated fetch, so figures are AP-sourced.]",
         candidates: [
           { name: "Mariannette Miller-Meeks", party: "R", winner: true,
-            positions: ["Won renomination with 71.6%","",""],
+            positions: ["Won renomination with 71.6%"],
             differentiators: ["Improved sharply on her narrow 2024 primary"],
             supporters: [], opponents: [] },
           { name: "Christina Bohannan", party: "D", winner: true,
-            positions: ["Won the Democratic nomination with 81.5%","",""],
+            positions: ["Won the Democratic nomination with 81.5%"],
             differentiators: ["Her third consecutive nomination in this district"],
             supporters: [], opponents: [] }
         ]
@@ -1090,11 +1114,11 @@ const HOUSE_RACES = {
         note: "The closest House race in Iowa history in percentage terms: Miller-Meeks 49.98% (206,955) to Bohannan 49.79% (206,157) — a margin of 799 votes, confirmed by recount.",
         candidates: [
           { name: "Mariannette Miller-Meeks", party: "R", winner: true,
-            positions: ["Won 49.98% — 206,955 votes","",""],
+            positions: ["Won 49.98% — 206,955 votes"],
             differentiators: ["Held the seat by 799 votes"],
             supporters: [], opponents: [] },
           { name: "Christina Bohannan", party: "D", winner: false,
-            positions: ["Won 49.79% — 206,157 votes","",""],
+            positions: ["Won 49.79% — 206,157 votes"],
             differentiators: ["Running again in 2026 for a third time"],
             supporters: [], opponents: [] }
         ]
@@ -1104,11 +1128,11 @@ const HOUSE_RACES = {
         note: "The first meeting of the two: Miller-Meeks won 53.3% to 46.6%, a 6.7-point margin that narrowed to 0.19 points two years later.",
         candidates: [
           { name: "Mariannette Miller-Meeks", party: "R", winner: true,
-            positions: ["Won 53.3% — 162,947 votes","",""],
+            positions: ["Won 53.3% — 162,947 votes"],
             differentiators: ["Her margin shrank sharply in 2024"],
             supporters: [], opponents: [] },
           { name: "Christina Bohannan", party: "D", winner: false,
-            positions: ["Won 46.6% — 142,173 votes","",""],
+            positions: ["Won 46.6% — 142,173 votes"],
             differentiators: ["Cut the margin from 6.7 points to 0.19 in 2024"],
             supporters: [], opponents: [] }
         ]
@@ -1134,7 +1158,7 @@ const HOUSE_RACES = {
             supporters: ["Out-raised the Trump-endorsed Republican in an open seat","A faith background and Dubuque base that fit a Catholic, blue-collar district","Both Cook and Sabato moved this race toward Democrats after the primary"],
             opponents: ["The NRCC says she missed 177 of 342 Iowa House votes in 2026 — 51.7% — while campaigning","Reporting cites specific skipped votes for campaign events in Cedar Rapids, Decorah and Dubuque","No Democrat has carried this seat since 2018, and it is R+4 [Verify]"] },
           { name: "Rick Stewart", party: "L", winner: false,
-            positions: ["[Verify — no 2026 platform could be sourced. His 2022 run for governor centered on ending the war on drugs, which is a prior-cycle position]","",""],
+            positions: ["[Verify — no 2026 platform could be sourced. His 2022 run for governor centered on ending the war on drugs, which is a prior-cycle position]"],
             differentiators: ["Former CEO of Frontier Natural Products Co-op; former Maquoketa law officer","The 2022 Libertarian nominee for governor, whose 2.4% won the party major-party status","⚠ HHS Secretary RFK Jr. phoned him on June 11, 2026 urging him to quit the race — he stayed in and gave the recording to The Gazette"],
             supporters: ["Survived a Republican ballot objection unanimously","Refused a sitting cabinet secretary's pressure to withdraw","Statewide name recognition unusual for a third-party House candidate"],
             opponents: ["Republicans openly treat him as a spoiler — hence the objection and the phone call","No published 2026 platform makes his agenda hard for voters to evaluate","No FEC fundraising figure could be located [Verify]"] },
@@ -1150,11 +1174,11 @@ const HOUSE_RACES = {
         note: "With the seat open, Joe Mitchell won the Republican nomination 61.4% (21,163) over state Sen. Charlie McClintock at 38.6%. Lindsay James won the Democratic nomination 57.3% (12,357) over Clint Twedt-Ball (24.3%) and Kathy Dolter (18.4%). [Verify exact totals — figures are AP-sourced; the Iowa SoS site returns 403 to automated fetch.]",
         candidates: [
           { name: "Joe Mitchell", party: "R", winner: true,
-            positions: ["Won the Republican nomination with 61.4%","",""],
+            positions: ["Won the Republican nomination with 61.4%"],
             differentiators: ["Cleared 50%, so no convention was needed"],
             supporters: [], opponents: [] },
           { name: "Lindsay James", party: "D", winner: true,
-            positions: ["Won the Democratic nomination with 57.3% in a three-way field","",""],
+            positions: ["Won the Democratic nomination with 57.3% in a three-way field"],
             differentiators: ["Avoided Iowa's 35% convention trigger comfortably"],
             supporters: [], opponents: [] }
         ]
@@ -1164,11 +1188,11 @@ const HOUSE_RACES = {
         note: "Ashley Hinson held the seat 57.1%–41.5% over Sarah Corkery, with independent Jody Puffett at 1.3%. Hinson vacated it in 2026 to run for the Senate.",
         candidates: [
           { name: "Ashley Hinson", party: "R", winner: true,
-            positions: ["Won 57.1% — 233,340 votes","",""],
+            positions: ["Won 57.1% — 233,340 votes"],
             differentiators: ["Won the open U.S. Senate nomination in 2026"],
             supporters: [], opponents: [] },
           { name: "Sarah Corkery", party: "D", winner: false,
-            positions: ["Won 41.5% — 169,740 votes","",""],
+            positions: ["Won 41.5% — 169,740 votes"],
             differentiators: ["Did not run again in 2026"],
             supporters: [], opponents: [] }
         ]
@@ -1200,11 +1224,11 @@ const HOUSE_RACES = {
         note: "Both nominations were uncontested — Nunn took 48,309 votes and Trone Garriott 54,662, each unopposed. State House Minority Leader Jennifer Konfrst suspended her campaign on Jan 26, 2026 and endorsed Trone Garriott, clearing the Democratic field before filing closed. Notably, more Democrats than Republicans turned out for an uncontested race.",
         candidates: [
           { name: "Zach Nunn", party: "R", winner: true,
-            positions: ["Renominated unopposed with 48,309 votes","",""],
+            positions: ["Renominated unopposed with 48,309 votes"],
             differentiators: ["Faced no primary opposition"],
             supporters: [], opponents: [] },
           { name: "Sarah Trone Garriott", party: "D", winner: true,
-            positions: ["Nominated unopposed with 54,662 votes","",""],
+            positions: ["Nominated unopposed with 54,662 votes"],
             differentiators: ["The field cleared for her before filing closed"],
             supporters: [], opponents: [] }
         ]
@@ -1214,11 +1238,11 @@ const HOUSE_RACES = {
         note: "Nunn held the seat 51.8%–47.9% over Lanon Baccam, a 3.9-point margin, while Trump carried the district by 4.5.",
         candidates: [
           { name: "Zach Nunn", party: "R", winner: true,
-            positions: ["Won 51.8% — 213,747 votes","",""],
+            positions: ["Won 51.8% — 213,747 votes"],
             differentiators: ["Ran behind Trump's margin in the district"],
             supporters: [], opponents: [] },
           { name: "Lanon Baccam", party: "D", winner: false,
-            positions: ["Won 47.9% — 197,965 votes","",""],
+            positions: ["Won 47.9% — 197,965 votes"],
             differentiators: ["Did not run again in 2026"],
             supporters: [], opponents: [] }
         ]
@@ -1228,11 +1252,11 @@ const HOUSE_RACES = {
         note: "Nunn took the seat from Democratic incumbent Cindy Axne by just 2,153 votes — 50.3% to 49.6%. This district has now produced two consecutive close finishes.",
         candidates: [
           { name: "Zach Nunn", party: "R", winner: true,
-            positions: ["Won 50.3% — 156,237 votes","",""],
+            positions: ["Won 50.3% — 156,237 votes"],
             differentiators: ["Unseated an incumbent by 2,153 votes"],
             supporters: [], opponents: [] },
           { name: "Cindy Axne", party: "D", winner: false,
-            positions: ["Won 49.6% — 154,084 votes","",""],
+            positions: ["Won 49.6% — 154,084 votes"],
             differentiators: ["The last Democrat to hold an Iowa U.S. House seat"],
             supporters: [], opponents: [] }
         ]
@@ -1258,7 +1282,7 @@ const HOUSE_RACES = {
             supporters: ["A local prosecutor with crossover appeal and real legislative experience","Tariff and farm-income anger gives Democrats an opening in farm country","Signed a pledge refusing corporate PAC money and backing a stock-trading ban"],
             opponents: ["Outgunned roughly six-to-one on cash on hand","The last Democratic nominee here lost by about 34 points in 2024","Won the nomination with only 39.1% — two-thirds of primary voters chose someone else"] },
           { name: "Jermaine Decker", party: "I", winner: false,
-            positions: ["[Verify — no campaign site, platform or FEC committee could be located]","",""],
+            positions: ["[Verify — no campaign site, platform or FEC committee could be located]"],
             differentiators: ["Described as an Army veteran; the only sourceable detail located","⚠ Listed by candidate directories, but his certification could NOT be confirmed against the Iowa Secretary of State [Verify]"],
             supporters: ["Offers IA-4 voters an option outside both parties [Verify]"],
             opponents: ["No platform, campaign presence or fundraising could be located [Verify]","Independents in this district have not exceeded low single digits [Verify]"] }
@@ -1269,11 +1293,11 @@ const HOUSE_RACES = {
         note: "Chris McGowan was unopposed for the Republican nomination with 55,077 votes, after Trump's endorsement pushed the rest of the field out. Dave Dawson won a three-way Democratic primary with 39.1% (11,291) over Stephanie Steiner (30.6%) and Ashley WolfTornabane (30.4%) — clearing Iowa's 35% convention threshold by about four points, the narrowest margin of the cycle. [Verify exact totals — the Iowa Secretary of State's PDFs return 403 to automated fetch.]",
         candidates: [
           { name: "Chris McGowan", party: "R", winner: true,
-            positions: ["Won the Republican nomination unopposed","",""],
+            positions: ["Won the Republican nomination unopposed"],
             differentiators: ["Trump's endorsement cleared three declared rivals out of the race"],
             supporters: [], opponents: [] },
           { name: "Dave Dawson", party: "D", winner: true,
-            positions: ["Won the Democratic nomination with 39.1% in a three-way field","",""],
+            positions: ["Won the Democratic nomination with 39.1% in a three-way field"],
             differentiators: ["Cleared the 35% convention threshold by about four points"],
             supporters: [], opponents: [] }
         ]
@@ -1283,11 +1307,11 @@ const HOUSE_RACES = {
         note: "Feenstra held the seat 67.0%–32.7% over Ryan Melton — a 34-point margin that shows how safe this district has become since the 2020 primary that replaced Steve King.",
         candidates: [
           { name: "Randy Feenstra", party: "R", winner: true,
-            positions: ["Won 67.0% — 250,522 votes","",""],
+            positions: ["Won 67.0% — 250,522 votes"],
             differentiators: ["Left the seat in 2026 to run for governor, and lost that primary"],
             supporters: [], opponents: [] },
           { name: "Ryan Melton", party: "D", winner: false,
-            positions: ["Won 32.7% — 122,175 votes","",""],
+            positions: ["Won 32.7% — 122,175 votes"],
             differentiators: ["Also the 2022 nominee; did not run in 2026"],
             supporters: [], opponents: [] }
         ]
@@ -1299,7 +1323,7 @@ const HOUSE_RACES = {
 const SITE_META = { name: "Iowa Elections Hub", lastUpdated: "September 3, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
-// Sources: (none yet — Ohio county-level down-ballot research is the next phase.)
+// Sources: (none yet — Iowa county-level down-ballot research is the next phase.)
 const LOCAL_RACES = {
   // County-level down-ballot research for Ohio has not started yet.
   // Follow the nc.html pattern (New Hanover, "37129") when it does.
@@ -1322,8 +1346,16 @@ function drawCapital(g, projection, cap) {
     return "M" + pts.map(p => p.join(",")).join("L") + "Z";
   };
   const grp = g.append("g").attr("class", "capital-marker");
-  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
-  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+  grp.append("path").attr("class", "capital-star").attr("d", star(0, 0, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", 10).attr("y", 3).text(cap.name);
+  // Constant on-screen size: scale the marker by viewBox-units-per-CSS-pixel, and again on resize.
+  const svgEl = g.node().ownerSVGElement;
+  const fit = () => {
+    const k = svgEl.viewBox.baseVal.width / Math.max(1, svgEl.getBoundingClientRect().width);
+    grp.attr("transform", `translate(${x},${y}) scale(${k})`);
+  };
+  fit();
+  window.addEventListener("resize", fit);
 }
 
 
@@ -1371,22 +1403,46 @@ function getCountyElections(fips) {
 const IA_STATE_FIPS = "19";
 const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
 
-const svg     = d3.select("#iamap");
+if (typeof d3 === "undefined" || typeof topojson === "undefined" || typeof d3.json !== "function") {
+  document.getElementById("map-loading").innerHTML = "The interactive map didn\u2019t load \u2014 a script it needs was blocked. <button type=\"button\" class=\"brief-more\" onclick=\"location.reload()\">Try again</button>";
+  document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+  document.getElementById("stat-statewide").textContent = STATEWIDE.filter(r => r.type === "upcoming").length;
+  throw new Error("map libraries did not load");
+}
+const svg = d3.select("#iamap");
 const tooltip = document.getElementById("tooltip");
 const panel   = document.getElementById("panel");
 const overlay = document.getElementById("overlay");
 const loading = document.getElementById("map-loading");
+const UNIT = "County";
 
 document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+document.getElementById("stat-statewide").textContent = STATEWIDE.filter(r => r.type === "upcoming").length;
 
+// "Richmond City County" and "Baltimore City County" are not places. Independent cities and
+// Louisiana parishes get the right word; two real Virginia counties happen to end in "City".
+const placeLabel = (c) => (/\bCity$/.test(c.n) && c.fips !== "51036" && c.fips !== "51095") ? c.n : c.n + " " + UNIT;
+// Hovering re-sorted every race on every pointer move; the answer never changes per county.
+const electionsCache = new Map();
+const countyElections = (fips) => { if (!electionsCache.has(fips)) electionsCache.set(fips, getCountyElections(fips)); return electionsCache.get(fips); };
+const HOVER = window.matchMedia && window.matchMedia("(hover: hover)").matches;
+
+loadMap();
+
+function loadMap() {
 d3.json(TOPO_URL).then((us) => {
   const allCounties = topojson.feature(us, us.objects.counties).features;
   const ncCounties  = allCounties.filter(d => String(d.id).startsWith(IA_STATE_FIPS));
 
-  const width  = 1000;
-  const height = 1000;
+  // Read the drawing size from the SVG's own viewBox, so the state's shape lives in one place.
+  const { width, height } = (() => { const vb = svg.node().viewBox.baseVal; return { width: vb.width || 1000, height: vb.height || 1000 }; })();
 
-  const projection = d3.geoAlbers()
+  // A conic equal-area CENTRED ON THIS STATE, so north is up and the shape matches the official
+  // state map. d3.geoAlbers() at its default -96° meridian tilted the far states by 12–37°.
+  const [[lonMin, latMin], [lonMax, latMax]] = d3.geoBounds({ type: "FeatureCollection", features: ncCounties });
+  const projection = d3.geoConicEqualArea()
+    .rotate([-(lonMin + lonMax) / 2, 0])
+    .parallels([latMin + (latMax - latMin) / 6, latMax - (latMax - latMin) / 6])
     .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
   const path = d3.geoPath().projection(projection);
 
@@ -1402,41 +1458,59 @@ d3.json(TOPO_URL).then((us) => {
       })
       .attr("data-fips", d => String(d.id).padStart(5, "0"))
       .attr("d", path)
+      // A keyboard or screen-reader user must be able to open a county too.
+      .attr("tabindex", 0)
+      .attr("role", "button")
+      .attr("aria-label", d => { const c = COUNTIES[String(d.id).padStart(5, "0")]; return c ? placeLabel({ ...c, fips: String(d.id).padStart(5, "0") }) : "Not in this dataset"; })
       .on("mousemove", (event, d) => {
+        if (!HOVER) return;
         const fips = String(d.id).padStart(5, "0");
-        const built = getCountyElections(fips);
+        const built = countyElections(fips);
         if (built) {
           const upcoming = built.elections.filter(e => e.type === "upcoming").length;
           const past = built.elections.filter(e => e.type === "past").length;
+          const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
           tooltip.innerHTML = `
-            <strong>${built.county.n} County</strong>
-            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+            <strong>${esc(placeLabel({ ...built.county, fips }))}</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · District${ds.length > 1 ? "s" : ""} ${ds.join(" & ")}</div>`;
         } else {
-          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+          tooltip.innerHTML = `FIPS ${esc(fips)}<div class="tooltip-meta">Not in this dataset</div>`;
         }
         tooltip.style.opacity = 1;
         const rect = svg.node().getBoundingClientRect();
-        tooltip.style.left = (event.clientX - rect.left) + "px";
-        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+        const x = event.clientX - rect.left, y = event.clientY - rect.top;
+        // Flip below the cursor near the top edge; keep the box inside the map horizontally.
+        tooltip.classList.toggle("below", y < tooltip.offsetHeight + 28);
+        const half = tooltip.offsetWidth / 2 + 8;
+        tooltip.style.left = Math.max(half, Math.min(rect.width - half, x)) + "px";
+        tooltip.style.top  = y + "px";
       })
       .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("keydown", (event, d) => {
+        if (event.key === "Enter" || event.key === " ") { event.preventDefault(); event.currentTarget.dispatchEvent(new MouseEvent("click", { bubbles: true })); }
+      })
       .on("click", (event, d) => {
         const fips = String(d.id).padStart(5, "0");
+        tooltip.style.opacity = 0;
         document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
         event.currentTarget.classList.add("selected");
-        openPanel(fips);
+        openPanel(fips, event.currentTarget);
       });
 
-  // ---- Capital marker: Columbus ----
+  // ---- Capital marker: Des Moines ----
   drawCapital(g, projection, { name: "Des Moines", lng: -93.6091, lat: 41.5868 });
 
   loading.style.display = "none";
 }).catch((err) => {
-  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+  if (window.console && console.error) console.error("[map] " + (err && err.message ? err.message : err));
+  loading.innerHTML = "The interactive map didn\u2019t load. <button type=\"button\" class=\"brief-more\" id=\"map-retry\">Try again</button>";
+  document.getElementById("map-retry").addEventListener("click", () => { loading.textContent = "Loading map\u2026"; loadMap(); });
 });
+}
 
-function openPanel(fips) {
-  const built = getCountyElections(fips);
+let lastFocus = null;
+function openPanel(fips, fromEl) {
+  const built = countyElections(fips);
   const body  = document.getElementById("panel-body");
   const title = document.getElementById("panel-title");
   const eyebrow = document.getElementById("panel-eyebrow");
@@ -1448,17 +1522,29 @@ function openPanel(fips) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn't in our Iowa dataset.</p></div>`;
   } else {
-    eyebrow.textContent = `Congressional District ${built.county.d}`;
-    title.textContent   = built.county.n + " County";
-    subtitle.textContent = built.district ? built.district.region : "";
+    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    title.textContent   = placeLabel({ ...built.county, fips });
+    subtitle.textContent = ds.length > 1
+      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);
+    // A brief only needs "Show more" if the clamp actually hides something.
+    body.querySelectorAll(".election-brief.clamped").forEach(b => {
+      const t = b.querySelector(".brief-body");
+      if (t && t.scrollHeight <= t.clientHeight + 4) { b.classList.remove("clamped"); const m = b.querySelector(".brief-more"); if (m) m.remove(); }
+    });
   }
 
+  lastFocus = fromEl || document.activeElement;
+  tooltip.style.opacity = 0;
   panel.classList.add("open");
   overlay.classList.add("open");
   panel.setAttribute("aria-hidden", "false");
+  document.documentElement.classList.add("drawer-open");
   body.scrollTop = 0;
+  setTimeout(() => document.getElementById("panel-close").focus(), 320);
 }
 
 function groupByType(elections) {
@@ -1501,12 +1587,15 @@ function briefSegments(note) {
   return out;
 }
 
+// Escape data before it goes into innerHTML. Notes and card text are plain prose; an ampersand
+// or angle bracket in a future edit must render as itself rather than corrupt the card.
+const esc = (v) => String(v == null ? "" : v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 function renderNote(note) {
   if (!note) return "";
   const body = briefSegments(note).map(function (s) {
     return s.mark
-      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${s.text}</p>`
-      : `<p class="brief-lead">${s.text}</p>`;
+      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${esc(s.text)}</p>`
+      : `<p class="brief-lead">${esc(s.text)}</p>`;
   }).join("");
   // Clamp only what actually needs clamping: the median note is 236 characters, so most
   // briefs show whole and never render a toggle at all.
@@ -1514,48 +1603,53 @@ function renderNote(note) {
   return `<div class="election-brief${long ? " clamped" : ""}">
       <div class="brief-label">About this race</div>
       <div class="brief-body">${body}</div>
-      ${long ? `<button class="brief-more" type="button">Show more</button>` : ""}
+      ${long ? `<button class="brief-more" type="button" aria-expanded="false">Show more</button>` : ""}
     </div>`;
 }
 
 function renderElection(e) {
   const count = (e.candidates && e.candidates.length) || 0;
-  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  // A ballot measure is recognised by what it is called, not by one exact scope string.
+  const isMeasure = /ballot measure|ballot question|amendment|initiative|proposition|referend|\bmeasure\b|\bquestion\b/i.test((e.scope || "") + " " + (e.office || ""));
+  const isInfo = /^Also on your ballot|— eight seats, ALL UNOPPOSED/i.test(e.office || "");
+  const countLabel = count ? `${count} candidate${count === 1 ? "" : "s"}` : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
   const candidatesHtml = count
-    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
-    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+    ? `<div class="candidates">${e.candidates.map(c => renderCandidate(c, e)).join("")}</div>`
+    : (isMeasure || isInfo ? "" : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">Candidates not yet announced.</div>`);
   const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
   return `
     <div class="election-card">
       <button class="election-summary" type="button" aria-expanded="false">
-        <div class="election-summary-main">
-          <div class="election-meta">
-            <span class="pill ${e.type}">${e.type}</span>
-            <span class="election-date">${e.date}</span>
-            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
-          </div>
-          <div class="election-office">${e.office || e.name || ""}</div>
-        </div>
-        <div class="election-toggle">
+        <span class="election-summary-main">
+          <span class="election-meta">
+            <span class="pill ${esc(e.type)}">${esc(e.type)}</span>
+            <span class="election-date">${esc(e.date)}</span>
+            ${e.scope ? `<span class="election-scope">${esc(e.scope)}</span>` : ""}
+          </span>
+          <span class="election-office">${esc(e.office || e.name || "")}</span>
+        </span>
+        <span class="election-toggle">
           <span class="cand-count">${countLabel}</span>
           <span class="chevron">${chevron}</span>
-        </div>
+        </span>
       </button>
       <div class="election-detail"><div>${renderNote(e.note)}${candidatesHtml}</div></div>
     </div>`;
 }
 
-function renderCandidate(c) {
-  const winnerClass = c.winner ? "candidate winner" : "candidate";
-  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+function renderCandidate(c, race) {
+  // A primary or runoff winner was NOMINATED, not elected — the badge should say so.
+  const nominated = !!(race && /primary|runoff/i.test((race.office || "") + " " + (race.scope || "")));
+  const winnerClass = c.winner ? ("candidate winner" + (nominated ? " nominee" : "")) : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
   return `
     <div class="${winnerClass}">
       <div class="cand-head">
-        <div class="cand-name">${c.name}</div>
-        <span class="party-tag party-${c.party}">${c.party}</span>
+        <div class="cand-name">${esc(c.name)}</div>
+        <span class="party-tag party-${esc(c.party)}">${esc(c.party)}</span>
       </div>
       ${positions ? `<div class="cand-section">
           <div class="cand-section-label">Top Positions</div>
@@ -1576,10 +1670,14 @@ function renderCandidate(c) {
 }
 
 function closePanel() {
+  if (!panel.classList.contains("open")) return;
   panel.classList.remove("open");
   overlay.classList.remove("open");
   panel.setAttribute("aria-hidden", "true");
+  document.documentElement.classList.remove("drawer-open");
+  tooltip.style.opacity = 0;
   document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+  if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
 }
 document.getElementById("panel-close").addEventListener("click", closePanel);
 overlay.addEventListener("click", closePanel);
@@ -1590,7 +1688,9 @@ document.getElementById("panel-body").addEventListener("click", (e) => {
   const more = e.target.closest(".brief-more");
   if (more) {
     const brief = more.closest(".election-brief");
-    more.textContent = brief.classList.toggle("clamped") ? "Show more" : "Show less";
+    const clamped = brief.classList.toggle("clamped");
+    more.textContent = clamped ? "Show more" : "Show less";
+    more.setAttribute("aria-expanded", clamped ? "false" : "true");
     return;
   }
   const summary = e.target.closest(".election-summary");

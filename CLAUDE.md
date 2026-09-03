@@ -89,7 +89,14 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 - **Fonts (Google Fonts):** Cormorant Garamond (serif, headlines) + Manrope (sans, body).
   ⚠️ History: the original font was Fraunces; its italic variable-font axes (SOFT/WONK) rendered
   stray decorative curls, so it was replaced. Do not reintroduce Fraunces.
-- **Maps:** NC/state pages use `d3.geoMercator().fitSize(...)`; national uses `d3.geoAlbersUsa()`.
+- **Maps:** every state page (and state.html) projects with a **conic equal-area centred on its own
+  state** — `d3.geoConicEqualArea().rotate([-lonMid, 0]).parallels([…])` computed from `d3.geoBounds`
+  of the state's counties — so north is up everywhere. (Until Sept 3, 2026 the pages used a default
+  `d3.geoAlbers()`, which tilted HI ~37° and ME ~16°, and this file wrongly said geoMercator.) The
+  map FRAME is shaped like the state: `tools/fit-map-frames.js` computes each page's aspect offline
+  from the same atlas and writes the `.map-frame` aspect-ratio, the `.map-shell` max-width and the
+  svg `viewBox` (the renderer reads its size from the viewBox). Re-run it after any map CSS change.
+  National map: `d3.geoAlbersUsa()`, territories filtered out before labelling.
 
 ## Design system (defined as CSS custom properties in each file)
 
@@ -121,9 +128,17 @@ italic gold word (`<em>`), pill badges, minimalism. Key recurring patterns:
   (green block) / "Opponents say" (red block) quote-styled lists. `winner: true` adds a gold
   "★ ELECTED" badge.
 - **Capital markers:** muted star + city name only (the "State Capital" sub-label was removed for
-  minimalism). Shown on individual state maps ONLY — never on the national map.
-- **National map tiers:** gold = fully built (the BUILT map: NC + SC), lighter gold `#D9BE85` =
-  marquee races built (the PARTIAL set), cream = starter framework. Legend reflects all three.
+  minimalism). Shown on individual state maps ONLY — never on the national map. The marker group
+  is scaled by viewBox-units-per-CSS-pixel on load and resize so it is the same size on screen on
+  a tall state (whose 1000-unit map may render 450px wide) as on a wide one.
+- **National map tiers:** gold = fully built (the BUILT map), cream = starter framework (AK CA MO
+  TX DC). The lighter-gold "marquee races built" tier (`PARTIAL`) is EMPTY since Sept 3, 2026 —
+  DC was in it while `state.html` held no DC races, so a DC visitor got a starter drawer under a
+  marquee label. Add a state back to PARTIAL only together with its `STATE_RACES` entries; the
+  legend line for the tier is added/removed by `tools/apply-index-fixes.js`.
+- **State list (index.html):** a static `<nav class="state-list">` of 51 real links under the map —
+  the keyboard, screen-reader, crawler and slow-CDN route into the site. Generated from BUILT by
+  `tools/apply-index-fixes.js`; `tests/uniformity.js` fails if it disagrees with the pages on disk.
 - **Small-state callouts (index.html):** VT, NH, MA, RI, CT, NJ, DE, MD, DC get leader lines to
   labels stacked on the right; each callout is a clickable group with an invisible 40×24 hit rect.
   Label coordinates are hand-tuned estimates — verify visually after any map layout change.
@@ -172,16 +187,21 @@ BUILT         : 44 fips -> page (37 nc, 45 sc, 13 ga, 51 va, 24 md, 10 de, 34 nj
                 09 ct, 50 vt, 23 me, 25 ma, 54 wv, 39 oh, 21 ky, 18 in, 19 ia, 17 il, 28 ms, 05 ar, 31 ne, 35 nm, 08 co,
                 41 or, 32 nv, 46 sd, 16 id, 30 mt, 42 pa, 47 tn, 15 hi, 01 al, 55 wi, 27 mn, 38 nd, 20 ks, 40 ok, 04 az,
                 12 fl, 56 wy, 49 ut, 53 wa)
-PARTIAL       : Set of 1 fips (DC) → lighter gold tier. The 6 remaining starter states are
-                AK CA LA MI MO TX. Tier arithmetic: 44 built + 1 marquee + 6 starter = 51.
+                26 mi, 22 la) — 46 pages; `tests/uniformity.js` asserts BUILT's size against the
+                <xx>.html files on disk, so this list is never the source of truth.
+PARTIAL       : EMPTY Set since Sept 3, 2026 (DC demoted — see "National map tiers"). The 5
+                starter jurisdictions are AK CA MO TX DC. Tier arithmetic: 46 built + 5 starter = 51.
 CALLOUTS      : label anchor coords for 9 small states + DC
 destFor(fips) : BUILT[fips] if fully built, else state.html?state=XX
 
 Fully built state pages (nc.html, sc.html) share one structure; a new one is made by cloning
 nc.html and replacing COUNTIES / STATEWIDE / HOUSE_RACES / LOCAL_RACES + the state-specific text
-(title, crest, hero, stats, capital marker, footer). Then: add the state.html redirect, add it to
-BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in tests
-(STATE_PAGES in data-logic.js, page lists in parse-check/smoke-test, redirect check).
+(title, crest, hero, stats, capital marker, footer). Then: add it to BUILT in index.html, remove
+it from PARTIAL + STATE_RACES, register it in tests (STATE_PAGES in data-logic.js, page lists in
+parse-check/smoke-test, redirect check), and re-run `node tools/apply-index-fixes.js` (regenerates
+the state list) and `node tools/apply-state-page-fixes.js` (regenerates the ONE redirect list, in
+state.html's <head>, from the <xx>.html files on disk — there is no longer a per-state `if` chain).
+Finally `node tools/fit-map-frames.js` so the new page's map frame takes the state's shape.
 ```
 
 ## Editorial policy (non-negotiable)
@@ -936,6 +956,37 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
    "Acadia County" on a live page. Default "county" leaves every existing config a byte-identical no-op — verified by
    re-running wa.html's real config and diffing against the shipped file.
 
+31. **THE SEPT 3, 2026 SITE SELF-REVIEW — what 46 "identical" pages had actually become, and how it was fixed once.**
+   Owner asked for a complete review (code, UX, UI, uniformity) before election season. Nine review lenses, two
+   adversarial skeptics per finding, 31 findings confirmed. The pattern behind most of them: **the pages were cloned
+   faster than the template was maintained**, so every fix that had ever been made by hand had been made on SOME pages.
+   ➤ **What a voter could see:** the SVG map was mouse-only (no keyboard, no screen reader — WCAG 2.1.1 on the site's
+   only navigation) and the home page had NO link to any state page (crawlers, keyboards and blocked-CDN visitors were
+   stranded); ballot measures said "Candidates not yet announced" (the renderer's only behavioural test was the literal
+   string `/Ballot Measure/`, and 12 amendments carried a different scope); ★ ELECTED sat on 120 PRIMARY winners;
+   "Richmond City County"; split counties (Jefferson AL, Wayne MI …) showed one district in the eyebrow while listing
+   two; the tooltip was clipped for the whole northern row of counties; 37 pages had a SQUARE map frame (Tennessee
+   filled 33% of its box) and every page projected with a default `d3.geoAlbers()` that tilted Hawaii 37°; the closed
+   drawer stayed in the tab order; the hero "Statewide Races Tracked" number was wrong on a dozen pages; three footers
+   cited Ohio's sources; the "Data" nav link went nowhere on all 46; the primary-turnout card misstated its own source
+   and the general-turnout card dropped "presidential years" — on a midterm site.
+   ➤ **How it was fixed — and the rule that came out of it:** NOT by editing 46 files. Every shared-code change is an
+   anchored `sub()` in `tools/apply-review-fixes.js` (index and state.html have their own), which refuses to write a
+   page with a missing anchor (Louisiana's parish wording tripped it on the first dry run — correctly). The scripts are
+   idempotent, and the first idempotence bug cost an hour: a re-run declared `esc` twice on every page because the
+   "already applied" check ran AFTER the anchor check, and several new texts still contain their anchor. **Check
+   "already applied" first.** The whole rebuild is reproducible from `git checkout`: nominee → normalize → frames →
+   review → index → state-page → footer-sources, then `node tests/run-all.js`.
+   ➤ **`tests/uniformity.js` now holds the line** (52 checks per page + cross-page + index + state.html). It found
+   three leftovers on its first run that the tools had missed — 25 pages of card pads the regex had skipped because
+   `[Verify]` inside an item ended the array match, an unmapped `State · Judicial` scope, and the Ohio footers.
+   ➤ **Visual verification without the Browser pane:** headless Edge screenshots (see `memory`: cnb-preview-and-patch-
+   tools), with a 375px iframe harness for phones because headless Chromium will not go below ~500px wide.
+   ➤ **Deliberately NOT changed (owner decisions, asked in the run summary):** the ipapi.co home-state glow (an
+   owner-requested feature; a privacy note was added instead), per-state topojson files (would end the no-build model),
+   hero copy beyond the eyebrow/lede, and researching DC's marquee races (DC was demoted to starter meanwhile, which is
+   simply true).
+
 ## Testing (`tests/` — plain Node.js, zero dependencies)
 
 Requires Node.js (any recent LTS). Run the whole suite from the site root:
@@ -952,13 +1003,19 @@ node tests/run-all.js
 | `tests/brief-render.js` | **The race note must stay OUT of the collapsed card header, and the ⚠/✅ segmentation must be LOSSLESS.** 329 checks over all 995 notes on 41 pages: no legacy `.election-note`, the brief is the first child of `.election-detail`, every brief reproduces its note's own words exactly, markup is well-formed, "Show more" appears iff the brief is clamped, and no note contains a backtick or `${` (either would break the whole drawer, since notes are interpolated into template literals). Added Aug 12, 2026 after the note shipped in the header and dwarfed the candidate data; **verified to fail on the pre-fix markup** |
 | `tests/label-fit.js` | **The national map's `LABEL_ADJ` labels must clear their state borders.** Measures clearance (anchor → nearest boundary) against baked geometry and requires 9.66px = 8.76 glyph half-diagonal + 0.4 stroke + 0.5 simplification slack. Added July 24, 2026 after the FL/LA labels shipped clipping *twice* — both earlier passes hit-tested the anchor POINT, which is inside the state even when the box around it is not. HI carries a documented exempt floor (its island cannot do better) |
 | `tests/fixtures/state-label-rings.json` | Projected, simplified state outlines for the 42 inline-label states (48KB). Built by `tools/gen-label-fixture.js`; records the projection it came from so `label-fit.js` fails loudly instead of checking stale geometry |
+| `tests/uniformity.js` | **Every state page is the SAME page with different data.** Added Sept 3, 2026 after the site self-review found 53 spellings of five scope ideas, a legend describing a tier no page has, seven pages styling a `#ncmap` that did not exist on them, three footers citing Ohio's sources, a hero stat wrong on a dozen pages and static footer dates disagreeing with `SITE_META`. Asserts per page: the scope grammar `<Level> · <Reach>[ · <Qualifier>]`, `Mon D, YYYY` dates, no empty-string card pads, no doubled `scope:` keys, uppercase open-seat tags, footer date = SITE_META, svg id = CSS selector, no "No data yet" legend, computed statewide stat, dialog drawer, Sources nav target, canonical URL, conic projection, frame aspect = viewBox, keyboard-reachable counties, pinned CDN versions; cross-page: no two Sources lines identical; index: BUILT count = pages on disk, state list = 51 with every built page, Marquee legend iff PARTIAL non-empty, territories filtered; state.html: head redirect list = pages on disk, footer date = SITE_META |
 | `tests/lib.js` | Shared helpers: inline-script extraction, the d3 cut, DOM stubs, vm sandbox runner |
-| `tests/run-all.js` | Runs all four suites; exits non-zero if anything fails |
+| `tests/run-all.js` | Runs all six suites; exits non-zero if anything fails |
 | `tools/verify-report.js` | Compact inventory of every [Verify] marker + time-sensitive race dates across all built pages. **Weekly refreshes work from this report, not full page reads** (~10× cheaper) |
 | `tools/voices-report.js` | Lists every candidate in an UPCOMING race that is missing supporters/opponents ("voices"), per page + a total. `--summary` for counts only, or pass a page name. Voices are a REQUIRED field (owner, July 24, 2026) — use this to find the gaps instead of reading pages |
 | `tools/apply-voices.js` | Injects researched voices into a page from a JSON file (`{office: {candidate: {supporters, opponents}}}`) without reflowing the rest of the file. Only fills EMPTY arrays in `upcoming` races, and reports any researched entry it could not place (so a name typo can't silently no-op). `--dry` to preview |
 | `tools/grok-research.js` | Grok lead generator (web + X search) — see editorial policy for sourcing rules |
 | `tools/research-ledger.md` | Dead-end tracker: markers researched with no findings + retry dates, so they aren't re-researched weekly |
+| `tools/normalize-vocabulary.js` | ONE vocabulary for race labels across all pages: maps 53 legacy scope strings onto the grammar `<Level> · <Reach>[ · <Qualifier>]`, classifies bare "Statewide"/"State · Judicial" by office, gives at-large pages `Federal · At-Large`, abbreviates House titles, uppercases `(OPEN SEAT)`/`(SPECIAL ELECTION)`, strips empty-string card pads (a real bracket-aware scanner — `[Verify]` inside an item must not end the array). Idempotent; `--check` reports. Run after any hand-edit of a data block |
+| `tools/fit-map-frames.js` | Shapes every state page's map frame like its state (see Maps). Caches the atlas at `tools/banked/counties-10m.json` (git-ignored) |
+| `tools/apply-review-fixes.js` | The Sept 3, 2026 self-review, as anchored exact-string replacements on the shared CSS/HTML/renderer of all 46 pages (keyboard counties, dialog drawer, measure detection, split-county drawer, escaping, CDN guard, tooltip flip, print/motion/focus CSS, ★ NOMINATED, marker scaling …). Refuses to write a page with a missing anchor; idempotent ("already applied" is checked BEFORE the anchor, because several new texts still contain their anchor). **Pattern for any future shared-code change: add a `sub()` here rather than hand-editing 46 files** |
+| `tools/apply-index-fixes.js` / `tools/apply-state-page-fixes.js` | The same review for index.html (state list, facts copy, form copy, keyboard states, territories, head links) and state.html (head redirect list, conic frame at runtime, place names, drawer types/scopes, official candidate-list links, `HOUSE_NOTES`/`LEG_NOTES`/`LOCAL_NOTES` tables) |
+| `tools/apply-nominee-fixes.js` / `tools/apply-footer-sources.js` | Data patches from the review: NC-1 (Buckhout), VA-10 (Beckwith), VA-11 (Purves) from the state election offices' lists; ia/in/ky footers citing their OWN sources instead of Ohio's |
 
 Notes for future edits:
 - `getCountyElections` returns `{ county, district, elections }` — the race list is `.elections`.

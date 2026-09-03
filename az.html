@@ -4,7 +4,15 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Arizona Elections Hub</title>
-<meta name="description" content="An interactive county-by-county guide to every AZ election, past and upcoming." />
+<meta name="description" content="An interactive county-by-county guide to every Arizona election, past and upcoming." />
+<link rel="canonical" href="https://checknbalance.org/az.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Check n Balance">
+<meta property="og:title" content="Arizona Elections Hub">
+<meta property="og:description" content="An interactive county-by-county guide to every Arizona election, past and upcoming.">
+<meta property="og:url" content="https://checknbalance.org/az.html">
+<meta property="og:image" content="https://checknbalance.org/apple-touch-icon.png">
+<meta name="twitter:card" content="summary">
 
 <!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -14,6 +22,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -206,13 +215,15 @@
     box-shadow: var(--shadow);
     position: relative;
     overflow: hidden;
+    max-width: calc(min(72vh, 760px) * 0.86 + 16px);
+    margin-left: auto; margin-right: auto;
   }
   .map-frame {
     background:
       radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
       var(--paper-pure);
     border-radius: 12px;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 0.86 / 1;
     width: 100%;
     position: relative;
   }
@@ -225,25 +236,21 @@
   }
 
   .county {
-    fill: #F1E9D2;
+    fill: var(--gold-soft);
     stroke: var(--paper-pure);
-    stroke-width: 0.7;
+    stroke-width: 1px;
+    vector-effect: non-scaling-stroke;   /* screen pixels at every map size, not viewBox units */
     cursor: pointer;
     transition: fill .15s ease;
   }
-  .county.has-data       { fill: var(--gold-soft); }
-  .county.has-data:hover { fill: var(--gold); }
-  .county:hover          { fill: #E5DBBE; }
-  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+  /* Hover fills only where a pointer can hover — a phone tap must not leave a county stuck "hovered". */
+  @media (hover: hover) {
+    .county:hover { fill: var(--gold); }
+  }
+  .county:focus-visible  { outline: none; fill: var(--gold); stroke: var(--ink); stroke-width: 2px; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.5px; }
 
   /* ---- Capital city marker (muted) ---- */
-  .capital-dot {
-    fill: var(--ink);
-    fill-opacity: 0.55;
-    stroke: var(--paper-pure);
-    stroke-width: 1.5;
-    pointer-events: none;
-  }
   .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
   .capital-label {
     font-family: var(--sans);
@@ -251,16 +258,7 @@
     font-weight: 600;
     letter-spacing: 0.06em;
     fill: var(--ink);
-    fill-opacity: 0.55;
-    pointer-events: none;
-  }
-  .capital-sub {
-    font-family: var(--sans);
-    font-size: 7.5px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    fill: var(--ink);
-    fill-opacity: 0.4;
+    fill-opacity: 0.85;
     pointer-events: none;
   }
 
@@ -276,10 +274,11 @@
     opacity: 0;
     transition: opacity .12s ease;
     white-space: nowrap;
-    z-index: 10;
+    z-index: 60;
     box-shadow: 0 8px 24px rgba(0,0,0,.18);
   }
   .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip.below { transform: translate(-50%, 26px); }
   .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
 
   /* ============================================
@@ -296,15 +295,17 @@
 
   .panel {
     position: fixed; top: 0; right: 0; bottom: 0;
-    width: min(720px, 100%);
+    width: min(720px, 92vw);
     background: var(--paper-pure);
     box-shadow: -10px 0 40px rgba(14,23,38,.15);
     transform: translateX(100%);
-    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    visibility: hidden;   /* off-screen AND out of the tab order / accessibility tree */
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1), visibility 0s linear .3s;
     z-index: 101;
     display: flex; flex-direction: column;
   }
-  .panel.open { transform: translateX(0); }
+  .panel.open { transform: translateX(0); visibility: visible; transition-delay: 0s; }
+  html.drawer-open { overflow: hidden; }   /* the page behind a full-height drawer must not scroll */
 
   .panel-header {
     padding: 24px 36px;
@@ -335,7 +336,7 @@
   }
   .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
 
-  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+  .panel-body { overflow-y: auto; overscroll-behavior: contain; padding: 8px 0 60px; flex: 1; }
 
   /* Group header inside panel */
   .group-header {
@@ -366,7 +367,7 @@
     padding: 4px 10px; border-radius: 999px;
     font-weight: 700;
   }
-  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.past     { background: #F1EAD8; color: #7A561B; }
   .pill.upcoming { background: #FCE8E6; color: var(--red); }
   .pill.scheduled{ background: #E8F0F2; color: #265D69; }
   .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
@@ -397,15 +398,15 @@
     font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase;
     color: var(--gold-deep); font-weight: 700; margin-bottom: 7px;
   }
-  .brief-body { font-size: 12.5px; line-height: 1.62; color: var(--ink-soft); }
+  .brief-body { font-size: 13.5px; line-height: 1.62; color: var(--ink-soft); }
   .brief-body p + p { margin-top: 7px; }
   .brief-lead { color: var(--ink); }
   /* Flag glyphs hang in the margin so the text block keeps a straight left edge. */
   .brief-flag { position: relative; padding-left: 21px; }
   .brief-mark { position: absolute; left: 0; top: 0; font-size: 11px; color: var(--gold-deep); }
-  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; }
+  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; -webkit-mask-image: linear-gradient(#000 72%, transparent); mask-image: linear-gradient(#000 72%, transparent); }
   .brief-more {
-    margin-top: 9px; padding: 0;
+    margin-top: 6px; padding: 6px 0; min-height: 24px;
     background: none; border: none; cursor: pointer;
     font-family: var(--sans); font-size: 10.5px; font-weight: 700;
     letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-deep);
@@ -446,8 +447,9 @@
     display: grid; grid-template-rows: 0fr;
     transition: grid-template-rows .28s ease;
   }
-  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-detail > div { overflow: hidden; min-height: 0; visibility: hidden; transition: visibility 0s linear .28s; }
   .election-card.open .election-detail { grid-template-rows: 1fr; }
+  .election-card.open .election-detail > div { visibility: visible; transition-delay: 0s; }
 
   .candidates { display: grid; gap: 14px; margin-top: 18px; }
   .candidate {
@@ -464,10 +466,11 @@
   .candidate.winner::before {
     content: '★ ELECTED';
     position: absolute; top: -10px; right: 14px;
-    background: var(--gold); color: white;
-    font-size: 9px; letter-spacing: 0.16em;
+    background: var(--gold-deep); color: white;
+    font-size: 10px; letter-spacing: 0.16em;
     padding: 3px 9px; border-radius: 4px; font-weight: 700;
   }
+  .candidate.winner.nominee::before { content: '★ NOMINATED'; }
   .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
   .cand-name {
     font-family: var(--serif); font-size: 20px; font-weight: 500;
@@ -494,7 +497,7 @@
   }
   .cand-list {
     list-style: none; padding-left: 0;
-    font-size: 13px; color: var(--ink); line-height: 1.5;
+    font-size: 13.5px; color: var(--ink); line-height: 1.5;
   }
   .cand-list li {
     padding: 4px 0 4px 18px;
@@ -513,7 +516,7 @@
   .voices-block {
     border-radius: 10px;
     padding: 12px 14px;
-    font-size: 12.5px; line-height: 1.5;
+    font-size: 13px; line-height: 1.5;
   }
   .voices-block.supporters {
     background: #F2F7F0;
@@ -532,8 +535,8 @@
   }
   .voices-block ul { list-style: none; padding: 0; margin: 0; }
   .voices-block li { padding: 3px 0; }
-  .voices-block li::before { content: '"'; opacity: .4; }
-  .voices-block li::after  { content: '"'; opacity: .4; }
+  .voices-block li::before { content: '\201C'; opacity: .4; }
+  .voices-block li::after  { content: '\201D'; opacity: .4; }
 
   .empty-state {
     padding: 60px 36px; text-align: center;
@@ -568,6 +571,26 @@
   /* ============================================
      RESPONSIVE
      ============================================ */
+  /* Keyboard users get a visible, on-brand focus ring everywhere. */
+  :focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 3px; }
+  /* Anchor jumps (#map, #sources) must not land under the sticky bar. */
+  .map-section, .footer { scroll-margin-top: 84px; }
+  /* Hero stat labels wrap unevenly on narrow screens; give them a common height. */
+  .stat-label { min-height: 2.6em; }
+  .legend-star { color: var(--ink); opacity: .7; font-size: 12px; margin-right: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  }
+  /* Printing a county's ballot prints the drawer, not the hero and an empty map. */
+  @media print {
+    .topbar, .hero, .map-section, .panel-overlay, .panel-close, .brief-more { display: none !important; }
+    .panel { position: static; width: auto; transform: none; visibility: visible; box-shadow: none; }
+    .panel-body { overflow: visible; }
+    .election-detail { grid-template-rows: 1fr; }
+    .election-detail > div { visibility: visible; }
+    .election-brief.clamped .brief-body { max-height: none; -webkit-mask-image: none; mask-image: none; }
+  }
   @media (max-width: 900px) {
     .topbar-inner { grid-template-columns: 1fr auto; }
     .topnav { display: none; }
@@ -582,6 +605,7 @@
     .section-head { flex-direction: column; align-items: flex-start; }
     .panel { width: 100%; }
     .panel-header { padding: 18px 22px; }
+    .panel-close { width: 44px; height: 44px; }
     .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
     .voices { grid-template-columns: 1fr; }
   }
@@ -612,7 +636,7 @@
     <nav class="topnav">
       <a href="#map">Map</a>
       <a href="#about">About</a>
-      <a href="#data">Data</a>
+      <a href="#sources">Sources</a>
     </nav>
   </div>
 </header>
@@ -631,7 +655,7 @@
   <div class="hero-stats">
     <div class="stat"><div class="stat-num">15</div><div class="stat-label">Counties</div></div>
     <div class="stat"><div class="stat-num"><em>9</em></div><div class="stat-label">U.S. House Seats</div></div>
-    <div class="stat"><div class="stat-num"><em>9</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num"><em id="stat-statewide">–</em></div><div class="stat-label">Statewide Races, Nov&nbsp;3</div></div>
     <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
   </div>
 </section>
@@ -644,20 +668,20 @@
     <div>
       <h2 class="section-title">Click a county to <em>begin</em>.</h2>
       <p class="section-sub">
-        Counties shaded in gold have detailed election information available. Hover for a quick
-        preview; click to open the full breakdown.
+        Tap or click any county to open its full ballot — every race, every candidate, and what
+        supporters and opponents say. On a desktop, hover for a quick preview.
       </p>
     </div>
     <div class="legend">
-      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
-      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Every county is clickable</span>
+      <span class="legend-swatch"><i class="legend-star">★</i> State capital</span>
     </div>
   </div>
 
   <div class="map-shell">
     <div class="map-frame">
       <div class="map-loading" id="map-loading">Loading map of Arizona…</div>
-      <svg id="azmap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <svg id="azmap" viewBox="0 0 1000 1163" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="tooltip" id="tooltip"></div>
     </div>
   </div>
@@ -667,7 +691,7 @@
      PANEL (details drawer)
      ============================================= -->
 <div class="panel-overlay" id="overlay"></div>
-<aside class="panel" id="panel" aria-hidden="true">
+<aside class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title" aria-hidden="true">
   <div class="panel-header">
     <div>
       <div class="panel-eyebrow" id="panel-eyebrow">County</div>
@@ -687,8 +711,8 @@
     <div class="footer-crest">
       <strong>AZ Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
-    <div class="footer-meta">
-      Last updated: <span id="last-updated">July 22, 2026</span><br>
+    <div class="footer-meta" id="sources">
+      Last updated: <span id="last-updated">August 27, 2026</span><br>
       Sources: Arizona Secretary of State (July 21, 2026 primary; Aug 6, 2026 statewide canvass; 2026 ballot-measure filings; State Voter Registration Report), Maricopa County official canvass, U.S. Census Bureau, MCDC Geocorr 2022, FEC, seethemoney.az.gov, Arizona Independent Redistricting Commission, Cook Political Report, Inside Elections, Sabato’s Crystal Ball, Votebeat Arizona, Arizona Mirror, Arizona Capitol Times, AZCentral, KJZZ, KTAR, AZPM, Arizona Daily Independent</div>
   </div>
 </footer>
@@ -696,8 +720,8 @@
 <!-- =============================================
      LIBRARIES
      ============================================= -->
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0"></script>
 
 <!-- =============================================
      DATA LAYER
@@ -788,11 +812,7 @@ const STATEWIDE = [
     note: "NOT AN OPEN SEAT — Katie Hobbs is seeking a second term after winning in 2022 by 17,117 votes. ✅ ARIZONA IS ELECTING A LIEUTENANT GOVERNOR FOR THE FIRST TIME: the office is new for 2026 and runs on a JOINT TICKET with the governor, with no separate primary, so the running mates below were chosen by the nominees rather than by voters. Hobbs picked JOHN GILES, the Republican mayor of Mesa from 2014 to 2025, who endorsed Kamala Harris in 2024 and spoke at that year's Democratic National Convention. Andy Biggs picked former state lawmaker Sine Kerr. ⚠ PRESIDENT TRUMP ENDORSED TWO CANDIDATES IN THIS PRIMARY — Biggs and Karrin Taylor Robson — and Robson ultimately withdrew. Biggs then won the nomination with 71.5%. ✅ A TURNOUT NUMBER WORTH NOTING: Hobbs was unopposed and still drew 443,680 votes, about 40,000 MORE than the entire contested four-way Republican primary (403,840).",
     candidates: [
       { name: "Katie Hobbs (incumbent) — with John Giles", party: "D", winner: false,
-        positions: [
-          "⚠ No consolidated 2026 issues page could be located on her campaign site; her record is the platform [Verify]",
-          "",
-          ""
-        ],
+        positions: ["⚠ No consolidated 2026 issues page could be located on her campaign site; her record is the platform [Verify]"],
         differentiators: [
           "Governor since 2023; before that Secretary of State, and Arizona Senate Minority Leader",
           "Won in 2022 by 17,117 votes — under half a point",
@@ -810,11 +830,7 @@ const STATEWIDE = [
           "⚠ No published 2026 policy platform of her own for voters to hold her to [Verify]"
         ] },
       { name: "Andy Biggs — with Sine Kerr", party: "R", winner: false,
-        positions: [
-          "⚠ No consolidated 2026 issues page could be located on his campaign site [Verify]; his record in Congress is the platform",
-          "",
-          ""
-        ],
+        positions: ["⚠ No consolidated 2026 issues page could be located on his campaign site [Verify]; his record in Congress is the platform"],
         differentiators: [
           "U.S. Representative for AZ-5 since 2017, giving up that seat to run; former President of the Arizona Senate",
           "Won the Republican primary with 71.5% (288,767) over Rep. David Schweikert's 15.6%",
@@ -832,11 +848,7 @@ const STATEWIDE = [
           "⚠ No published 2026 platform for the office he is seeking [Verify]"
         ] },
       { name: "Risa Lombardo", party: "G", winner: false,
-        positions: [
-          "⚠ No sourced 2026 platform statement could be located [Verify]",
-          "",
-          ""
-        ],
+        positions: ["⚠ No sourced 2026 platform statement could be located [Verify]"],
         differentiators: [
           "Won a four-way Green primary over Carlos Melendez, William Pounds and Athena Eastwood",
           "⚠ Ballot certification could not be confirmed against the Secretary of State's own list [Verify]",
@@ -851,11 +863,7 @@ const STATEWIDE = [
           "No reported fundraising or campaign organisation [Verify]"
         ] },
       { name: "Teri Hourihan", party: "I", winner: false,
-        positions: [
-          "⚠ No sourced 2026 platform statement could be located [Verify]",
-          "",
-          ""
-        ],
+        positions: ["⚠ No sourced 2026 platform statement could be located [Verify]"],
         differentiators: [
           "The No Labels Party nominee",
           "⚠ Ballot certification could not be confirmed against the Secretary of State's own list [Verify]",
@@ -874,11 +882,7 @@ const STATEWIDE = [
     note: "⚠ THE SHARPEST CONTRAST ON THE ARIZONA BALLOT, BECAUSE THE OFFICE IS ELECTION ADMINISTRATION ITSELF. Adrian Fontes has resisted federal efforts to scrutinise Arizona's voting process; Alexander Kolodin LED MULTIPLE LAWSUITS TO OVERTURN THE 2020 AND 2022 ARIZONA RESULTS, drawing rebukes from judges and from the state bar. ✅ AND HE IS ON THE SAME BALLOT TWICE IN EFFECT: Kolodin is the sponsor of PROPOSITION 144, the constitutional amendment on this ballot that would write voter-ID requirements for ALL voting methods, including by mail, into the Arizona Constitution. A voter can back the man and the measure, or split them. ⚠ THE PRIMARY UPSET: Kolodin beat Gina Swoboda 58.3% to 41.7% — and Swoboda was the OTHER half of President Trump's rare dual endorsement in January 2026, alongside Jay Feely in AZ-1. Trump's pick lost this one. ⚠ Polling has Fontes 41%, Kolodin 35%, with 20% undecided [Verify — a single public poll].",
     candidates: [
       { name: "Adrian Fontes (incumbent)", party: "D", winner: false,
-        positions: [
-          "Resisting federal efforts to scrutinise Arizona's voting process",
-          "⚠ No fuller consolidated 2026 issues platform could be located [Verify]",
-          ""
-        ],
+        positions: ["Resisting federal efforts to scrutinise Arizona's voting process","⚠ No fuller consolidated 2026 issues platform could be located [Verify]"],
         differentiators: [
           "Secretary of State since 2023; Maricopa County Recorder 2016-2020; an attorney and former prosecutor",
           "Unopposed for renomination with 495,572 votes",
@@ -916,11 +920,7 @@ const STATEWIDE = [
           "He trails in the only public poll located, 35% to 41% [Verify]"
         ] },
       { name: "Duwayne Collier", party: "G", winner: false,
-        positions: [
-          "⚠ No sourced 2026 platform statement could be located [Verify]",
-          "",
-          ""
-        ],
+        positions: ["⚠ No sourced 2026 platform statement could be located [Verify]"],
         differentiators: [
           "Won the Green primary 66.0% with 421 votes over a write-in — a nominating electorate of 638 people in total",
           "⚠ Ballot certification could not be confirmed against the Secretary of State's own list [Verify]",
@@ -939,11 +939,7 @@ const STATEWIDE = [
     note: "⚠ A REMATCH OF THE CLOSEST STATEWIDE RACE IN ARIZONA HISTORY — SORT OF. Kris Mayes won this office in 2022 by 280 VOTES after a statewide recount. Her 2022 opponent, Abe Hamadeh, is not on this ballot for AG; he is now the congressman for AZ-8, and he challenged that 280-vote result in court. Her opponent instead is Senate President WARREN PETERSEN. ✅ PETERSEN IS THE MAN WHO CLOSED ARIZONA'S REDISTRICTING QUESTION: on Aug 11, 2026 he publicly abandoned the plan to sue for a new congressional map, saying the lines would be very similar so a lawsuit probably would not make sense — which is why Arizona votes on unchanged districts this year. ⚠ THE REPUBLICAN PRIMARY WAS FOUGHT OVER HIS QUALIFICATIONS: Rodney Glassman argued Petersen had been licensed to practise law for under three years with little trial experience. Petersen won 55.9% to 44.1%. ⚠ An AARP-commissioned poll has Mayes ahead by five points among likely voters, with Petersen leading among voters 50 and up [Verify — a sponsored poll].",
     candidates: [
       { name: "Kris Mayes (incumbent)", party: "D", winner: false,
-        positions: [
-          "⚠ No consolidated 2026 issues page could be located [Verify]; her litigation record is the platform",
-          "",
-          ""
-        ],
+        positions: ["⚠ No consolidated 2026 issues page could be located [Verify]; her litigation record is the platform"],
         differentiators: [
           "Attorney General since 2023; formerly an Arizona Corporation Commissioner",
           "Won in 2022 by 280 VOTES after a statewide recount — the closest statewide result in Arizona history",
@@ -1058,11 +1054,7 @@ const STATEWIDE = [
           "She trails Yee on cash by about $100,000"
         ] },
       { name: "Kimberly Yee", party: "R", winner: false,
-        positions: [
-          "⚠ Her campaign site could not be retrieved, so no self-described 2026 platform is published here [Verify]",
-          "Reported: she ran to Tom Horne's right on ESA regulation, backed by the Legislature's Freedom Caucus, which faulted him as too aggressive in policing ESA spending",
-          ""
-        ],
+        positions: ["⚠ Her campaign site could not be retrieved, so no self-described 2026 platform is published here [Verify]","Reported: she ran to Tom Horne's right on ESA regulation, backed by the Legislature's Freedom Caucus, which faulted him as too aggressive in policing ESA spending"],
         differentiators: [
           "Two-term State Treasurer and a former Arizona Senate majority leader",
           "⚠ BEAT A SITTING SUPERINTENDENT OF HER OWN PARTY, 53.3% (317,711) to 46.7%",
@@ -1084,11 +1076,7 @@ const STATEWIDE = [
     note: "✅ ARIZONA IS THE ONLY STATE IN THE COUNTRY THAT ELECTS A MINE INSPECTOR. The office inspects active mines for worker safety, runs miner safety training, oversees reclamation and secures Arizona's more than 100,000 abandoned mine shafts. It is a small agency — not a permitting or environmental regulator. ⚠ AND THE INCUMBENT IS A REPUBLICAN APPOINTED BY A DEMOCRATIC GOVERNOR: Katie Hobbs picked Les Presmyk from seven Republican applicants on Sept 12, 2025 after Paul Marsh resigned, and the appointment drew bipartisan praise. Both candidates were unopposed in their primaries. ⚠ No campaign-finance report could be located for either candidate [Verify].",
     candidates: [
       { name: "Les Presmyk (incumbent)", party: "R", winner: false,
-        positions: [
-          "⚠ No sourced 2026 campaign platform statement could be located [Verify] — his candidacy rests on his record and career",
-          "",
-          ""
-        ],
+        positions: ["⚠ No sourced 2026 campaign platform statement could be located [Verify] — his candidacy rests on his record and career"],
         differentiators: [
           "Appointed by Gov. Katie Hobbs (D) on Sept 12, 2025 from seven Republican applicants, after Paul Marsh resigned",
           "A mining engineer trained at the University of Arizona College of Mines, with more than 44 years in Arizona mining — Magma Copper, San Manuel and Miami Copper",
@@ -1150,11 +1138,7 @@ const STATEWIDE = [
           "One-party control of the Commission has produced no viewpoint diversity on those requests [Verify — structural argument]"
         ] },
       { name: "Ralph Heap", party: "R", winner: false,
-        positions: [
-          "⚠ No specific rate or energy policy planks from his own site could be located, and he did not respond to the Arizona Republic's candidate questionnaire [Verify]",
-          "",
-          ""
-        ],
+        positions: ["⚠ No specific rate or energy policy planks from his own site could be located, and he did not respond to the Arizona Republic's candidate questionnaire [Verify]"],
         differentiators: [
           "A fourth-generation Arizonan and an East Valley orthopedic surgeon for more than 40 years",
           "Recruited to run by Freedom Caucus chair Sen. Jake Hoffman",
@@ -1211,11 +1195,7 @@ const STATEWIDE = [
           "No Democrat currently holds any of the five seats [Verify — structural argument]"
         ] },
       { name: "Mike Cease", party: "G", winner: false,
-        positions: [
-          "⚠ No sourced 2026 platform statement could be located [Verify]",
-          "",
-          ""
-        ],
+        positions: ["⚠ No sourced 2026 platform statement could be located [Verify]"],
         differentiators: [
           "⚠ Won the Green line as a WRITE-IN with 213 votes",
           "⚠ Ballot certification could not be confirmed against the Secretary of State's own list [Verify]",
@@ -1234,11 +1214,7 @@ const STATEWIDE = [
     note: "ONE SUPREME COURT JUSTICE FACES RETENTION: JOHN R. LOPEZ IV. ⚠ CORRECTION TO A COMMON ERROR, INCLUDING OUR OWN BRIEF: Lopez is the VICE Chief Justice, not the Chief Justice. Ann Timmer has been Chief Justice since July 1, 2024, and her term runs to 2029. Retention is a simple yes-or-no vote with no opponent. ⚠ ARIZONA RETENTION VOTES HAVE BECOME GENUINELY CONTESTED: justices historically average about 73% yes, but in 2022 one fell to 56%, the first below 60% since 1990, and in 2024 NEITHER justice up for retention cleared 60%, against an organised anti-retention campaign. All three of those sub-60% justices were appointees of Gov. Doug Ducey — as is Lopez. ⚠ No 2026 Judicial Performance Review rating for Lopez is available yet; those publish in September 2026 at azjudges.info and in the Publicity Pamphlet [Verify]. ✅ No organised 2026 anti-retention campaign against Lopez could be located. Court of Appeals and Superior Court judges in Maricopa, Pima, Pinal and Coconino counties also face retention, but only this statewide seat is carded here.",
     candidates: [
       { name: "John R. Lopez IV — Arizona Supreme Court (retention)", party: "I", winner: false,
-        positions: [
-          "Retention votes are yes-or-no, with no opponent and no campaign; judges do not run on a platform",
-          "",
-          ""
-        ],
+        positions: ["Retention votes are yes-or-no, with no opponent and no campaign; judges do not run on a platform"],
         differentiators: [
           "Vice Chief Justice of the Arizona Supreme Court; appointed by Gov. Doug Ducey in 2016 and retained in 2020",
           "His current term expires Jan 4, 2027",
@@ -1257,15 +1233,11 @@ const STATEWIDE = [
         ] }
     ] },
 
-  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Ballot Question", office: "Ballot Measures — Arizona (8 measures)",
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Ballot Measure · Statewide", office: "Ballot Measures — Arizona (8 measures)",
     note: "⚠ EIGHT MEASURES, AND ALL EIGHT ARE LEGISLATIVE REFERRALS — THERE IS NO CITIZEN INITIATIVE ON ARIZONA'S 2026 BALLOT. Ten referrals plus one initiative had advanced, and litigation cut the field to eight: PROP 143 (school-district payroll deduction) was STRUCK DOWN by Judge Greg Como in late July under the constitution's separate-amendment rule, and Republicans said they would not appeal; PROP 145 (military-family ESA funds) was STRUCK by Judge Joseph Kreamer on the same ground; and the PROTECT EDUCATION ACT, which would have appeared as Prop 212, is OFF — the Arizona Supreme Court rejected its ballot description on Aug 14 and then held on Aug 18 that it fell short of the 255,949 valid signatures required, after challenges by the Arizona Free Enterprise Club and the Goldwater Institute. Its sponsors conceded. ✅ Props 142, 144 and 318 all survived challenges and stay on the ballot. The field is now FINAL — Maricopa County's ballot-printing deadline passed on Aug 20, 2026. ⚠ Maricopa County voters will also see a local Proposition 413, which is a county measure and is not covered here.",
     candidates: [
       { name: "Prop 141 — ban mileage-based vehicle taxes (constitutional)", party: "I", winner: false,
-        positions: [
-          "A YES vote permanently bars the state and local governments from taxing or charging fees based on vehicle miles travelled, and from monitoring or limiting mileage without consent",
-          "A NO vote leaves a mileage-based road-funding option available to future legislatures",
-          ""
-        ],
+        positions: ["A YES vote permanently bars the state and local governments from taxing or charging fees based on vehicle miles travelled, and from monitoring or limiting mileage without consent","A NO vote leaves a mileage-based road-funding option available to future legislatures"],
         differentiators: [
           "A constitutional amendment referred by the Legislature (SCR 1004, 2025)",
           "FOR: Arizona Free Enterprise Club, Arizona Trucking Association, Home Builders Association of Central Arizona, National Motorists Association",
@@ -1280,11 +1252,7 @@ const STATEWIDE = [
           "Arizona has among the worst-maintained highways in the country, and this locks a repair option out of the Constitution entirely"
         ] },
       { name: "Prop 142 — bar preferential treatment and DEI requirements", party: "I", winner: false,
-        positions: [
-          "A YES vote bars government from requiring anyone to endorse race or ethnicity-based preferential treatment — no DEI statements in hiring, admissions, promotion, contracting or scholarships — and bars public funds for such programs or training",
-          "A NO vote leaves current practice unchanged",
-          ""
-        ],
+        positions: ["A YES vote bars government from requiring anyone to endorse race or ethnicity-based preferential treatment — no DEI statements in hiring, admissions, promotion, contracting or scholarships — and bars public funds for such programs or training","A NO vote leaves current practice unchanged"],
         differentiators: [
           "Referred by the Legislature (HCR 2044); survived a court challenge and was upheld for the ballot",
           "FOR: Goldwater Institute, Heritage Action for America, Arizona Women of Action, Arizona Free Enterprise Club",
@@ -1299,11 +1267,7 @@ const STATEWIDE = [
           "Its catch-all language covering any related practice or concept could block teaching history, or collecting race data for medical and public-health research"
         ] },
       { name: "Prop 144 — election requirements, including ID for mail voting (constitutional)", party: "I", winner: false,
-        positions: [
-          "A YES vote writes into the Constitution that only citizens may vote; requires government-issued ID to vote BY ANY METHOD, INCLUDING BY MAIL; bars foreign-national money in state elections; and guarantees on-site tabulation at voting locations",
-          "A NO vote leaves these rules in statute, where they can be changed by ordinary legislation",
-          ""
-        ],
+        positions: ["A YES vote writes into the Constitution that only citizens may vote; requires government-issued ID to vote BY ANY METHOD, INCLUDING BY MAIL; bars foreign-national money in state elections; and guarantees on-site tabulation at voting locations","A NO vote leaves these rules in statute, where they can be changed by ordinary legislation"],
         differentiators: [
           "The Arizona Secure Elections Act (HCR 2001), sponsored by Rep. ALEXANDER KOLODIN — who is also the Republican nominee for Secretary of State on this same ballot",
           "⚠ Survived TWO challenges: a separate-amendment claim failed in Maricopa Superior Court, and on about Aug 19 the Arizona Supreme Court refused to order the ballot description rewritten, holding the petitioners lacked standing",
@@ -1318,11 +1282,7 @@ const STATEWIDE = [
           "Opponents say it hands the Legislature power to restructure or end mail voting; Civic Engagement Beyond Voting asserts the sponsor designed it to eliminate mail-in voting [Verify — that is CEBV's characterization of his intent, not a sourced statement by him]"
         ] },
       { name: "Prop 316 — cap municipal grocery taxes at 2%", party: "I", winner: false,
-        positions: [
-          "A YES vote caps city and town taxes on food for home consumption at 2% and requires local voter approval for any increase; cities already above the cap could only go down",
-          "A NO vote leaves cities their current authority over food taxes",
-          ""
-        ],
+        positions: ["A YES vote caps city and town taxes on food for home consumption at 2% and requires local voter approval for any increase; cities already above the cap could only go down","A NO vote leaves cities their current authority over food taxes"],
         differentiators: [
           "Referred by the Legislature (HCR 2021)",
           "⚠ UNUSUALLY, THE CITIES' OWN LOBBY IS FOR IT: the League of Arizona Cities and Towns filed the FOR argument, calling it a negotiated compromise that preserves existing revenue while giving local voters the final say",
@@ -1337,11 +1297,7 @@ const STATEWIDE = [
           "Gov. Hobbs vetoed a similar 2023 bill projected to cost 65 cities more than $150 million a year, and the food tax is over 30% of the town of Taylor's budget"
         ] },
       { name: "Prop 317 — declare drug cartels terrorist organizations", party: "I", winner: false,
-        positions: [
-          "A YES vote declares drug cartels terrorist organizations and directs the Arizona Department of Homeland Security to do everything in its authority to counter them",
-          "A NO vote means no such designation, and AZDOHS keeps its current grant-administration role",
-          ""
-        ],
+        positions: ["A YES vote declares drug cartels terrorist organizations and directs the Arizona Department of Homeland Security to do everything in its authority to counter them","A NO vote means no such designation, and AZDOHS keeps its current grant-administration role"],
         differentiators: [
           "Referred by the Legislature (HCR 2055)",
           "⚠ NO MAJOR ORGANIZATION FILED AN ARGUMENT ON EITHER SIDE — the only FOR argument was filed by an individual, George Khalaf of Scottsdale, and the only AGAINST by Timothy Everhard of Arizonans for Freedom",
@@ -1356,11 +1312,7 @@ const STATEWIDE = [
           "Barring the designation from supporting an asylum claim by someone fleeing that same cartel is, critics say, the tell that it is about messaging"
         ] },
       { name: "Prop 318 — student athletics and private spaces (constitutional)", party: "I", winner: false,
-        positions: [
-          "A YES vote bars K-12 schools and athletic associations from letting anyone use a restroom, locker room, shower or other private space not designated for their sex; designates sports Male, Female or Co-Ed; and creates a private right to sue",
-          "A NO vote leaves these decisions to schools and athletic associations",
-          ""
-        ],
+        positions: ["A YES vote bars K-12 schools and athletic associations from letting anyone use a restroom, locker room, shower or other private space not designated for their sex; designates sports Male, Female or Co-Ed; and creates a private right to sue","A NO vote leaves these decisions to schools and athletic associations"],
         differentiators: [
           "The Protect Girls Sports in Arizona Act (HCR 2003); challenged in court and upheld for the ballot",
           "FOR: Center for Arizona Policy, Arizona Women of Action, Liberty Counsel Action",
@@ -1375,11 +1327,7 @@ const STATEWIDE = [
           "Enforcement invites invasive sex-checking of ALL girls, and the broad language creates lawsuit exposure for schools and educators"
         ] },
       { name: "Prop 319 — ban photo-radar and red-light cameras", party: "I", winner: false,
-        positions: [
-          "A YES vote bans government photo-radar and red-light camera enforcement; cities with existing contracts must win voter approval to continue, for ten years at a time, or shut down within 90 days",
-          "A NO vote leaves photo enforcement as it is",
-          ""
-        ],
+        positions: ["A YES vote bans government photo-radar and red-light camera enforcement; cities with existing contracts must win voter approval to continue, for ten years at a time, or shut down within 90 days","A NO vote leaves photo enforcement as it is"],
         differentiators: [
           "Referred by the Legislature (SCR 1004, 2026)",
           "⚠ NO ORGANIZATION FILED A FOR ARGUMENT — only two individuals did",
@@ -1394,11 +1342,7 @@ const STATEWIDE = [
           "Removing them costs lives at intersections, which is why AAA and the state public-health association both filed against it"
         ] },
       { name: "Prop 320 — require 60% of school budgets go to classroom instruction", party: "I", winner: false,
-        positions: [
-          "A YES vote requires districts over 7,500 students, plus ALL districts in Maricopa, Pima and Pinal counties, to spend at least 60% of the operating budget on direct instruction; failure costs 25% of state funding, rising to 100% after four more years of noncompliance",
-          "A NO vote means no such spending mandate or penalty",
-          ""
-        ],
+        positions: ["A YES vote requires districts over 7,500 students, plus ALL districts in Maricopa, Pima and Pinal counties, to spend at least 60% of the operating budget on direct instruction; failure costs 25% of state funding, rising to 100% after four more years of noncompliance","A NO vote means no such spending mandate or penalty"],
         differentiators: [
           "Referred by the Legislature (SCR 1032), sponsored by Sen. Jake Hoffman",
           "FOR: Goldwater Institute, Arizona Women of Action",
@@ -1550,11 +1494,7 @@ const HOUSE_RACES = {
               "Still trails Crane on cash, $1.91M to $2.84M"
             ] },
           { name: "Curtis Goodwin", party: "L", winner: false,
-            positions: [
-              "⚠ No sourced 2026 platform statement of any kind could be located [Verify]",
-              "",
-              ""
-            ],
+            positions: ["⚠ No sourced 2026 platform statement of any kind could be located [Verify]"],
             differentiators: [
               "Maintenance technician and industrial painter",
               "Won the Libertarian line with 318 votes (97.0%) over a write-in",
@@ -1618,11 +1558,7 @@ const HOUSE_RACES = {
               "No money and no campaign organisation of any scale [Verify]"
             ] },
           { name: "David Redkey", party: "G", winner: false,
-            positions: [
-              "⚠ No sourced 2026 platform statement could be located [Verify]",
-              "",
-              ""
-            ],
+            positions: ["⚠ No sourced 2026 platform statement could be located [Verify]"],
             differentiators: [
               "Educator; originally filed in AZ-1 before appearing here",
               "⚠ Won the Green nomination as a WRITE-IN with FIVE votes — the smallest nominating total on this page [Verify — ballot certification could not be confirmed against the Secretary of State's own list]",
@@ -1689,11 +1625,7 @@ const HOUSE_RACES = {
               "He lost this district's own Republican primary two years ago with 27% [Verify — structural argument]"
             ] },
           { name: "Tisha Benoit", party: "I", winner: false,
-            positions: [
-              "⚠ No sourced 2026 platform statement could be located [Verify]",
-              "",
-              ""
-            ],
+            positions: ["⚠ No sourced 2026 platform statement could be located [Verify]"],
             differentiators: [
               "The No Labels nominee; an herbal medicine practitioner and acupuncturist",
               "Won the No Labels line 65.4% (981) over former Republican state Rep. John Fillmore",
@@ -1814,11 +1746,7 @@ const HOUSE_RACES = {
               "A Green on the ballot cuts against her, not the incumbent — Greens took more votes here in 2024 than Ciscomani's entire margin [Verify — structural argument]"
             ] },
           { name: "Jereme Peters", party: "L", winner: false,
-            positions: [
-              "⚠ No sourced 2026 platform statement could be located [Verify]",
-              "",
-              ""
-            ],
+            positions: ["⚠ No sourced 2026 platform statement could be located [Verify]"],
             differentiators: [
               "Unopposed for the Libertarian nomination with 231 votes",
               "No FEC cash-on-hand figure could be located [Verify]",
@@ -1832,11 +1760,7 @@ const HOUSE_RACES = {
               "In a genuine Toss Up, a minor-party line risks deciding the seat without winning it [Verify — structural argument]"
             ] },
           { name: "Gary Swing", party: "G", winner: false,
-            positions: [
-              "⚠ No sourced 2026 platform statement could be located [Verify]",
-              "",
-              ""
-            ],
+            positions: ["⚠ No sourced 2026 platform statement could be located [Verify]"],
             differentiators: [
               "⚠ Won the Green nomination as a WRITE-IN with 29 votes; the Arizona Green Party lists him as its endorsed write-in",
               "⚠ HIS BALLOT STATUS IS THE LEAST CERTAIN ON THIS PAGE [Verify] — his claim that the Secretary of State found him certifiable traces only to his own Facebook post, and Ballotpedia's summary paragraph omits him while its candidate table includes him",
@@ -1859,11 +1783,7 @@ const HOUSE_RACES = {
         note: "A SAFE DEMOCRATIC SEAT AND A THIRD MEETING OF THE SAME TWO CANDIDATES. Cook PVI D+13. ⚠ THIS SEAT CHANGED HANDS BY DEATH, NOT DEFEAT: Rep. Raul Grijalva died in March 2025 after 22 years, and his daughter Adelita Grijalva won the Sept 23, 2025 special election and was sworn in Nov 12, 2025 — the first Latina to represent Arizona in Congress. She is now running for her first full term. ✅ A DETAIL WORTH KNOWING: minutes after taking the oath she provided the decisive 218th signature on the discharge petition forcing release of the Epstein files. Daniel Butierez has now lost to a Grijalva twice — by about 27 points in 2024 and about 40 in the special — and is running a third time. Both primaries were uncontested.",
         candidates: [
           { name: "Adelita Grijalva (incumbent)", party: "D", winner: false,
-            positions: [
-              "⚠ No detailed 2026 issue platform could be located on her own campaign site [Verify] — it runs on keeping a progressive champion in southern Arizona rather than on a policy list",
-              "",
-              ""
-            ],
+            positions: ["⚠ No detailed 2026 issue platform could be located on her own campaign site [Verify] — it runs on keeping a progressive champion in southern Arizona rather than on a policy list"],
             differentiators: [
               "Pima County Supervisor and before that a TUSD school board member; decades of work in Pima County teen court",
               "Won the Sept 23, 2025 special election for the remainder of her father's term; unopposed for renomination with 49,107 votes",
@@ -2033,8 +1953,16 @@ function drawCapital(g, projection, cap) {
     return "M" + pts.map(p => p.join(",")).join("L") + "Z";
   };
   const grp = g.append("g").attr("class", "capital-marker");
-  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
-  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+  grp.append("path").attr("class", "capital-star").attr("d", star(0, 0, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", 10).attr("y", 3).text(cap.name);
+  // Constant on-screen size: scale the marker by viewBox-units-per-CSS-pixel, and again on resize.
+  const svgEl = g.node().ownerSVGElement;
+  const fit = () => {
+    const k = svgEl.viewBox.baseVal.width / Math.max(1, svgEl.getBoundingClientRect().width);
+    grp.attr("transform", `translate(${x},${y}) scale(${k})`);
+  };
+  fit();
+  window.addEventListener("resize", fit);
 }
 
 
@@ -2080,22 +2008,46 @@ function getCountyElections(fips) {
 const AZ_STATE_FIPS = "04";
 const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
 
-const svg     = d3.select("#azmap");
+if (typeof d3 === "undefined" || typeof topojson === "undefined" || typeof d3.json !== "function") {
+  document.getElementById("map-loading").innerHTML = "The interactive map didn\u2019t load \u2014 a script it needs was blocked. <button type=\"button\" class=\"brief-more\" onclick=\"location.reload()\">Try again</button>";
+  document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+  document.getElementById("stat-statewide").textContent = STATEWIDE.filter(r => r.type === "upcoming").length;
+  throw new Error("map libraries did not load");
+}
+const svg = d3.select("#azmap");
 const tooltip = document.getElementById("tooltip");
 const panel   = document.getElementById("panel");
 const overlay = document.getElementById("overlay");
 const loading = document.getElementById("map-loading");
+const UNIT = "County";
 
 document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+document.getElementById("stat-statewide").textContent = STATEWIDE.filter(r => r.type === "upcoming").length;
 
+// "Richmond City County" and "Baltimore City County" are not places. Independent cities and
+// Louisiana parishes get the right word; two real Virginia counties happen to end in "City".
+const placeLabel = (c) => (/\bCity$/.test(c.n) && c.fips !== "51036" && c.fips !== "51095") ? c.n : c.n + " " + UNIT;
+// Hovering re-sorted every race on every pointer move; the answer never changes per county.
+const electionsCache = new Map();
+const countyElections = (fips) => { if (!electionsCache.has(fips)) electionsCache.set(fips, getCountyElections(fips)); return electionsCache.get(fips); };
+const HOVER = window.matchMedia && window.matchMedia("(hover: hover)").matches;
+
+loadMap();
+
+function loadMap() {
 d3.json(TOPO_URL).then((us) => {
   const allCounties = topojson.feature(us, us.objects.counties).features;
   const ncCounties  = allCounties.filter(d => String(d.id).startsWith(AZ_STATE_FIPS));
 
-  const width  = 1000;
-  const height = 1000;
+  // Read the drawing size from the SVG's own viewBox, so the state's shape lives in one place.
+  const { width, height } = (() => { const vb = svg.node().viewBox.baseVal; return { width: vb.width || 1000, height: vb.height || 1000 }; })();
 
-  const projection = d3.geoAlbers()
+  // A conic equal-area CENTRED ON THIS STATE, so north is up and the shape matches the official
+  // state map. d3.geoAlbers() at its default -96° meridian tilted the far states by 12–37°.
+  const [[lonMin, latMin], [lonMax, latMax]] = d3.geoBounds({ type: "FeatureCollection", features: ncCounties });
+  const projection = d3.geoConicEqualArea()
+    .rotate([-(lonMin + lonMax) / 2, 0])
+    .parallels([latMin + (latMax - latMin) / 6, latMax - (latMax - latMin) / 6])
     .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
   const path = d3.geoPath().projection(projection);
 
@@ -2111,41 +2063,59 @@ d3.json(TOPO_URL).then((us) => {
       })
       .attr("data-fips", d => String(d.id).padStart(5, "0"))
       .attr("d", path)
+      // A keyboard or screen-reader user must be able to open a county too.
+      .attr("tabindex", 0)
+      .attr("role", "button")
+      .attr("aria-label", d => { const c = COUNTIES[String(d.id).padStart(5, "0")]; return c ? placeLabel({ ...c, fips: String(d.id).padStart(5, "0") }) : "Not in this dataset"; })
       .on("mousemove", (event, d) => {
+        if (!HOVER) return;
         const fips = String(d.id).padStart(5, "0");
-        const built = getCountyElections(fips);
+        const built = countyElections(fips);
         if (built) {
           const upcoming = built.elections.filter(e => e.type === "upcoming").length;
           const past = built.elections.filter(e => e.type === "past").length;
+          const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
           tooltip.innerHTML = `
-            <strong>${built.county.n} County</strong>
-            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+            <strong>${esc(placeLabel({ ...built.county, fips }))}</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · District${ds.length > 1 ? "s" : ""} ${ds.join(" & ")}</div>`;
         } else {
-          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+          tooltip.innerHTML = `FIPS ${esc(fips)}<div class="tooltip-meta">Not in this dataset</div>`;
         }
         tooltip.style.opacity = 1;
         const rect = svg.node().getBoundingClientRect();
-        tooltip.style.left = (event.clientX - rect.left) + "px";
-        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+        const x = event.clientX - rect.left, y = event.clientY - rect.top;
+        // Flip below the cursor near the top edge; keep the box inside the map horizontally.
+        tooltip.classList.toggle("below", y < tooltip.offsetHeight + 28);
+        const half = tooltip.offsetWidth / 2 + 8;
+        tooltip.style.left = Math.max(half, Math.min(rect.width - half, x)) + "px";
+        tooltip.style.top  = y + "px";
       })
       .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("keydown", (event, d) => {
+        if (event.key === "Enter" || event.key === " ") { event.preventDefault(); event.currentTarget.dispatchEvent(new MouseEvent("click", { bubbles: true })); }
+      })
       .on("click", (event, d) => {
         const fips = String(d.id).padStart(5, "0");
+        tooltip.style.opacity = 0;
         document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
         event.currentTarget.classList.add("selected");
-        openPanel(fips);
+        openPanel(fips, event.currentTarget);
       });
 
-  // ---- Capital marker: Hartford ----
+  // ---- Capital marker: Phoenix ----
   drawCapital(g, projection, { name: "Phoenix", lng: -112.097, lat: 33.448 });
 
   loading.style.display = "none";
 }).catch((err) => {
-  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+  if (window.console && console.error) console.error("[map] " + (err && err.message ? err.message : err));
+  loading.innerHTML = "The interactive map didn\u2019t load. <button type=\"button\" class=\"brief-more\" id=\"map-retry\">Try again</button>";
+  document.getElementById("map-retry").addEventListener("click", () => { loading.textContent = "Loading map\u2026"; loadMap(); });
 });
+}
 
-function openPanel(fips) {
-  const built = getCountyElections(fips);
+let lastFocus = null;
+function openPanel(fips, fromEl) {
+  const built = countyElections(fips);
   const body  = document.getElementById("panel-body");
   const title = document.getElementById("panel-title");
   const eyebrow = document.getElementById("panel-eyebrow");
@@ -2157,17 +2127,29 @@ function openPanel(fips) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn't in our Arizona dataset.</p></div>`;
   } else {
-    eyebrow.textContent = `Congressional District ${built.county.d}`;
-    title.textContent   = built.county.n + " County";
-    subtitle.textContent = built.district ? built.district.region : "";
+    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    title.textContent   = placeLabel({ ...built.county, fips });
+    subtitle.textContent = ds.length > 1
+      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);
+    // A brief only needs "Show more" if the clamp actually hides something.
+    body.querySelectorAll(".election-brief.clamped").forEach(b => {
+      const t = b.querySelector(".brief-body");
+      if (t && t.scrollHeight <= t.clientHeight + 4) { b.classList.remove("clamped"); const m = b.querySelector(".brief-more"); if (m) m.remove(); }
+    });
   }
 
+  lastFocus = fromEl || document.activeElement;
+  tooltip.style.opacity = 0;
   panel.classList.add("open");
   overlay.classList.add("open");
   panel.setAttribute("aria-hidden", "false");
+  document.documentElement.classList.add("drawer-open");
   body.scrollTop = 0;
+  setTimeout(() => document.getElementById("panel-close").focus(), 320);
 }
 
 function groupByType(elections) {
@@ -2210,12 +2192,15 @@ function briefSegments(note) {
   return out;
 }
 
+// Escape data before it goes into innerHTML. Notes and card text are plain prose; an ampersand
+// or angle bracket in a future edit must render as itself rather than corrupt the card.
+const esc = (v) => String(v == null ? "" : v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 function renderNote(note) {
   if (!note) return "";
   const body = briefSegments(note).map(function (s) {
     return s.mark
-      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${s.text}</p>`
-      : `<p class="brief-lead">${s.text}</p>`;
+      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${esc(s.text)}</p>`
+      : `<p class="brief-lead">${esc(s.text)}</p>`;
   }).join("");
   // Clamp only what actually needs clamping: the median note is 236 characters, so most
   // briefs show whole and never render a toggle at all.
@@ -2223,48 +2208,53 @@ function renderNote(note) {
   return `<div class="election-brief${long ? " clamped" : ""}">
       <div class="brief-label">About this race</div>
       <div class="brief-body">${body}</div>
-      ${long ? `<button class="brief-more" type="button">Show more</button>` : ""}
+      ${long ? `<button class="brief-more" type="button" aria-expanded="false">Show more</button>` : ""}
     </div>`;
 }
 
 function renderElection(e) {
   const count = (e.candidates && e.candidates.length) || 0;
-  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  // A ballot measure is recognised by what it is called, not by one exact scope string.
+  const isMeasure = /ballot measure|ballot question|amendment|initiative|proposition|referend|\bmeasure\b|\bquestion\b/i.test((e.scope || "") + " " + (e.office || ""));
+  const isInfo = /^Also on your ballot|— eight seats, ALL UNOPPOSED/i.test(e.office || "");
+  const countLabel = count ? `${count} candidate${count === 1 ? "" : "s"}` : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
   const candidatesHtml = count
-    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
-    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+    ? `<div class="candidates">${e.candidates.map(c => renderCandidate(c, e)).join("")}</div>`
+    : (isMeasure || isInfo ? "" : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">Candidates not yet announced.</div>`);
   const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
   return `
     <div class="election-card">
       <button class="election-summary" type="button" aria-expanded="false">
-        <div class="election-summary-main">
-          <div class="election-meta">
-            <span class="pill ${e.type}">${e.type}</span>
-            <span class="election-date">${e.date}</span>
-            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
-          </div>
-          <div class="election-office">${e.office || e.name || ""}</div>
-        </div>
-        <div class="election-toggle">
+        <span class="election-summary-main">
+          <span class="election-meta">
+            <span class="pill ${esc(e.type)}">${esc(e.type)}</span>
+            <span class="election-date">${esc(e.date)}</span>
+            ${e.scope ? `<span class="election-scope">${esc(e.scope)}</span>` : ""}
+          </span>
+          <span class="election-office">${esc(e.office || e.name || "")}</span>
+        </span>
+        <span class="election-toggle">
           <span class="cand-count">${countLabel}</span>
           <span class="chevron">${chevron}</span>
-        </div>
+        </span>
       </button>
       <div class="election-detail"><div>${renderNote(e.note)}${candidatesHtml}</div></div>
     </div>`;
 }
 
-function renderCandidate(c) {
-  const winnerClass = c.winner ? "candidate winner" : "candidate";
-  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+function renderCandidate(c, race) {
+  // A primary or runoff winner was NOMINATED, not elected — the badge should say so.
+  const nominated = !!(race && /primary|runoff/i.test((race.office || "") + " " + (race.scope || "")));
+  const winnerClass = c.winner ? ("candidate winner" + (nominated ? " nominee" : "")) : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
   return `
     <div class="${winnerClass}">
       <div class="cand-head">
-        <div class="cand-name">${c.name}</div>
-        <span class="party-tag party-${c.party}">${c.party}</span>
+        <div class="cand-name">${esc(c.name)}</div>
+        <span class="party-tag party-${esc(c.party)}">${esc(c.party)}</span>
       </div>
       ${positions ? `<div class="cand-section">
           <div class="cand-section-label">Top Positions</div>
@@ -2285,10 +2275,14 @@ function renderCandidate(c) {
 }
 
 function closePanel() {
+  if (!panel.classList.contains("open")) return;
   panel.classList.remove("open");
   overlay.classList.remove("open");
   panel.setAttribute("aria-hidden", "true");
+  document.documentElement.classList.remove("drawer-open");
+  tooltip.style.opacity = 0;
   document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+  if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
 }
 document.getElementById("panel-close").addEventListener("click", closePanel);
 overlay.addEventListener("click", closePanel);
@@ -2299,7 +2293,9 @@ document.getElementById("panel-body").addEventListener("click", (e) => {
   const more = e.target.closest(".brief-more");
   if (more) {
     const brief = more.closest(".election-brief");
-    more.textContent = brief.classList.toggle("clamped") ? "Show more" : "Show less";
+    const clamped = brief.classList.toggle("clamped");
+    more.textContent = clamped ? "Show more" : "Show less";
+    more.setAttribute("aria-expanded", clamped ? "false" : "true");
     return;
   }
   const summary = e.target.closest(".election-summary");

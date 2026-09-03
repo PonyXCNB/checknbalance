@@ -4,12 +4,21 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>United States Elections Hub</title>
-<meta name="description" content="An interactive 50-state atlas of election coverage." />
+<meta name="description" content="A nonpartisan, county-by-county guide to who is on your November 3, 2026 ballot — every state, every race, with sourced positions and the arguments for and against each candidate." />
 
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#FBF9F4">
+<link rel="canonical" href="https://checknbalance.org/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Check n Balance">
+<meta property="og:title" content="Check n Balance — who is on your November 3, 2026 ballot">
+<meta property="og:description" content="A nonpartisan, county-by-county guide to every race in every state, with sourced positions and the arguments for and against each candidate.">
+<meta property="og:url" content="https://checknbalance.org/">
+<meta property="og:image" content="https://checknbalance.org/apple-touch-icon.png">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,7 +34,7 @@
     --shadow:0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
   body { font-family: var(--sans); color: var(--ink); background: var(--paper); line-height: 1.55; -webkit-font-smoothing: antialiased; }
   a { color: inherit; text-decoration: none; }
 
@@ -62,7 +71,7 @@
   .legend-link { color: var(--gold-deep); border-bottom: 1px solid var(--gold-soft); transition: border-color .15s ease; }
   .legend-link:hover { border-bottom-color: var(--gold-deep); }
 
-  .map-shell { background: var(--paper-pure); border: 1px solid var(--line); border-radius: 18px; padding: 8px; box-shadow: var(--shadow); position: relative; overflow: hidden; }
+  .map-shell { background: var(--paper-pure); border: 1px solid var(--line); border-radius: 18px; padding: 8px; box-shadow: var(--shadow); position: relative; }
   .map-frame { background: radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%), var(--paper-pure); border-radius: 12px; aspect-ratio: 1.62 / 1; width: 100%; position: relative; }
   #usmap { width: 100%; height: 100%; display: block; }
   .map-loading { position: absolute; inset: 0; display: grid; place-items: center; color: var(--ink-soft); font-size: 14px; background: var(--paper-pure); }
@@ -72,7 +81,8 @@
   .state.partial { fill: #D9BE85; }
   .state.partial:hover { fill: var(--gold-deep); }
   .state.featured:hover { fill: var(--gold-deep); }
-  .state:hover:not(.featured) { fill: #E5DBBE; }
+  .state:focus-visible { outline: none; stroke: var(--ink); stroke-width: 1.6; }
+  .state:hover:not(.featured):not(.partial) { fill: #E5DBBE; }
 
   /* Home-state "illumination": the state appears to glow/brighten and throb,
      like it's being lit up — a single warm gold hue, no blue. */
@@ -88,10 +98,33 @@
     50%      { filter: brightness(1.12) drop-shadow(0 0 8px rgba(140,100,32,0.9)); }
   }
   .state.featured.home { animation: homeGlowFeatured 3.4s ease-in-out infinite; }
+  .callout.home .callout-abbr { fill: var(--gold-deep); font-weight: 700; animation: homeText 3.4s ease-in-out infinite; }
+  .callout.home .callout-line { stroke: var(--gold-deep); opacity: .95; }
+  @keyframes homeText { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
   .home-note {
     text-align: center; font-size: 12px; color: var(--ink-soft);
     margin-top: 14px; display: none;
   }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .state.home, .state.featured.home, .callout.home .callout-abbr { animation: none; }
+    *, *::before, *::after { transition-duration: .01ms !important; }
+  }
+  /* Every state, as a real link — for keyboards, screen readers, search engines, phones, and the
+     day the map CDN is slow. */
+  .state-list { max-width: 1240px; margin: 0 auto; padding: 8px 32px 56px; }
+  .state-list h2 { font-family: var(--serif); font-weight: 400; font-size: 26px; letter-spacing: -0.01em; text-align: center; margin: 0 0 6px; }
+  .state-list h2 em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .state-list p { text-align: center; font-size: 13px; color: var(--ink-soft); margin: 0 0 22px; }
+  .state-list p a { color: var(--gold-deep); border-bottom: 1px solid var(--gold-soft); }
+  .state-list ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 6px 18px; }
+  .state-list li a { display: flex; align-items: center; gap: 9px; padding: 7px 8px; border-radius: 8px; font-size: 14px; color: var(--ink); transition: background .15s ease; }
+  .state-list li a:hover { background: var(--paper-pure); }
+  .state-list li a i { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; border: 1px solid rgba(0,0,0,.08); background: #F1E9D2; }
+  .state-list li a.built i { background: var(--gold); border-color: var(--gold-deep); }
+  .state-list li a.partial i { background: #D9BE85; border-color: var(--gold); }
+  .state-list li a small { color: var(--ink-soft); font-size: 11px; margin-left: auto; letter-spacing: .04em; white-space: nowrap; }
+  :focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 3px; }
 
   .state-abbr { font-family: var(--sans); font-size: 11px; font-weight: 600; fill: var(--ink); text-anchor: middle; pointer-events: none; letter-spacing: 0.02em; }
   .state-abbr.on-featured { fill: white; }
@@ -102,11 +135,10 @@
   .callout:hover .callout-line { stroke: var(--gold-deep); opacity: 0.95; }
 
   /* Capital marker (muted) */
-  .capital-star { fill: var(--ink); fill-opacity: 0.55; pointer-events: none; }
-  .capital-label { font-family: var(--sans); font-size: 9px; font-weight: 600; letter-spacing: 0.05em; fill: var(--ink); fill-opacity: 0.5; pointer-events: none; }
 
-  .tooltip { position: absolute; pointer-events: none; background: var(--ink); color: var(--paper); padding: 10px 14px; border-radius: 8px; font-size: 12px; transform: translate(-50%, -130%); opacity: 0; transition: opacity .12s ease; white-space: nowrap; z-index: 10; box-shadow: 0 8px 24px rgba(0,0,0,.18); }
+  .tooltip { position: absolute; pointer-events: none; background: var(--ink); color: var(--paper); padding: 10px 14px; border-radius: 8px; font-size: 12px; transform: translate(-50%, -130%); opacity: 0; transition: opacity .12s ease; white-space: nowrap; z-index: 60; box-shadow: 0 8px 24px rgba(0,0,0,.18); }
   .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip.below { transform: translate(-50%, 26px); }
   .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
 
   /* ---- Voter facts section ---- */
@@ -171,7 +203,7 @@
     transition: border-color .15s ease;
   }
   .contrib textarea { min-height: 132px; resize: vertical; line-height: 1.55; }
-  .contrib input:focus, .contrib textarea:focus { outline: none; border-color: var(--gold); }
+  .contrib input:focus-visible, .contrib textarea:focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 2px; border-color: var(--gold); }
   .contrib-hint { font-size: 11.5px; color: var(--ink-soft); margin-top: 6px; }
 
   .contrib-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 20px; }
@@ -231,18 +263,17 @@
 </header>
 
 <section class="hero">
-  <div class="eyebrow"><span class="dot"></span> Fifty States · One Atlas</div>
+  <div class="eyebrow"><span class="dot"></span> General election · Tuesday, November 3, 2026</div>
   <h1>Understand the candidates that will shape your <em>future</em>.</h1>
   <p class="hero-lede">
-    Click any state to meet their election candidates, county by county.
+    A nonpartisan, county-by-county guide to who is on your ballot. Choose your state to begin.
   </p>
 </section>
 
 <section class="map-section">
   <div class="legend">
     <span class="legend-swatch"><i style="background:#B8893C;border-color:#8C6420"></i> Fully built <span class="legend-count">(46 states)</span></span>
-    <span class="legend-swatch"><i style="background:#D9BE85;border-color:#B8893C"></i> Marquee races built</span>
-    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework</span>
+    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(AK, CA, MO, TX, DC)</span></span>
   </div>
   <p class="legend-note">We&#39;re working as fast as we can to get all fifty states fully built, with priority to
     geographies with upcoming competitive races. If you&#39;re interested in contributing, please submit your
@@ -250,41 +281,101 @@
   <div class="map-shell">
     <div class="map-frame">
       <div class="map-loading" id="map-loading">Loading map of the United States…</div>
-      <svg id="usmap" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet"></svg>
+      <svg id="usmap" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Map of the United States. Each state is a link to its election guide."></svg>
       <div class="tooltip" id="tooltip"></div>
     </div>
   </div>
   <div class="home-note" id="home-note"></div>
 </section>
 
+<!-- Every state as a real link: reachable by keyboard and screen reader, crawlable, and tappable on a
+     phone where the map's smallest states are a few pixels wide. Generated from the same BUILT /
+     PARTIAL tables the map uses (tools/apply-index-fixes.js). -->
+<nav class="state-list" aria-label="Choose your state">
+  <h2>Or choose your <em>state</em>.</h2>
+  <p>Not sure you are registered? Deadlines vary by state — check <a href="https://vote.gov" rel="noopener">vote.gov</a>.</p>
+  <ul>
+      <li><a class="built" href="al.html"><i aria-hidden="true"></i>Alabama<small>Full guide</small></a></li>
+      <li><a class="starter" href="state.html?state=AK"><i aria-hidden="true"></i>Alaska<small>Starter</small></a></li>
+      <li><a class="built" href="az.html"><i aria-hidden="true"></i>Arizona<small>Full guide</small></a></li>
+      <li><a class="built" href="ar.html"><i aria-hidden="true"></i>Arkansas<small>Full guide</small></a></li>
+      <li><a class="starter" href="state.html?state=CA"><i aria-hidden="true"></i>California<small>Starter</small></a></li>
+      <li><a class="built" href="co.html"><i aria-hidden="true"></i>Colorado<small>Full guide</small></a></li>
+      <li><a class="built" href="ct.html"><i aria-hidden="true"></i>Connecticut<small>Full guide</small></a></li>
+      <li><a class="built" href="de.html"><i aria-hidden="true"></i>Delaware<small>Full guide</small></a></li>
+      <li><a class="starter" href="state.html?state=DC"><i aria-hidden="true"></i>District of Columbia<small>Starter</small></a></li>
+      <li><a class="built" href="fl.html"><i aria-hidden="true"></i>Florida<small>Full guide</small></a></li>
+      <li><a class="built" href="ga.html"><i aria-hidden="true"></i>Georgia<small>Full guide</small></a></li>
+      <li><a class="built" href="hi.html"><i aria-hidden="true"></i>Hawaii<small>Full guide</small></a></li>
+      <li><a class="built" href="id.html"><i aria-hidden="true"></i>Idaho<small>Full guide</small></a></li>
+      <li><a class="built" href="il.html"><i aria-hidden="true"></i>Illinois<small>Full guide</small></a></li>
+      <li><a class="built" href="in.html"><i aria-hidden="true"></i>Indiana<small>Full guide</small></a></li>
+      <li><a class="built" href="ia.html"><i aria-hidden="true"></i>Iowa<small>Full guide</small></a></li>
+      <li><a class="built" href="ks.html"><i aria-hidden="true"></i>Kansas<small>Full guide</small></a></li>
+      <li><a class="built" href="ky.html"><i aria-hidden="true"></i>Kentucky<small>Full guide</small></a></li>
+      <li><a class="built" href="la.html"><i aria-hidden="true"></i>Louisiana<small>Full guide</small></a></li>
+      <li><a class="built" href="me.html"><i aria-hidden="true"></i>Maine<small>Full guide</small></a></li>
+      <li><a class="built" href="md.html"><i aria-hidden="true"></i>Maryland<small>Full guide</small></a></li>
+      <li><a class="built" href="ma.html"><i aria-hidden="true"></i>Massachusetts<small>Full guide</small></a></li>
+      <li><a class="built" href="mi.html"><i aria-hidden="true"></i>Michigan<small>Full guide</small></a></li>
+      <li><a class="built" href="mn.html"><i aria-hidden="true"></i>Minnesota<small>Full guide</small></a></li>
+      <li><a class="built" href="ms.html"><i aria-hidden="true"></i>Mississippi<small>Full guide</small></a></li>
+      <li><a class="starter" href="state.html?state=MO"><i aria-hidden="true"></i>Missouri<small>Starter</small></a></li>
+      <li><a class="built" href="mt.html"><i aria-hidden="true"></i>Montana<small>Full guide</small></a></li>
+      <li><a class="built" href="ne.html"><i aria-hidden="true"></i>Nebraska<small>Full guide</small></a></li>
+      <li><a class="built" href="nv.html"><i aria-hidden="true"></i>Nevada<small>Full guide</small></a></li>
+      <li><a class="built" href="nh.html"><i aria-hidden="true"></i>New Hampshire<small>Full guide</small></a></li>
+      <li><a class="built" href="nj.html"><i aria-hidden="true"></i>New Jersey<small>Full guide</small></a></li>
+      <li><a class="built" href="nm.html"><i aria-hidden="true"></i>New Mexico<small>Full guide</small></a></li>
+      <li><a class="built" href="ny.html"><i aria-hidden="true"></i>New York<small>Full guide</small></a></li>
+      <li><a class="built" href="nc.html"><i aria-hidden="true"></i>North Carolina<small>Full guide</small></a></li>
+      <li><a class="built" href="nd.html"><i aria-hidden="true"></i>North Dakota<small>Full guide</small></a></li>
+      <li><a class="built" href="oh.html"><i aria-hidden="true"></i>Ohio<small>Full guide</small></a></li>
+      <li><a class="built" href="ok.html"><i aria-hidden="true"></i>Oklahoma<small>Full guide</small></a></li>
+      <li><a class="built" href="or.html"><i aria-hidden="true"></i>Oregon<small>Full guide</small></a></li>
+      <li><a class="built" href="pa.html"><i aria-hidden="true"></i>Pennsylvania<small>Full guide</small></a></li>
+      <li><a class="built" href="ri.html"><i aria-hidden="true"></i>Rhode Island<small>Full guide</small></a></li>
+      <li><a class="built" href="sc.html"><i aria-hidden="true"></i>South Carolina<small>Full guide</small></a></li>
+      <li><a class="built" href="sd.html"><i aria-hidden="true"></i>South Dakota<small>Full guide</small></a></li>
+      <li><a class="built" href="tn.html"><i aria-hidden="true"></i>Tennessee<small>Full guide</small></a></li>
+      <li><a class="starter" href="state.html?state=TX"><i aria-hidden="true"></i>Texas<small>Starter</small></a></li>
+      <li><a class="built" href="ut.html"><i aria-hidden="true"></i>Utah<small>Full guide</small></a></li>
+      <li><a class="built" href="vt.html"><i aria-hidden="true"></i>Vermont<small>Full guide</small></a></li>
+      <li><a class="built" href="va.html"><i aria-hidden="true"></i>Virginia<small>Full guide</small></a></li>
+      <li><a class="built" href="wa.html"><i aria-hidden="true"></i>Washington<small>Full guide</small></a></li>
+      <li><a class="built" href="wv.html"><i aria-hidden="true"></i>West Virginia<small>Full guide</small></a></li>
+      <li><a class="built" href="wi.html"><i aria-hidden="true"></i>Wisconsin<small>Full guide</small></a></li>
+      <li><a class="built" href="wy.html"><i aria-hidden="true"></i>Wyoming<small>Full guide</small></a></li>
+  </ul>
+</nav>
+
 <!-- ============= VERIFIABLE VOTER FACTS ============= -->
 <section class="facts">
   <div class="facts-head">
     <h2>Why <em>down-ballot</em> matters.</h2>
     <p>
-      The races on this site — Senate, House, judges, county seats — are decided by a fraction of eligible
-      voters, often by people who know little about the candidates. The numbers tell the story.
+      The races further down the ballot — state legislature, judges, county seats — are decided by a fraction
+      of eligible voters, often by people who know little about the candidates. The numbers tell the story.
     </p>
   </div>
 
   <div class="facts-grid">
     <div class="fact-card">
-      <div class="fact-num">~20<span>%</span></div>
+      <div class="fact-num">~23<span>%</span></div>
       <div class="fact-body">
-        Average share of eligible Americans who vote in primary elections — the contests that decide who even
-        appears on the November ballot. In 2024, only about 34 million of roughly 149 million eligible voters
-        cast a primary ballot.
+        Share of registered voters who had cast a primary ballot by late April 2024 across the 32 states that had
+        voted by then — about 34 million of 149 million. Primaries decide who even appears on the November ballot.
       </div>
-      <div class="fact-source">Sources: academic study via Clark Univ.; The Midterm Project (2024 figures)</div>
+      <div class="fact-source">Source: <a href="https://voteathome.org/" rel="noopener">National Vote at Home Institute</a>, 2024 primary-turnout analysis</div>
     </div>
 
     <div class="fact-card">
       <div class="fact-num">~80<span>%</span></div>
       <div class="fact-body">
-        Of eligible voters do <em>not</em> participate in primaries. Turnout in the 2022 midterm primaries
-        was just 21.3% — still short of the 35%-by-2026 national target set by reform advocates.
+        Of eligible voters did <em>not</em> vote in the 2022 midterm primaries — turnout was 21.3%. Reformers set a
+        35% goal for 2026; halfway through this year's primary season only two states had reached it.
       </div>
-      <div class="fact-source">Source: Bipartisan Policy Center</div>
+      <div class="fact-source">Source: <a href="https://bipartisanpolicy.org/" rel="noopener">Bipartisan Policy Center</a>, primary-turnout reports (2022; July 2026 update)</div>
     </div>
 
     <div class="fact-card">
@@ -293,7 +384,7 @@
         Of North Carolina voters in one study could not name a single justice on their own state supreme
         court — a court whose seats appear on the very ballots they cast.
       </div>
-      <div class="fact-source">Source: study cited in Maine Law faculty publication</div>
+      <div class="fact-source">Source: a voter-knowledge study cited in a Maine Law faculty publication [Verify — the original study has not been located]</div>
     </div>
 
     <div class="fact-card">
@@ -302,7 +393,7 @@
         Average turnout across 340 U.S. mayoral elections in one analysis. Some big-city mayors have won with
         single-digit turnout; Philadelphia elected its mayor in 2019 with just 27% turnout.
       </div>
-      <div class="fact-source">Source: FairVote, summarizing a 2013 study</div>
+      <div class="fact-source">Source: <a href="https://fairvote.org/" rel="noopener">FairVote</a>, summarizing a 2013 study of 340 mayoral elections</div>
     </div>
 
     <div class="fact-card">
@@ -311,16 +402,16 @@
         In San Francisco's 2014 election, roughly half of the people who voted skipped the judicial races
         entirely — even though nearly everyone marked a choice for president two years earlier.
       </div>
-      <div class="fact-source">Source: KQED analysis of San Francisco turnout</div>
+      <div class="fact-source">Source: KQED analysis of San Francisco turnout [Verify — the original article has not been located]</div>
     </div>
 
     <div class="fact-card">
       <div class="fact-num">56–68<span>%</span></div>
       <div class="fact-body">
-        The range of U.S. general-election turnout since 2000, versus just 18–29% for primaries. General
-        turnout runs more than double primary turnout — and falls off further the lower you go down the ballot.
+        General-election turnout in presidential years since 2000, versus just 18–29% in those years' primaries.
+        In midterm years like 2026, general turnout falls to roughly 40–50% — and drops further down the ballot.
       </div>
-      <div class="fact-source">Source: States United Democracy Center</div>
+      <div class="fact-source">Source: <a href="https://statesuniteddemocracy.org/" rel="noopener">States United Democracy Center</a>, turnout analysis</div>
     </div>
 
     <div class="fact-card fact-wide">
@@ -333,7 +424,7 @@
           single letter next to a name decides the outcome. That's exactly the gap this project exists to close.
         </div>
       </div>
-      <div class="fact-source">Source: American Political Science Review; political-science research on voter heuristics</div>
+      <div class="fact-source">Source: political-science research on voter heuristics, including work published in the American Political Science Review</div>
     </div>
   </div>
 </section>
@@ -353,7 +444,7 @@
         data-netlify="true" netlify-honeypot="bot-field">
     <input type="hidden" name="form-name" value="contribute">
     <input type="hidden" name="subject" value="checknbalance.org — new contribution submission">
-    <p class="contrib-hp">
+    <p class="contrib-hp" aria-hidden="true">
       <label>Leave this field empty: <input name="bot-field" tabindex="-1" autocomplete="off"></label>
     </p>
 
@@ -393,7 +484,7 @@
 
     <div class="contrib-actions">
       <button type="submit" class="contrib-submit" id="contrib-submit">Send it in</button>
-      <p class="contrib-note">Your email is used only to reply to you. Nothing is published, shared, or added to a mailing list.</p>
+      <p class="contrib-note">Your email is used only to reply to you. Submissions are stored by Netlify, our hosting provider; nothing is published, shared, or added to a mailing list.</p>
     </div>
     <p class="contrib-status" id="contrib-status" role="status" aria-live="polite"></p>
   </form>
@@ -402,13 +493,13 @@
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-crest"><strong>Elections Hub</strong> · A civic side-project, not affiliated with any government agency.</div>
-    <div class="footer-meta">Last updated: September 2026</div>
+    <div class="footer-meta">Last updated: September 2026 · <a href="#contribute">Report a correction</a> · Every candidate claim is meant to trace to a real source; anything unconfirmed is marked [Verify].</div>
     <!-- Freshness: bump this month on EVERY scheduled run (see CLAUDE.md). -->
   </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0"></script>
 <script>
 // FIPS -> abbreviation
 const ST = {
@@ -430,26 +521,10 @@ const NAME = {
   "46":"South Dakota","47":"Tennessee","48":"Texas","49":"Utah","50":"Vermont","51":"Virginia",
   "53":"Washington","54":"West Virginia","55":"Wisconsin","56":"Wyoming"
 };
-// State capitals: [lng, lat]
-const CAP = {
-  "01":[-86.300,32.377],"02":[-134.420,58.302],"04":[-112.097,33.448],"05":[-92.290,34.746],
-  "06":[-121.494,38.576],"08":[-104.984,39.739],"09":[-72.682,41.764],"10":[-75.524,39.158],
-  "11":[-77.037,38.907],"12":[-84.281,30.438],"13":[-84.388,33.749],"15":[-157.858,21.307],
-  "16":[-116.200,43.617],"17":[-89.654,39.798],"18":[-86.158,39.768],"19":[-93.604,41.591],
-  "20":[-95.678,39.048],"21":[-84.863,38.197],"22":[-91.187,30.457],"23":[-69.782,44.307],
-  "24":[-76.492,38.979],"25":[-71.064,42.358],"26":[-84.555,42.733],"27":[-93.090,44.954],
-  "28":[-90.184,32.298],"29":[-92.173,38.579],"30":[-112.039,46.589],"31":[-96.700,40.808],
-  "32":[-119.766,39.164],"33":[-71.538,43.207],"34":[-74.770,40.220],"35":[-105.940,35.682],
-  "36":[-73.757,42.652],"37":[-78.639,35.780],"38":[-100.784,46.821],"39":[-82.999,39.961],
-  "40":[-97.535,35.482],"41":[-123.030,44.939],"42":[-76.883,40.264],"44":[-71.415,41.831],
-  "45":[-81.035,34.000],"46":[-100.346,44.367],"47":[-86.784,36.166],"48":[-97.743,30.267],
-  "49":[-111.891,40.761],"50":[-72.576,44.260],"51":[-77.436,37.541],"53":[-122.901,47.038],
-  "54":[-81.612,38.336],"55":[-89.384,43.074],"56":[-104.820,41.140]
-};
 // Fully built states — each has its own dedicated page (the gold tier)
 const BUILT = { "37": "nc.html", "45": "sc.html", "13": "ga.html", "51": "va.html", "24": "md.html", "10": "de.html", "34": "nj.html", "36": "ny.html", "44": "ri.html", "33": "nh.html", "09": "ct.html", "50": "vt.html", "23": "me.html", "25": "ma.html", "54": "wv.html", "39": "oh.html", "21": "ky.html", "18": "in.html", "19": "ia.html", "17": "il.html", "28": "ms.html", "05": "ar.html", "31": "ne.html", "35": "nm.html", "08": "co.html", "41": "or.html", "32": "nv.html", "46": "sd.html", "16": "id.html", "30": "mt.html", "42": "pa.html", "47": "tn.html", "15": "hi.html", "01": "al.html", "55": "wi.html", "27": "mn.html", "38": "nd.html", "20": "ks.html", "40": "ok.html", "04": "az.html", "12": "fl.html", "56": "wy.html", "49": "ut.html", "53": "wa.html", "26": "mi.html", "22": "la.html" };
 // States with marquee 2026 races built out (partial tier)
-const PARTIAL = new Set(["11"]); // DC
+const PARTIAL = new Set([]); // none yet — DC's marquee races are not built (see CLAUDE.md)
 
 // Small states that get a leader-line callout instead of an inline label.
 // lx/ly are label anchor positions in the g-coordinate space (right-side ocean).
@@ -492,18 +567,13 @@ const loading = document.getElementById("map-loading");
 function destFor(fips) {
   return BUILT[fips] || `state.html?state=${ST[fips]}`;
 }
-function starPath(cx, cy, r) {
-  let pts = [];
-  for (let i = 0; i < 10; i++) {
-    const ang = (Math.PI / 5) * i - Math.PI / 2;
-    const rad = i % 2 === 0 ? r : r * 0.42;
-    pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
-  }
-  return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+if (typeof d3 === "undefined" || typeof topojson === "undefined") {
+  document.getElementById("map-loading").innerHTML = "The map didn\u2019t load \u2014 use the state list below.";
 }
-
 d3.json(TOPO_URL).then((us) => {
-  const states = topojson.feature(us, us.objects.states).features;
+  // states-10m also carries five territories (60/66/69/72/78); geoAlbersUsa cannot project them, so
+  // their labels became transform(NaN,NaN) — ten console errors a load. Keep the 51 we name.
+  const states = topojson.feature(us, us.objects.states).features.filter(d => ST[String(d.id).padStart(2, "0")]);
   const width = 1000, height = 620;
   // Reserve ~130px on the right for callout labels.
   const projection = d3.geoAlbersUsa().fitSize([width - 150, height - 40], { type:"FeatureCollection", features: states });
@@ -524,10 +594,17 @@ d3.json(TOPO_URL).then((us) => {
         tooltip.innerHTML = `<strong>${NAME[fips] || "—"}</strong><div class="tooltip-meta">${tier} · click to explore →</div>`;
         tooltip.style.opacity = 1;
         const rect = svg.node().getBoundingClientRect();
-        tooltip.style.left = (event.clientX - rect.left) + "px";
-        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+        const x = event.clientX - rect.left, y = event.clientY - rect.top;
+        tooltip.classList.toggle("below", y < tooltip.offsetHeight + 28);
+        const half = tooltip.offsetWidth / 2 + 8;
+        tooltip.style.left = Math.max(half, Math.min(rect.width - half, x)) + "px";
+        tooltip.style.top  = y + "px";
       })
       .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .attr("tabindex", 0)
+      .attr("role", "link")
+      .attr("aria-label", d => { const f = String(d.id).padStart(2,"0"); return NAME[f] + " \u2014 " + (BUILT[f] ? "full guide" : (PARTIAL.has(f) ? "marquee races" : "starter")); })
+      .on("keydown", (event, d) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); window.location.href = destFor(String(d.id).padStart(2,"0")); } })
       .on("click", (event, d) => {
         const fips = String(d.id).padStart(2,"0");
         window.location.href = destFor(fips);
@@ -545,12 +622,17 @@ d3.json(TOPO_URL).then((us) => {
   // Callout lines + labels for small states (clickable: the label navigates like the state would)
   const byFips = {};
   states.forEach(d => { byFips[String(d.id).padStart(2,"0")] = d; });
+  const calloutGroups = {};
   CALLOUTS.forEach(c => {
     const feat = byFips[c.fips];
     if (!feat) return;
     const fips = c.fips;
     const [cx, cy] = path.centroid(feat);
-    const cg = g.append("g").attr("class", "callout");
+    const cg = g.append("g").attr("class", "callout")
+      .attr("tabindex", 0).attr("role", "link")
+      .attr("aria-label", NAME[fips] + " \u2014 " + (BUILT[fips] ? "full guide" : (PARTIAL.has(fips) ? "marquee races" : "starter")))
+      .on("keydown", (event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); window.location.href = destFor(fips); } });
+    calloutGroups[fips] = cg;
 
     cg.append("path")
       .attr("class", "callout-line")
@@ -596,13 +678,15 @@ d3.json(TOPO_URL).then((us) => {
       g.selectAll(".state")
         .filter(d => String(d.id).padStart(2, "0") === fips)
         .classed("home", true);
+      if (calloutGroups[fips]) calloutGroups[fips].classed("home", true);
       const note = document.getElementById("home-note");
-      note.textContent = `The pulsing state is ${NAME[fips]} — your approximate location based on your network connection.`;
+      note.textContent = `Highlighted: ${NAME[fips]} \u2014 a guess from your network address (looked up once via ipapi.co, not stored).`;
       note.style.display = "block";
     })
     .catch(() => { /* no geolocation — page works fine without it */ });
 }).catch(err => {
-  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+  if (window.console && console.error) console.error("[map] " + (err && err.message ? err.message : err));
+  loading.innerHTML = "The map didn\u2019t load \u2014 use the state list below.";
 });
 </script>
 
@@ -647,22 +731,10 @@ d3.json(TOPO_URL).then((us) => {
         // rather than inviting the visitor to keep hammering a button that cannot work.
         var dead = err && (err.status === 404 || err.status === 405);
         status.textContent = dead
-          ? "This form isn't accepting messages right now — that's a fault on our end, not anything you did. It's been logged and we're on it. Sorry for the wasted typing."
+          ? "This form isn't accepting messages right now — that's a fault on our end, not anything you did. Please try again later; sorry for the wasted typing."
           : "That didn't send. Please try again in a moment — and if it keeps failing, the problem is on our end, not yours.";
         if (window.console && console.error) {
-          console.error(
-            "[contribute] submission failed: " + (err && err.message ? err.message : err) +
-            (dead
-              ? "\nThe POST reached the static host instead of Netlify's form handler." +
-                "\nMost likely cause: Form detection is OFF for this site." +
-                "\nFix: open the project's Forms tab and select 'Enable form detection', then redeploy once" +
-                "\n(detection registers forms at DEPLOY time, so an existing deploy will not pick it up)." +
-                "\n  Forms:   https://app.netlify.com/projects/strong-bienenstitch-2e0547/forms" +
-                "\n  Deploys: https://app.netlify.com/projects/strong-bienenstitch-2e0547/deploys" +
-                "\nThen add an email notification under Project configuration > Notifications >" +
-                "\nEmails and webhooks > Form submission notifications > Add notification."
-              : "")
-          );
+          console.error("[contribute] submission failed: " + (err && err.message ? err.message : err) + (dead ? " \u2014 the POST did not reach a form handler (see CLAUDE.md, owner to-do item 8)." : ""));
         }
       });
   });

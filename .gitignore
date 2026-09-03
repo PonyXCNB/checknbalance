@@ -19,3 +19,9 @@ node_modules/
 *token*
 __pycache__/
 *.pyc
+
+# Reproducible cache of the us-atlas file tools/fit-map-frames.js reads (re-fetched when absent)
+tools/banked/counties-10m.json
+
+# Local desktop-app preview config, not part of the site
+.claude/

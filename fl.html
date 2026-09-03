@@ -4,7 +4,15 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Florida Elections Hub</title>
-<meta name="description" content="An interactive county-by-county guide to every FL election, past and upcoming." />
+<meta name="description" content="An interactive county-by-county guide to every Florida election, past and upcoming." />
+<link rel="canonical" href="https://checknbalance.org/fl.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Check n Balance">
+<meta property="og:title" content="Florida Elections Hub">
+<meta property="og:description" content="An interactive county-by-county guide to every Florida election, past and upcoming.">
+<meta property="og:url" content="https://checknbalance.org/fl.html">
+<meta property="og:image" content="https://checknbalance.org/apple-touch-icon.png">
+<meta name="twitter:card" content="summary">
 
 <!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -14,6 +22,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -206,13 +215,15 @@
     box-shadow: var(--shadow);
     position: relative;
     overflow: hidden;
+    max-width: calc(min(72vh, 760px) * 1.02 + 16px);
+    margin-left: auto; margin-right: auto;
   }
   .map-frame {
     background:
       radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
       var(--paper-pure);
     border-radius: 12px;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1.02 / 1;
     width: 100%;
     position: relative;
   }
@@ -225,25 +236,21 @@
   }
 
   .county {
-    fill: #F1E9D2;
+    fill: var(--gold-soft);
     stroke: var(--paper-pure);
-    stroke-width: 0.7;
+    stroke-width: 1px;
+    vector-effect: non-scaling-stroke;   /* screen pixels at every map size, not viewBox units */
     cursor: pointer;
     transition: fill .15s ease;
   }
-  .county.has-data       { fill: var(--gold-soft); }
-  .county.has-data:hover { fill: var(--gold); }
-  .county:hover          { fill: #E5DBBE; }
-  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+  /* Hover fills only where a pointer can hover — a phone tap must not leave a county stuck "hovered". */
+  @media (hover: hover) {
+    .county:hover { fill: var(--gold); }
+  }
+  .county:focus-visible  { outline: none; fill: var(--gold); stroke: var(--ink); stroke-width: 2px; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.5px; }
 
   /* ---- Capital city marker (muted) ---- */
-  .capital-dot {
-    fill: var(--ink);
-    fill-opacity: 0.55;
-    stroke: var(--paper-pure);
-    stroke-width: 1.5;
-    pointer-events: none;
-  }
   .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
   .capital-label {
     font-family: var(--sans);
@@ -251,16 +258,7 @@
     font-weight: 600;
     letter-spacing: 0.06em;
     fill: var(--ink);
-    fill-opacity: 0.55;
-    pointer-events: none;
-  }
-  .capital-sub {
-    font-family: var(--sans);
-    font-size: 7.5px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    fill: var(--ink);
-    fill-opacity: 0.4;
+    fill-opacity: 0.85;
     pointer-events: none;
   }
 
@@ -276,10 +274,11 @@
     opacity: 0;
     transition: opacity .12s ease;
     white-space: nowrap;
-    z-index: 10;
+    z-index: 60;
     box-shadow: 0 8px 24px rgba(0,0,0,.18);
   }
   .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip.below { transform: translate(-50%, 26px); }
   .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
 
   /* ============================================
@@ -296,15 +295,17 @@
 
   .panel {
     position: fixed; top: 0; right: 0; bottom: 0;
-    width: min(720px, 100%);
+    width: min(720px, 92vw);
     background: var(--paper-pure);
     box-shadow: -10px 0 40px rgba(14,23,38,.15);
     transform: translateX(100%);
-    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    visibility: hidden;   /* off-screen AND out of the tab order / accessibility tree */
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1), visibility 0s linear .3s;
     z-index: 101;
     display: flex; flex-direction: column;
   }
-  .panel.open { transform: translateX(0); }
+  .panel.open { transform: translateX(0); visibility: visible; transition-delay: 0s; }
+  html.drawer-open { overflow: hidden; }   /* the page behind a full-height drawer must not scroll */
 
   .panel-header {
     padding: 24px 36px;
@@ -335,7 +336,7 @@
   }
   .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
 
-  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+  .panel-body { overflow-y: auto; overscroll-behavior: contain; padding: 8px 0 60px; flex: 1; }
 
   /* Group header inside panel */
   .group-header {
@@ -366,7 +367,7 @@
     padding: 4px 10px; border-radius: 999px;
     font-weight: 700;
   }
-  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.past     { background: #F1EAD8; color: #7A561B; }
   .pill.upcoming { background: #FCE8E6; color: var(--red); }
   .pill.scheduled{ background: #E8F0F2; color: #265D69; }
   .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
@@ -397,15 +398,15 @@
     font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase;
     color: var(--gold-deep); font-weight: 700; margin-bottom: 7px;
   }
-  .brief-body { font-size: 12.5px; line-height: 1.62; color: var(--ink-soft); }
+  .brief-body { font-size: 13.5px; line-height: 1.62; color: var(--ink-soft); }
   .brief-body p + p { margin-top: 7px; }
   .brief-lead { color: var(--ink); }
   /* Flag glyphs hang in the margin so the text block keeps a straight left edge. */
   .brief-flag { position: relative; padding-left: 21px; }
   .brief-mark { position: absolute; left: 0; top: 0; font-size: 11px; color: var(--gold-deep); }
-  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; }
+  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; -webkit-mask-image: linear-gradient(#000 72%, transparent); mask-image: linear-gradient(#000 72%, transparent); }
   .brief-more {
-    margin-top: 9px; padding: 0;
+    margin-top: 6px; padding: 6px 0; min-height: 24px;
     background: none; border: none; cursor: pointer;
     font-family: var(--sans); font-size: 10.5px; font-weight: 700;
     letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-deep);
@@ -446,8 +447,9 @@
     display: grid; grid-template-rows: 0fr;
     transition: grid-template-rows .28s ease;
   }
-  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-detail > div { overflow: hidden; min-height: 0; visibility: hidden; transition: visibility 0s linear .28s; }
   .election-card.open .election-detail { grid-template-rows: 1fr; }
+  .election-card.open .election-detail > div { visibility: visible; transition-delay: 0s; }
 
   .candidates { display: grid; gap: 14px; margin-top: 18px; }
   .candidate {
@@ -464,10 +466,11 @@
   .candidate.winner::before {
     content: '★ ELECTED';
     position: absolute; top: -10px; right: 14px;
-    background: var(--gold); color: white;
-    font-size: 9px; letter-spacing: 0.16em;
+    background: var(--gold-deep); color: white;
+    font-size: 10px; letter-spacing: 0.16em;
     padding: 3px 9px; border-radius: 4px; font-weight: 700;
   }
+  .candidate.winner.nominee::before { content: '★ NOMINATED'; }
   .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
   .cand-name {
     font-family: var(--serif); font-size: 20px; font-weight: 500;
@@ -494,7 +497,7 @@
   }
   .cand-list {
     list-style: none; padding-left: 0;
-    font-size: 13px; color: var(--ink); line-height: 1.5;
+    font-size: 13.5px; color: var(--ink); line-height: 1.5;
   }
   .cand-list li {
     padding: 4px 0 4px 18px;
@@ -513,7 +516,7 @@
   .voices-block {
     border-radius: 10px;
     padding: 12px 14px;
-    font-size: 12.5px; line-height: 1.5;
+    font-size: 13px; line-height: 1.5;
   }
   .voices-block.supporters {
     background: #F2F7F0;
@@ -532,8 +535,8 @@
   }
   .voices-block ul { list-style: none; padding: 0; margin: 0; }
   .voices-block li { padding: 3px 0; }
-  .voices-block li::before { content: '"'; opacity: .4; }
-  .voices-block li::after  { content: '"'; opacity: .4; }
+  .voices-block li::before { content: '\201C'; opacity: .4; }
+  .voices-block li::after  { content: '\201D'; opacity: .4; }
 
   .empty-state {
     padding: 60px 36px; text-align: center;
@@ -568,6 +571,26 @@
   /* ============================================
      RESPONSIVE
      ============================================ */
+  /* Keyboard users get a visible, on-brand focus ring everywhere. */
+  :focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 3px; }
+  /* Anchor jumps (#map, #sources) must not land under the sticky bar. */
+  .map-section, .footer { scroll-margin-top: 84px; }
+  /* Hero stat labels wrap unevenly on narrow screens; give them a common height. */
+  .stat-label { min-height: 2.6em; }
+  .legend-star { color: var(--ink); opacity: .7; font-size: 12px; margin-right: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  }
+  /* Printing a county's ballot prints the drawer, not the hero and an empty map. */
+  @media print {
+    .topbar, .hero, .map-section, .panel-overlay, .panel-close, .brief-more { display: none !important; }
+    .panel { position: static; width: auto; transform: none; visibility: visible; box-shadow: none; }
+    .panel-body { overflow: visible; }
+    .election-detail { grid-template-rows: 1fr; }
+    .election-detail > div { visibility: visible; }
+    .election-brief.clamped .brief-body { max-height: none; -webkit-mask-image: none; mask-image: none; }
+  }
   @media (max-width: 900px) {
     .topbar-inner { grid-template-columns: 1fr auto; }
     .topnav { display: none; }
@@ -582,6 +605,7 @@
     .section-head { flex-direction: column; align-items: flex-start; }
     .panel { width: 100%; }
     .panel-header { padding: 18px 22px; }
+    .panel-close { width: 44px; height: 44px; }
     .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
     .voices { grid-template-columns: 1fr; }
   }
@@ -612,7 +636,7 @@
     <nav class="topnav">
       <a href="#map">Map</a>
       <a href="#about">About</a>
-      <a href="#data">Data</a>
+      <a href="#sources">Sources</a>
     </nav>
   </div>
 </header>
@@ -631,7 +655,7 @@
   <div class="hero-stats">
     <div class="stat"><div class="stat-num">67</div><div class="stat-label">Counties</div></div>
     <div class="stat"><div class="stat-num"><em>28</em></div><div class="stat-label">U.S. House Seats</div></div>
-    <div class="stat"><div class="stat-num"><em>7</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num"><em id="stat-statewide">–</em></div><div class="stat-label">Statewide Races, Nov&nbsp;3</div></div>
     <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
   </div>
 </section>
@@ -644,20 +668,20 @@
     <div>
       <h2 class="section-title">Click a county to <em>begin</em>.</h2>
       <p class="section-sub">
-        Counties shaded in gold have detailed election information available. Hover for a quick
-        preview; click to open the full breakdown.
+        Tap or click any county to open its full ballot — every race, every candidate, and what
+        supporters and opponents say. On a desktop, hover for a quick preview.
       </p>
     </div>
     <div class="legend">
-      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
-      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Every county is clickable</span>
+      <span class="legend-swatch"><i class="legend-star">★</i> State capital</span>
     </div>
   </div>
 
   <div class="map-shell">
     <div class="map-frame">
       <div class="map-loading" id="map-loading">Loading map of Florida…</div>
-      <svg id="flmap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <svg id="flmap" viewBox="0 0 1000 980" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="tooltip" id="tooltip"></div>
     </div>
   </div>
@@ -667,7 +691,7 @@
      PANEL (details drawer)
      ============================================= -->
 <div class="panel-overlay" id="overlay"></div>
-<aside class="panel" id="panel" aria-hidden="true">
+<aside class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title" aria-hidden="true">
   <div class="panel-header">
     <div>
       <div class="panel-eyebrow" id="panel-eyebrow">County</div>
@@ -687,8 +711,8 @@
     <div class="footer-crest">
       <strong>FL Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
-    <div class="footer-meta">
-      Last updated: <span id="last-updated">July 22, 2026</span><br>
+    <div class="footer-meta" id="sources">
+      Last updated: <span id="last-updated">August 28, 2026</span><br>
       Sources: Florida Department of State, Division of Elections (dos.fl.gov/elections) and its official Aug 18, 2026 primary results at floridaelectionwatch.gov, certified by the Elections Canvassing Commission on Aug 27, 2026; the Florida Legislature's own HB 1D (2026D) congressional plan EOGPCRP2026, its Congressional Redistricting Data Packet and block-assignment file; the Division of Elections constitutional-initiatives database; FEC; Cook Political Report (2026 PVI on the new lines); Inside Elections; Florida Politics, Tampa Bay Times, Miami Herald, Orlando Sentinel, WUSF, WLRN, WFSU, Florida Phoenix, News Service of Florida, AP.</div>
   </div>
 </footer>
@@ -696,8 +720,8 @@
 <!-- =============================================
      LIBRARIES
      ============================================= -->
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0"></script>
 
 <!-- =============================================
      DATA LAYER
@@ -891,11 +915,7 @@ const STATEWIDE = [
           "Pro-Israel critics object to her ceasefire resolution and her call to cut U.S. aid to Israel"
         ] },
       { name: "Neil J. Gillespie", party: "I", winner: false,
-        positions: [
-          "⚠ No published platform could be located — no campaign website was found [Verify]",
-          "",
-          ""
-        ],
+        positions: ["⚠ No published platform could be located — no campaign website was found [Verify]"],
         differentiators: [
           "Qualified NPA candidate on the official Division of Elections general-election listing",
           "The only non-major-party candidate in this race — no Libertarian and no write-in qualified",
@@ -956,11 +976,7 @@ const STATEWIDE = [
           "He is being outraised by roughly ten to one, which limits statewide paid communication"
         ] },
       { name: "Scott Eckhard Jewett — with Nicole Skelly", party: "L", winner: false,
-        positions: [
-          "⚠ No detailed platform could be located — no campaign website was found [Verify]",
-          "",
-          ""
-        ],
+        positions: ["⚠ No detailed platform could be located — no campaign website was found [Verify]"],
         differentiators: [
           "Libertarian Party of Florida nominee; qualified without primary opposition",
           "Running mate is Nicole Skelly",
@@ -1118,11 +1134,7 @@ const STATEWIDE = [
     note: "EXACTLY ONE FLORIDA SUPREME COURT JUSTICE IS ON THE 2026 RETENTION BALLOT — CHIEF JUSTICE CARLOS G. MUÑIZ. This is a nonpartisan yes/no vote, not a contest between candidates: a majority 'yes' grants a new six-year term, a majority 'no' creates a vacancy the Governor fills. ✅ The Division of Elections confirms only justices whose terms expire January 2027 appear. ⚠ Twenty-two District Court of Appeal judges also stand for retention, but those are DISTRICT ballots, not statewide, and are not carded here. ⚠ No Florida justice has ever been removed by a retention vote.",
     candidates: [
       { name: "Carlos G. Muñiz — Chief Justice (retain / do not retain)", party: "I", winner: false,
-        positions: [
-          "⚠ Merit-retention candidates do not campaign on a platform; Florida's judicial canons sharply limit what a sitting justice may say about issues",
-          "",
-          ""
-        ],
+        positions: ["⚠ Merit-retention candidates do not campaign on a platform; Florida's judicial canons sharply limit what a sitting justice may say about issues"],
         differentiators: [
           "Appointed to the Florida Supreme Court on Jan 22, 2019 by Gov. DeSantis; the 89th justice since statehood",
           "Chief Justice of Florida since July 1, 2022",
@@ -1139,15 +1151,11 @@ const STATEWIDE = [
           "Reform advocates argue retention votes have become meaningless because no Florida justice has ever lost one, effectively granting lifetime tenure",
           "Some voters object that he was appointed by the sitting Governor and has ruled favourably on that administration's priorities [Verify — a general criticism; no specific ruling tally was located]"
         ] } ] },
-  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Ballot Question", office: "Ballot Measures — Florida (3 amendments)",
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Ballot Measure · Statewide", office: "Ballot Measures — Florida (3 amendments)",
     note: "EXACTLY THREE AMENDMENTS, AND ALL THREE ARE LEGISLATIVE REFERRALS — NO CITIZEN INITIATIVE QUALIFIED FOR FLORIDA'S 2026 BALLOT. All 22 petition campaigns failed the 891,523-signature threshold, so the widely reported recreational-marijuana and abortion measures are NOT on this ballot. ⚠ EACH AMENDMENT NEEDS 60% TO PASS, not a simple majority. ⚠ AMENDMENT 3'S BALLOT TITLE WAS REWRITTEN BY COURT ORDER: on Aug 3, 2026 Leon County Circuit Judge David Frank ruled the original title, 'Save Our Homes From Excessive Property Taxes,' was 'not fair or neutral' and read 'more akin to a political slogan.' DeSantis declined to appeal and AG Uthmeier filed revised language on Aug 14, 2026. Numbers, titles and sponsoring joint resolutions below are from the Division of Elections' own initiatives database.",
     candidates: [
       { name: "Amendment 1 — Budget Stabilization Fund", party: "I", winner: false,
-        positions: [
-          "A YES vote raises Florida's rainy-day fund cap from 10% to 25% of general revenue collections and requires the Legislature to transfer the lesser of $750 million or the amount needed to reach 25% each year unless certain conditions are met, while allowing withdrawals for critical state needs",
-          "A NO vote leaves the existing 10% cap and the current transfer rules in place",
-          ""
-        ],
+        positions: ["A YES vote raises Florida's rainy-day fund cap from 10% to 25% of general revenue collections and requires the Legislature to transfer the lesser of $750 million or the amount needed to reach 25% each year unless certain conditions are met, while allowing withdrawals for critical state needs","A NO vote leaves the existing 10% cap and the current transfer rules in place"],
         differentiators: [
           "A constitutional amendment referred by the Legislature (HJR 5019); Division of Elections records it as Ballot Number 1, made ballot June 17, 2025",
           "Passed the House 100–1 and the Senate 29–4",
@@ -1162,11 +1170,7 @@ const STATEWIDE = [
           "A mandatory annual transfer locks money away that a future Legislature might need for classrooms [Verify — structural argument]"
         ] },
       { name: "Amendment 2 — exempt farm equipment on agricultural land from property tax", party: "I", winner: false,
-        positions: [
-          "A YES vote exempts farm equipment — tractors, machinery, tools — from local property taxes when it is habitually located on land classified as agricultural, used for producing agricultural products or agritourism, and owned by that land's owner or leaseholder",
-          "A NO vote leaves that equipment taxable by counties, school districts and other local governments",
-          ""
-        ],
+        positions: ["A YES vote exempts farm equipment — tractors, machinery, tools — from local property taxes when it is habitually located on land classified as agricultural, used for producing agricultural products or agritourism, and owned by that land's owner or leaseholder","A NO vote leaves that equipment taxable by counties, school districts and other local governments"],
         differentiators: [
           "A constitutional amendment referred by the Legislature (HJR 1215, Senate companion SJR 318); Ballot Number 2, made ballot June 18, 2025",
           "Passed 37–0 in the Senate and 110–1 in the House; first applies to tax years beginning Jan 1, 2027",
@@ -1181,11 +1185,7 @@ const STATEWIDE = [
           "The roughly $31M a year falls on counties and school districts, which have no way to replace it [Verify — structural argument]"
         ] },
       { name: "Amendment 3 — increased homestead exemption; lower cap on non-homestead assessment increases", party: "I", winner: false,
-        positions: [
-          "A YES vote raises the non-school homestead exemption to $150,000 in 2027 and $250,000 in 2028, and cuts the non-homestead assessment cap from 10% to 5%",
-          "A NO vote leaves the current homestead exemption and the 10% non-homestead cap unchanged",
-          ""
-        ],
+        positions: ["A YES vote raises the non-school homestead exemption to $150,000 in 2027 and $250,000 in 2028, and cuts the non-homestead assessment cap from 10% to 5%","A NO vote leaves the current homestead exemption and the 10% non-homestead cap unchanged"],
         differentiators: [
           "⚠ Its ballot title was REWRITTEN BY COURT ORDER on Aug 3, 2026 after a judge found the original 'more akin to a political slogan'",
           "Referred by the Legislature (CS/HJR 1F); Ballot Number 3, made ballot June 16, 2026",
@@ -1203,14 +1203,14 @@ const STATEWIDE = [
         ] } ] },
 
   // ─────────────────────────── PAST — Aug 18, 2026 primaries, all certified Aug 27 ───────────────────────────
-  { date: "Aug 18, 2026", type: "past", scope: "Federal · Statewide · Democratic primary", office: "U.S. Senate (Special) — Democratic Primary",
+  { date: "Aug 18, 2026", type: "past", scope: "Federal · Statewide · Primary", office: "U.S. Senate (SPECIAL ELECTION) — Democratic Primary",
     note: "THE BIGGEST UPSET OF FLORIDA'S PRIMARY NIGHT. State Rep. Angie Nixon, who joined the Democratic Socialists of America in June 2026, beat retired Lt. Col. Alexander Vindman — a key witness in Trump's first impeachment — by twelve points despite being heavily outraised. Total Democratic primary vote: 1,258,973. ⚠ Statewide turnout figures conflict: NBC 6 reported about 25%, Common Cause Florida 22.39% [Verify]. Certified Aug 27, 2026.",
     candidates: [
       { name: "Angie Nixon", party: "D", winner: true,
         positions: [], differentiators: ["705,835 votes — 56.06%", "Florida state Representative, House District 13 (Jacksonville)", "Raised $974,845 total"], supporters: [], opponents: [] },
       { name: "Alexander Vindman", party: "D", winner: false,
         positions: [], differentiators: ["553,138 votes — 43.94%", "Retired U.S. Army Lieutenant Colonel; a key witness in Trump's first impeachment", "Significantly outraised Nixon [Verify — exact FEC totals not pulled for the losing candidate]"], supporters: [], opponents: [] } ] },
-  { date: "Aug 18, 2026", type: "past", scope: "Federal · Statewide · Republican primary", office: "U.S. Senate (Special) — Republican Primary",
+  { date: "Aug 18, 2026", type: "past", scope: "Federal · Statewide · Primary", office: "U.S. Senate (SPECIAL ELECTION) — Republican Primary",
     note: "APPOINTED SEN. ASHLEY MOODY CRUSHED A FOUR-WAY FIELD WITH NEARLY 80%, her first appearance on any ballot for this seat. Total Republican primary vote: 1,660,013. Certified Aug 27, 2026.",
     candidates: [
       { name: "Ashley Moody (appointed incumbent)", party: "R", winner: true,
@@ -1221,7 +1221,7 @@ const STATEWIDE = [
         positions: [], differentiators: ["79,973 votes — 4.82%"], supporters: [], opponents: [] },
       { name: "Neelam Taneja Perry", party: "R", winner: false,
         positions: [], differentiators: ["31,250 votes — 1.88%", "⚠ She ran as a REPUBLICAN — several aggregators wrongly list her as an NPA general-election candidate; the state's own records do not"], supporters: [], opponents: [] } ] },
-  { date: "Aug 18, 2026", type: "past", scope: "State · Statewide · Republican primary", office: "Governor — Republican Primary",
+  { date: "Aug 18, 2026", type: "past", scope: "State · Statewide · Primary", office: "Governor — Republican Primary",
     note: "BYRON DONALDS WON AN ELEVEN-CANDIDATE FIELD WITH 47.79%, nearly doubling second-place Lt. Gov. Jay Collins. Trump's early endorsement and a near-$100M committee operation cleared the field; ⚠ DeSantis pointedly WITHHELD his endorsement. Total Republican primary vote: 1,697,330. Certified Aug 27, 2026.",
     candidates: [
       { name: "Byron Donalds", party: "R", winner: true,
@@ -1230,7 +1230,7 @@ const STATEWIDE = [
         positions: [], differentiators: ["427,014 votes — 25.16%", "The sitting Lieutenant Governor of Florida"], supporters: [], opponents: [] },
       { name: "James Fishback", party: "R", winner: false,
         positions: [], differentiators: ["177,809 votes — 10.48%", "Investor; drew support from Tucker Carlson"], supporters: [], opponents: [] } ] },
-  { date: "Aug 18, 2026", type: "past", scope: "State · Statewide · Democratic primary", office: "Governor — Democratic Primary",
+  { date: "Aug 18, 2026", type: "past", scope: "State · Statewide · Primary", office: "Governor — Democratic Primary",
     note: "DAVID JOLLY AND GWEN GRAHAM WON AS A JOINT TICKET WITH 60.95% in a six-way field, after Orange County Mayor Jerry Demings withdrew for health reasons. ⚠ Jolly is a former REPUBLICAN congressman who registered as a Democrat in 2025. Total Democratic primary vote: 1,250,544. Certified Aug 27, 2026.",
     candidates: [
       { name: "David Jolly and Gwen Graham", party: "D", winner: true,
@@ -1239,7 +1239,7 @@ const STATEWIDE = [
         positions: [], differentiators: ["189,421 votes — 15.15%"], supporters: [], opponents: [] },
       { name: "Dotie Joseph", party: "D", winner: false,
         positions: [], differentiators: ["119,968 votes — 9.59%", "Florida state Representative"], supporters: [], opponents: [] } ] },
-  { date: "Aug 18, 2026", type: "past", scope: "State · Statewide · Party primaries", office: "Chief Financial Officer — Party Primaries",
+  { date: "Aug 18, 2026", type: "past", scope: "State · Statewide · Primary", office: "Chief Financial Officer — Party Primaries",
     note: "THIS CARD COVERS BOTH PARTY PRIMARIES. Appointed CFO Blaise Ingoglia took 61.32% of the Republican vote; former state Sen. Annette Taddeo won the Democratic primary with 65.64%. Republican total 1,579,082; Democratic total 1,213,713. Certified Aug 27, 2026.",
     candidates: [
       { name: "Blaise Ingoglia (appointed incumbent)", party: "R", winner: true,
@@ -1250,7 +1250,7 @@ const STATEWIDE = [
         positions: [], differentiators: ["796,723 votes — 65.64% (Democratic primary)", "Former Florida state senator, District 40", "Endorsed by Alex Sink, the last Democrat to hold the office"], supporters: [], opponents: [] },
       { name: "Earle Ford", party: "D", winner: false,
         positions: [], differentiators: ["416,990 votes — 34.36%"], supporters: [], opponents: [] } ] },
-  { date: "Aug 18, 2026", type: "past", scope: "State · Statewide · Party primaries", office: "Commissioner of Agriculture — Party Primaries",
+  { date: "Aug 18, 2026", type: "past", scope: "State · Statewide · Primary", office: "Commissioner of Agriculture — Party Primaries",
     note: "THIS CARD COVERS BOTH PARTY PRIMARIES. Elected incumbent Wilton Simpson won the Republican nomination 68.91% to 31.09% over Matt Taylor; Miami trial attorney Joey Mendoza Atkins took the Democratic nomination with 60.29%. Republican total 1,613,042; Democratic total 1,189,715. Certified Aug 27, 2026.",
     candidates: [
       { name: "Wilton Simpson (incumbent)", party: "R", winner: true,
@@ -1293,8 +1293,7 @@ const HOUSE_RACES = {
 // noted in the race note rather than given candidate cards.
   1: { name: "U.S. House — FL District 1", region: "Pensacola, Destin and the western Panhandle (Escambia, Santa Rosa, Okaloosa, Walton)",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "FL-1 WAS NOT TOUCHED BY THE NEW HB 1D MAP — its four Panhandle counties are identical to the 2024 lines, confirmed by the county breakdown in the state's certified Aug 18 results. ✅ This is a third Patronis–Valimont-era matchup: Valimont lost to Matt Gaetz in 2024 (66–34) and to Patronis in the April 2025 special (56.9–42.3). ⚠ Valimont's money has collapsed — $174,309 raised this cycle through July 29 against roughly $6.5M in the 2025 special. Cook rates it Solid R (R+18 PVI); Inside Elections also Solid Republican. Certified Aug 27, 2026.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "FL-1 WAS NOT TOUCHED BY THE NEW HB 1D MAP — its four Panhandle counties are identical to the 2024 lines, confirmed by the county breakdown in the state's certified Aug 18 results. ✅ This is a third Patronis–Valimont-era matchup: Valimont lost to Matt Gaetz in 2024 (66–34) and to Patronis in the April 2025 special (56.9–42.3). ⚠ Valimont's money has collapsed — $174,309 raised this cycle through July 29 against roughly $6.5M in the 2025 special. Cook rates it Solid R (R+18 PVI); Inside Elections also Solid Republican. Certified Aug 27, 2026.",
         candidates: [
           { name: "Jimmy Patronis (incumbent)", party: "R", winner: false,
             positions: ["Supporter of President Trump's agenda", "Defender of Second Amendment rights", "Backing first responders, law enforcement, veterans and active military"],
@@ -1311,16 +1310,14 @@ const HOUSE_RACES = {
             differentiators: ["No-party-affiliation candidate — qualified straight to the November ballot, no primary", "Founder of A Pensacola Perspective, a civic-engagement nonprofit", "More than a decade working in the financial industry", "Not among FL-1 candidates reporting more than $20,000 in receipts to the FEC this cycle"],
             supporters: ["Offers a non-partisan option in a seat where the general election is effectively decided by the Republican primary", "Runs on local presence and constituent service rather than national culture-war framing"],
             opponents: ["No-party candidates drew under 1% in this district's 2025 special election", "No meaningful campaign funding could be located in FEC filings [Verify — structural argument]", "Faces a $3.8M incumbent with statewide name recognition [Verify — structural argument]"] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Republican primary",
-        note: "PATRONIS WON A THREE-WAY REPUBLICAN PRIMARY WITH 71.1%. No Democratic primary was held — Gay Valimont was unopposed. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "PATRONIS WON A THREE-WAY REPUBLICAN PRIMARY WITH 71.1%. No Democratic primary was held — Gay Valimont was unopposed. Certified Aug 27, 2026.",
         candidates: [
           { name: "Jimmy Patronis (incumbent)", party: "R", winner: true, positions: [], differentiators: ["62,965 votes — 71.1%"], supporters: [], opponents: [] },
           { name: "John Frankman", party: "R", winner: false, positions: [], differentiators: ["17,278 votes — 19.5%"], supporters: [], opponents: [] },
           { name: "Douglas Chico", party: "R", winner: false, positions: [], differentiators: ["8,285 votes — 9.4%"], supporters: [], opponents: [] } ] } ] },
   2: { name: "U.S. House — FL District 2", region: "Tallahassee, Panama City and the eastern Panhandle / Big Bend (16 counties including Leon, Bay, Gadsden and Jackson)",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "OPEN SEAT — REP. NEAL DUNN ANNOUNCED ON JAN 13, 2026 THAT HE WOULD NOT SEEK A SIXTH TERM, and he does not appear on the state's qualified-candidate list. ⚠ FL-2 was NOT redrawn by HB 1D; its 16 counties match the 2024 lines per the certified Aug 18 results. ✅ Austin Rogers emerged from an eight-way Republican field with just 30.5%, beating Florida GOP chairman Evan Power (15.8%) and self-funding attorney Keith Gross, who raised $12.3M and finished second at 16.4%. Cook rates it Solid R (R+8 PVI, the second-least-red of districts 1–7); Inside Elections also Solid Republican. Certified Aug 27, 2026.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "OPEN SEAT — REP. NEAL DUNN ANNOUNCED ON JAN 13, 2026 THAT HE WOULD NOT SEEK A SIXTH TERM, and he does not appear on the state's qualified-candidate list. ⚠ FL-2 was NOT redrawn by HB 1D; its 16 counties match the 2024 lines per the certified Aug 18 results. ✅ Austin Rogers emerged from an eight-way Republican field with just 30.5%, beating Florida GOP chairman Evan Power (15.8%) and self-funding attorney Keith Gross, who raised $12.3M and finished second at 16.4%. Cook rates it Solid R (R+8 PVI, the second-least-red of districts 1–7); Inside Elections also Solid Republican. Certified Aug 27, 2026.",
         candidates: [
           { name: "Austin Rogers", party: "R", winner: false,
             positions: ["America First — a reliable vote for President Trump's agenda", "Secure the border and fund the military and law enforcement", "Defend freedom of faith and freedom of speech"],
@@ -1332,8 +1329,7 @@ const HOUSE_RACES = {
             differentiators: ["Won a four-way Democratic primary with 33.5%", "Worked for a USAID subsidiary until the agency was cut in 2025", "$348,120 raised through July 29, 2026", "First FL-2 race without an incumbent since 2016"],
             supporters: ["An agriculture and rural-health platform built for a 16-county district where one in four families uses nutrition programs", "Open-seat dynamics plus R+8 make this the least-red Panhandle seat", "Outraised the 2024 Democratic nominee, who lost by 23 points"],
             opponents: ["Won with 33.5%; runners-up Yen Bailey and Brice Barnes together took 55% of the Democratic primary vote", "Trails the Republican nominee roughly three to one in money", "Both Cook and Inside Elections rate the seat Solid Republican"] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Republican primary",
-        note: "AN EIGHT-WAY SCRAMBLE WON WITH 30.5%. ✅ Florida GOP chairman Evan Power finished third; Keith Gross, who raised $12.3M, finished second. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "AN EIGHT-WAY SCRAMBLE WON WITH 30.5%. ✅ Florida GOP chairman Evan Power finished third; Keith Gross, who raised $12.3M, finished second. Certified Aug 27, 2026.",
         candidates: [
           { name: "Austin Rogers", party: "R", winner: true, positions: [], differentiators: ["26,726 votes — 30.5%"], supporters: [], opponents: [] },
           { name: "Keith Gross", party: "R", winner: false, positions: [], differentiators: ["14,381 votes — 16.4%; raised $12.3M"], supporters: [], opponents: [] },
@@ -1343,8 +1339,7 @@ const HOUSE_RACES = {
           { name: "Audie Rowell", party: "R", winner: false, positions: [], differentiators: ["4,773 votes — 5.4%"], supporters: [], opponents: [] },
           { name: "Lee Jones", party: "R", winner: false, positions: [], differentiators: ["1,821 votes — 2.1%"], supporters: [], opponents: [] },
           { name: "Nick Lewis", party: "R", winner: false, positions: [], differentiators: ["1,281 votes — 1.5%"], supporters: [], opponents: [] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
-        note: "A FOUR-WAY RACE DECIDED BY 5.5 POINTS. ⚠ Yen Bailey, the party's 2024 nominee, finished second. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "A FOUR-WAY RACE DECIDED BY 5.5 POINTS. ⚠ Yen Bailey, the party's 2024 nominee, finished second. Certified Aug 27, 2026.",
         candidates: [
           { name: "Amanda Marie Green", party: "D", winner: true, positions: [], differentiators: ["21,462 votes — 33.5%"], supporters: [], opponents: [] },
           { name: "Yen Bailey", party: "D", winner: false, positions: [], differentiators: ["17,924 votes — 28.0%; the 2024 Democratic nominee, who lost 61.6–38.4"], supporters: [], opponents: [] },
@@ -1352,8 +1347,7 @@ const HOUSE_RACES = {
           { name: "Nicholas Zateslo", party: "D", winner: false, positions: [], differentiators: ["7,424 votes — 11.6%; raised $449,913, most of any FL-2 Democrat"], supporters: [], opponents: [] } ] } ] },
   3: { name: "U.S. House — FL District 3", region: "Gainesville, Ocala and twelve north-central counties",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "FL-3 WAS NOT REDRAWN BY HB 1D — the same twelve north-central counties appear in the certified Aug 18 results as in 2024. ✅ Kat Cammack drew no Republican primary opponent and seeks a fourth term. ⚠ She faces a two-front general: Democrat Seth Harp, a sixth-grade civics teacher who beat the party's 2024 nominee, and independent Mike Klein, an Army veteran who has actually OUT-RAISED Harp. Cook rates it Solid R (R+10 PVI); Inside Elections also Solid Republican. Certified Aug 27, 2026.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "FL-3 WAS NOT REDRAWN BY HB 1D — the same twelve north-central counties appear in the certified Aug 18 results as in 2024. ✅ Kat Cammack drew no Republican primary opponent and seeks a fourth term. ⚠ She faces a two-front general: Democrat Seth Harp, a sixth-grade civics teacher who beat the party's 2024 nominee, and independent Mike Klein, an Army veteran who has actually OUT-RAISED Harp. Cook rates it Solid R (R+10 PVI); Inside Elections also Solid Republican. Certified Aug 27, 2026.",
         candidates: [
           { name: "Kat Cammack (incumbent)", party: "R", winner: false,
             positions: ["Agricultural producers and rural communities", "Energy production and health policy", "Small-business owners, veterans and military families"],
@@ -1370,8 +1364,7 @@ const HOUSE_RACES = {
             differentiators: ["No-party-affiliation candidate — qualified straight to the November ballot", "West Point class of 1989, commissioned infantry officer, Desert Storm-era Army veteran", "$58,936 raised through June 30, 2026 — more than the Democratic nominee", "Fifth-generation Floridian who grew up in Gainesville"],
             supporters: ["The only candidate in the race campaigning explicitly against gerrymandering — pointed, given HB 1D and the pending Fair Districts litigation", "Out-raised the major-party challenger despite having no party infrastructure", "West Point and Army credentials in a district with large veteran and VA populations"],
             opponents: ["No independent has won a Florida U.S. House seat in the modern era [Verify — structural argument]", "Risks splitting the anti-incumbent vote and helping Cammack [Verify — structural argument]", "$59K against a $2M incumbent leaves no room for district-wide paid media"] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
-        note: "HARP UNSEATED THE PARTY'S OWN 2024 NOMINEE. Tom Wells carried the Democratic line against Cammack in 2024 and finished second here. The Republican primary was uncontested and is not carded. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "HARP UNSEATED THE PARTY'S OWN 2024 NOMINEE. Tom Wells carried the Democratic line against Cammack in 2024 and finished second here. The Republican primary was uncontested and is not carded. Certified Aug 27, 2026.",
         candidates: [
           { name: "Seth Harp", party: "D", winner: true, positions: [], differentiators: ["20,669 votes — 45.2%"], supporters: [], opponents: [] },
           { name: "Tom Wells", party: "D", winner: false, positions: [], differentiators: ["15,444 votes — 33.8%; the 2024 Democratic nominee"], supporters: [], opponents: [] },
@@ -1379,8 +1372,7 @@ const HOUSE_RACES = {
           { name: "George Hubac", party: "D", winner: false, positions: [], differentiators: ["4,457 votes — 9.7%"], supporters: [], opponents: [] } ] } ] },
   4: { name: "U.S. House — FL District 4", region: "Northern and western Jacksonville, Orange Park and Fernandina Beach (Clay, Duval, Nassau)",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "AT R+5, FL-4 IS TIED FOR THE LEAST-REPUBLICAN OF DISTRICTS 1–7 — and it was not redrawn by HB 1D. ✅ LaShonda 'L.J.' Holloway won her third consecutive Democratic nomination with 57.3% while raising $27,348 — against rival Michael Kirwan's $742,680, a roughly twenty-seven-to-one money disadvantage she overcame. ⚠ Four candidates are on the November ballot: Aaron Bean (R), Holloway (D), independent Todd Schaefer and Mike Sell of the Florida Forward Party. Bean won this seat 57.3–42.7 in 2024. Cook and Inside Elections both rate it Solid R. Certified Aug 27, 2026.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "AT R+5, FL-4 IS TIED FOR THE LEAST-REPUBLICAN OF DISTRICTS 1–7 — and it was not redrawn by HB 1D. ✅ LaShonda 'L.J.' Holloway won her third consecutive Democratic nomination with 57.3% while raising $27,348 — against rival Michael Kirwan's $742,680, a roughly twenty-seven-to-one money disadvantage she overcame. ⚠ Four candidates are on the November ballot: Aaron Bean (R), Holloway (D), independent Todd Schaefer and Mike Sell of the Florida Forward Party. Bean won this seat 57.3–42.7 in 2024. Cook and Inside Elections both rate it Solid R. Certified Aug 27, 2026.",
         candidates: [
           { name: "Aaron Bean (incumbent)", party: "R", winner: false,
             positions: ["Defends the Medicaid and tax provisions of the Working Families Tax Cut", "Government efficiency — founder and co-chair of the DOGE Caucus", "Economy, energy and veterans' services"],
@@ -1398,20 +1390,18 @@ const HOUSE_RACES = {
             supporters: ["Ballot access without a primary gives voters a third option in a seat both parties treat as safe", "Campaigns on one concrete signature proposal rather than a slate of slogans"],
             opponents: ["His signature American Prosperity Card Act has no congressional sponsor or published analysis that could be located [Verify — structural argument]", "Drew effectively zero recorded votes as a 2024 write-in in this district", "No meaningful campaign funding could be located in FEC filings [Verify — structural argument]"] },
           { name: "Mike Sell", party: "I", winner: false,
-            positions: ["⚠ No published platform could be located — neither the Florida Forward Party's own materials nor any candidate site was reachable [Verify]", "Runs under the Florida Forward Party banner, a minor party recognised by the Division of Elections [Verify — party platform not confirmed at a primary source]", ""],
+            positions: ["⚠ No published platform could be located — neither the Florida Forward Party's own materials nor any candidate site was reachable [Verify]","Runs under the Florida Forward Party banner, a minor party recognised by the Division of Elections [Verify — party platform not confirmed at a primary source]"],
             differentiators: ["Qualified for the November ballot as a Florida Forward Party candidate on the certified list", "$24,186 raised through July 29, 2026 — nearly as much as the Democratic nominee", "Jacksonville-based", "⚠ No Ballotpedia candidate page and no campaign site could be located [Verify]"],
             supporters: ["Has raised nearly as much as the major-party challenger, which is unusual for a minor-party candidate", "Gives voters a fourth ballot line in a district where the two-party outcome is widely presumed [Verify — structural argument]"],
             opponents: ["No campaign presence, platform or public statements could be located [Verify — an absence of located records]", "Minor-party candidates have not cleared 1% in this district in recent cycles [Verify — structural argument]", "Unfunded relative to a $2M incumbent [Verify — structural argument]"] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
-        note: "HOLLOWAY WON BY 27 POINTS WHILE BEING OUTRAISED TWENTY-SEVEN TO ONE. Michael Kirwan reported $742,680 in receipts to Holloway's $27,348 and finished second. The Republican primary was uncontested and is not carded. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "HOLLOWAY WON BY 27 POINTS WHILE BEING OUTRAISED TWENTY-SEVEN TO ONE. Michael Kirwan reported $742,680 in receipts to Holloway's $27,348 and finished second. The Republican primary was uncontested and is not carded. Certified Aug 27, 2026.",
         candidates: [
           { name: "LaShonda 'L.J.' Holloway", party: "D", winner: true, positions: [], differentiators: ["29,772 votes — 57.3%"], supporters: [], opponents: [] },
           { name: "Michael Kirwan", party: "D", winner: false, positions: [], differentiators: ["15,809 votes — 30.4%; raised $742,680"], supporters: [], opponents: [] },
           { name: "Brit Robinson", party: "D", winner: false, positions: [], differentiators: ["6,358 votes — 12.2%"], supporters: [], opponents: [] } ] } ] },
   5: { name: "U.S. House — FL District 5", region: "Southern and eastern Jacksonville, the Beaches and St. Augustine (Duval, St. Johns)",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "FL-5 WAS NOT REDRAWN BY HB 1D — still Duval plus St. Johns, per the certified Aug 18 county returns. ⚠ The notable result was on the Republican side: five-term incumbent John Rutherford took 67.7% against radio host Mark Kaye, who raised only $31,456 yet won 32.3% — a roughly one-in-three protest vote against a sitting member. ✅ Democrat Rachel Grage, a biomedical engineer, won her primary with 65.1%. A qualified write-in, William Lintag Upham, is certified but will not appear printed on the ballot. Cook rates it Solid R (R+10 PVI); Inside Elections also Solid Republican. Certified Aug 27, 2026.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "FL-5 WAS NOT REDRAWN BY HB 1D — still Duval plus St. Johns, per the certified Aug 18 county returns. ⚠ The notable result was on the Republican side: five-term incumbent John Rutherford took 67.7% against radio host Mark Kaye, who raised only $31,456 yet won 32.3% — a roughly one-in-three protest vote against a sitting member. ✅ Democrat Rachel Grage, a biomedical engineer, won her primary with 65.1%. A qualified write-in, William Lintag Upham, is certified but will not appear printed on the ballot. Cook rates it Solid R (R+10 PVI); Inside Elections also Solid Republican. Certified Aug 27, 2026.",
         candidates: [
           { name: "John Rutherford (incumbent)", party: "R", winner: false,
             positions: ["Making life affordable again — block new taxes, cut existing ones, cut red tape on small business", "Supporting military veterans — VA reform and accountability, troop pay, PTSD and transition programmes", "Making communities safer — authored the STOP School Violence Act; voted to fund the border wall"],
@@ -1423,21 +1413,18 @@ const HOUSE_RACES = {
             differentiators: ["Won the Democratic primary with 65.1%", "Biomedical engineer; bachelor's and master's degrees from Tulane", "$272,423 raised through July 29, 2026 — 37% of the incumbent's total, the best challenger ratio in districts 1–7 outside FL-7", "Ran for Florida House District 16 in 2024, losing with 39%"],
             supporters: ["Won her primary outright with 65%, avoiding a divided party", "Raised a competitive-by-district-standards $272K against an incumbent who raised only $727K", "A STEM and public-school background paired with an affordability-and-honesty message"],
             opponents: ["R+10; the Democratic nominee took 36.9% here in 2024", "Has never won elective office — lost a state House race in 2024 with 39%", "Both Cook and Inside Elections rate the seat Solid Republican"] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Republican primary",
-        note: "A FIVE-TERM INCUMBENT HELD BELOW 68% BY A NEARLY UNFUNDED CHALLENGER. Radio host Mark Kaye reported $31,456 in receipts and still took 32.3%. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "A FIVE-TERM INCUMBENT HELD BELOW 68% BY A NEARLY UNFUNDED CHALLENGER. Radio host Mark Kaye reported $31,456 in receipts and still took 32.3%. Certified Aug 27, 2026.",
         candidates: [
           { name: "John Rutherford (incumbent)", party: "R", winner: true, positions: [], differentiators: ["54,072 votes — 67.7%"], supporters: [], opponents: [] },
           { name: "Mark Kaye", party: "R", winner: false, positions: [], differentiators: ["25,793 votes — 32.3%; raised $31,456"], supporters: [], opponents: [] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
-        note: "GRAGE WON OUTRIGHT WITH 65.1% IN A THREE-WAY FIELD. All three candidates campaigned primarily on Northeast Florida affordability. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "GRAGE WON OUTRIGHT WITH 65.1% IN A THREE-WAY FIELD. All three candidates campaigned primarily on Northeast Florida affordability. Certified Aug 27, 2026.",
         candidates: [
           { name: "Rachel Grage", party: "D", winner: true, positions: [], differentiators: ["27,427 votes — 65.1%"], supporters: [], opponents: [] },
           { name: "Alex Hazen", party: "D", winner: false, positions: [], differentiators: ["9,119 votes — 21.6%"], supporters: [], opponents: [] },
           { name: "Mark Heggestad", party: "D", winner: false, positions: [], differentiators: ["5,607 votes — 13.3%"], supporters: [], opponents: [] } ] } ] },
   6: { name: "U.S. House — FL District 6", region: "Daytona Beach, Palm Coast and the northern Atlantic coast (Volusia, Flagler, Putnam, plus parts of Marion, Lake and St. Johns)",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "RANDY FINE WON HIS PRIMARY WITH 57.6% AGAINST DAN BILZERIAN, THE POKER AND SOCIAL-MEDIA FIGURE WHO TOOK 18.9% ON AN OPENLY ANTISEMITIC CAMPAIGN. ⚠ FL-6 was NOT redrawn by HB 1D; the same six counties appear in the certified Aug 18 returns. ✅ Fine holds this seat from an April 2025 special election he won 56.7–42.7 — a fourteen-point margin in a seat Michael Waltz carried by 33 in 2024. Four candidates are certified for November plus a qualified write-in, Alec Pavlik, who will not appear printed on the ballot. Cook rates it Solid R (R+14 PVI); Inside Elections also Solid Republican. Certified Aug 27, 2026.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "RANDY FINE WON HIS PRIMARY WITH 57.6% AGAINST DAN BILZERIAN, THE POKER AND SOCIAL-MEDIA FIGURE WHO TOOK 18.9% ON AN OPENLY ANTISEMITIC CAMPAIGN. ⚠ FL-6 was NOT redrawn by HB 1D; the same six counties appear in the certified Aug 18 returns. ✅ Fine holds this seat from an April 2025 special election he won 56.7–42.7 — a fourteen-point margin in a seat Michael Waltz carried by 33 in 2024. Four candidates are certified for November plus a qualified write-in, Alec Pavlik, who will not appear printed on the ballot. Cook rates it Solid R (R+14 PVI); Inside Elections also Solid Republican. Certified Aug 27, 2026.",
         candidates: [
           { name: "Randy Fine (incumbent)", party: "R", winner: false,
             positions: ["Strengthen America's global position and stop terrorism", "Energy and resource independence; grow the economy", "Tackle immigration and secure the border; fight crime and demand justice"],
@@ -1459,15 +1446,13 @@ const HOUSE_RACES = {
             differentiators: ["Libertarian Party of Florida nominee; the party's primary was uncontested", "Also ran in the April 2025 special election, taking 701 votes — 0.4%", "Welder and Libertarian activist", "No FEC filings above the reporting threshold could be located [Verify]"],
             supporters: ["A second consecutive run gives Libertarian voters a consistent ballot presence in the district", "Provides an anti-major-party option in a seat where the general-election outcome is widely presumed [Verify — structural argument]"],
             opponents: ["Received 0.4% in the same district sixteen months ago", "No individual campaign platform or website could be located [Verify — an absence of located records]", "Unfunded against a $4.3M incumbent [Verify — structural argument]"] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Republican primary",
-        note: "FINE HELD OFF DAN BILZERIAN 57.6% TO 18.9%. Bilzerian raised $1,241,450 and ran what national outlets described as an openly antisemitic campaign. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "FINE HELD OFF DAN BILZERIAN 57.6% TO 18.9%. Bilzerian raised $1,241,450 and ran what national outlets described as an openly antisemitic campaign. Certified Aug 27, 2026.",
         candidates: [
           { name: "Randy Fine (incumbent)", party: "R", winner: true, positions: [], differentiators: ["51,109 votes — 57.6%"], supporters: [], opponents: [] },
           { name: "Dan Bilzerian", party: "R", winner: false, positions: [], differentiators: ["16,776 votes — 18.9%; raised $1,241,450"], supporters: [], opponents: [] },
           { name: "Aaron Baker", party: "R", winner: false, positions: [], differentiators: ["12,074 votes — 13.6%"], supporters: [], opponents: [] },
           { name: "Charles Gambaro", party: "R", winner: false, positions: [], differentiators: ["8,716 votes — 9.8%"], supporters: [], opponents: [] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
-        note: "A FOUR-WAY RACE DECIDED BY 5.2 POINTS, WITH NO CANDIDATE REACHING A THIRD OF THE VOTE. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "A FOUR-WAY RACE DECIDED BY 5.2 POINTS, WITH NO CANDIDATE REACHING A THIRD OF THE VOTE. Certified Aug 27, 2026.",
         candidates: [
           { name: "Eric Yonce", party: "D", winner: true, positions: [], differentiators: ["13,465 votes — 32.1%"], supporters: [], opponents: [] },
           { name: "Ronnie 'Ron' Murchinson-Rivera", party: "D", winner: false, positions: [], differentiators: ["11,260 votes — 26.9%; first responder"], supporters: [], opponents: [] },
@@ -1475,8 +1460,7 @@ const HOUSE_RACES = {
           { name: "Robert David Cooper II", party: "D", winner: false, positions: [], differentiators: ["7,414 votes — 17.7%; Marine veteran"], supporters: [], opponents: [] } ] } ] },
   7: { name: "U.S. House — FL District 7", region: "Orlando's northern suburbs and the Volusia coast (Seminole County, New Smyrna Beach)",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "INCUMBENT REP. CORY MILLS LOST HIS OWN REPUBLICAN PRIMARY ON AUG 18, FALLING 47.3% TO 34.1% TO FORMER FOX 35 ORLANDO ANCHOR RYAN ELIJAH. Mills was under a House Ethics investigation and had been the subject of a restraining order sought by a former girlfriend; Trump, who endorsed him in 2025, left him off a later endorsement list, and Gov. DeSantis said he did not support him. ⚠ FL-7 was NOT redrawn by HB 1D — it remains Seminole plus Volusia per the certified returns. ✅ THIS IS THE ONLY ONE OF DISTRICTS 1–7 EITHER RATER CALLS COMPETITIVE: Cook moved it from Solid R to LIKELY R on Jan 15, 2026, and Inside Elections also has it Likely Republican (R+5 PVI). Democrat Bale Dalton has out-raised every Republican in the race and is in the DCCC's Red to Blue programme. Certified Aug 27, 2026.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "INCUMBENT REP. CORY MILLS LOST HIS OWN REPUBLICAN PRIMARY ON AUG 18, FALLING 47.3% TO 34.1% TO FORMER FOX 35 ORLANDO ANCHOR RYAN ELIJAH. Mills was under a House Ethics investigation and had been the subject of a restraining order sought by a former girlfriend; Trump, who endorsed him in 2025, left him off a later endorsement list, and Gov. DeSantis said he did not support him. ⚠ FL-7 was NOT redrawn by HB 1D — it remains Seminole plus Volusia per the certified returns. ✅ THIS IS THE ONLY ONE OF DISTRICTS 1–7 EITHER RATER CALLS COMPETITIVE: Cook moved it from Solid R to LIKELY R on Jan 15, 2026, and Inside Elections also has it Likely Republican (R+5 PVI). Democrat Bale Dalton has out-raised every Republican in the race and is in the DCCC's Red to Blue programme. Certified Aug 27, 2026.",
         candidates: [
           { name: "Ryan Elijah", party: "R", winner: false,
             positions: ["Affordability — keep taxes low and achieve American energy independence", "Parental rights, school choice and curriculum transparency", "Medical innovation and lowering health care costs; enforce immigration law"],
@@ -1489,19 +1473,17 @@ const HOUSE_RACES = {
             supporters: ["Out-raised every Republican in the race, including the sitting incumbent", "A military and NASA resume is an unusually good fit for a district with Space Coast-adjacent workers and a heavy veteran population", "National party investment via Red to Blue signals the seat is genuinely contested"],
             opponents: ["Has never held elective office — his record is executive and military, not legislative", "Built his campaign message around attacking Cory Mills, who is no longer on the ballot, requiring a pivot", "R+5, and no Democrat has carried this seat in its current configuration; both raters still favour Republicans"] },
           { name: "Christopher Dennison", party: "L", winner: false,
-            positions: ["⚠ These are the Libertarian Party of Florida's platform planks, not a platform of his own — no individual candidate platform, website or survey response could be located [Verify]", "Free-market economy and limited government", ""],
+            positions: ["⚠ These are the Libertarian Party of Florida's platform planks, not a platform of his own — no individual candidate platform, website or survey response could be located [Verify]","Free-market economy and limited government"],
             differentiators: ["Libertarian Party of Florida nominee; the party's Aug 18 primary was cancelled for lack of opposition", "$10,500 in contributions and $10,440 in expenditures reported [Verify — via an aggregator citing FEC data]", "Has not completed a candidate survey", "On the ballot in the only district in this bloc rated competitive"],
             supporters: ["A third ballot line in the one seat here where the two major parties are actually contesting the outcome", "A Libertarian presence can matter at the margin in a Likely-R rather than Solid-R race [Verify — structural argument]"],
             opponents: ["Raised $10,500 against two candidates with a combined $1.7M", "No campaign website, platform statement or public positions could be located [Verify — an absence of located records]", "Third-party candidates have not been a factor in this district's recent general elections [Verify — structural argument]"] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Republican primary",
-        note: "A SITTING MEMBER OF CONGRESS WAS DEFEATED. Cory Mills, facing a House Ethics investigation and a restraining-order case, lost by 13.2 points to a first-time candidate. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "A SITTING MEMBER OF CONGRESS WAS DEFEATED. Cory Mills, facing a House Ethics investigation and a restraining-order case, lost by 13.2 points to a first-time candidate. Certified Aug 27, 2026.",
         candidates: [
           { name: "Ryan Elijah", party: "R", winner: true, positions: [], differentiators: ["31,558 votes — 47.3%"], supporters: [], opponents: [] },
           { name: "Cory Mills (incumbent)", party: "R", winner: false, positions: [], differentiators: ["22,753 votes — 34.1%; two-term incumbent, defeated"], supporters: [], opponents: [] },
           { name: "Sarah Ulrich", party: "R", winner: false, positions: [], differentiators: ["7,010 votes — 10.5%"], supporters: [], opponents: [] },
           { name: "Michael Don Johnson", party: "R", winner: false, positions: [], differentiators: ["5,411 votes — 8.1%"], supporters: [], opponents: [] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
-        note: "FORMER U.S. REP. ALAN GRAYSON FINISHED THIRD WITH 18.9%. Dalton, the top fundraiser at $1.38M, won with 45.5% in a three-way race between two veterans and a former congressman. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "FORMER U.S. REP. ALAN GRAYSON FINISHED THIRD WITH 18.9%. Dalton, the top fundraiser at $1.38M, won with 45.5% in a three-way race between two veterans and a former congressman. Certified Aug 27, 2026.",
         candidates: [
           { name: "Bale Dalton", party: "D", winner: true, positions: [], differentiators: ["21,776 votes — 45.5%"], supporters: [], opponents: [] },
           { name: "Marialana Kinter", party: "D", winner: false, positions: [], differentiators: ["17,022 votes — 35.6%; raised $565,078"], supporters: [], opponents: [] },
@@ -1521,8 +1503,7 @@ const HOUSE_RACES = {
 // appear on the printed ballot, so they are noted in the race note rather than carded.
   8: { name: "U.S. House — FL District 8", region: "Brevard County's Space Coast plus the UCF area of eastern Orange County",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "REDISTRICTING MADE THIS SEAT MEASURABLY CLOSER: HB 1D dropped Indian River County and pushed FL-8 west to absorb about 160,000 more Orange County residents, moving Cook's PVI from R+11 to R+8. ✅ Cook still rates it Solid Republican, and Trump carried the new lines by roughly 14 points. ✅ Neither party had a contested primary — both were cancelled at qualifying, so this matchup has been set since June 12. ⚠ Jennifer Jenkins reached this race only after two switches: she began the cycle running for U.S. Senate, moved to FL-6 against Randy Fine, then moved again to FL-8 after the map changed. Certified Aug 27, 2026.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "REDISTRICTING MADE THIS SEAT MEASURABLY CLOSER: HB 1D dropped Indian River County and pushed FL-8 west to absorb about 160,000 more Orange County residents, moving Cook's PVI from R+11 to R+8. ✅ Cook still rates it Solid Republican, and Trump carried the new lines by roughly 14 points. ✅ Neither party had a contested primary — both were cancelled at qualifying, so this matchup has been set since June 12. ⚠ Jennifer Jenkins reached this race only after two switches: she began the cycle running for U.S. Senate, moved to FL-6 against Randy Fine, then moved again to FL-8 after the map changed. Certified Aug 27, 2026.",
         candidates: [
           { name: "Mike Haridopolos (incumbent)", party: "R", winner: false,
             positions: ["Space Coast and NASA/commercial launch leadership", "Indian River Lagoon restoration and water quality", "Tax reform, veterans and border enforcement"],
@@ -1536,8 +1517,7 @@ const HOUSE_RACES = {
             opponents: ["The Florida Republican Party brands her 'Jumpin' Jenkins' over three race switches in one cycle", "Outraised better than two to one and holds roughly one eleventh of the incumbent's cash", "⚠ The same internal poll had her trailing 44–35 on a plain head-to-head ballot"] } ] } ] },
   9: { name: "U.S. House — FL District 9", region: "Osceola County and parts of Orange and Polk, running south through Indian River, Okeechobee, Highlands and Glades",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "THIS IS THE MOST REDRAWN SEAT IN FLORIDA: HB 1D DISMANTLED DARREN SOTO'S HISPANIC-MAJORITY OSCEOLA–ORANGE–POLK DISTRICT AND STRETCHED IT SOUTH through Indian River, Okeechobee, Highlands and Glades counties. ✅ Cook's PVI moved from D+4 to R+8 — a swing no other Florida district matched — and Trump would have carried the new lines about 58–41. ✅ Cook rates the race Likely Republican. ⚠ Soto had no primary opponent, but seven Republicans fought for the nomination and Dan Green won it with just 25.4%, meaning roughly three-quarters of Republican primary voters backed someone else. Certified Aug 27, 2026.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "THIS IS THE MOST REDRAWN SEAT IN FLORIDA: HB 1D DISMANTLED DARREN SOTO'S HISPANIC-MAJORITY OSCEOLA–ORANGE–POLK DISTRICT AND STRETCHED IT SOUTH through Indian River, Okeechobee, Highlands and Glades counties. ✅ Cook's PVI moved from D+4 to R+8 — a swing no other Florida district matched — and Trump would have carried the new lines about 58–41. ✅ Cook rates the race Likely Republican. ⚠ Soto had no primary opponent, but seven Republicans fought for the nomination and Dan Green won it with just 25.4%, meaning roughly three-quarters of Republican primary voters backed someone else. Certified Aug 27, 2026.",
         candidates: [
           { name: "Darren Soto (incumbent)", party: "D", winner: false,
             positions: ["Jobs and the economy; Social Security", "Health care access", "Environmental protection and Puerto Rico advocacy"],
@@ -1549,8 +1529,7 @@ const HOUSE_RACES = {
             differentiators: ["Navy Reserve commander, four Middle East tours; former Pentagon appointee", "Won the Aug 18 Republican primary with 25.38% — 14,748 votes", "$363,243 cash on hand on $1.30M raised, as of July 29, 2026", "Endorsed by Rep. Jim Jordan, Rep. Mike Haridopolos, Sen. Tim Sheehy and former Sen. Connie Mack"],
             supporters: ["Runs in a seat the new map made roughly twelve points more Republican", "A military and national-security resume fits a district with a large veteran population", "Consolidated national conservative endorsements ahead of the primary"],
             opponents: ["Won the nomination by only 587 votes with 25.4% in a seven-way field", "Has never held elected office", "Enters the general with under $400K against Soto's $1.19M"] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Republican primary",
-        note: "SEVEN REPUBLICANS SPLIT THE FIELD AND DAN GREEN WON WITH 25.38%, EDGING RANCHER BEN BUTLER BY 587 VOTES. ⚠ Thomas Chalifoux raised more than $3.1M — over twice Green's haul — and finished third. Darren Soto's Democratic primary was cancelled for lack of an opponent. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "SEVEN REPUBLICANS SPLIT THE FIELD AND DAN GREEN WON WITH 25.38%, EDGING RANCHER BEN BUTLER BY 587 VOTES. ⚠ Thomas Chalifoux raised more than $3.1M — over twice Green's haul — and finished third. Darren Soto's Democratic primary was cancelled for lack of an opponent. Certified Aug 27, 2026.",
         candidates: [
           { name: "Dan Green", party: "R", winner: true, positions: [], differentiators: ["14,748 votes — 25.38% of 58,102 cast"], supporters: [], opponents: [] },
           { name: "Ben Butler", party: "R", winner: false, positions: [], differentiators: ["14,161 votes — 24.37%; lost by 587"], supporters: [], opponents: [] },
@@ -1561,8 +1540,7 @@ const HOUSE_RACES = {
           { name: "Steve Rance", party: "R", winner: false, positions: [], differentiators: ["1,335 votes — 2.30%"], supporters: [], opponents: [] } ] } ] },
   10: { name: "U.S. House — FL District 10", region: "Most of Orlando, wholly inside Orange County",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "THERE IS NO NOVEMBER CONTEST HERE — MAXWELL FROST DREW NO OPPONENT AT ALL AND WAS RE-ELECTED WITHOUT APPEARING ON A BALLOT. ✅ When qualifying closed June 12, 2026, no Republican, minor-party or write-in candidate had qualified; both the Aug 18 primary and the Nov 3 general were cancelled and the seat does not appear on Orange County ballots. ✅ He is the only member of Florida's 28-seat delegation to win this cycle unopposed. ⚠ A Republican (Vibert White) and a write-in (Brent Lawhon) appear in the state database but the state says neither qualified. HB 1D shifted FL-10 west, shedding eastern Orange County, but left it wholly inside Orange and unchanged at Cook D+13 — Solid Democratic.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "THERE IS NO NOVEMBER CONTEST HERE — MAXWELL FROST DREW NO OPPONENT AT ALL AND WAS RE-ELECTED WITHOUT APPEARING ON A BALLOT. ✅ When qualifying closed June 12, 2026, no Republican, minor-party or write-in candidate had qualified; both the Aug 18 primary and the Nov 3 general were cancelled and the seat does not appear on Orange County ballots. ✅ He is the only member of Florida's 28-seat delegation to win this cycle unopposed. ⚠ A Republican (Vibert White) and a write-in (Brent Lawhon) appear in the state database but the state says neither qualified. HB 1D shifted FL-10 west, shedding eastern Orange County, but left it wholly inside Orange and unchanged at Cook D+13 — Solid Democratic.",
         candidates: [
           { name: "Maxwell Alejandro Frost (incumbent)", party: "D", winner: false,
             positions: ["Gun violence prevention", "Federal constituent services and casework", "Support for federal workers facing layoffs and funding freezes"],
@@ -1571,8 +1549,7 @@ const HOUSE_RACES = {
             opponents: ["Running unopposed means voters get no contested choice and no head-to-head scrutiny this cycle [Verify — structural argument]", "No organised opposition campaign could be located in this district [Verify — an absence of located records]"] } ] } ] },
   11: { name: "U.S. House — FL District 11", region: "All of Sumter County including The Villages, plus parts of Lake and south-western Orange",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "OPEN SEAT — REP. DANIEL WEBSTER ANNOUNCED DURING THE REDISTRICTING SPECIAL SESSION THAT HE WOULD NOT SEEK RE-ELECTION. ✅ HB 1D shed the district's Polk County territory (about 41,000 residents) and pushed it deeper into south-western Orange; Cook's PVI barely moved, R+8 to R+7, and Cook rates it Solid Republican. ⚠ Republican nominee Joe Strada won by 393 votes out of 81,775 — a 0.48-point margin that triggered an AUTOMATIC MACHINE RECOUNT across Sumter, Lake and Orange counties. The recount, completed the weekend of Aug 22–24, confirmed the result, and the Elections Canvassing Commission certified on Aug 27.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "OPEN SEAT — REP. DANIEL WEBSTER ANNOUNCED DURING THE REDISTRICTING SPECIAL SESSION THAT HE WOULD NOT SEEK RE-ELECTION. ✅ HB 1D shed the district's Polk County territory (about 41,000 residents) and pushed it deeper into south-western Orange; Cook's PVI barely moved, R+8 to R+7, and Cook rates it Solid Republican. ⚠ Republican nominee Joe Strada won by 393 votes out of 81,775 — a 0.48-point margin that triggered an AUTOMATIC MACHINE RECOUNT across Sumter, Lake and Orange counties. The recount, completed the weekend of Aug 22–24, confirmed the result, and the Elections Canvassing Commission certified on Aug 27.",
         candidates: [
           { name: "Joe Strada", party: "R", winner: false,
             positions: ["Immigration enforcement", "Government accountability and spending", "Closing the skilled-trades worker shortage through training programmes"],
@@ -1589,24 +1566,21 @@ const HOUSE_RACES = {
             differentiators: ["Recent Chairman, Libertarian Party of Orange County", "Retired Defense Intelligence Agency civilian analyst, 1999–2018", "Advanced from a cancelled Libertarian primary", "No FEC receipts on file as of July 29, 2026"],
             supporters: ["Offers voters an option in a district where the major-party race is rated Solid Republican", "Two decades of federal intelligence work behind his foreign-policy positions", "Publishes detailed position papers rather than slogans on his campaign site"],
             opponents: ["Unfunded against a self-funding nominee with $2.2M on hand [Verify — structural argument]", "Libertarian nominees in Florida U.S. House races have not been competitive for the seat [Verify — structural argument]", "No paid campaign presence in the district could be located [Verify — an absence of located records]"] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Republican primary",
-        note: "JOE STRADA BEAT FORMER LAKE COUNTY PROPERTY APPRAISER CAREY BAKER BY 393 VOTES — 0.48 POINTS — TRIGGERING AN AUTOMATIC MACHINE RECOUNT ACROSS SUMTER, LAKE AND ORANGE COUNTIES. ✅ The recount, completed Aug 24, left the margin intact. ⚠ Retiring Rep. Daniel Webster and former state Rep. Anthony Sabatini both appear on the state's withdrawn / did-not-qualify list for this seat. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "JOE STRADA BEAT FORMER LAKE COUNTY PROPERTY APPRAISER CAREY BAKER BY 393 VOTES — 0.48 POINTS — TRIGGERING AN AUTOMATIC MACHINE RECOUNT ACROSS SUMTER, LAKE AND ORANGE COUNTIES. ✅ The recount, completed Aug 24, left the margin intact. ⚠ Retiring Rep. Daniel Webster and former state Rep. Anthony Sabatini both appear on the state's withdrawn / did-not-qualify list for this seat. Certified Aug 27, 2026.",
         candidates: [
           { name: "Joe Strada", party: "R", winner: true, positions: [], differentiators: ["27,389 votes — 33.49%; won by 393 after a machine recount"], supporters: [], opponents: [] },
           { name: "Carey Baker", party: "R", winner: false, positions: [], differentiators: ["26,996 votes — 33.01%", "Former Lake County Property Appraiser and state senator"], supporters: [], opponents: [] },
           { name: "Tim Wilkins", party: "R", winner: false, positions: [], differentiators: ["20,810 votes — 25.45%"], supporters: [], opponents: [] },
           { name: "Nizam Razack", party: "R", winner: false, positions: [], differentiators: ["4,742 votes — 5.80%; raised $932,552 and finished fourth"], supporters: [], opponents: [] },
           { name: "Ivette Palomo", party: "R", winner: false, positions: [], differentiators: ["1,838 votes — 2.25%"], supporters: [], opponents: [] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
-        note: "JAMES PERICOLA TOOK 46.35% IN A THREE-WAY DEMOCRATIC PRIMARY. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "JAMES PERICOLA TOOK 46.35% IN A THREE-WAY DEMOCRATIC PRIMARY. Certified Aug 27, 2026.",
         candidates: [
           { name: "James Pericola", party: "D", winner: true, positions: [], differentiators: ["20,833 votes — 46.35%"], supporters: [], opponents: [] },
           { name: "Royal Webster", party: "D", winner: false, positions: [], differentiators: ["12,356 votes — 27.49%"], supporters: [], opponents: [] },
           { name: "Dan Williams", party: "D", winner: false, positions: [], differentiators: ["11,759 votes — 26.16%"], supporters: [], opponents: [] } ] } ] },
   12: { name: "U.S. House — FL District 12", region: "Pasco County and northern Hillsborough County",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "FL-12 MOVED TEN POINTS TOWARD DEMOCRATS UNDER HB 1D — COOK'S PVI WENT FROM R+17 TO R+7, THE LARGEST DEMOCRATIC-DIRECTION SHIFT OF ANY FLORIDA DISTRICT. ✅ The map handed the district's northern Citrus, Hernando and Marion territory to the new District 15 and pushed FL-12 south into Hillsborough County. ⚠ Even so, Cook still rates the seat Solid Republican and Gus Bilirakis has held it since 2007. ⚠ Democratic nominee Kimberly Overman won her primary while being outraised nearly four to one and finished the pre-primary period with under $5,000 in the bank. Certified Aug 27, 2026.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "FL-12 MOVED TEN POINTS TOWARD DEMOCRATS UNDER HB 1D — COOK'S PVI WENT FROM R+17 TO R+7, THE LARGEST DEMOCRATIC-DIRECTION SHIFT OF ANY FLORIDA DISTRICT. ✅ The map handed the district's northern Citrus, Hernando and Marion territory to the new District 15 and pushed FL-12 south into Hillsborough County. ⚠ Even so, Cook still rates the seat Solid Republican and Gus Bilirakis has held it since 2007. ⚠ Democratic nominee Kimberly Overman won her primary while being outraised nearly four to one and finished the pre-primary period with under $5,000 in the bank. Certified Aug 27, 2026.",
         candidates: [
           { name: "Gus M. Bilirakis (incumbent)", party: "R", winner: false,
             positions: ["Cut homeowners' insurance costs via the Homeowners Premium Tax Reduction Act", "Affordable housing and lowering the cost of living", "Veterans and seniors — the Major Richard Star Act, EASE Act telehealth, KidCare"],
@@ -1619,19 +1593,17 @@ const HOUSE_RACES = {
             supporters: ["Won county-wide office in Hillsborough, the district's new southern anchor", "Beat a far better-funded primary opponent, which suggests organisational strength over money", "Runs in a district ten points more competitive than it was in 2024"],
             opponents: ["Ended the pre-primary period with under $5,000 against the incumbent's $554,000", "Cook rates the seat Solid Republican despite the shift", "Has never represented the Pasco County portion, which remains the district's population centre [Verify — structural argument]"] },
           { name: "Branden Scrivener", party: "I", winner: false,
-            positions: ["⚠ Health care access, inferred from his stated occupation as a case manager — no platform document could be located [Verify]", "", ""],
+            positions: ["⚠ Health care access, inferred from his stated occupation as a case manager — no platform document could be located [Verify]"],
             differentiators: ["Healthcare case manager; qualified with no party affiliation", "$353 cash on hand on $7,975 raised, as of June 30, 2026", "Appears on the November ballot as an NPA candidate"],
             supporters: ["Gives voters a non-partisan option in a seat where the major-party outcome is rated Solid Republican", "Front-line health-care work is directly relevant to a district with a large senior population"],
             opponents: ["Under $400 on hand against a $554,000 incumbent [Verify — structural argument]", "No organised campaign presence in the district could be located [Verify — an absence of located records]", "NPA candidates in Florida U.S. House races have not been competitive for the seat [Verify — structural argument]"] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
-        note: "KIMBERLY OVERMAN WON THE DEMOCRATIC NOMINATION 52.66% TO 47.34% DESPITE BEING OUTRAISED ALMOST FOUR TO ONE. ⚠ Darren McAuley raised $728,863 to Overman's $186,813 and lost by 2,207 votes. Gus Bilirakis had no Republican primary opponent. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "KIMBERLY OVERMAN WON THE DEMOCRATIC NOMINATION 52.66% TO 47.34% DESPITE BEING OUTRAISED ALMOST FOUR TO ONE. ⚠ Darren McAuley raised $728,863 to Overman's $186,813 and lost by 2,207 votes. Gus Bilirakis had no Republican primary opponent. Certified Aug 27, 2026.",
         candidates: [
           { name: "Kimberly Overman", party: "D", winner: true, positions: [], differentiators: ["21,833 votes — 52.66% of 41,459 cast"], supporters: [], opponents: [] },
           { name: "Darren McAuley", party: "D", winner: false, positions: [], differentiators: ["19,626 votes — 47.34%; raised $728,863, the most in the primary, and lost"], supporters: [], opponents: [] } ] } ] },
   13: { name: "U.S. House — FL District 13", region: "Most of Pinellas County outside southern St. Petersburg — Clearwater and Largo — plus southern Pasco",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "HB 1D CUT SOUTHERN PINELLAS OUT OF FL-13 AND PUSHED IT NORTH INTO PASCO COUNTY, ADDING ABOUT 62,000 RESIDENTS. ✅ The net partisan effect was small — Cook's PVI moved only R+5 to R+6 — and Cook rates the race Likely Republican. ✅ Retired Army Brigadier General Leela Gray won the Democratic nomination outright with 65.01%, clearing a nine-candidate field that mostly withdrew before the ballot. ⚠ BOTH PUBLIC POLLS IN THIS RACE ARE CAMPAIGN INTERNALS POINTING OPPOSITE DIRECTIONS: Luna's pollster had her up 49–41, a Democratic internal had it 41–39. Treat both with caution. Certified Aug 27, 2026.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "HB 1D CUT SOUTHERN PINELLAS OUT OF FL-13 AND PUSHED IT NORTH INTO PASCO COUNTY, ADDING ABOUT 62,000 RESIDENTS. ✅ The net partisan effect was small — Cook's PVI moved only R+5 to R+6 — and Cook rates the race Likely Republican. ✅ Retired Army Brigadier General Leela Gray won the Democratic nomination outright with 65.01%, clearing a nine-candidate field that mostly withdrew before the ballot. ⚠ BOTH PUBLIC POLLS IN THIS RACE ARE CAMPAIGN INTERNALS POINTING OPPOSITE DIRECTIONS: Luna's pollster had her up 49–41, a Democratic internal had it 41–39. Treat both with caution. Certified Aug 27, 2026.",
         candidates: [
           { name: "Anna Paulina Luna (incumbent)", party: "R", winner: false,
             positions: ["Release of the Epstein files — she led the discharge petition [Verify — from her legislative record, not a 2026 campaign document]", "A congressional stock-trading ban and proxy voting for new parents [Verify — legislative record]", "Border enforcement and Republican tax cuts including no tax on tips [Verify — legislative record]"],
@@ -1648,16 +1620,14 @@ const HOUSE_RACES = {
             differentiators: ["Qualified with no party affiliation", "$25,681 cash on hand on $28,181 raised, as of June 30, 2026", "Runs a district-focused community organising effort"],
             supporters: ["A single-issue focus on Medicare and Medicaid cuts is highly salient in a Pinellas district with many seniors", "Has spent almost nothing of what he raised, keeping most of it available for the autumn", "Offers an option to voters unwilling to back either major party"],
             opponents: ["Roughly $26K on hand against a $1.47M incumbent [Verify — structural argument]", "An NPA campaign attacking Republicans mainly risks splitting the anti-Luna vote with Gray [Verify — structural argument]", "No polling shows him with measurable support [Verify — structural argument]"] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
-        note: "LEELA GRAY WON THE DEMOCRATIC NOMINATION OUTRIGHT WITH 65.01%, MORE THAN DOUBLING HER NEAREST RIVAL. ⚠ Seven other Democrats had filed and withdrew before the ballot, leaving a three-way race. Anna Paulina Luna had no Republican primary opponent. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "LEELA GRAY WON THE DEMOCRATIC NOMINATION OUTRIGHT WITH 65.01%, MORE THAN DOUBLING HER NEAREST RIVAL. ⚠ Seven other Democrats had filed and withdrew before the ballot, leaving a three-way race. Anna Paulina Luna had no Republican primary opponent. Certified Aug 27, 2026.",
         candidates: [
           { name: "Leela Gray", party: "D", winner: true, positions: [], differentiators: ["32,705 votes — 65.01% of 50,311 cast"], supporters: [], opponents: [] },
           { name: "Brandt Robinson", party: "D", winner: false, positions: [], differentiators: ["13,279 votes — 26.39%"], supporters: [], opponents: [] },
           { name: "John William Liccione", party: "D", winner: false, positions: [], differentiators: ["4,327 votes — 8.60%"], supporters: [], opponents: [] } ] } ] },
   14: { name: "U.S. House — FL District 14", region: "Tampa and south-central Hillsborough County, entirely within Hillsborough",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "THE SINGLE MOST TRANSFORMED DISTRICT ON FLORIDA'S NEW MAP: HB 1D SEVERED FL-14'S CROSS-BAY LINK TO ST. PETERSBURG AND FLIPPED IT FROM COOK D+5 TO R+4 — AN 11.1-POINT RAW PVI SHIFT, THE LARGEST IN THE STATE. ✅ Harris carried the old lines 53.3–45.6; Trump would have carried the new lines 54.7–44.2. ✅ Kathy Castor, in office twenty years, is running anyway, and COOK NOW RATES THE SEAT TOSS UP. ⚠ Republican Mike Beltran finished the pre-primary period with MORE cash on hand than the incumbent. ⚠ Two write-in candidates, Salomon Hernandez and Keith Varian, are state-certified but do not appear on the printed ballot, so they are not carded here. Certified Aug 27, 2026.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "THE SINGLE MOST TRANSFORMED DISTRICT ON FLORIDA'S NEW MAP: HB 1D SEVERED FL-14'S CROSS-BAY LINK TO ST. PETERSBURG AND FLIPPED IT FROM COOK D+5 TO R+4 — AN 11.1-POINT RAW PVI SHIFT, THE LARGEST IN THE STATE. ✅ Harris carried the old lines 53.3–45.6; Trump would have carried the new lines 54.7–44.2. ✅ Kathy Castor, in office twenty years, is running anyway, and COOK NOW RATES THE SEAT TOSS UP. ⚠ Republican Mike Beltran finished the pre-primary period with MORE cash on hand than the incumbent. ⚠ Two write-in candidates, Salomon Hernandez and Keith Varian, are state-certified but do not appear on the printed ballot, so they are not carded here. Certified Aug 27, 2026.",
         candidates: [
           { name: "Kathy Castor (incumbent)", party: "D", winner: false,
             positions: ["Rein in housing costs and expand affordable housing", "Protect Tampa Bay's economic anchors — MacDill Air Force Base, Moffitt Cancer Center, USF", "Health care access and climate and environmental protection"],
@@ -1674,8 +1644,7 @@ const HOUSE_RACES = {
             differentiators: ["Twenty-year U.S. Navy veteran", "Advanced from a cancelled Libertarian primary", "$100 cash on hand on $10,500 raised, as of June 30, 2026", "Runs a full published issues platform"],
             supporters: ["Offers a third option in a genuine toss-up where both major parties are running national messages", "A military service record in a district that includes MacDill Air Force Base personnel", "Maintains a substantive published platform rather than a placeholder site"],
             opponents: ["$100 on hand against two candidates with roughly $1.8M each [Verify — structural argument]", "In a toss-up seat, a Libertarian vote is likely to be argued as a spoiler [Verify — structural argument]", "No polling shows him with measurable support [Verify — structural argument]"] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Republican primary",
-        note: "MIKE BELTRAN WON A CROWDED EIGHT-WAY REPUBLICAN PRIMARY WITH 45.59%, BEATING KEVIN STEELE BY MORE THAN FIFTEEN POINTS. ⚠ Steele raised and spent more than Beltran — $2.59M raised, $2.11M spent — and finished second. ✅ Beltran spent only about $177,000 of the $2.1M he raised, carrying $1.94M into the general. Kathy Castor had no Democratic primary opponent. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "MIKE BELTRAN WON A CROWDED EIGHT-WAY REPUBLICAN PRIMARY WITH 45.59%, BEATING KEVIN STEELE BY MORE THAN FIFTEEN POINTS. ⚠ Steele raised and spent more than Beltran — $2.59M raised, $2.11M spent — and finished second. ✅ Beltran spent only about $177,000 of the $2.1M he raised, carrying $1.94M into the general. Kathy Castor had no Democratic primary opponent. Certified Aug 27, 2026.",
         candidates: [
           { name: "Mike Beltran", party: "R", winner: true, positions: [], differentiators: ["25,866 votes — 45.59% of 56,734 cast"], supporters: [], opponents: [] },
           { name: "Kevin M. Steele", party: "R", winner: false, positions: [], differentiators: ["17,140 votes — 30.21%; raised $2,588,952 and spent $2,106,349, the most in the field"], supporters: [], opponents: [] },
@@ -1698,8 +1667,7 @@ const HOUSE_RACES = {
 // therefore NOT carded. Cook's Aug 25, 2026 House ratings PDF WAS read at cookpolitical.com.
   15: { name: "U.S. House — FL District 15", region: "Eastern Hillsborough north through Pasco, plus all of Hernando and Citrus counties",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "REDRAWN UNDER HB 1D — DISTRICT 15 NOW RUNS FROM THE TAMPA SUBURBS NORTH THROUGH ALL OF HERNANDO AND CITRUS COUNTIES, absorbing much of the old District 12 and adding Citrus outright. ✅ Incumbent Laurel Lee chose to run in the renumbered seat and drew no primary opponent. ⚠ Cook does not list FL-15 among its competitive races as of Aug 25, 2026 — i.e. Solid R. ✅ COOK HAS RECALCULATED PVI ON THE NEW LINES: FL-15 is now R+9, up from R+5 on the old map, so the redraw made this seat four points MORE Republican. Aug 18 primary results were certified Aug 27, 2026.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "REDRAWN UNDER HB 1D — DISTRICT 15 NOW RUNS FROM THE TAMPA SUBURBS NORTH THROUGH ALL OF HERNANDO AND CITRUS COUNTIES, absorbing much of the old District 12 and adding Citrus outright. ✅ Incumbent Laurel Lee chose to run in the renumbered seat and drew no primary opponent. ⚠ Cook does not list FL-15 among its competitive races as of Aug 25, 2026 — i.e. Solid R. ✅ COOK HAS RECALCULATED PVI ON THE NEW LINES: FL-15 is now R+9, up from R+5 on the old map, so the redraw made this seat four points MORE Republican. Aug 18 primary results were certified Aug 27, 2026.",
         candidates: [
           { name: "Laurel Lee (incumbent)", party: "R", winner: false,
             positions: ["Securing the border", "Growing the economy and leading in innovation", "Crime and community safety; supporting military and veterans"],
@@ -1711,15 +1679,13 @@ const HOUSE_RACES = {
             differentiators: ["Retired U.S. Army veteran and writer", "Won the Aug 18 Democratic primary with 53.6%", "$1,926 cash on hand as of March 31, 2026 [Verify — an FEC-cited table, not read at the FEC]"],
             supporters: ["Beat a better-funded CIA-veteran rival, which is a real grassroots signal", "An explicit anti-AIPAC, anti-arms-transfer platform gives the left a clear alternative", "A veteran outsider with no ties to the party establishment"],
             opponents: ["Effectively unfunded against a $1.9M incumbent [Verify — structural argument]", "Long odds in a seat Cook does not rate competitive [Verify — structural argument]"] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
-        note: "ROBERT PEOPLE WON A CLOSE TWO-WAY DEMOCRATIC PRIMARY, 53.6% TO 46.4%, on the new district lines. The Republican primary was uncontested and is not carded. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "ROBERT PEOPLE WON A CLOSE TWO-WAY DEMOCRATIC PRIMARY, 53.6% TO 46.4%, on the new district lines. The Republican primary was uncontested and is not carded. Certified Aug 27, 2026.",
         candidates: [
           { name: "Robert People", party: "D", winner: true, positions: [], differentiators: ["22,213 votes — 53.6%"], supporters: [], opponents: [] },
           { name: "Chris Irizarry", party: "D", winner: false, positions: [], differentiators: ["19,196 votes — 46.4%", "Retired CIA officer and Army veteran; previously ran in the 12th district"], supporters: [], opponents: [] } ] } ] },
   16: { name: "U.S. House — FL District 16", region: "Manatee, DeSoto and Hardee counties plus parts of Pinellas, Polk, Sarasota and Hillsborough",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "OPEN SEAT — 18-YEAR INCUMBENT VERN BUCHANAN IS NOT SEEKING RE-ELECTION, and HB 1D stretched the district east and west from its old Manatee/Brandon core to pick up parts of Pinellas, Polk and Sarasota plus all of DeSoto and Hardee. ✅ Sydney Gruters won the Republican nomination with 63.4% after Trump moved his endorsement from Buchanan to her. ⚠ Cook does not list FL-16 among its competitive races as of Aug 25, 2026 (Solid R), and its recalculated 2026 PVI is R+6, barely moved from R+7. Other raters are reported to see an open-seat opening, but neither Sabato nor Inside Elections could be read at their own sites, so no second rating is carded [Verify]. Certified Aug 27, 2026.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "OPEN SEAT — 18-YEAR INCUMBENT VERN BUCHANAN IS NOT SEEKING RE-ELECTION, and HB 1D stretched the district east and west from its old Manatee/Brandon core to pick up parts of Pinellas, Polk and Sarasota plus all of DeSoto and Hardee. ✅ Sydney Gruters won the Republican nomination with 63.4% after Trump moved his endorsement from Buchanan to her. ⚠ Cook does not list FL-16 among its competitive races as of Aug 25, 2026 (Solid R), and its recalculated 2026 PVI is R+6, barely moved from R+7. Other raters are reported to see an open-seat opening, but neither Sabato nor Inside Elections could be read at their own sites, so no second rating is carded [Verify]. Certified Aug 27, 2026.",
         candidates: [
           { name: "Sydney Gruters", party: "R", winner: false,
             positions: ["Lower the cost of living for area families", "Cut taxes and regulations", "America First framing — 'defend the American way of life'"],
@@ -1736,14 +1702,12 @@ const HOUSE_RACES = {
             differentiators: ["U.S. Air Force veteran", "Qualified NPA candidate on the November ballot", "$691 cash on hand as of June 30, 2026 [Verify — an FEC-cited table, not read at the FEC]"],
             supporters: ["Gives voters a ballot option in a seat where the general is not rated competitive", "A veteran running with no party machine behind him"],
             opponents: ["Under $1,000 on hand against a $622K nominee [Verify — structural argument]", "No detailed policy platform could be located on his campaign site"] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Republican primary",
-        note: "SYDNEY GRUTERS WON THE OPEN-SEAT REPUBLICAN PRIMARY OUTRIGHT WITH 63.4%. ⚠ Trump had originally endorsed retiring incumbent Vern Buchanan, then switched to Gruters. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "SYDNEY GRUTERS WON THE OPEN-SEAT REPUBLICAN PRIMARY OUTRIGHT WITH 63.4%. ⚠ Trump had originally endorsed retiring incumbent Vern Buchanan, then switched to Gruters. Certified Aug 27, 2026.",
         candidates: [
           { name: "Sydney Gruters", party: "R", winner: true, positions: [], differentiators: ["48,570 votes — 63.4%"], supporters: [], opponents: [] },
           { name: "Eddie Speir", party: "R", winner: false, positions: [], differentiators: ["16,291 votes — 21.3%", "Former New College of Florida trustee; 2024 candidate for this district"], supporters: [], opponents: [] },
           { name: "Ed Pope", party: "R", winner: false, positions: [], differentiators: ["11,692 votes — 15.3%", "Businessman and Navy veteran"], supporters: [], opponents: [] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
-        note: "KELLY KIRSCHNER WON A FIVE-WAY DEMOCRATIC PRIMARY WITH 43.0%, more than double the runner-up. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "KELLY KIRSCHNER WON A FIVE-WAY DEMOCRATIC PRIMARY WITH 43.0%, more than double the runner-up. Certified Aug 27, 2026.",
         candidates: [
           { name: "Kelly Kirschner", party: "D", winner: true, positions: [], differentiators: ["23,488 votes — 43.0%"], supporters: [], opponents: [] },
           { name: "Tamika Lyles", party: "D", winner: false, positions: [], differentiators: ["10,888 votes — 19.9%", "Nonprofit founder; 2020 candidate for Florida House District 43"], supporters: [], opponents: [] },
@@ -1752,11 +1716,10 @@ const HOUSE_RACES = {
           { name: "Glenn Pearson", party: "D", winner: false, positions: [], differentiators: ["5,002 votes — 9.2%", "Small-business owner; 2024 Manatee County commission candidate"], supporters: [], opponents: [] } ] } ] },
   17: { name: "U.S. House — FL District 17", region: "Coastal Sarasota and Charlotte counties plus part of Lee County including Fort Myers",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "MODESTLY REDRAWN UNDER HB 1D — DISTRICT 17 DROPPED INLAND EASTERN SARASOTA COUNTY AND PICKED UP MORE OF FORT MYERS IN LEE COUNTY. ✅ Incumbent Greg Steube is running in the same seat and was unopposed for renomination. ⚠ Cook does not list FL-17 among its competitive races as of Aug 25, 2026 — Solid R; its recalculated 2026 PVI is R+10, essentially unmoved from R+11. Certified Aug 27, 2026.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "MODESTLY REDRAWN UNDER HB 1D — DISTRICT 17 DROPPED INLAND EASTERN SARASOTA COUNTY AND PICKED UP MORE OF FORT MYERS IN LEE COUNTY. ✅ Incumbent Greg Steube is running in the same seat and was unopposed for renomination. ⚠ Cook does not list FL-17 among its competitive races as of Aug 25, 2026 — Solid R; its recalculated 2026 PVI is R+10, essentially unmoved from R+11. Certified Aug 27, 2026.",
         candidates: [
           { name: "Greg Steube (incumbent)", party: "R", winner: false,
-            positions: ["⚠ He runs as a 'trusted conservative' and Army veteran; his campaign site publishes no issues page, so no itemised platform could be documented [Verify]", "", ""],
+            positions: ["⚠ He runs as a 'trusted conservative' and Army veteran; his campaign site publishes no issues page, so no itemised platform could be documented [Verify]"],
             differentiators: ["Incumbent U.S. Representative, FL-17", "Unopposed in the Aug 18 Republican primary", "$2,166,212 cash on hand as of June 30, 2026 [Verify — an FEC-cited table, not read at the FEC]", "Endorsed by Donald Trump and AIPAC"],
             supporters: ["Trump endorsement and no primary opposition", "A $2.2M war chest, roughly seventy times his opponent's", "The seat is not rated competitive by Cook"],
             opponents: ["His campaign site offers voters no detailed policy platform to evaluate", "Critics argue a safe seat leaves him unaccountable to a general electorate [Verify — structural argument]"] },
@@ -1766,19 +1729,17 @@ const HOUSE_RACES = {
             supporters: ["A second run at the seat gives him name recognition and an existing volunteer base", "Won his primary by nearly eleven points", "Publishes a clearer issue platform than the incumbent does"],
             opponents: ["Outgunned roughly seventy to one on cash [Verify — structural argument]", "Long odds in a seat no major rater treats as competitive [Verify — structural argument]"] },
           { name: "Michael J. Quirk", party: "I", winner: false,
-            positions: ["⚠ No published policy platform could be located — no campaign site was found [Verify]", "", ""],
+            positions: ["⚠ No published policy platform could be located — no campaign site was found [Verify]"],
             differentiators: ["Qualified NPA candidate on the November ballot", "$11,552 raised and $4,592 cash on hand as of June 30, 2026 [Verify — an FEC-cited table, not read at the FEC]"],
             supporters: ["Offers an alternative to voters unwilling to back either major party", "Filed and qualified under his own steam with no party support"],
             opponents: ["No campaign presence could be located [Verify — an absence of located records]", "Under $5,000 on hand against a $2.2M incumbent [Verify — structural argument]"] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
-        note: "MATTHEW MONTAVON WON THE DEMOCRATIC PRIMARY 55.4% TO 44.6%. The Republican primary was uncontested and is not carded. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "MATTHEW MONTAVON WON THE DEMOCRATIC PRIMARY 55.4% TO 44.6%. The Republican primary was uncontested and is not carded. Certified Aug 27, 2026.",
         candidates: [
           { name: "Matthew Montavon", party: "D", winner: true, positions: [], differentiators: ["27,627 votes — 55.4%"], supporters: [], opponents: [] },
           { name: "Allen L. Spence Jr.", party: "D", winner: false, positions: [], differentiators: ["22,270 votes — 44.6%", "Equities trader"], supporters: [], opponents: [] } ] } ] },
   18: { name: "U.S. House — FL District 18", region: "Polk County plus part of Osceola County",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "SUBSTANTIALLY REDRAWN — HB 1D COLLAPSED DISTRICT 18 FROM A SPRAWLING RURAL MULTI-COUNTY SEAT INTO A COMPACT DISTRICT ANCHORED IN POLK COUNTY plus a slice of Osceola. ✅ Incumbent Scott Franklin of Lakeland is running in the redrawn seat. ✅ NEITHER PRIMARY WAS CONTESTED — all three November candidates advanced without a primary fight, so no Aug 18 race is carded. ⚠ Cook does not list FL-18 among its competitive races as of Aug 25, 2026 — Solid R — but the collapse into Polk moved its PVI SIX POINTS, from R+14 on the old sprawling seat to R+8 on the new one.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "SUBSTANTIALLY REDRAWN — HB 1D COLLAPSED DISTRICT 18 FROM A SPRAWLING RURAL MULTI-COUNTY SEAT INTO A COMPACT DISTRICT ANCHORED IN POLK COUNTY plus a slice of Osceola. ✅ Incumbent Scott Franklin of Lakeland is running in the redrawn seat. ✅ NEITHER PRIMARY WAS CONTESTED — all three November candidates advanced without a primary fight, so no Aug 18 race is carded. ⚠ Cook does not list FL-18 among its competitive races as of Aug 25, 2026 — Solid R — but the collapse into Polk moved its PVI SIX POINTS, from R+14 on the old sprawling seat to R+8 on the new one.",
         candidates: [
           { name: "Scott Franklin (incumbent)", party: "R", winner: false,
             positions: ["Fuelling economic growth and advancing a conservative agenda", "Fighting socialism and protecting constitutional rights", "Standing up for Christian values; strengthening national security"],
@@ -1797,8 +1758,7 @@ const HOUSE_RACES = {
             opponents: ["Under $6,000 on hand and no party infrastructure [Verify — structural argument]", "NPA candidates rarely clear low single digits in Florida U.S. House races [Verify — structural argument]"] } ] } ] },
   19: { name: "U.S. House — FL District 19", region: "Inland Collier County and part of Lee County, anchored on Naples — Fort Myers removed",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "OPEN SEAT — INCUMBENT BYRON DONALDS VACATED IT TO RUN FOR GOVERNOR, AND HE WON THE AUG 18 REPUBLICAN GUBERNATORIAL PRIMARY. HB 1D also redrew the district, dropping Fort Myers and pushing inland into Collier. ✅ THE AUG 18 REPUBLICAN PRIMARY WAS A NATIONAL STORY: Trump endorsed Catalina Lauf on Aug 13, five days before the vote, and she LOST to broadcaster Jim Schwartzel 29.1% to 22.0% in a ten-candidate field that also drew former congressmen Madison Cawthorn and Chris Collins from other states. ⚠ Cook does not list FL-19 among its competitive races as of Aug 25, 2026 — Solid R, and its PVI is R+14 both before and after the redraw. Certified Aug 27, 2026.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "OPEN SEAT — INCUMBENT BYRON DONALDS VACATED IT TO RUN FOR GOVERNOR, AND HE WON THE AUG 18 REPUBLICAN GUBERNATORIAL PRIMARY. HB 1D also redrew the district, dropping Fort Myers and pushing inland into Collier. ✅ THE AUG 18 REPUBLICAN PRIMARY WAS A NATIONAL STORY: Trump endorsed Catalina Lauf on Aug 13, five days before the vote, and she LOST to broadcaster Jim Schwartzel 29.1% to 22.0% in a ten-candidate field that also drew former congressmen Madison Cawthorn and Chris Collins from other states. ⚠ Cook does not list FL-19 among its competitive races as of Aug 25, 2026 — Solid R, and its PVI is R+14 both before and after the redraw. Certified Aug 27, 2026.",
         candidates: [
           { name: "Jim Schwartzel", party: "R", winner: false,
             positions: ["Back Trump's America First agenda — energy independence, border enforcement, law and order", "Congressional term limits", "Protect Southwest Florida water quality — the Caloosahatchee, beaches and estuaries"],
@@ -1806,7 +1766,7 @@ const HOUSE_RACES = {
             supporters: ["Won without — and against — the Trump endorsement, which shows an independent local base built over years of radio", "Owns the district's conservative media megaphone and its audience", "Nominee in a seat Cook does not rate competitive"],
             opponents: ["Spent 91% of everything he raised to win the primary, leaving him comparatively thin for the general [Verify — structural argument]", "Beat Trump's pick, which critics say leaves him without the President's active backing in a MAGA-heavy district [Verify — structural argument]", "No prior elected office [Verify — no prior office located in official candidate records]"] },
           { name: "Victor Arias", party: "D", winner: false,
-            positions: ["⚠ No policy platform could be retrieved — his campaign site was returning a server error throughout this research [Verify]", "", ""],
+            positions: ["⚠ No policy platform could be retrieved — his campaign site was returning a server error throughout this research [Verify]"],
             differentiators: ["Attorney", "Won the Aug 18 Democratic primary with 45.5% in a three-way race", "$11,963 cash on hand as of June 30, 2026 [Verify — an FEC-cited table, not read at the FEC]"],
             supporters: ["Won a genuine three-way contested primary rather than being handed the nomination", "Faces a Republican who emptied his treasury and lost the President's endorsement", "An attorney's background in a race otherwise short on policy detail"],
             opponents: ["Roughly $12,000 on hand in an expensive Fort Myers–Naples media market [Verify — structural argument]", "His campaign website was offline during this research and no platform could be documented", "The seat is not rated competitive by any major rater [Verify — structural argument]"] },
@@ -1815,8 +1775,7 @@ const HOUSE_RACES = {
             differentiators: ["Business manager", "Qualified NPA candidate on the November ballot", "$775 cash on hand as of June 30, 2026 [Verify — an FEC-cited table, not read at the FEC]"],
             supporters: ["Publishes a coherent constitutionalist platform in a race where the Democrat's site is down", "An open seat and a fractured ten-way Republican primary leave more unattached voters than usual"],
             opponents: ["Under $1,000 on hand [Verify — structural argument]", "No organisational or party support could be located [Verify — an absence of located records]"] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Republican primary",
-        note: "JIM SCHWARTZEL WON A TEN-CANDIDATE OPEN-SEAT PRIMARY WITH 29.1%, DEFEATING TRUMP-ENDORSED CATALINA LAUF. ✅ Trump endorsed Lauf on Aug 13, only five days before the election. ⚠ The field included two former congressmen from other states — Madison Cawthorn of North Carolina and Chris Collins of New York — plus former Illinois state senator Jim Oberweis, who spent $3.08M to finish third. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "JIM SCHWARTZEL WON A TEN-CANDIDATE OPEN-SEAT PRIMARY WITH 29.1%, DEFEATING TRUMP-ENDORSED CATALINA LAUF. ✅ Trump endorsed Lauf on Aug 13, only five days before the election. ⚠ The field included two former congressmen from other states — Madison Cawthorn of North Carolina and Chris Collins of New York — plus former Illinois state senator Jim Oberweis, who spent $3.08M to finish third. Certified Aug 27, 2026.",
         candidates: [
           { name: "Jim Schwartzel", party: "R", winner: true, positions: [], differentiators: ["26,153 votes — 29.1%"], supporters: [], opponents: [] },
           { name: "Catalina Lauf", party: "R", winner: false, positions: [], differentiators: ["19,722 votes — 22.0%", "Trump-endorsed Aug 13, 2026; former Commerce Department adviser and 2022 nominee in IL-11"], supporters: [], opponents: [] },
@@ -1828,16 +1787,14 @@ const HOUSE_RACES = {
           { name: "Ola Hawatmeh", party: "R", winner: false, positions: [], differentiators: ["2,534 votes — 2.8%"], supporters: [], opponents: [] },
           { name: "Greg 'Tex' Bukowski", party: "R", winner: false, positions: [], differentiators: ["2,266 votes — 2.5%", "Sarasota County Charter Review Board member"], supporters: [], opponents: [] },
           { name: "Linda J. Sawyer", party: "R", winner: false, positions: [], differentiators: ["1,650 votes — 1.8%"], supporters: [], opponents: [] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
-        note: "VICTOR ARIAS WON A CLOSE THREE-WAY DEMOCRATIC PRIMARY, 45.5% TO 41.1%. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "VICTOR ARIAS WON A CLOSE THREE-WAY DEMOCRATIC PRIMARY, 45.5% TO 41.1%. Certified Aug 27, 2026.",
         candidates: [
           { name: "Victor Arias", party: "D", winner: true, positions: [], differentiators: ["15,410 votes — 45.5%"], supporters: [], opponents: [] },
           { name: "Howard Sapp", party: "D", winner: false, positions: [], differentiators: ["13,918 votes — 41.1%", "Retired air traffic controller; 2024 nominee for Florida House District 78"], supporters: [], opponents: [] },
           { name: "Robert M. Neeld", party: "D", winner: false, positions: [], differentiators: ["4,553 votes — 13.4%", "2016 nominee for this district"], supporters: [], opponents: [] } ] } ] },
   20: { name: "U.S. House — FL District 20", region: "A compact central and northern Broward County district including Margate and Oakland Park",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "THE BIGGEST REDISTRICTING STORY IN THIS BLOC — HB 1D REBUILT DISTRICT 20 FROM A SPRAWLING MULTI-COUNTY SHAPE INTO A COMPACT BROWARD SEAT, AND FIVE-TERM CONGRESSWOMAN DEBBIE WASSERMAN SCHULTZ MOVED HERE FROM DISTRICT 25 AND WON THE PRIMARY. ⚠ The seat is currently VACANT: the prior incumbent, Sheila Cherfilus-McCormick, resigned Apr 21, 2026 minutes before a House Ethics sanction hearing, after a Nov 2025 federal indictment alleging theft of $5M in FEMA funds; she ran anyway and finished FOURTH with 9.2%. Her criminal trial is reported for February 2027 [Verify — a press report, not a court docket]. ⚠ Cook does not list FL-20 among its competitive races as of Aug 25, 2026 — Solid D; its recalculated 2026 PVI is D+20, down slightly from D+22. Certified Aug 27, 2026.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "THE BIGGEST REDISTRICTING STORY IN THIS BLOC — HB 1D REBUILT DISTRICT 20 FROM A SPRAWLING MULTI-COUNTY SHAPE INTO A COMPACT BROWARD SEAT, AND FIVE-TERM CONGRESSWOMAN DEBBIE WASSERMAN SCHULTZ MOVED HERE FROM DISTRICT 25 AND WON THE PRIMARY. ⚠ The seat is currently VACANT: the prior incumbent, Sheila Cherfilus-McCormick, resigned Apr 21, 2026 minutes before a House Ethics sanction hearing, after a Nov 2025 federal indictment alleging theft of $5M in FEMA funds; she ran anyway and finished FOURTH with 9.2%. Her criminal trial is reported for February 2027 [Verify — a press report, not a court docket]. ⚠ Cook does not list FL-20 among its competitive races as of Aug 25, 2026 — Solid D; its recalculated 2026 PVI is D+20, down slightly from D+22. Certified Aug 27, 2026.",
         candidates: [
           { name: "Debbie Wasserman Schultz (incumbent, currently FL-25)", party: "D", winner: false,
             positions: ["⚠ Her campaign runs on a record rather than an itemised platform [Verify]", "Reproductive rights — endorsed by Planned Parenthood Action Fund", "Gun safety (Giffords) and conservation (League of Conservation Voters)"],
@@ -1845,7 +1802,7 @@ const HOUSE_RACES = {
             supporters: ["Won a commanding plurality against four opponents including a sitting member and a former county mayor", "Deep labour, environmental and reproductive-rights institutional backing", "$1.86M on hand — roughly forty times the Republican nominee"],
             opponents: ["Critics call her a carpetbagger who switched districts rather than face the redrawn FL-25", "House Minority Leader Hakeem Jeffries and the Florida LGBTQ Democratic Caucus both declined to endorse in this primary", "Progressives argue a former DNC chair displacing this district's field is a step backward on representation [Verify — structural argument]"] },
           { name: "Brent Andersen", party: "R", winner: false,
-            positions: ["⚠ He runs as a 'Conservative Republican | Builder'; his site publishes no itemised issue platform [Verify]", "", ""],
+            positions: ["⚠ He runs as a 'Conservative Republican | Builder'; his site publishes no itemised issue platform [Verify]"],
             differentiators: ["Businessman", "Won the Aug 18 Republican primary with 53.8%", "$46,553 cash on hand as of June 30, 2026 [Verify — an FEC-cited table, not read at the FEC]", "Endorsed by state Rep. Chip LaMarca, Log Cabin Republicans and the Sun Sentinel"],
             supporters: ["Won a majority in a four-way primary on modest spending", "The Sun Sentinel endorsement and Log Cabin Republicans backing signal broader-than-base appeal", "Faces a Democratic nominee under carpetbagger attack in a seat she has never represented"],
             opponents: ["Cook rates the seat Solid D at a 2026 PVI of D+20 [Verify — structural argument]", "$46,553 against $1.86M is not a competitive general-election budget [Verify — structural argument]", "Publishes no detailed policy platform for voters to evaluate"] },
@@ -1854,16 +1811,14 @@ const HOUSE_RACES = {
             differentiators: ["Runs as 'Dr. Kedner Maxime' on a service-over-politics platform", "Advanced unopposed as the NPA candidate on the November ballot", "$2,541 cash on hand as of June 30, 2026 [Verify — an FEC-cited table, not read at the FEC]"],
             supporters: ["His TPS-for-Haiti advocacy speaks directly to Broward's large Haitian-American community, which the departing incumbent represented", "Publishes a fuller issue platform than the Republican nominee", "Offers a non-major-party option after a bruising, scandal-shadowed Democratic primary"],
             opponents: ["Under $3,000 on hand against a $1.86M nominee [Verify — structural argument]", "No institutional or party support could be located [Verify — an absence of located records]"] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
-        note: "DEBBIE WASSERMAN SCHULTZ WON WITH 45.3% AFTER SWITCHING FROM DISTRICT 25 — AND THE PRIOR INCUMBENT, SHEILA CHERFILUS-MCCORMICK, FINISHED FOURTH WITH 9.2%. ⚠ Cherfilus-McCormick had already resigned the seat on Apr 21, 2026 ahead of a House Ethics sanction hearing, following a federal indictment over $5M in FEMA funds, and reported $0 cash on hand. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "DEBBIE WASSERMAN SCHULTZ WON WITH 45.3% AFTER SWITCHING FROM DISTRICT 25 — AND THE PRIOR INCUMBENT, SHEILA CHERFILUS-MCCORMICK, FINISHED FOURTH WITH 9.2%. ⚠ Cherfilus-McCormick had already resigned the seat on Apr 21, 2026 ahead of a House Ethics sanction hearing, following a federal indictment over $5M in FEMA funds, and reported $0 cash on hand. Certified Aug 27, 2026.",
         candidates: [
           { name: "Debbie Wasserman Schultz", party: "D", winner: true, positions: [], differentiators: ["30,505 votes — 45.3%"], supporters: [], opponents: [] },
           { name: "Dale V.C. Holness", party: "D", winner: false, positions: [], differentiators: ["15,571 votes — 23.1%", "Former mayor of Broward County; 2022 candidate for this seat"], supporters: [], opponents: [] },
           { name: "Elijah Manley", party: "D", winner: false, positions: [], differentiators: ["9,377 votes — 13.9%", "Substitute teacher and activist; raised $1.07M"], supporters: [], opponents: [] },
           { name: "Sheila Cherfilus-McCormick", party: "D", winner: false, positions: [], differentiators: ["6,193 votes — 9.2%", "Former U.S. representative (2022–2026); resigned Apr 21, 2026 amid a federal indictment"], supporters: [], opponents: [] },
           { name: "Luther 'Uncle Luke' Campbell", party: "D", winner: false, positions: [], differentiators: ["5,691 votes — 8.5%", "Rapper; 2011 candidate for mayor of Miami-Dade County"], supporters: [], opponents: [] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Republican primary",
-        note: "BRENT ANDERSEN WON THE FOUR-WAY REPUBLICAN PRIMARY WITH 53.8%. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "BRENT ANDERSEN WON THE FOUR-WAY REPUBLICAN PRIMARY WITH 53.8%. Certified Aug 27, 2026.",
         candidates: [
           { name: "Brent Andersen", party: "R", winner: true, positions: [], differentiators: ["7,442 votes — 53.8%"], supporters: [], opponents: [] },
           { name: "Rod Joseph", party: "R", winner: false, positions: [], differentiators: ["2,831 votes — 20.5%"], supporters: [], opponents: [] },
@@ -1871,8 +1826,7 @@ const HOUSE_RACES = {
           { name: "Lateresa 'LA' Jones", party: "R", winner: false, positions: [], differentiators: ["866 votes — 6.3%"], supporters: [], opponents: [] } ] } ] },
   21: { name: "U.S. House — FL District 21", region: "Martin, St. Lucie and Indian River counties plus northern Palm Beach County (Jupiter, Palm Beach Gardens)",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "REDRAWN UNDER HB 1D — DISTRICT 21 SHED INLAND NORTHERN PALM BEACH COUNTY AND ADDED INDIAN RIVER COUNTY, keeping its Martin and St. Lucie core and the Jupiter–Palm Beach Gardens coast. ✅ Incumbent Brian Mast is running in the same seat and was unopposed for renomination. ✅ The Democratic primary was decided by 362 votes out of 47,746 — 50.4% to 49.6%. ⚠ Cook does not list FL-21 among its competitive races as of Aug 25, 2026 — Solid R, and its PVI is R+7 both before and after the redraw. Certified Aug 27, 2026.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "REDRAWN UNDER HB 1D — DISTRICT 21 SHED INLAND NORTHERN PALM BEACH COUNTY AND ADDED INDIAN RIVER COUNTY, keeping its Martin and St. Lucie core and the Jupiter–Palm Beach Gardens coast. ✅ Incumbent Brian Mast is running in the same seat and was unopposed for renomination. ✅ The Democratic primary was decided by 362 votes out of 47,746 — 50.4% to 49.6%. ⚠ Cook does not list FL-21 among its competitive races as of Aug 25, 2026 — Solid R, and its PVI is R+7 both before and after the redraw. Certified Aug 27, 2026.",
         candidates: [
           { name: "Brian Mast (incumbent)", party: "R", winner: false,
             positions: ["America First; 'drain the swamp'", "Clean water — Lake Okeechobee discharges and estuary health", "Tax cuts and jobs; veterans' and seniors' care; Second Amendment; support for Israel"],
@@ -1889,8 +1843,7 @@ const HOUSE_RACES = {
             differentiators: ["Former mayor and councilmember of Juno Beach", "Qualified NPA candidate on the November ballot", "$19,543 raised — $13,000 of it self-funded — and $665 cash on hand as of June 30, 2026 [Verify — an FEC-cited table, not read at the FEC]"],
             supporters: ["The only candidate in the race with local municipal executive experience in the district", "A detailed, locally specific platform on insurance, the ACA premium cliff and Okeechobee discharges", "A no-corporate-PAC pledge appeals to voters alienated by both parties"],
             opponents: ["$665 on hand against a $2.9M incumbent, and two-thirds of what he raised was his own money [Verify — structural argument]", "NPA candidates rarely clear low single digits in Florida congressional races [Verify — structural argument]"] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
-        note: "JAMES MARTIN WON BY 362 VOTES — 50.4% TO 49.6% — one of the closest congressional primaries in the state. ⚠ Bernard Taylor actually OUTRAISED Martin, $993,380 to $579,000, and still lost. The Republican primary was uncontested and is not carded. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "JAMES MARTIN WON BY 362 VOTES — 50.4% TO 49.6% — one of the closest congressional primaries in the state. ⚠ Bernard Taylor actually OUTRAISED Martin, $993,380 to $579,000, and still lost. The Republican primary was uncontested and is not carded. Certified Aug 27, 2026.",
         candidates: [
           { name: "James T. Martin", party: "D", winner: true, positions: [], differentiators: ["24,054 votes — 50.4%"], supporters: [], opponents: [] },
           { name: "Bernard Taylor", party: "D", winner: false, positions: [], differentiators: ["23,692 votes — 49.6%", "Firefighter; raised $993,380 — more than the winner"], supporters: [], opponents: [] } ] } ] },
@@ -1915,8 +1868,7 @@ const HOUSE_RACES = {
 // not appear on the printed ballot, so they are noted rather than carded.
   22: { name: "U.S. House — FL District 22", region: "Inland Palm Beach and Broward (Wellington, Parkland) west through Hendry County to southern Collier County and Marco Island",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "OPEN SEAT — HB 1D TURNED FL-22 FROM A PALM BEACH DEMOCRATIC SEAT INTO A REPUBLICAN-LEANING DISTRICT RUNNING FROM BROWARD TO THE OUTSKIRTS OF NAPLES. ⚠ Incumbent Lois Frankel is NOT running here — she filed in the renumbered FL-23. Cook's own 2026 PVI file moves this seat from D+4 to R+4, and its 2024 presidential figures under the new lines show Trump 211,914 to Harris 171,280. ✅ Cook rates it Lean Republican; Inside Elections rates it Tilt Republican, shifted from Solid Democratic on May 8, 2026. Certified Aug 27, 2026.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "OPEN SEAT — HB 1D TURNED FL-22 FROM A PALM BEACH DEMOCRATIC SEAT INTO A REPUBLICAN-LEANING DISTRICT RUNNING FROM BROWARD TO THE OUTSKIRTS OF NAPLES. ⚠ Incumbent Lois Frankel is NOT running here — she filed in the renumbered FL-23. Cook's own 2026 PVI file moves this seat from D+4 to R+4, and its 2024 presidential figures under the new lines show Trump 211,914 to Harris 171,280. ✅ Cook rates it Lean Republican; Inside Elections rates it Tilt Republican, shifted from Solid Democratic on May 8, 2026. Certified Aug 27, 2026.",
         candidates: [
           { name: "Casey Askar", party: "R", winner: false,
             positions: ["Extend and expand the 2017 tax cuts; eliminate the estate tax and the marriage penalty", "Unleash domestic oil, gas, nuclear and coal production", "Deport criminal illegal aliens; keep a merit-based immigration policy"],
@@ -1928,8 +1880,7 @@ const HOUSE_RACES = {
             differentiators: ["Won the Democratic primary with 68.57% over Kaysia Earley", "$1,296,684 cash on hand on $2,284,052 raised, as of July 29, 2026", "Added to the DCCC 'Red to Blue' programme in July 2026", "Former Harlem school principal, White House Fellow at the Department of Education, public-sector lead at Apple"],
             supporters: ["Ends the primary with more cash on hand than Askar and without his self-funded debt load", "National Democratic investment — DCCC Red to Blue plus a stated committee commitment to spend here", "Florida AFL-CIO endorsement and a first-time-candidate profile against a repeat candidate"],
             opponents: ["Has never held elected office", "Switched districts — she launched in FL-21 against Brian Mast before the new map was adopted", "Running in a seat Cook now scores R+4 and rates Lean Republican"] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Republican primary",
-        note: "A NINE-FILER SCRAMBLE FOR THE NEW SEAT, DECIDED WITH UNDER 31%. 47,876 votes cast. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "A NINE-FILER SCRAMBLE FOR THE NEW SEAT, DECIDED WITH UNDER 31%. 47,876 votes cast. Certified Aug 27, 2026.",
         candidates: [
           { name: "Casey Askar", party: "R", winner: true, positions: [], differentiators: ["14,774 votes — 30.86%"], supporters: [], opponents: [] },
           { name: "Michael Carbonara", party: "R", winner: false, positions: [], differentiators: ["9,072 votes — 18.95%"], supporters: [], opponents: [] },
@@ -1938,15 +1889,13 @@ const HOUSE_RACES = {
           { name: "Terri Hasdorff", party: "R", winner: false, positions: [], differentiators: ["3,683 votes — 7.69%"], supporters: [], opponents: [] },
           { name: "Michael Thompson", party: "R", winner: false, positions: [], differentiators: ["2,616 votes — 5.46%"], supporters: [], opponents: [] },
           { name: "Richard Evans", party: "R", winner: false, positions: [], differentiators: ["1,441 votes — 3.01%"], supporters: [], opponents: [] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
-        note: "DANDIYA WON BETTER THAN TWO TO ONE. 38,014 votes cast. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "DANDIYA WON BETTER THAN TWO TO ONE. 38,014 votes cast. Certified Aug 27, 2026.",
         candidates: [
           { name: "Pia Dandiya", party: "D", winner: true, positions: [], differentiators: ["26,067 votes — 68.57%"], supporters: [], opponents: [] },
           { name: "Kaysia Earley", party: "D", winner: false, positions: [], differentiators: ["11,947 votes — 31.43%"], supporters: [], opponents: [] } ] } ] },
   23: { name: "U.S. House — FL District 23", region: "Palm Beach County — part of West Palm Beach south to Boynton Beach",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "LOIS FRANKEL IS RUNNING IN A RENUMBERED SEAT: she currently represents FL-22, but HB 1D redrew her Palm Beach territory as FL-23 and she filed there. ⚠ Do not read this as an open seat or as her 2024 district. Her own campaign site says she is running in District 23 after 'mid-decade gerrymandering' she strongly opposed, and calls the new seat very similar to her current one. ✅ THE REDRAW MADE HER SEAT SAFER, NOT WEAKER: Cook's PVI moves it from D+2 to D+9. Cook and Inside Elections both rate FL-23 Solid Democratic. Certified Aug 27, 2026.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "LOIS FRANKEL IS RUNNING IN A RENUMBERED SEAT: she currently represents FL-22, but HB 1D redrew her Palm Beach territory as FL-23 and she filed there. ⚠ Do not read this as an open seat or as her 2024 district. Her own campaign site says she is running in District 23 after 'mid-decade gerrymandering' she strongly opposed, and calls the new seat very similar to her current one. ✅ THE REDRAW MADE HER SEAT SAFER, NOT WEAKER: Cook's PVI moves it from D+2 to D+9. Cook and Inside Elections both rate FL-23 Solid Democratic. Certified Aug 27, 2026.",
         candidates: [
           { name: "Lois Frankel (incumbent — currently represents FL-22)", party: "D", winner: false,
             positions: ["Lowering costs for Florida families", "Protecting Social Security, Medicare and Medicaid", "Defending democracy and voting rights"],
@@ -1958,21 +1907,18 @@ const HOUSE_RACES = {
             differentiators: ["Won the Republican primary with 73.67% over Paola Branda", "Third consecutive congressional run — lost Republican primaries in 2022 and 2024", "$33,691 cash on hand with $65,466 in debt, as of July 29, 2026", "Certified Financial Planner; career at JP Morgan, Morgan Stanley, Merrill Lynch and Citi Global Markets"],
             supporters: ["Twenty-five years in finance and fifth-generation West Palm Beach roots — her campaign's core pitch", "Won the Republican primary decisively after two prior losses, consolidating the local Republican vote", "Lists Fraternal Order of Police and PBA backing [Verify — her own site footnotes the list as '2024, partial']"],
             opponents: ["Cook and Inside Elections both rate FL-23 Solid Democratic", "Ended the pre-primary period with about $34K on hand against Frankel's $1.2M", "⚠ Her posted endorsement list is labelled 2024 rather than current [Verify — from her own site's footnote]"] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
-        note: "FRANKEL CLEARED 74% IN HER NEW DISTRICT NUMBER. 57,498 votes cast. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "FRANKEL CLEARED 74% IN HER NEW DISTRICT NUMBER. 57,498 votes cast. Certified Aug 27, 2026.",
         candidates: [
           { name: "Lois Frankel", party: "D", winner: true, positions: [], differentiators: ["42,964 votes — 74.72%"], supporters: [], opponents: [] },
           { name: "Victoria Doyle", party: "D", winner: false, positions: [], differentiators: ["13,438 votes — 23.37%"], supporters: [], opponents: [] },
           { name: "Mark Piper", party: "D", winner: false, positions: [], differentiators: ["1,096 votes — 1.91%"], supporters: [], opponents: [] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Republican primary",
-        note: "ADEIMY WON HER NOMINATION ON THE THIRD ATTEMPT. 28,018 votes cast. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "ADEIMY WON HER NOMINATION ON THE THIRD ATTEMPT. 28,018 votes cast. Certified Aug 27, 2026.",
         candidates: [
           { name: "Deborah Adeimy", party: "R", winner: true, positions: [], differentiators: ["20,641 votes — 73.67%"], supporters: [], opponents: [] },
           { name: "Paola Branda", party: "R", winner: false, positions: [], differentiators: ["7,377 votes — 26.33%"], supporters: [], opponents: [] } ] } ] },
   24: { name: "U.S. House — FL District 24", region: "Northern Miami-Dade and southern Broward — Miami Gardens, part of Miami, part of Hollywood",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "OPEN SEAT — FREDERICA WILSON IS RETIRING AND APPEARS NOWHERE ON FLORIDA'S 2026 U.S. HOUSE QUALIFIED LIST. She announced on May 29, 2026 that she would not seek re-election and endorsed Miami-Dade Commissioner Oliver Gilbert III at a hand-off event in Miami Gardens. ⚠ HB 1D redrew the seat: it now reaches further into Broward and takes in all of Miami Gardens, while Miami Beach moved out to FL-25. ✅ The seat got bluer, not weaker — Cook's PVI moves from D+18 to D+22, and Cook and Inside Elections both rate it Solid Democratic. ⚠ A qualified write-in, Patricia Gonzalez, is certified but will not appear on the printed ballot. Certified Aug 27, 2026.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "OPEN SEAT — FREDERICA WILSON IS RETIRING AND APPEARS NOWHERE ON FLORIDA'S 2026 U.S. HOUSE QUALIFIED LIST. She announced on May 29, 2026 that she would not seek re-election and endorsed Miami-Dade Commissioner Oliver Gilbert III at a hand-off event in Miami Gardens. ⚠ HB 1D redrew the seat: it now reaches further into Broward and takes in all of Miami Gardens, while Miami Beach moved out to FL-25. ✅ The seat got bluer, not weaker — Cook's PVI moves from D+18 to D+22, and Cook and Inside Elections both rate it Solid Democratic. ⚠ A qualified write-in, Patricia Gonzalez, is certified but will not appear on the printed ballot. Certified Aug 27, 2026.",
         candidates: [
           { name: "Oliver G. Gilbert III", party: "D", winner: false,
             positions: ["Healthcare for all and universal childcare and pre-K", "Eliminate federal income taxes for working families", "Expand rapid transit — including Miami-Dade's North Corridor — and stop ICE raids"],
@@ -1984,8 +1930,7 @@ const HOUSE_RACES = {
             differentiators: ["Unopposed for the Republican nomination", "Real-estate developer, small-business owner and homeschooling mother", "$298,626 cash on hand on $313,318 raised, but $306,068 in reported debt, as of July 29, 2026"],
             supporters: ["The only Republican on the ballot — she banked her money instead of spending it in a primary", "Runs an affordable-housing plan drawn from her own development work", "Reported more cash on hand than Gilbert at the pre-primary filing"],
             opponents: ["FL-24 is D+22 under Cook's 2026 PVI and Solid Democratic at both Cook and Inside Elections", "⚠ Nearly all her reported cash is matched by campaign debt", "No prior elected office and no locatable endorsements [Verify — an absence of located records]"] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
-        note: "THE MARQUEE SOUTH FLORIDA CONTEST OF THE NIGHT — SEVEN CANDIDATES, AND GILBERT EDGED STATE SEN. SHEVRIN JONES BY ABOUT 2.4 POINTS. 59,520 votes cast. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "THE MARQUEE SOUTH FLORIDA CONTEST OF THE NIGHT — SEVEN CANDIDATES, AND GILBERT EDGED STATE SEN. SHEVRIN JONES BY ABOUT 2.4 POINTS. 59,520 votes cast. Certified Aug 27, 2026.",
         candidates: [
           { name: "Oliver G. Gilbert III", party: "D", winner: true, positions: [], differentiators: ["20,445 votes — 34.35%"], supporters: [], opponents: [] },
           { name: "Shevrin 'Shev' Jones", party: "D", winner: false, positions: [], differentiators: ["19,034 votes — 31.98%; state senator"], supporters: [], opponents: [] },
@@ -1996,8 +1941,7 @@ const HOUSE_RACES = {
           { name: "Roderick Vereen", party: "D", winner: false, positions: [], differentiators: ["779 votes — 1.31%"], supporters: [], opponents: [] } ] } ] },
   25: { name: "U.S. House — FL District 25", region: "The Atlantic coastal strip from Delray Beach and Boca Raton south through Deerfield Beach, Fort Lauderdale and Hollywood to Miami Beach",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "THE MARQUEE FLORIDA TOSS-UP: JARED MOSKOWITZ IS RUNNING IN A RENUMBERED SEAT THAT HB 1D FLIPPED FROM DEMOCRATIC TO REPUBLICAN-LEANING. He currently represents FL-23; the new FL-25 is a three-county coastal ribbon, and Cook's PVI moves it from D+5 to R+3, with 2024 presidential figures of Trump 204,494 to Harris 169,978. ⚠ Debbie Wasserman Schultz, this number's previous occupant, is NOT here — she ran in FL-20 and beat that seat's incumbent in the primary. ✅ Cook rates FL-25 Toss Up and Inside Elections also rates it Toss-up, shifted from Solid Democratic. ⚠ Libertarian Peter Jassenoff stays on the ballot after the Republican Party of Florida DROPPED its suit to remove him over a filing-fee technicality on Aug 14, 2026. A qualified write-in, Michaelangelo Hamilton, is certified but off the printed ballot. Certified Aug 27, 2026.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "THE MARQUEE FLORIDA TOSS-UP: JARED MOSKOWITZ IS RUNNING IN A RENUMBERED SEAT THAT HB 1D FLIPPED FROM DEMOCRATIC TO REPUBLICAN-LEANING. He currently represents FL-23; the new FL-25 is a three-county coastal ribbon, and Cook's PVI moves it from D+5 to R+3, with 2024 presidential figures of Trump 204,494 to Harris 169,978. ⚠ Debbie Wasserman Schultz, this number's previous occupant, is NOT here — she ran in FL-20 and beat that seat's incumbent in the primary. ✅ Cook rates FL-25 Toss Up and Inside Elections also rates it Toss-up, shifted from Solid Democratic. ⚠ Libertarian Peter Jassenoff stays on the ballot after the Republican Party of Florida DROPPED its suit to remove him over a filing-fee technicality on Aug 14, 2026. A qualified write-in, Michaelangelo Hamilton, is certified but off the printed ballot. Certified Aug 27, 2026.",
         candidates: [
           { name: "Jared Moskowitz (incumbent — currently represents FL-23)", party: "D", winner: false,
             positions: ["Independent, bipartisan problem-solving and oversight of the administration", "Public and school safety — co-authored the Marjory Stoneman Douglas Public Safety Act", "Confronting antisemitism and extremism, and supporting U.S. allies including Israel"],
@@ -2014,23 +1958,20 @@ const HOUSE_RACES = {
             differentiators: ["Unopposed for the Libertarian nomination", "$60 cash on hand on $10,500 raised, as of June 30, 2026", "⚠ The Republican Party of Florida sued to strike him from the ballot over paying his filing fee by personal cheque, then DROPPED the suit Aug 14, 2026"],
             supporters: ["Republicans thought him consequential enough to litigate his removal in a toss-up seat — an implicit concession that he can move votes", "Offers a third option in a race both national parties are heavily nationalising [Verify — structural argument]"],
             opponents: ["Effectively unfunded at $60 cash on hand", "No locatable platform or public campaign presence [Verify — an absence of located records]", "No third-party candidate has won a Florida U.S. House seat in the modern era [Verify — structural argument]"] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Republican primary",
-        note: "FIVE CANDIDATES, NO ONE NEAR A MAJORITY — SINGER TOOK IT BY UNDER FOUR POINTS. 37,885 votes cast. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "FIVE CANDIDATES, NO ONE NEAR A MAJORITY — SINGER TOOK IT BY UNDER FOUR POINTS. 37,885 votes cast. Certified Aug 27, 2026.",
         candidates: [
           { name: "Scott Singer", party: "R", winner: true, positions: [], differentiators: ["11,896 votes — 31.4%"], supporters: [], opponents: [] },
           { name: "George R. Moraitis", party: "R", winner: false, positions: [], differentiators: ["10,384 votes — 27.41%"], supporters: [], opponents: [] },
           { name: "Dan Franzese", party: "R", winner: false, positions: [], differentiators: ["9,711 votes — 25.63%"], supporters: [], opponents: [] },
           { name: "Joseph 'Joe' Kaufman", party: "R", winner: false, positions: [], differentiators: ["4,701 votes — 12.41%"], supporters: [], opponents: [] },
           { name: "Raven Harrison", party: "R", winner: false, positions: [], differentiators: ["1,193 votes — 3.15%"], supporters: [], opponents: [] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
-        note: "MOSKOWITZ TURNED BACK A CHALLENGE FROM HIS LEFT. 44,631 votes cast. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "MOSKOWITZ TURNED BACK A CHALLENGE FROM HIS LEFT. 44,631 votes cast. Certified Aug 27, 2026.",
         candidates: [
           { name: "Jared Moskowitz", party: "D", winner: true, positions: [], differentiators: ["28,330 votes — 63.48%"], supporters: [], opponents: [] },
           { name: "Oliver Adams Larkin", party: "D", winner: false, positions: [], differentiators: ["16,301 votes — 36.52%"], supporters: [], opponents: [] } ] } ] },
   26: { name: "U.S. House — FL District 26", region: "Inland Miami-Dade — Hialeah, Doral, Miami Lakes — plus western Pembroke Pines and Miramar in Broward",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "HB 1D CUT FL-26'S REPUBLICAN LEAN IN HALF: Cook's own 2026 PVI file moves it from R+16 to R+7, the biggest partisan shift of any South Florida seat. The district dropped Collier County entirely and picked up Democratic-leaning Broward precincts around Pembroke Pines and Miramar. ⚠ Mario Díaz-Balart stayed put and both nominees were unopposed, so there was no Aug 18 primary here. ✅ Despite the shift, Cook and Inside Elections both still rate FL-26 Solid Republican. A no-party-affiliation candidate, Deborah Ann Meidinger Hosey, also qualified and appears on the ballot.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "HB 1D CUT FL-26'S REPUBLICAN LEAN IN HALF: Cook's own 2026 PVI file moves it from R+16 to R+7, the biggest partisan shift of any South Florida seat. The district dropped Collier County entirely and picked up Democratic-leaning Broward precincts around Pembroke Pines and Miramar. ⚠ Mario Díaz-Balart stayed put and both nominees were unopposed, so there was no Aug 18 primary here. ✅ Despite the shift, Cook and Inside Elections both still rate FL-26 Solid Republican. A no-party-affiliation candidate, Deborah Ann Meidinger Hosey, also qualified and appears on the ballot.",
         candidates: [
           { name: "Mario Díaz-Balart (incumbent)", party: "R", winner: false,
             positions: ["Lower costs and fiscal discipline", "Strong national defence — he chairs the National Security, State and Related Programs appropriations subcommittee", "Everglades restoration — founder and co-chair of the bipartisan Everglades Caucus"],
@@ -2049,8 +1990,7 @@ const HOUSE_RACES = {
             opponents: ["$1,540 on hand against Díaz-Balart's $2.5M [Verify — structural argument]", "No prior elected office and no locatable endorsements [Verify — an absence of located records]", "NPA candidates rarely clear low single digits in Florida U.S. House races [Verify — structural argument]"] } ] } ] },
   27: { name: "U.S. House — FL District 27", region: "South Miami-Dade — part of Miami, Coral Gables, Cutler Bay and Palmetto Bay",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "ONE OF THE FEW SOUTH FLORIDA SEATS HB 1D BARELY TOUCHED: Cook's PVI is unchanged at R+6 and the 2024 presidential figures under the new lines are essentially identical to the old ones. ⚠ The line adjustments were minimal, but the district is not the same as 2024 on paper — it now runs south to Cutler Bay and Palmetto Bay. ✅ Salazar dominated her primary with 81.35%; Democrats picked former CBS Miami anchor Eliott Rodriguez by seven points. Cook rates FL-27 Likely Republican, and Inside Elections also rates it Likely Republican with no change. Certified Aug 27, 2026.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "ONE OF THE FEW SOUTH FLORIDA SEATS HB 1D BARELY TOUCHED: Cook's PVI is unchanged at R+6 and the 2024 presidential figures under the new lines are essentially identical to the old ones. ⚠ The line adjustments were minimal, but the district is not the same as 2024 on paper — it now runs south to Cutler Bay and Palmetto Bay. ✅ Salazar dominated her primary with 81.35%; Democrats picked former CBS Miami anchor Eliott Rodriguez by seven points. Cook rates FL-27 Likely Republican, and Inside Elections also rates it Likely Republican with no change. Certified Aug 27, 2026.",
         candidates: [
           { name: "María Elvira Salazar (incumbent)", party: "R", winner: false,
             positions: ["Lower taxes, support for small business, workforce training and job fairs", "Anti-socialism — sanctions and pressure on the Cuban, Venezuelan and Nicaraguan regimes", "Congressional term limits, and a legal pathway for undocumented immigrants through her Dignity Act"],
@@ -2062,20 +2002,17 @@ const HOUSE_RACES = {
             differentiators: ["Former CBS News Miami anchor — twenty-five years on air, retired December 2025", "Won the Democratic primary with 53.51% over former prosecutor Robin Peguero", "$325,097 cash on hand on $661,173 raised, no reported debt, as of July 29, 2026", "Son of Cuban immigrants, like his opponent"],
             supporters: ["Decades of county-wide name recognition from nightly television news", "The best-funded Democrat in this race and debt-free heading into the general", "Immigration enforcement is a live local grievance he campaigns on in both languages"],
             opponents: ["Has never held elected office and won his own primary by only seven points", "Trails Salazar roughly seven to one in cash on hand", "The seat is R+6 and rated Likely Republican by both Cook and Inside Elections"] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Republican primary",
-        note: "SALAZAR WAS NEVER THREATENED. 35,936 votes cast. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "SALAZAR WAS NEVER THREATENED. 35,936 votes cast. Certified Aug 27, 2026.",
         candidates: [
           { name: "María Elvira Salazar", party: "R", winner: true, positions: [], differentiators: ["29,233 votes — 81.35%"], supporters: [], opponents: [] },
           { name: "V. Michael Arias", party: "R", winner: false, positions: [], differentiators: ["6,703 votes — 18.65%"], supporters: [], opponents: [] } ] },
-      { date: "Aug 18, 2026", type: "past", scope: "Federal · District · Democratic primary",
-        note: "A CLOSE TWO-WAY RACE — NAME RECOGNITION BEAT A PROSECUTORIAL RESUME BY ABOUT 2,300 VOTES. 32,388 votes cast. Certified Aug 27, 2026.",
+      { date: "Aug 18, 2026", type: "past", note: "A CLOSE TWO-WAY RACE — NAME RECOGNITION BEAT A PROSECUTORIAL RESUME BY ABOUT 2,300 VOTES. 32,388 votes cast. Certified Aug 27, 2026.",
         candidates: [
           { name: "Eliott Rodriguez", party: "D", winner: true, positions: [], differentiators: ["17,332 votes — 53.51%"], supporters: [], opponents: [] },
           { name: "Robin Peguero", party: "D", winner: false, positions: [], differentiators: ["15,056 votes — 46.49%"], supporters: [], opponents: [] } ] } ] },
   28: { name: "U.S. House — FL District 28", region: "South-western Miami-Dade — West Kendall, The Hammocks, Goulds, Homestead and Florida City — plus the Florida Keys",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "THE LEAST-CHANGED SOUTH FLORIDA SEAT UNDER HB 1D: Cook's PVI is identical before and after the redraw at R+10, and the 2024 presidential figures are unchanged. ⚠ Both nominees were unopposed, so there was no Aug 18 primary here — Monroe County ran no contested congressional primary at all. ✅ This is a Giménez–Ehr rematch; Ehr lost to Giménez in this district in 2024 [Verify — the 2024 result via an aggregator, not the state archive]. A no-party-affiliation candidate, Eddy Rojas, is also on the November ballot. Cook and Inside Elections both rate FL-28 Solid Republican.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "THE LEAST-CHANGED SOUTH FLORIDA SEAT UNDER HB 1D: Cook's PVI is identical before and after the redraw at R+10, and the 2024 presidential figures are unchanged. ⚠ Both nominees were unopposed, so there was no Aug 18 primary here — Monroe County ran no contested congressional primary at all. ✅ This is a Giménez–Ehr rematch; Ehr lost to Giménez in this district in 2024 [Verify — the 2024 result via an aggregator, not the state archive]. A no-party-affiliation candidate, Eddy Rojas, is also on the November ballot. Cook and Inside Elections both rate FL-28 Solid Republican.",
         candidates: [
           { name: "Carlos A. Giménez (incumbent)", party: "R", winner: false,
             positions: ["Lower taxes and balance the budget", "Protect the environment", "⚠ He sets his 'Day One' agenda from a constituent survey rather than a published issues platform — his campaign site has no issues page [Verify]"],
@@ -2120,8 +2057,16 @@ function drawCapital(g, projection, cap) {
     return "M" + pts.map(p => p.join(",")).join("L") + "Z";
   };
   const grp = g.append("g").attr("class", "capital-marker");
-  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
-  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+  grp.append("path").attr("class", "capital-star").attr("d", star(0, 0, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", 10).attr("y", 3).text(cap.name);
+  // Constant on-screen size: scale the marker by viewBox-units-per-CSS-pixel, and again on resize.
+  const svgEl = g.node().ownerSVGElement;
+  const fit = () => {
+    const k = svgEl.viewBox.baseVal.width / Math.max(1, svgEl.getBoundingClientRect().width);
+    grp.attr("transform", `translate(${x},${y}) scale(${k})`);
+  };
+  fit();
+  window.addEventListener("resize", fit);
 }
 
 
@@ -2167,22 +2112,46 @@ function getCountyElections(fips) {
 const FL_STATE_FIPS = "12";
 const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
 
-const svg     = d3.select("#flmap");
+if (typeof d3 === "undefined" || typeof topojson === "undefined" || typeof d3.json !== "function") {
+  document.getElementById("map-loading").innerHTML = "The interactive map didn\u2019t load \u2014 a script it needs was blocked. <button type=\"button\" class=\"brief-more\" onclick=\"location.reload()\">Try again</button>";
+  document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+  document.getElementById("stat-statewide").textContent = STATEWIDE.filter(r => r.type === "upcoming").length;
+  throw new Error("map libraries did not load");
+}
+const svg = d3.select("#flmap");
 const tooltip = document.getElementById("tooltip");
 const panel   = document.getElementById("panel");
 const overlay = document.getElementById("overlay");
 const loading = document.getElementById("map-loading");
+const UNIT = "County";
 
 document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+document.getElementById("stat-statewide").textContent = STATEWIDE.filter(r => r.type === "upcoming").length;
 
+// "Richmond City County" and "Baltimore City County" are not places. Independent cities and
+// Louisiana parishes get the right word; two real Virginia counties happen to end in "City".
+const placeLabel = (c) => (/\bCity$/.test(c.n) && c.fips !== "51036" && c.fips !== "51095") ? c.n : c.n + " " + UNIT;
+// Hovering re-sorted every race on every pointer move; the answer never changes per county.
+const electionsCache = new Map();
+const countyElections = (fips) => { if (!electionsCache.has(fips)) electionsCache.set(fips, getCountyElections(fips)); return electionsCache.get(fips); };
+const HOVER = window.matchMedia && window.matchMedia("(hover: hover)").matches;
+
+loadMap();
+
+function loadMap() {
 d3.json(TOPO_URL).then((us) => {
   const allCounties = topojson.feature(us, us.objects.counties).features;
   const ncCounties  = allCounties.filter(d => String(d.id).startsWith(FL_STATE_FIPS));
 
-  const width  = 1000;
-  const height = 1000;
+  // Read the drawing size from the SVG's own viewBox, so the state's shape lives in one place.
+  const { width, height } = (() => { const vb = svg.node().viewBox.baseVal; return { width: vb.width || 1000, height: vb.height || 1000 }; })();
 
-  const projection = d3.geoAlbers()
+  // A conic equal-area CENTRED ON THIS STATE, so north is up and the shape matches the official
+  // state map. d3.geoAlbers() at its default -96° meridian tilted the far states by 12–37°.
+  const [[lonMin, latMin], [lonMax, latMax]] = d3.geoBounds({ type: "FeatureCollection", features: ncCounties });
+  const projection = d3.geoConicEqualArea()
+    .rotate([-(lonMin + lonMax) / 2, 0])
+    .parallels([latMin + (latMax - latMin) / 6, latMax - (latMax - latMin) / 6])
     .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
   const path = d3.geoPath().projection(projection);
 
@@ -2198,41 +2167,59 @@ d3.json(TOPO_URL).then((us) => {
       })
       .attr("data-fips", d => String(d.id).padStart(5, "0"))
       .attr("d", path)
+      // A keyboard or screen-reader user must be able to open a county too.
+      .attr("tabindex", 0)
+      .attr("role", "button")
+      .attr("aria-label", d => { const c = COUNTIES[String(d.id).padStart(5, "0")]; return c ? placeLabel({ ...c, fips: String(d.id).padStart(5, "0") }) : "Not in this dataset"; })
       .on("mousemove", (event, d) => {
+        if (!HOVER) return;
         const fips = String(d.id).padStart(5, "0");
-        const built = getCountyElections(fips);
+        const built = countyElections(fips);
         if (built) {
           const upcoming = built.elections.filter(e => e.type === "upcoming").length;
           const past = built.elections.filter(e => e.type === "past").length;
+          const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
           tooltip.innerHTML = `
-            <strong>${built.county.n} County</strong>
-            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+            <strong>${esc(placeLabel({ ...built.county, fips }))}</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · District${ds.length > 1 ? "s" : ""} ${ds.join(" & ")}</div>`;
         } else {
-          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+          tooltip.innerHTML = `FIPS ${esc(fips)}<div class="tooltip-meta">Not in this dataset</div>`;
         }
         tooltip.style.opacity = 1;
         const rect = svg.node().getBoundingClientRect();
-        tooltip.style.left = (event.clientX - rect.left) + "px";
-        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+        const x = event.clientX - rect.left, y = event.clientY - rect.top;
+        // Flip below the cursor near the top edge; keep the box inside the map horizontally.
+        tooltip.classList.toggle("below", y < tooltip.offsetHeight + 28);
+        const half = tooltip.offsetWidth / 2 + 8;
+        tooltip.style.left = Math.max(half, Math.min(rect.width - half, x)) + "px";
+        tooltip.style.top  = y + "px";
       })
       .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("keydown", (event, d) => {
+        if (event.key === "Enter" || event.key === " ") { event.preventDefault(); event.currentTarget.dispatchEvent(new MouseEvent("click", { bubbles: true })); }
+      })
       .on("click", (event, d) => {
         const fips = String(d.id).padStart(5, "0");
+        tooltip.style.opacity = 0;
         document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
         event.currentTarget.classList.add("selected");
-        openPanel(fips);
+        openPanel(fips, event.currentTarget);
       });
 
-  // ---- Capital marker: Hartford ----
+  // ---- Capital marker: Tallahassee ----
   drawCapital(g, projection, { name: "Tallahassee", lng: -84.2807, lat: 30.4383 });
 
   loading.style.display = "none";
 }).catch((err) => {
-  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+  if (window.console && console.error) console.error("[map] " + (err && err.message ? err.message : err));
+  loading.innerHTML = "The interactive map didn\u2019t load. <button type=\"button\" class=\"brief-more\" id=\"map-retry\">Try again</button>";
+  document.getElementById("map-retry").addEventListener("click", () => { loading.textContent = "Loading map\u2026"; loadMap(); });
 });
+}
 
-function openPanel(fips) {
-  const built = getCountyElections(fips);
+let lastFocus = null;
+function openPanel(fips, fromEl) {
+  const built = countyElections(fips);
   const body  = document.getElementById("panel-body");
   const title = document.getElementById("panel-title");
   const eyebrow = document.getElementById("panel-eyebrow");
@@ -2244,17 +2231,29 @@ function openPanel(fips) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn't in our Florida dataset.</p></div>`;
   } else {
-    eyebrow.textContent = `Congressional District ${built.county.d}`;
-    title.textContent   = built.county.n + " County";
-    subtitle.textContent = built.district ? built.district.region : "";
+    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    title.textContent   = placeLabel({ ...built.county, fips });
+    subtitle.textContent = ds.length > 1
+      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);
+    // A brief only needs "Show more" if the clamp actually hides something.
+    body.querySelectorAll(".election-brief.clamped").forEach(b => {
+      const t = b.querySelector(".brief-body");
+      if (t && t.scrollHeight <= t.clientHeight + 4) { b.classList.remove("clamped"); const m = b.querySelector(".brief-more"); if (m) m.remove(); }
+    });
   }
 
+  lastFocus = fromEl || document.activeElement;
+  tooltip.style.opacity = 0;
   panel.classList.add("open");
   overlay.classList.add("open");
   panel.setAttribute("aria-hidden", "false");
+  document.documentElement.classList.add("drawer-open");
   body.scrollTop = 0;
+  setTimeout(() => document.getElementById("panel-close").focus(), 320);
 }
 
 function groupByType(elections) {
@@ -2297,12 +2296,15 @@ function briefSegments(note) {
   return out;
 }
 
+// Escape data before it goes into innerHTML. Notes and card text are plain prose; an ampersand
+// or angle bracket in a future edit must render as itself rather than corrupt the card.
+const esc = (v) => String(v == null ? "" : v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 function renderNote(note) {
   if (!note) return "";
   const body = briefSegments(note).map(function (s) {
     return s.mark
-      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${s.text}</p>`
-      : `<p class="brief-lead">${s.text}</p>`;
+      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${esc(s.text)}</p>`
+      : `<p class="brief-lead">${esc(s.text)}</p>`;
   }).join("");
   // Clamp only what actually needs clamping: the median note is 236 characters, so most
   // briefs show whole and never render a toggle at all.
@@ -2310,48 +2312,53 @@ function renderNote(note) {
   return `<div class="election-brief${long ? " clamped" : ""}">
       <div class="brief-label">About this race</div>
       <div class="brief-body">${body}</div>
-      ${long ? `<button class="brief-more" type="button">Show more</button>` : ""}
+      ${long ? `<button class="brief-more" type="button" aria-expanded="false">Show more</button>` : ""}
     </div>`;
 }
 
 function renderElection(e) {
   const count = (e.candidates && e.candidates.length) || 0;
-  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  // A ballot measure is recognised by what it is called, not by one exact scope string.
+  const isMeasure = /ballot measure|ballot question|amendment|initiative|proposition|referend|\bmeasure\b|\bquestion\b/i.test((e.scope || "") + " " + (e.office || ""));
+  const isInfo = /^Also on your ballot|— eight seats, ALL UNOPPOSED/i.test(e.office || "");
+  const countLabel = count ? `${count} candidate${count === 1 ? "" : "s"}` : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
   const candidatesHtml = count
-    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
-    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+    ? `<div class="candidates">${e.candidates.map(c => renderCandidate(c, e)).join("")}</div>`
+    : (isMeasure || isInfo ? "" : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">Candidates not yet announced.</div>`);
   const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
   return `
     <div class="election-card">
       <button class="election-summary" type="button" aria-expanded="false">
-        <div class="election-summary-main">
-          <div class="election-meta">
-            <span class="pill ${e.type}">${e.type}</span>
-            <span class="election-date">${e.date}</span>
-            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
-          </div>
-          <div class="election-office">${e.office || e.name || ""}</div>
-        </div>
-        <div class="election-toggle">
+        <span class="election-summary-main">
+          <span class="election-meta">
+            <span class="pill ${esc(e.type)}">${esc(e.type)}</span>
+            <span class="election-date">${esc(e.date)}</span>
+            ${e.scope ? `<span class="election-scope">${esc(e.scope)}</span>` : ""}
+          </span>
+          <span class="election-office">${esc(e.office || e.name || "")}</span>
+        </span>
+        <span class="election-toggle">
           <span class="cand-count">${countLabel}</span>
           <span class="chevron">${chevron}</span>
-        </div>
+        </span>
       </button>
       <div class="election-detail"><div>${renderNote(e.note)}${candidatesHtml}</div></div>
     </div>`;
 }
 
-function renderCandidate(c) {
-  const winnerClass = c.winner ? "candidate winner" : "candidate";
-  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+function renderCandidate(c, race) {
+  // A primary or runoff winner was NOMINATED, not elected — the badge should say so.
+  const nominated = !!(race && /primary|runoff/i.test((race.office || "") + " " + (race.scope || "")));
+  const winnerClass = c.winner ? ("candidate winner" + (nominated ? " nominee" : "")) : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
   return `
     <div class="${winnerClass}">
       <div class="cand-head">
-        <div class="cand-name">${c.name}</div>
-        <span class="party-tag party-${c.party}">${c.party}</span>
+        <div class="cand-name">${esc(c.name)}</div>
+        <span class="party-tag party-${esc(c.party)}">${esc(c.party)}</span>
       </div>
       ${positions ? `<div class="cand-section">
           <div class="cand-section-label">Top Positions</div>
@@ -2372,10 +2379,14 @@ function renderCandidate(c) {
 }
 
 function closePanel() {
+  if (!panel.classList.contains("open")) return;
   panel.classList.remove("open");
   overlay.classList.remove("open");
   panel.setAttribute("aria-hidden", "true");
+  document.documentElement.classList.remove("drawer-open");
+  tooltip.style.opacity = 0;
   document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+  if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
 }
 document.getElementById("panel-close").addEventListener("click", closePanel);
 overlay.addEventListener("click", closePanel);
@@ -2386,7 +2397,9 @@ document.getElementById("panel-body").addEventListener("click", (e) => {
   const more = e.target.closest(".brief-more");
   if (more) {
     const brief = more.closest(".election-brief");
-    more.textContent = brief.classList.toggle("clamped") ? "Show more" : "Show less";
+    const clamped = brief.classList.toggle("clamped");
+    more.textContent = clamped ? "Show more" : "Show less";
+    more.setAttribute("aria-expanded", clamped ? "false" : "true");
     return;
   }
   const summary = e.target.closest(".election-summary");

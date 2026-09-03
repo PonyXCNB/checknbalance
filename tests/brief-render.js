@@ -30,9 +30,12 @@ check(PAGES.length >= 35, `found ${PAGES.length} pages rendering a brief (expect
 
 // Block tags are paragraph boundaries in the DOM, so they must become whitespace before
 // comparing, or adjacent paragraphs run together and every multi-segment note looks altered.
+// Notes are HTML-escaped on the way into the brief (Sept 3, 2026), so decode the five entities the
+// escaper produces — the DOM shows the decoded text, and that is what must match the note.
 const stripTags = h => h
   .replace(/<\/(p|div|button)>/g, " ")
   .replace(/<[^>]+>/g, "")
+  .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'")
   .replace(/\s+/g, " ")
   .trim();
 // The flag glyphs move into their own span, so normalise them out of both sides.
@@ -46,8 +49,11 @@ for (const page of PAGES) {
   // ---- 1. the note must not be rendered in the collapsed header ----
   check(!src.includes('class="election-note"'),
     `${page}: no legacy .election-note in the card header`);
-  const summaryBlock = src.slice(src.indexOf('<div class="election-summary-main">'),
-                                 src.indexOf('<div class="election-toggle">'));
+  // The header's inner blocks became <span>s on Sept 3, 2026 (a <button> may not contain <div>s).
+  const mainIdx = src.search(/<(?:div|span) class="election-summary-main">/);
+  const toggleIdx = src.search(/<(?:div|span) class="election-toggle">/);
+  check(mainIdx !== -1 && toggleIdx > mainIdx, `${page}: the summary header markup is present`);
+  const summaryBlock = src.slice(mainIdx, toggleIdx);
   check(!/renderNote|\.note/.test(summaryBlock),
     `${page}: the summary header renders no note`);
   check(/<div class="election-detail"><div>\$\{renderNote\(/.test(src),
@@ -63,8 +69,13 @@ for (const page of PAGES) {
   vm.runInContext(src.slice(start, end) + ";this.renderNote = renderNote;", ctx);
 
   // ---- 3. collect this page's real notes ----
-  const code = extractInlineScripts(page)[0];
+  // The data script is the one declaring the race tables — state.html now has a short redirect
+  // script in its <head> ahead of it.
+  const scripts = extractInlineScripts(page);
+  const code = scripts.find(c => /const (STATEWIDE|STATE_RACES) =/.test(c)) || scripts[0];
+  // state.html with no ?state= now sends the visitor home; give it one so its data script runs.
   const { sandbox, error } = runScript(cutAtD3(code), {
+    search: page === "state.html" ? "?state=TX" : "",
     extra: "__exports.S = typeof STATEWIDE !== 'undefined' ? STATEWIDE : [];" +
            "__exports.H = typeof HOUSE_RACES !== 'undefined' ? HOUSE_RACES : {};" +
            "__exports.L = typeof LOCAL_RACES !== 'undefined' ? LOCAL_RACES : {};" +

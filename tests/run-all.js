@@ -5,7 +5,7 @@ const { execFileSync } = require("child_process");
 const path = require("path");
 
 let failed = false;
-for (const file of ["parse-check.js", "smoke-test.js", "data-logic.js", "label-fit.js", "brief-render.js"]) {
+for (const file of ["parse-check.js", "smoke-test.js", "data-logic.js", "label-fit.js", "brief-render.js", "uniformity.js"]) {
   console.log(`\n============ ${file} ============`);
   try {
     execFileSync(process.execPath, [path.join(__dirname, file)], { stdio: "inherit" });

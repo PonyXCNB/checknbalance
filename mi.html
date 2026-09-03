@@ -4,7 +4,15 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Michigan Elections Hub</title>
-<meta name="description" content="An interactive county-by-county guide to every MI election, past and upcoming." />
+<meta name="description" content="An interactive county-by-county guide to every Michigan election, past and upcoming." />
+<link rel="canonical" href="https://checknbalance.org/mi.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Check n Balance">
+<meta property="og:title" content="Michigan Elections Hub">
+<meta property="og:description" content="An interactive county-by-county guide to every Michigan election, past and upcoming.">
+<meta property="og:url" content="https://checknbalance.org/mi.html">
+<meta property="og:image" content="https://checknbalance.org/apple-touch-icon.png">
+<meta name="twitter:card" content="summary">
 
 <!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -14,6 +22,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -206,13 +215,15 @@
     box-shadow: var(--shadow);
     position: relative;
     overflow: hidden;
+    max-width: calc(min(72vh, 760px) * 0.87 + 16px);
+    margin-left: auto; margin-right: auto;
   }
   .map-frame {
     background:
       radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
       var(--paper-pure);
     border-radius: 12px;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 0.87 / 1;
     width: 100%;
     position: relative;
   }
@@ -225,25 +236,21 @@
   }
 
   .county {
-    fill: #F1E9D2;
+    fill: var(--gold-soft);
     stroke: var(--paper-pure);
-    stroke-width: 0.7;
+    stroke-width: 1px;
+    vector-effect: non-scaling-stroke;   /* screen pixels at every map size, not viewBox units */
     cursor: pointer;
     transition: fill .15s ease;
   }
-  .county.has-data       { fill: var(--gold-soft); }
-  .county.has-data:hover { fill: var(--gold); }
-  .county:hover          { fill: #E5DBBE; }
-  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+  /* Hover fills only where a pointer can hover — a phone tap must not leave a county stuck "hovered". */
+  @media (hover: hover) {
+    .county:hover { fill: var(--gold); }
+  }
+  .county:focus-visible  { outline: none; fill: var(--gold); stroke: var(--ink); stroke-width: 2px; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.5px; }
 
   /* ---- Capital city marker (muted) ---- */
-  .capital-dot {
-    fill: var(--ink);
-    fill-opacity: 0.55;
-    stroke: var(--paper-pure);
-    stroke-width: 1.5;
-    pointer-events: none;
-  }
   .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
   .capital-label {
     font-family: var(--sans);
@@ -251,16 +258,7 @@
     font-weight: 600;
     letter-spacing: 0.06em;
     fill: var(--ink);
-    fill-opacity: 0.55;
-    pointer-events: none;
-  }
-  .capital-sub {
-    font-family: var(--sans);
-    font-size: 7.5px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    fill: var(--ink);
-    fill-opacity: 0.4;
+    fill-opacity: 0.85;
     pointer-events: none;
   }
 
@@ -276,10 +274,11 @@
     opacity: 0;
     transition: opacity .12s ease;
     white-space: nowrap;
-    z-index: 10;
+    z-index: 60;
     box-shadow: 0 8px 24px rgba(0,0,0,.18);
   }
   .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip.below { transform: translate(-50%, 26px); }
   .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
 
   /* ============================================
@@ -296,15 +295,17 @@
 
   .panel {
     position: fixed; top: 0; right: 0; bottom: 0;
-    width: min(720px, 100%);
+    width: min(720px, 92vw);
     background: var(--paper-pure);
     box-shadow: -10px 0 40px rgba(14,23,38,.15);
     transform: translateX(100%);
-    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    visibility: hidden;   /* off-screen AND out of the tab order / accessibility tree */
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1), visibility 0s linear .3s;
     z-index: 101;
     display: flex; flex-direction: column;
   }
-  .panel.open { transform: translateX(0); }
+  .panel.open { transform: translateX(0); visibility: visible; transition-delay: 0s; }
+  html.drawer-open { overflow: hidden; }   /* the page behind a full-height drawer must not scroll */
 
   .panel-header {
     padding: 24px 36px;
@@ -335,7 +336,7 @@
   }
   .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
 
-  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+  .panel-body { overflow-y: auto; overscroll-behavior: contain; padding: 8px 0 60px; flex: 1; }
 
   /* Group header inside panel */
   .group-header {
@@ -366,7 +367,7 @@
     padding: 4px 10px; border-radius: 999px;
     font-weight: 700;
   }
-  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.past     { background: #F1EAD8; color: #7A561B; }
   .pill.upcoming { background: #FCE8E6; color: var(--red); }
   .pill.scheduled{ background: #E8F0F2; color: #265D69; }
   .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
@@ -397,15 +398,15 @@
     font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase;
     color: var(--gold-deep); font-weight: 700; margin-bottom: 7px;
   }
-  .brief-body { font-size: 12.5px; line-height: 1.62; color: var(--ink-soft); }
+  .brief-body { font-size: 13.5px; line-height: 1.62; color: var(--ink-soft); }
   .brief-body p + p { margin-top: 7px; }
   .brief-lead { color: var(--ink); }
   /* Flag glyphs hang in the margin so the text block keeps a straight left edge. */
   .brief-flag { position: relative; padding-left: 21px; }
   .brief-mark { position: absolute; left: 0; top: 0; font-size: 11px; color: var(--gold-deep); }
-  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; }
+  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; -webkit-mask-image: linear-gradient(#000 72%, transparent); mask-image: linear-gradient(#000 72%, transparent); }
   .brief-more {
-    margin-top: 9px; padding: 0;
+    margin-top: 6px; padding: 6px 0; min-height: 24px;
     background: none; border: none; cursor: pointer;
     font-family: var(--sans); font-size: 10.5px; font-weight: 700;
     letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-deep);
@@ -446,8 +447,9 @@
     display: grid; grid-template-rows: 0fr;
     transition: grid-template-rows .28s ease;
   }
-  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-detail > div { overflow: hidden; min-height: 0; visibility: hidden; transition: visibility 0s linear .28s; }
   .election-card.open .election-detail { grid-template-rows: 1fr; }
+  .election-card.open .election-detail > div { visibility: visible; transition-delay: 0s; }
 
   .candidates { display: grid; gap: 14px; margin-top: 18px; }
   .candidate {
@@ -464,10 +466,11 @@
   .candidate.winner::before {
     content: '★ ELECTED';
     position: absolute; top: -10px; right: 14px;
-    background: var(--gold); color: white;
-    font-size: 9px; letter-spacing: 0.16em;
+    background: var(--gold-deep); color: white;
+    font-size: 10px; letter-spacing: 0.16em;
     padding: 3px 9px; border-radius: 4px; font-weight: 700;
   }
+  .candidate.winner.nominee::before { content: '★ NOMINATED'; }
   .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
   .cand-name {
     font-family: var(--serif); font-size: 20px; font-weight: 500;
@@ -494,7 +497,7 @@
   }
   .cand-list {
     list-style: none; padding-left: 0;
-    font-size: 13px; color: var(--ink); line-height: 1.5;
+    font-size: 13.5px; color: var(--ink); line-height: 1.5;
   }
   .cand-list li {
     padding: 4px 0 4px 18px;
@@ -513,7 +516,7 @@
   .voices-block {
     border-radius: 10px;
     padding: 12px 14px;
-    font-size: 12.5px; line-height: 1.5;
+    font-size: 13px; line-height: 1.5;
   }
   .voices-block.supporters {
     background: #F2F7F0;
@@ -532,8 +535,8 @@
   }
   .voices-block ul { list-style: none; padding: 0; margin: 0; }
   .voices-block li { padding: 3px 0; }
-  .voices-block li::before { content: '"'; opacity: .4; }
-  .voices-block li::after  { content: '"'; opacity: .4; }
+  .voices-block li::before { content: '\201C'; opacity: .4; }
+  .voices-block li::after  { content: '\201D'; opacity: .4; }
 
   .empty-state {
     padding: 60px 36px; text-align: center;
@@ -568,6 +571,26 @@
   /* ============================================
      RESPONSIVE
      ============================================ */
+  /* Keyboard users get a visible, on-brand focus ring everywhere. */
+  :focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 3px; }
+  /* Anchor jumps (#map, #sources) must not land under the sticky bar. */
+  .map-section, .footer { scroll-margin-top: 84px; }
+  /* Hero stat labels wrap unevenly on narrow screens; give them a common height. */
+  .stat-label { min-height: 2.6em; }
+  .legend-star { color: var(--ink); opacity: .7; font-size: 12px; margin-right: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  }
+  /* Printing a county's ballot prints the drawer, not the hero and an empty map. */
+  @media print {
+    .topbar, .hero, .map-section, .panel-overlay, .panel-close, .brief-more { display: none !important; }
+    .panel { position: static; width: auto; transform: none; visibility: visible; box-shadow: none; }
+    .panel-body { overflow: visible; }
+    .election-detail { grid-template-rows: 1fr; }
+    .election-detail > div { visibility: visible; }
+    .election-brief.clamped .brief-body { max-height: none; -webkit-mask-image: none; mask-image: none; }
+  }
   @media (max-width: 900px) {
     .topbar-inner { grid-template-columns: 1fr auto; }
     .topnav { display: none; }
@@ -582,6 +605,7 @@
     .section-head { flex-direction: column; align-items: flex-start; }
     .panel { width: 100%; }
     .panel-header { padding: 18px 22px; }
+    .panel-close { width: 44px; height: 44px; }
     .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
     .voices { grid-template-columns: 1fr; }
   }
@@ -612,7 +636,7 @@
     <nav class="topnav">
       <a href="#map">Map</a>
       <a href="#about">About</a>
-      <a href="#data">Data</a>
+      <a href="#sources">Sources</a>
     </nav>
   </div>
 </header>
@@ -631,7 +655,7 @@
   <div class="hero-stats">
     <div class="stat"><div class="stat-num">83</div><div class="stat-label">Counties</div></div>
     <div class="stat"><div class="stat-num"><em>13</em></div><div class="stat-label">U.S. House Seats</div></div>
-    <div class="stat"><div class="stat-num"><em>12</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num"><em id="stat-statewide">–</em></div><div class="stat-label">Statewide Races, Nov&nbsp;3</div></div>
     <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
   </div>
 </section>
@@ -644,20 +668,20 @@
     <div>
       <h2 class="section-title">Click a county to <em>begin</em>.</h2>
       <p class="section-sub">
-        Counties shaded in gold have detailed election information available. Hover for a quick
-        preview; click to open the full breakdown.
+        Tap or click any county to open its full ballot — every race, every candidate, and what
+        supporters and opponents say. On a desktop, hover for a quick preview.
       </p>
     </div>
     <div class="legend">
-      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
-      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Every county is clickable</span>
+      <span class="legend-swatch"><i class="legend-star">★</i> State capital</span>
     </div>
   </div>
 
   <div class="map-shell">
     <div class="map-frame">
       <div class="map-loading" id="map-loading">Loading map of Michigan…</div>
-      <svg id="mimap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <svg id="mimap" viewBox="0 0 1000 1149" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="tooltip" id="tooltip"></div>
     </div>
   </div>
@@ -667,7 +691,7 @@
      PANEL (details drawer)
      ============================================= -->
 <div class="panel-overlay" id="overlay"></div>
-<aside class="panel" id="panel" aria-hidden="true">
+<aside class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title" aria-hidden="true">
   <div class="panel-header">
     <div>
       <div class="panel-eyebrow" id="panel-eyebrow">County</div>
@@ -687,8 +711,8 @@
     <div class="footer-crest">
       <strong>MI Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
-    <div class="footer-meta">
-      Last updated: <span id="last-updated">August 3, 2026</span><br>
+    <div class="footer-meta" id="sources">
+      Last updated: <span id="last-updated">September 3, 2026</span><br>
       Sources: Michigan Bureau of Elections — the general-election candidate listing at mi-boe.entellitrak.com (generated Sept 3, 2026) and the Filing for Office guides; Michigan Secretary of State — the machine-readable county canvass of the Aug 4, 2026 primary at mvic.sos.state.mi.us, all 83 counties; the Board of State Canvassers' own meeting agendas and Statewide Petition Status document; the Michigan Independent Citizens Redistricting Commission's county-split report for the Chestnut congressional plan; Const 1963 art V sections 21 and 30 and MCL 168.52, 168.73, 168.282, 168.590c and 168.591 via legislature.mi.gov; Graveline v. Benson, 430 F.Supp.3d 297 (E.D. Mich. 2019); MCDC Geocorr 2022; Cook Political Report (2026 PVI file and public race pages), Sabato's Crystal Ball, Inside Elections; FEC and Transparency USA; Michigan Advance, Bridge Michigan, Votebeat, Michigan Public, Detroit News, Detroit Free Press, MLive, WCMU, WDET, Crain's Detroit, The Hill, CNN, NBC News.</div>
   </div>
 </footer>
@@ -696,8 +720,8 @@
 <!-- =============================================
      LIBRARIES
      ============================================= -->
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0"></script>
 
 <!-- =============================================
      DATA LAYER
@@ -877,22 +901,22 @@ const STATEWIDE = [
         supporters: ["He came within 0.3 points in 2024, a worse year for Republicans in Michigan","The deepest national-security résumé in the race","He enters the general with more cash preserved relative to what he raised"],
         opponents: ["He trailed 43–47 in the Aug 31 EPIC-MRA poll","The 'Florida man' residency attack has followed him since 2024 — though Bridge Michigan's own fact-check finds he is a Livingston County native who does live in White Lake","Losing a Senate race in 2024 and running again invites the argument that the party had no better option [Verify — structural argument]"] },
       { name: "Lydia Christensen", party: "L", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Libertarian nominee, chosen at party convention","From Ironwood in the Upper Peninsula; a member of the Kiowa-Sioux Nation; nominated at Troy on June 28, 2026","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
         supporters: ["She runs on civil-liberties absolutism plus an opt-in Medicaid for All, expanded Social Security and a $15 minimum wage indexed to inflation — an unusual combination for a Libertarian [Verify — positions via LP.org and Independent Political Report]","Gives libertarian voters a ballot line of their own [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["Her nomination drew public criticism from a Libertarian National Committee regional representative as off-platform","No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
       { name: "Tim Long", party: "I", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["U.S. Taxpayers nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
         supporters: ["Offers an alternative to both major-party nominees [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["His own party publishes NO content for him while 13 other U.S. Taxpayers nominees have full biographies on the same site [Verify — read from the party's own candidate API]","No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
       { name: "Douglas P. Marsh", party: "G", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Green nominee, chosen at party convention","The Green Party's 2026 Senate nominee, as he was in 2024","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
         supporters: ["Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No candidate-specific platform could be located — the Michigan Green Party's candidate pages are login-gated [Verify]","No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
       { name: "Walter P. Kristy", party: "I", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Natural Law nominee, chosen at party convention","Filed on Aug 31, 2026, more than four months after the major parties","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
         supporters: ["Offers an alternative to both major-party nominees [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["He filed too late to appear in Michigan Advance's voter guide, and the only biographical line located is a single-sourced directory entry [Verify]","No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] }
@@ -922,7 +946,7 @@ const STATEWIDE = [
         supporters: ["A published, itemised platform, which is more than most minor-party tickets offer","Leading her own party's ticket gives the U.S. Taxpayers line a recognised name"],
         opponents: ["The 2022 ballot removal for fraudulent petition signatures is a matter of public record, including her own mandamus complaint on the Michigan Supreme Court's website","$0 raised against tickets with millions","The U.S. Taxpayers ticket took 0.69% in the 2018 governor's race [Verify — computed from the state's own 2018 results file]"] },
       { name: "Douglas Campbell & Bobbie Clay", party: "G", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Green nominee, chosen at party convention","Filed Aug 3, 2026; confirmed on the Michigan Green Party's own site","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
         supporters: ["Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["$0 raised and $0 spent; the Green ticket took 0.68% in the 2018 governor's race [Verify — computed from the state's own 2018 results file]","No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] }
@@ -942,22 +966,22 @@ const STATEWIDE = [
         supporters: ["He runs on prosecutorial experience rather than political profile","His site lists endorsement blocks from sheriffs, prosecutors, state legislators and law-enforcement organisations [Verify — the names are JavaScript-loaded and could not be extracted]","Peer election to lead the state prosecutors' association is a credential no other candidate has"],
         opponents: ["Democrats read the no-lawfare plank as a pledge to stand down from the multistate litigation Nessel used against the Trump administration — which both Savit and Gilchrist made the centrepiece of their convention speeches [Verify — structural argument]","A county prosecutor's office is far smaller than the department he would run [Verify — structural argument]"] },
       { name: "Jason Dye", party: "L", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Libertarian nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
         supporters: ["Gives libertarian voters a ballot line of their own [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
       { name: "John Perry Ludtke Jr.", party: "I", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["U.S. Taxpayers nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
         supporters: ["Offers an alternative to both major-party nominees [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["His own party publishes no content for him [Verify — read from the party's own candidate API]","No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
       { name: "Jeff Polonowski", party: "G", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Green nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
         supporters: ["Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No candidate-specific platform could be located — the Michigan Green Party's candidate pages are login-gated [Verify]","No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
       { name: "Doug Dern", party: "I", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Natural Law nominee, chosen at party convention","The Natural Law Party's 2018 Supreme Court candidate, when he took 209,103 votes","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
         supporters: ["Offers an alternative to both major-party nominees [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["Filed Aug 31, 2026, too late to appear in Michigan Advance's voter guide","No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] }
@@ -977,17 +1001,17 @@ const STATEWIDE = [
         supporters: ["Operational credibility — he runs on clerk-office metrics rather than national politics, and pledges to keep politics out of the office","The only candidate in the race with hands-on election administration experience","A county-level record voters can check"],
         opponents: ["Democrats read the watermarked-ballot and database agenda as importing 2020 election-fraud premises into statewide administration","The same voter-data question drives his opponent's campaign from the opposite direction, so the contrast is sharp and unavoidable [Verify — structural argument; no direct news-reported criticism of Forlini was located this pass]"] },
       { name: "Christine Sloan", party: "L", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Libertarian nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
         supporters: ["Gives libertarian voters a ballot line of their own [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
       { name: "Scott E. Aughney", party: "I", winner: false,
-        positions: ["Election integrity, from the perspective of an election-records requester","No further published 2026 platform could be located [Verify — an absence of located records]",""],
+        positions: ["Election integrity, from the perspective of an election-records requester","No further published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["U.S. Taxpayers Party nominee, from Jackson County","Self-described election-integrity investigator and whistleblower; a founding member of Citizens for Electoral Justice","Filed a pro se Court of Claims suit against then-Secretary of State Benson in May 2024 alleging obstruction of a records request over election data [Verify — from his party's own biography]","No FEC fundraising located [Verify — an absence of located records]"],
         supporters: ["He has actually litigated for access to Michigan election records, which is an unusually direct qualification for the office [Verify — via his party's own biography]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["A suit against the incumbent he seeks to replace invites the argument that the candidacy is a grievance rather than a programme [Verify — structural argument]","No campaign fundraising or independent coverage could be located [Verify — an absence of located records]"] },
       { name: "Eric Borregard", party: "G", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Green nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
         supporters: ["Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] }
@@ -1022,7 +1046,7 @@ const STATEWIDE = [
         supporters: ["She is the only candidate running specifically on judicial accountability and probate-court reform","She has published actual position papers, which most minor-party judicial candidates do not"],
         opponents: ["No legal training or judicial experience is claimed [Verify — an absence of located records]","Minor-party judicial candidates in Michigan have not won a Supreme Court seat [Verify — structural argument]"] },
       { name: "Thomas W. Howe", party: "I", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["U.S. Taxpayers nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
         supporters: ["Offers an alternative to both major-party nominees [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No platform material exists even on the party website that nominated him [Verify — read from the party's own candidate API]","No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] }
@@ -1034,207 +1058,207 @@ const STATEWIDE = [
 
     ] },
 
-  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide · Education", office: "State Board of Education — two seats",
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "State Board of Education — two seats",
     note: "MICHIGAN ELECTS ITS EDUCATION BOARDS STATEWIDE, AND ALMOST NOBODY VOTES IN THEM — which is exactly the kind of race this site exists for. Two eight-year seats are up. Nominees are chosen at each party's fall state convention (MCL 168.282), which must meet at least 60 days before the election. Both Democratic incumbents were re-nominated. ⚠ Bipartisan bills would abolish elections for the three UNIVERSITY boards, though not for this one, starting in 2027. ⚠ Very little is published about most candidates for these boards; party and incumbency are usually the only decision-relevant facts a voter can get, and that is stated plainly on each card rather than padded.",
     candidates: [
       { name: "Judith Pritchett", party: "D", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Democratic nominee, chosen at the party's fall state convention","Incumbent, re-nominated — these are eight-year terms","On the Secretary of State's certified November candidate list"],
         supporters: ["A major-party line is a realistic path on a ballot most voters mark by party","Michigan elects this board STATEWIDE, so every voter in the state has a say in it"],
         opponents: ["Board races sit near the bottom of a long ballot, where the party label does most of the deciding [Verify — structural argument]","No individual platform for this candidate could be located"] },
       { name: "Tiffany Tilley", party: "D", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Democratic nominee, chosen at the party's fall state convention","Incumbent, re-nominated — these are eight-year terms","On the Secretary of State's certified November candidate list"],
         supporters: ["A major-party line is a realistic path on a ballot most voters mark by party","Michigan elects this board STATEWIDE, so every voter in the state has a say in it"],
         opponents: ["Board races sit near the bottom of a long ballot, where the party label does most of the deciding [Verify — structural argument]","No individual platform for this candidate could be located"] },
       { name: "Terence Collins", party: "R", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Republican nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["A major-party line is a realistic path on a ballot most voters mark by party","Michigan elects this board STATEWIDE, so every voter in the state has a say in it"],
         opponents: ["Board races sit near the bottom of a long ballot, where the party label does most of the deciding [Verify — structural argument]","No individual platform for this candidate could be located"] },
       { name: "Bree Moeggenberg", party: "R", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Republican nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["A major-party line is a realistic path on a ballot most voters mark by party","Michigan elects this board STATEWIDE, so every voter in the state has a say in it"],
         opponents: ["Board races sit near the bottom of a long ballot, where the party label does most of the deciding [Verify — structural argument]","No individual platform for this candidate could be located"] },
       { name: "Charles Essner", party: "L", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Libertarian nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["Gives voters a Libertarian option on a board the major parties otherwise split between them","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No Libertarian candidate has won a Michigan education-board seat in recent cycles [Verify — structural argument]","No individual platform or fundraising could be located"] },
       { name: "William Mohr II", party: "I", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["U.S. Taxpayers nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["Gives voters a U.S. Taxpayers option on a board the major parties otherwise split between them","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No U.S. Taxpayers candidate has won a Michigan education-board seat in recent cycles [Verify — structural argument]","No individual platform or fundraising could be located"] },
       { name: "Christine C. Schwartz", party: "I", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["U.S. Taxpayers nominee, chosen at the party's fall state convention","Also appeared on the state's 2018 ballot for a statewide education board","On the Secretary of State's certified November candidate list"],
         supporters: ["Gives voters a U.S. Taxpayers option on a board the major parties otherwise split between them","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No U.S. Taxpayers candidate has won a Michigan education-board seat in recent cycles [Verify — structural argument]","No individual platform or fundraising could be located"] },
       { name: "Wissam Charafeddine", party: "G", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Green nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["Gives voters a Green option on a board the major parties otherwise split between them","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No Green candidate has won a Michigan education-board seat in recent cycles [Verify — structural argument]","No individual platform or fundraising could be located"] },
       { name: "Mary Anne Hering", party: "I", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Working Class nominee, chosen at the party's fall state convention","A recurring Working Class Party education-board candidate, including in 2018","On the Secretary of State's certified November candidate list"],
         supporters: ["Gives voters a Working Class option on a board the major parties otherwise split between them","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No Working Class candidate has won a Michigan education-board seat in recent cycles [Verify — structural argument]","No individual platform or fundraising could be located"] },
       { name: "Kelli Monroe", party: "I", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Natural Law nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["Gives voters a Natural Law option on a board the major parties otherwise split between them","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No Natural Law candidate has won a Michigan education-board seat in recent cycles [Verify — structural argument]","No individual platform or fundraising could be located"] }
     ] },
 
-  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide · Education", office: "University of Michigan Board of Regents — two seats",
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "University of Michigan Board of Regents — two seats",
     note: "TWO EIGHT-YEAR SEATS ON THE GOVERNING BOARD OF THE STATE'S FLAGSHIP UNIVERSITY, elected statewide and nominated at party conventions. ⚠ Only ONE incumbent is running: Paul Brown was re-nominated, while Regent Jordan Acker, elected in 2018, is NOT on the 2026 ballot — Amir Makled takes that slot. ⚠ Bipartisan legislation would abolish elections for this board starting in 2027, replacing them with appointments. Almost nothing is published about candidates for these seats.",
     candidates: [
       { name: "Paul Brown", party: "D", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Democratic nominee, chosen at the party's fall state convention","Incumbent, re-nominated — these are eight-year terms","On the Secretary of State's certified November candidate list"],
         supporters: ["A major-party line is a realistic path on a ballot most voters mark by party","Michigan elects this board STATEWIDE, so every voter in the state has a say in it"],
         opponents: ["Board races sit near the bottom of a long ballot, where the party label does most of the deciding [Verify — structural argument]","No individual platform for this candidate could be located"] },
       { name: "Amir Makled", party: "D", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Democratic nominee, chosen at the party's fall state convention","New nominee; he takes the slot of Regent Jordan Acker, who is not on the 2026 ballot","On the Secretary of State's certified November candidate list"],
         supporters: ["A major-party line is a realistic path on a ballot most voters mark by party","Michigan elects this board STATEWIDE, so every voter in the state has a say in it"],
         opponents: ["Board races sit near the bottom of a long ballot, where the party label does most of the deciding [Verify — structural argument]","No individual platform for this candidate could be located"] },
       { name: "Lena Epstein", party: "R", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Republican nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["A major-party line is a realistic path on a ballot most voters mark by party","Michigan elects this board STATEWIDE, so every voter in the state has a say in it"],
         opponents: ["Board races sit near the bottom of a long ballot, where the party label does most of the deciding [Verify — structural argument]","No individual platform for this candidate could be located"] },
       { name: "Michael Schostak", party: "R", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Republican nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["A major-party line is a realistic path on a ballot most voters mark by party","Michigan elects this board STATEWIDE, so every voter in the state has a say in it"],
         opponents: ["Board races sit near the bottom of a long ballot, where the party label does most of the deciding [Verify — structural argument]","No individual platform for this candidate could be located"] },
       { name: "Andrew Chadderdon", party: "L", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Libertarian nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["Gives voters a Libertarian option on a board the major parties otherwise split between them","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No Libertarian candidate has won a Michigan education-board seat in recent cycles [Verify — structural argument]","No individual platform or fundraising could be located"] },
       { name: "Kyle Maas", party: "I", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["U.S. Taxpayers nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["Gives voters a U.S. Taxpayers option on a board the major parties otherwise split between them","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No U.S. Taxpayers candidate has won a Michigan education-board seat in recent cycles [Verify — structural argument]","No individual platform or fundraising could be located"] }
     ] },
 
-  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide · Education", office: "Michigan State University Board of Trustees — two seats",
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Michigan State University Board of Trustees — two seats",
     note: "TWO EIGHT-YEAR SEATS, elected statewide and nominated at party conventions. Both Democratic incumbents — Brianna Scott and Kelly Tebay Zemke — were re-nominated. ⚠ Bipartisan legislation would abolish elections for this board starting in 2027. This is the largest minor-party field of any Michigan education board, with ten candidates in total. Almost nothing is published about most of them.",
     candidates: [
       { name: "Brianna Scott", party: "D", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Democratic nominee, chosen at the party's fall state convention","Incumbent, re-nominated — these are eight-year terms","On the Secretary of State's certified November candidate list"],
         supporters: ["A major-party line is a realistic path on a ballot most voters mark by party","Michigan elects this board STATEWIDE, so every voter in the state has a say in it"],
         opponents: ["Board races sit near the bottom of a long ballot, where the party label does most of the deciding [Verify — structural argument]","No individual platform for this candidate could be located"] },
       { name: "Kelly Tebay Zemke", party: "D", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Democratic nominee, chosen at the party's fall state convention","Incumbent, re-nominated — these are eight-year terms","On the Secretary of State's certified November candidate list"],
         supporters: ["A major-party line is a realistic path on a ballot most voters mark by party","Michigan elects this board STATEWIDE, so every voter in the state has a say in it"],
         opponents: ["Board races sit near the bottom of a long ballot, where the party label does most of the deciding [Verify — structural argument]","No individual platform for this candidate could be located"] },
       { name: "Julie Maday", party: "R", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Republican nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["A major-party line is a realistic path on a ballot most voters mark by party","Michigan elects this board STATEWIDE, so every voter in the state has a say in it"],
         opponents: ["Board races sit near the bottom of a long ballot, where the party label does most of the deciding [Verify — structural argument]","No individual platform for this candidate could be located"] },
       { name: "Roger Victory", party: "R", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Republican nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["A major-party line is a realistic path on a ballot most voters mark by party","Michigan elects this board STATEWIDE, so every voter in the state has a say in it"],
         opponents: ["Board races sit near the bottom of a long ballot, where the party label does most of the deciding [Verify — structural argument]","No individual platform for this candidate could be located"] },
       { name: "Daniel R. Patterson", party: "L", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Libertarian nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["Gives voters a Libertarian option on a board the major parties otherwise split between them","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No Libertarian candidate has won a Michigan education-board seat in recent cycles [Verify — structural argument]","No individual platform or fundraising could be located"] },
       { name: "Will Tyler White", party: "L", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Libertarian nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["Gives voters a Libertarian option on a board the major parties otherwise split between them","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No Libertarian candidate has won a Michigan education-board seat in recent cycles [Verify — structural argument]","No individual platform or fundraising could be located"] },
       { name: "Janet Sanger", party: "I", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["U.S. Taxpayers nominee, chosen at the party's fall state convention","Also appeared on the state's 2018 ballot for a statewide education board","On the Secretary of State's certified November candidate list"],
         supporters: ["Gives voters a U.S. Taxpayers option on a board the major parties otherwise split between them","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No U.S. Taxpayers candidate has won a Michigan education-board seat in recent cycles [Verify — structural argument]","No individual platform or fundraising could be located"] },
       { name: "John Sanger", party: "I", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["U.S. Taxpayers nominee, chosen at the party's fall state convention","Also appeared on the state's 2018 ballot for a statewide education board","On the Secretary of State's certified November candidate list"],
         supporters: ["Gives voters a U.S. Taxpayers option on a board the major parties otherwise split between them","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No U.S. Taxpayers candidate has won a Michigan education-board seat in recent cycles [Verify — structural argument]","No individual platform or fundraising could be located"] },
       { name: "John Anthony La Pietra", party: "G", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Green nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["Gives voters a Green option on a board the major parties otherwise split between them","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No Green candidate has won a Michigan education-board seat in recent cycles [Verify — structural argument]","No individual platform or fundraising could be located"] },
       { name: "Yaz Ozbek", party: "I", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Working Class nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["Gives voters a Working Class option on a board the major parties otherwise split between them","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No Working Class candidate has won a Michigan education-board seat in recent cycles [Verify — structural argument]","No individual platform or fundraising could be located"] }
     ] },
 
-  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide · Education", office: "Wayne State University Board of Governors — two seats",
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Wayne State University Board of Governors — two seats",
     note: "TWO EIGHT-YEAR SEATS, elected statewide and nominated at party conventions. ⚠ NEITHER INCUMBENT IS RUNNING — the 2018 winners, Bryan Barnhill and Anil Kumar, are both off the 2026 ballot, so both Democratic nominees are new. (Kumar is instead running as an independent for Congress in MI-11.) ⚠ Bipartisan legislation would abolish elections for this board starting in 2027. Almost nothing is published about most candidates.",
     candidates: [
       { name: "Shereef Akeel", party: "D", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Democratic nominee, chosen at the party's fall state convention","New nominee; neither 2018 incumbent is on the 2026 ballot","On the Secretary of State's certified November candidate list"],
         supporters: ["A major-party line is a realistic path on a ballot most voters mark by party","Michigan elects this board STATEWIDE, so every voter in the state has a say in it"],
         opponents: ["Board races sit near the bottom of a long ballot, where the party label does most of the deciding [Verify — structural argument]","No individual platform for this candidate could be located"] },
       { name: "Richard Mack", party: "D", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Democratic nominee, chosen at the party's fall state convention","New nominee; neither 2018 incumbent is on the 2026 ballot","On the Secretary of State's certified November candidate list"],
         supporters: ["A major-party line is a realistic path on a ballot most voters mark by party","Michigan elects this board STATEWIDE, so every voter in the state has a say in it"],
         opponents: ["Board races sit near the bottom of a long ballot, where the party label does most of the deciding [Verify — structural argument]","No individual platform for this candidate could be located"] },
       { name: "Andy Anuzis", party: "R", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Republican nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["A major-party line is a realistic path on a ballot most voters mark by party","Michigan elects this board STATEWIDE, so every voter in the state has a say in it"],
         opponents: ["Board races sit near the bottom of a long ballot, where the party label does most of the deciding [Verify — structural argument]","No individual platform for this candidate could be located"] },
       { name: "Christa Murphy", party: "R", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Republican nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["A major-party line is a realistic path on a ballot most voters mark by party","Michigan elects this board STATEWIDE, so every voter in the state has a say in it"],
         opponents: ["Board races sit near the bottom of a long ballot, where the party label does most of the deciding [Verify — structural argument]","No individual platform for this candidate could be located"] },
       { name: "Alex Avery", party: "L", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Libertarian nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["Gives voters a Libertarian option on a board the major parties otherwise split between them","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No Libertarian candidate has won a Michigan education-board seat in recent cycles [Verify — structural argument]","No individual platform or fundraising could be located"] },
       { name: "Jami Van Alstine", party: "L", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Libertarian nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["Gives voters a Libertarian option on a board the major parties otherwise split between them","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No Libertarian candidate has won a Michigan education-board seat in recent cycles [Verify — structural argument]","No individual platform or fundraising could be located"] },
       { name: "Jeff McDonald", party: "I", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["U.S. Taxpayers nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["Gives voters a U.S. Taxpayers option on a board the major parties otherwise split between them","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No U.S. Taxpayers candidate has won a Michigan education-board seat in recent cycles [Verify — structural argument]","No individual platform or fundraising could be located"] },
       { name: "Paul M. Ragan", party: "G", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Green nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["Gives voters a Green option on a board the major parties otherwise split between them","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No Green candidate has won a Michigan education-board seat in recent cycles [Verify — structural argument]","No individual platform or fundraising could be located"] },
       { name: "Suzanne Roehrig", party: "I", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Working Class nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["Gives voters a Working Class option on a board the major parties otherwise split between them","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No Working Class candidate has won a Michigan education-board seat in recent cycles [Verify — structural argument]","No individual platform or fundraising could be located"] },
       { name: "Kathleen Oakford", party: "I", winner: false,
-        positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+        positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["Natural Law nominee, chosen at the party's fall state convention","On the Secretary of State's certified November candidate list"],
         supporters: ["Gives voters a Natural Law option on a board the major parties otherwise split between them","Appears on the state's own certified ballot, so the choice is real rather than notional"],
         opponents: ["No Natural Law candidate has won a Michigan education-board seat in recent cycles [Verify — structural argument]","No individual platform or fundraising could be located"] }
     ] },
 
-  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide · Ballot Measure", office: "Proposal 2026-1 — Shall Michigan hold a constitutional convention?",
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Ballot Measure · Statewide", office: "Proposal 2026-1 — Shall Michigan hold a constitutional convention?",
     note: "THIS QUESTION IS PUT TO MICHIGAN VOTERS AUTOMATICALLY EVERY 16 YEARS, AND THEY HAVE NEVER SAID YES — 1978, 1994 and 2010 all failed, the last of them 67%–33%. Official ballot language as placed before the Board of State Canvassers on July 24, 2026: 'A PROPOSAL TO CONVENE A CONSTITUTIONAL CONVENTION FOR THE PURPOSE OF DRAFTING A GENERAL REVISION OF THE STATE CONSTITUTION — Shall a convention of delegates, to be elected at a partisan special election, be convened in 2027 to draft a general revision of the State Constitution for presentation to the state's voters for their approval or rejection?' HOW IT WOULD WORK: one delegate for each of the 110 state House and 35 state Senate districts, elected at a special primary and general; the convention would convene Oct 5, 2027 in Lansing with no deadline to finish; anything it produced would go back to voters. ⚠ Final ballot certification is Sept 4, 2026 — this page is stated as of Sept 3.",
     candidates: [
       { name: "Yes — hold a constitutional convention", party: "I", winner: false,
@@ -1249,7 +1273,7 @@ const STATEWIDE = [
         opponents: ["Supporters answer that voters would still have to approve anything the convention produced","Critics of the 'no' campaign argue it protects a status quo that both parties' leaders have called unwieldy [Verify — structural argument]"] }
     ] },
 
-  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide · Ballot Measure", office: "Money Out of Politics — a proposed initiated law on campaign finance",
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Ballot Measure · Statewide", office: "Money Out of Politics — a proposed initiated law on campaign finance",
     note: "IT IS ON THE BALLOT, AND THE LEGISLATURE HAD ITS CHANCE TO PASS IT INSTEAD. The Board of State Canvassers certified the petition 3–1 on July 24, 2026 — 368,762 valid signatures estimated against 356,958 required. Under Michigan's initiated-law process the Legislature could then have enacted it directly: the HOUSE PASSED IT 77–26 on Aug 25, 2026, but the SENATE DECLINED TO TAKE IT UP, so it goes to voters. ⚠ THE PROPOSAL NUMBER IS NOT FINAL. The Board's drafts labelled it 'Proposal 2026-2 or 2026-3' because the designation depended on whether a separate citizenship-voting amendment also certified; it did not, so this should become Proposal 2026-2 — but that is confirmed only at the Sept 4, 2026 certification [Verify]. OFFICIAL 100-WORD SUMMARY as drafted by the Director of Elections: the proposal would prohibit regulated electric and gas utilities, contractors with over $250,000 annually in government contracts, and people and organisations with substantial connections to them, from making direct or indirect campaign contributions to those who run for or hold offices that affect them; expand laws regulating spending on political communications, including donor-disclosure requirements, to cover communications that clearly identify candidates or ballot questions even without express advocacy; and expressly apply the paid-for disclosure requirement to internet political communications. ⚠ LIVE LITIGATION: Protect MI Free Speech sued in the Michigan Supreme Court on Aug 4, 2026 arguing the Bureau used a faulty statistical formula; as of Sept 3 no oral argument had been scheduled and no resolution was reported [Verify].",
     candidates: [
       { name: "Yes — adopt the initiated law", party: "I", winner: false,
@@ -1289,10 +1313,9 @@ const STATEWIDE = [
 // which had to be downloaded and read visually because Sabato publishes no House text. On that chart a
 // district that is absent falls in the "Safe" bucket — an inference from omission, marked where used.
 const HOUSE_RACES = {
-  1: { name: "U.S. House — Michigan District 1", region: "All 15 Upper Peninsula counties plus 20 in the northern Lower Peninsula — Traverse City, Marquette, Alpena, Sault Ste. Marie",
+  1: { name: "U.S. House — MI District 1", region: "All 15 Upper Peninsula counties plus 20 in the northern Lower Peninsula — Traverse City, Marquette, Alpena, Sault Ste. Marie",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "BERGMAN TOOK 74.3% OF A THREE-WAY PRIMARY — BUT FOUR OF HIS OWN REGION'S REPUBLICAN LEGISLATORS HAD PULLED THEIR ENDORSEMENTS IN FEBRUARY. State Reps. Bohnak, Markkanen, McBroom and Prestin rescinded over a state Senate dispute; he won anyway. ⚠ Challenger Matthew DenOtter SELF-FUNDED $1,877,175 of his $1,906,389 — nearly matching Bergman's entire raise — and took 13.1%. Callie Barr won the Democratic primary with 58.5% and is running a rematch of 2024. Cook PVI R+11; Solid or Safe R at all three raters. Official Secretary of State results: Bergman 80,726 (74.33%), DenOtter 14,254, Justin Michal 13,627; Barr 62,197 (58.49%), Kyle Blomquist 37,936, Wayne Stiles 6,213.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "BERGMAN TOOK 74.3% OF A THREE-WAY PRIMARY — BUT FOUR OF HIS OWN REGION'S REPUBLICAN LEGISLATORS HAD PULLED THEIR ENDORSEMENTS IN FEBRUARY. State Reps. Bohnak, Markkanen, McBroom and Prestin rescinded over a state Senate dispute; he won anyway. ⚠ Challenger Matthew DenOtter SELF-FUNDED $1,877,175 of his $1,906,389 — nearly matching Bergman's entire raise — and took 13.1%. Callie Barr won the Democratic primary with 58.5% and is running a rematch of 2024. Cook PVI R+11; Solid or Safe R at all three raters. Official Secretary of State results: Bergman 80,726 (74.33%), DenOtter 14,254, Justin Michal 13,627; Barr 62,197 (58.49%), Kyle Blomquist 37,936, Wayne Stiles 6,213.",
         candidates: [
           { name: "Jack Bergman (incumbent)", party: "R", winner: false,
             positions: ["Secure the border and enforce immigration law","Strengthen national defense and veterans' services","Rein in federal spending"],
@@ -1305,36 +1328,35 @@ const HOUSE_RACES = {
             supporters: ["Consolidated the primary at 58% and has the strongest cash position of any recent MI-1 Democrat","Her affordability and rural-hospital message is aimed at the district's actual economics","National women's and veterans' groups moved in immediately after the primary"],
             opponents: ["She lost this district in 2024 and faces the same R+11 arithmetic","Trails Bergman better than two to one in money raised","All three raters call the seat Solid or Safe R, so outside money is unlikely to arrive [Verify — structural argument]"] },
           { name: "Arnett Satterla", party: "L", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Libertarian nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives libertarian voters a ballot line of their own [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
           { name: "Doc Kovaly", party: "I", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["U.S. Taxpayers nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Offers an alternative to both major-party nominees [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
           { name: "LaVeta Davenport", party: "G", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Green nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
           { name: "Liz Hakola", party: "I", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Working Class nominee, chosen at party convention","Also the Working Class nominee here in 2022 and 2024","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["A third consecutive run gives her the most name recognition in the minor-party field here [Verify — structural argument]","Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["She did not win in 2022 or 2024 and no campaign operation could be located this cycle [Verify — an absence of located records]","No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
           { name: "Zebulon Featherly", party: "I", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["No Party Affiliation nominee, chosen at party convention","Qualified with No Party Affiliation — the only true independent on the MI-1 ballot","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Carries no party label at all, which is the whole of the appeal [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] }
         ] }
     ] },
-  2: { name: "U.S. House — Michigan District 2", region: "West-central Michigan, 20 counties — Mount Pleasant, Big Rapids, Manistee, Ionia, plus slivers of Kent, Ottawa and Midland",
+  2: { name: "U.S. House — MI District 2", region: "West-central Michigan, 20 counties — Mount Pleasant, Big Rapids, Manistee, Ionia, plus slivers of Kent, Ottawa and Midland",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "THE CLOSEST PRIMARY IN THE STATE: BEN AMBROSE WON THE DEMOCRATIC NOMINATION BY 1,497 VOTES, 2.04 POINTS, and AP did not call it until 4:36 p.m. the next day. ⚠ Not an upset — Ambrose held the Detroit News endorsement — but a near-miss that leaves him without a unified party. Moolenaar was unopposed. Official Secretary of State results: Moolenaar 93,751 (100%); Ambrose 32,445 (44.32%), Jamie Hill 30,948 (42.28%), Clyde Welford 9,806 (13.40%). Cook PVI R+15, the most Republican seat in the state; Solid or Safe R at all three raters. ⚠ EASY TO MISS: Natural Law nominee Richard Sills filed by convention on SEPT 1, 2026, after most voter guides were built — Michigan Advance's guide lists only the Green.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "THE CLOSEST PRIMARY IN THE STATE: BEN AMBROSE WON THE DEMOCRATIC NOMINATION BY 1,497 VOTES, 2.04 POINTS, and AP did not call it until 4:36 p.m. the next day. ⚠ Not an upset — Ambrose held the Detroit News endorsement — but a near-miss that leaves him without a unified party. Moolenaar was unopposed. Official Secretary of State results: Moolenaar 93,751 (100%); Ambrose 32,445 (44.32%), Jamie Hill 30,948 (42.28%), Clyde Welford 9,806 (13.40%). Cook PVI R+15, the most Republican seat in the state; Solid or Safe R at all three raters. ⚠ EASY TO MISS: Natural Law nominee Richard Sills filed by convention on SEPT 1, 2026, after most voter guides were built — Michigan Advance's guide lists only the Green.",
         candidates: [
           { name: "John Moolenaar (incumbent)", party: "R", winner: false,
             positions: ["Secure the border","Cut wasteful federal spending and rebuild the military","Counter the Chinese Communist Party — block foreign purchases of American farmland"],
@@ -1347,21 +1369,20 @@ const HOUSE_RACES = {
             supporters: ["A Marine combat veteran with a farm-country biography is the strongest profile Democrats have fielded here recently","The Detroit News endorsed him over two rivals","Pairs federal legislative experience with local roots"],
             opponents: ["He won his own primary by two points, so he starts without a unified party behind him","Raised under $86,000 against Moolenaar's $1.65 million and $1.9 million banked","All three raters call MI-2 Solid or Safe R at R+15 [Verify — structural argument]"] },
           { name: "Charlotte Magoon", party: "G", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Green nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
           { name: "Richard Sills", party: "I", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Natural Law nominee, chosen at party convention","Filed by convention on Sept 1, 2026 — after most published voter guides were built","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Offers an alternative to both major-party nominees [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["Natural Law has no Michigan electoral history to build on [Verify — structural argument]","No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] }
         ] }
     ] },
-  3: { name: "U.S. House — Michigan District 3", region: "West Michigan — Grand Rapids, Muskegon, Grand Haven, Wyoming, Kentwood, East Grand Rapids; parts of Kent, Muskegon and Ottawa",
+  3: { name: "U.S. House — MI District 3", region: "West Michigan — Grand Rapids, Muskegon, Grand Haven, Wyoming, Kentwood, East Grand Rapids; parts of Kent, Muskegon and Ottawa",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "REPUBLICANS RECRUITED A 30-YEAR TV METEOROLOGIST, AND SHE WON THE PRIMARY 78.6%–21.4%. Terri DeBoer is a career broadcaster with three decades of name recognition in exactly the media market that is the district, not a conventional political candidate. Scholten was unopposed. Official Secretary of State results: Scholten 112,189 (100%); DeBoer 54,241 (78.56%), Ryan Cushman 14,804 (21.44%). ⚠ THE RATERS DISAGREE HERE: Cook UPGRADED the seat to Solid D in January 2026, Inside Elections still has it only Likely D (May 8, 2026), and Sabato has it Safe D. Cook PVI D+4 — the district has trended left since 2016 and Harris carried it by eight points.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "REPUBLICANS RECRUITED A 30-YEAR TV METEOROLOGIST, AND SHE WON THE PRIMARY 78.6%–21.4%. Terri DeBoer is a career broadcaster with three decades of name recognition in exactly the media market that is the district, not a conventional political candidate. Scholten was unopposed. Official Secretary of State results: Scholten 112,189 (100%); DeBoer 54,241 (78.56%), Ryan Cushman 14,804 (21.44%). ⚠ THE RATERS DISAGREE HERE: Cook UPGRADED the seat to Solid D in January 2026, Inside Elections still has it only Likely D (May 8, 2026), and Sabato has it Safe D. Cook PVI D+4 — the district has trended left since 2016 and Harris carried it by eight points.",
         candidates: [
           { name: "Hillary Scholten (incumbent)", party: "D", winner: false,
             positions: ["Lower health-care and prescription costs; defend and expand the ACA; paid family and medical leave","Reproductive freedom — protect the right to choose after Dobbs","Jobs and cost-of-living relief in West Michigan"],
@@ -1374,16 +1395,15 @@ const HOUSE_RACES = {
             supporters: ["Uniquely high, non-political name recognition across exactly the media market that is the district","A health-care-choice and affordability message pitched at swing voters rather than the base","Raised nearly $552,000 as a first-time candidate"],
             opponents: ["Running roughly $1.8 million behind the incumbent in a district Harris carried by eight points","No elected experience of any kind","Every rater has the seat Solid, Likely or Safe Democratic [Verify — structural argument]"] },
           { name: "Joe Jock", party: "G", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Green nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] }
         ] }
     ] },
-  4: { name: "U.S. House — Michigan District 4", region: "Southwestern Michigan — Kalamazoo and Holland; all of Allegan and Van Buren, plus parts of Ottawa, Kalamazoo, Calhoun and Berrien",
+  4: { name: "U.S. House — MI District 4", region: "Southwestern Michigan — Kalamazoo and Holland; all of Allegan and Van Buren, plus parts of Ottawa, Kalamazoo, Calhoun and Berrien",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "MICHIGAN'S SECOND-MOST COMPETITIVE SEAT, AND ONE OF ONLY TWO RATERS HAVE MOVED. Cook shifted it from Likely R to LEAN R in June 2026; Inside Elections and Sabato also have it Lean or Leans R. Cook PVI R+3. ⚠ Huizenga won by 12 points in 2024 but Trump carried the district by only six, and Ottawa County was one of the few Michigan counties where Harris improved on Biden's margin. ⚠ EVERY PUBLIC POLL OF THIS RACE IS PARTISAN-SPONSORED AND THEY DISAGREE: GBAO for McCann had McCann 48–45 (May 28–Jun 1); Ragnar Research for Conservatives for America had Huizenga 48–42 (Mar 12–14); PPP had Huizenga 44–42 (Nov 2025). Official Secretary of State results: Huizenga 71,455 (85.13%) over former Holland mayor Phil Tanis; McCann 65,587 (65.67%) over Diop Harris.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "MICHIGAN'S SECOND-MOST COMPETITIVE SEAT, AND ONE OF ONLY TWO RATERS HAVE MOVED. Cook shifted it from Likely R to LEAN R in June 2026; Inside Elections and Sabato also have it Lean or Leans R. Cook PVI R+3. ⚠ Huizenga won by 12 points in 2024 but Trump carried the district by only six, and Ottawa County was one of the few Michigan counties where Harris improved on Biden's margin. ⚠ EVERY PUBLIC POLL OF THIS RACE IS PARTISAN-SPONSORED AND THEY DISAGREE: GBAO for McCann had McCann 48–45 (May 28–Jun 1); Ragnar Research for Conservatives for America had Huizenga 48–42 (Mar 12–14); PPP had Huizenga 44–42 (Nov 2025). Official Secretary of State results: Huizenga 71,455 (85.13%) over former Holland mayor Phil Tanis; McCann 65,587 (65.67%) over Diop Harris.",
         candidates: [
           { name: "Bill Huizenga (incumbent)", party: "R", winner: false,
             positions: ["Fight inflation by reining in federal spending","Expand American energy production to cut utility bills","Remove regulation and expand access to capital for local employers"],
@@ -1396,16 +1416,15 @@ const HOUSE_RACES = {
             supporters: ["A rare challenger within striking distance on money, with the full state party apparatus behind him","His own poll showed him ahead 48–45 in June","He has a legislative record to run on — he cites his vote to expand Medicaid to more than a million Michiganders"],
             opponents: ["The one Republican-sponsored poll had him down six, and the two polls not run by his own campaign both showed Huizenga ahead","Huizenga still has about $580,000 more banked and 15 years of incumbency","No rater has moved this seat past Lean R — nobody calls it a toss-up"] },
           { name: "Shafina Che Barnett", party: "G", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Green nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["In a two-way race consuming essentially all the district's resources, a third line struggles for attention [Verify — structural argument]","No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] }
         ] }
     ] },
-  5: { name: "U.S. House — Michigan District 5", region: "The entire southern tier — Michigan's whole border with Indiana and Ohio. All of Branch, Cass, Hillsdale, Jackson, Lenawee and St. Joseph, most of Monroe and Calhoun",
+  5: { name: "U.S. House — MI District 5", region: "The entire southern tier — Michigan's whole border with Indiana and Ohio. All of Branch, Cass, Hillsdale, Jackson, Lenawee and St. Joseph, most of Monroe and Calhoun",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "BOTH NOMINEES WERE UNOPPOSED, so no primary money was spent and no upset was possible: Walberg 77,105 (100%) and Vukasovich 64,425 (100%) on the Secretary of State's official results. Cook PVI R+13; Solid or Safe R at all three raters, none of which has engaged with the race this cycle. Five candidates are on the November ballot, the second-longest in the state. ⚠ NOT ASSERTED: the U.S. Taxpayers nominee here shares a name with a Democrat who ran against Walberg in the 2000s. We did not confirm they are the same person and do not claim it.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "BOTH NOMINEES WERE UNOPPOSED, so no primary money was spent and no upset was possible: Walberg 77,105 (100%) and Vukasovich 64,425 (100%) on the Secretary of State's official results. Cook PVI R+13; Solid or Safe R at all three raters, none of which has engaged with the race this cycle. Five candidates are on the November ballot, the second-longest in the state. ⚠ NOT ASSERTED: the U.S. Taxpayers nominee here shares a name with a Democrat who ran against Walberg in the 2000s. We did not confirm they are the same person and do not claim it.",
         candidates: [
           { name: "Tim Walberg (incumbent)", party: "R", winner: false,
             positions: ["National security — strengthening resolve and capabilities against terrorist threats and hostile regimes","Jobs and fiscal responsibility — the federal government should live within its means","Affordable health care — lower prescription costs, combat addiction, protect pre-existing conditions"],
@@ -1418,26 +1437,25 @@ const HOUSE_RACES = {
             supporters: ["An authentic labour organiser's profile in a working-class district","Ran unopposed, so he enters the general with a unified party","His affordability and rural-health message maps onto the district's actual economics"],
             opponents: ["Outraised roughly 31 to one, with under $14,000 on hand","No rater lists MI-5 as anything but Solid or Safe R at R+13","No independent or party polling of this race could be located [Verify — an absence of located records]"] },
           { name: "Ronald A. Muszynski", party: "L", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Libertarian nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives libertarian voters a ballot line of their own [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
           { name: "Sharon Marie Renier", party: "I", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["U.S. Taxpayers nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Offers an alternative to both major-party nominees [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["A name-match with a 2000s Democratic candidate against Walberg was NOT confirmed and is not asserted here [Verify]","No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
           { name: "Jim Bronke", party: "G", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Green nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] }
         ] }
     ] },
-  6: { name: "U.S. House — Michigan District 6", region: "All of Washtenaw County — Ann Arbor, Ypsilanti, Chelsea, Dexter, Saline — plus western and southern Wayne (Canton, Plymouth, Trenton, Woodhaven, Belleville, Grosse Ile), a slice of southwestern Oakland and Milan in Monroe",
+  6: { name: "U.S. House — MI District 6", region: "All of Washtenaw County — Ann Arbor, Ypsilanti, Chelsea, Dexter, Saline — plus western and southern Wayne (Canton, Plymouth, Trenton, Woodhaven, Belleville, Grosse Ile), a slice of southwestern Oakland and Milan in Monroe",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "BOTH NOMINEES WERE UNOPPOSED, AND THE PRIMARY TURNOUT GAP IS THE WHOLE STORY OF THIS SEAT: Democrats cast 150,919 votes to Republicans' 47,757, a 3.2-to-1 margin. Official Secretary of State results, both at 100%. Cook PVI D+12; Solid or Safe D at all three raters. Six candidates are on the November ballot, the longest in the state.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "BOTH NOMINEES WERE UNOPPOSED, AND THE PRIMARY TURNOUT GAP IS THE WHOLE STORY OF THIS SEAT: Democrats cast 150,919 votes to Republicans' 47,757, a 3.2-to-1 margin. Official Secretary of State results, both at 100%. Cook PVI D+12; Solid or Safe D at all three raters. Six candidates are on the November ballot, the longest in the state.",
         candidates: [
           { name: "Debbie Dingell (incumbent)", party: "D", winner: false,
             positions: ["Environment and the Great Lakes — she calls climate change a real problem requiring proactive solutions","Health care — her framing is that living in America should mean a right to quality care, plus lowering costs","Labour, manufacturing and the auto industry — fighting to create jobs and stabilise the region"],
@@ -1450,31 +1468,30 @@ const HOUSE_RACES = {
             supporters: ["A 30-year auto-industry insider offers a manufacturing critique in a district defined by the auto economy","She has run here before and knows the terrain","She has published specific roll-call contrasts rather than generalities"],
             opponents: ["MI-6 is D+12 and rated Solid or Safe D by all three raters, and Democratic primary turnout tripled Republican turnout","No FEC fundraising total for her could be located, and her own site's donation page still says the campaign's finances are being set up [Verify — an absence of located records; an FEC rate limit also blocked a direct pull]","Her published resource list is drawn entirely from partisan outlets, which critics use to argue narrow appeal in a district anchored by Ann Arbor [Verify — structural argument]"] },
           { name: "Timothy A. Teagan", party: "L", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Libertarian nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives libertarian voters a ballot line of their own [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
           { name: "Michael Mickevicius", party: "I", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["U.S. Taxpayers nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Offers an alternative to both major-party nominees [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
           { name: "Clyde Shabazz", party: "G", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Green nominee, chosen at party convention","Also the Green nominee in MI-14 in 2020 and in this district in 2024","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
           { name: "Linda Rayburn", party: "I", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Working Class nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] }
         ] }
     ] },
-  7: { name: "U.S. House — Michigan District 7", region: "The Lansing–East Lansing metro — all of Ingham, Clinton, Shiawassee and Livingston (Lansing, East Lansing, Howell, Brighton, Owosso), most of Eaton, parts of Oakland and Genesee",
+  7: { name: "U.S. House — MI District 7", region: "The Lansing–East Lansing metro — all of Ingham, Clinton, Shiawassee and Livingston (Lansing, East Lansing, Howell, Brighton, Owosso), most of Eaton, parts of Oakland and Genesee",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "MICHIGAN'S MARQUEE RACE, THE ONLY DISTRICT IN THE STATE AT COOK PVI EVEN, AND A TOSS-UP AT ALL THREE RATERS. ⚠⚠ AND IT PRODUCED THE STATE'S BIGGEST PRIMARY UPSET: WILLIAM LAWRENCE BEAT BOTH ESTABLISHMENT FAVOURITES BY NEARLY 15 POINTS WHILE RAISING THE LEAST MONEY OF THE THREE. Official results: Lawrence 55,933 (43.65%), Bridget Brink 36,885 (28.79%), Matt Maasdam 35,315 (27.56%). Brink — the former U.S. Ambassador to Ukraine — had EMILYs List, the Detroit Free Press and $2,977,601, and came second. Maasdam — a retired Navy SEAL endorsed by Sen. Elissa Slotkin, who held this exact seat — raised $2,126,381 and came THIRD. Lawrence raised $1,119,197 and won outright. Barrett was unopposed at 72,468. ⚠ BOTH PUBLIC GENERAL-ELECTION POLLS ARE DEMOCRATIC-SPONSORED: Global Strategy Group for House Majority PAC had Lawrence 49–47 (Aug 11–13) and Data for Progress for Lawrence had him 48–46 (Jun 24–30) — though that same poll showed Barrett AHEAD of both Brink and Maasdam, so Lawrence was the only Democrat it showed leading. ⚠ Michigan Advance lists Working Class candidate Felix Thibodeau on this ballot; the Secretary of State's own listing marks him DISQUALIFIED. The state's list governs.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "MICHIGAN'S MARQUEE RACE, THE ONLY DISTRICT IN THE STATE AT COOK PVI EVEN, AND A TOSS-UP AT ALL THREE RATERS. ⚠⚠ AND IT PRODUCED THE STATE'S BIGGEST PRIMARY UPSET: WILLIAM LAWRENCE BEAT BOTH ESTABLISHMENT FAVOURITES BY NEARLY 15 POINTS WHILE RAISING THE LEAST MONEY OF THE THREE. Official results: Lawrence 55,933 (43.65%), Bridget Brink 36,885 (28.79%), Matt Maasdam 35,315 (27.56%). Brink — the former U.S. Ambassador to Ukraine — had EMILYs List, the Detroit Free Press and $2,977,601, and came second. Maasdam — a retired Navy SEAL endorsed by Sen. Elissa Slotkin, who held this exact seat — raised $2,126,381 and came THIRD. Lawrence raised $1,119,197 and won outright. Barrett was unopposed at 72,468. ⚠ BOTH PUBLIC GENERAL-ELECTION POLLS ARE DEMOCRATIC-SPONSORED: Global Strategy Group for House Majority PAC had Lawrence 49–47 (Aug 11–13) and Data for Progress for Lawrence had him 48–46 (Jun 24–30) — though that same poll showed Barrett AHEAD of both Brink and Maasdam, so Lawrence was the only Democrat it showed leading. ⚠ Michigan Advance lists Working Class candidate Felix Thibodeau on this ballot; the Secretary of State's own listing marks him DISQUALIFIED. The state's list governs.",
         candidates: [
           { name: "Tom Barrett (incumbent)", party: "R", winner: false,
             positions: ["Veterans' employment and services — he entered politics after finding Michigan had the nation's second-highest veteran unemployment rate","Transportation and infrastructure, from his seat on that committee","No third published policy position could be located [Verify — barrett.house.gov/issues renders empty, two other paths 404, and his campaign site has no issues section]"],
@@ -1487,16 +1504,15 @@ const HOUSE_RACES = {
             supporters: ["He beat two far better-funded, nationally credentialed opponents by 15 points, which is real evidence of organising capacity","He was the only Democrat tested who led Barrett in the June poll, and he leads in the August one","Labour and environmental groups that had backed his rivals moved to him within weeks"],
             opponents: ["Outraised more than five to one, entering the general with $2.5 million less on hand","Cook's own analysis treats his record as Barrett's central opportunity in a PVI-EVEN seat","Mainstream Democrats spent the primary arguing explicitly that he was too far left to hold this district","He has never held elected office, against an incumbent with eight years in the state Senate and 22 in the Army"] },
           { name: "Shane Dedrick", party: "G", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Green nominee, chosen at party convention","Filed by convention on Apr 27, 2026","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["In a genuine toss-up decided at the margin, this is the one Michigan district where a minor-party share could plausibly matter [Verify — structural argument]","Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] }
         ] }
     ] },
-  8: { name: "U.S. House — Michigan District 8", region: "The Saginaw Bay — Flint, Saginaw, Bay City and Midland; all of Saginaw and Bay counties, most of Genesee, parts of Midland and Tuscola",
+  8: { name: "U.S. House — MI District 8", region: "The Saginaw Bay — Flint, Saginaw, Bay City and Midland; all of Saginaw and Bay counties, most of Genesee, parts of Midland and Tuscola",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "⚠⚠ A CANDIDATE WHO HAD SUSPENDED HIS CAMPAIGN BEAT TRUMP'S ENDORSEE OUTRIGHT. Thomas J. Smith suspended in mid-July 2026 and endorsed a rival — then won the Republican primary with 50.44%. Amir Hassan had Trump's Truth Social endorsement and a place on stage at his July 27 rally, and had raised over $700,000 to Smith's $1,850; he took 33.18%. Official results: Smith 31,283, Hassan 20,579, Alfred Lemmo 10,159. ✅ SMITH ACCEPTED AND IS CAMPAIGNING — verified three ways: the Secretary of State's own general listing carries him with no disqualification or withdrawal; he said publicly he was humbled and honoured to take the fight to the incumbent; and the FEC shows $243,238 raised and $219,799 on hand through Aug 24, roughly $241,000 of it raised AFTER the primary from a $1,850 base. McDonald Rivet was unopposed at 104,783. Cook PVI R+1. ⚠ THE RATERS SPLIT THREE WAYS: Inside Elections moved it Likely D to SOLID D on Aug 6, two days after the primary; Cook and Sabato both still say Likely D.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "⚠⚠ A CANDIDATE WHO HAD SUSPENDED HIS CAMPAIGN BEAT TRUMP'S ENDORSEE OUTRIGHT. Thomas J. Smith suspended in mid-July 2026 and endorsed a rival — then won the Republican primary with 50.44%. Amir Hassan had Trump's Truth Social endorsement and a place on stage at his July 27 rally, and had raised over $700,000 to Smith's $1,850; he took 33.18%. Official results: Smith 31,283, Hassan 20,579, Alfred Lemmo 10,159. ✅ SMITH ACCEPTED AND IS CAMPAIGNING — verified three ways: the Secretary of State's own general listing carries him with no disqualification or withdrawal; he said publicly he was humbled and honoured to take the fight to the incumbent; and the FEC shows $243,238 raised and $219,799 on hand through Aug 24, roughly $241,000 of it raised AFTER the primary from a $1,850 base. McDonald Rivet was unopposed at 104,783. Cook PVI R+1. ⚠ THE RATERS SPLIT THREE WAYS: Inside Elections moved it Likely D to SOLID D on Aug 6, two days after the primary; Cook and Sabato both still say Likely D.",
         candidates: [
           { name: "Kristen McDonald Rivet (incumbent)", party: "D", winner: false,
             positions: ["Lowering costs","Health-care affordability","Working with both parties to get things done"],
@@ -1509,26 +1525,25 @@ const HOUSE_RACES = {
             supporters: ["Winning an outright majority with essentially no money and no campaign is real evidence of name recognition and grassroots appeal in a district he grew up in","He has raised roughly $241,000 in the weeks since, which suggests the party is consolidating behind him","He accepted the nomination publicly and is on the state's certified ballot"],
             opponents: ["He publicly quit the race and endorsed a rival, which invites questions about commitment and durability [Verify — structural argument; the suspension is documented but no named critic has made this argument]","He starts with roughly a 19-to-one cash disadvantage","The district's most engaged Republican voters backed a candidate he had told them to support instead"] },
           { name: "C. Mia Pettus", party: "L", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Libertarian nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives libertarian voters a ballot line of their own [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
           { name: "Jim Casha", party: "G", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Green nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
           { name: "Kathy Goodwin", party: "I", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Working Class nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] }
         ] }
     ] },
-  9: { name: "U.S. House — Michigan District 9", region: "The Thumb — Port Huron plus the northern Detroit exurbs; all of Huron, Lapeer, St. Clair and Sanilac, parts of Macomb, Oakland and Tuscola",
+  9: { name: "U.S. House — MI District 9", region: "The Thumb — Port Huron plus the northern Detroit exurbs; all of Huron, Lapeer, St. Clair and Sanilac, parts of Macomb, Oakland and Tuscola",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "THE SAFEST SEAT IN MICHIGAN AND THE HIGHEST-RANKING MEMBER. Lisa McClain chairs the House Republican Conference, the number-four position in House leadership, and was re-elected in 2024 with 66.8%. Both nominees were unopposed: McClain 103,344 (100%), Pooley 74,387 (100%) on the Secretary of State's official results. Cook PVI R+16; Solid or Safe R at all three raters. ⚠ A DISCREPANCY WORTH NAMING: Michigan Advance's voter guide states that independents Jasen Cartwright and Fernando Valdez are also on this ballot. Neither name appears anywhere in the Secretary of State's own candidate listing — which does otherwise include No Party Affiliation candidates elsewhere in the state, so this is not a formatting artefact. They are NOT carded here.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "THE SAFEST SEAT IN MICHIGAN AND THE HIGHEST-RANKING MEMBER. Lisa McClain chairs the House Republican Conference, the number-four position in House leadership, and was re-elected in 2024 with 66.8%. Both nominees were unopposed: McClain 103,344 (100%), Pooley 74,387 (100%) on the Secretary of State's official results. Cook PVI R+16; Solid or Safe R at all three raters. ⚠ A DISCREPANCY WORTH NAMING: Michigan Advance's voter guide states that independents Jasen Cartwright and Fernando Valdez are also on this ballot. Neither name appears anywhere in the Secretary of State's own candidate listing — which does otherwise include No Party Affiliation candidates elsewhere in the state, so this is not a formatting artefact. They are NOT carded here.",
         candidates: [
           { name: "Lisa McClain (incumbent)", party: "R", winner: false,
             positions: ["Agriculture and the Great Lakes","Jobs, the economy and national security","Veterans' services"],
@@ -1541,31 +1556,30 @@ const HOUSE_RACES = {
             supporters: ["A working machinist is a natural messenger in a manufacturing region and a direct contrast to a multimillionaire incumbent","He is unbought by definition, having raised almost nothing","He ran unopposed, so he enters the general with a unified party"],
             opponents: ["He faces essentially insurmountable odds in an R+16 seat rated Solid or Safe R by every rater, against an incumbent who won by 33 points","$8,084 is not enough to run a district-wide campaign in a media market that includes Detroit","No polling of this race could be located [Verify — an absence of located records]"] },
           { name: "Kevin Vayko", party: "L", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Libertarian nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives libertarian voters a ballot line of their own [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
           { name: "John Vlahos", party: "I", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["U.S. Taxpayers nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Offers an alternative to both major-party nominees [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
           { name: "Destiny Clayton", party: "G", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Green nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
           { name: "Jim Walkowicz", party: "I", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Working Class nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] }
         ] }
     ] },
-  10: { name: "U.S. House — Michigan District 10", region: "Southern Macomb County — Warren and Sterling Heights — plus Rochester and Rochester Hills in eastern Oakland",
+  10: { name: "U.S. House — MI District 10", region: "Southern Macomb County — Warren and Sterling Heights — plus Rochester and Rochester Hills in eastern Oakland",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "AN OPEN SEAT AND A TOSS-UP: JOHN JAMES VACATED IT TO RUN FOR GOVERNOR, AND WON THAT PRIMARY WITH 50.05%. He had held MI-10 with 51.1% in 2024. Cook PVI R+3. ⚠ THE RATINGS HAVE MOVED AND OUR OWN EARLIER NOTE WAS STALE: Cook and Sabato (Aug 26) both now call it a pure TOSS UP; only Inside Elections still says Tilt R, on a rating dated Dec 5, 2025, before the field was even known. ⚠ THE TURNOUT TELL: Democrats cast 99,982 primary votes to Republicans' 62,981 in an R+3 open seat. Official results: Bouchard 45,482 (72.22%) over Justin Kirk, Robert Lulgjuraj and Steffan Demetropoulos — Lulgjuraj withdrew but stayed on the ballot after raising $1.29 million; Hines 47,005 (47.01%) over Eric Chung 29,662 and Tim Greimel 23,315. ⚠ Chung OUTRAISED Hines $1.92M to $1.21M and still lost by 17 points.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "AN OPEN SEAT AND A TOSS-UP: JOHN JAMES VACATED IT TO RUN FOR GOVERNOR, AND WON THAT PRIMARY WITH 50.05%. He had held MI-10 with 51.1% in 2024. Cook PVI R+3. ⚠ THE RATINGS HAVE MOVED AND OUR OWN EARLIER NOTE WAS STALE: Cook and Sabato (Aug 26) both now call it a pure TOSS UP; only Inside Elections still says Tilt R, on a rating dated Dec 5, 2025, before the field was even known. ⚠ THE TURNOUT TELL: Democrats cast 99,982 primary votes to Republicans' 62,981 in an R+3 open seat. Official results: Bouchard 45,482 (72.22%) over Justin Kirk, Robert Lulgjuraj and Steffan Demetropoulos — Lulgjuraj withdrew but stayed on the ballot after raising $1.29 million; Hines 47,005 (47.01%) over Eric Chung 29,662 and Tim Greimel 23,315. ⚠ Chung OUTRAISED Hines $1.92M to $1.21M and still lost by 17 points.",
         candidates: [
           { name: "Christina Bertrand Hines", party: "D", winner: false,
             positions: ["Lower costs, protect families and defend democracy","Published plans on health care and on protecting Michigan's water","Disability rights and overturning Citizens United"],
@@ -1578,26 +1592,25 @@ const HOUSE_RACES = {
             supporters: ["A decorated combat veteran fits a district built around the Arsenal of Democracy defence-manufacturing base","He won his primary with 72% and enters the autumn with a commanding cash advantage","Trump's endorsement consolidates a base that matters in Macomb County"],
             opponents: ["He has never held elected office, and his own campaign biography leads with his father — opponents can frame his rise as trading on the family name [Verify — structural argument]","His primary was won in a contest where Democrats cast 59% more votes district-wide","A Trump endorsement is a mixed asset in a toss-up seat — and in MI-8 this year, one did not even carry its own primary"] },
           { name: "Mike Saliba", party: "L", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Libertarian nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["In a toss-up decided by a narrow margin, minor-party candidates can matter arithmetically even at low vote shares [Verify — structural argument]","Gives libertarian voters a ballot line of their own [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
           { name: "Kwabena Nkromo", party: "G", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Green nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
           { name: "Andrea L. Kirby", party: "I", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Working Class nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] }
         ] }
     ] },
-  11: { name: "U.S. House — Michigan District 11", region: "Entirely within Oakland County — Royal Oak, Pontiac, Troy and the Southfield area",
+  11: { name: "U.S. House — MI District 11", region: "Entirely within Oakland County — Royal Oak, Pontiac, Troy and the Southfield area",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "AN OPEN SEAT, BECAUSE HALEY STEVENS GAVE IT UP FOR A SENATE RACE SHE THEN LOST. Abdul El-Sayed won that Democratic Senate primary with 744,952 votes (48.45%). Cook labels this seat OPEN (Stevens). Cook PVI D+9; Solid or Safe D at all three raters. ⚠ THE TURNOUT TELL: 151,327 Democratic primary votes to 50,179 Republican, a three-to-one gap. Official results: Moss 75,449 (49.86%), Aisha Farooqi 47,722 (31.54%), John Paul Torres 15,627, Don Ufford 12,529 — Ufford raised $1.02 million and finished fourth with 8%. Baker was unopposed at 50,179. ⚠ Note that Moss finished just UNDER 50% in his own primary.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "AN OPEN SEAT, BECAUSE HALEY STEVENS GAVE IT UP FOR A SENATE RACE SHE THEN LOST. Abdul El-Sayed won that Democratic Senate primary with 744,952 votes (48.45%). Cook labels this seat OPEN (Stevens). Cook PVI D+9; Solid or Safe D at all three raters. ⚠ THE TURNOUT TELL: 151,327 Democratic primary votes to 50,179 Republican, a three-to-one gap. Official results: Moss 75,449 (49.86%), Aisha Farooqi 47,722 (31.54%), John Paul Torres 15,627, Don Ufford 12,529 — Ufford raised $1.02 million and finished fourth with 8%. Baker was unopposed at 50,179. ⚠ Note that Moss finished just UNDER 50% in his own primary.",
         candidates: [
           { name: "Jeremy Moss", party: "D", winner: false,
             positions: ["Guarantee health care — supports a robust public option as a pathway to universal coverage, restoring Medicaid and SNAP cuts, banning aggressive medical-debt collection","Tackling the cost of living","Holding ICE accountable and fixing the immigration system"],
@@ -1605,31 +1618,30 @@ const HOUSE_RACES = {
             supporters: ["Near-total consolidation of Michigan's Democratic establishment behind a legislator with a concrete state record on gun safety, reproductive rights and senior tax relief","A D+9 seat rated Solid or Safe D by all three raters","A three-to-one primary turnout advantage over Republicans"],
             opponents: ["He took under 50% in his own primary, with nearly a third going to a progressive challenger — a real left flank to reunify","An open seat with no incumbent is structurally more volatile than a defended one [Verify — structural argument]","His pro-Israel endorsements sit awkwardly with part of the coalition that backed his primary opponent [Verify — structural argument]"] },
           { name: "Ethan Baker", party: "R", winner: false,
-            positions: ["Depolarisation — his platform is framed around listening, leading and uniting rather than issue planks","No itemised policy positions could be located on his campaign site [Verify — an absence of located records]",""],
+            positions: ["Depolarisation — his platform is framed around listening, leading and uniting rather than issue planks","No itemised policy positions could be located on his campaign site [Verify — an absence of located records]"],
             differentiators: ["Mayor of Troy since 2019 and on the city council from 2015 — Troy is the largest city in the district","Runs Troy as an explicitly nonpartisan office","$141,876 raised, $121,125 on hand (FEC, July 15, 2026)"],
             supporters: ["A sitting big-city mayor with seven years of executive experience is a far stronger nominee than this seat usually attracts","A unity-and-civility message is plausibly tailored to affluent, college-educated Oakland County suburbs that have swung away from the national party","He holds real local office in the district's biggest city"],
             opponents: ["D+9 and rated Solid or Safe D by all three raters","Outraised roughly ten to one, entering the autumn with about a tenth of Moss's money","Republicans cast a third as many primary votes as Democrats district-wide"] },
           { name: "Anil Kumar", party: "I", winner: false,
-            positions: ["No positions are attributed here [Verify — two plausible campaign domains resolve but neither could be authenticated as his, and this page does not attribute positions to an unverified site]","",""],
+            positions: ["No positions are attributed here [Verify — two plausible campaign domains resolve but neither could be authenticated as his, and this page does not attribute positions to an unverified site]"],
             differentiators: ["Member of the Wayne State University Board of Governors","Ran in the Democratic primary before switching to an independent bid, qualifying by petition on July 15","$712,923 raised — $640,000 of it self-funded — with $407,720 on hand (FEC, through June 30, 2026)","That is nearly three times Ethan Baker's cash on hand"],
             supporters: ["The best-funded non-major-party candidate in Michigan by a wide margin","He holds real elected office at a major university","An independent line in a seat where the Republican is outspent ten to one is a genuine third option [Verify — structural argument]"],
             opponents: ["Independents without ballot-line infrastructure rarely clear low single digits in Michigan House races [Verify — structural argument]","The bulk of his money is his own rather than demonstrated grassroots support","He is described in reporting as a perennial candidate [Verify — the characterisation is from reporting, not independently established]"] },
           { name: "Farid Ishac", party: "L", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Libertarian nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives libertarian voters a ballot line of their own [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
           { name: "Ryan Teasdale", party: "G", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Green nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] }
         ] }
     ] },
-  12: { name: "U.S. House — Michigan District 12", region: "Northern Wayne County — Dearborn, Dearborn Heights, Southfield, Westland and Inkster",
+  12: { name: "U.S. House — MI District 12", region: "Northern Wayne County — Dearborn, Dearborn Heights, Southfield, Westland and Inkster",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "⚠ THIS DISTRICT IS THE PLURALITY OF NO COUNTY, AND WITHOUT THE MULTI-DISTRICT MODEL ITS VOTERS WOULD NEVER SEE THIS RACE. It is the runner-up in Wayne behind MI-13 and third in Oakland. TLAIB WON HER PRIMARY BY 57 POINTS DESPITE TWO CREDIBLE CHALLENGERS AND TWO ADVERSE NEWSPAPER ENDORSEMENTS. Official results: Tlaib 102,707 (73.91%), former state Rep. Shanelle Jackson 23,419 (16.85%), Inkster Mayor Byron Nolen 12,828 (9.23%); the Detroit News and Michigan Chronicle had both endorsed Jackson. Hooper was unopposed at 24,610. Cook PVI D+21; Solid or Safe D at all three raters.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "⚠ THIS DISTRICT IS THE PLURALITY OF NO COUNTY, AND WITHOUT THE MULTI-DISTRICT MODEL ITS VOTERS WOULD NEVER SEE THIS RACE. It is the runner-up in Wayne behind MI-13 and third in Oakland. TLAIB WON HER PRIMARY BY 57 POINTS DESPITE TWO CREDIBLE CHALLENGERS AND TWO ADVERSE NEWSPAPER ENDORSEMENTS. Official results: Tlaib 102,707 (73.91%), former state Rep. Shanelle Jackson 23,419 (16.85%), Inkster Mayor Byron Nolen 12,828 (9.23%); the Detroit News and Michigan Chronicle had both endorsed Jackson. Hooper was unopposed at 24,610. Cook PVI D+21; Solid or Safe D at all three raters.",
         candidates: [
           { name: "Rashida Tlaib (incumbent)", party: "D", winner: false,
             positions: ["Direct federal funding for local communities — she says she has secured more than $68 million","Fighting systems that hurt people, and community-rooted representation","A self-identified member of the Democratic Socialists of America"],
@@ -1642,26 +1654,25 @@ const HOUSE_RACES = {
             supporters: ["A repeat nominee with county party leadership experience gives the district's Republicans a real ballot option","A compelling personal biography of service and caregiving","He knows the district, having run here before"],
             opponents: ["$775 raised is not a funded campaign by any measure, against an incumbent with $3.4 million banked","D+21 with universal Solid or Safe D ratings","He has run here before without winning [Verify — structural argument]"] },
           { name: "Marc Joseph Sosnowski", party: "I", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["U.S. Taxpayers nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Offers an alternative to both major-party nominees [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
           { name: "Brenda K. Sanders", party: "G", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Green nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
           { name: "Gary Walkowicz", party: "I", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Working Class nominee, chosen at party convention","A recurring Working Class Party candidate in the Detroit area [Verify — biography and current campaign activity not independently confirmed]","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] }
         ] }
     ] },
-  13: { name: "U.S. House — Michigan District 13", region: "Entirely within Wayne County — most of Detroit plus Taylor and Romulus",
+  13: { name: "U.S. House — MI District 13", region: "Entirely within Wayne County — most of Detroit plus Taylor and Romulus",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
-        note: "⚠⚠ AN INCUMBENT CONGRESSMAN WAS DEFEATED, SO THIS SEAT IS EFFECTIVELY OPEN. Donavan McKinney beat Rep. Shri Thanedar 57,746 (51.70%) to 53,522 (47.91%) — a margin of 4,224 votes. Thanedar holds the seat until January 2027 but will not be on the November ballot, and Cook now lists the race as OPEN (Thanedar). ⚠ THANEDAR REPORTED $5,029,239 CASH ON HAND, MUCH OF IT SELF-FUNDED, AND STILL LOST. ⚠ The last public poll had it the other way: Data for Progress (July 9–15, sponsored by Justice Democrats, which backed McKinney) showed Thanedar ahead 46–42, so McKinney outperformed it. The win is widely described as likely restoring Black representation to a roughly 75% Black Detroit district for the first time since 2023. Nykoriak won the Republican primary with 99.48% of 18,574 votes. Cook PVI D+22; Solid or Safe D at all three raters. ⚠ THREE CANDIDATES WERE DISQUALIFIED and are NOT on the ballot: D. Etta Wilcoxon (Green), Shelby Campbell and Maurice Morton (both No Party Affiliation). Morton matters — he raised $133,714 and is described elsewhere as a declared independent — but the state's list marks him disqualified, so he is not carded.",
+      { date: "Nov 3, 2026", type: "upcoming", note: "⚠⚠ AN INCUMBENT CONGRESSMAN WAS DEFEATED, SO THIS SEAT IS EFFECTIVELY OPEN. Donavan McKinney beat Rep. Shri Thanedar 57,746 (51.70%) to 53,522 (47.91%) — a margin of 4,224 votes. Thanedar holds the seat until January 2027 but will not be on the November ballot, and Cook now lists the race as OPEN (Thanedar). ⚠ THANEDAR REPORTED $5,029,239 CASH ON HAND, MUCH OF IT SELF-FUNDED, AND STILL LOST. ⚠ The last public poll had it the other way: Data for Progress (July 9–15, sponsored by Justice Democrats, which backed McKinney) showed Thanedar ahead 46–42, so McKinney outperformed it. The win is widely described as likely restoring Black representation to a roughly 75% Black Detroit district for the first time since 2023. Nykoriak won the Republican primary with 99.48% of 18,574 votes. Cook PVI D+22; Solid or Safe D at all three raters. ⚠ THREE CANDIDATES WERE DISQUALIFIED and are NOT on the ballot: D. Etta Wilcoxon (Green), Shelby Campbell and Maurice Morton (both No Party Affiliation). Morton matters — he raised $133,714 and is described elsewhere as a declared independent — but the state's list marks him disqualified, so he is not carded.",
         candidates: [
           { name: "Donavan McKinney", party: "D", winner: false,
             positions: ["Economic security, living wages and union jobs — the right to organise","Raising taxes on billionaires and corporations to fund housing, education and clean air and water","Running against career politicians and multimillionaires"],
@@ -1669,22 +1680,22 @@ const HOUSE_RACES = {
             supporters: ["He beat a self-funding incumbent while being outspent, which supporters read as proof that organising beats money","His election would restore Black congressional representation to a majority-Black Detroit district","Deep labour backing in a labour city"],
             opponents: ["He won by under four points — about 4,200 votes — so a substantial share of the district preferred the incumbent","His democratic-socialist label and billionaire-tax platform are to the left of the national party, which critics argue limits his effectiveness in a closely divided House","He enters the general with only $142,854 on hand after a costly primary"] },
           { name: "T.P. Nykoriak", party: "R", winner: false,
-            positions: ["No campaign website, platform or issue statements could be located [Verify — an absence of located records; searched by name and by district]","",""],
+            positions: ["No campaign website, platform or issue statements could be located [Verify — an absence of located records; searched by name and by district]"],
             differentiators: ["Won the Republican nomination with 99.48% in an uncontested primary","Described in reporting as a perennial candidate [Verify — the characterisation is from reporting]","He was unopposed only because both would-be rivals, Martell Bivings and Raphiel King, were disqualified","$0.00 raised — the FEC shows no receipts"],
             supporters: ["He gives the district's Republican voters a ballot line in a seat where the party often struggles to field anyone [Verify — structural argument]","18,478 people voted for him in the primary"],
             opponents: ["No campaign fundraising could be located in FEC filings — the record shows $0 raised","No campaign website or platform of any kind was found [Verify — an absence of located records]","D+22, rated Solid or Safe D by all three raters, in a district where Republicans cast 18,574 primary votes to Democrats' 111,704 — a six-to-one gap"] },
           { name: "Chris Dardzinski", party: "I", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["U.S. Taxpayers nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Offers an alternative to both major-party nominees [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
           { name: "Raelyn Light", party: "G", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Green nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] },
           { name: "Simone R. Coleman", party: "I", winner: false,
-            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
             differentiators: ["Working Class nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
             supporters: ["Gives voters to the left of the Democratic nominee a ballot line [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
             opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"] }
@@ -1718,8 +1729,16 @@ function drawCapital(g, projection, cap) {
     return "M" + pts.map(p => p.join(",")).join("L") + "Z";
   };
   const grp = g.append("g").attr("class", "capital-marker");
-  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
-  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+  grp.append("path").attr("class", "capital-star").attr("d", star(0, 0, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", 10).attr("y", 3).text(cap.name);
+  // Constant on-screen size: scale the marker by viewBox-units-per-CSS-pixel, and again on resize.
+  const svgEl = g.node().ownerSVGElement;
+  const fit = () => {
+    const k = svgEl.viewBox.baseVal.width / Math.max(1, svgEl.getBoundingClientRect().width);
+    grp.attr("transform", `translate(${x},${y}) scale(${k})`);
+  };
+  fit();
+  window.addEventListener("resize", fit);
 }
 
 
@@ -1767,22 +1786,46 @@ function getCountyElections(fips) {
 const MI_STATE_FIPS = "26";
 const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
 
-const svg     = d3.select("#mimap");
+if (typeof d3 === "undefined" || typeof topojson === "undefined" || typeof d3.json !== "function") {
+  document.getElementById("map-loading").innerHTML = "The interactive map didn\u2019t load \u2014 a script it needs was blocked. <button type=\"button\" class=\"brief-more\" onclick=\"location.reload()\">Try again</button>";
+  document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+  document.getElementById("stat-statewide").textContent = STATEWIDE.filter(r => r.type === "upcoming").length;
+  throw new Error("map libraries did not load");
+}
+const svg = d3.select("#mimap");
 const tooltip = document.getElementById("tooltip");
 const panel   = document.getElementById("panel");
 const overlay = document.getElementById("overlay");
 const loading = document.getElementById("map-loading");
+const UNIT = "County";
 
 document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+document.getElementById("stat-statewide").textContent = STATEWIDE.filter(r => r.type === "upcoming").length;
 
+// "Richmond City County" and "Baltimore City County" are not places. Independent cities and
+// Louisiana parishes get the right word; two real Virginia counties happen to end in "City".
+const placeLabel = (c) => (/\bCity$/.test(c.n) && c.fips !== "51036" && c.fips !== "51095") ? c.n : c.n + " " + UNIT;
+// Hovering re-sorted every race on every pointer move; the answer never changes per county.
+const electionsCache = new Map();
+const countyElections = (fips) => { if (!electionsCache.has(fips)) electionsCache.set(fips, getCountyElections(fips)); return electionsCache.get(fips); };
+const HOVER = window.matchMedia && window.matchMedia("(hover: hover)").matches;
+
+loadMap();
+
+function loadMap() {
 d3.json(TOPO_URL).then((us) => {
   const allCounties = topojson.feature(us, us.objects.counties).features;
   const ncCounties  = allCounties.filter(d => String(d.id).startsWith(MI_STATE_FIPS));
 
-  const width  = 1000;
-  const height = 1000;
+  // Read the drawing size from the SVG's own viewBox, so the state's shape lives in one place.
+  const { width, height } = (() => { const vb = svg.node().viewBox.baseVal; return { width: vb.width || 1000, height: vb.height || 1000 }; })();
 
-  const projection = d3.geoAlbers()
+  // A conic equal-area CENTRED ON THIS STATE, so north is up and the shape matches the official
+  // state map. d3.geoAlbers() at its default -96° meridian tilted the far states by 12–37°.
+  const [[lonMin, latMin], [lonMax, latMax]] = d3.geoBounds({ type: "FeatureCollection", features: ncCounties });
+  const projection = d3.geoConicEqualArea()
+    .rotate([-(lonMin + lonMax) / 2, 0])
+    .parallels([latMin + (latMax - latMin) / 6, latMax - (latMax - latMin) / 6])
     .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
   const path = d3.geoPath().projection(projection);
 
@@ -1798,41 +1841,59 @@ d3.json(TOPO_URL).then((us) => {
       })
       .attr("data-fips", d => String(d.id).padStart(5, "0"))
       .attr("d", path)
+      // A keyboard or screen-reader user must be able to open a county too.
+      .attr("tabindex", 0)
+      .attr("role", "button")
+      .attr("aria-label", d => { const c = COUNTIES[String(d.id).padStart(5, "0")]; return c ? placeLabel({ ...c, fips: String(d.id).padStart(5, "0") }) : "Not in this dataset"; })
       .on("mousemove", (event, d) => {
+        if (!HOVER) return;
         const fips = String(d.id).padStart(5, "0");
-        const built = getCountyElections(fips);
+        const built = countyElections(fips);
         if (built) {
           const upcoming = built.elections.filter(e => e.type === "upcoming").length;
           const past = built.elections.filter(e => e.type === "past").length;
+          const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
           tooltip.innerHTML = `
-            <strong>${built.county.n} County</strong>
-            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+            <strong>${esc(placeLabel({ ...built.county, fips }))}</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · District${ds.length > 1 ? "s" : ""} ${ds.join(" & ")}</div>`;
         } else {
-          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+          tooltip.innerHTML = `FIPS ${esc(fips)}<div class="tooltip-meta">Not in this dataset</div>`;
         }
         tooltip.style.opacity = 1;
         const rect = svg.node().getBoundingClientRect();
-        tooltip.style.left = (event.clientX - rect.left) + "px";
-        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+        const x = event.clientX - rect.left, y = event.clientY - rect.top;
+        // Flip below the cursor near the top edge; keep the box inside the map horizontally.
+        tooltip.classList.toggle("below", y < tooltip.offsetHeight + 28);
+        const half = tooltip.offsetWidth / 2 + 8;
+        tooltip.style.left = Math.max(half, Math.min(rect.width - half, x)) + "px";
+        tooltip.style.top  = y + "px";
       })
       .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("keydown", (event, d) => {
+        if (event.key === "Enter" || event.key === " ") { event.preventDefault(); event.currentTarget.dispatchEvent(new MouseEvent("click", { bubbles: true })); }
+      })
       .on("click", (event, d) => {
         const fips = String(d.id).padStart(5, "0");
+        tooltip.style.opacity = 0;
         document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
         event.currentTarget.classList.add("selected");
-        openPanel(fips);
+        openPanel(fips, event.currentTarget);
       });
 
-  // ---- Capital marker: Columbus ----
+  // ---- Capital marker: Lansing ----
   drawCapital(g, projection, { name: "Lansing", lng: -84.5555, lat: 42.7325 });
 
   loading.style.display = "none";
 }).catch((err) => {
-  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+  if (window.console && console.error) console.error("[map] " + (err && err.message ? err.message : err));
+  loading.innerHTML = "The interactive map didn\u2019t load. <button type=\"button\" class=\"brief-more\" id=\"map-retry\">Try again</button>";
+  document.getElementById("map-retry").addEventListener("click", () => { loading.textContent = "Loading map\u2026"; loadMap(); });
 });
+}
 
-function openPanel(fips) {
-  const built = getCountyElections(fips);
+let lastFocus = null;
+function openPanel(fips, fromEl) {
+  const built = countyElections(fips);
   const body  = document.getElementById("panel-body");
   const title = document.getElementById("panel-title");
   const eyebrow = document.getElementById("panel-eyebrow");
@@ -1844,17 +1905,29 @@ function openPanel(fips) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn't in our Michigan dataset.</p></div>`;
   } else {
-    eyebrow.textContent = `Congressional District ${built.county.d}`;
-    title.textContent   = built.county.n + " County";
-    subtitle.textContent = built.district ? built.district.region : "";
+    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    title.textContent   = placeLabel({ ...built.county, fips });
+    subtitle.textContent = ds.length > 1
+      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);
+    // A brief only needs "Show more" if the clamp actually hides something.
+    body.querySelectorAll(".election-brief.clamped").forEach(b => {
+      const t = b.querySelector(".brief-body");
+      if (t && t.scrollHeight <= t.clientHeight + 4) { b.classList.remove("clamped"); const m = b.querySelector(".brief-more"); if (m) m.remove(); }
+    });
   }
 
+  lastFocus = fromEl || document.activeElement;
+  tooltip.style.opacity = 0;
   panel.classList.add("open");
   overlay.classList.add("open");
   panel.setAttribute("aria-hidden", "false");
+  document.documentElement.classList.add("drawer-open");
   body.scrollTop = 0;
+  setTimeout(() => document.getElementById("panel-close").focus(), 320);
 }
 
 function groupByType(elections) {
@@ -1897,12 +1970,15 @@ function briefSegments(note) {
   return out;
 }
 
+// Escape data before it goes into innerHTML. Notes and card text are plain prose; an ampersand
+// or angle bracket in a future edit must render as itself rather than corrupt the card.
+const esc = (v) => String(v == null ? "" : v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 function renderNote(note) {
   if (!note) return "";
   const body = briefSegments(note).map(function (s) {
     return s.mark
-      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${s.text}</p>`
-      : `<p class="brief-lead">${s.text}</p>`;
+      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${esc(s.text)}</p>`
+      : `<p class="brief-lead">${esc(s.text)}</p>`;
   }).join("");
   // Clamp only what actually needs clamping: the median note is 236 characters, so most
   // briefs show whole and never render a toggle at all.
@@ -1910,48 +1986,53 @@ function renderNote(note) {
   return `<div class="election-brief${long ? " clamped" : ""}">
       <div class="brief-label">About this race</div>
       <div class="brief-body">${body}</div>
-      ${long ? `<button class="brief-more" type="button">Show more</button>` : ""}
+      ${long ? `<button class="brief-more" type="button" aria-expanded="false">Show more</button>` : ""}
     </div>`;
 }
 
 function renderElection(e) {
   const count = (e.candidates && e.candidates.length) || 0;
-  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  // A ballot measure is recognised by what it is called, not by one exact scope string.
+  const isMeasure = /ballot measure|ballot question|amendment|initiative|proposition|referend|\bmeasure\b|\bquestion\b/i.test((e.scope || "") + " " + (e.office || ""));
+  const isInfo = /^Also on your ballot|— eight seats, ALL UNOPPOSED/i.test(e.office || "");
+  const countLabel = count ? `${count} candidate${count === 1 ? "" : "s"}` : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
   const candidatesHtml = count
-    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
-    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+    ? `<div class="candidates">${e.candidates.map(c => renderCandidate(c, e)).join("")}</div>`
+    : (isMeasure || isInfo ? "" : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">Candidates not yet announced.</div>`);
   const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
   return `
     <div class="election-card">
       <button class="election-summary" type="button" aria-expanded="false">
-        <div class="election-summary-main">
-          <div class="election-meta">
-            <span class="pill ${e.type}">${e.type}</span>
-            <span class="election-date">${e.date}</span>
-            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
-          </div>
-          <div class="election-office">${e.office || e.name || ""}</div>
-        </div>
-        <div class="election-toggle">
+        <span class="election-summary-main">
+          <span class="election-meta">
+            <span class="pill ${esc(e.type)}">${esc(e.type)}</span>
+            <span class="election-date">${esc(e.date)}</span>
+            ${e.scope ? `<span class="election-scope">${esc(e.scope)}</span>` : ""}
+          </span>
+          <span class="election-office">${esc(e.office || e.name || "")}</span>
+        </span>
+        <span class="election-toggle">
           <span class="cand-count">${countLabel}</span>
           <span class="chevron">${chevron}</span>
-        </div>
+        </span>
       </button>
       <div class="election-detail"><div>${renderNote(e.note)}${candidatesHtml}</div></div>
     </div>`;
 }
 
-function renderCandidate(c) {
-  const winnerClass = c.winner ? "candidate winner" : "candidate";
-  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
-  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+function renderCandidate(c, race) {
+  // A primary or runoff winner was NOMINATED, not elected — the badge should say so.
+  const nominated = !!(race && /primary|runoff/i.test((race.office || "") + " " + (race.scope || "")));
+  const winnerClass = c.winner ? ("candidate winner" + (nominated ? " nominee" : "")) : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
   return `
     <div class="${winnerClass}">
       <div class="cand-head">
-        <div class="cand-name">${c.name}</div>
-        <span class="party-tag party-${c.party}">${c.party}</span>
+        <div class="cand-name">${esc(c.name)}</div>
+        <span class="party-tag party-${esc(c.party)}">${esc(c.party)}</span>
       </div>
       ${positions ? `<div class="cand-section">
           <div class="cand-section-label">Top Positions</div>
@@ -1972,10 +2053,14 @@ function renderCandidate(c) {
 }
 
 function closePanel() {
+  if (!panel.classList.contains("open")) return;
   panel.classList.remove("open");
   overlay.classList.remove("open");
   panel.setAttribute("aria-hidden", "true");
+  document.documentElement.classList.remove("drawer-open");
+  tooltip.style.opacity = 0;
   document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+  if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
 }
 document.getElementById("panel-close").addEventListener("click", closePanel);
 overlay.addEventListener("click", closePanel);
@@ -1986,7 +2071,9 @@ document.getElementById("panel-body").addEventListener("click", (e) => {
   const more = e.target.closest(".brief-more");
   if (more) {
     const brief = more.closest(".election-brief");
-    more.textContent = brief.classList.toggle("clamped") ? "Show more" : "Show less";
+    const clamped = brief.classList.toggle("clamped");
+    more.textContent = clamped ? "Show more" : "Show less";
+    more.setAttribute("aria-expanded", clamped ? "false" : "true");
     return;
   }
   const summary = e.target.closest(".election-summary");
