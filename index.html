@@ -273,7 +273,8 @@
 <section class="map-section">
   <div class="legend">
     <span class="legend-swatch"><i style="background:#B8893C;border-color:#8C6420"></i> Fully built <span class="legend-count">(46 states)</span></span>
-    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(AK, CA, MO, TX, DC)</span></span>
+    <span class="legend-swatch"><i style="background:#D9BE85;border-color:#B8893C"></i> Marquee races built <span class="legend-count">(DC)</span></span>
+    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(AK, CA, MO, TX)</span></span>
   </div>
   <p class="legend-note">We&#39;re working as fast as we can to get all fifty states fully built, with priority to
     geographies with upcoming competitive races. If you&#39;re interested in contributing, please submit your
@@ -303,7 +304,7 @@
       <li><a class="built" href="co.html"><i aria-hidden="true"></i>Colorado<small>Full guide</small></a></li>
       <li><a class="built" href="ct.html"><i aria-hidden="true"></i>Connecticut<small>Full guide</small></a></li>
       <li><a class="built" href="de.html"><i aria-hidden="true"></i>Delaware<small>Full guide</small></a></li>
-      <li><a class="starter" href="state.html?state=DC"><i aria-hidden="true"></i>District of Columbia<small>Starter</small></a></li>
+      <li><a class="partial" href="state.html?state=DC"><i aria-hidden="true"></i>District of Columbia<small>Marquee races</small></a></li>
       <li><a class="built" href="fl.html"><i aria-hidden="true"></i>Florida<small>Full guide</small></a></li>
       <li><a class="built" href="ga.html"><i aria-hidden="true"></i>Georgia<small>Full guide</small></a></li>
       <li><a class="built" href="hi.html"><i aria-hidden="true"></i>Hawaii<small>Full guide</small></a></li>
@@ -524,7 +525,7 @@ const NAME = {
 // Fully built states — each has its own dedicated page (the gold tier)
 const BUILT = { "37": "nc.html", "45": "sc.html", "13": "ga.html", "51": "va.html", "24": "md.html", "10": "de.html", "34": "nj.html", "36": "ny.html", "44": "ri.html", "33": "nh.html", "09": "ct.html", "50": "vt.html", "23": "me.html", "25": "ma.html", "54": "wv.html", "39": "oh.html", "21": "ky.html", "18": "in.html", "19": "ia.html", "17": "il.html", "28": "ms.html", "05": "ar.html", "31": "ne.html", "35": "nm.html", "08": "co.html", "41": "or.html", "32": "nv.html", "46": "sd.html", "16": "id.html", "30": "mt.html", "42": "pa.html", "47": "tn.html", "15": "hi.html", "01": "al.html", "55": "wi.html", "27": "mn.html", "38": "nd.html", "20": "ks.html", "40": "ok.html", "04": "az.html", "12": "fl.html", "56": "wy.html", "49": "ut.html", "53": "wa.html", "26": "mi.html", "22": "la.html" };
 // States with marquee 2026 races built out (partial tier)
-const PARTIAL = new Set([]); // none yet — DC's marquee races are not built (see CLAUDE.md)
+const PARTIAL = new Set(["11"]); // DC — marquee races in state.html's STATE_RACES
 
 // Small states that get a leader-line callout instead of an inline label.
 // lx/ly are label anchor positions in the g-coordinate space (right-side ocean).

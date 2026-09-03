@@ -131,11 +131,13 @@ italic gold word (`<em>`), pill badges, minimalism. Key recurring patterns:
   minimalism). Shown on individual state maps ONLY — never on the national map. The marker group
   is scaled by viewBox-units-per-CSS-pixel on load and resize so it is the same size on screen on
   a tall state (whose 1000-unit map may render 450px wide) as on a wide one.
-- **National map tiers:** gold = fully built (the BUILT map), cream = starter framework (AK CA MO
-  TX DC). The lighter-gold "marquee races built" tier (`PARTIAL`) is EMPTY since Sept 3, 2026 —
-  DC was in it while `state.html` held no DC races, so a DC visitor got a starter drawer under a
-  marquee label. Add a state back to PARTIAL only together with its `STATE_RACES` entries; the
-  legend line for the tier is added/removed by `tools/apply-index-fixes.js`.
+- **National map tiers:** gold = fully built (the BUILT map), lighter gold `#D9BE85` = marquee
+  races built (`PARTIAL`, today DC only — its 21 races live in `state.html`'s `STATE_RACES`, written
+  by `tools/apply-dc-races.js`), cream = starter framework (AK CA MO TX). A jurisdiction goes into
+  PARTIAL only together with its `STATE_RACES` entries: on Sept 3, 2026 DC wore the marquee label
+  with no races behind it, was demoted for a few hours, and was researched and restored the same
+  day. The legend line for the tier is written by `tools/apply-index-fixes.js`, and
+  `tests/uniformity.js` fails if the Marquee legend and PARTIAL disagree.
 - **State list (index.html):** a static `<nav class="state-list">` of 51 real links under the map —
   the keyboard, screen-reader, crawler and slow-CDN route into the site. Generated from BUILT by
   `tools/apply-index-fixes.js`; `tests/uniformity.js` fails if it disagrees with the pages on disk.
@@ -189,8 +191,8 @@ BUILT         : 44 fips -> page (37 nc, 45 sc, 13 ga, 51 va, 24 md, 10 de, 34 nj
                 12 fl, 56 wy, 49 ut, 53 wa)
                 26 mi, 22 la) — 46 pages; `tests/uniformity.js` asserts BUILT's size against the
                 <xx>.html files on disk, so this list is never the source of truth.
-PARTIAL       : EMPTY Set since Sept 3, 2026 (DC demoted — see "National map tiers"). The 5
-                starter jurisdictions are AK CA MO TX DC. Tier arithmetic: 46 built + 5 starter = 51.
+PARTIAL       : Set of 1 fips (DC) → lighter gold tier; DC's races are in state.html's STATE_RACES.
+                The 4 starter states are AK CA MO TX. Tier arithmetic: 46 built + 1 marquee + 4 starter = 51.
 CALLOUTS      : label anchor coords for 9 small states + DC
 destFor(fips) : BUILT[fips] if fully built, else state.html?state=XX
 
@@ -984,8 +986,13 @@ Finally `node tools/fit-map-frames.js` so the new page's map frame takes the sta
    tools), with a 375px iframe harness for phones because headless Chromium will not go below ~500px wide.
    ➤ **Deliberately NOT changed (owner decisions, asked in the run summary):** the ipapi.co home-state glow (an
    owner-requested feature; a privacy note was added instead), per-state topojson files (would end the no-build model),
-   hero copy beyond the eyebrow/lede, and researching DC's marquee races (DC was demoted to starter meanwhile, which is
-   simply true).
+   hero copy beyond the eyebrow/lede. The owner answered the same day: keep the glow, leave the map file alone, hero
+   copy fine, and **research DC** — done (`tools/apply-dc-races.js`; DC restored to the marquee tier with 21 races).
+   ➤ **Tooling lesson from the DC follow-up:** a sub whose `to` text is later edited by ANOTHER sub breaks idempotence
+   (its `to` is no longer present, its `from` long gone). Two fixes are in `apply-state-page-fixes.js`: `opt()` migrations
+   that upgrade a previously shipped form when present and skip otherwise, and presence guards
+   (`if (!s.includes("(function setBanner() {")) sub(...)`) for blocks that later subs edit inside. Always prove a tool
+   converges from BOTH the committed page and a `git checkout` of the pre-review page before pushing it.
 
 ## Testing (`tests/` — plain Node.js, zero dependencies)
 
@@ -1015,6 +1022,7 @@ node tests/run-all.js
 | `tools/fit-map-frames.js` | Shapes every state page's map frame like its state (see Maps). Caches the atlas at `tools/banked/counties-10m.json` (git-ignored) |
 | `tools/apply-review-fixes.js` | The Sept 3, 2026 self-review, as anchored exact-string replacements on the shared CSS/HTML/renderer of all 46 pages (keyboard counties, dialog drawer, measure detection, split-county drawer, escaping, CDN guard, tooltip flip, print/motion/focus CSS, ★ NOMINATED, marker scaling …). Refuses to write a page with a missing anchor; idempotent ("already applied" is checked BEFORE the anchor, because several new texts still contain their anchor). **Pattern for any future shared-code change: add a `sub()` here rather than hand-editing 46 files** |
 | `tools/apply-index-fixes.js` / `tools/apply-state-page-fixes.js` | The same review for index.html (state list, facts copy, form copy, keyboard states, territories, head links) and state.html (head redirect list, conic frame at runtime, place names, drawer types/scopes, official candidate-list links, `HOUSE_NOTES`/`LEG_NOTES`/`LOCAL_NOTES` tables) |
+| `tools/apply-dc-races.js` | **The District of Columbia's marquee 2026 races** (21 entries: delegate, mayor, attorney general, Council chair/at-large/Wards 1-3-5-6, shadow senator and representative, four school-board seats, Initiative 86, and the June 16 primaries + at-large special), inserted into `state.html`'s `STATE_RACES`. Every name and party label is from DCBOE's July 15, 2026 general-election roster; vote totals are DCBOE-derived via Wikipedia and carry [Verify certified canvass] because electionresults.dcboe.org renders only in a browser. Idempotent; re-runnable after `git checkout`. Keys drive `buildSeats` suppression (`delegate`, `council-*`, `sboe-*`, `initiative-*`) |
 | `tools/apply-nominee-fixes.js` / `tools/apply-footer-sources.js` | Data patches from the review: NC-1 (Buckhout), VA-10 (Beckwith), VA-11 (Purves) from the state election offices' lists; ia/in/ky footers citing their OWN sources instead of Ohio's |
 
 Notes for future edits:

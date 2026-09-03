@@ -15,7 +15,7 @@ const { extractInlineScripts, cutAtD3, runScript, makeChecker } = require("./lib
 
 const { check, summary } = makeChecker();
 const VALID_TYPES = new Set(["past", "upcoming", "scheduled"]);
-const VALID_PARTIES = new Set(["D", "R", "I", "L", "G"]);
+const VALID_PARTIES = new Set(["D", "R", "I", "L", "G", "NP"]);   // NP = nonpartisan office (DC school board)
 
 // ---------------------------------------------------------------
 // Fully built state pages (nc.html pattern)

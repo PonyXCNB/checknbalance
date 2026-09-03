@@ -101,12 +101,22 @@ sub("hero eyebrow", `  <div class="eyebrow"><span class="dot"></span> Fifty Stat
     `  <div class="eyebrow"><span class="dot"></span> General election · Tuesday, November 3, 2026</div>`);
 sub("hero lede", `    Click any state to meet their election candidates, county by county.`,
     `    A nonpartisan, county-by-county guide to who is on your ballot. Choose your state to begin.`);
+// The interim (Sept 3, 2026) legend, from the hours when DC was a starter, becomes the final one.
+// Runs BEFORE the main legend replacement so a page in that state converges.
+sub("legend interim → final", `    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(AK, CA, MO, TX, DC)</span></span>`,
+    `    <span class="legend-swatch"><i style="background:#D9BE85;border-color:#B8893C"></i> Marquee races built <span class="legend-count">(DC)</span></span>
+    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(AK, CA, MO, TX)</span></span>`);
 sub("legend counts", `    <span class="legend-swatch"><i style="background:#D9BE85;border-color:#B8893C"></i> Marquee races built</span>
     <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework</span>`,
-    `    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(AK, CA, MO, TX, DC)</span></span>`);
-// The "Marquee races built" tier had one member, DC — but state.html holds no DC races, so a DC
-// visitor got the starter drawer under a marquee label. Until DC is researched, it is a starter.
-sub("DC tier", `const PARTIAL = new Set(["11"]); // DC`, `const PARTIAL = new Set([]); // none yet — DC's marquee races are not built (see CLAUDE.md)`);
+    `    <span class="legend-swatch"><i style="background:#D9BE85;border-color:#B8893C"></i> Marquee races built <span class="legend-count">(DC)</span></span>
+    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(AK, CA, MO, TX)</span></span>`);
+// The interim (Sept 3, 2026) legend, from the hours when DC was a starter, becomes the final one.
+sub("legend interim → final", `    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(AK, CA, MO, TX, DC)</span></span>`,
+    `    <span class="legend-swatch"><i style="background:#D9BE85;border-color:#B8893C"></i> Marquee races built <span class="legend-count">(DC)</span></span>
+    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(AK, CA, MO, TX)</span></span>`);
+// DC's marquee races live in state.html's STATE_RACES (tools/apply-dc-races.js), so it wears the
+// lighter-gold tier honestly; it was briefly a starter on Sept 3, 2026 while that was untrue.
+subRe("DC tier", /const PARTIAL = new Set\(\[[^\]]*\]\);[^\n]*/, `const PARTIAL = new Set(["11"]); // DC — marquee races in state.html's STATE_RACES`, /const PARTIAL = new Set\(\["11"\]\); \/\/ DC — marquee races in state\.html/);
 sub("map svg label", `<svg id="usmap" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet"></svg>`,
     `<svg id="usmap" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Map of the United States. Each state is a link to its election guide."></svg>`);
 // The state list, generated from the same tables the map uses, so it can never disagree with it.
@@ -116,7 +126,7 @@ sub("map svg label", `<svg id="usmap" viewBox="0 0 1000 620" preserveAspectRatio
   const builtMatch = s.match(/const BUILT = \{([^}]*)\};/);
   if (!builtMatch) missing.push("BUILT table");
   const built = new Set((builtMatch ? builtMatch[1] : "").match(/"(\d\d)"/g).map(x => x.replace(/"/g, "")));
-  const partial = new Set([]);   // DC's marquee races are not built; it is a starter like AK/CA/MO/TX
+  const partial = new Set(["11"]);   // DC: marquee races built in state.html
   const items = Object.keys(NAME).sort((a, b) => NAME[a].localeCompare(NAME[b])).map(f => {
     const href = built.has(f) ? `${ST[f].toLowerCase()}.html` : `state.html?state=${ST[f]}`;
     const cls = built.has(f) ? "built" : (partial.has(f) ? "partial" : "starter");

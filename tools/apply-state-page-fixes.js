@@ -45,6 +45,9 @@ const subRe = (label, re, to, already) => {
   if (already && already.test(s)) return;
   missing.push(label);
 };
+// Optional migration: an earlier shipped form of a block is upgraded to the current form when
+// present, and silently skipped otherwise (a fresh page never had it; a current page already moved on).
+const opt = (from, to) => { if (!s.includes(to) && s.includes(from)) s = s.split(from).join(to); };
 const BUILT = fs.readdirSync(ROOT).filter(f => /^[a-z]{2}\.html$/.test(f)).map(f => f.slice(0, 2)).sort();
 const LAST_UPDATED = "September 3, 2026";
 
@@ -102,6 +105,34 @@ sub("voices size", `  .voices-block { border-radius: 10px; padding: 12px 14px; f
 sub("typographic quotes", `  .voices-block li::before { content: '"'; opacity: .4; }
   .voices-block li::after { content: '"'; opacity: .4; }`, `  .voices-block li::before { content: '\\201C'; opacity: .4; }
   .voices-block li::after { content: '\\201D'; opacity: .4; }`);
+// Nonpartisan offices (the DC school board) and a winner badge for past primaries/specials, which
+// the generic page never had: NOMINATED for a primary, ELECTED for a special or general.
+sub("party-NP + winner badge", `  .party-G { background: #DCF5E0; color: #1F6F2A; }`, `  .party-G { background: #DCF5E0; color: #1F6F2A; }
+  .party-NP { background: #EEEDE8; color: #555; }
+  .candidate.winner { position: relative; border-color: var(--gold); }
+  .candidate.winner::before { content: '★ ELECTED'; position: absolute; top: -10px; right: 14px; background: var(--gold-deep); color: white; font-size: 10px; letter-spacing: 0.16em; padding: 3px 9px; border-radius: 4px; font-weight: 700; }
+  .candidate.winner.nominee::before { content: '★ NOMINATED'; }`);
+sub("renderCandidate winner + escaping", `function renderCandidate(c) {
+  const positions = (c.positions || []).filter(Boolean).map(p => \`<li>\${p}</li>\`).join("");
+  const differentiators = (c.differentiators || []).filter(Boolean).map(p => \`<li>\${p}</li>\`).join("");
+  const supporters = (c.supporters || []).filter(Boolean).map(p => \`<li>\${p}</li>\`).join("");
+  const opponents = (c.opponents || []).filter(Boolean).map(p => \`<li>\${p}</li>\`).join("");
+  return \`
+    <div class="candidate">
+      <div class="cand-head">
+        <div class="cand-name">\${c.name}</div>
+        <span class="party-tag party-\${c.party}">\${c.party}</span>`, `function renderCandidate(c, race) {
+  const nominated = !!(race && /primary/i.test((race.office || "") + " " + (race.scope || "")));
+  const cls = c.winner ? ("candidate winner" + (nominated ? " nominee" : "")) : "candidate";
+  const positions = (c.positions || []).filter(Boolean).map(p => \`<li>\${esc(p)}</li>\`).join("");
+  const differentiators = (c.differentiators || []).filter(Boolean).map(p => \`<li>\${esc(p)}</li>\`).join("");
+  const supporters = (c.supporters || []).filter(Boolean).map(p => \`<li>\${esc(p)}</li>\`).join("");
+  const opponents = (c.opponents || []).filter(Boolean).map(p => \`<li>\${esc(p)}</li>\`).join("");
+  return \`
+    <div class="\${cls}">
+      <div class="cand-head">
+        <div class="cand-name">\${esc(c.name)}</div>
+        <span class="party-tag party-\${esc(c.party)}">\${esc(c.party)}</span>`);
 sub("placeholder link", `  .placeholder-body .ph-card { border: 1px dashed var(--line); border-radius: 10px; padding: 16px 18px; background: var(--paper); margin-top: 10px; }`,
     `  .placeholder-body .ph-card { border: 1px dashed var(--line); border-radius: 10px; padding: 16px 18px; background: var(--paper); margin-top: 10px; }
   .placeholder-body .ph-card a { color: var(--gold-deep); border-bottom: 1px solid var(--gold-soft); }`);
@@ -153,6 +184,10 @@ if (!STATES[abbr]) { window.location.replace("index.html#map"); throw new Error(
 const SITE_META = { lastUpdated: "${LAST_UPDATED}" };
 `, /redirecting home: unknown state/);
 subRe("site meta date current", /const SITE_META = \{ lastUpdated: "[^"]*" \};/, `const SITE_META = { lastUpdated: "${LAST_UPDATED}" };`);
+// Migration from the d75a2ce form of the DC section copy, run BEFORE the block below is checked
+// (that block keeps its anchor inside its new text, so it must see the final wording already).
+opt(`  ? "The District is one jurisdiction. Tap it to open the offices on the November 3 ballot; candidate detail is still being researched."`,
+    `  ? "The District is one jurisdiction. Tap it to open the November 3 ballot — delegate, mayor, attorney general, Council, school board and Initiative 86."`);
 sub("crest + noun + names", `const STATE = STATES[abbr];
 const FIPS = STATE.f;
 const cap = CAP[FIPS];`, `const STATE = STATES[abbr];
@@ -181,7 +216,7 @@ document.getElementById("footer-crest").textContent = \`\${abbr} Elections Hub\`
 document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
 document.getElementById("section-title").innerHTML = FIPS === "11" ? "Tap the District to <em>begin</em>." : \`Tap a \${NOUN.split(" or ")[0]} to <em>begin</em>.\`;
 document.getElementById("section-sub").textContent = FIPS === "11"
-  ? "The District is one jurisdiction. Tap it to open the offices on the November 3 ballot; candidate detail is still being researched."
+  ? "The District is one jurisdiction. Tap it to open the November 3 ballot — delegate, mayor, attorney general, Council, school board and Initiative 86."
   : \`Every \${NOUN} is clickable. Each opens the offices on that ballot; candidate detail is still being researched.\`;`);
 sub("hero lede", `document.getElementById("hero-lede").textContent =
   \`What \${STATE.n} votes on in 2026, county by county. Offices are verified; candidate research is in progress.\`;`,
@@ -191,8 +226,29 @@ subRe("dead NY block", /const STATE_RACES = \{\n  NY: \[[\s\S]*?\n  \],?\n\};/,
   `const STATE_RACES = {
   // Marquee races for a jurisdiction that has no built page yet. Each entry: { key, date, type, scope,
   // office, note, candidates } exactly as on the built pages; "key" suppresses the generic office
-  // entry of the same name in buildSeats. None today — every researched state has its own page.
-};`, /None today — every researched state has its own page/);
+  // entry of the same name in buildSeats. DC's races are inserted by tools/apply-dc-races.js.
+};`, /^(?![\s\S]*\n  NY: \[)/);
+// Migrations from the form shipped in commit d75a2ce (Sept 3, 2026, before the coverage guards and
+// the ballot-measure branch existed), so this tool converges from either starting point.
+opt(`  seats.push({ type:"upcoming", date: NOV, scope: abbr === "DC" ? "Local · District" : "State · District",`,
+    `  if (!coversPrefix("legislature") && !coversPrefix("council")) seats.push({ type:"upcoming", date: NOV, scope: abbr === "DC" ? "Local · District" : "State · District",`);
+opt(`  if (!coversPrefix("local")) seats.push({ type:"upcoming", date: NOV, scope:"Local · " + (FIPS === "11" ? "District" : FIPS === "22" ? "Parish" : "County"),`,
+    `  if (!coversPrefix("local") && !coversPrefix("sboe") && !coversPrefix("initiative")) seats.push({ type:"upcoming", date: NOV, scope:"Local · " + (FIPS === "11" ? "District" : FIPS === "22" ? "Parish" : "County"),`);
+opt(`  seats.push({ type:"upcoming", date: NOV, scope:"Local · " + (FIPS === "11" ? "District" : FIPS === "22" ? "Parish" : "County"),`,
+    `  if (!coversPrefix("local") && !coversPrefix("sboe") && !coversPrefix("initiative")) seats.push({ type:"upcoming", date: NOV, scope:"Local · " + (FIPS === "11" ? "District" : FIPS === "22" ? "Parish" : "County"),`);
+opt(`  const countLabel = hasCands ? \`\${s.candidates.length} candidate\${s.candidates.length === 1 ? "" : "s"}\` : "Research in progress";
+  const official = OFFICIAL[abbr];
+  const detailBody = hasCands
+    ? \`<div class="candidates">\${s.candidates.map(renderCandidate).join("")}</div>\`
+    : \`<div class="placeholder-body"><div class="ph-card">`, `  // A ballot measure has no candidates and needs no "research in progress" placeholder.
+  const isMeasure = /ballot measure|ballot question|amendment|initiative|proposition|referend/i.test((s.scope || "") + " " + (s.office || ""));
+  const countLabel = hasCands ? \`\${s.candidates.length} candidate\${s.candidates.length === 1 ? "" : "s"}\` : (isMeasure ? "Yes / No" : "Research in progress");
+  const official = OFFICIAL[abbr];
+  const detailBody = hasCands
+    ? \`<div class="candidates">\${s.candidates.map(c => renderCandidate(c, s)).join("")}</div>\`
+    : isMeasure ? "" : \`<div class="placeholder-body"><div class="ph-card">`);
+opt(`  ? "The District is one jurisdiction. Tap it to open the offices on the November 3 ballot; candidate detail is still being researched."`,
+    `  ? "The District is one jurisdiction. Tap it to open the November 3 ballot — delegate, mayor, attorney general, Council, school board and Initiative 86."`);
 sub("buildSeats types + scopes", `  if (SEN_2026.has(abbr) && !covered.has("senate")) {
     seats.push({ type:"upcoming", scope:"Federal · Statewide · Nov 3, 2026",
       office:"U.S. Senate — " + STATE.n,
@@ -249,13 +305,19 @@ sub("buildSeats types + scopes", `  if (SEN_2026.has(abbr) && !covered.has("sena
       office:"Delegate to the U.S. House (non-voting)",
       note: HOUSE_NOTES.DC || "DC elects a non-voting delegate; it has no senators or governor." });
   }
-  seats.push({ type:"upcoming", date: NOV, scope: abbr === "DC" ? "Local · District" : "State · District",
+  if (!coversPrefix("legislature") && !coversPrefix("council")) seats.push({ type:"upcoming", date: NOV, scope: abbr === "DC" ? "Local · District" : "State · District",
     office: abbr === "DC" ? "DC Council" : "State Legislature",
     note: LEG_NOTES[abbr] || "Most states elect state house (and some senate) seats in 2026. District detail in progress." });
-  seats.push({ type:"upcoming", date: NOV, scope:"Local · " + (FIPS === "11" ? "District" : FIPS === "22" ? "Parish" : "County"),
+  if (!coversPrefix("local") && !coversPrefix("sboe") && !coversPrefix("initiative")) seats.push({ type:"upcoming", date: NOV, scope:"Local · " + (FIPS === "11" ? "District" : FIPS === "22" ? "Parish" : "County"),
     office: FIPS === "11" ? "Local Offices & Ballot Questions" : (FIPS === "22" ? "Parish" : "County") + " & Local Offices",
     note: LOCAL_NOTES[abbr] || "Commission, sheriff, school board, and judicial races vary by " + NOUN.split(" or ")[0] + ". Research in progress." });
   return seats;`);
+// Marquee entries in STATE_RACES (keys "council-chair", "council-ward-1", "local-…") must suppress
+// the generic "DC Council" / "Local Offices" rows, as "delegate"/"governor" already do.
+sub("coverage by key prefix", `  const covered = coveredKeys(abbr);
+  const NOV = "Nov 3, 2026";`, `  const covered = coveredKeys(abbr);
+  const coversPrefix = (p) => [...covered].some(k => k === p || k.startsWith(p + "-"));
+  const NOV = "Nov 3, 2026";`);
 sub("office notes tables", `function buildSeats(abbr) {
   const seats = [];`, `// Office-level notes for the jurisdictions this page still serves. Sourced; [Verify] where not read
 // from the state's own election office. Filled by tools/apply-state-page-fixes.js.
@@ -265,7 +327,8 @@ const LOCAL_NOTES = {};
 
 function buildSeats(abbr) {
   const seats = [];`);
-sub("banner text", `if (STATE_RACES[abbr]) {
+// (Guarded by the function's presence: the "marquee hero copy" sub below edits inside this block.)
+if (!s.includes("(function setBanner() {")) sub("banner text", `if (STATE_RACES[abbr]) {
   const b = document.querySelector(".banner span");
   if (b) b.innerHTML = "This state's <strong>marquee 2026 races are built out</strong> below — click any county, then expand a race. County-level local races are the next research phase.";
 }`, `(function setBanner() {
@@ -292,6 +355,17 @@ sub("cdn guard first", `const svg = d3.select("#statemap");`, `if (typeof d3 ===
   throw new Error("map libraries did not load");
 }
 const svg = d3.select("#statemap");`);
+// A marquee jurisdiction (STATE_RACES present) must not keep the starter hero: eyebrow, lede,
+// banner and section copy all say the races are built.
+sub("marquee hero copy", `    b.innerHTML = "This state's <strong>marquee 2026 races are built out</strong> below — click any county, then expand a race. County-level local races are the next research phase.";
+    return;`, `    const unitWord = FIPS === "11" ? "the District" : "any " + NOUN.split(" or ")[0];
+    b.innerHTML = \`<strong>Marquee 2026 races are built out</strong> for \${STATE.n} — tap \${unitWord}, then expand a race. Cards carry [Verify] where a claim has not yet been read from a primary source.\`;
+    const eyebrow = document.querySelector(".hero .eyebrow");
+    if (eyebrow) eyebrow.innerHTML = '<span class="dot"></span> Marquee Races Built';
+    document.getElementById("hero-lede").textContent = FIPS === "11"
+      ? "What the District votes on November 3, 2026 — delegate, mayor, attorney general, Council, school board and Initiative 86 — with the candidates and what their supporters and opponents say."
+      : \`What \${STATE.n} votes on November 3, 2026 — the marquee races, with the candidates and what their supporters and opponents say.\`;
+    return;`);
 sub("loadMap wrapper", `
 d3.json(TOPO_URL).then((us) => {`, `
 loadMap();
@@ -432,11 +506,13 @@ sub("renderSeat", `  const countLabel = hasCands ? \`\${s.candidates.length} can
           <span class="cand-count">\${countLabel}</span>
           <span class="chevron">\${chevron}</span>
         </div>
-      </button>`, `  const countLabel = hasCands ? \`\${s.candidates.length} candidate\${s.candidates.length === 1 ? "" : "s"}\` : "Research in progress";
+      </button>`, `  // A ballot measure has no candidates and needs no "research in progress" placeholder.
+  const isMeasure = /ballot measure|ballot question|amendment|initiative|proposition|referend/i.test((s.scope || "") + " " + (s.office || ""));
+  const countLabel = hasCands ? \`\${s.candidates.length} candidate\${s.candidates.length === 1 ? "" : "s"}\` : (isMeasure ? "Yes / No" : "Research in progress");
   const official = OFFICIAL[abbr];
   const detailBody = hasCands
-    ? \`<div class="candidates">\${s.candidates.map(renderCandidate).join("")}</div>\`
-    : \`<div class="placeholder-body"><div class="ph-card">
+    ? \`<div class="candidates">\${s.candidates.map(c => renderCandidate(c, s)).join("")}</div>\`
+    : isMeasure ? "" : \`<div class="placeholder-body"><div class="ph-card">
         The office above is verified for the 2026 ballot. Candidate-level detail for <strong>\${esc(countyName)}, \${esc(STATE.n)}</strong> — top positions, differentiators, and what supporters and opponents say — is being researched, matching the depth of the fully built states.\${official ? \` In the meantime, the certified candidate list is published by the <a href="\${official[1]}" rel="noopener">\${esc(official[0])}</a>.\` : ""}
       </div></div>\`;
   return \`
