@@ -731,7 +731,11 @@
 // County-by-County canvasses (primary and general) parsed separately.
 // The one county with no Aug 11, 2026 document posted is TAYLOR (its clerk's archive ends at the
 // April 2026 election); it sits in CD7 on the other two sources and on its own Aug 2024 file.
-// Re-run the state-level test once WEC posts the canvass (expected after ~Aug 18-Sept 1, 2026).
+// UPDATE Sept 3, 2026: WEC HAS NOW POSTED THE CANVASS. Its results page, dated Aug 28, 2026, states
+// that the Aug 11, 2026 partisan primary was CERTIFIED ON AUG 25, 2026, and publishes the summary
+// results, the County-by-County and Ward-by-Ward reports and the signed canvass statements. The
+// county-clerk sweep below stands as recorded; the state-level test can now be re-run against
+// WEC's own County-by-County file at elections.wi.gov.
 // 'd' is the population-plurality district (drives map shading); 'ds' lists EVERY district
 // overlapping a split county so the drawer shows all of that county's U.S. House races.
 // 12 split counties. Only Chippewa (52.96/47.04) and Dodge (54.51/45.49) are near-ties; the
@@ -817,9 +821,11 @@ const COUNTIES = {
 // Ballot Access Report of June 9, 2026; Wisconsin Legislature enrolled joint resolutions
 // (docs.legis.wisconsin.gov); Wisconsin Ethics Commission campaign-finance filings; AP/NBC
 // primary tabulation; WPR, Wisconsin Examiner, WUWM, PBS Wisconsin.
-// ⚠ WISCONSIN HAS NO STATEWIDE ELECTION-NIGHT REPORTING SYSTEM — the WEC says so itself. Every
-// Aug 11, 2026 primary figure here is UNOFFICIAL; the state canvass is due under Wis. Stat.
-// § 7.70(3)(a) on or before the 3rd Wednesday after the primary, i.e. Aug 26, 2026.
+// ⚠ WISCONSIN HAS NO STATEWIDE ELECTION-NIGHT REPORTING SYSTEM — the WEC says so itself, which is
+// why the Aug 11, 2026 figures here were originally recorded as unofficial. ✅ THEY ARE NOW CERTIFIED:
+// the WEC certified the Aug 11, 2026 partisan primary on AUG 25, 2026, within the Wis. Stat.
+// § 7.70(3)(a) deadline, and posted summary, county-by-county and ward-by-ward results plus the
+// signed canvass statements on Aug 28, 2026.
 const STATEWIDE = [
   // ─────────────────────────── UPCOMING ───────────────────────────
   { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Governor and Lieutenant Governor of Wisconsin (OPEN SEAT)",
@@ -1129,7 +1135,7 @@ const HOUSE_RACES = {
           { name: "Kristin Lyerly", party: "D", winner: false, positions: [], differentiators: ["178,666 votes — 42.6%"], supporters: [], opponents: [] } ] } ] },
 };
 
-const SITE_META = { name: "Wisconsin Elections Hub", lastUpdated: "August 13, 2026" };
+const SITE_META = { name: "Wisconsin Elections Hub", lastUpdated: "September 3, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Wisconsin county-level down-ballot research has not started.)

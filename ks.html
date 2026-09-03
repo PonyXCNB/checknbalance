@@ -852,8 +852,12 @@ const COUNTIES = {
 // Kansas Governmental Ethics Commission filings; Kansas Bar Association "Your Kansas Judges";
 // candidates' own campaign sites; KCUR, Kansas Reflector, Johnson County Post, HPPR, KWCH, WIBW,
 // KCTV5, Smart Politics; Sabato's Crystal Ball (read directly for the Senate rating change).
-// ⚠ EVERY AUG 4 FIGURE IS UNOFFICIAL. The State Board of Canvassers does not certify until
-// Sept 1, 2026, and the SoS's own site is titled "Unofficial Kansas Election Results."
+// ✅ EVERY AUG 4 FIGURE IS NOW CERTIFIED. The State Board of Canvassers — the Secretary of State,
+// the Governor and the Attorney General — certified the Aug 4 primary on Sept 1, 2026, reviewing the
+// results as submitted and certified by each of Kansas's 105 counties. Turnout was 650,383, the
+// second-highest Kansas primary turnout on record after 2022. Official totals are at
+// sos.ks.gov/elections/26elec/2026-Primary-Election-Official-Vote-Totals.pdf.
+// Source: the Secretary of State's own Sept 1, 2026 press release.
 // ⚠ Cook Political Report and Inside Elections could NOT be read at their own sites (both HTTP 403);
 // their ratings are carried from aggregators and marked [Verify].
 // ⚠ Kansas statewide campaign finance is filed with the Kansas Governmental Ethics Commission, not
@@ -862,7 +866,7 @@ const COUNTIES = {
 const STATEWIDE = [
   // ─────────────────────────── UPCOMING ───────────────────────────
   { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · Statewide", office: "U.S. Senate — Kansas",
-    note: "KANSAS HAS NOT ELECTED A DEMOCRAT TO THE U.S. SENATE SINCE GEORGE McGILL IN 1932, and no Democrat has come within single digits since 1974. ✅ EVEN SO, TWO RATERS MOVED OFF SAFE AFTER THE PRIMARY: Sabato's Crystal Ball shifted Safe R to Likely R on Aug 4, 2026 (read directly at the rater's own site), and Cook is reported to have moved Solid R to Likely R the same day [Verify — not read at Cook's own site]. Inside Elections last showed Solid R on Apr 23, 2026 [Verify]. What changed was money: Adam Hamilton raised roughly $3.7 million in his launch quarter against Marshall's $610,000 — a record Kansas start — though Marshall still leads on cash, $5.39M to $1.73M. Marshall took the primary with 79.9%; Hamilton won a plurality of 34.9% in an eleven-candidate field. ⚠ Aug 4 figures are unofficial until the state canvass on Sept 1, 2026.",
+    note: "KANSAS HAS NOT ELECTED A DEMOCRAT TO THE U.S. SENATE SINCE GEORGE McGILL IN 1932, and no Democrat has come within single digits since 1974. ✅ EVEN SO, TWO RATERS MOVED OFF SAFE AFTER THE PRIMARY: Sabato's Crystal Ball shifted Safe R to Likely R on Aug 4, 2026 (read directly at the rater's own site), and Cook is reported to have moved Solid R to Likely R the same day [Verify — not read at Cook's own site]. Inside Elections last showed Solid R on Apr 23, 2026 [Verify]. What changed was money: Adam Hamilton raised roughly $3.7 million in his launch quarter against Marshall's $610,000 — a record Kansas start — though Marshall still leads on cash, $5.39M to $1.73M. Marshall took the primary with 79.9%; Hamilton won a plurality of 34.9% in an eleven-candidate field. ✅ Certified by the State Board of Canvassers on Sept 1, 2026.",
     candidates: [
       { name: "Roger Marshall (incumbent)", party: "R", winner: false,
         positions: [
@@ -872,7 +876,7 @@ const STATEWIDE = [
         ],
         differentiators: [
           "U.S. Senator since 2021; previously the 1st District's congressman, and an OB-GYN by training",
-          "Won the Republican primary with 79.9% (266,135 votes) over Pond Naramore [Verify — unofficial, pending the Sept 1 state canvass]",
+          "Won the Republican primary with 79.9% (266,135 votes) over Pond Naramore (certified by the State Board of Canvassers, Sept 1, 2026)",
           "$5,388,078 cash on hand through July 15, 2026",
           "Endorsed by President Trump (Aug 3, 2026), AIPAC and the Senate Conservatives Fund"
         ],
@@ -894,7 +898,7 @@ const STATEWIDE = [
         ],
         differentiators: [
           "Has never held elected office; founding senior pastor for 36 years of the largest United Methodist congregation in the country",
-          "Won the Democratic primary with 34.9% (76,105 votes) in an eleven-candidate field [Verify — unofficial, pending the Sept 1 state canvass]",
+          "Won the Democratic primary with 34.9% (76,105 votes) in an eleven-candidate field (certified by the State Board of Canvassers, Sept 1, 2026)",
           "$1,730,620 cash on hand through July 15, 2026; $4.17 million raised, including a $50,000 candidate loan",
           "Endorsed by former Gov. and HHS Secretary Kathleen Sebelius and Sen. Tim Kaine"
         ],
@@ -932,7 +936,7 @@ const STATEWIDE = [
     ] },
 
   { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Governor and Lieutenant Governor of Kansas (OPEN SEAT)",
-    note: "OPEN — Laura Kelly is term-limited, and this is the Republicans' strongest gubernatorial pickup target of the cycle. ⚠ THE COMMON FRAMING IS WRONG: the last Republican ELECTED governor of Kansas was Sam Brownback in November 2014. Jeff Colyer held the office in 2018 by succession and was never elected — he lost that year's primary. Kelly then won twice, by 5.03 points in 2018 and 2.21 in 2022. Governor and Lieutenant Governor run as a JOINT TICKET; Lt. Governor candidates never appear on a primary ballot. Ty Masterson won a seven-way primary with 43.2% on a Trump endorsement; Cindy Holscher beat Kelly's preferred candidate Ethan Corson 48.6% to 38.8%, after which Kelly endorsed Holscher on Aug 5. All three raters lean Republican for a flip — Inside Elections Tilt R (Aug 6, 2026), Cook Lean R (Sept 11, 2025), Sabato Lean R (Sept 4, 2025) [Verify — none read at the raters' own sites]. ⚠ Aug 4 figures are unofficial until the state canvass on Sept 1, 2026.",
+    note: "OPEN — Laura Kelly is term-limited, and this is the Republicans' strongest gubernatorial pickup target of the cycle. ⚠ THE COMMON FRAMING IS WRONG: the last Republican ELECTED governor of Kansas was Sam Brownback in November 2014. Jeff Colyer held the office in 2018 by succession and was never elected — he lost that year's primary. Kelly then won twice, by 5.03 points in 2018 and 2.21 in 2022. Governor and Lieutenant Governor run as a JOINT TICKET; Lt. Governor candidates never appear on a primary ballot. Ty Masterson won a seven-way primary with 43.2% on a Trump endorsement; Cindy Holscher beat Kelly's preferred candidate Ethan Corson 48.6% to 38.8%, after which Kelly endorsed Holscher on Aug 5. All three raters lean Republican for a flip — Inside Elections Tilt R (Aug 6, 2026), Cook Lean R (Sept 11, 2025), Sabato Lean R (Sept 4, 2025) [Verify — none read at the raters' own sites]. ✅ Certified by the State Board of Canvassers on Sept 1, 2026.",
     candidates: [
       { name: "Ty Masterson — Governor", party: "R", winner: false,
         positions: [
@@ -942,7 +946,7 @@ const STATEWIDE = [
         ],
         differentiators: [
           "President of the Kansas Senate since 2021; in the Legislature since 2004; directs GoCreate at Wichita State University",
-          "Won the Republican primary with 43.2% (147,217 votes) over six rivals; the runner-up took 22.4% [Verify — unofficial, pending the Sept 1 state canvass]",
+          "Won the Republican primary with 43.2% (147,217 votes) over six rivals; the runner-up took 22.4% (certified by the State Board of Canvassers, Sept 1, 2026)",
           "$430,211 cash on hand as of July 23, 2026 (Kansas Governmental Ethics Commission filing)",
           "Endorsed by President Trump, Sen. Roger Marshall, former Gov. Jeff Colyer, Americans for Prosperity and the NRA Political Victory Fund"
         ],
@@ -985,7 +989,7 @@ const STATEWIDE = [
         ],
         differentiators: [
           "Kansas Senator for Overland Park since 2021; state Representative 2017-2021; a career in advertising",
-          "Won the Democratic primary with 48.6% (108,489 votes), beating Ethan Corson 48.6 to 38.8 despite his holding Gov. Kelly's endorsement [Verify — unofficial, pending the Sept 1 state canvass]",
+          "Won the Democratic primary with 48.6% (108,489 votes), beating Ethan Corson 48.6 to 38.8 despite his holding Gov. Kelly's endorsement (certified by the State Board of Canvassers, Sept 1, 2026)",
           "$64,933 cash on hand as of July 23, 2026 [Verify — the closing figure came from a search index of an image-only official filing; the opening balance and receipts are confirmed]",
           "Endorsed by Gov. Laura Kelly (Aug 5, 2026, switched after the primary), former Gov. John Carlin and former State Treasurer Lynn Rogers"
         ],
@@ -1023,7 +1027,7 @@ const STATEWIDE = [
     ] },
 
   { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Attorney General of Kansas",
-    note: "A REMATCH OF 2022, WHICH KOBACH WON NARROWLY while running well behind the rest of the Republican statewide ticket. Both men were unopposed on Aug 4 — officially 100% each on the Secretary of State's own results system. No third-party or independent candidate was located for this race; the Libertarian Party of Kansas nominated none. ⚠ Aug 4 figures are unofficial until the state canvass on Sept 1, 2026.",
+    note: "A REMATCH OF 2022, WHICH KOBACH WON NARROWLY while running well behind the rest of the Republican statewide ticket. Both men were unopposed on Aug 4 — officially 100% each on the Secretary of State's own results system. No third-party or independent candidate was located for this race; the Libertarian Party of Kansas nominated none. ✅ Certified by the State Board of Canvassers on Sept 1, 2026.",
     candidates: [
       { name: "Kris Kobach (incumbent)", party: "R", winner: false,
         positions: [
@@ -1033,7 +1037,7 @@ const STATEWIDE = [
         ],
         differentiators: [
           "Kansas Attorney General since 2023; Kansas Secretary of State 2011-2019; chairman of the Republican Attorneys General Association since Oct 2024",
-          "Unopposed in the primary with 278,204 votes [Verify — unofficial, pending the Sept 1 state canvass]",
+          "Unopposed in the primary with 278,204 votes (certified by the State Board of Canvassers, Sept 1, 2026)",
           "$502,626 cash on hand as of Jan 1, 2026 [Verify — candidate-reported in his own press release, not checked against an ethics-commission filing]"
         ],
         supporters: [
@@ -1054,7 +1058,7 @@ const STATEWIDE = [
         ],
         differentiators: [
           "A private attorney and the 2022 Democratic nominee for this office; holds no current elected office",
-          "Unopposed in the primary with 199,541 votes [Verify — unofficial, pending the Sept 1 state canvass]",
+          "Unopposed in the primary with 199,541 votes (certified by the State Board of Canvassers, Sept 1, 2026)",
           "⚠ No campaign-finance figure could be located [Verify] — Kansas statewide filings are image-only scans"
         ],
         supporters: [
@@ -1070,7 +1074,7 @@ const STATEWIDE = [
     ] },
 
   { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Secretary of State of Kansas (OPEN SEAT)",
-    note: "OPEN — Scott Schwab vacated the office to run for governor, and lost that primary with 11%. THIS IS THE SHARPEST POLICY CONTRAST ON THE KANSAS BALLOT: the three candidates disagree directly on the mail-ballot grace period, the length of advance voting, and proof of citizenship. Proctor was unopposed after his primary rival joined Schwab's gubernatorial ticket; Day beat Samuel Lane 85% to 15%. ⚠ Scott E. Morgan is the nominee of UNITED KANSAS, a recognised Kansas party formed when the Free State Party merged into it in April 2026; this site has no party tag for it, so he is carded as an independent and the label is stated here. ⚠ Aug 4 figures are unofficial until the state canvass on Sept 1, 2026.",
+    note: "OPEN — Scott Schwab vacated the office to run for governor, and lost that primary with 11%. THIS IS THE SHARPEST POLICY CONTRAST ON THE KANSAS BALLOT: the three candidates disagree directly on the mail-ballot grace period, the length of advance voting, and proof of citizenship. Proctor was unopposed after his primary rival joined Schwab's gubernatorial ticket; Day beat Samuel Lane 85% to 15%. ⚠ Scott E. Morgan is the nominee of UNITED KANSAS, a recognised Kansas party formed when the Free State Party merged into it in April 2026; this site has no party tag for it, so he is carded as an independent and the label is stated here. ✅ Certified by the State Board of Canvassers on Sept 1, 2026.",
     candidates: [
       { name: "Pat Proctor", party: "R", winner: false,
         positions: [
@@ -1080,7 +1084,7 @@ const STATEWIDE = [
         ],
         differentiators: [
           "Kansas Representative from Leavenworth since 2020; chairs the House Elections Committee and the Joint Committee on Kansas Security; sits on the U.S. Election Assistance Commission Board of Advisors",
-          "Unopposed in the primary with 266,853 votes [Verify — unofficial, pending the Sept 1 state canvass]",
+          "Unopposed in the primary with 266,853 votes (certified by the State Board of Canvassers, Sept 1, 2026)",
           "⚠ No campaign-finance figure could be located [Verify]"
         ],
         supporters: [
@@ -1101,7 +1105,7 @@ const STATEWIDE = [
         ],
         differentiators: [
           "Holds no current office; served in the Kansas House 2020-2021, appointed to a vacancy, then won election by 62 votes, and resigned after moving out of the district",
-          "Won the primary with 85% (176,899 votes) over Samuel Lane [Verify — unofficial, pending the Sept 1 state canvass]",
+          "Won the primary with 85% (176,899 votes) over Samuel Lane (certified by the State Board of Canvassers, Sept 1, 2026)",
           "⚠ No campaign-finance figure could be located [Verify]"
         ],
         supporters: [
@@ -1138,7 +1142,7 @@ const STATEWIDE = [
     ] },
 
   { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "State Treasurer of Kansas",
-    note: "BOTH MAJOR-PARTY CANDIDATES WERE UNOPPOSED, officially 100% each on the Secretary of State's results system. Libertarian Eric Lund is also on the November ballot, nominated at his party's Apr 25, 2026 convention. ⚠ Aug 4 figures are unofficial until the state canvass on Sept 1, 2026.",
+    note: "BOTH MAJOR-PARTY CANDIDATES WERE UNOPPOSED, officially 100% each on the Secretary of State's results system. Libertarian Eric Lund is also on the November ballot, nominated at his party's Apr 25, 2026 convention. ✅ Certified by the State Board of Canvassers on Sept 1, 2026.",
     candidates: [
       { name: "Steven C. Johnson (incumbent)", party: "R", winner: false,
         positions: [
@@ -1148,7 +1152,7 @@ const STATEWIDE = [
         ],
         differentiators: [
           "Kansas State Treasurer since 2023; Kansas House 2011-2023",
-          "Unopposed in the primary with 275,638 votes [Verify — unofficial, pending the Sept 1 state canvass]",
+          "Unopposed in the primary with 275,638 votes (certified by the State Board of Canvassers, Sept 1, 2026)",
           "⚠ No campaign-finance figure could be located [Verify]"
         ],
         supporters: [
@@ -1169,7 +1173,7 @@ const STATEWIDE = [
         ],
         differentiators: [
           "Holds no current office; chief executive of an Overland Park insurance group with about 20 years in risk management",
-          "Unopposed in the primary with 193,763 votes [Verify — unofficial, pending the Sept 1 state canvass]",
+          "Unopposed in the primary with 193,763 votes (certified by the State Board of Canvassers, Sept 1, 2026)",
           "⚠ No campaign-finance figure could be located [Verify]"
         ],
         supporters: [
@@ -1206,7 +1210,7 @@ const STATEWIDE = [
     ] },
 
   { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Commissioner of Insurance of Kansas (OPEN SEAT)",
-    note: "THE MARQUEE DOWN-BALLOT RACE — THE SITTING SPEAKER OF THE KANSAS HOUSE AGAINST THE SITTING SENATE MINORITY LEADER. The seat is open because Vicki Schmidt ran for governor and lost the primary with 14%. Both nominees were unopposed on Aug 4, officially 100% each. Libertarian Ric Koehn is also on the ballot. ✅ The most striking endorsement on the Kansas ballot is here: Dinah Sykes is backed by TWO former Kansas insurance commissioners from opposite parties, Sandy Praeger (R) and Kathleen Sebelius (D). ⚠ Aug 4 figures are unofficial until the state canvass on Sept 1, 2026.",
+    note: "THE MARQUEE DOWN-BALLOT RACE — THE SITTING SPEAKER OF THE KANSAS HOUSE AGAINST THE SITTING SENATE MINORITY LEADER. The seat is open because Vicki Schmidt ran for governor and lost the primary with 14%. Both nominees were unopposed on Aug 4, officially 100% each. Libertarian Ric Koehn is also on the ballot. ✅ The most striking endorsement on the Kansas ballot is here: Dinah Sykes is backed by TWO former Kansas insurance commissioners from opposite parties, Sandy Praeger (R) and Kathleen Sebelius (D). ✅ Certified by the State Board of Canvassers on Sept 1, 2026.",
     candidates: [
       { name: "Dan Hawkins", party: "R", winner: false,
         positions: [
@@ -1216,7 +1220,7 @@ const STATEWIDE = [
         ],
         differentiators: [
           "Speaker of the Kansas House since 2023; in the House since 2013, and retiring from it to run for this office",
-          "Unopposed in the primary with 272,016 votes [Verify — unofficial, pending the Sept 1 state canvass]",
+          "Unopposed in the primary with 272,016 votes (certified by the State Board of Canvassers, Sept 1, 2026)",
           "⚠ No campaign-finance figure could be located [Verify]"
         ],
         supporters: [
@@ -1237,7 +1241,7 @@ const STATEWIDE = [
         ],
         differentiators: [
           "Kansas Senator from Lenexa since 2017 and Senate Minority Leader since 2021; elected as a Republican, she switched to the Democratic Party in December 2018",
-          "Unopposed in the primary with 194,563 votes [Verify — unofficial, pending the Sept 1 state canvass]",
+          "Unopposed in the primary with 194,563 votes (certified by the State Board of Canvassers, Sept 1, 2026)",
           "⚠ No campaign-finance figure could be located [Verify]"
         ],
         supporters: [
@@ -1354,7 +1358,7 @@ const HOUSE_RACES = {
     region: "The Big First — 60 counties of western and central Kansas, plus Lawrence. Manhattan, Salina, Hays, Dodge City, Garden City, Hutchinson, McPherson. All of 57 counties plus parts of Douglas, Jackson and Pawnee.",
     races: [
       { date: "Nov 3, 2026", type: "upcoming",
-        note: "THE MOST REPUBLICAN DISTRICT IN KANSAS — Cook PVI R+16, and Tracey Mann won it by 38 points in 2024. ⚠ THE MAP'S MOST-CONTESTED FEATURE IS HERE: the 2022 Ad Astra 2 plan moved Lawrence and the rest of Douglas County out of KS-2 and into this rural district, and both 2026 Democratic candidates were Lawrence attorneys. All three raters call it Safe or Solid Republican [Verify — Cook and Inside Elections were not read at their own sites]. ⚠ Aug 4 figures are unofficial until the state canvass on Sept 1, 2026.",
+        note: "THE MOST REPUBLICAN DISTRICT IN KANSAS — Cook PVI R+16, and Tracey Mann won it by 38 points in 2024. ⚠ THE MAP'S MOST-CONTESTED FEATURE IS HERE: the 2022 Ad Astra 2 plan moved Lawrence and the rest of Douglas County out of KS-2 and into this rural district, and both 2026 Democratic candidates were Lawrence attorneys. All three raters call it Safe or Solid Republican [Verify — Cook and Inside Elections were not read at their own sites]. ✅ Certified by the State Board of Canvassers on Sept 1, 2026.",
         candidates: [
           { name: "Tracey Mann (incumbent)", party: "R", winner: false,
             positions: [
@@ -1364,7 +1368,7 @@ const HOUSE_RACES = {
             ],
             differentiators: [
               "In office since 2021, seeking a fourth term; chairs the House Agriculture Livestock, Dairy and Poultry Subcommittee",
-              "Won the Republican primary 81.0% to 19.0% over Craig Musser [Verify — unofficial, pending the Sept 1 state canvass]",
+              "Won the Republican primary 81.0% to 19.0% over Craig Musser (certified by the State Board of Canvassers, Sept 1, 2026)",
               "$2,713,324 cash on hand as of July 15, 2026"
             ],
             supporters: [
@@ -1385,7 +1389,7 @@ const HOUSE_RACES = {
             ],
             differentiators: [
               "Lawrence attorney with three decades in legal aid and federal service, including the NLRB and Social Security Administration; no prior elected office",
-              "Won the Democratic primary 64.2% to 35.8% over Colin McRoberts [Verify — unofficial, pending the Sept 1 state canvass]",
+              "Won the Democratic primary 64.2% to 35.8% over Colin McRoberts (certified by the State Board of Canvassers, Sept 1, 2026)",
               "$3,162 cash on hand as of July 15, 2026"
             ],
             supporters: [
@@ -1427,7 +1431,7 @@ const HOUSE_RACES = {
     region: "Eastern Kansas — Topeka, Leavenworth, Emporia, Pittsburg, and the majority of Kansas City, Kansas. All of 24 counties plus parts of Douglas, Jackson and Wyandotte.",
     races: [
       { date: "Nov 3, 2026", type: "upcoming",
-        note: "THE SEAT IS NOT OPEN — first-term Republican Derek Schmidt is running, and he won his primary 79.9% to 20.1%. Ad Astra 2 handed this district the majority of Wyandotte County (Kansas City, Kansas) while taking Lawrence out of it, but the seat remains strongly Republican: Cook PVI R+10 and a 2024 margin of 18.9 points. ⚠ No sourced before-and-after PVI comparison for the Wyandotte shift could be located, so its magnitude is not stated here [Verify]. ⚠ Aug 4 figures are unofficial until the state canvass on Sept 1, 2026.",
+        note: "THE SEAT IS NOT OPEN — first-term Republican Derek Schmidt is running, and he won his primary 79.9% to 20.1%. Ad Astra 2 handed this district the majority of Wyandotte County (Kansas City, Kansas) while taking Lawrence out of it, but the seat remains strongly Republican: Cook PVI R+10 and a 2024 margin of 18.9 points. ⚠ No sourced before-and-after PVI comparison for the Wyandotte shift could be located, so its magnitude is not stated here [Verify]. ✅ Certified by the State Board of Canvassers on Sept 1, 2026.",
         candidates: [
           { name: "Derek Schmidt (incumbent)", party: "R", winner: false,
             positions: [
@@ -1437,7 +1441,7 @@ const HOUSE_RACES = {
             ],
             differentiators: [
               "U.S. Representative since Jan 2025; previously Kansas Attorney General for 12 years and a state senator, including six years as majority leader",
-              "Won the Republican primary 79.9% to 20.1% over Chad Young [Verify — unofficial, pending the Sept 1 state canvass]",
+              "Won the Republican primary 79.9% to 20.1% over Chad Young (certified by the State Board of Canvassers, Sept 1, 2026)",
               "$939,168 cash on hand through July 15, 2026; $1,457,605 raised this cycle",
               "Endorsed by President Trump in July 2026"
             ],
@@ -1459,7 +1463,7 @@ const HOUSE_RACES = {
             ],
             differentiators: [
               "No prior elected office; West Point graduate, Army captain, veterinarian and rancher from Galesburg, and a former registered Republican",
-              "Unopposed in the Democratic primary with 37,925 votes [Verify — unofficial, pending the Sept 1 state canvass]",
+              "Unopposed in the Democratic primary with 37,925 votes (certified by the State Board of Canvassers, Sept 1, 2026)",
               "$244,286 cash on hand through July 15, 2026; $758,823 raised, about 94.7% from individuals"
             ],
             supporters: [
@@ -1502,7 +1506,7 @@ const HOUSE_RACES = {
     region: "The Kansas City suburbs — all of Johnson, Miami, Franklin and Anderson counties, plus the part of Wyandotte County south of I-70. Overland Park, Olathe, Lenexa, Shawnee, Ottawa.",
     races: [
       { date: "Nov 3, 2026", type: "upcoming",
-        note: "KANSAS'S ONLY DISTRICT WITH A COMPETITIVE PARTISAN LEAN — AND ALL THREE RATERS NOW CALL IT SOLID OR SAFE DEMOCRATIC. Ad Astra 2 was drawn in 2022 specifically to weaken this seat, splitting Kansas City, Kansas along I-70 and moving the northern half into KS-2. It has not worked: Sharice Davids has won every election under it, taking 53.4% to 42.6% in 2024, and the district still carries a Cook PVI of D+2. ✅ Sabato's Crystal Ball moved the seat from Likely Democratic to Safe Democratic on July 30, 2026 — read directly at the rater's own site. The money gap is the defining fact of the general election: $1.72 million on hand to $12,284. ⚠ Aug 4 figures are unofficial until the state canvass on Sept 1, 2026.",
+        note: "KANSAS'S ONLY DISTRICT WITH A COMPETITIVE PARTISAN LEAN — AND ALL THREE RATERS NOW CALL IT SOLID OR SAFE DEMOCRATIC. Ad Astra 2 was drawn in 2022 specifically to weaken this seat, splitting Kansas City, Kansas along I-70 and moving the northern half into KS-2. It has not worked: Sharice Davids has won every election under it, taking 53.4% to 42.6% in 2024, and the district still carries a Cook PVI of D+2. ✅ Sabato's Crystal Ball moved the seat from Likely Democratic to Safe Democratic on July 30, 2026 — read directly at the rater's own site. The money gap is the defining fact of the general election: $1.72 million on hand to $12,284. ✅ Certified by the State Board of Canvassers on Sept 1, 2026.",
         candidates: [
           { name: "Sharice Davids (incumbent)", party: "D", winner: false,
             positions: [
@@ -1512,7 +1516,7 @@ const HOUSE_RACES = {
             ],
             differentiators: [
               "Fourth-term incumbent, in office since 2019; Ranking Member of the House Agriculture General Farm Commodities Subcommittee",
-              "Won the Democratic primary with 83.4% over Sarah Preu [Verify — unofficial, pending the Sept 1 state canvass]",
+              "Won the Democratic primary with 83.4% over Sarah Preu (certified by the State Board of Canvassers, Sept 1, 2026)",
               "$1,724,211 cash on hand as of July 15, 2026; $3,690,439 raised this cycle"
             ],
             supporters: [
@@ -1534,7 +1538,7 @@ const HOUSE_RACES = {
             differentiators: [
               "Two terms on the Shawnee City Council (2015-2023), including council president; earlier a city planning commissioner",
               "Retired U.S. Army colonel with roughly 30 years at FEMA in emergency management",
-              "Won the Republican primary with 78.7% over Chase LaPorte [Verify — unofficial, pending the Sept 1 state canvass]",
+              "Won the Republican primary with 78.7% over Chase LaPorte (certified by the State Board of Canvassers, Sept 1, 2026)",
               "$12,283 cash on hand as of July 15, 2026; $18,916 raised this cycle"
             ],
             supporters: [
@@ -1576,7 +1580,7 @@ const HOUSE_RACES = {
     region: "Wichita and south-central Kansas — Sedgwick, Butler, Cowley, Harvey, Sumner, Pratt and ten more counties, plus part of Pawnee. The state's only majority-urban district.",
     races: [
       { date: "Nov 3, 2026", type: "upcoming",
-        note: "A SAFE REPUBLICAN, WICHITA-CENTRED SEAT AT COOK PVI R+12, held by Ron Estes since a 2017 special election. It is Kansas's only majority-urban district, anchored by Sedgwick County and the Wichita aviation economy. Unusually for a safe seat, four candidates are reported on the November ballot, including a Libertarian and an independent. ⚠ Aug 4 figures are unofficial until the state canvass on Sept 1, 2026.",
+        note: "A SAFE REPUBLICAN, WICHITA-CENTRED SEAT AT COOK PVI R+12, held by Ron Estes since a 2017 special election. It is Kansas's only majority-urban district, anchored by Sedgwick County and the Wichita aviation economy. ⚠ THREE CANDIDATES ARE ON THE NOVEMBER BALLOT, NOT FOUR. This page previously carded independent Paul Vincent Catanese. He was a real candidate who ran a real campaign, but Kansas independents reach the general ballot only by petition, and he did not get there: his own campaign site says “Having not collected enough signatures before the August 2nd deadline, I have dropped out of the 2026 Election.” The petition deadline was noon on Aug 3, 2026. ✅ Confirmed against the Secretary of State’s certified 2026 General list, which returns exactly three KS-4 rows — Estes (R), Tyndell (D), Cranmer (L) — and carries only two independents anywhere in Kansas, both for state House seats. ✅ Certified by the State Board of Canvassers on Sept 1, 2026.",
         candidates: [
           { name: "Ron Estes (incumbent)", party: "R", winner: false,
             positions: [
@@ -1587,7 +1591,7 @@ const HOUSE_RACES = {
             differentiators: [
               "In office since a 2017 special election; sits on the House Ways and Means Committee",
               "Previously Sedgwick County treasurer (2005-2011) and Kansas State Treasurer (2011-2017)",
-              "Won the Republican primary 80.9% to 19.1% over Frank McCollum [Verify — unofficial, pending the Sept 1 state canvass]",
+              "Won the Republican primary 80.9% to 19.1% over Frank McCollum (certified by the State Board of Canvassers, Sept 1, 2026)",
               "$1,622,846 cash on hand as of March 31, 2026"
             ],
             supporters: [
@@ -1608,7 +1612,7 @@ const HOUSE_RACES = {
             ],
             differentiators: [
               "Wichita attorney and business owner; no prior elected office",
-              "Won a four-way Democratic primary with 65.8% [Verify — unofficial, pending the Sept 1 state canvass]",
+              "Won a four-way Democratic primary with 65.8% (certified by the State Board of Canvassers, Sept 1, 2026)",
               "$120,411 cash on hand as of March 31, 2026"
             ],
             supporters: [
@@ -1641,34 +1645,13 @@ const HOUSE_RACES = {
               "No elected experience and no reported campaign funding [Verify]",
               "His platform is largely structural, leaving voters little on cost of living, health care or agriculture",
               "Libertarian nominees in KS-4 have historically drawn low single digits"
-            ] },
-          { name: "Paul Vincent Catanese", party: "I", winner: false,
-            positions: [
-              "Break the political party system's hold on the country and empower independents to run for office",
-              "Introduce a bill to simplify legislation and end oversized omnibus bills",
-              "Accept only small grassroots contributions, refusing corporate and special-interest money, and hold open town halls"
-            ],
-            differentiators: [
-              "Independent candidate who qualified by filing rather than through a primary; a 2024 presidential candidate. No prior elected office",
-              "⚠ His ballot certification could NOT be confirmed against the Kansas Secretary of State's own list [Verify] — the SoS candidate page returns 403 to automated fetch, so his candidacy rests on his own campaign site and an aggregator's table",
-              "$2,241 cash on hand as of March 31, 2026"
-            ],
-            supporters: [
-              "The only genuinely non-party option on the KS-4 ballot, which matches his central anti-partisan message [Verify — structural argument]",
-              "A small-dollar-only funding pledge that is consistent with his reported FEC totals",
-              "Voters dissatisfied with both major parties have somewhere to go [Verify — contingent on his ballot status being confirmed]"
-            ],
-            opponents: [
-              "Roughly $2,200 on hand against an incumbent with over $1.6 million — no realistic path",
-              "His platform is almost entirely process reform, with no stated positions on health care, agriculture or the economy",
-              "Independent candidacies in this district have no history of meaningful vote share [Verify — structural argument]"
             ] }
         ] }
     ]
   }
 };
 
-const SITE_META = { name: "Kansas Elections Hub", lastUpdated: "August 18, 2026" };
+const SITE_META = { name: "Kansas Elections Hub", lastUpdated: "September 3, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Kansas county-level down-ballot research has not started.)
