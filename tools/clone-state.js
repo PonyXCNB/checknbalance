@@ -143,16 +143,14 @@ const subs = [
   [`Loading map of ${donorName}…`, `Loading map of ${cfg.name}…`],
   [`#${donorab}map`, `#${ab}map`],
   [`id="${donorab}map"`, `id="${ab}map"`],
-  // footer
-  [`<strong>${donorAB} Elections Hub</strong>`, `<strong>${AB} Elections Hub</strong>`],
+  // (footer handled below — the donor may spell the state out; see the seat-label note)
   // the FIPS constant — lesson #10, the one that has shipped broken twice
   [`const ${donorAB}_STATE_FIPS = "${cfg.donorFips}";`, `const ${AB}_STATE_FIPS = "${cfg.fips}";`],
   [`${donorAB}_STATE_FIPS`, `${AB}_STATE_FIPS`],
   // empty state — the drawer title AND the sentence under it. Pages differ in how they write
   // the apostrophe (raw ' vs &#39;), so both spellings are tried and exactly one must match.
   [`"Not in ${donorAB}"`, `"Not in ${AB}"`],
-  // data-layer comment
-  [`every ${donorAB} ${dn.s}`, `every ${AB} ${tn.s}`],
+  // (the data-layer comment is handled below — nine pages named the WRONG state in it)
   // SITE_META
   [`const SITE_META = { name: "${donorName} Elections Hub", lastUpdated: "${cfg.donorLastUpdated}" };`,
    `const SITE_META = { name: "${cfg.name} Elections Hub", lastUpdated: "${cfg.lastUpdated}" };`],
@@ -178,6 +176,33 @@ if (donorSeatVariants.length !== 1) {
 } else {
   html = html.split(donorSeatVariants[0])
              .join(seatStat(cfg.houseSeats, Number(cfg.houseSeats) === 1 ? "U.S. House Seat" : "U.S. House Seats"));
+}
+
+// Footer crest line. Pages write it EITHER as initials ("KS Elections Hub") OR spelled out
+// ("Ohio Elections Hub") — tests/data-logic.js explicitly permits both, so a donor using the
+// spelled-out form is correct, not broken. The tool used to hard-code the initials and refused
+// to clone from ia/in/ky/oh because of it (caught Sept 3, 2026 cloning Michigan from Ohio).
+// Same shape as quirks #14, #16 and #23: a hard-coded string assuming all donors are worded
+// identically. Accept whichever form the DONOR uses; emit the initials, the site's majority style.
+const footerVariants = [`<strong>${donorAB} Elections Hub</strong>`,
+                        `<strong>${donorName} Elections Hub</strong>`].filter(s => html.includes(s));
+if (footerVariants.length !== 1) {
+  missed.push(`<strong>(${donorAB}|${donorName}) Elections Hub</strong> (matched ${footerVariants.length} times, need exactly 1)`);
+} else {
+  html = html.split(footerVariants[0]).join(`<strong>${AB} Elections Hub</strong>`);
+}
+
+// Data-layer comment naming the state. ⚠ NINE PAGES NAMED THE WRONG STATE HERE (ia in ky ma me
+// nh oh ri wv all inherited "every DE county" or "every CT county" from a donor). It is a code
+// comment, so no test and no reader ever saw it — but it is the same class as lesson #28, and a
+// wrong donor abbreviation is exactly what makes the NEXT clone fail. All nine are fixed, and
+// tests/data-logic.js now asserts this string against the filename too. Accept whatever
+// two-letter abbreviation the donor actually carries, so one stale donor cannot block a build.
+const dataCommentRe = new RegExp(`(\\(1\\) COUNTIES\\s+[\\u2014-]\\s+every )[A-Z]{2}( ${dn.s})`);
+if (!dataCommentRe.test(html)) {
+  missed.push(`(1) COUNTIES — every <XX> ${dn.s}`);
+} else {
+  html = html.replace(dataCommentRe, `$1${AB}$2`);
 }
 
 // empty-state sentence — accept either apostrophe spelling, but require one of them

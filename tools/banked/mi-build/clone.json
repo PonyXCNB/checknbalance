@@ -12,11 +12,11 @@
   "out": "mi.html",
   "countyCount": 83,
   "houseSeats": 13,
-  "statewideCount": 0,
+  "statewideCount": 12,
   "fips": "26",
   "lastUpdated": "September 3, 2026",
   "capital": { "name": "Lansing", "lng": -84.5555, "lat": 42.7325 },
-  "sources": "PLACEHOLDER — set from the statewide research before building",
+  "sources": "Michigan Bureau of Elections — the general-election candidate listing at mi-boe.entellitrak.com (generated Sept 3, 2026) and the Filing for Office guides; Michigan Secretary of State — the machine-readable county canvass of the Aug 4, 2026 primary at mvic.sos.state.mi.us, all 83 counties; the Board of State Canvassers' own meeting agendas and Statewide Petition Status document; the Michigan Independent Citizens Redistricting Commission's county-split report for the Chestnut congressional plan; Const 1963 art V sections 21 and 30 and MCL 168.52, 168.73, 168.282, 168.590c and 168.591 via legislature.mi.gov; Graveline v. Benson, 430 F.Supp.3d 297 (E.D. Mich. 2019); MCDC Geocorr 2022; Cook Political Report (2026 PVI file and public race pages), Sabato's Crystal Ball, Inside Elections; FEC and Transparency USA; Michigan Advance, Bridge Michigan, Votebeat, Michigan Public, Detroit News, Detroit Free Press, MLive, WCMU, WDET, Crain's Detroit, The Hill, CNN, NBC News.",
   "countiesFile": "tools/banked/mi-build/counties.js",
   "statewideFile": "tools/banked/mi-build/statewide.js",
   "houseFile": "tools/banked/mi-build/house.js"

@@ -125,6 +125,7 @@ const STATE_PAGES = [
   // all, so without `ds` a voter in south Seattle or Renton would never see their own U.S. House
   // race (lesson #12). 8 statewide (5 Supreme Court seats + 3 initiatives) + 4 districts = 12.
   { page: "wa.html", countyCount: 39,  sampleFips: "53033", sampleName: "King",         expectedRaces: 12 },
+  { page: "mi.html", countyCount: 83,  sampleFips: "26163", sampleName: "Wayne",        expectedRaces: 15 },
 ];
 
 for (const cfg of STATE_PAGES) {
@@ -193,6 +194,24 @@ for (const cfg of STATE_PAGES) {
   const emptyName = emptyBody ? emptyBody[1].trim() : "";
   check(!!emptyBody && (x.SITE_META.name || "").startsWith(emptyName + " "),
     `${cfg.page}: county drawer empty state names "${emptyName}", matching the page's own state`);
+  // ⚠ FOURTH instance, found Sept 3, 2026 building Michigan — and again it was NINE pages.
+  // The data-layer comment above COUNTIES names the state: "(1) COUNTIES — every DE county".
+  // `ia in ky me nh oh ri wv` all inherited Delaware's abbreviation and `ma` inherited
+  // Connecticut's. It is only a code comment, so no reader was ever misled — but it is the same
+  // class, and a stale abbreviation here is what makes the NEXT clone fail: clone-state.js
+  // refused to write mi.html because it could not find "every OH county" in the Ohio donor.
+  // ➤ That refusal has now caught a real defect SIX times (quirks #16, #22, #23, #26, #28, this).
+  const dataComment = rawPage.match(/\(1\) COUNTIES\s+[—-]\s+every ([A-Z]{2}) (?:county|parish|borough)([^\n]*)/);
+  check(!!dataComment && dataComment[1] === expectAbbr,
+    `${cfg.page}: COUNTIES data comment says "every ${expectAbbr} ..." (got "${dataComment ? dataComment[1] : "MISSING"}")`);
+  // ...and the SECOND half of the same comment was wrong on the same nine pages, in a way the
+  // abbreviation check could not see: it claimed "(all in the single at-large district)" on pages
+  // with 2, 4, 6, 9, 13 and 15 districts, inherited from Delaware. A comment that contradicts the
+  // page's own data is worth failing on, because the next person to read it is the next builder.
+  const districtCount = Object.keys(x.HOUSE_RACES || {}).length;
+  const claimsAtLarge = !!dataComment && /single at-large district/.test(dataComment[2]);
+  check(!claimsAtLarge || districtCount === 1,
+    `${cfg.page}: COUNTIES comment claims a single at-large district only if there is one (has ${districtCount})`);
 
   const result = x.getCountyElections(cfg.sampleFips);
   const races = (result && result.elections) || [];
@@ -234,6 +253,26 @@ for (const cfg of STATE_PAGES) {
     .filter(d => !reachable.has(d)).sort((a, b) => a - b);
   check(unreachable.length === 0,
     `${cfg.page}: every one of the ${Object.keys(x.HOUSE_RACES).length} House districts is reachable from a county${unreachable.length ? ` (unreachable: ${unreachable.join(",")})` : ""}`);
+
+  // ⚠⚠ AND THE RUNTIME MUST ACTUALLY USE `ds` — the check above only proves the DATA is
+  // right. Found Sept 3, 2026: `nc.html`, the flagship, had carried `ds` on 12 split counties
+  // since Aug 11 while its getCountyElections still read only `county.d`, so a Guilford,
+  // Mecklenburg or Wake voter saw ONE of their possible U.S. House races. The Aug 11 fix added
+  // the data and the map shading and never updated the merge; every test passed because every
+  // test asked the data, not the function. This asks the FUNCTION.
+  const splitCounties = Object.entries(x.COUNTIES)
+    .filter(([, c]) => Array.isArray(c.ds) && c.ds.length > 1);
+  if (splitCounties.length) {
+    // use the county touching the most districts — the hardest case on the page
+    splitCounties.sort((a, b) => b[1].ds.length - a[1].ds.length);
+    const [splitFips, splitCounty] = splitCounties[0];
+    const merged = x.getCountyElections(splitFips);
+    const houseOffices = new Set((merged ? merged.elections : [])
+      .filter(e => /U\.S\. House/.test(e.office || ""))
+      .map(e => e.office));
+    check(houseOffices.size >= splitCounty.ds.length,
+      `${cfg.page}: getCountyElections('${splitFips}' ${splitCounty.n}) surfaces all ${splitCounty.ds.length} of its districts (got ${houseOffices.size})`);
+  }
 
   console.log("");
 }

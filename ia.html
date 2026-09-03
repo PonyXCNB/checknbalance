@@ -703,7 +703,7 @@
 <!-- =============================================
      DATA LAYER
      Three pieces feed the panel:
-       (1) COUNTIES       — every DE county (all in the single at-large district)
+       (1) COUNTIES       — every IA county + its primary US House district(s)
        (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
        (3) HOUSE_RACES    — US House race per district
      Each county's election list is built by combining (2) + the right item from (3).
@@ -1333,15 +1333,22 @@ function getCountyElections(fips) {
   const county = COUNTIES[fips];
   if (!county) return null;
   const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them. Without this,
+  // a split-county voter sees only their plurality district's race, and a district that is the
+  // plurality of NO county is unreachable entirely (lesson #12). Harmless where no county
+  // carries `ds` — it falls back to [county.d].
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
   // House race entries store their office name on the parent district object,
   // so attach it (plus a scope label) to every race so each seat renders with a clear title.
-  const houseRaces = district
-    ? district.races.map(r => ({
-        ...r,
-        office: r.office || district.name,
-        scope: r.scope || `Federal · District ${county.d}`
-      }))
-    : [];
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
   const localRaces = LOCAL_RACES[fips] || [];
   // Combine statewide + this county's House races + local races
   const all = [...STATEWIDE, ...houseRaces, ...localRaces];

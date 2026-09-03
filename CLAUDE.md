@@ -68,7 +68,8 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 | `ks.html` | Kansas — thirty-eighth fully built state (105 counties, 4 districts, Aug 4, 2026 primary). Built Aug 18, 2026 from mn.html. ⚠ **KANSAS DID NOT REDISTRICT** — the mid-decade push failed twice and the 2022 *Ad Astra 2* plan governs; *Rivera v. Schwab* already upheld it. The map is the best-proved on the site: the enacted plan's own KLRD split report matches an independent Geocorr derivation TO THE PERSON, and the **currency test passed 105 of 105 counties against the SoS's own Aug 4 ballot data**. Only 4 split counties (Douglas, Jackson, Pawnee, Wyandotte); **Lawrence sits in KS-1**, the map's most-contested feature, and Wyandotte is split along I-70. ⚠ **NOTHING IS CERTIFIED — the State Board of Canvassers does not certify until Sept 1, 2026**, so every primary figure on the page says it is unofficial. Statewide: U.S. Senate (Marshall vs. Adam Hamilton — **two raters moved off Safe after a record $3.7M Democratic launch quarter**), **OPEN Governor** (Kelly term-limited; Masterson/Klemp vs. Holscher/Ohaebosim, Lean/Tilt R flip), AG (Kobach–Mann, a 2022 rematch), **OPEN Secretary of State**, Treasurer, **OPEN Insurance Commissioner** (Speaker Hawkins vs. Minority Leader Sykes — the marquee down-ballot race), and 9 appellate retentions. ⚠ **NO November ballot question** — the only 2026 amendment was on the AUGUST ballot and voters **rejected partisan election of Supreme Court justices 61.4–38.6**. KS-3 (Davids) is the only competitive-lean seat and all three raters now call it Solid/Safe D. No LOCAL_RACES yet |
 | `fl.html` | Florida — **forty-first fully built state** (67 counties, 28 districts, Aug 18, 2026 primary CERTIFIED Aug 27). Built Aug 28, 2026 from pa.html, the other 67-county page. ⚠ **BUILT ON HB 1D, THE NEW MID-DECADE MAP** signed May 4, 2026 after *Louisiana v. Callais* — it redrew 21 of 28 districts and **CD119 is STALE for Florida, disagreeing on 20 of 67 counties**. Districts 1–7 were NOT redrawn. 19 split counties; **FL-24, FL-25 and FL-26 are the plurality of NO county** and are reachable only via `ds` (lesson #12). U.S. Senate is a **SPECIAL** for the last two years of Rubio's term (Moody appointed); OPEN Governor (DeSantis term-limited). Marquee: **FL-25 Toss Up** (Moskowitz in a renumbered seat flipped D+5→R+3) and **FL-14 Toss Up** (Castor; D+5→R+4, the largest raw-PVI shift in the state). **FL-7's Cory Mills LOST his own primary.** 3 amendments, all legislative referrals. No LOCAL_RACES yet |
 | `wy.html` | Wyoming — **forty-second fully built state** (23 counties, ONE at-large seat, Aug 18, 2026 primary CERTIFIED Aug 26). Built Aug 28, 2026 from nd.html. ⚠ **FIVE OF SEVEN TOP OFFICES ARE OPEN** — Senate (Lummis retiring), House (Hageman vacated it), Governor (Gordon declined a third term), Secretary of State (Gray vacated it) and Superintendent (Degenfelder vacated it). **NO county is split** — the simplest map on the site. ⚠ **NO DEMOCRAT FILED for Auditor or Treasurer.** Trump's endorsees SPLIT: Hageman won the Senate primary, Degenfelder LOST the governor's. Chuck Gray won the House nomination with **24.9%**. One ballot measure — the state's first citizen initiative in ~30 years. No LOCAL_RACES yet |
-| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH/KY/IN/IA/IL/MS/AR/NE/NM/CO/OR/NV/SD/ID/MT/PA/TN/HI/AL/WI/MN/ND/KS/OK/AZ/FL/WY redirect to their dedicated pages |
+| `mi.html` | Michigan — **forty-fifth fully built state** (83 counties, 13 districts, Aug 4, 2026 primary). Built Sept 3, 2026 from oh.html. ✅ **MAP UNCHANGED and PROVED 83 OF 83** against the Secretary of State's own machine-readable county canvass — the MICRC "Chestnut" plan governs, *Agee v. Benson* touched only STATE LEGISLATIVE districts, and Cook's own 2026 PVI file gives all 13 districts an IDENTICAL 2025 and 2026 PVI (a zero shift where redrawn states move 10–25 points). ⚠⚠ **CD12 IS THE PLURALITY OF NO COUNTY** — runner-up in Wayne, third in Oakland — so it is reachable only via `ds` (lesson #12, as with PA-3 and WA-9). ⚠ **WE DO NOT CLAIM BSC CERTIFICATION**: the state publishes the results as "STATE PRIMARY, OFFICIAL" but no minutes are posted, so the page says "official county-canvassed results". OPEN Senate (Peters retiring) — **El-Sayed beat Stevens by 13,792 votes / 0.897%**, vs. Mike Rogers, Toss Up at all three raters. OPEN Governor (Whitmer term-limited): Benson/Brinks vs. James/DeBoyer — ⚠ **Mike Duggan is NOT on the ballot; he withdrew May 21, 2026**. ⚠ **AG and SoS are nominated at CONVENTIONS, not the primary** (Const art V § 21). Marquee: **MI-07 at PVI EVEN, Toss Up everywhere — and William Lawrence beat two better-funded establishment favourites by 15 points**. **MI-13's Shri Thanedar LOST his primary**; **MI-08's Thomas Smith won after suspending his campaign, beating Trump's endorsee**; MI-10 and MI-11 are open. Two ballot proposals expected, a third in litigation. No LOCAL_RACES yet |
+| `state.html` | Generic per-state page, driven by URL param `?state=XX` (2-letter abbr). Renders that state's real county map + race data. NC/SC/GA/VA/MD/DE/NJ/NY/RI/NH/CT/VT/ME/MA/WV/OH/KY/IN/IA/IL/MS/AR/NE/NM/CO/OR/NV/SD/ID/MT/PA/TN/HI/AL/WI/MN/ND/KS/OK/AZ/FL/WY/MI redirect to their dedicated pages |
 | `favicon.svg` | Gold-gradient circle + white checkmark (primary favicon, matches site crest) |
 | `favicon.png` | 32px PNG fallback |
 | `favicon.ico` | Multi-size ICO (16/32/48) at root for legacy auto-discovery |
@@ -204,7 +205,36 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of September 2, 2026)
+## Current state (as of September 3, 2026)
+- **MI (full, added Sept 3, 2026) — 45th state.** See the file-inventory row. 130 candidate cards, 0 voices gaps, 394 [Verify].
+- **⚠⚠ THE FLAGSHIP WAS SHOWING SPLIT-COUNTY VOTERS ONLY ONE OF THEIR U.S. HOUSE RACES, AND HAD BEEN SINCE AUG 11.**
+  `nc.html` gained `ds` on 12 split counties in the Aug 11 map fix (owner to-do item 9), but its `getCountyElections`
+  was never updated to READ `ds` — so a Guilford, Mecklenburg, Wake or Cumberland voter clicked their county and saw
+  one U.S. House race instead of two or three. The data was right, the map shading was right, the function was wrong.
+  **Every test passed the whole time, because every test asked the DATA and none asked the FUNCTION.** See lesson #29.
+  Fixed on nc.html and mi.html, and the `ds`-aware merge is now on all 45 pages (a no-op where no county carries `ds`,
+  which immunises every future clone). New regression test in `tests/data-logic.js`, verified to fail on the old code,
+  plus a standalone auditor at `tools/ds-merge-audit.js`.
+- **⚠ NINE PAGES NAMED THE WRONG STATE IN THEIR DATA-LAYER COMMENT, AND NINE CLAIMED A SINGLE AT-LARGE DISTRICT THEY
+  DO NOT HAVE.** `ia in ky ma me nh oh ri wv` said "every DE county" (or CT), and `ia in ky me nh oh ri wv` plus the new
+  `mi` claimed "(all in the single at-large district)" on pages with 2 to 15 districts. Comments only — no reader was
+  misled — but it is lesson #28's class a fourth time, and the stale abbreviation is what made the Michigan clone fail.
+  Both halves are now asserted against the filename and the page's own district count. See lesson #30.
+- **The Sept 1 certification wave is fully resolved** — Kansas certified (20 markers cleared, and the certified list
+  caught a KS-4 independent we should not have been carding), Nebraska's Senate line is confirmed empty by court order,
+  Idaho's Roth and the deceased ID-2 nominee are both now "Withdrawn" on the state's own system, Wisconsin certified
+  Aug 25, SC and GA read from their own portals. GA-13's Blair has been seated (House Clerk: sworn Sept 1).
+- **Massachusetts refreshed after its Sept 1 primary** — all nine House districts and six statewide offices moved to the
+  actual November field, eleven defeated primary candidates removed. ⚠ A correction the page needed: Galvin is NOT
+  unopposed — a Republican write-in campaign drew 38,660 votes against a 5,000-vote nomination threshold.
+- **Three live defects fixed on published pages:** `pa.html` carded a Green nominee a court had ordered off the ballot
+  Aug 21; `de.html` said no Republican had filed for attorney general when the party had named one on Aug 24; and
+  `ks.html` carded an independent who never qualified.
+- **The six states left to build are AK CA LA MO TX, plus DC's special no-county page model.** Louisiana is fully
+  researched and banked in `tools/banked/la-build/` — map proved, calendar established, all six districts and the
+  statewide ballot written up. It is the recommended next build.
+
+## Superseded — current state as of September 2, 2026
 - **UT (full, added Sept 2, 2026) — 43rd state.** ⚠⚠ **UTAH RUNS ON A COURT-DRAWN MAP AND THE DISTRICT NUMBERS ALL SHIFTED, which is the single
   easiest thing to get wrong here.** Judge Dianna M. Gibson (Third Judicial District) struck the 2021 plan under Proposition 4 on **Aug 25, 2025**,
   enjoined the Legislature's replacement SB 1012 ("Map C") on Nov 10, 2025, and adopted **Plaintiffs' Map 1 as adjusted — "Map 1A"** for 2026.
@@ -859,6 +889,52 @@ BUILT in index.html, remove it from PARTIAL + STATE_RACES, and register it in te
    filename-derived assertion. When you fix one instance of a cosmetic clone bug, **sweep every page for
    the same class immediately** — quirk #14 fixed two strings on two pages and left four more strings on
    nine pages, because it fixed the *instances* rather than the *class*.
+
+29. **⚠⚠ THE DATA WAS RIGHT, THE MAP WAS RIGHT, AND THE FUNCTION IGNORED BOTH — ON THE FLAGSHIP, FOR THREE WEEKS.**
+   Found Sept 3, 2026 building Michigan. Lesson #12 established the `ds` model: a county shared by several districts
+   lists them all, so a split-county voter sees every U.S. House race that is actually on their ballot. On **Aug 11 the
+   nc.html map fix added `ds` to 12 split counties** — Cabarrus, Chatham, Cumberland, Forsyth, Granville, Guilford,
+   Mecklenburg, Onslow, Polk, Robeson, Sampson, Wake. **It never updated `getCountyElections`, which still read only
+   `county.d`.** So the flagship spent three weeks telling a Guilford voter about one of their three possible House
+   races, and a Mecklenburg voter about one of three.
+   ➤ **WHY NOTHING CAUGHT IT.** The reachability test added for lesson #12 iterates `COUNTIES` and asks whether every
+   district appears in some `d` or `ds`. It does — the DATA is complete. The pinned race counts are pinned to whatever
+   the page produced when the pin was written, so a wrong count becomes the expected count. **Every check asked the data;
+   none asked the function.** That is the whole failure.
+   ➤ **The general shape, and it is worth carrying to other work: a fix that lands in a DATA file and a fix that lands in
+   the CODE that reads it are two fixes, and shipping one is not shipping the other.** When adding a field, grep for
+   every reader of the old field before calling it done.
+   ➤ **Fixed** on nc.html and mi.html, then applied to all 45 pages — it is a no-op where no county carries `ds`, so it
+   also immunises every future clone from inheriting the old merge. **The real deliverable is the regression test**, which
+   runs `getCountyElections` on each page's most-split county and requires every one of its districts to surface;
+   verified to FAIL on the pre-fix nc.html, naming Guilford and "got 1". `tools/ds-merge-audit.js` runs the same sweep
+   standalone across every page.
+   ➤ ⚠ **STILL OPEN, and it is the next run's highest-value audit:** the merge now honours `ds`, but **many pages carry no
+   `ds` data at all** — including states that certainly do split counties (GA 14 districts, VA 11, NJ 12, MD 8, SC 7,
+   OH 15, IN 9, KY 6, CT 5). Some are genuinely unsplit and documented as such (Iowa's law forbids splitting counties;
+   WV splits none). The rest need the lesson-#12 derivation their pages never got. Run `node tools/ds-merge-audit.js`
+   first — it lists which pages have split counties in their data at all.
+
+30. **THE SAME COSMETIC CLONE BUG, A FOURTH TIME — AND THE SECOND HALF WAS A CLAIM, NOT A LABEL.**
+   Found Sept 3, 2026 when `clone-state.js` refused to write `mi.html` because it could not find `every OH county` in
+   the Ohio donor. It was right twice over. **(a)** Nine pages — `ia in ky ma me nh oh ri wv` — carried a data-layer
+   comment reading "every **DE** county" (or CT for ma), inherited from Delaware. **(b)** Chasing that exposed the
+   second half: nine pages claimed **"(all in the single at-large district)"** while having 2, 4, 6, 9, 13 or 15
+   districts. Comments only, so no reader was misled — but the stale abbreviation is exactly what blocks the next
+   clone, and a comment that contradicts the page's own data misleads the next builder.
+   ➤ **Both are now asserted in `tests/data-logic.js`** — the abbreviation against the filename, and the at-large claim
+   against `Object.keys(HOUSE_RACES).length`. Verified to fail on the pre-fix markup.
+   ➤ **The tool was ALSO too rigid, and that half was fixed in the tool, not the pages** (lesson #23's principle): it
+   hard-coded the footer as `<strong>OH Elections Hub</strong>`, but `tests/data-logic.js` explicitly permits either
+   initials or the spelled-out name, and ia/in/ky/oh legitimately spell it out. It now accepts whichever form the donor
+   uses and emits the initials.
+   ➤ **This is the SIXTH time clone-state.js's refuse-to-write behaviour has caught a real defect** (quirks #16, #22,
+   #23, #26, #28, now #30) and the fourth time the fault was a FILE rather than the tool. Do not soften it.
+   ➤ Also added this run: **`countyNoun` is now config**, because Louisiana has PARISHES. Ten user-visible strings
+   hard-coded "county", including `built.county.n + " County"`, which would have rendered every Louisiana parish as
+   "Acadia County" on a live page. Default "county" leaves every existing config a byte-identical no-op — verified by
+   re-running wa.html's real config and diffing against the shipped file.
+
 ## Testing (`tests/` — plain Node.js, zero dependencies)
 
 Requires Node.js (any recent LTS). Run the whole suite from the site root:
@@ -1104,7 +1180,32 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
    built once and never re-derived. **Every legacy page's map deserves the same audit nc.html just got** — sc.html and
    ga.html are the oldest and were built the same week under the same assumptions.
 
-**Queue status (as of Sept 2, 2026): every numbered item 1–10 is COMPLETE and the owner has added nothing new.**
+**Queue status (as of Sept 3, 2026): every numbered item 1–10 is COMPLETE and the owner has added nothing new.**
+Item 4 (voices) reads **0 missing / 1,512 candidates across 45 pages** at the end of the Sept 3 run — Michigan shipped
+with 130 candidates and 0 gaps. The landing page was reviewed end-to-end and its dependent facts reconcile: the legend
+needed only its count (44 → **45 states**), the footer already read September 2026, PARTIAL is still **{DC} alone**, and
+the tier arithmetic checks out — 45 built + 1 marquee + 5 starter = 51. The prose has been fully state-agnostic since
+the Aug 12 contribution-form change, so nothing in it contradicts the map. **The states left to build are AK CA LA MO TX,
+plus DC's special no-county page model.**
+The [Verify] total went 3,515 → **3,892**: Michigan's 394 honest markers, less 20 cleared by the Kansas certification and
+a handful cleared elsewhere. ✅ **The time-sensitive calendar is still EMPTY.**
+⚠⚠ **THE RUN'S BIGGEST FINDING WAS NOT A STATE BUILD — IT WAS THAT THE FLAGSHIP HAD BEEN SHOWING SPLIT-COUNTY VOTERS
+ONE OF THEIR U.S. HOUSE RACES SINCE AUG 11.** See lesson #29. `nc.html` had the `ds` data and the map shading and a
+`getCountyElections` that read neither. Every test passed throughout, because every test asked the data and none asked
+the function. Fixed on all 45 pages, with a regression test verified to fail on the old code.
+⚠ **A SECOND STRUCTURAL GAP IS NOW OPEN AND SHOULD LEAD THE NEXT RUN:** the merge honours `ds`, but a number of pages
+carry **no `ds` data at all**, including states that certainly split counties (GA, VA, NJ, MD, SC, OH, IN, KY, CT).
+`node tools/ds-merge-audit.js` lists them in seconds. Some are genuine negatives already documented — Iowa's law forbids
+splitting counties, West Virginia splits none — but the rest never got the lesson-#12 derivation.
+✅ **LOUISIANA IS RESEARCHED, PROVED AND BANKED but NOT BUILT** — `tools/banked/la-build/`. Its map is Act 2 of the 2026
+Regular Session (SB 121, signed May 29), validated three ways including a currency test against the Secretary of State's
+live ballots in all 64 parishes with zero contradictions; the two-track calendar is established from the SoS's own words;
+and both the statewide ballot and all six districts are written up with sourced candidate detail. ⚠ **Its calendar is
+unlike any other state on the site and the page must say so: Nov 3 is only the FIRST ROUND for U.S. House, with a
+Dec 12 runoff, while for Senate, Supreme Court, PSC and BESE Nov 3 IS the general — and those are decided by PLURALITY
+with no runoff.** ⚠ **Bill Cassidy LOST his own primary, finishing THIRD with 24.8%.**
+
+Superseded: **Queue status (as of Sept 2, 2026): every numbered item 1–10 is COMPLETE and the owner has added nothing new.**
 Item 4 (voices) reads **0 missing / 1,395 candidates across 44 pages** at the end of the Sept 2 run — Utah shipped with 30 candidates and
 Washington with 36, both 0 gaps. The landing page was reviewed end-to-end and its dependent facts reconcile: the legend needed only its count
 (42 → **44 states**), the footer was bumped August → **September 2026**, PARTIAL is still **{DC} alone**, and the tier arithmetic checks out —
