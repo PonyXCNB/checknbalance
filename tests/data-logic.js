@@ -126,6 +126,9 @@ const STATE_PAGES = [
   // race (lesson #12). 8 statewide (5 Supreme Court seats + 3 initiatives) + 4 districts = 12.
   { page: "wa.html", countyCount: 39,  sampleFips: "53033", sampleName: "King",         expectedRaces: 12 },
   { page: "mi.html", countyCount: 83,  sampleFips: "26163", sampleName: "Wayne",        expectedRaces: 15 },
+  // East Baton Rouge is deliberately the LA sample: it is split between LA-02 and LA-06 via `ds`,
+  // and LA-06 is the seat *Louisiana v. Callais* redrew, so this count guards the merge on the new map.
+  { page: "la.html", countyCount: 64,  sampleFips: "22033", sampleName: "East Baton Rouge", expectedRaces: 14 },
 ];
 
 for (const cfg of STATE_PAGES) {
@@ -190,7 +193,10 @@ for (const cfg of STATE_PAGES) {
   check(!!notIn && notIn[1] === expectAbbr,
     `${cfg.page}: county drawer empty state reads "Not in ${expectAbbr}" (got "${notIn ? notIn[1] : "MISSING"}")`);
   // Same class of bug, same sentence: the empty-state body names the state in words.
-  const emptyBody = rawPage.match(/This county isn(?:&#39;|')t in our ([A-Za-z ]+) dataset\./);
+  // ⚠ The NOUN varies: Louisiana has parishes and Alaska has boroughs, so this must not be
+  // county-specific — it failed on la.html the first time it ran, the same rigidity the clone
+  // tool had before `countyNoun` became config.
+  const emptyBody = rawPage.match(/This (?:county|parish|borough) isn(?:&#39;|')t in our ([A-Za-z ]+) dataset\./);
   const emptyName = emptyBody ? emptyBody[1].trim() : "";
   check(!!emptyBody && (x.SITE_META.name || "").startsWith(emptyName + " "),
     `${cfg.page}: county drawer empty state names "${emptyName}", matching the page's own state`);

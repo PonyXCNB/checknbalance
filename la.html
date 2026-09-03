@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Louisiana Elections Hub</title>
+<meta name="description" content="An interactive parish-by-parish guide to every LA election, past and upcoming." />
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #lamap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: #F1E9D2;
+    stroke: var(--paper-pure);
+    stroke-width: 0.7;
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  .county.has-data       { fill: var(--gold-soft); }
+  .county.has-data:hover { fill: var(--gold); }
+  .county:hover          { fill: #E5DBBE; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.2; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-dot {
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    stroke: var(--paper-pure);
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.55;
+    pointer-events: none;
+  }
+  .capital-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    fill: var(--ink);
+    fill-opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 100%);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: var(--gold-deep); }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  /* ---- Race brief (the context note) ----
+     Lives INSIDE the expanded panel only. A collapsed card shows the pill, date, office
+     and candidate count and nothing else, so a county's ballot reads as a clean list.
+     Owner-reported twice on Aug 12, 2026: as a header element these notes — 2,187
+     characters at the extreme, and 30% of them opening with a ⚠ flag — buried the
+     candidate data the page exists to show. Set in roman, not italic: extended italic
+     body copy at 12.5px is the thing that read as 'terrible'. Long briefs clamp to about
+     four lines behind a Show more toggle so they never crowd out the cards below. */
+  .election-brief {
+    margin: 2px 0 18px;
+    padding: 12px 16px 13px 17px;
+    border-left: 2px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    background: linear-gradient(90deg, rgba(232,217,184,.30), rgba(232,217,184,0) 94%);
+  }
+  .brief-label {
+    font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); font-weight: 700; margin-bottom: 7px;
+  }
+  .brief-body { font-size: 12.5px; line-height: 1.62; color: var(--ink-soft); }
+  .brief-body p + p { margin-top: 7px; }
+  .brief-lead { color: var(--ink); }
+  /* Flag glyphs hang in the margin so the text block keeps a straight left edge. */
+  .brief-flag { position: relative; padding-left: 21px; }
+  .brief-mark { position: absolute; left: 0; top: 0; font-size: 11px; color: var(--gold-deep); }
+  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; }
+  .brief-more {
+    margin-top: 9px; padding: 0;
+    background: none; border: none; cursor: pointer;
+    font-family: var(--sans); font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-deep);
+    border-bottom: 1px solid var(--gold-soft);
+  }
+  .brief-more:hover { border-bottom-color: var(--gold); }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold); color: white;
+    font-size: 9px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12.5px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '"'; opacity: .4; }
+  .voices-block li::after  { content: '"'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">LA</div>
+      <div class="brand-text">
+        <span class="brand-name">Louisiana Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Louisiana <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A parish-by-parish guide to the races that have shaped — and will shape — our state.
+    Click any of the 64 parishes to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">64</div><div class="stat-label">Parishes</div></div>
+    <div class="stat"><div class="stat-num"><em>6</em></div><div class="stat-label">U.S. House Seats</div></div>
+    <div class="stat"><div class="stat-num"><em>12</em></div><div class="stat-label">Statewide Races Tracked</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a parish to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Parishes shaded in gold have detailed election information available. Hover for a quick
+        preview; click to open the full breakdown.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Louisiana…</div>
+      <svg id="lamap" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">Parish</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>LA Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta">
+      Last updated: <span id="last-updated">July 22, 2026</span><br>
+      Sources: Louisiana Secretary of State — the certified candidate inquiry pulled for all 64 parishes (voterportal.sos.la.gov, electionId 344), the election-dates and November qualifying-reminder pages, the how-candidates-are-elected rule, the May 16 and June 27 closed-primary results feeds, and the '2026 Proposed Constitutional Amendments' PDF, from which every ballot question is quoted verbatim; the Louisiana Legislature (legis.la.gov) for SB 121 / Act 2 of the 2026 Regular Session and Act 7 of 2026, and redist.legis.la.gov for the Act 2 'Population and Party by Parish' report and block-equivalency file; Louisiana v. Callais, Nos. 24-109/24-110 (U.S. Sup. Ct., Apr 29, 2026); FEC bulk files weball26 and cn26; Cook Political Report (2026 PVI file and public race pages), Sabato's Crystal Ball, Inside Elections, Decision Desk HQ; Louisiana Illuminator, The Advocate, Roll Call, Louisiana Radio Network, Energy and Policy Institute, Shreveport Times, 225 Baton Rouge, Baton Rouge Weekly Press; candidates' own campaign sites and Ballotpedia Candidate Connection surveys, attributed as self-description.</div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every LA county + its primary US House district(s)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// Louisiana parish -> U.S. House district.
+// MAP: SB 121 = ACT 2 OF THE 2026 REGULAR SESSION, signed May 29, 2026 - verified at the
+// Legislature's own bill page, which reads "Signed by the Governor. Becomes Act No. 2".
+// This is a THIRD map, not SB8/Act 2 of 2024 and not HB1. After *Louisiana v. Callais* (decided
+// Apr 29, 2026) Gov. Landry suspended the scheduled May 16 congressional primaries on Apr 30 and
+// the Legislature redrew. NO INJUNCTION IS LIVE: the three-judge W.D. La. court cancelled its June
+// hearing and remedial proceedings are set for March 2-3, 2027, after this election.
+// THE 6TH DISTRICT WAS DISMANTLED. Cleo Fields did not qualify for any House seat; he announced on
+// July 21, 2026 that he would not seek re-election "in the 6th District or any other district in
+// Louisiana" and is instead expected to run for Louisiana Senate District 14, his old seat, which
+// came open when Sen. Larry Selders died July 7, 2026. Cook's own PVI file moves LA-06 from D+8 to
+// R+16 - a -24.5 shift, an order of magnitude larger than any other district in the state.
+// VALIDATED THREE WAYS, ZERO MISMATCHES:
+//   (1) The Legislature's OWN published crosswalk - redist.legis.la.gov, Act 2 "Report - Population
+//       and Party by Parish" - which is lesson #25 for the third build running: the state published
+//       the answer outright. It parses to 79 parish-district records over 64 parishes, summing to
+//       4,657,757, Louisiana's exact 2020 census population.
+//   (2) The Act 2 block-equivalency file (142,968 blocks), independently yielding the identical 15
+//       split parishes and identical district sets.
+//   (3) THE CURRENCY TEST (lesson #17): because Act 7 moved U.S. House to a November open primary,
+//       there was no spring House primary to test against - so the better test was run instead. The
+//       Secretary of State's certified candidate list was queried for ALL 64 PARISHES (election id
+//       344 = Nov 3, 2026) and the set of House district contests actually on each parish's ballot
+//       matches this table EXACTLY. 64 of 64, zero contradictions.
+// 15 split parishes, each split exactly two ways. Closest plurality call is St. Charles at
+// 52.1%/47.9% (D2 27,393 to D6 25,156); nothing else is within reach of rounding.
+// Per-district deviation from the 776,292.83 ideal runs -44 to +62, a range of 107 people (0.0138%).
+// REACHABILITY: every district 1-6 is the population plurality of at least one parish, so none is
+// orphaned. Parishes per plurality district: D1 4, D2 6, D3 10, D4 14, D5 23, D6 7 = 64.
+// 'd' is the population-plurality district (drives map shading); 'ds' lists EVERY district in the
+// parish (drives which races the drawer shows).
+const COUNTIES = {
+  "22001": { n: "Acadia", d: 3 },
+  "22003": { n: "Allen", d: 4 },
+  "22005": { n: "Ascension", d: 6, ds: [2, 6] },
+  "22007": { n: "Assumption", d: 6 },
+  "22009": { n: "Avoyelles", d: 5 },
+  "22011": { n: "Beauregard", d: 4 },
+  "22013": { n: "Bienville", d: 4 },
+  "22015": { n: "Bossier", d: 4 },
+  "22017": { n: "Caddo", d: 4 },
+  "22019": { n: "Calcasieu", d: 3, ds: [3, 4] },
+  "22021": { n: "Caldwell", d: 5 },
+  "22023": { n: "Cameron", d: 3 },
+  "22025": { n: "Catahoula", d: 5 },
+  "22027": { n: "Claiborne", d: 4 },
+  "22029": { n: "Concordia", d: 5 },
+  "22031": { n: "De Soto", d: 4 },
+  "22033": { n: "East Baton Rouge", d: 6, ds: [2, 6] },
+  "22035": { n: "East Carroll", d: 5 },
+  "22037": { n: "East Feliciana", d: 5 },
+  "22039": { n: "Evangeline", d: 4 },
+  "22041": { n: "Franklin", d: 5 },
+  "22043": { n: "Grant", d: 5 },
+  "22045": { n: "Iberia", d: 3 },
+  "22047": { n: "Iberville", d: 2, ds: [2, 6] },
+  "22049": { n: "Jackson", d: 5 },
+  "22051": { n: "Jefferson", d: 1, ds: [1, 2] },
+  "22053": { n: "Jefferson Davis", d: 3 },
+  "22055": { n: "Lafayette", d: 3 },
+  "22057": { n: "Lafourche", d: 6, ds: [1, 6] },
+  "22059": { n: "LaSalle", d: 5 },
+  "22061": { n: "Lincoln", d: 5 },
+  "22063": { n: "Livingston", d: 6 },
+  "22065": { n: "Madison", d: 5 },
+  "22067": { n: "Morehouse", d: 5 },
+  "22069": { n: "Natchitoches", d: 4 },
+  "22071": { n: "Orleans", d: 2, ds: [1, 2] },
+  "22073": { n: "Ouachita", d: 5 },
+  "22075": { n: "Plaquemines", d: 1 },
+  "22077": { n: "Pointe Coupee", d: 6 },
+  "22079": { n: "Rapides", d: 5 },
+  "22081": { n: "Red River", d: 4 },
+  "22083": { n: "Richland", d: 5 },
+  "22085": { n: "Sabine", d: 4 },
+  "22087": { n: "St. Bernard", d: 2, ds: [1, 2] },
+  "22089": { n: "St. Charles", d: 2, ds: [2, 6] },
+  "22091": { n: "St. Helena", d: 5 },
+  "22093": { n: "St. James", d: 2 },
+  "22095": { n: "St. John the Baptist", d: 2, ds: [2, 6] },
+  "22097": { n: "St. Landry", d: 3, ds: [3, 5] },
+  "22099": { n: "St. Martin", d: 3, ds: [3, 6] },
+  "22101": { n: "St. Mary", d: 3 },
+  "22103": { n: "St. Tammany", d: 1 },
+  "22105": { n: "Tangipahoa", d: 5, ds: [1, 5] },
+  "22107": { n: "Tensas", d: 5 },
+  "22109": { n: "Terrebonne", d: 1, ds: [1, 3] },
+  "22111": { n: "Union", d: 4 },
+  "22113": { n: "Vermilion", d: 3 },
+  "22115": { n: "Vernon", d: 4 },
+  "22117": { n: "Washington", d: 5 },
+  "22119": { n: "Webster", d: 4 },
+  "22121": { n: "West Baton Rouge", d: 6, ds: [2, 6] },
+  "22123": { n: "West Carroll", d: 5 },
+  "22125": { n: "West Feliciana", d: 5 },
+  "22127": { n: "Winn", d: 5 },
+};
+
+// Louisiana STATEWIDE 2026 ballot.
+//
+// ⚠⚠ LOUISIANA'S BALLOT RUNS ON TWO TRACKS AT ONCE AND THE PAGE MUST SAY SO, or it misleads every
+// voter in the state. Read this before editing anything below.
+//   • U.S. HOUSE: Act 7 of the 2026 Regular Session (signed May 14, 2026) pulled congressional races
+//     back into Louisiana's majority-vote "jungle" system. NOV 3 IS ONLY THE FIRST ROUND. A candidate
+//     wins outright only with a MAJORITY; otherwise the top two go to a RUNOFF ON DEC 12, 2026.
+//     Never call Nov 3 the general election for a Louisiana House race.
+//   • U.S. SENATE, SUPREME COURT, PSC and BESE: Act 1 of the 2024 FIRST Extraordinary Session moved
+//     these to CLOSED PARTY PRIMARIES, held in spring. For them NOV 3 IS THE GENERAL — and it is
+//     decided by PLURALITY, with no runoff. The Secretary of State says so in its own words.
+//   • The SoS's official name for the date is "November 3, 2026 – U.S. Senate General/Open U.S.
+//     Representative Primary/Open Primary Election."
+//
+// ⚠ THIS ARRAY IS SHOWN TO EVERY PARISH, so it carries only genuinely STATEWIDE contests: the U.S.
+// Senate and the ten constitutional amendments. The Public Service Commission, BESE and the Supreme
+// Court are DISTRICT offices — carding them here would tell a Shreveport voter about a New Orleans
+// race. They are covered instead by one informational entry that names every candidate and the
+// parishes each district covers, the same treatment Michigan's unopposed Court of Appeals seats get.
+//
+// ✅ VERIFIED NEGATIVE — NO GOVERNOR OR STATE EXECUTIVE OFFICER IS ON THE 2026 BALLOT. Established
+// from three affirmative sources, not assumed: the SoS's own "Offices Regularly Scheduled to be
+// Filled — Congressional/Presidential Elections" list contains no state executive office; the SoS's
+// 2027 calendar sets the Gubernatorial Primary for Oct 9, 2027; and the SoS's own statewide office
+// list for this election (electionId 344) contains no such office. Louisiana elects them in odd
+// years.
+//
+// SOURCES: Louisiana Secretary of State — the certified candidate inquiry pulled for all 64 parishes
+// (voterportal.sos.la.gov, electionId 344), the election-dates and qualifying-reminder pages, the
+// how-candidates-are-elected rule, and the "2026 Proposed Constitutional Amendments" PDF, from which
+// every ballot question below is quoted VERBATIM; the Louisiana Legislature's own bill pages;
+// certified May 16 and June 27 closed-primary results from the SoS results feed; FEC bulk files
+// weball26 and cn26; Cook Political Report, Sabato's Crystal Ball, Inside Elections; Louisiana
+// Illuminator, The Advocate, Roll Call, Energy and Policy Institute, Bayou Progressive.
+const STATEWIDE = [
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · Statewide", office: "U.S. Senate — Louisiana",
+    note: "⭐ THE INCUMBENT LOST HIS OWN PRIMARY, AND FINISHED THIRD. Bill Cassidy did not retire — he ran, and on May 16, 2026 he took 99,496 votes (24.8%) in the closed Republican primary, eliminated before the runoff. Certified Secretary of State results, all 3,722 precincts: Julia Letlow 179,903 (44.8%), John Fleming 113,437 (28.3%), Cassidy 99,496, Mark Spencer 8,338. Cassidy was one of seven Senate Republicans who voted to convict President Trump at the second impeachment trial and was censured by the state party; Trump endorsed Letlow on Jan 18, 2026, two days before she entered. He is the first elected incumbent senator to lose renomination since Richard Lugar in 2012, and remains Louisiana's senator until noon on Jan 3, 2027. ✅ RUNOFFS, June 27: Letlow beat Fleming 180,002 (56.9%) to 136,591; on the Democratic side Jamie Davis beat Gary Crockett 156,789 (79.9%) to 39,423, carrying ALL 64 PARISHES. ⚠ FOR THIS OFFICE NOV 3 IS THE GENERAL, NOT A FIRST ROUND — and it is decided by PLURALITY with no December runoff, because it came through a closed party primary. ⚠ Turnout on June 27 was 17%, with 47% more Republican than Democratic ballots cast statewide. Rated Solid or Safe Republican by Cook (Aug 20), Sabato (Aug 26) and Inside Elections. ⚠ The only public poll was commissioned and paid for by the Davis campaign — PPP, July 21–22, 518 registered voters: Letlow 41, Davis 37, with 22% undecided [Verify — no independent public poll of this matchup was located, and the campaign has not released the margin of error or crosstabs].",
+    candidates: [
+      { name: "Julia Letlow", party: "R", winner: false,
+        positions: ["Secure the border and deport criminal illegal aliens — finish the wall, end catch-and-release, nationwide E-Verify","Lower costs — permanently extend the 2017 tax cuts and make no-tax-on-tips and no-tax-on-overtime permanent","Parents' rights — a national Parents' Bill of Rights, curriculum transparency, expanded school choice"],
+        differentiators: ["U.S. Representative for LA-05 since 2021 — her run is why that seat is open","First Republican woman elected to Congress from Louisiana, originally elected with 65%","Won the seat in a 2021 special election after her husband Luke died of COVID-19 complications; Ph.D. in communication; former university administrator","$6,210,122 raised, $1,427,072 on hand (FEC, through June 30, 2026)","Endorsed by President Trump and by Gov. Jeff Landry"],
+        supporters: ["She holds Trump's endorsement in a state he carried by about 22 points, and won the runoff 57–43 after beating both a sitting senator and the state treasurer","An Appropriations seat and a record she puts at more than $130 million in targeted federal support for Louisiana","Roughly $9.25 million in outside spending has backed her, against none at all for her opponent"],
+        opponents: ["⚠ In January 2026 she filed a 26-page report covering 224 previously undisclosed stock and bond transactions; Forbes found 211 were reported past the STOCK Act's 45-day deadline, some dating to 2024, worth roughly $266,000 to $3.5 million. Her office attributed it to a professionally managed account with discretionary authority [Verify — the underlying Forbes and NOTUS reporting is the citable part; the framing is her critics']","Her own platform calls for banning members of Congress from trading individual stocks, which critics say sits awkwardly with that disclosure record","The Campaign Legal Center has filed an FEC complaint alleging a Baton Rouge federal contractor gave $100,000 to a pro-Letlow super PAC while holding a NASA contract, which would violate the contractor contribution ban [Verify — an allegation; the FEC has made no finding]","Davis centres the race on her vote for H.R.1 in 2025, which he says cut Medicaid and put 33 Louisiana rural hospitals at risk"] },
+      { name: "\"Jamie\" Davis", party: "D", winner: false,
+        positions: ["Affordability — raise the federal minimum wage, still $7.25 since 2009; roll back parts of the 2025 tax law; crack down on pump price-gouging","The insurance crisis — a federal backstop for hurricane-exposed states and a stronger flood insurance programme, citing a $7,304 average Louisiana homeowner premium, third-highest in the country","Hospitals and health care — restore cut coverage before more of the 33 at-risk rural hospitals close; Medicare drug-price negotiation"],
+        differentiators: ["Former Tensas Parish police juror — Louisiana's equivalent of a county commissioner — and a member of the Democratic State Central Committee","Third-generation Delta crop farmer, about 3,200 acres of sorghum, corn, soy and cotton","The first Black candidate to advance to a general election for a Louisiana U.S. Senate seat since Reconstruction","$1,983,548 raised, $479,104 on hand, average donation $18, no corporate PACs (FEC, through June 30, 2026)"],
+        supporters: ["He consolidated the Democratic field decisively — 47.4% then 79.9% — and carried every one of the 64 parishes, unusual reach for a rural north Louisiana Democrat","A working farmer running on utility bills, home insurance and rural hospital closures is aimed at measurable Louisiana pain points, and his platform sources each figure","His own campaign's poll put him within four points with 22% undecided, in a sample that self-reported the actual 2024 presidential result"],
+        opponents: ["Louisiana has not elected a Democrat to the U.S. Senate since Mary Landrieu in 2008, and Trump took 60% of the state in 2024 [Verify — structural argument]","He is behind roughly three to one in candidate fundraising and, more tellingly, has ZERO independent expenditure on his side against $9.25 million backing his opponent — no national Democratic group has engaged","His prior office is a parish police jury seat; the Louisiana Illuminator described his primary win as a monumental leap onto the statewide stage for someone whose experience is limited to the Tensas Parish Police Jury"] }
+    ] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · District offices", office: "Also on your ballot, by district — Public Service Commission, BESE, and three Supreme Court seats already decided",
+    note: "THESE ARE DISTRICT RACES, NOT STATEWIDE ONES, so they are named here rather than carded — only some parishes vote in each. ⚠⚠ THE THREE LOUISIANA SUPREME COURT SEATS WILL NOT APPEAR ON ANY BALLOT. Each drew exactly one qualified candidate, and Louisiana law declares such candidates elected without their names appearing at all: District 1 William 'Billy' Burris (R), who won a May 16 special primary 57.7% and took office June 17, 2026; District 3 Cade R. Cole (R), incumbent, a full ten-year term to 2036; District 4 Jay B. McCallum (R), incumbent. ⚠ PUBLIC SERVICE COMMISSION — two of five seats, BOTH OPEN because both incumbents are term-limited. The commission sets electricity rates and approves power plants, and the winners inherit the fight over who pays for AI data-centre load. ⚠ Louisiana, unlike several states with elected regulators, PERMITS PSC candidates to take money from the companies they would regulate. District 1 (10 southeastern parishes, replacing Eric Skrmetta): Stephanie Hilferty (R, state representative, won the runoff 62.5%), Connie Norris (D, retired educator, funded by a single $20,000 personal loan and no outside money) and Christopher 'Chris' Justin (No Party, an engineer who worked on contract for the PSC itself and pledges to take no utility money). District 5 (24 north Louisiana parishes, replacing Foster Campbell after a 50-year career): John E. Atkins (R, Caddo Parish commissioner and former energy consultant, won his primary 88.4% and refunded two utility contributions) vs. James Edward Green (D, Shreveport city councilman of 16 years and a pastor). ⚠ BESE DISTRICT 1 (St. Tammany plus parts of Tangipahoa, Orleans and Jefferson) is a SPECIAL election — regular BESE seats are on the governor's cycle, next in 2027. Gov. Landry appointed Joseph Cao (R), the former congressman, in January 2026; he won the Republican runoff 52.0–48.0 and faces Angela Hershey (D), a retired high-school science teacher, in a contest squarely about the LA GATOR education-savings programme. ⚠ Candidate cards are deliberately not shown for district races on this statewide page; check your own parish's sample ballot, published no later than 20 days before the election.",
+    candidates: [] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide · Ballot Measure", office: "Constitutional Amendment 1 — Act 39 (2026 RS)",
+    note: "OFFICIAL BALLOT QUESTION, QUOTED VERBATIM from the Secretary of State's own “2026 Proposed Constitutional Amendments” document: “Do you support an amendment to allow the surviving spouse of a deceased veteran with a service-connected disability, who receives the additional property tax exemption, to make a one-time transfer of the additional property tax exemption to a subsequent qualifying property?” Effective Jan 1, 2027. Amends Article VII, Section 21(K)(1). ⚠ CONTEXT WORTH KNOWING BEFORE YOU VOTE: all FIVE constitutional amendments on Louisiana's May 16, 2026 ballot FAILED, several by lopsided margins — 78% no on the unclassified civil service amendment and 77% no on raising the judicial retirement age. Turnout was 831,886 of 2,966,014 registered voters. SIX of these ten are property-tax measures, the same category voters rejected in May. ⚠ Ten amendments are on the Nov 3 ballot and NONE is on the Dec 12 ballot. This page deliberately does not card a Yes and No campaign for each measure: no organised campaign for or against most of these ten could be located, and inventing one would be worse than saying so [Verify — read the full text at sos.la.gov before voting].",
+    candidates: [] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide · Ballot Measure", office: "Constitutional Amendment 2 — Act 273 (2026 RS)",
+    note: "OFFICIAL BALLOT QUESTION, QUOTED VERBATIM from the Secretary of State's own “2026 Proposed Constitutional Amendments” document: “Do you support an amendment to allow a local taxing authority to continue to levy a lower millage rate without losing its ability to adjust to the maximum authorized millage rate from a prior year's reassessment?” Effective Jan 1, 2027. Amends Article VII, Section 23(C). ⚠ Ten amendments are on the Nov 3 ballot and NONE is on the Dec 12 ballot. This page deliberately does not card a Yes and No campaign for each measure: no organised campaign for or against most of these ten could be located, and inventing one would be worse than saying so [Verify — read the full text at sos.la.gov before voting].",
+    candidates: [] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide · Ballot Measure", office: "Constitutional Amendment 3 — Act 271 (2026 RS)",
+    note: "OFFICIAL BALLOT QUESTION, QUOTED VERBATIM from the Secretary of State's own “2026 Proposed Constitutional Amendments” document: “Do you support an amendment to prohibit a defendant from being released on any post-conviction bail if the defendant is convicted of an aggravated offense against a minor child?” Adds Article I, Section 18(C). ⚠ Ten amendments are on the Nov 3 ballot and NONE is on the Dec 12 ballot. This page deliberately does not card a Yes and No campaign for each measure: no organised campaign for or against most of these ten could be located, and inventing one would be worse than saying so [Verify — read the full text at sos.la.gov before voting].",
+    candidates: [] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide · Ballot Measure", office: "Constitutional Amendment 4 — Act 414 (2026 RS)",
+    note: "OFFICIAL BALLOT QUESTION, QUOTED VERBATIM from the Secretary of State's own “2026 Proposed Constitutional Amendments” document: “Do you support an amendment to prohibit a person who has served more than one and one-half terms as governor from being elected as governor for any future term?” A LIFETIME gubernatorial term limit. Amends Article IV, Section 3(B). ⚠ Ten amendments are on the Nov 3 ballot and NONE is on the Dec 12 ballot. This page deliberately does not card a Yes and No campaign for each measure: no organised campaign for or against most of these ten could be located, and inventing one would be worse than saying so [Verify — read the full text at sos.la.gov before voting].",
+    candidates: [] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide · Ballot Measure", office: "Constitutional Amendment 5 — Act 606 (2026 RS)",
+    note: "OFFICIAL BALLOT QUESTION, QUOTED VERBATIM from the Secretary of State's own “2026 Proposed Constitutional Amendments” document: “Do you support an amendment to authorize a state retirement system to apply any nonrecurring state monies it receives to any of its unfunded accrued liability rather than requiring application to its oldest unfunded accrued liability?” Amends Article VII, Section 10(D)(2)(b)(iii). ⚠ Ten amendments are on the Nov 3 ballot and NONE is on the Dec 12 ballot. This page deliberately does not card a Yes and No campaign for each measure: no organised campaign for or against most of these ten could be located, and inventing one would be worse than saying so [Verify — read the full text at sos.la.gov before voting].",
+    candidates: [] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide · Ballot Measure", office: "Constitutional Amendment 6 — Act 274 (2026 RS)",
+    note: "OFFICIAL BALLOT QUESTION, QUOTED VERBATIM from the Secretary of State's own “2026 Proposed Constitutional Amendments” document: “Do you support an amendment to authorize parishes and municipalities to extend an additional property tax exemption for property subject to the homestead exemption that is owned and occupied by a person who is at least sixty-five years of age and who qualifies for the special assessment level?” Effective Jan 1, 2028. Adds Article VII, Section 21(P). ⚠ Amendment 10 is also described by the Secretary of State as adding Article VII, Section 21(P) — that is what the state's own document says for each, verbatim. If both pass, expect a drafting question. ⚠ Ten amendments are on the Nov 3 ballot and NONE is on the Dec 12 ballot. This page deliberately does not card a Yes and No campaign for each measure: no organised campaign for or against most of these ten could be located, and inventing one would be worse than saying so [Verify — read the full text at sos.la.gov before voting].",
+    candidates: [] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide · Ballot Measure", office: "Constitutional Amendment 7 — Act 607 (2026 RS)",
+    note: "OFFICIAL BALLOT QUESTION, QUOTED VERBATIM from the Secretary of State's own “2026 Proposed Constitutional Amendments” document: “Do you support an amendment to allow for the use of public funds by a political subdivision for the purpose of identifying, inventorying, removing or replacing drinking water utility service lines made of or affected by materials as specified or prescribed by the Lead and Copper Rule Improvements of the United States Environmental Protection Agency, promulgated October 30, 2024, or subsequent promulgation, on property owned by utility customers?” Amends Article VII, Section 14. In plain terms: it would let a local government spend public money replacing lead drinking-water lines that sit on private property. ⚠ Ten amendments are on the Nov 3 ballot and NONE is on the Dec 12 ballot. This page deliberately does not card a Yes and No campaign for each measure: no organised campaign for or against most of these ten could be located, and inventing one would be worse than saying so [Verify — read the full text at sos.la.gov before voting].",
+    candidates: [] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide · Ballot Measure", office: "Constitutional Amendment 8 — Act 277 (2026 RS)",
+    note: "OFFICIAL BALLOT QUESTION, QUOTED VERBATIM from the Secretary of State's own “2026 Proposed Constitutional Amendments” document: “Do you support an amendment to prohibit expropriation of property by a foreign adversary or an agent of a foreign adversary?” Amends Article I, Section 4(B)(4). ⚠ Ten amendments are on the Nov 3 ballot and NONE is on the Dec 12 ballot. This page deliberately does not card a Yes and No campaign for each measure: no organised campaign for or against most of these ten could be located, and inventing one would be worse than saying so [Verify — read the full text at sos.la.gov before voting].",
+    candidates: [] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide · Ballot Measure", office: "Constitutional Amendment 9 — Act 220 of the 2025 Regular Session",
+    note: "OFFICIAL BALLOT QUESTION, QUOTED VERBATIM from the Secretary of State's own “2026 Proposed Constitutional Amendments” document: “Do you support an amendment to increase the maximum amount of income a person may receive and still qualify for the special assessment level for residential property receiving the homestead exemption?” Effective Jan 1, 2027. Amends Article VII, Section 18(G)(1)(a)(ii). ⚠ Note the session: this one was queued a YEAR earlier than the other nine. ⚠ Ten amendments are on the Nov 3 ballot and NONE is on the Dec 12 ballot. This page deliberately does not card a Yes and No campaign for each measure: no organised campaign for or against most of these ten could be located, and inventing one would be worse than saying so [Verify — read the full text at sos.la.gov before voting].",
+    candidates: [] },
+
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide · Ballot Measure", office: "Constitutional Amendment 10 — Act 272 (2026 RS)",
+    note: "OFFICIAL BALLOT QUESTION, QUOTED VERBATIM from the Secretary of State's own “2026 Proposed Constitutional Amendments” document: “Do you support an amendment to allow property tax exemptions for blighted or derelict properties that have been rehabilitated, and to require the legislature to enact laws providing for administration of these exemptions?” Effective Jan 1, 2027. Adds Article VII, Section 21(P) — see the note on Amendment 6. ⚠ Ten amendments are on the Nov 3 ballot and NONE is on the Dec 12 ballot. This page deliberately does not card a Yes and No campaign for each measure: no organised campaign for or against most of these ten could be located, and inventing one would be worse than saying so [Verify — read the full text at sos.la.gov before voting].",
+    candidates: [] }
+];
+
+// Louisiana U.S. House races, 2026. Six districts on the NEW Act 2 map.
+//
+// ⚠⚠ NOV 3, 2026 IS THE FIRST ROUND FOR THESE RACES, NOT THE GENERAL ELECTION. Act 7 of the 2026
+// Regular Session (signed May 14, 2026) pulled U.S. House contests back out of Louisiana's new
+// closed-party-primary system and returned them to the majority-vote "jungle" open primary. Every
+// candidate of every party appears on one ballot; a candidate wins outright ONLY with a majority,
+// and otherwise the top two advance to a RUNOFF ON DEC 12, 2026. The Secretary of State says it in
+// its own words: "Per Act 7 of the 2026 Regular Legislative Session, U.S. Representative is not
+// considered a closed party office for purposes of the November and December election cycle."
+// The SoS's official name for the date is "November 3, 2026 – U.S. Senate General/Open U.S.
+// Representative Primary/Open Primary Election." NEVER call it the general election here.
+// House qualifying ran Aug 5–7, 2026 and the petition threshold was cut to 250 signatures.
+//
+// THE FIELD BELOW IS THE STATE'S OWN CERTIFIED LIST, pulled from the Secretary of State's candidate
+// inquiry (voterportal.sos.la.gov, electionId 344) for ALL 64 PARISHES and parsed directly — 39
+// candidates, matching an independent research pass exactly. ⚠ Parish ids in that API run 2–65, not
+// 1–64. Where an aggregator disagrees with this list, the state governs: Ballotpedia carries the
+// LA-02 candidate Renada Collins as a Democrat and the state carries her as No Party.
+//
+// PVI is Cook's own 2026 file (datawrapper.dwcdn.net/rAx2t/1/dataset.csv), read directly. Ratings are
+// Cook's public per-race pages, Inside Elections' machine-readable ratings feed, and Sabato's Aug 26
+// chart image. ⚠ Cook's per-race "Key Dates" are STALE — they still show the abandoned closed-primary
+// calendar (filing Dec 17, 2025; primary Apr 18, 2026). Do not reuse them.
+const HOUSE_RACES = {
+  1: { name: "U.S. House — Louisiana District 1", region: "New Orleans' suburbs and the Northshore into the bayou — Metairie and Kenner, all of St. Tammany (Slidell, Mandeville, Covington), Houma, Thibodaux, Chalmette, all of Plaquemines, and part of Orleans",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "⚠ NOV 3 IS THE FIRST ROUND, NOT THE GENERAL. Act 7 of the 2026 Regular Session put U.S. House races back into Louisiana's majority-vote open primary, so every candidate of every party is on one ballot; a candidate wins outright ONLY with a majority, and otherwise the top two go to a RUNOFF ON DEC 12, 2026. THE DISTRICT HOLDS THE SECOND-RANKING JOB IN THE HOUSE. Steve Scalise has been House Majority Leader through the 118th and 119th Congresses, and was Whip before that. Cook PVI R+20; Solid or Safe R at all four raters. Four candidates. ⚠ The certified field here is the Secretary of State's own, pulled from its candidate inquiry for all 64 parishes — not an aggregator's list.",
+        candidates: [
+          { name: "Steve Scalise (incumbent)", party: "R", winner: false,
+            positions: ["Fiscal discipline and lower taxes","Border security and partnership with law enforcement","National defense and ending reliance on China"],
+            differentiators: ["House Majority Leader — the second-ranking Republican in the chamber","In office since 2008, succeeding Bobby Jindal; Louisiana Legislature 1996–2008","$10,638,030 raised, $3,885,942 on hand (FEC, through July 18, 2026) — about 75 times his only funded opponent","Endorsed by the Republican Party of Louisiana"],
+            supporters: ["The district holds leverage over what reaches the House floor, which no ordinary member has","He points to the 2017 tax law and USMCA as concrete legislative results","An R+20 seat and a nearly 75-to-one money advantage"],
+            opponents: ["Jewett argues Louisiana's schools rank near the bottom nationally, with about one in four students not graduating, and that this is what long tenure has produced","She also argues about a quarter of rural hospitals are at risk of closing while nearly half of Louisianans rely on Medicaid or are uninsured","Arrington, a Republican who ran against him in 2024, campaigns on congressional term limits — an implicit case against 18 years in office"] },
+          { name: "Lauren Jewett", party: "D", winner: false,
+            positions: ["Increase school funding and teacher pay; expand pre-K and special education","Accessible and affordable healthcare — expand community health centers, incentivise doctors to practise in Louisiana, protect Medicaid","Fund the coastal master plan, hold oil companies accountable through litigation, invest in storm-surge protection"],
+            differentiators: ["National Board Certified elementary special education teacher, in her 14th year; taught in St. John the Baptist and Orleans parishes","Union member and mentor teacher; ran for BESE in 2023","$142,677 raised, $11,884 on hand (FEC, through July 18, 2026)","The only Democrat on the ballot, so the anti-Scalise vote does not split"],
+            supporters: ["A classroom special-education teacher running on education is an unusually direct credential in a state ranked near the bottom","Her coastal plank is specific to the parishes this district actually contains — Jefferson, Orleans, Plaquemines, St. Bernard","With no Democratic opponent she consolidates her side of a jungle-primary ballot"],
+            opponents: ["Outraised roughly 75 to one, with $11,884 against $3.9 million","Every rater calls the seat Solid or Safe Republican at R+20 [Verify — structural argument]","Her only prior run, for BESE in 2023, did not win office"] },
+          { name: "Randall \"Randy\" Arrington", party: "R", winner: false,
+            positions: ["Congressional term limits — two Senate terms and four House terms [Verify — from his own candidate survey, which he filed for a 2024 U.S. Senate run]","Spend tax dollars domestically rather than funding foreign wars [Verify — as above]","Strict adherence to the original Constitution; a humble public servant rather than a celebrity [Verify — as above]"],
+            differentiators: ["U.S. Navy 1976–1997; UCLA bachelor's 1976; Ph.D., University of New Orleans, 1999; a pilot","Ran against Scalise in 2024","Also sought the U.S. Senate this cycle but did not appear on the May 16 Republican primary ballot","FEC-registered but no financial summary on file [Verify — an absence of located records]"],
+            supporters: ["Twenty-one years of Navy service and a doctorate is a serious résumé","He is the only candidate offering Republican voters an alternative to the Majority Leader","Term limits is a consistent, repeatedly stated principle rather than a grab-bag platform"],
+            opponents: ["A repeat challenger with no reportable fundraising in a seat all four raters call safe","He failed to make the Senate ballot earlier this same cycle","⚠ His published positions date from that 2024 Senate bid and are written in Senate terms, so voters have no current House platform to evaluate [Verify]"] },
+          { name: "E. \"Liddy\" Glass", party: "I", winner: false,
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            differentiators: ["No Party candidate on the state's certified Nov 3 ballot","Qualified Aug 7, 2026, the final day of qualifying","From Metairie; no office held or sought could be located","No FEC fundraising located [Verify — an absence of located records]"],
+            supporters: ["The only candidate on this ballot with no party label at all, which under an open primary is a real option for voters who reject both parties [Verify — structural argument]","Louisiana's open primary puts every candidate on one ballot, so no party gatekeeping stands between them and voters","Appears on the state's own certified ballot, so the choice is real rather than notional"],
+            opponents: ["No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Faces long odds in an R+20 seat against a Majority Leader holding $3.9 million, and only the top two advance to the Dec 12 runoff [Verify — structural argument]"] }
+        ] }
+    ] },
+  2: { name: "U.S. House — Louisiana District 2", region: "New Orleans and the river parishes running up to Baton Rouge — part of Orleans, Jefferson and St. Bernard, plus St. Charles, all of St. James, St. John the Baptist, Ascension, Iberville, West Baton Rouge and part of East Baton Rouge",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "⚠ NOV 3 IS THE FIRST ROUND, NOT THE GENERAL. Act 7 of the 2026 Regular Session put U.S. House races back into Louisiana's majority-vote open primary, so every candidate of every party is on one ballot; a candidate wins outright ONLY with a majority, and otherwise the top two go to a RUNOFF ON DEC 12, 2026. LOUISIANA'S ONLY DEMOCRATIC-HELD SEAT, and under the new Act 2 lines it now reaches into Baton Rouge. Cook PVI D+25; Solid or Safe D at all four raters. Five candidates, and Troy Carter faces no Democratic opponent. ⚠ A LABEL DISCREPANCY WORTH KNOWING: Ballotpedia lists Renada Collins as a Democrat; the Secretary of State's certified ballot lists her as No Party. This page follows the state. ⚠ Carter's own official House page still describes the PRE-redistricting district — it names Assumption and Lafourche and omits Baton Rouge — so do not rely on it for geography.",
+        candidates: [
+          { name: "Troy A. Carter Sr. (incumbent)", party: "D", winner: false,
+            positions: ["Energy and commerce policy for the river-parish corridor","Homeland security, disaster and hurricane resources","Lowering costs for Louisianans"],
+            differentiators: ["In office since 2021, succeeding Cedric Richmond; now in his third term","Sits on the exclusive Committee on Energy and Commerce, plus Homeland Security","Selected by leadership as a Deputy Whip","$1,412,697 raised, $382,786 on hand (FEC, through July 18, 2026) — the only candidate in this race with any FEC financials at all"],
+            supporters: ["A seat on Energy and Commerce, the House's most sought-after committee, matters for a district built around the petrochemical river corridor","He faces no Democratic opponent, so his party's vote is undivided","He is the only funded candidate in the field"],
+            opponents: ["Peter Williams, the state party's endorsed Republican, argues the district needs a new voice putting people over politics","Renada Collins runs on 'People Over Profit', arguing economic growth here has not reached households and that basic infrastructure — broken water mains, fire hydrants — goes unfixed","Five years in office in a safe seat invites the standard accountability critique [Verify — structural argument]"] },
+          { name: "Peter Williams", party: "R", winner: false,
+            positions: ["People over politics, with practical leadership and accountability [Verify — from a candidate survey he wrote for the SIXTH District, before switching to this one]","A platform spanning agriculture, health, housing, education, transportation and incarceration [Verify — as above]","Protecting the district's economic engines — agriculture, forestry, seafood and hospitality [Verify — as above]"],
+            differentiators: ["Endorsed by the Republican Party of Louisiana for this district","A farmer from Pointe Coupee Parish; University of Southwestern Louisiana, 1980","⚠ He qualified in LA-06 in February 2026 and then qualified here on Aug 7","FEC-registered but no financial summary on file [Verify — an absence of located records]"],
+            supporters: ["The state party's official endorsement unlocks national committee assistance, discounted mail and party voter files","As a working farmer he makes an agriculture and seafood case for the river parishes","He describes decades of advocacy as a private citizen rather than a politician"],
+            opponents: ["No reportable fundraising against an incumbent with $382,786 on hand, in a D+25 seat every rater calls safely Democratic","⚠ He filed in a different district six months ago, and his only published platform is written for that district — it references cities not in this one and tells voters to vote on May 16, 2026, an election that was cancelled [Verify — read from the survey's own text]"] },
+          { name: "Renada \"Honey\" Collins", party: "I", winner: false,
+            positions: ["People Over Profit — a livable wage reflecting the true cost of living, and growth that reaches every household","Infrastructure and quality of life — federal funding aimed at broken water mains and fire hydrants, with transparent project management","Housing stability and literacy — affordability targeted at 80% of area median income, plus help for residents using housing vouchers"],
+            differentiators: ["A banking executive by profession","⚠ Certified by the Secretary of State as No Party; Ballotpedia lists her as a Democrat","She was Carter's opponent in the cancelled May primary and requalified in August","No FEC financial summary on file [Verify — an absence of located records]"],
+            supporters: ["The most granular local platform in the race — area-median-income targeting and voucher literacy are mechanisms, not slogans","Water mains and fire hydrants are live New Orleans failures, not abstractions","A banking background is directly relevant to housing finance"],
+            opponents: ["No reported fundraising against a three-term incumbent on Energy and Commerce","⚠ Her party label is itself contested in the public record — the state says No Party, Ballotpedia says Democrat — which muddies her identity for voters [Verify]"] },
+          { name: "Walter \"Rocky\" Beach", party: "I", winner: false,
+            positions: ["Strengthen EMS as essential healthcare — recruitment and retention for EMTs and paramedics, investment in emergency response","Protect EMTs and paramedics with competitive pay and civil service protections","Election integrity and ballot access together — supports citizenship verification while keeping voting easy for eligible citizens"],
+            differentiators: ["A paramedic; describes himself as an EMS advocate and reform leader","From Gonzales in Ascension Parish — the Baton Rouge end of the redrawn district, not New Orleans","Also runs on strict limits on eminent domain and on aquifer protection","No FEC record located [Verify — an absence of located records]"],
+            supporters: ["The only first responder in the field, and the only candidate in the state running on EMS as a healthcare-system issue","His eminent-domain and aquifer planks speak to the river-parish industrial corridor rather than to New Orleans","He tries to hold both sides of the election-integrity argument rather than picking one"],
+            opponents: ["His own site says the full campaign site is still launching, and he has no FEC filing, so there is little evidence of an operating campaign [Verify — an absence of located records]","Running with no party label from Gonzales in a district whose population centre is New Orleans is a hard geographic and partisan fit [Verify — structural argument]"] },
+          { name: "Lisa Ballay", party: "L", winner: false,
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            differentiators: ["Libertarian candidate on the state's certified Nov 3 ballot","Qualified Aug 7, 2026, the final day of qualifying","From New Orleans; the only Libertarian on this ballot","No FEC fundraising located [Verify — an absence of located records]"],
+            supporters: ["She gives this district's voters the only third-party option on a ballot otherwise split between a three-term Democrat and a party-endorsed Republican [Verify — structural argument]","Louisiana's open primary puts every candidate on one ballot, so no party gatekeeping stands between them and voters","Appears on the state's own certified ballot, so the choice is real rather than notional"],
+            opponents: ["FEC-registered but with no financial summary filed [Verify — an absence of located records]","No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Faces long odds in a D+25 seat where the incumbent is the only funded candidate, and only the top two advance to the Dec 12 runoff [Verify — structural argument]"] }
+        ] }
+    ] },
+  3: { name: "U.S. House — Louisiana District 3", region: "Acadiana and southwest Louisiana — all of Lafayette, Iberia, Acadia, Vermilion, Jefferson Davis, Cameron and St. Mary, most of Calcasieu (Lake Charles), and parts of St. Landry, St. Martin and Terrebonne",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "⚠ NOV 3 IS THE FIRST ROUND, NOT THE GENERAL. Act 7 of the 2026 Regular Session put U.S. House races back into Louisiana's majority-vote open primary, so every candidate of every party is on one ballot; a candidate wins outright ONLY with a majority, and otherwise the top two go to a RUNOFF ON DEC 12, 2026. THE LARGEST FIELD OF ANY LOUISIANA DISTRICT AND THE MOST SPLIT OPPOSITION: six candidates, THREE of them Democrats. Under an open primary that division matters — only the top two advance. Cook PVI R+18; Solid or Safe R at all four raters. ⚠ Cook's own public race summary observes that this district's congressman has long had a knack for courting controversy.",
+        candidates: [
+          { name: "\"Clay\" Higgins (incumbent)", party: "R", winner: false,
+            positions: ["Energy and the environment, plus hurricane recovery and water management for coastal Acadiana","Immigration, law and crime — including his January 6 investigative work, a standing heading on his own site","Agriculture, seafood and outdoor recreation"],
+            differentiators: ["In office since 2017, succeeding Charles Boustany Jr.","Army veteran and law enforcement officer with an active commission and Louisiana POST certification","Core member of the House Freedom Caucus; chairs the Federal Law Enforcement Subcommittee","$822,841 raised, $595,415 on hand (FEC, through July 18, 2026); endorsed by the Republican Party of Louisiana"],
+            supporters: ["A subcommittee chairmanship and Freedom Caucus membership give a safe-seat member real committee leverage","An active law-enforcement commission is an unusual, still-current credential","He holds about $595,000 against a field whose best-funded challenger has $7,385"],
+            opponents: ["Cook's own race summary notes his knack for courting controversy","Gonzalez has run against him before, taking 19% in a four-person 2024 field, and campaigns on parish-by-parish crime, poverty and infant and maternal mortality data","LeBrun argues Louisiana families are being crushed by the highest insurance rates in the nation and that no national plan for insurance affordability exists"] },
+          { name: "John Day", party: "D", winner: false,
+            positions: ["Americans first, party second — government that works for people rather than parties","Lower costs, better pay, safer communities and real storm protection","An all-of-the-above energy strategy — backing oil and gas jobs while investing in renewables"],
+            differentiators: ["Endorsed by the Louisiana Democratic Party over Priscilla Gonzalez on Aug 30, 2026","U.S. Navy veteran from Lake Charles","$18,947 raised, $7,385 on hand (FEC, through July 18, 2026) — the best-funded challenger in the district","⚠ Described by the same outlet as a professional writer in August and as a former insurance-industry employee in February [Verify — the two descriptions differ]"],
+            supporters: ["He is the party's official pick and the only challenger with money actually on file","His all-of-the-above energy position is deliberately built for an oil-and-gas district rather than against it","He ran in the cancelled spring primary and requalified rather than dropping out"],
+            opponents: ["$7,385 on hand against an incumbent's $595,415 in an R+18 seat all four raters call safe","Two other Democrats and a no-party candidate share this ballot, so the anti-Higgins vote splits four ways even with the endorsement [Verify — structural argument]"] },
+          { name: "Priscilla Gonzalez", party: "D", winner: false,
+            positions: ["Healthcare, with dedicated attention to infant and maternal mortality","Education and workforce, including teacher salaries","Criminal justice reform, plus hurricanes, infrastructure and taxes"],
+            differentiators: ["Ran against Higgins in 2024 and took 19% in a four-person field","Her campaign site is built as a parish-by-parish data book, with separate crime and poverty pages for ten parishes","⚠ Ballotpedia lists her profession as marketing director while the Louisiana Illuminator calls her a Lafayette attorney [Verify — the sources conflict]","FEC-registered but no financial summary on file [Verify — an absence of located records]"],
+            supporters: ["She has already won 19% against this incumbent — more tested support than any other challenger here","Her site is the most research-dense of any candidate in the state, documenting crime, poverty and mortality parish by parish","She is based in Lafayette, the district's largest city"],
+            opponents: ["She lost her own party's endorsement to Day and has no reportable fundraising","She skipped the spring qualifying and entered only in August, which opponents frame as an uncommitted campaign","She declined to speak with reporters after qualifying [Verify — reported by the Louisiana Illuminator]"] },
+          { name: "Caleb \"With a C\" Walker", party: "D", winner: false,
+            positions: ["Lower the cost of living","Invest in people","Protect Louisiana's future — real representation and fairness for south Louisiana"],
+            differentiators: ["Army combat veteran — ten years, rising to Sergeant First Class, with a deployment to Afghanistan","Originally from Wisner in Franklin Parish, in Lafayette since 2020; student body president at his community college","Works as a retail chain department manager","No FEC record located [Verify — an absence of located records]"],
+            supporters: ["A decade in uniform ending at Sergeant First Class is the most substantial military record among the challengers","He stayed with the race through its cancellation and requalified","As a working retail manager he embodies the cost-of-living argument he runs on"],
+            opponents: ["The third Democrat on a single ballot in an R+18 seat, without his party's endorsement and with no FEC filing","His published platform is three headline phrases with little detail behind them","⚠ His own campaign site calls Nov 3 the general election, which is wrong — it is the first round [Verify — read from his site]"] },
+          { name: "Tia LeBrun", party: "I", winner: false,
+            positions: ["Insurance affordability — she calls Louisiana families crushed by the highest insurance rates in the nation, and wants a national plan before the next storm","Paid family leave, healthcare not tied to employment, universal preschool and two years of free community college","Personal freedom — decisions about your own body and family without government or corporate interference"],
+            differentiators: ["An educator and administrator from Sulphur; a single parent; LSU 2004 and a University of New Orleans graduate degree","⚠ She was listed as a DEMOCRAT in February 2026 and is certified as NO PARTY in August","Also runs on regulating AI, arguing everyone should own their body, likeness and voice","$6,968 raised, $3,465 on hand (FEC, through July 18, 2026)"],
+            supporters: ["Insurance affordability is arguably the dominant pocketbook issue in coastal Louisiana and she leads with it","She is one of very few candidates in the state with a stated position on AI and likeness rights","No party label fits an open primary that rewards crossover appeal, and she has money on file, which most of this field does not"],
+            opponents: ["She appeared as a Democrat in February and as No Party in August, which invites questions about what she stands for","$3,465 on hand against $595,415 is not a competitive campaign","Her prior 2022 bid did not win office [Verify — structural argument]"] },
+          { name: "\"Kate\" Cotten", party: "R", winner: false,
+            positions: ["No published 2026 platform could be located [Verify — an absence of located records]","",""],
+            differentiators: ["Republican candidate on the state's certified Nov 3 ballot","Qualified Aug 7, 2026, the final day of qualifying","From Lake Charles — the district's Calcasieu population centre, while the incumbent is from Lafayette; the only Republican challenging him","No FEC fundraising located [Verify — an absence of located records]"],
+            supporters: ["She gives Calcasieu-area Republicans the only in-party alternative to a Lafayette-based incumbent, and geography is a live lane in a district split between two metros [Verify — structural argument]","Louisiana's open primary puts every candidate on one ballot, so no party gatekeeping stands between them and voters","Appears on the state's own certified ballot, so the choice is real rather than notional"],
+            opponents: ["⚠ Her campaign website resolves but shows only a 'Launching Soon' placeholder [Verify — checked Sept 3, 2026]","No campaign platform, website or fundraising could be located [Verify — an absence of located records]","Faces long odds in an R+18 seat against an incumbent holding about $595,000, and only the top two advance to the Dec 12 runoff [Verify — structural argument]"] }
+        ] }
+    ] },
+  4: { name: "U.S. House — Louisiana District 4", region: "Northwest Louisiana and the western tier — Shreveport (all of Caddo), Bossier City, Natchitoches, Minden, Leesville and DeRidder, plus all of Vernon, Beauregard, Sabine, De Soto, Webster, Claiborne, Bienville, Red River, Union, Allen and Evangeline, and part of Calcasieu",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "⚠ NOV 3 IS THE FIRST ROUND, NOT THE GENERAL. Act 7 of the 2026 Regular Session put U.S. House races back into Louisiana's majority-vote open primary, so every candidate of every party is on one ballot; a candidate wins outright ONLY with a majority, and otherwise the top two go to a RUNOFF ON DEC 12, 2026. THE DISTRICT HOLDS THE SPEAKERSHIP. Mike Johnson is the 56th Speaker of the House and the first Louisianan ever to hold the office. He has raised $20,976,864 with $9,613,157 on hand — roughly 35 times all four challengers combined. Cook PVI R+17; Solid or Safe R at all four raters. Five candidates. ⚠ ONE CHALLENGER RAN IN THREE STATES THIS CYCLE — see Gordon Heslop below.",
+        candidates: [
+          { name: "\"Mike\" Johnson (incumbent)", party: "R", winner: false,
+            positions: ["Individual freedom, limited government and the rule of law","Peace through strength","Fiscal responsibility, free markets and human dignity"],
+            differentiators: ["56th Speaker of the House — the highest federal office any Louisianan has held","First elected in December 2016; Louisiana House 2015–17","Former chair of the Judiciary Subcommittee on the Constitution and of the Republican Study Committee","$20,976,864 raised, $9,613,157 on hand (FEC, through July 18, 2026); endorsed by the Republican Party of Louisiana"],
+            supporters: ["The district holds the most powerful post in Congress, which he argues converts into regional clout","He points to enacted tax cuts and energy policy as concrete local returns, putting the tax change at roughly $1,300 per family here","The Louisiana Illuminator calls him a heavy favourite"],
+            opponents: ["Cable argues he voted to cut Medicaid by close to a trillion dollars in a district where more than a third rely on it, and that rural hospitals will close as a result","Cable also argues Republican trade and farm policy has roughly halved the district's soybean economy since 2017","Gromlich argues the Speaker is absent from and inattentive to the district and prioritises donors and special interests","Cook's own summary notes his 2023 ascent was catalysed by his relative obscurity — his pre-gavel tenure was the shortest of any Speaker since 1883"] },
+          { name: "Conrad Cable", party: "D", winner: false,
+            positions: ["Raise wages and protect the right to organise","Healthcare as a right — supports Medicare for All and attacks Medicaid cuts as hospital-closing","USDA-run public grocery stores in rural and low-income areas accepting SNAP, WIC and EBT"],
+            differentiators: ["A Union Parish produce farmer","Won the Louisiana Democratic Party endorsement over Gromlich on Aug 30, 2026","$238,886 raised — of which $236,611 is individual contributions, with ZERO candidate loans — and $28,255 on hand (FEC, through July 18, 2026)","Also runs on overturning Citizens United and banning congressional stock trading"],
+            supporters: ["His money is almost entirely individual contributions with no self-funding, which backs his anti-big-money message","He is the party's official nominee and a farmer making an agriculture-specific case in a farm district","He stayed in after the primary was cancelled — in his words, he dug in his heels"],
+            opponents: ["Medicare for All and USDA-operated public grocery stores sit well to the left of an R+17 district [Verify — structural argument]","He is outraised roughly 88 to one by the Speaker","⚠ His own site says first-generation farmer while two outlets say fifth-generation [Verify — the sources conflict]"] },
+          { name: "\"Matt\" Gromlich", party: "D", winner: false,
+            positions: ["Affordability — universal pre-K, a $15 minimum wage, teacher tax relief and loan forgiveness, universal school meals, and military-family housing cost stability at Barksdale Air Force Base and Fort Johnson","Safety — universal healthcare access not tied to employment, safe drinking water citing Shreveport's failing systems, and rural maternity access","Freedom — overturn Citizens United, congressional term limits, and ban member stock trading"],
+            differentiators: ["Educator and researcher, currently teaching at LSU-Shreveport","$268,772 raised — the most of any challenger in this district — but $200,000 of it is his own loan; individual contributions are $59,955, with $10,175 on hand (FEC, through July 18, 2026)","Lost the party endorsement to Cable","Notes that Louisiana is one of five states with no state minimum wage"],
+            supporters: ["The most specific policy programme in the district, costed and tied to named local facts","As a working educator he makes a direct case on schools and teacher retention","He identifies concrete local failures — Shreveport water, housing-allowance shortfalls at two military installations"],
+            opponents: ["He did not win his own party's endorsement, so he is the second Democrat splitting an already small vote","⚠ He campaigns on getting money out of politics while roughly three-quarters of his receipts are a $200,000 personal loan rather than grassroots contributions","He is outraised roughly 78 to one by the Speaker [Verify — structural argument]"] },
+          { name: "\"Mike\" Nichols", party: "R", winner: false,
+            positions: ["No published issue positions could be located [Verify — his campaign site is a one-page template whose only message is a slogan, and its two linked PDFs are image-only with no extractable text]","",""],
+            differentiators: ["A cattleman and retired biologist with a background in land management and water resources, and USDA experience","One of only two Republicans challenging a sitting Speaker of his own party","$49,755 raised — of which $40,300 is his own loan; individual contributions are $7,300, and cash on hand is $2.56 (FEC, through July 19, 2026)"],
+            supporters: ["Working knowledge of land, water and USDA programmes is directly relevant to a heavily rural, agricultural district","Running against a sitting Speaker at all gives this district's Republicans an alternative they would otherwise not have [Verify — structural argument]"],
+            opponents: ["Essentially no external support: $7,300 in individual contributions against $40,300 of his own money, and $2.56 left","He has published no issue positions voters can evaluate, against an incumbent with a full public record [Verify — an absence of located records]"] },
+          { name: "Gordon Heslop", party: "R", winner: false,
+            positions: ["Make America Normal Again — explicitly ANTI-TARIFF, focused on the middle class and the national debt","Tax fairness — high earners should pay at least the middle-class rate; RAISE the minimum wage; save Social Security","Rural health and the rural economy, a first-home programme, expanded trades training"],
+            differentiators: ["⚠⚠ HE RAN IN THREE STATES THIS CYCLE — he lost the Texas 32nd District Republican primary on Mar 3, 2026 and the Missouri 8th District Republican primary on Aug 4, 2026, then qualified in Louisiana on Aug 7, three days after the Missouri loss","⚠ He presented a Missouri-issued photo ID while claiming residence in Natchitoches [Verify — reported by the Louisiana Illuminator]","Retired accounting professor, about 25 years at Northwestern State University of Louisiana and East Texas A&M; DBA, LLB and MBA","No FEC registration for this district; his Texas and Missouri committee shows $70,606 raised [Verify — the FEC file may lag an August filing]"],
+            supporters: ["The only Republican here offering a detailed, itemised platform, and it breaks with party orthodoxy on tariffs, the minimum wage and taxing high earners — giving anti-tariff Republicans somewhere to go","He states an aim of restoring civility and accepting election results, a direct contrast pitch"],
+            opponents: ["He lost two Republican primaries in two other states earlier this same year before appearing on Louisiana's ballot — a straightforward carpetbagging charge","His anti-tariff, pro-minimum-wage, tax-the-wealthy planks are hard to reconcile with the Republican electorate he needs [Verify — structural argument from his own stated platform]"] }
+        ] }
+    ] },
+  5: { name: "U.S. House — Louisiana District 5", region: "Northeast and central Louisiana plus the Florida parishes — Monroe and West Monroe (all of Ouachita), Alexandria and Pineville (all of Rapides), Ruston, Bastrop, Bogalusa, Marksville and Vidalia; 22 whole parishes plus parts of St. Landry and Tangipahoa",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "⚠ NOV 3 IS THE FIRST ROUND, NOT THE GENERAL. Act 7 of the 2026 Regular Session put U.S. House races back into Louisiana's majority-vote open primary, so every candidate of every party is on one ballot; a candidate wins outright ONLY with a majority, and otherwise the top two go to a RUNOFF ON DEC 12, 2026. ⭐ AN OPEN SEAT WITH NINE CANDIDATES — Julia Letlow vacated it to run for the U.S. Senate, a race she is now favoured to win. Cook PVI R+17; Solid or Safe R. ⚠ TWO CANDIDATES ARE HERE BECAUSE THE MAP MOVED THEIR HOUSES: Stewart Cathey's and Gabe Firment's homes moved out of the Speaker's 4th District into this one under Act 2, which is why both entered on Aug 5 having never planned a congressional run. ⚠ THE STATE PARTY'S ENDORSEMENT IS ITSELF CONTESTED: the Republican Party of Louisiana endorsed Misti Cordell, a first-time candidate, and its own chairman says he personally voted against endorsing anyone here and wants the process overhauled; Echols called it a backroom popularity contest of eight in a secret emergency meeting. Gov. Landry has endorsed no one. The Democratic Party endorsed Pat Moore.",
+        candidates: [
+          { name: "Michael \"Mike\" Echols", party: "R", winner: false,
+            positions: ["Modernise the electrical grid and expand broadband, then invest in next-generation infrastructure","Pass a farm bill that works for farmers","A builder's frame — voters are tired of politicians talking rather than solving problems"],
+            differentiators: ["Louisiana House District 14 since 2020 and Chairman of the Louisiana House Republican Caucus","Contractor, downtown Monroe real-estate developer and conservative radio host; accounting degree and MBA","$2,979,894 raised — but $2,430,000 of it is his own loans; individual contributions are $509,962, with $1,081,639 on hand (FEC, through July 18, 2026) — the most cash of anyone in this race","⚠ No campaign website or issues platform could be located [Verify — his apparent domain is a parked lander and a similar one belongs to a different person]"],
+            supporters: ["By far the most cash on hand in a nine-way field, which matters when the top two advance","He lives in the district and leads his legislative caucus, giving him both local standing and a base","He says he has had months of conversations with the President's political team"],
+            opponents: ["About 82% of his money is a personal loan, so his lead overstates his base of support","The state party passed him over for a first-time candidate, and his response — that the process smells to high heaven — is read by rivals as sour grapes","He is the best-funded candidate in the race with no published platform at all [Verify — an absence of located records]"] },
+          { name: "Misti Cordell", party: "R", winner: false,
+            positions: ["Cut taxes, slash federal waste, end job-killing regulations, and protect agriculture and energy from federal overreach","Secure the border, finish the wall, back law enforcement and the Second Amendment","School choice, parents over Washington bureaucrats, pro-life and religious freedom"],
+            differentiators: ["The only candidate here with the state Republican Party's endorsement","⚠ She has NEVER held elected office","Healthcare business owner and the governor's appointee as chair of the Louisiana Board of Regents","$555,686 raised — $206,500 of it her own loan; individual contributions $336,661, with $148,773 on hand (FEC, through July 18, 2026)"],
+            supporters: ["The endorsement is materially valuable, not symbolic — national committee support and party data are gated behind it","She frames outsider status as the asset against three sitting legislators","She says the endorsement came from grassroots state central committee members and that she had been working to earn it for months"],
+            opponents: ["⚠ The endorsement came from an eight-member executive committee in a closed emergency meeting, and the party chairman says he personally voted against endorsing anyone in this district","She is personally close to the governor and several of his longtime staffers work on her campaign, which feeds the charge that it was an insider award","Under the old lines she lived outside the district she sought — in her own words, she could just about spit on the line"] },
+          { name: "Stewart Cathey Jr.", party: "R", winner: false,
+            positions: ["Protecting freedoms, making life more affordable and creating opportunity for Louisiana families","Rural and agriculture policy — he chairs the Senate Committee on Agriculture, Forestry, Aquaculture and Rural Development","Higher-education accountability — he authored a bill to write annual faculty review and tenure revocation into law"],
+            differentiators: ["Louisiana Senate District 33 since 2020","U.S. Army engineer officer — Katrina cleanup with the Corps of Engineers and TWO Afghanistan deployments, overseeing $250 million in infrastructure on the first","$13,500 raised, $13,165 on hand (FEC, through July 18, 2026) — this predates his Aug 5 entry","He voted against the earlier map"],
+            supporters: ["The only combat veteran among the leading Republicans, paired with a rural committee chairmanship in a rural district","He spoke with the President's political team before qualifying, so an endorsement remains possible","He can point to having voted against the map the Supreme Court then set aside"],
+            opponents: ["He entered only after the map moved his own house into the district, inviting the charge he is running because a seat opened near him","He starts with roughly $13,000 against a rival holding over $1 million","His signature higher-education effort collapsed — his tenure bill never got a hearing he chose not to request, and he declined to convene the task force he created"] },
+          { name: "\"Gabe\" Firment", party: "R", winner: false,
+            positions: ["Secure the border and American sovereignty; restore Louisiana energy dominance","Protect farmers, rural communities and the TIMBER industry — the most district-specific plank in the Republican field","Protect Social Security and Medicare; defend the Second Amendment"],
+            differentiators: ["Louisiana House District 22 since 2020, and chairs the House Insurance Committee","Owns an insurance claims consulting business; grew up in Rapides Parish and raised his family in Grant Parish","The only leading Republican rooted in the district's central, Alexandria-area half rather than Monroe","$49,006 raised, $47,572 on hand (FEC, through July 18, 2026)"],
+            supporters: ["A clear geographic lane — three of his rivals are all from Monroe, and he is the central Louisiana candidate","His timber and rural-property planks are unusually specific to that economy","He took the party endorsement in stride, saying he doubts it means much to the average voter, while calling for tougher future vetting"],
+            opponents: ["Like Cathey, he entered only because redistricting moved his house, having previously not wanted to challenge the Speaker","Under $50,000 against a rival with over $1 million on hand","His bill barring auto-accident victims who are not lawful U.S. residents from recovering insurance money advanced on a party-line vote over Democratic objection, which critics call punitive rather than an insurance fix"] },
+          { name: "Patricia \"Pat\" Moore", party: "D", winner: false,
+            positions: ["Help working families get ahead — lower everyday costs, fair wages, affordable childcare and good jobs at home","Keep communities strong — in her words, a ZIP code should not determine whether your road gets fixed","Create opportunity at home — small business, skilled trades, workforce training and agriculture, so young people do not have to leave"],
+            differentiators: ["Louisiana House District 17 since 2019 — the only Democrat here who has held elected office","Member of the Legislative Black Caucus and the Women's Caucus; background in sales and insurance","Endorsed by the Louisiana Democratic Party over McKay and Wilson","FEC-registered but no financial summary on file [Verify — consistent with an August filing]"],
+            supporters: ["The only Democrat in this district who has actually won and held office, and in Monroe, the district's largest northern city","She carries the party's endorsement, consolidating organisational support","Her platform is deliberately economic and place-based — roads, water, childcare, trades — which fits an open primary needing crossover votes"],
+            opponents: ["No federal fundraising is yet on the public record, where the leading Republican holds over $1 million","Even with the endorsement she is one of three Democrats on a single ballot in a district Republicans are heavily favoured to win","By her own account she entered at others' urging rather than from a long-planned campaign [Verify — structural argument]"] },
+          { name: "Dan McKay", party: "D", winner: false,
+            positions: ["Democratic principles under attack — separation of church and state, free and fair elections, the rule of law and a free press","Healthcare as a human right — he says about 20 rural hospitals in this district are at risk of closing from Medicaid cuts taking effect at the end of 2026","Rural population loss, blight and water — he warns data centres encroach on water systems and deliver a short construction boom then few lasting jobs"],
+            differentiators: ["More than 45 years of country law practice in Avoyelles Parish — 15 years a public defender, 11 an assistant district attorney","City attorney for Bunkie for 12 years, Hessmer for 24 and Evergreen for 18; LSU Law","U.S. Army veteran, two years overseas during Vietnam, later commanding officer of his Army Reserve unit","$89,999 raised — $39,238 of it his own loan — and NEGATIVE cash on hand at −$19,056 (FEC, through July 18, 2026): the only committee in the state showing a deficit"],
+            supporters: ["Nearly half a century prosecuting, defending and serving as a small-town city attorney across this district is unusually concrete local knowledge","The rural-hospital closure warning is the most specific, checkable local consequence anyone in the field has put forward","He says the switch to an open primary has not changed how he talks to people"],
+            opponents: ["His committee is in the red, the only one in the state, which limits any paid campaign heading toward a possible December runoff","He did not get the party's endorsement, so the Democratic vote splits three ways","Positions such as rethinking automatic alignment with Israel's wars sit well outside the district's electorate [Verify — structural argument]"] },
+          { name: "Antonio Wilson", party: "D", winner: false,
+            positions: ["Build the economy and create jobs — attract industry, strengthen small business, support agriculture, expand workforce training","Rebuild infrastructure — roads and bridges, modernise aging water and sewer systems, expand broadband, address drainage and flooding","Invest in people — healthcare access, public education and career and technical training"],
+            differentiators: ["A licensed general contractor and business owner from Tallulah in Madison Parish, and a product of the Madison Parish schools","MBA and graduate study to the doctoral level","The only candidate in the field from the Mississippi Delta parishes","FEC-registered but no financial summary on file [Verify — an absence of located records]"],
+            supporters: ["The only candidate from the Delta parishes, the poorest and most infrastructure-starved part of this district, with a platform built around exactly that gap","His contracting background is directly relevant to the water, sewer, drainage and broadband projects the district needs"],
+            opponents: ["No fundraising on the public record and no party endorsement, leaving him the third Democrat on a nine-candidate ballot","Unlike Moore he has never held elected office, so his platform rests on stated intentions rather than a record [Verify — structural argument]"] },
+          { name: "Austin Magee", party: "R", winner: false,
+            positions: ["Reform politics itself — ban congressional stock trading, a term-limits amendment, limit lobbying, and extreme financial clarity for politicians","Fiscal responsibility — in his words, we cannot let these politicians bankrupt our country","AI governance — get control of AI before it controls us, with ways to distinguish reality from fiction and a rule that AI never be given power over life-or-death decisions"],
+            differentiators: ["Owner of a welding and mechanical contracting company; born, schooled and working entirely within the district","Never held or sought office — in his words, he has never been in politics, never wanted to be and still does not","Based in Washington Parish, the Florida-parishes end, away from the Monroe cluster","$8,939 raised, $1,284 on hand (FEC, through June 30, 2026) — the lowest of any candidate here with a summary"],
+            supporters: ["The only candidate in the state with a stated AI governance position, and one of very few putting anti-corruption reform at the centre rather than the margin","As a working welding contractor with no political history he is the most literal version of the not-a-career-politician pitch several better-funded rivals only claim"],
+            opponents: ["$1,284 on hand against a rival holding over $1 million, with no endorsement, no office record and no organisation","His own framing — that he cannot do any worse than the rest of them — is an argument against experience rather than for a governing plan [Verify — structural argument]"] },
+          { name: "Oscar \"Omar\" Dantzler", party: "R", winner: false,
+            positions: ["No published platform could be located [Verify — an absence of located records; he has not completed a candidate survey in 2026, 2023 or 2022, and no campaign site resolves]","",""],
+            differentiators: ["⭐ The most tested vote-getter in the field: he ran here in 2022 and finished SECOND to Julia Letlow with 15.7%, about 35,149 votes","⚠ He ran that 2022 race as a DEMOCRAT and is certified as a REPUBLICAN in 2026","A background in law enforcement; worked as a school bus driver in Tangipahoa Parish","No FEC committee [Verify — an absence of located records]"],
+            supporters: ["He has already drawn more than 35,000 votes in this district under the majority-vote format, more tested support than most of this field has ever had","In a nine-way first round where only the top two advance, name familiarity is a real asset [Verify — structural argument]"],
+            opponents: ["He has published no platform, filed no FEC committee and has no located campaign presence, so voters have nothing to evaluate","His 15.7% in 2022 came as runner-up to an incumbent, so it reads as a ceiling rather than a launchpad","⚠ His switch from the Democratic to the Republican label between cycles invites questions about which voters he is seeking [Verify — no explanation from him was located]"] }
+        ] }
+    ] },
+  6: { name: "U.S. House — Louisiana District 6", region: "The Baton Rouge area reaching south and west — part of East Baton Rouge, all of Livingston (Denham Springs), Assumption and Pointe Coupee (New Roads), plus parts of Ascension (Gonzales, Prairieville), Iberville (Plaquemine), West Baton Rouge (Port Allen), Lafourche, St. Charles, St. John the Baptist and St. Martin",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · District",
+        note: "⚠ NOV 3 IS THE FIRST ROUND, NOT THE GENERAL. Act 7 of the 2026 Regular Session put U.S. House races back into Louisiana's majority-vote open primary, so every candidate of every party is on one ballot; a candidate wins outright ONLY with a majority, and otherwise the top two go to a RUNOFF ON DEC 12, 2026. ⭐⭐ THIS IS THE SEAT *LOUISIANA v. CALLAIS* PRODUCED, AND IT IS NOT THE DISTRICT IT WAS. Do NOT describe it as a majority-Black Baton Rouge district — under Act 2 it is a majority-white seat reaching south and west. Cook's PVI moves it from D+8 to R+16, the largest shift in the state; Inside Elections calculates Trump would have carried the new lines by 32 points against Harris +15 in the old; Sabato lists it under SAFE GOP PICKUP. ⚠⚠ CLEO FIELDS IS NOT RUNNING FOR CONGRESS ANYWHERE — verified against the certified Nov 3 ballot in all 64 parishes. On July 21, 2026 he said he would not seek re-election in the 6th District or any other district in Louisiana, and he is expected to run instead for Louisiana Senate District 14, his old seat, which came open when Sen. Larry Selders died July 7, 2026; qualifying for that special is Oct 14–16, so he cannot yet appear on any ballot. Former Rep. Garret Graves also did not qualify, despite holding $3.6 million. ⚠ RESIDENCY IS THE AXIS OF THIS RACE: both leading Republicans were LA-05 candidates until Act 2 moved their Baton Rouge addresses. Ten candidates. ⚠ The state party endorsed BOTH Miguez and Edmonds, the second coming after backlash over the first.",
+        candidates: [
+          { name: "Blake Miguez", party: "R", winner: false,
+            positions: ["America First immigration enforcement — he authored the law forcing New Orleans to comply with immigration detainers — and constitutional carry","Cutting the cost of government — he was appointed to the state's government-efficiency committee and extended the statute of limitations on political corruption","A cultural and health agenda — he banned ultra-processed foods in schools, led bans on transgender participation in girls' sports, and banned private technology-company election funding"],
+            differentiators: ["Louisiana Senate District 22 since 2024; previously Louisiana House District 49 and House Republican Majority Leader","$6,612,410 raised, $2,032,592 on hand and $2,012,356 in debts (FEC, through July 18, 2026) — about 12 times his nearest rival","LSU bachelor's and a Southern University Law Center JD; oil-and-gas family business owner and a champion competitive marksman","⚠ President Trump endorsed him in February — but for the OLD 5th District [Verify — whether that endorsement stands for this district is unconfirmed; one outlet calls it uncertain and his opponent asserts it was lost]"],
+            supporters: ["The only candidate with the money and profile to hold a nationally targeted seat — $2 million on hand against $323,000 for his nearest rival","A long, concrete legislative record rather than promises","Genuine Baton Rouge ties — an LSU degree, a Southern Law degree, a business he expanded into the city, and a home there"],
+            opponents: ["He represents an ACADIANA senate district, bought his Baton Rouge house only in March 2026, and cannot vote in the district he seeks to represent","His opponent puts it as: he is not from here, he cannot vote here, and he does not understand the issues facing these communities","He shopped districts — U.S. Senate, then the 5th, then the 6th — and won his presidential endorsement in a different one","He is crosswise with Gov. Landry, who vetoed his nutrition bill and fell out with him over the tax overhaul"] },
+          { name: "\"Rick\" Edmonds", party: "R", winner: false,
+            positions: ["Affordability and Louisiana jobs, strengthening the energy industry","Public safety and cutting wasteful federal spending","Protecting flood insurance and disaster-relief access, plus infrastructure and traffic relief"],
+            differentiators: ["Louisiana Senate District 6 since 2024; previously Louisiana House District 66, 2016–2024 — a Baton Rouge legislator for a decade","$530,592 raised, $323,040 on hand and $155,000 in debts (FEC, through July 18, 2026)","The state party endorsed him on Aug 27, a second endorsement issued after backlash over its Miguez-only vote","Endorsed by Baton Rouge Mayor Sid Edwards and St. George Mayor Dustin Yates; a pastor, running on 'From Here. For Here.'"],
+            supporters: ["He actually lives in and represents the district, unlike his better-funded rival","He won the party's endorsement even after the executive committee had already gone for Miguez, which suggests real grassroots pull","His platform is locally specific — flood insurance, disaster relief, traffic — and he has the two relevant mayors behind him"],
+            opponents: ["Outraised roughly 12 to one, with about a sixth of Miguez's cash on hand","⚠ His own residency is contested from the other direction — Miguez alleged he lives in Mississippi, where he serves as senior pastor of a church in McComb, though Edmonds responds that he drives there and back every Sunday and owns no Mississippi property","He opened his campaign with personal attacks, prompting his opponent to say he should repent"] },
+          { name: "Monique Appeaning", party: "R", winner: false,
+            positions: ["Affordable living — no tax on tips, overtime or Social Security","Safe communities and a strong military — violent crime and trafficking, military modernisation","Everyday accountability — a visible presence in every parish, federal oversight, rebuilding manufacturing and protecting farmers and small business"],
+            differentiators: ["On the staff of the East Baton Rouge Mayor-President; more than 25 years of public service including budget analyst for the Louisiana National Guard","$104,323 raised, $38,783 on hand (FEC, through July 18, 2026) — the best of any non-legislator in the field","Endorsed by the Republican parties of East Baton Rouge and West Baton Rouge parishes and by St. George Mayor Dustin Yates","Ran for Louisiana House District 66 in 2023 and finished out of the runoff"],
+            supporters: ["The only non-legislator in the Republican field with a real local organisation — two parish party endorsements plus a mayor","Her budget-analyst background in the Guard and state government is a fiscal credential distinct from the two senators' legislative résumés","She has raised six figures without ever holding office"],
+            opponents: ["Her one prior bid ended outside the runoff, so she has no demonstrated ability to win a contested race","About $39,000 on hand against $2.03 million and $323,000 is not competitive across eleven parishes","Her endorsements are concentrated in two parishes, in a district reaching into Livingston, Ascension, Lafourche, St. Charles, St. John and St. Martin [Verify — structural argument]"] },
+          { name: "Lindsay \"Rubia\" Garcia", party: "D", winner: false,
+            positions: ["Constitutional rights and government accountability — due process and equal protection","Affordability — raise the federal minimum wage so full-time work is not poverty; jobs via clean energy, infrastructure, healthcare and small business","Essential services — affordable healthcare, quality education, and closing the rural digital divide so farmers can participate in the modern economy"],
+            differentiators: ["Endorsed by the Louisiana Democratic Party over Banks and Forbes","A plaintiff in the stalled federal lawsuit challenging the governor's order cancelling the May primaries","$65,473 raised, $36,348 on hand (FEC, through July 18, 2026) — the ONLY Democrat in this field with any FEC receipts on file","Former teacher; served military families through a Defense Department programme; Southern University Law Center graduate, 2025; built a following of over a million across social platforms on Louisiana education failures"],
+            supporters: ["The party's official pick over two better-credentialed rivals, and the only Democrat here with reported money","A million-plus follower platform is real distribution in a low-information first round","She is the only candidate of either party personally litigating against the process that produced this map"],
+            opponents: ["She has never held office and graduated law school only in 2025","⚠ She joined the Democratic Party only just before qualifying for the May election, having previously had no party affiliation — which invites the charge that the party endorsed a newcomer over a twelve-year councilwoman and a three-governor agency head","Her lawsuit remains in legal limbo, so the process fight she runs on has produced nothing","⚠ Do not search for her at the obvious domain — it belongs to an unrelated person; no campaign website could be located [Verify]"] },
+          { name: "Patrick \"Pat\" Forbes", party: "D", winner: false,
+            positions: ["Cost of living and tariffs — he calls tariffs a tax on everything you buy, and says Congress should be a check on the President rather than a rubber stamp","Insurance affordability through risk reduction — elevate houses, fortified roofs and real drainage, because exposure is the lever; Louisiana home insurance is up about 40% since 2023","Healthcare and anti-corruption — keep rural hospitals open, ban congressional stock trading, restore the Voting Rights Act by statute and end partisan gerrymandering"],
+            differentiators: ["Executive Director of the Louisiana Office of Community Development under Governors Blanco, Jindal and Edwards — three governors of both parties","An engineer by training; previously ran the Louisiana Recovery Authority's infrastructure section","Oversaw dispensing more than $13 billion in federal block grants after Katrina and Rita, and says he brought home about $3 billion after the 2016 flood","Endorsed by former Gov. John Bel Edwards, his former boss; no FEC registration located [Verify — an absence of located records]"],
+            supporters: ["The most experienced government executive in the ten-candidate field — an engineer who ran the state's disaster-recovery apparatus for three governors of both parties","A former Democratic governor endorsed him specifically for that bipartisan record","In a district where insurance costs and flood risk dominate, he is the one candidate who can point to physically built results"],
+            opponents: ["The state party declined to endorse him, choosing Garcia","No FEC filing could be located, so his resources are unmeasurable across eleven parishes","He concedes he only entered because of redistricting and would not have run had Fields sought re-election, which opponents can cast as opportunistic"] },
+          { name: "Chauna Banks", party: "D", winner: false,
+            positions: ["Jobs and economic security — small-business capital access and federal contracting, workforce training, protecting Social Security and Medicare, affordable housing","Education connected to opportunity — schools and teachers, plus apprenticeships and trades alongside college","Infrastructure, flood protection and disaster recovery"],
+            differentiators: ["East Baton Rouge Metro Council, District 2, from 2013 through the end of 2024 — TWELVE YEARS in elected office, the only Democrat here who has served","More than 20 years in public education; computer science and mental health counselling degrees from Southern University","Ran for Louisiana House District 63 in 2023 and lost; did not seek Metro Council re-election in 2024","FEC-registered but no financial summary on file [Verify — an absence of located records]"],
+            supporters: ["The only Democrat in the race who has actually been elected to and served in office in this district","She runs on kitchen-table costs rather than national politics, with a concrete apprenticeships-and-workforce agenda from her education background","Her pitch is explicitly cross-partisan, in a district drawn to be Republican"],
+            opponents: ["Her own state party rejected her, endorsing Garcia","She has a registered committee but no receipts on file, so no measurable resources across eleven parishes","Her last bid for higher office ended in defeat, and she left the Metro Council rather than seek re-election [Verify — structural argument]"] },
+          { name: "Michael Mebruer", party: "R", winner: false,
+            positions: ["Deficit and spending control — his stated top priority, calling current debt financing unsustainable","Reform over expansion — in his words, the solution is not more bureaucracy but better systems","A no-donation, no-obligation campaign — in his words, when you take money from someone you owe them, and he is not willing to carry that obligation into Congress"],
+            differentiators: ["A traveling medical professional, including work in Arctic Alaska","LSU Master's in Financial Economics, 2026; a first-time candidate","$37,765 raised, $1,010 on hand (FEC, through July 18, 2026) — consistent with a self-funded effort that refuses donations","⚠ He lists a St. Francisville address, which under Act 2 is in the 5th District — legal, since Congress requires only state residency, but worth knowing"],
+            supporters: ["His self-funding pledge is verifiable: the FEC shows small sums and no donor base, exactly what he claims","He brings a real technical credential to his signature issue — a master's in financial economics rather than generic deficit rhetoric","Having worked as a traveling clinician across the country, he argues he has seen which government systems actually function"],
+            opponents: ["Refusing donations across eleven parishes guarantees he cannot reach most voters — $1,010 on hand against $2.03 million","A first-time candidate with no endorsements and a single-issue platform, in a race where two senators are contesting energy, insurance, crime and infrastructure","His graduate degree was completed the same year as his run, which cuts against an experienced-hand framing [Verify — structural argument]"] },
+          { name: "Rufus Craig", party: "L", winner: false,
+            positions: ["End the drug war — his signature issue; he argues it is not a war on drugs but a war on people who use drugs, applied disproportionately against poor people and people of colour","Mental health funding — he says underfunding leaves police and first responders handling people in crisis","A libertarian approach to flood policy and development — accept help, but reassess where and how we build"],
+            differentiators: ["Chairman of the Louisiana Libertarian Party","⭐ The best third-party benchmark in the field — he took 13.0%, about 30,709 votes, in the 2022 primary for this district","A repeat candidate: this district in 2014 and 2022, a state Senate seat in 2019 and Mayor of Baton Rouge in 2016","A self-employed attorney since 1984, frequently defending people accused of drug crimes; no FEC registration located [Verify]"],
+            supporters: ["The only candidate with a demonstrated third-party base in this exact district — 30,709 votes and 13% in 2022","Forty years as a criminal defence attorney gives his signature issue a grounding the other nine lack","His drug-policy and mental-health arguments cross the usual partisan line, a genuine coalition case in a seat where neither party's standard pitch fits every parish"],
+            opponents: ["He has run for Congress three times and for mayor once without winning","His 13% came against an incumbent facing no serious major-party opposition, not in a competitive open seat","No FEC filing or reported money for 2026, and by his own account he is running to raise two issues rather than to win [Verify — structural argument]"] },
+          { name: "Larry Davis III", party: "R", winner: false,
+            positions: ["Economic growth and fiscal responsibility","Border security and public safety","Energy independence and parental rights"],
+            differentiators: ["Member of the Livingston Parish Republican Executive Committee; describes himself as a middle-class worker and a licensed minister","Switched from the 5th District to this one in February 2026, saying he made the shift because this is where the fight matters most","One of only two Republicans based outside the Baton Rouge core, in Livingston Parish, which Act 2 puts wholly inside this district","$21,956 raised and NEGATIVE cash on hand at −$1,131 (FEC, through July 18, 2026)"],
+            supporters: ["Livingston Parish is a large Republican bloc that neither state senator represents","He offers the broadest published platform in the field, including technology and AI and rural development, which no other candidate here addresses"],
+            opponents: ["$21,956 raised and negative cash on hand against a $2 million front-runner","He has never held elective office and has no located endorsements","In a round where only the top two advance, a third Livingston-area Republican mainly fragments the anti-Miguez vote [Verify — structural argument]"] },
+          { name: "Stephen Wagley", party: "R", winner: false,
+            positions: ["School choice","Veterans' education benefits and workforce development","Pro-life advocacy"],
+            differentiators: ["Chief operating officer of his family's multi-campus Louisiana healthcare-worker training college, managing more than 200 employees","Homeschooled through to his senior year; football at McNeese State; business degree from LSU","A fifth-generation Louisianian, in Baton Rouge since the age of four; an ordained deacon","No FEC candidate registration or financials could be located at all [Verify — an absence of located records]"],
+            supporters: ["The only candidate whose day job is workforce training — his school-choice and workforce planks come from operating experience","His roots are the deepest claimed in a field where residency is the central fight, a contrast to a New Iberia senator and a Mississippi-commuting pastor"],
+            opponents: ["No federal campaign-finance filing could be located at all, meaning no measurable money or organisation against a $2 million front-runner","He has never held or sought office and has no located endorsements","In a two-advance round dominated by two sitting senators, a fourth Baton Rouge-area Republican has no clear path [Verify — structural argument]"] }
+        ] }
+    ] },
+};
+
+const SITE_META = { name: "Louisiana Elections Hub", lastUpdated: "September 3, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — Louisiana county-level down-ballot research has not started.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Louisiana has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(x, y, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", x + 10).attr("y", y + 3).text(cap.name);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them,
+  // otherwise a district with no plurality county is unreachable from the map.
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const LA_STATE_FIPS = "22";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+const svg     = d3.select("#lamap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(LA_STATE_FIPS));
+
+  const width  = 1000;
+  const height = 1000;
+
+  const projection = d3.geoAlbers()
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      .on("mousemove", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        const built = getCountyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          tooltip.innerHTML = `
+            <strong>${built.county.n} County</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · D-${built.county.d}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${fips}<div class="tooltip-meta">No data yet</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        tooltip.style.left = (event.clientX - rect.left) + "px";
+        tooltip.style.top  = (event.clientY - rect.top)  + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips);
+      });
+
+  // ---- Capital marker: Hartford ----
+  drawCapital(g, projection, { name: "Baton Rouge", lng: -91.1871, lat: 30.4515 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";
+});
+
+function openPanel(fips) {
+  const built = getCountyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "Parish FIPS " + fips;
+    title.textContent   = "Not in LA";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This parish isn't in our Louisiana dataset.</p></div>`;
+  } else {
+    eyebrow.textContent = `Congressional District ${built.county.d}`;
+    title.textContent   = built.county.n + " Parish";
+    subtitle.textContent = built.district ? built.district.region : "";
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+  }
+
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  body.scrollTop = 0;
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+// Split a race note on the ⚠ / ✅ flag glyphs the editorial style already uses, keeping
+// the glyph that introduced each segment. Text before the first flag is the lead. This is
+// presentation only — no wording is altered and nothing is dropped.
+function briefSegments(note) {
+  const out = [];
+  const re = /([\u26A0\uFE0F\u2705]+)\s*/g;
+  let last = 0, mark = "", m;
+  while ((m = re.exec(note)) !== null) {
+    const text = note.slice(last, m.index).trim();
+    if (text) out.push({ mark: mark, text: text });
+    mark = m[1].replace(/\uFE0F/g, "");
+    last = re.lastIndex;
+  }
+  const tail = note.slice(last).trim();
+  if (tail) out.push({ mark: mark, text: tail });
+  return out;
+}
+
+function renderNote(note) {
+  if (!note) return "";
+  const body = briefSegments(note).map(function (s) {
+    return s.mark
+      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${s.text}</p>`
+      : `<p class="brief-lead">${s.text}</p>`;
+  }).join("");
+  // Clamp only what actually needs clamping: the median note is 236 characters, so most
+  // briefs show whole and never render a toggle at all.
+  const long = note.length > 300;
+  return `<div class="election-brief${long ? " clamped" : ""}">
+      <div class="brief-label">About this race</div>
+      <div class="brief-body">${body}</div>
+      ${long ? `<button class="brief-more" type="button">Show more</button>` : ""}
+    </div>`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  const countLabel = count === 0 ? "TBD" : `${count} candidate${count === 1 ? "" : "s"}`;
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(renderCandidate).join("")}</div>`
+    : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">${/Ballot Measure/i.test(e.scope || "") ? "A yes/no question — no candidates on this line." : "Candidates not yet announced."}</div>`;
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <div class="election-summary-main">
+          <div class="election-meta">
+            <span class="pill ${e.type}">${e.type}</span>
+            <span class="election-date">${e.date}</span>
+            ${e.scope ? `<span class="election-scope">· ${e.scope}</span>` : ""}
+          </div>
+          <div class="election-office">${e.office || e.name || ""}</div>
+        </div>
+        <div class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </div>
+      </button>
+      <div class="election-detail"><div>${renderNote(e.note)}${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c) {
+  const winnerClass = c.winner ? "candidate winner" : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${p}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${c.name}</div>
+        <span class="party-tag party-${c.party}">${c.party}</span>
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const more = e.target.closest(".brief-more");
+  if (more) {
+    const brief = more.closest(".election-brief");
+    more.textContent = brief.classList.toggle("clamped") ? "Show more" : "Show less";
+    return;
+  }
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>
