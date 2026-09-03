@@ -993,6 +993,12 @@ Finally `node tools/fit-map-frames.js` so the new page's map frame takes the sta
    that upgrade a previously shipped form when present and skip otherwise, and presence guards
    (`if (!s.includes("(function setBanner() {")) sub(...)`) for blocks that later subs edit inside. Always prove a tool
    converges from BOTH the committed page and a `git checkout` of the pre-review page before pushing it.
+   ➤ **The verification pass finished later the same day (60 confirmed of 179)**; the remaining actionable ones shipped
+   as a follow-up: 9 primary winners flagged, 57 House primary cards given a qualified scope (the drawer now titles them
+   "… — Primary/Runoff" from the scope, so no per-race `office:` is needed), measure cards without a party tag, the
+   American-spelling and voter-language sweeps in `normalize-vocabulary.js` steps (i)–(k), office notes for TX/CA/AK/MO
+   on state.html. **Trap:** the spelling sweep also rewrites JS COMMENTS in script #2 ("recognised", "grey"), so a
+   patch tool's anchor text must already be American or its idempotence check fails after the sweep runs.
 
 ## Testing (`tests/` — plain Node.js, zero dependencies)
 

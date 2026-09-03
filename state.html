@@ -399,6 +399,8 @@ const SEN_SPECIAL = {
 };
 // Senate races with verified open-seat / battleground notes
 const SEN_NOTES = {
+  TX: "Open contest for the Class 2 seat: Attorney General Ken Paxton (R) defeated Sen. John Cornyn in the May 26 Republican runoff and faces state Rep. James Talarico (D) [Verify — from a review-stage web check, not yet read from the Texas Secretary of State].",
+  AK: "Ranked-choice general election among the top four from the Aug 18 primary — Sen. Dan Sullivan (R), former Rep. Mary Peltola (D) and an unrelated candidate also named Daniel Sullivan advanced; check the full name on your ballot [Verify — Alaska Division of Elections results not yet read].",
   KY: "Open seat — Mitch McConnell (R) is retiring.",
   IL: "Open seat — Dick Durbin (D) is retiring.",
   NH: "Open seat — Jeanne Shaheen (D) is retiring.",
@@ -412,7 +414,8 @@ const SEN_NOTES = {
 const GOV_2026 = new Set(["AL","AK","AZ","AR","CA","CO","CT","FL","GA","HI","ID","IL","IA","KS","ME","MD","MA","MI","MN","NE","NV","NH","NM","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","VT","WI","WY"]);
 // Governor races with verified open-seat notes (term limits / announced retirements)
 const GOV_NOTES = {
-  CA: "Open seat — Gavin Newsom (D) is term-limited.",
+  CA: "Open seat — Gavin Newsom (D) is term-limited. The June 2 top-two primary advanced Xavier Becerra (D) and Steve Hilton (R) [Verify — from a review-stage web check].",
+  TX: "Gov. Greg Abbott (R) is seeking a fourth term [Verify the Democratic nominee].",
   CO: "Open seat — Jared Polis (D) is term-limited.",
   KS: "Open seat — Laura Kelly (D) is term-limited.",
   ME: "Open seat — Janet Mills (D) is term-limited.",
@@ -860,9 +863,14 @@ function coveredKeys(abbr) {
   b.innerHTML = `Offices on ${STATE.n}'s <strong>2026 ballot are verified</strong>${list ? " (" + list + ")" : ""}. Candidate-level detail is being researched state by state — the gold states on the home map show the finished version.`;
 })();
 
-// Office-level notes for the jurisdictions this page still serves. Sourced; [Verify] where not read
-// from the state's own election office. Filled by tools/apply-state-page-fixes.js.
-const HOUSE_NOTES = {};
+// Office-level notes for the jurisdictions this page still serves. These came from the Sept 3, 2026
+// review's web checks, NOT from the states' own election offices, so every one carries [Verify]
+// until a refresh reads the primary source. Written by tools/apply-state-page-fixes.js.
+const HOUSE_NOTES = {
+  TX: "Texas adopted a new congressional map in August 2025, which the U.S. Supreme Court allowed for 2026 in December 2025 — your district number may have changed since 2024; confirm it with the Secretary of State [Verify].",
+  CA: "California is using the Proposition 50 map approved by voters in November 2025 for the 2026–2030 elections — district lines changed; confirm your district with the Secretary of State [Verify].",
+  MO: "Missouri enacted a new congressional map in 2025; a referendum challenge was before the Missouri Supreme Court in early September 2026 — confirm your district with the Secretary of State [Verify].",
+};
 const LEG_NOTES = {};
 const LOCAL_NOTES = {};
 

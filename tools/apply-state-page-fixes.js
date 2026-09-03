@@ -318,15 +318,32 @@ sub("coverage by key prefix", `  const covered = coveredKeys(abbr);
   const NOV = "Nov 3, 2026";`, `  const covered = coveredKeys(abbr);
   const coversPrefix = (p) => [...covered].some(k => k === p || k.startsWith(p + "-"));
   const NOV = "Nov 3, 2026";`);
-sub("office notes tables", `function buildSeats(abbr) {
-  const seats = [];`, `// Office-level notes for the jurisdictions this page still serves. Sourced; [Verify] where not read
+const NOTES_TABLES = `// Office-level notes for the jurisdictions this page still serves. These came from the Sept 3, 2026
+// review's web checks, NOT from the states' own election offices, so every one carries [Verify]
+// until a refresh reads the primary source. Written by tools/apply-state-page-fixes.js.
+const HOUSE_NOTES = {
+  TX: "Texas adopted a new congressional map in August 2025, which the U.S. Supreme Court allowed for 2026 in December 2025 — your district number may have changed since 2024; confirm it with the Secretary of State [Verify].",
+  CA: "California is using the Proposition 50 map approved by voters in November 2025 for the 2026–2030 elections — district lines changed; confirm your district with the Secretary of State [Verify].",
+  MO: "Missouri enacted a new congressional map in 2025; a referendum challenge was before the Missouri Supreme Court in early September 2026 — confirm your district with the Secretary of State [Verify].",
+};
+const LEG_NOTES = {};
+const LOCAL_NOTES = {};`;
+opt(`// Office-level notes for the jurisdictions this page still serves. Sourced; [Verify] where not read
 // from the state's own election office. Filled by tools/apply-state-page-fixes.js.
 const HOUSE_NOTES = {};
 const LEG_NOTES = {};
-const LOCAL_NOTES = {};
+const LOCAL_NOTES = {};`, NOTES_TABLES);
+sub("office notes tables", `function buildSeats(abbr) {
+  const seats = [];`, `${NOTES_TABLES}
 
 function buildSeats(abbr) {
   const seats = [];`);
+// Senate and governor notes for the generic-page states (same provenance and [Verify] discipline).
+sub("senate notes TX/AK", `const SEN_NOTES = {`, `const SEN_NOTES = {
+  TX: "Open contest for the Class 2 seat: Attorney General Ken Paxton (R) defeated Sen. John Cornyn in the May 26 Republican runoff and faces state Rep. James Talarico (D) [Verify — from a review-stage web check, not yet read from the Texas Secretary of State].",
+  AK: "Ranked-choice general election among the top four from the Aug 18 primary — Sen. Dan Sullivan (R), former Rep. Mary Peltola (D) and an unrelated candidate also named Daniel Sullivan advanced; check the full name on your ballot [Verify — Alaska Division of Elections results not yet read].",`);
+sub("governor notes CA/TX", `  CA: "Open seat — Gavin Newsom (D) is term-limited.",`, `  CA: "Open seat — Gavin Newsom (D) is term-limited. The June 2 top-two primary advanced Xavier Becerra (D) and Steve Hilton (R) [Verify — from a review-stage web check].",
+  TX: "Gov. Greg Abbott (R) is seeking a fourth term [Verify the Democratic nominee].",`);
 // (Guarded by the function's presence: the "marquee hero copy" sub below edits inside this block.)
 if (!s.includes("(function setBanner() {")) sub("banner text", `if (STATE_RACES[abbr]) {
   const b = document.querySelector(".banner span");

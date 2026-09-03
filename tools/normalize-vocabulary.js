@@ -197,6 +197,77 @@ for (const page of pages) {
     if (n) changes.push(`${n} empty-string pads removed`);
   }
 
+  // (i) American spelling. The newest pages carried 470+ British forms ("organised labour",
+  //     "data centres", "licence-plate"). Word-boundary, case-preserving; proper nouns excluded
+  //     (Centre County, PA is a real place). Applied to prose and data only — the <style> block
+  //     is left alone (steps i and j share this split).
+  const styleStart = s.indexOf("<style>"), styleEnd = s.indexOf("</style>");
+  const styleBlock = (styleStart !== -1 && styleEnd !== -1) ? s.slice(styleStart, styleEnd) : "";
+  const STYLE_TOKEN = " STYLE ";
+  if (styleBlock) s = s.replace(styleBlock, STYLE_TOKEN);
+  {
+    let n = 0;
+    const count2 = (re) => (s.match(re) || []).length;
+    const stems = "organis|recognis|prioritis|modernis|apologis|weaponis|jeopardis|stabilis|characteris|scrutinis|legalis|incentivis|criminalis|mobilis|minimis|maximis|centralis|formalis|finalis|penalis|subsidis|capitalis|marginalis|normalis|realis|utilis|authoris|categoris|civilis|colonis|criticis|demonis|emphasis|energis|equalis|fertilis|generalis|harmonis|hospitalis|immunis|industrialis|liberalis|localis|memorialis|monopolis|nationalis|neutralis|optimis|patronis|politicis|popularis|privatis|publicis|radicalis|randomis|revitalis|sanitis|sensationalis|socialis|specialis|standardis|sterilis|summaris|symbolis|sympathis|terroris|theoris|traumatis|trivialis|unionis|urbanis|vandalis|victimis|visualis|vocalis|westernis";
+    const ise = new RegExp("\\b(" + stems + ")(e|es|ed|ing|ation|ations)\\b", "gi");
+    n += count2(ise); s = s.replace(ise, (m, a, b) => a.slice(0, -1) + (a.slice(-1) === "S" ? "Z" : "z") + b);
+    // "emphasis" the noun survives: only the verb forms matched above because they need a suffix.
+    const pairs = [
+      [/\b(c)entre(s?)\b(?! (County|Hall|Township|Daily|Street|Avenue|Square|Court|Region|Wheel))/g, "$1enter$2"],
+      [/\b(l)abour\b/g, "$1abor"], [/\b(p)rogramme(s?)\b/g, "$1rogram$2"], [/\b(d)efence(s?)\b/g, "$1efense$2"],
+      [/\b(l)icence(s?)\b/g, "$1icense$2"], [/\b(f)avour(s|ed|ing|able|ably|ite|ites|itism)?\b/g, "$1avor$2"],
+      [/\b(l)abell(ed|ing)\b/g, "$1abel$2"], [/\b(s)ignall(ed|ing)\b/g, "$1ignal$2"], [/\b(t)ravell(ed|ing|er|ers)\b/g, "$1ravel$2"],
+      [/\b(c)heque(s?)\b/g, "$1heck$2"], [/\b(j)udgement(s?)\b/g, "$1udgment$2"], [/\b(a)rtefact(s?)\b/g, "$1rtifact$2"],
+      [/\b(s)ulphur\b/g, "$1ulfur"], [/\b(a)nalys(e|es|ed|ing)\b/g, "$1nalyz$2"], [/\b(n)eighbourhood(s?)\b/g, "$1eighborhood$2"],
+      [/\b(j)ewellery\b/g, "$1ewelry"], [/\b(c)olour(s|ed|ful|ing)?\b/g, "$1olor$2"], [/\b(h)onour(s|ed|ing|able)?\b/g, "$1onor$2"],
+      [/\b(b)ehaviour(s|al)?\b/g, "$1ehavior$2"], [/\b(o)ffence(s?)\b/g, "$1ffense$2"], [/\b(c)ancell(ed|ing)\b/g, "$1ancel$2"],
+      [/\b(m)odell(ed|ing)\b/g, "$1odel$2"], [/\b(f)ulfil\b/g, "$1ulfill"], [/\b(e)nrol(s?)\b/g, "$1nroll$2"], [/\b(g)rey\b/g, "$1ray"],
+      [/\b(a)rmour\b/g, "$1rmor"], [/\b(h)arbour(s?)\b/g, "$1arbor$2"], [/\b(r)umour(s?)\b/g, "$1umor$2"], [/\b(m)ould(s|ed|ing)?\b/g, "$1old$2"],
+      [/\b(p)ractis(e|ed|ing)\b/g, "$1ractic$2"], [/\b(s)ceptic(s|al|ism)?\b/g, "$1keptic$2"], [/\b(t)yre(s?)\b/g, "$1ire$2"],
+      [/\b(d)ialogue(s?)\b/g, "$1ialog$2"], [/\b(c)atalogue(s?)\b/g, "$1atalog$2"], [/\b(k)ilometre(s?)\b/g, "$1ilometer$2"], [/\b(m)etre(s?)\b/g, "$1eter$2"],
+      [/\b(a)eroplane(s?)\b/g, "$1irplane$2"], [/\b(a)luminium\b/g, "$1luminum"], [/\b(p)aediatric/g, "$1ediatric"], [/\b(o)rthopaedic/g, "$1rthopedic"],
+      [/\b(a)naemi(a|c)\b/g, "$1nemi$2"], [/\b(h)aemorrhag/g, "$1emorrhag"], [/\b(m)anoeuvr(e|es|ed|ing)\b/g, "$1aneuver$2"],
+    ];
+    for (const [re, to] of pairs) { const k = count2(re); if (k) { n += k; s = s.replace(re, to); } }
+    if (n) changes.push(`${n} British spellings → American`);
+  }
+
+  // (j) Research-process jargon that leaked into voter-facing text ("not carded", "this pass").
+  {
+    let n = 0;
+    const count2 = (re) => (s.match(re) || []).length;
+    const swaps = [
+      [/\bnot carded\b/g, "not listed"], [/\bis carded\b/g, "is listed"], [/\bare carded\b/g, "are listed"], [/\bcarded here\b/g, "listed here"],
+      [/\bcarded\b/g, "listed"], [/\bthis pass\b/g, "at this update"], [/\ba previous pass\b/g, "an earlier update"], [/\bprevious pass\b/g, "earlier update"],
+      [/\bblocks automated (fetch|retrieval|access)\b/g, "could not be read"], [/\breturned 403 to automated fetch\b/g, "could not be read"],
+    ];
+    for (const [re, to] of swaps) { const k = count2(re); if (k) { n += k; s = s.replace(re, to); } }
+    if (n) changes.push(`${n} research-jargon phrases reworded for voters`);
+  }
+  if (styleBlock) s = s.replace(STYLE_TOKEN, styleBlock);
+
+  // (k) Past House primaries/runoffs carried no scope qualifier, so the drawer titled them exactly
+  //     like the general ("U.S. House — IN District 1 · past"). Give them "Federal · District N ·
+  //     Primary|Runoff"; the renderer appends " — Primary"/" — Runoff" to the inherited title.
+  {
+    const hm = s.match(/const HOUSE_RACES = \{([\s\S]*?)\n\};/);
+    if (hm) {
+      let block = hm[1], k = 0;
+      // Walk district by district so the district number is known.
+      block = block.replace(/\n  (\d+): \{([\s\S]*?)(?=\n  \d+: \{|$)/g, (all, dist, body) => {
+        const out = body.replace(/(\{\s*date: "[^"]+",\s*type: "past",)((?:(?!candidates:)[\s\S])*?note: "((?:[^"\\]|\\.)*)")/g, (m, head, rest, note) => {
+          if (/\bscope:|\boffice:/.test(rest)) return m;
+          if (!/\b(primary|primaries|runoff)\b/i.test(note)) return m;
+          const runoff = /\brunoff\b/i.test(note) && /(won|beat|defeated|took|routed|carried|prevailed)[^.]{0,80}\brunoff\b|\brunoff (was|result|winner|victory)/i.test(note);
+          k++;
+          return `${head} scope: "Federal · District ${dist} · ${runoff ? "Runoff" : "Primary"}",${rest}`;
+        });
+        return `\n  ${dist}: {${out}`;
+      });
+      if (k) { s = s.replace(hm[0], `const HOUSE_RACES = {${block}\n};`); changes.push(`${k} past House primary/runoff cards given a qualified scope`); }
+    }
+  }
+
   // (h) The ct.html "(R)" name suffixes duplicate the party tag
   if (ab === "ct") {
     const n = count(/name: "([^"]+) \(R\)"/g);

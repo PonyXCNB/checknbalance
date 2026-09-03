@@ -51,6 +51,11 @@ for (const page of pages) {
   const sub = (label, from, to) => {
     if (to && s.includes(to)) return true;      // already applied
     if (s.includes(from)) { s = s.split(from).join(to); return true; }
+    if (process.env.DEBUG_SUB && to) {          // show the first line of `to` the page does not carry
+      const lines = to.split("\n");
+      const bad = lines.find(l => l.trim() && !s.includes(l));
+      console.error(`  [${page}] ${label}: first missing line of the new text:\n    ${JSON.stringify(bad)}`);
+    }
     missing.push(label); return false;
   };
   const subRe = (label, re, to, already) => {
@@ -58,6 +63,8 @@ for (const page of pages) {
     if (already && already.test(s)) return true;
     missing.push(label); return false;
   };
+  // Optional migration: upgrade a previously shipped form when present, skip silently otherwise.
+  const opt = (from, to) => { if (!s.includes(to) && s.includes(from)) s = s.split(from).join(to); };
 
   // ───────────────────────────── HEAD ─────────────────────────────
   const byby = ab === "la" ? "parish-by-parish" : "county-by-county";
@@ -459,6 +466,30 @@ function renderNote(note) {`);
       : \`<p class="brief-lead">\${esc(s.text)}</p>\`;`);
   sub("show-more aria", `      \${long ? \`<button class="brief-more" type="button">Show more</button>\` : ""}`,
       `      \${long ? \`<button class="brief-more" type="button" aria-expanded="false">Show more</button>\` : ""}`);
+  // Migrations from the d75a2ce form of renderElection/renderCandidate (pages already carrying it),
+  // run BEFORE the blocks below are checked so both starting points converge on the same text.
+  opt(`  const countLabel = count ? \`\${count} candidate\${count === 1 ? "" : "s"}\` : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
+  const candidatesHtml = count`, `  // Measure cards carry Yes/No pairs or one card per proposition — never "candidates".
+  const yesNo = count > 0 && e.candidates.every(c => /^(yes|no)\\b/i.test(c.name || ""));
+  const countLabel = count
+    ? (isMeasure ? (yesNo ? "Yes / No" : \`\${count} measure\${count === 1 ? "" : "s"}\`) : \`\${count} candidate\${count === 1 ? "" : "s"}\`)
+    : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
+  const candidatesHtml = count`);
+  opt(`  const chevron = \`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>\`;
+  return \`
+    <div class="election-card">`, `  // A House primary inherits its district's title; say which contest it is.
+  const qualifier = e.office ? "" : (/Runoff/i.test(e.scope || "") ? " — Runoff" : /Primary/i.test(e.scope || "") ? " — Primary" : "");
+  const title = e.office || ((e.name || "") + qualifier);
+  const chevron = \`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>\`;
+  return \`
+    <div class="election-card">`);
+  opt(`          <span class="election-office">\${esc(e.office || e.name || "")}</span>`, `          <span class="election-office">\${esc(title)}</span>`);
+  opt(`  const nominated = !!(race && /primary|runoff/i.test((race.office || "") + " " + (race.scope || "")));
+  const winnerClass = c.winner ? ("candidate winner" + (nominated ? " nominee" : "")) : "candidate";`, `  const nominated = !!(race && /primary|runoff/i.test((race.office || "") + " " + (race.scope || "")));
+  // A proposition or a Yes/No side has no party; the gray "I" tag was a lie on 50 measure cards.
+  const measureCard = !!(race && /ballot measure|ballot question|amendment|initiative|proposition|referend|\\bmeasure\\b|\\bquestion\\b/i.test((race.scope || "") + " " + (race.office || "")));
+  const winnerClass = c.winner ? ("candidate winner" + (nominated ? " nominee" : "")) : "candidate";`);
+  opt(`        <span class="party-tag party-\${esc(c.party)}">\${esc(c.party)}</span>`, `        \${measureCard ? "" : \`<span class="party-tag party-\${esc(c.party)}">\${esc(c.party)}</span>\`}`);
   sub("renderElection: measures, escaping, spans", `function renderElection(e) {
   const count = (e.candidates && e.candidates.length) || 0;
   const countLabel = count === 0 ? "TBD" : \`\${count} candidate\${count === 1 ? "" : "s"}\`;
@@ -486,13 +517,20 @@ function renderNote(note) {`);
     </div>\`;
 }`, `function renderElection(e) {
   const count = (e.candidates && e.candidates.length) || 0;
-  // A ballot measure is recognised by what it is called, not by one exact scope string.
+  // A ballot measure is recognized by what it is called, not by one exact scope string.
   const isMeasure = /ballot measure|ballot question|amendment|initiative|proposition|referend|\\bmeasure\\b|\\bquestion\\b/i.test((e.scope || "") + " " + (e.office || ""));
   const isInfo = /^Also on your ballot|— eight seats, ALL UNOPPOSED/i.test(e.office || "");
-  const countLabel = count ? \`\${count} candidate\${count === 1 ? "" : "s"}\` : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
+  // Measure cards carry Yes/No pairs or one card per proposition — never "candidates".
+  const yesNo = count > 0 && e.candidates.every(c => /^(yes|no)\\b/i.test(c.name || ""));
+  const countLabel = count
+    ? (isMeasure ? (yesNo ? "Yes / No" : \`\${count} measure\${count === 1 ? "" : "s"}\`) : \`\${count} candidate\${count === 1 ? "" : "s"}\`)
+    : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
   const candidatesHtml = count
     ? \`<div class="candidates">\${e.candidates.map(c => renderCandidate(c, e)).join("")}</div>\`
     : (isMeasure || isInfo ? "" : \`<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">Candidates not yet announced.</div>\`);
+  // A House primary inherits its district's title; say which contest it is.
+  const qualifier = e.office ? "" : (/Runoff/i.test(e.scope || "") ? " — Runoff" : /Primary/i.test(e.scope || "") ? " — Primary" : "");
+  const title = e.office || ((e.name || "") + qualifier);
   const chevron = \`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>\`;
   return \`
     <div class="election-card">
@@ -503,7 +541,7 @@ function renderNote(note) {`);
             <span class="election-date">\${esc(e.date)}</span>
             \${e.scope ? \`<span class="election-scope">\${esc(e.scope)}</span>\` : ""}
           </span>
-          <span class="election-office">\${esc(e.office || e.name || "")}</span>
+          <span class="election-office">\${esc(title)}</span>
         </span>
         <span class="election-toggle">
           <span class="cand-count">\${countLabel}</span>
@@ -527,6 +565,8 @@ function renderNote(note) {`);
       </div>`, `function renderCandidate(c, race) {
   // A primary or runoff winner was NOMINATED, not elected — the badge should say so.
   const nominated = !!(race && /primary|runoff/i.test((race.office || "") + " " + (race.scope || "")));
+  // A proposition or a Yes/No side has no party; the gray "I" tag was a lie on 50 measure cards.
+  const measureCard = !!(race && /ballot measure|ballot question|amendment|initiative|proposition|referend|\\bmeasure\\b|\\bquestion\\b/i.test((race.scope || "") + " " + (race.office || "")));
   const winnerClass = c.winner ? ("candidate winner" + (nominated ? " nominee" : "")) : "candidate";
   const positions      = (c.positions || []).filter(Boolean).map(p => \`<li>\${esc(p)}</li>\`).join("");
   const differentiators= (c.differentiators || []).filter(Boolean).map(p => \`<li>\${esc(p)}</li>\`).join("");
@@ -536,7 +576,7 @@ function renderNote(note) {`);
     <div class="\${winnerClass}">
       <div class="cand-head">
         <div class="cand-name">\${esc(c.name)}</div>
-        <span class="party-tag party-\${esc(c.party)}">\${esc(c.party)}</span>
+        \${measureCard ? "" : \`<span class="party-tag party-\${esc(c.party)}">\${esc(c.party)}</span>\`}
       </div>`);
   sub("closePanel: focus + scroll lock", `function closePanel() {
   panel.classList.remove("open");

@@ -321,7 +321,7 @@ function officeKind(seat) {
 
 // NC, SC, GA, VA, MD, DE, and NJ redirect to their own pages, so they are not tested here.
 const FEATURED_ABBRS = ["AL", "FL", "NY", "DC"];
-const ALL_TESTED = [...new Set([...FEATURED_ABBRS, "TX", "CA", "OH", "WA"])];
+const ALL_TESTED = [...new Set([...FEATURED_ABBRS, "TX", "CA", "AK", "MO", "OH", "WA"])];   // AK/MO: the live generic-page states with unusual data
 
 for (const abbr of ALL_TESTED) {
   const { seats, error } = seatsFor(abbr);

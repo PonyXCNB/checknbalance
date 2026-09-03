@@ -1030,7 +1030,7 @@ const STATEWIDE = [
 // ⚠ Ballotpedia was wrong at least three times here: it listed a Republican (Daniel George) in
 // the IN-8 primary who never made the ballot, an independent (James Burke) in the IN-8 general
 // who is not certified, and an independent (Eric Beebe) in IN-2 who actually filed for a
-// LaPorte County school board seat. None are carded.
+// LaPorte County school board seat. None are listed.
 const HOUSE_RACES = {
   1: {
     name: "U.S. House — IN District 1",
@@ -1053,8 +1053,8 @@ const HOUSE_RACES = {
         ]
       },
       {
-        date: "May 5, 2026", type: "past",
-        note: "Mrvan won renomination 80.2% over LaVetta Sparks-Wade. Barb Regnitz won a three-way Republican primary with 45.8% over Jim Schenke (30.1%) and Ben Ruiz (24.1%); 2022 nominee Jennifer-Ruth Green withdrew before the primary. [Verify exact totals — the Indiana ENR portal had no working public endpoint this pass, so figures are from compiled tables rather than the official canvass.]",
+        date: "May 5, 2026", type: "past", scope: "Federal · District 1 · Primary",
+        note: "Mrvan won renomination 80.2% over LaVetta Sparks-Wade. Barb Regnitz won a three-way Republican primary with 45.8% over Jim Schenke (30.1%) and Ben Ruiz (24.1%); 2022 nominee Jennifer-Ruth Green withdrew before the primary. [Verify exact totals — the Indiana ENR portal had no working public endpoint at this update, so figures are from compiled tables rather than the official canvass.]",
         candidates: [
           { name: "Frank Mrvan", party: "D", winner: true,
             positions: ["Won renomination with 80.2%"],
@@ -1108,7 +1108,7 @@ const HOUSE_RACES = {
         ]
       },
       {
-        date: "May 5, 2026", type: "past",
+        date: "May 5, 2026", type: "past", scope: "Federal · District 2 · Primary",
         note: "Yakym was unopposed for renomination. Jamee Decio won the Democratic primary with 72.1% over Shaun Maeyens. [Verify exact totals against the official canvass.]",
         candidates: [
           { name: "Rudy Yakym", party: "R", winner: true,
@@ -1213,7 +1213,7 @@ const HOUSE_RACES = {
         ]
       },
       {
-        date: "May 5, 2026", type: "past",
+        date: "May 5, 2026", type: "past", scope: "Federal · District 4 · Primary",
         note: "Baird won renomination 60.5% (37,855) over state Rep. Craig Haggard at 30.5% and John Piper at 8.9%. Drew Cox won an eight-way Democratic primary with 30.4% (7,550) over Joe Mackey at 22.8%. [Verify certified totals against the Indiana Secretary of State canvass — the Election Division's July 22 certified list is still incomplete for federal offices.]",
         candidates: [
           { name: "Jim Baird", party: "R", winner: true,
@@ -1263,7 +1263,7 @@ const HOUSE_RACES = {
         ]
       },
       {
-        date: "May 5, 2026", type: "past",
+        date: "May 5, 2026", type: "past", scope: "Federal · District 5 · Primary",
         note: "Spartz won renomination 59.9% (33,691) over Scott King at 40.1% — a closer call than an incumbent usually faces. J.D. Ford won a seven-way Democratic primary with 42.5% (17,608). [Verify certified totals against the Indiana Secretary of State canvass.]",
         candidates: [
           { name: "Victoria Spartz", party: "R", winner: true,
@@ -1348,7 +1348,7 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "Indiana's only Democratic seat, at Cook PVI D+21. Rated Solid/Safe Democratic (Cook, July 16) and Solid Democratic (Inside Elections, June 25). André Carson, in his tenth term, drew a real primary challenge from two-time statewide nominee Destiny Wells and took 62.4%. [Verify: no Sabato rating could be obtained — Sabato publishes House ratings only as an image. Cook PVI is the 2025 edition; Cook blocks automated access to the 2026 edition.]",
+        note: "Indiana's only Democratic seat, at Cook PVI D+21. Rated Solid/Safe Democratic (Cook, July 16) and Solid Democratic (Inside Elections, June 25). André Carson, in his tenth term, drew a real primary challenge from two-time statewide nominee Destiny Wells and took 62.4%. [Verify: no Sabato rating could be obtained — Sabato publishes House ratings only as an image. Cook PVI is the 2025 edition; Cook could not be read to the 2026 edition.]",
         candidates: [
           { name: "André Carson (incumbent)", party: "D", winner: false,
             positions: ["Grow the economy and build a stronger middle class","Strengthen national security","Affordability — voted for the $35-a-month insulin cap"],
@@ -1368,7 +1368,7 @@ const HOUSE_RACES = {
         ]
       },
       {
-        date: "May 5, 2026", type: "past",
+        date: "May 5, 2026", type: "past", scope: "Federal · District 7 · Primary",
         note: "Carson won renomination with 62.4% (44,849) over Destiny Wells at 23.4% and George Hornedo at 10.5%. Wells was the Democratic nominee for Secretary of State in 2022 and Attorney General in 2024, so this was a genuine challenge. On the Republican side Patrick McAuley beat Felipe Rios 84.4%–15.6% — several outlets wrongly reported that primary as uncontested. Certified results from the Indiana Election Division.",
         candidates: [
           { name: "André Carson", party: "D", winner: true,
@@ -1403,7 +1403,7 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "Cook PVI R+18. Rated Solid/Safe Republican (Cook, July 16) and Solid Republican (Inside Elections, June 25). Despite the district's \"Bloody Eighth\" nickname — earned in decades when it swung repeatedly — it is not currently competitive. A straight two-way race: no Libertarian filed, and a declared independent, James Burke, does NOT appear on the Secretary of State's certified list and is therefore not carded here. [Verify: no Sabato rating could be obtained.]",
+        note: "Cook PVI R+18. Rated Solid/Safe Republican (Cook, July 16) and Solid Republican (Inside Elections, June 25). Despite the district's \"Bloody Eighth\" nickname — earned in decades when it swung repeatedly — it is not currently competitive. A straight two-way race: no Libertarian filed, and a declared independent, James Burke, does NOT appear on the Secretary of State's certified list and is therefore not listed here. [Verify: no Sabato rating could be obtained.]",
         candidates: [
           { name: "Mark Messmer (incumbent)", party: "R", winner: false,
             positions: ["\"Pro-life, pro-gun, and pro-Trump\"; border security and the rule of law","Jobs and economic growth through his Working Family Tax Cuts bill","Reducing government overreach on small business"],
@@ -1418,7 +1418,7 @@ const HOUSE_RACES = {
         ]
       },
       {
-        date: "May 5, 2026", type: "past",
+        date: "May 5, 2026", type: "past", scope: "Federal · District 8 · Primary",
         note: "Messmer was unopposed for renomination. Mary Allen won a four-way Democratic primary with 66.7% (18,816) over Tabitha Zeigler at 15.3%. Certified results from the Indiana Election Division. ⚠ Ballotpedia listed a Republican challenger, Daniel George, who did not appear on the certified ballot.",
         candidates: [
           { name: "Mark Messmer", party: "R", winner: true,
@@ -1478,7 +1478,7 @@ const HOUSE_RACES = {
         ]
       },
       {
-        date: "May 5, 2026", type: "past",
+        date: "May 5, 2026", type: "past", scope: "Federal · District 9 · Primary",
         note: "Houchin was unopposed for renomination. Brad Meyer won a four-way Democratic primary with 37.9% (12,788) over Tim Peck at 33.1% — Peck was the district's 2024 nominee, so this was an upset of the presumed frontrunner. Certified results from the Indiana Election Division.",
         candidates: [
           { name: "Erin Houchin", party: "R", winner: true,
@@ -1492,7 +1492,7 @@ const HOUSE_RACES = {
         ]
       },
       {
-        date: "Nov 5, 2024", type: "past",
+        date: "Nov 5, 2024", type: "past", scope: "Federal · District 9 · Primary",
         note: "Houchin held the seat 64.5%–32.8% over Timothy Peck, with Libertarian Russell Brooksbank at 2.7%. Peck sought the nomination again in 2026 and lost the primary.",
         candidates: [
           { name: "Erin Houchin", party: "R", winner: true,
@@ -1798,13 +1798,20 @@ function renderNote(note) {
 
 function renderElection(e) {
   const count = (e.candidates && e.candidates.length) || 0;
-  // A ballot measure is recognised by what it is called, not by one exact scope string.
+  // A ballot measure is recognized by what it is called, not by one exact scope string.
   const isMeasure = /ballot measure|ballot question|amendment|initiative|proposition|referend|\bmeasure\b|\bquestion\b/i.test((e.scope || "") + " " + (e.office || ""));
   const isInfo = /^Also on your ballot|— eight seats, ALL UNOPPOSED/i.test(e.office || "");
-  const countLabel = count ? `${count} candidate${count === 1 ? "" : "s"}` : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
+  // Measure cards carry Yes/No pairs or one card per proposition — never "candidates".
+  const yesNo = count > 0 && e.candidates.every(c => /^(yes|no)\b/i.test(c.name || ""));
+  const countLabel = count
+    ? (isMeasure ? (yesNo ? "Yes / No" : `${count} measure${count === 1 ? "" : "s"}`) : `${count} candidate${count === 1 ? "" : "s"}`)
+    : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
   const candidatesHtml = count
     ? `<div class="candidates">${e.candidates.map(c => renderCandidate(c, e)).join("")}</div>`
     : (isMeasure || isInfo ? "" : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">Candidates not yet announced.</div>`);
+  // A House primary inherits its district's title; say which contest it is.
+  const qualifier = e.office ? "" : (/Runoff/i.test(e.scope || "") ? " — Runoff" : /Primary/i.test(e.scope || "") ? " — Primary" : "");
+  const title = e.office || ((e.name || "") + qualifier);
   const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
   return `
     <div class="election-card">
@@ -1815,7 +1822,7 @@ function renderElection(e) {
             <span class="election-date">${esc(e.date)}</span>
             ${e.scope ? `<span class="election-scope">${esc(e.scope)}</span>` : ""}
           </span>
-          <span class="election-office">${esc(e.office || e.name || "")}</span>
+          <span class="election-office">${esc(title)}</span>
         </span>
         <span class="election-toggle">
           <span class="cand-count">${countLabel}</span>
@@ -1829,6 +1836,8 @@ function renderElection(e) {
 function renderCandidate(c, race) {
   // A primary or runoff winner was NOMINATED, not elected — the badge should say so.
   const nominated = !!(race && /primary|runoff/i.test((race.office || "") + " " + (race.scope || "")));
+  // A proposition or a Yes/No side has no party; the gray "I" tag was a lie on 50 measure cards.
+  const measureCard = !!(race && /ballot measure|ballot question|amendment|initiative|proposition|referend|\bmeasure\b|\bquestion\b/i.test((race.scope || "") + " " + (race.office || "")));
   const winnerClass = c.winner ? ("candidate winner" + (nominated ? " nominee" : "")) : "candidate";
   const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
   const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
@@ -1838,7 +1847,7 @@ function renderCandidate(c, race) {
     <div class="${winnerClass}">
       <div class="cand-head">
         <div class="cand-name">${esc(c.name)}</div>
-        <span class="party-tag party-${esc(c.party)}">${esc(c.party)}</span>
+        ${measureCard ? "" : `<span class="party-tag party-${esc(c.party)}">${esc(c.party)}</span>`}
       </div>
       ${positions ? `<div class="cand-section">
           <div class="cand-section-label">Top Positions</div>

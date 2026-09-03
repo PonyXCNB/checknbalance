@@ -2936,7 +2936,7 @@ const HOUSE_RACES = {
             "party": "I",
             "winner": false,
             "positions": [
-              "Runs as an independent on the premise that the two-party system is 'irreparably broken,' emphasizing dialogue, common ground and rebuilding public trust over partisan competition (statonforcongress.com; dailyorange.com)",
+              "Runs as an independent on the premise that the two-party system is 'irreparably broken,' emphasizing dialog, common ground and rebuilding public trust over partisan competition (statonforcongress.com; dailyorange.com)",
               "Says he favors policies that benefit families and small businesses, but detailed issue positions are thin [Verify]"
             ],
             "differentiators": [
@@ -3563,13 +3563,20 @@ function renderNote(note) {
 
 function renderElection(e) {
   const count = (e.candidates && e.candidates.length) || 0;
-  // A ballot measure is recognised by what it is called, not by one exact scope string.
+  // A ballot measure is recognized by what it is called, not by one exact scope string.
   const isMeasure = /ballot measure|ballot question|amendment|initiative|proposition|referend|\bmeasure\b|\bquestion\b/i.test((e.scope || "") + " " + (e.office || ""));
   const isInfo = /^Also on your ballot|— eight seats, ALL UNOPPOSED/i.test(e.office || "");
-  const countLabel = count ? `${count} candidate${count === 1 ? "" : "s"}` : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
+  // Measure cards carry Yes/No pairs or one card per proposition — never "candidates".
+  const yesNo = count > 0 && e.candidates.every(c => /^(yes|no)\b/i.test(c.name || ""));
+  const countLabel = count
+    ? (isMeasure ? (yesNo ? "Yes / No" : `${count} measure${count === 1 ? "" : "s"}`) : `${count} candidate${count === 1 ? "" : "s"}`)
+    : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
   const candidatesHtml = count
     ? `<div class="candidates">${e.candidates.map(c => renderCandidate(c, e)).join("")}</div>`
     : (isMeasure || isInfo ? "" : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">Candidates not yet announced.</div>`);
+  // A House primary inherits its district's title; say which contest it is.
+  const qualifier = e.office ? "" : (/Runoff/i.test(e.scope || "") ? " — Runoff" : /Primary/i.test(e.scope || "") ? " — Primary" : "");
+  const title = e.office || ((e.name || "") + qualifier);
   const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
   return `
     <div class="election-card">
@@ -3580,7 +3587,7 @@ function renderElection(e) {
             <span class="election-date">${esc(e.date)}</span>
             ${e.scope ? `<span class="election-scope">${esc(e.scope)}</span>` : ""}
           </span>
-          <span class="election-office">${esc(e.office || e.name || "")}</span>
+          <span class="election-office">${esc(title)}</span>
         </span>
         <span class="election-toggle">
           <span class="cand-count">${countLabel}</span>
@@ -3594,6 +3601,8 @@ function renderElection(e) {
 function renderCandidate(c, race) {
   // A primary or runoff winner was NOMINATED, not elected — the badge should say so.
   const nominated = !!(race && /primary|runoff/i.test((race.office || "") + " " + (race.scope || "")));
+  // A proposition or a Yes/No side has no party; the gray "I" tag was a lie on 50 measure cards.
+  const measureCard = !!(race && /ballot measure|ballot question|amendment|initiative|proposition|referend|\bmeasure\b|\bquestion\b/i.test((race.scope || "") + " " + (race.office || "")));
   const winnerClass = c.winner ? ("candidate winner" + (nominated ? " nominee" : "")) : "candidate";
   const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
   const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
@@ -3603,7 +3612,7 @@ function renderCandidate(c, race) {
     <div class="${winnerClass}">
       <div class="cand-head">
         <div class="cand-name">${esc(c.name)}</div>
-        <span class="party-tag party-${esc(c.party)}">${esc(c.party)}</span>
+        ${measureCard ? "" : `<span class="party-tag party-${esc(c.party)}">${esc(c.party)}</span>`}
       </div>
       ${positions ? `<div class="cand-section">
           <div class="cand-section-label">Top Positions</div>

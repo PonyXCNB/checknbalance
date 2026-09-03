@@ -847,7 +847,7 @@ const COUNTIES = {
 // petitions were submitted and are still in signature verification; none has an official ballot
 // title yet, and the Secretary of State's certification deadline is SEPT 11, 2026.
 // The NONPARTISAN State Board of Education (districts 5, 6, 7, 8) and University of Nebraska
-// Board of Regents (districts 1, 2, 4) races ARE carded, each with an explicit scope label naming
+// Board of Regents (districts 1, 2, 4) races ARE listed, each with an explicit scope label naming
 // who actually votes in it, because the site has no geography model for those districts.
 // ⚠ Several education-race position summaries come from the Nebraska Family Alliance voter guide,
 // a socially conservative advocacy organization with advocacy-worded questions; it is named inline
@@ -932,7 +932,7 @@ const STATEWIDE = [
     type: "upcoming",
     scope: "State · Statewide",
     office: "Governor and Lieutenant Governor — Nebraska",
-    note: "Jim Pillen (R), elected in 2022 by 23.2 points, seeks a second term with a Trump endorsement. Democrat Lynne Walz, a former state senator and teacher, runs with Humboldt-area farmer Ben Steffen, himself a former Republican. Rated Solid/Safe Republican by every handicapper; no Democrat has won a Nebraska governorship since 1994. ⚠ Former Republican state senator Brett Lindstrom filed 5,735 petition signatures on Aug 3 for an independent ticket with Mike Picard, but the Secretary of State still lists him as \"Signature Verification in Progress\" — he is NOT certified and is not carded here [Verify]. ⚠ The Secretary of State's certified list shows Pillen's lieutenant-governor line as \"(undeclared)\" as of Aug 3, 2026; Joe Kelly is the sitting Lt. Governor and was Pillen's 2022 running mate, but no formal 2026 designation could be corroborated [Verify]. In Nebraska the two offices run on a single ticket. ⚠ All polling located is from Democratic-aligned firms.",
+    note: "Jim Pillen (R), elected in 2022 by 23.2 points, seeks a second term with a Trump endorsement. Democrat Lynne Walz, a former state senator and teacher, runs with Humboldt-area farmer Ben Steffen, himself a former Republican. Rated Solid/Safe Republican by every handicapper; no Democrat has won a Nebraska governorship since 1994. ⚠ Former Republican state senator Brett Lindstrom filed 5,735 petition signatures on Aug 3 for an independent ticket with Mike Picard, but the Secretary of State still lists him as \"Signature Verification in Progress\" — he is NOT certified and is not listed here [Verify]. ⚠ The Secretary of State's certified list shows Pillen's lieutenant-governor line as \"(undeclared)\" as of Aug 3, 2026; Joe Kelly is the sitting Lt. Governor and was Pillen's 2022 running mate, but no formal 2026 designation could be corroborated [Verify]. In Nebraska the two offices run on a single ticket. ⚠ All polling located is from Democratic-aligned firms.",
     candidates: [
       { name: "Jim Pillen (incumbent)", party: "R", winner: false,
         positions: [
@@ -1673,7 +1673,7 @@ const HOUSE_RACES = {
         ]
       },
       {
-        date: "May 12, 2026", type: "past",
+        date: "May 12, 2026", type: "past", scope: "Federal · District 1 · Primary",
         note: "Backemeyer won a two-way Democratic primary; Flood and Sandman were unopposed on their lines.",
         candidates: [
           { name: "Chris Backemeyer", party: "D", winner: true, positions: ["Won the Democratic primary with 57.62% (26,523 votes)"], differentiators: [], supporters: [], opponents: [] },
@@ -1755,7 +1755,7 @@ const HOUSE_RACES = {
         ]
       },
       {
-        date: "May 12, 2026", type: "past",
+        date: "May 12, 2026", type: "past", scope: "Federal · District 2 · Primary",
         note: "Powell won a seven-way Democratic primary by 1,401 votes — 2.42 points — over state Sen. John Cavanaugh. Harding and Foreman were unopposed on their lines.",
         candidates: [
           { name: "Denise Powell", party: "D", winner: true, positions: ["Won the Democratic primary with 38.82% (22,516 votes)"], differentiators: [], supporters: [], opponents: [] },
@@ -1782,7 +1782,7 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "Adrian Smith (R) seeks an 11th term; he did NOT retire, and the U.S. House Clerk's July 6, 2026 roster confirms he still holds the seat. This is one of the most Republican districts in the country — no handicapper rates it competitive and neither party committee has targeted it. Voter registration runs roughly 268,246 Republican to 70,368 Democratic, and Smith won by 60.8 points in 2024. The live question is his own standing rather than the district's: he took 64.7% against a primary challenger, down from about 75% in 2024 and 76% in 2022. ⚠ THE BALLOT MAY NOT BE FINAL — Mark Cohen, a registered nonpartisan, submitted about 3,680 petition signatures on July 30 against a 2,000-valid requirement, and the Secretary of State's file still lists him as \"Signature Verification in Progress.\" He is NOT yet on the certified list and is not carded here [Verify — re-check with the Secretary of State]. The Libertarian Party made no nomination in NE-3.",
+        note: "Adrian Smith (R) seeks an 11th term; he did NOT retire, and the U.S. House Clerk's July 6, 2026 roster confirms he still holds the seat. This is one of the most Republican districts in the country — no handicapper rates it competitive and neither party committee has targeted it. Voter registration runs roughly 268,246 Republican to 70,368 Democratic, and Smith won by 60.8 points in 2024. The live question is his own standing rather than the district's: he took 64.7% against a primary challenger, down from about 75% in 2024 and 76% in 2022. ⚠ THE BALLOT MAY NOT BE FINAL — Mark Cohen, a registered nonpartisan, submitted about 3,680 petition signatures on July 30 against a 2,000-valid requirement, and the Secretary of State's file still lists him as \"Signature Verification in Progress.\" He is NOT yet on the certified list and is not listed here [Verify — re-check with the Secretary of State]. The Libertarian Party made no nomination in NE-3.",
         candidates: [
           { name: "Adrian Smith (incumbent)", party: "R", winner: false,
             positions: [
@@ -1846,7 +1846,7 @@ const HOUSE_RACES = {
         ]
       },
       {
-        date: "May 12, 2026", type: "past",
+        date: "May 12, 2026", type: "past", scope: "Federal · District 3 · Primary",
         note: "Smith was held to 64.7% by a primary challenger, down from about 75% in 2024 and 76% in 2022. Stille and Else were unopposed on their lines.",
         candidates: [
           { name: "Adrian Smith", party: "R", winner: true, positions: ["Won the Republican primary with 64.71% (60,549 votes)"], differentiators: [], supporters: [], opponents: [] },
@@ -2153,13 +2153,20 @@ function renderNote(note) {
 
 function renderElection(e) {
   const count = (e.candidates && e.candidates.length) || 0;
-  // A ballot measure is recognised by what it is called, not by one exact scope string.
+  // A ballot measure is recognized by what it is called, not by one exact scope string.
   const isMeasure = /ballot measure|ballot question|amendment|initiative|proposition|referend|\bmeasure\b|\bquestion\b/i.test((e.scope || "") + " " + (e.office || ""));
   const isInfo = /^Also on your ballot|— eight seats, ALL UNOPPOSED/i.test(e.office || "");
-  const countLabel = count ? `${count} candidate${count === 1 ? "" : "s"}` : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
+  // Measure cards carry Yes/No pairs or one card per proposition — never "candidates".
+  const yesNo = count > 0 && e.candidates.every(c => /^(yes|no)\b/i.test(c.name || ""));
+  const countLabel = count
+    ? (isMeasure ? (yesNo ? "Yes / No" : `${count} measure${count === 1 ? "" : "s"}`) : `${count} candidate${count === 1 ? "" : "s"}`)
+    : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
   const candidatesHtml = count
     ? `<div class="candidates">${e.candidates.map(c => renderCandidate(c, e)).join("")}</div>`
     : (isMeasure || isInfo ? "" : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">Candidates not yet announced.</div>`);
+  // A House primary inherits its district's title; say which contest it is.
+  const qualifier = e.office ? "" : (/Runoff/i.test(e.scope || "") ? " — Runoff" : /Primary/i.test(e.scope || "") ? " — Primary" : "");
+  const title = e.office || ((e.name || "") + qualifier);
   const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
   return `
     <div class="election-card">
@@ -2170,7 +2177,7 @@ function renderElection(e) {
             <span class="election-date">${esc(e.date)}</span>
             ${e.scope ? `<span class="election-scope">${esc(e.scope)}</span>` : ""}
           </span>
-          <span class="election-office">${esc(e.office || e.name || "")}</span>
+          <span class="election-office">${esc(title)}</span>
         </span>
         <span class="election-toggle">
           <span class="cand-count">${countLabel}</span>
@@ -2184,6 +2191,8 @@ function renderElection(e) {
 function renderCandidate(c, race) {
   // A primary or runoff winner was NOMINATED, not elected — the badge should say so.
   const nominated = !!(race && /primary|runoff/i.test((race.office || "") + " " + (race.scope || "")));
+  // A proposition or a Yes/No side has no party; the gray "I" tag was a lie on 50 measure cards.
+  const measureCard = !!(race && /ballot measure|ballot question|amendment|initiative|proposition|referend|\bmeasure\b|\bquestion\b/i.test((race.scope || "") + " " + (race.office || "")));
   const winnerClass = c.winner ? ("candidate winner" + (nominated ? " nominee" : "")) : "candidate";
   const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
   const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
@@ -2193,7 +2202,7 @@ function renderCandidate(c, race) {
     <div class="${winnerClass}">
       <div class="cand-head">
         <div class="cand-name">${esc(c.name)}</div>
-        <span class="party-tag party-${esc(c.party)}">${esc(c.party)}</span>
+        ${measureCard ? "" : `<span class="party-tag party-${esc(c.party)}">${esc(c.party)}</span>`}
       </div>
       ${positions ? `<div class="cand-section">
           <div class="cand-section-label">Top Positions</div>

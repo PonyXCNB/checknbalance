@@ -1017,7 +1017,7 @@ const STATEWIDE = [
     note: "✅ RESULT — DARLINE GRAHAM-NORDONE WON the Aug 25, 2026 runoff with 52.45% (193,486 votes) to U.S. Rep. Ralph Norman’s 47.55% (175,412), out of 369,190 cast with all 46 counties reporting. She is therefore the Republican nominee against Democrat Annie Andrews on Nov 3. ✅ TURNOUT ROSE SHARPLY between rounds — 368,723 in the runoff against 334,881 on Aug 11 — unusual, since runoff turnout normally falls. ✅ WHO MAY VOTE WAS SETTLED, and earlier reporting had it backwards: the State Election Commission itself ruled on July 15, 2026 — there was no court case — that voters who cast a June DEMOCRATIC primary ballot were NOT eligible, and restated that for the runoff on Aug 12. The South Carolina Democratic Party AGREED, its executive director saying state law \"is clear.\" ⚠ THERE IS NO SPECIAL GENERAL ELECTION — McMaster’s July appointment covers the remainder of Graham’s term through Jan 3, 2027, so Aug 25 decided only who carries the Republican line in the ORDINARY Nov 3 election for a full six-year term. ⚠ NOT YET CERTIFIED: no State Election Commission release announcing runoff certification has been posted; by the pattern of the Aug 11 primary it would fall on Friday, Aug 28, 2026 [Verify]. Figures are the Commission’s own election-night reporting.",
     candidates: [
       { name: "Darline Graham-Nordone (appointed incumbent)", party: "R", winner: true,
-        positions: ["[Verify] No itemized policy platform could be sourced — her campaign site would be the primary source and was not reachable this pass"],
+        positions: ["[Verify] No itemized policy platform could be sourced — her campaign site would be the primary source and was not reachable at this update"],
         differentiators: ["Appointed to the seat July 13, 2026 and sworn in July 14 — the first woman to represent South Carolina in the U.S. Senate; she is Lindsey Graham's sister","WON the Aug 25 runoff with 52.45% (193,396 votes); had led the Aug 11 field with 32.75% (109,663); also reported in some outlets simply as \"Darline Graham\"","Endorsed by President Trump, who urged Gov. McMaster to appoint her and called her a \"WINNER\"; she had never held elected office before the appointment [Verify — prior public service is reported as a term on the SC Commission for the Blind]"],
         supporters: [
           "Carries the President's explicit endorsement in a state he won by about 20 points",
@@ -1030,7 +1030,7 @@ const STATEWIDE = [
           "No legislative or executive record for voters to judge [Verify]"
         ] },
       { name: "Ralph Norman", party: "R", winner: false,
-        positions: ["Campaigns on \"faith, family, and freedom\" — his own election-night framing","[Verify] Itemized 2026 Senate policy positions could not be sourced this pass"],
+        positions: ["Campaigns on \"faith, family, and freedom\" — his own election-night framing","[Verify] Itemized 2026 Senate policy positions could not be sourced at this update"],
         differentiators: [
           "U.S. Representative for SC-5 since a 2017 special election; a House Freedom Caucus member consistently described as among the chamber's most conservative",
           "Took 24.6% (82,523) on Aug 11, holding second place over Rep. Russell Fry by roughly 16,800 votes",
@@ -1086,7 +1086,7 @@ const STATEWIDE = [
     office: "GOP Runoff — Governor",
     note: "Alan Wilson routed Trump-endorsed Pamela Evette 68.6% to 31.4% after Trump hedged with a dual endorsement before the runoff.",
     candidates: [
-      { name: "Alan Wilson", party: "R", winner: false,
+      { name: "Alan Wilson", party: "R", winner: true,
         positions: ["Agency audits","Infrastructure repair","Ending bad corporate deals"],
         differentiators: ["Attorney General since 2011","Consolidated Mace and Norman endorsements","Came second on June 9 (26.1%), then won the runoff going away"],
         supporters: ["Party unity candidate with statewide experience"],
@@ -1126,7 +1126,7 @@ const STATEWIDE = [
     office: "Democratic Primary — Governor",
     note: "State Rep. Jermaine Johnson won with 59.7% over Billy Webster. Mullins McLeod's final ballot status: [Verify].",
     candidates: [
-      { name: "Jermaine Johnson", party: "D", winner: false,
+      { name: "Jermaine Johnson", party: "D", winner: true,
         positions: ["Economic fairness","Mental-health funding","Public-education investment"],
         differentiators: ["State representative; decisive 59.7% win","Former pro basketball player with a rags-to-riches story"],
         supporters: ["Generational-change energy"], opponents: ["Untested statewide"] },
@@ -1160,7 +1160,7 @@ const STATEWIDE = [
     office: "Democratic Primary — U.S. Senate",
     note: "Pediatrician Annie Andrews won with 61.5%. [Verify runner-up percentages.]",
     candidates: [
-      { name: "Annie Andrews", party: "D", winner: false,
+      { name: "Annie Andrews", party: "D", winner: true,
         positions: ["Healthcare and public health","Gun-violence prevention","Children's issues"],
         differentiators: ["Pediatrician; 2022 SC-1 nominee; 61.5% primary win"],
         supporters: ["Strongest Democratic Senate fundraising in years"], opponents: ["Already lost one federal race"] },
@@ -1762,13 +1762,20 @@ function renderNote(note) {
 
 function renderElection(e) {
   const count = (e.candidates && e.candidates.length) || 0;
-  // A ballot measure is recognised by what it is called, not by one exact scope string.
+  // A ballot measure is recognized by what it is called, not by one exact scope string.
   const isMeasure = /ballot measure|ballot question|amendment|initiative|proposition|referend|\bmeasure\b|\bquestion\b/i.test((e.scope || "") + " " + (e.office || ""));
   const isInfo = /^Also on your ballot|— eight seats, ALL UNOPPOSED/i.test(e.office || "");
-  const countLabel = count ? `${count} candidate${count === 1 ? "" : "s"}` : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
+  // Measure cards carry Yes/No pairs or one card per proposition — never "candidates".
+  const yesNo = count > 0 && e.candidates.every(c => /^(yes|no)\b/i.test(c.name || ""));
+  const countLabel = count
+    ? (isMeasure ? (yesNo ? "Yes / No" : `${count} measure${count === 1 ? "" : "s"}`) : `${count} candidate${count === 1 ? "" : "s"}`)
+    : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
   const candidatesHtml = count
     ? `<div class="candidates">${e.candidates.map(c => renderCandidate(c, e)).join("")}</div>`
     : (isMeasure || isInfo ? "" : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">Candidates not yet announced.</div>`);
+  // A House primary inherits its district's title; say which contest it is.
+  const qualifier = e.office ? "" : (/Runoff/i.test(e.scope || "") ? " — Runoff" : /Primary/i.test(e.scope || "") ? " — Primary" : "");
+  const title = e.office || ((e.name || "") + qualifier);
   const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
   return `
     <div class="election-card">
@@ -1779,7 +1786,7 @@ function renderElection(e) {
             <span class="election-date">${esc(e.date)}</span>
             ${e.scope ? `<span class="election-scope">${esc(e.scope)}</span>` : ""}
           </span>
-          <span class="election-office">${esc(e.office || e.name || "")}</span>
+          <span class="election-office">${esc(title)}</span>
         </span>
         <span class="election-toggle">
           <span class="cand-count">${countLabel}</span>
@@ -1793,6 +1800,8 @@ function renderElection(e) {
 function renderCandidate(c, race) {
   // A primary or runoff winner was NOMINATED, not elected — the badge should say so.
   const nominated = !!(race && /primary|runoff/i.test((race.office || "") + " " + (race.scope || "")));
+  // A proposition or a Yes/No side has no party; the gray "I" tag was a lie on 50 measure cards.
+  const measureCard = !!(race && /ballot measure|ballot question|amendment|initiative|proposition|referend|\bmeasure\b|\bquestion\b/i.test((race.scope || "") + " " + (race.office || "")));
   const winnerClass = c.winner ? ("candidate winner" + (nominated ? " nominee" : "")) : "candidate";
   const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
   const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
@@ -1802,7 +1811,7 @@ function renderCandidate(c, race) {
     <div class="${winnerClass}">
       <div class="cand-head">
         <div class="cand-name">${esc(c.name)}</div>
-        <span class="party-tag party-${esc(c.party)}">${esc(c.party)}</span>
+        ${measureCard ? "" : `<span class="party-tag party-${esc(c.party)}">${esc(c.party)}</span>`}
       </div>
       ${positions ? `<div class="cand-section">
           <div class="cand-section-label">Top Positions</div>

@@ -773,7 +773,7 @@ const STATEWIDE = [
     type: "upcoming",
     scope: "Federal · Statewide",
     office: "U.S. Senate — Massachusetts",
-    note: "MARKEY BEAT MOULTON 64.8%–35.2% IN THE SEPT 1 PRIMARY — a far wider margin than his 2020 win over Joe Kennedy III, and a decisive rejection of the generational-change argument. ⚠ UNOFFICIAL: the Secretary of the Commonwealth had not posted certified primary results as of Sept 3; the figures are AP's, 572,735 to 310,534 with 98.75% of the expected vote counted [Verify — pending certification]. ✅ Moulton conceded on election night and pledged to help Markey win in November; he gave up MA-6 to run and leaves Congress either way. John Deaton (R), the 2024 nominee against Elizabeth Warren, was uncontested. ⚠ Minor-party and independent candidates qualified by the Aug 25 deadline, but Massachusetts has NOT yet published its November candidate list, so they are named here rather than carded: Joe Tache (Party for Socialism and Liberation) and independents Shiva Ayyadurai, Nathan Bech and Morgan Dawicki [Verify — via The Green Papers only; the state's own list is the source that would settle it]. Rated Solid/Safe Democratic.",
+    note: "MARKEY BEAT MOULTON 64.8%–35.2% IN THE SEPT 1 PRIMARY — a far wider margin than his 2020 win over Joe Kennedy III, and a decisive rejection of the generational-change argument. ⚠ UNOFFICIAL: the Secretary of the Commonwealth had not posted certified primary results as of Sept 3; the figures are AP's, 572,735 to 310,534 with 98.75% of the expected vote counted [Verify — pending certification]. ✅ Moulton conceded on election night and pledged to help Markey win in November; he gave up MA-6 to run and leaves Congress either way. John Deaton (R), the 2024 nominee against Elizabeth Warren, was uncontested. ⚠ Minor-party and independent candidates qualified by the Aug 25 deadline, but Massachusetts has NOT yet published its November candidate list, so they are named here rather than listed: Joe Tache (Party for Socialism and Liberation) and independents Shiva Ayyadurai, Nathan Bech and Morgan Dawicki [Verify — via The Green Papers only; the state's own list is the source that would settle it]. Rated Solid/Safe Democratic.",
     candidates: [
       { name: "Ed Markey (incumbent)", party: "D", winner: false,
         positions: ["Green New Deal co-author; climate and clean-energy investment","Medicare for All; opposes private equity in healthcare","Opposes Trump-era immigration enforcement"],
@@ -1519,13 +1519,20 @@ function renderNote(note) {
 
 function renderElection(e) {
   const count = (e.candidates && e.candidates.length) || 0;
-  // A ballot measure is recognised by what it is called, not by one exact scope string.
+  // A ballot measure is recognized by what it is called, not by one exact scope string.
   const isMeasure = /ballot measure|ballot question|amendment|initiative|proposition|referend|\bmeasure\b|\bquestion\b/i.test((e.scope || "") + " " + (e.office || ""));
   const isInfo = /^Also on your ballot|— eight seats, ALL UNOPPOSED/i.test(e.office || "");
-  const countLabel = count ? `${count} candidate${count === 1 ? "" : "s"}` : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
+  // Measure cards carry Yes/No pairs or one card per proposition — never "candidates".
+  const yesNo = count > 0 && e.candidates.every(c => /^(yes|no)\b/i.test(c.name || ""));
+  const countLabel = count
+    ? (isMeasure ? (yesNo ? "Yes / No" : `${count} measure${count === 1 ? "" : "s"}`) : `${count} candidate${count === 1 ? "" : "s"}`)
+    : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
   const candidatesHtml = count
     ? `<div class="candidates">${e.candidates.map(c => renderCandidate(c, e)).join("")}</div>`
     : (isMeasure || isInfo ? "" : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">Candidates not yet announced.</div>`);
+  // A House primary inherits its district's title; say which contest it is.
+  const qualifier = e.office ? "" : (/Runoff/i.test(e.scope || "") ? " — Runoff" : /Primary/i.test(e.scope || "") ? " — Primary" : "");
+  const title = e.office || ((e.name || "") + qualifier);
   const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
   return `
     <div class="election-card">
@@ -1536,7 +1543,7 @@ function renderElection(e) {
             <span class="election-date">${esc(e.date)}</span>
             ${e.scope ? `<span class="election-scope">${esc(e.scope)}</span>` : ""}
           </span>
-          <span class="election-office">${esc(e.office || e.name || "")}</span>
+          <span class="election-office">${esc(title)}</span>
         </span>
         <span class="election-toggle">
           <span class="cand-count">${countLabel}</span>
@@ -1550,6 +1557,8 @@ function renderElection(e) {
 function renderCandidate(c, race) {
   // A primary or runoff winner was NOMINATED, not elected — the badge should say so.
   const nominated = !!(race && /primary|runoff/i.test((race.office || "") + " " + (race.scope || "")));
+  // A proposition or a Yes/No side has no party; the gray "I" tag was a lie on 50 measure cards.
+  const measureCard = !!(race && /ballot measure|ballot question|amendment|initiative|proposition|referend|\bmeasure\b|\bquestion\b/i.test((race.scope || "") + " " + (race.office || "")));
   const winnerClass = c.winner ? ("candidate winner" + (nominated ? " nominee" : "")) : "candidate";
   const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
   const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
@@ -1559,7 +1568,7 @@ function renderCandidate(c, race) {
     <div class="${winnerClass}">
       <div class="cand-head">
         <div class="cand-name">${esc(c.name)}</div>
-        <span class="party-tag party-${esc(c.party)}">${esc(c.party)}</span>
+        ${measureCard ? "" : `<span class="party-tag party-${esc(c.party)}">${esc(c.party)}</span>`}
       </div>
       ${positions ? `<div class="cand-section">
           <div class="cand-section-label">Top Positions</div>

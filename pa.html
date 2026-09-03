@@ -774,7 +774,7 @@
 // PA-17 takes in all of Beaver.
 // ⚠ Chester County is legally split — the description puts two census blocks of Birmingham
 // Township in PA-5 — but that sliver holds SIX people and is a contiguity artifact, so Chester
-// is carded as single-district PA-6. That is the only overlap dropped; the next smallest kept
+// is listed as single-district PA-6. That is the only overlap dropped; the next smallest kept
 // is Somerset's 1,503 people in PA-13.
 const COUNTIES = {
   "42001":{n:"Adams",d:13},
@@ -861,7 +861,7 @@ const COUNTIES = {
 // ⚠ Built Aug 10, 2026 — the deadline for objections to nomination papers and for withdrawals.
 // The field is final only as of the close of that window; re-check the Department of State's
 // certified candidate list. No statewide ballot question could be found for November 2026, and
-// none is carded rather than asserting either way.
+// none is listed rather than asserting either way.
 const STATEWIDE = [
   // UPCOMING — 2026 General Election (Nov 3, 2026)
   {
@@ -993,7 +993,7 @@ const STATEWIDE = [
 // only TWO of those are congressional: Dennis Joseph Mahoney in PA-3 and Andrew Tupone in PA-7.
 // Paper filers DO appear in the database once approved, so an absence is real evidence, not a gap.
 // Directory-listed names that the Commonwealth has NO record of, and which are therefore NOT
-// carded: Reza Rahman, Jamie Frost Remmey and John Hoban (PA-1); Milan Patel (PA-4); Sheila
+// listed: Reza Rahman, Jamie Frost Remmey and John Hoban (PA-1); Milan Patel (PA-4); Sheila
 // Armstrong and Alex Schnell (PA-3); Philip Cerroni (PA-6); Frank Golden and Ramon Granados
 // (PA-7); Jeffrey Wilder (PA-11); Cody Thomas (PA-13); Adam Halfhill (PA-14); Jacob Smith (PA-15);
 // Nicholas Singelis II (PA-16); Fogel Shimp (PA-10).
@@ -1008,7 +1008,7 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "⚠ THE MOST-WATCHED CROSSOVER SEAT IN PENNSYLVANIA. Brian Fitzpatrick has held Bucks County for five terms by winning voters who vote Democratic at the top of the ticket — Harris carried the district about 50%–49% in 2024 while he won it by roughly 13 points. Democrats nominated Bucks County Commissioner Bob Harvie, who won the primary 65.1%–34.9% over Lucia Simonelli. Rated Likely Republican by Cook, LEAN REPUBLICAN by Inside Elections (moved from Likely R in Dec 2025), Leans Republican by Sabato and Lean Republican by Decision Desk HQ (July 14, 2026) — the most competitive Republican-held seat in the state after PA-7 and PA-8 [Verify — every rater's own page blocks automated retrieval, so these are read through citing tables; rating DATES conflict between sources and are best read as each rater's ratings-set date]. No public polling of this race was found. No minor-party or independent candidate qualified.",
+        note: "⚠ THE MOST-WATCHED CROSSOVER SEAT IN PENNSYLVANIA. Brian Fitzpatrick has held Bucks County for five terms by winning voters who vote Democratic at the top of the ticket — Harris carried the district about 50%–49% in 2024 while he won it by roughly 13 points. Democrats nominated Bucks County Commissioner Bob Harvie, who won the primary 65.1%–34.9% over Lucia Simonelli. Rated Likely Republican by Cook, LEAN REPUBLICAN by Inside Elections (moved from Likely R in Dec 2025), Leans Republican by Sabato and Lean Republican by Decision Desk HQ (July 14, 2026) — the most competitive Republican-held seat in the state after PA-7 and PA-8 [Verify — every rater's own page could not be read, so these are read through citing tables; rating DATES conflict between sources and are best read as each rater's ratings-set date]. No public polling of this race was found. No minor-party or independent candidate qualified.",
         candidates: [
           { name: "Brian Fitzpatrick (incumbent)", party: "R", winner: false,
             positions: [
@@ -1082,7 +1082,7 @@ const HOUSE_RACES = {
             ],
             opponents: [
               "After six terms he embodies the Philadelphia Democratic establishment his challenger runs against",
-              "His opponent argues longstanding leadership has left neighbourhood families struggling",
+              "His opponent argues longstanding leadership has left neighborhood families struggling",
               "A $5.6M war chest against an opponent who has filed no financial report is itself the argument that the seat is not contested [Verify — structural argument; no named critic was found]"
             ] },
           { name: "Jessica Arriaga", party: "R", winner: false,
@@ -1098,7 +1098,7 @@ const HOUSE_RACES = {
             ],
             supporters: [
               "A Puerto Rican mother from North Philadelphia offering two decades of frontline health-care work rather than a political résumé",
-              "A sitting ward leader with real neighbourhood organising experience",
+              "A sitting ward leader with real neighborhood organizing experience",
               "Endorsed by the Pennsylvania Young Republicans"
             ],
             opponents: [
@@ -1207,16 +1207,16 @@ const HOUSE_RACES = {
             positions: [
               "Fight inflationary spending and support small businesses (her campaign site)",
               "Enforce immigration law and stop trafficking (her campaign site)",
-              "Back law enforcement and protect neighbourhoods and local schools (her campaign site)"
+              "Back law enforcement and protect neighborhoods and local schools (her campaign site)"
             ],
             differentiators: [
-              "Founded and owns a jewellery appraisal business established in 1989, doing expert-witness and estate valuation work",
+              "Founded and owns a jewelry appraisal business established in 1989, doing expert-witness and estate valuation work",
               "A West Norriton resident since 1987; a Graduate Gemologist and county Republican area vice chair",
               "⚠ No processed FEC financial total is on file for her committee [Verify — this may reflect a processing lag rather than no fundraising]"
             ],
             supporters: [
               "Nearly 40 years running her own small business in the district she wants to represent",
-              "A deep precinct-level organising base as a local party chair",
+              "A deep precinct-level organizing base as a local party chair",
               "She campaigns on specific local grievances including data-center siting and a proposed water-utility merger"
             ],
             opponents: [
@@ -1304,7 +1304,7 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "Chrissy Houlahan (D) is seeking a fifth term; the seat is not open, and she was unopposed for renomination. ✅ THE DISTRICT'S COMPOSITION IS NOW SETTLED after two conflicting descriptions: it is ALL of Chester County plus 19 Berks municipalities — not \"most of Chester,\" and not \"Chester plus Reading only.\" Chester County's own 2026 ballot listing contains exactly ONE congressional contest, which independently proves the whole county sits in this district. Rated Solid Democratic by Cook and Inside Elections (both Sept 11, 2025 — the shared date is genuine, not a table artifact) and Safe Democratic by Sabato (Apr 10, 2025) [Verify — read through a citing table]. ⚠ A third name, Green filer Philip Vincent Cerroni, is NOT carded: he reported no financial activity, a candidate directory flags him as not certified by any election authority, and Chester County's post-deadline list of Aug 6, 2026 shows only two names.",
+        note: "Chrissy Houlahan (D) is seeking a fifth term; the seat is not open, and she was unopposed for renomination. ✅ THE DISTRICT'S COMPOSITION IS NOW SETTLED after two conflicting descriptions: it is ALL of Chester County plus 19 Berks municipalities — not \"most of Chester,\" and not \"Chester plus Reading only.\" Chester County's own 2026 ballot listing contains exactly ONE congressional contest, which independently proves the whole county sits in this district. Rated Solid Democratic by Cook and Inside Elections (both Sept 11, 2025 — the shared date is genuine, not a table artifact) and Safe Democratic by Sabato (Apr 10, 2025) [Verify — read through a citing table]. ⚠ A third name, Green filer Philip Vincent Cerroni, is NOT listed: he reported no financial activity, a candidate directory flags him as not certified by any election authority, and Chester County's post-deadline list of Aug 6, 2026 shows only two names.",
         candidates: [
           { name: "Chrissy Houlahan (incumbent)", party: "D", winner: false,
             positions: [
@@ -1366,7 +1366,7 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "⚠ ONE OF THE CLOSEST HOUSE SEATS IN THE COUNTRY, AND A TOSS UP BY ALL THREE RATERS (Cook, Sabato and Inside Elections). Freshman Republican Ryan Mackenzie took the seat in 2024 by 4,062 votes, 50.5%–49.5%, unseating three-term Democrat Susan Wild; Decision Desk HQ moved it to Lean Democratic on July 14, 2026. Democrat Bob Brooks, a retired Bethlehem firefighter, won a four-way May 19 primary with about 41.4% and has been on the DCCC's Red to Blue list since May 4, 2026. ⚠⚠ A DISPUTED THIRD CANDIDACY IS UNRESOLVED AS THIS PAGE PUBLISHES: Andrew Tupone filed Aug 4 as a GREEN with about 9,000 signatures, but he was a registered Republican from 2008 until February 2026, switched to Democrat and then to Green in April, and was the 2021 REPUBLICAN nominee for a Northampton County magisterial seat. The Green Party of Pennsylvania disavows him — a spokesman called him a \"faux Green Party candidate\" — and of 22 listed circulators reportedly only one is a Pennsylvanian. Brooks' campaign calls it a scheme to split the vote; Tupone denies paying or coordinating with anyone. ⚠ THE COMMONWEALTH'S OWN CANDIDATE DATABASE CONFIRMS HE QUALIFIED — he is one of only TWO congressional nomination-paper filers approved statewide. He is described here rather than carded because no policy platform for him could be sourced anywhere and his candidacy is contested; the deadline to object to nomination papers was Aug 10, 2026, the day this page was built, and no ruling could be confirmed [Verify]. Two further names that appear in one candidate directory, Frank Golden and Ramon Granados, have NO record with the Commonwealth and are NOT on the ballot. Spending has already passed $9.3M, beating the last midterm's full-cycle total.",
+        note: "⚠ ONE OF THE CLOSEST HOUSE SEATS IN THE COUNTRY, AND A TOSS UP BY ALL THREE RATERS (Cook, Sabato and Inside Elections). Freshman Republican Ryan Mackenzie took the seat in 2024 by 4,062 votes, 50.5%–49.5%, unseating three-term Democrat Susan Wild; Decision Desk HQ moved it to Lean Democratic on July 14, 2026. Democrat Bob Brooks, a retired Bethlehem firefighter, won a four-way May 19 primary with about 41.4% and has been on the DCCC's Red to Blue list since May 4, 2026. ⚠⚠ A DISPUTED THIRD CANDIDACY IS UNRESOLVED AS THIS PAGE PUBLISHES: Andrew Tupone filed Aug 4 as a GREEN with about 9,000 signatures, but he was a registered Republican from 2008 until February 2026, switched to Democrat and then to Green in April, and was the 2021 REPUBLICAN nominee for a Northampton County magisterial seat. The Green Party of Pennsylvania disavows him — a spokesman called him a \"faux Green Party candidate\" — and of 22 listed circulators reportedly only one is a Pennsylvanian. Brooks' campaign calls it a scheme to split the vote; Tupone denies paying or coordinating with anyone. ⚠ THE COMMONWEALTH'S OWN CANDIDATE DATABASE CONFIRMS HE QUALIFIED — he is one of only TWO congressional nomination-paper filers approved statewide. He is described here rather than listed because no policy platform for him could be sourced anywhere and his candidacy is contested; the deadline to object to nomination papers was Aug 10, 2026, the day this page was built, and no ruling could be confirmed [Verify]. Two further names that appear in one candidate directory, Frank Golden and Ramon Granados, have NO record with the Commonwealth and are NOT on the ballot. Spending has already passed $9.3M, beating the last midterm's full-cycle total.",
         candidates: [
           { name: "Ryan Mackenzie (incumbent)", party: "R", winner: false,
             positions: [
@@ -1428,7 +1428,7 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "⚠ A TOSS UP BY ALL THREE RATERS. Freshman Republican Rob Bresnahan ousted nine-year incumbent Matt Cartwright in 2024 by 6,252 votes, 50.8%–49.2%, while Trump carried the district by nearly ten points. Cook moved the seat from Lean Republican to Toss Up, Inside Elections on June 11, 2026, and SABATO'S CRYSTAL BALL MOVED IT FROM LEANS REPUBLICAN TO TOSS-UP ON JULY 30, 2026 — that last change was confirmed at the rater's own site rather than secondhand. His challenger is Scranton Mayor Paige Cognetti, on the DCCC's Red to Blue list, who has out-raised him. No independent or minor-party candidate surfaced [Verify — the state's certified list is not machine-readable]. ⚠ ALL THREE PUBLIC POLLS ARE DEMOCRATIC-SPONSORED and are labelled as such: Lake Research (June 18–23, 2026) Cognetti 47–45; Impact Research for her own campaign (June 8–11) Cognetti 46–45; PPP (Aug 2025) Cognetti 45–43. No independent poll of this race was found.",
+        note: "⚠ A TOSS UP BY ALL THREE RATERS. Freshman Republican Rob Bresnahan ousted nine-year incumbent Matt Cartwright in 2024 by 6,252 votes, 50.8%–49.2%, while Trump carried the district by nearly ten points. Cook moved the seat from Lean Republican to Toss Up, Inside Elections on June 11, 2026, and SABATO'S CRYSTAL BALL MOVED IT FROM LEANS REPUBLICAN TO TOSS-UP ON JULY 30, 2026 — that last change was confirmed at the rater's own site rather than secondhand. His challenger is Scranton Mayor Paige Cognetti, on the DCCC's Red to Blue list, who has out-raised him. No independent or minor-party candidate surfaced [Verify — the state's certified list is not machine-readable]. ⚠ ALL THREE PUBLIC POLLS ARE DEMOCRATIC-SPONSORED and are labeled as such: Lake Research (June 18–23, 2026) Cognetti 47–45; Impact Research for her own campaign (June 8–11) Cognetti 46–45; PPP (Aug 2025) Cognetti 45–43. No independent poll of this race was found.",
         candidates: [
           { name: "Rob Bresnahan Jr. (incumbent)", party: "R", winner: false,
             positions: [
@@ -1490,7 +1490,7 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "⚠ NOT AN OPEN SEAT — this corrects a widely repeated assumption. Dan Meuser was weighing a run for governor and publicly RULED IT OUT in July 2025, saying his focus needed to stay on his current job; he filed and was renominated unopposed. Both primaries were uncontested: Meuser 100%, Rachel Wallace 100%. Trump carried this district 68%–31% in 2024 and Meuser won it by 41 points, so every rater calls it Solid or Safe Republican — Cook and Inside Elections (both Sept 11, 2025), Sabato (Apr 10, 2025) and Decision Desk HQ (July 14, 2026) [Verify — read through a citing table; the raters' own pages block automated retrieval]. ⚠ NO third-party candidate qualified: Jenn Brothers left the Democratic primary to run as an independent but never filed nomination papers and is seeking WRITE-IN votes only, so she is not on the ballot. ⚠ A candidate directory listed three primary entrants — Gage Heller, Jennifer Brothers and Daniel Byron — who never appeared on any ballot; Byron withdrew and endorsed Wallace. None is carded.",
+        note: "⚠ NOT AN OPEN SEAT — this corrects a widely repeated assumption. Dan Meuser was weighing a run for governor and publicly RULED IT OUT in July 2025, saying his focus needed to stay on his current job; he filed and was renominated unopposed. Both primaries were uncontested: Meuser 100%, Rachel Wallace 100%. Trump carried this district 68%–31% in 2024 and Meuser won it by 41 points, so every rater calls it Solid or Safe Republican — Cook and Inside Elections (both Sept 11, 2025), Sabato (Apr 10, 2025) and Decision Desk HQ (July 14, 2026) [Verify — read through a citing table; the raters' own pages block automated retrieval]. ⚠ NO third-party candidate qualified: Jenn Brothers left the Democratic primary to run as an independent but never filed nomination papers and is seeking WRITE-IN votes only, so she is not on the ballot. ⚠ A candidate directory listed three primary entrants — Gage Heller, Jennifer Brothers and Daniel Byron — who never appeared on any ballot; Byron withdrew and endorsed Wallace. None is listed.",
         candidates: [
           { name: "Dan Meuser (incumbent)", party: "R", winner: false,
             positions: [
@@ -1552,7 +1552,7 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "⚠ A TOSS UP AND A REMATCH. Scott Perry, a former chair of the House Freedom Caucus, held this seat in 2024 by just 5,133 votes — 50.5%–49.3%, his narrowest margin in twelve years — while Trump carried the district 52.0%–46.8%. Janelle Stelson, the 26-year WGAL news anchor he beat, is back: she won the May 19 Democratic primary over Dauphin County Commissioner Justin Douglas roughly 74%–26%, and Perry was unopposed. Cook and Sabato both rate it Toss Up; Inside Elections is a genuine conflict, called Toss-up in one 2025 report and Tilt Republican in another from May 2026 [Verify]. THIS IS THE MOST EXPENSIVE HOUSE RACE IN PENNSYLVANIA — more than $11.5M raised between them and $4.3M already spent. An independent, Army veteran Isabelle Harman of Carlisle, is also on the ballot. ⚠ A candidate directory lists a fourth name, Fogel G. Shimp, as an independent; he actually filed as a REPUBLICAN primary challenger, never made the ballot, and his campaign site is dead. He is not carded. ⚠ ALL polling in this race is partisan-sponsored — no independent public poll was found.",
+        note: "⚠ A TOSS UP AND A REMATCH. Scott Perry, a former chair of the House Freedom Caucus, held this seat in 2024 by just 5,133 votes — 50.5%–49.3%, his narrowest margin in twelve years — while Trump carried the district 52.0%–46.8%. Janelle Stelson, the 26-year WGAL news anchor he beat, is back: she won the May 19 Democratic primary over Dauphin County Commissioner Justin Douglas roughly 74%–26%, and Perry was unopposed. Cook and Sabato both rate it Toss Up; Inside Elections is a genuine conflict, called Toss-up in one 2025 report and Tilt Republican in another from May 2026 [Verify]. THIS IS THE MOST EXPENSIVE HOUSE RACE IN PENNSYLVANIA — more than $11.5M raised between them and $4.3M already spent. An independent, Army veteran Isabelle Harman of Carlisle, is also on the ballot. ⚠ A candidate directory lists a fourth name, Fogel G. Shimp, as an independent; he actually filed as a REPUBLICAN primary challenger, never made the ballot, and his campaign site is dead. He is not listed. ⚠ ALL polling in this race is partisan-sponsored — no independent public poll was found.",
         candidates: [
           { name: "Scott Perry (incumbent)", party: "R", winner: false,
             positions: [
@@ -1695,7 +1695,7 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "A rematch, but a lopsided one. Two-term Democrat Summer Lee seeks a third term and — unlike 2022 and 2024 — faced NO serious primary challenge, winning renomination 81.2%–18.8% over app developer Will Parker, who reported $10 raised in the first quarter. James Hayes, the Republican she beat in 2024, was unopposed for renomination with 100%. The district voted Harris 59%–40% in 2024. Rated Solid Democratic by Cook and Inside Elections (both Sept 11, 2025), Safe by Sabato (Apr 10, 2025) and Safe by Decision Desk HQ (July 14, 2026) [Verify — read through a citing table]. No independent or minor-party candidate qualified. ⚠ A candidate directory lists three more primary entrants — Adam Forgie, Benson Fechter and Arnold Santos. Forgie withdrew, Fechter failed to qualify, and Santos appears in no official listing at all. None is carded.",
+        note: "A rematch, but a lopsided one. Two-term Democrat Summer Lee seeks a third term and — unlike 2022 and 2024 — faced NO serious primary challenge, winning renomination 81.2%–18.8% over app developer Will Parker, who reported $10 raised in the first quarter. James Hayes, the Republican she beat in 2024, was unopposed for renomination with 100%. The district voted Harris 59%–40% in 2024. Rated Solid Democratic by Cook and Inside Elections (both Sept 11, 2025), Safe by Sabato (Apr 10, 2025) and Safe by Decision Desk HQ (July 14, 2026) [Verify — read through a citing table]. No independent or minor-party candidate qualified. ⚠ A candidate directory lists three more primary entrants — Adam Forgie, Benson Fechter and Arnold Santos. Forgie withdrew, Fechter failed to qualify, and Santos appears in no official listing at all. None is listed.",
         candidates: [
           { name: "Summer Lee (incumbent)", party: "D", winner: false,
             positions: [
@@ -1767,7 +1767,7 @@ const HOUSE_RACES = {
               "A dermatologist in Altoona for more than 25 years; chief resident at Johns Hopkins; served as a Navy physician during Desert Shield and Desert Storm"
             ],
             supporters: [
-              "A practising physician sitting on the Health subcommittee that writes health law",
+              "A practicing physician sitting on the Health subcommittee that writes health law",
               "Four straight wins averaging over 70% of the vote",
               "Endorsed by Donald Trump in a district Trump carried 72–27"
             ],
@@ -1788,7 +1788,7 @@ const HOUSE_RACES = {
               "Endorsed by the Pennsylvania AFL-CIO and the Pennsylvania Machinists Union (July 26, 2026); appeared with Lt. Gov. Austin Davis on Aug 2, 2026"
             ],
             supporters: [
-              "A second run gives her name recognition and an organisation already built",
+              "A second run gives her name recognition and an organization already built",
               "She has nearly quadrupled her 2024-cycle fundraising pace",
               "She carries statewide labor backing and drew a sitting lieutenant governor to campaign with her"
             ],
@@ -1815,7 +1815,7 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "Guy Reschenthaler, the House Republican chief deputy whip, is seeking a fifth term; the seat is not open and both nominations were uncontested. Trump carried the district 66%–33% in 2024. Rated Solid Republican by Cook and Inside Elections (both Sept 11, 2025) and Safe Republican by Sabato (Apr 10, 2025) [Verify — read through a citing table; the raters' own pages block automated retrieval]. ⚠ NO PRIMARY VOTE TOTAL IS PRINTED HERE: two sources give materially different counts for the Democratic primary and the state's returns portal could not be read, so the figure is omitted rather than guessed. ⚠ A third name, independent Adam Halfhill, is NOT carded — a local paper reported the Department of State saying he had not filed nomination papers, and one directory labels him with a party that has no Pennsylvania ballot line [Verify against the certified list].",
+        note: "Guy Reschenthaler, the House Republican chief deputy whip, is seeking a fifth term; the seat is not open and both nominations were uncontested. Trump carried the district 66%–33% in 2024. Rated Solid Republican by Cook and Inside Elections (both Sept 11, 2025) and Safe Republican by Sabato (Apr 10, 2025) [Verify — read through a citing table; the raters' own pages block automated retrieval]. ⚠ NO PRIMARY VOTE TOTAL IS PRINTED HERE: two sources give materially different counts for the Democratic primary and the state's returns portal could not be read, so the figure is omitted rather than guessed. ⚠ A third name, independent Adam Halfhill, is NOT listed — a local paper reported the Department of State saying he had not filed nomination papers, and one directory labels him with a party that has no Pennsylvania ballot line [Verify against the certified list].",
         candidates: [
           { name: "Guy Reschenthaler (incumbent)", party: "R", winner: false,
             positions: [
@@ -1873,7 +1873,7 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "Glenn \"GT\" Thompson, chairman of the House Agriculture Committee, is seeking a tenth term; he announced his re-election bid in a video on Feb 12, 2026 and was renominated unopposed with 100%, as was Democrat Ray Bilger. Trump carried the district 69%–31% in 2024. Rated Solid Republican by Cook and Inside Elections (both Sept 11, 2025) and Safe Republican by Sabato (Apr 10, 2025) [Verify — read through a citing table]. ⚠ Thompson disclosed a prostate cancer diagnosis in DECEMBER 2023, saying he felt well and would continue serving; he has since taken a full committee chairmanship and filed for re-election, and no later adverse health news was found — the date matters because that story still circulates as though it were current [Verify current status]. ⚠ A reported Green candidate appears in exactly one directory, with no corroboration anywhere and no listing by the state Green Party, and is not carded.",
+        note: "Glenn \"GT\" Thompson, chairman of the House Agriculture Committee, is seeking a tenth term; he announced his re-election bid in a video on Feb 12, 2026 and was renominated unopposed with 100%, as was Democrat Ray Bilger. Trump carried the district 69%–31% in 2024. Rated Solid Republican by Cook and Inside Elections (both Sept 11, 2025) and Safe Republican by Sabato (Apr 10, 2025) [Verify — read through a citing table]. ⚠ Thompson disclosed a prostate cancer diagnosis in DECEMBER 2023, saying he felt well and would continue serving; he has since taken a full committee chairmanship and filed for re-election, and no later adverse health news was found — the date matters because that story still circulates as though it were current [Verify current status]. ⚠ A reported Green candidate appears in exactly one directory, with no corroboration anywhere and no listing by the state Green Party, and is not listed.",
         candidates: [
           { name: "Glenn \"GT\" Thompson (incumbent)", party: "R", winner: false,
             positions: [
@@ -1931,7 +1931,7 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "Mike Kelly, 78, chairman of the Ways and Means Tax Subcommittee, announced in September 2025 that he is seeking a NINTH term; both nominations were uncontested. ⚠ THE ONE CRACK IN THE REGION'S REPUBLICAN WALL: while Cook and Inside Elections have it Solid Republican (both Sept 11, 2025) and Sabato Safe Republican (Apr 10, 2025), DECISION DESK HQ RATES IT ONLY LIKELY REPUBLICAN (July 14, 2026) — a notch more competitive than every other Republican seat in western Pennsylvania [Verify — the first three read through a citing table]. A data point without a clear meaning: Democrat Justin Wagner's uncontested primary drew about 5,100 MORE votes than Kelly's uncontested primary. ⚠ Kelly's campaign site carries a 2015 copyright and appears stale, so his positions below are treated as longstanding rather than current-cycle [Verify]. A reported independent is not carded — every trace of him is an FEC registration rather than a certified ballot line.",
+        note: "Mike Kelly, 78, chairman of the Ways and Means Tax Subcommittee, announced in September 2025 that he is seeking a NINTH term; both nominations were uncontested. ⚠ THE ONE CRACK IN THE REGION'S REPUBLICAN WALL: while Cook and Inside Elections have it Solid Republican (both Sept 11, 2025) and Sabato Safe Republican (Apr 10, 2025), DECISION DESK HQ RATES IT ONLY LIKELY REPUBLICAN (July 14, 2026) — a notch more competitive than every other Republican seat in western Pennsylvania [Verify — the first three read through a citing table]. A data point without a clear meaning: Democrat Justin Wagner's uncontested primary drew about 5,100 MORE votes than Kelly's uncontested primary. ⚠ Kelly's campaign site carries a 2015 copyright and appears stale, so his positions below are treated as longstanding rather than current-cycle [Verify]. A reported independent is not listed — every trace of him is an FEC registration rather than a certified ballot line.",
         candidates: [
           { name: "Mike Kelly (incumbent)", party: "R", winner: false,
             positions: [
@@ -2338,13 +2338,20 @@ function renderNote(note) {
 
 function renderElection(e) {
   const count = (e.candidates && e.candidates.length) || 0;
-  // A ballot measure is recognised by what it is called, not by one exact scope string.
+  // A ballot measure is recognized by what it is called, not by one exact scope string.
   const isMeasure = /ballot measure|ballot question|amendment|initiative|proposition|referend|\bmeasure\b|\bquestion\b/i.test((e.scope || "") + " " + (e.office || ""));
   const isInfo = /^Also on your ballot|— eight seats, ALL UNOPPOSED/i.test(e.office || "");
-  const countLabel = count ? `${count} candidate${count === 1 ? "" : "s"}` : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
+  // Measure cards carry Yes/No pairs or one card per proposition — never "candidates".
+  const yesNo = count > 0 && e.candidates.every(c => /^(yes|no)\b/i.test(c.name || ""));
+  const countLabel = count
+    ? (isMeasure ? (yesNo ? "Yes / No" : `${count} measure${count === 1 ? "" : "s"}`) : `${count} candidate${count === 1 ? "" : "s"}`)
+    : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
   const candidatesHtml = count
     ? `<div class="candidates">${e.candidates.map(c => renderCandidate(c, e)).join("")}</div>`
     : (isMeasure || isInfo ? "" : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">Candidates not yet announced.</div>`);
+  // A House primary inherits its district's title; say which contest it is.
+  const qualifier = e.office ? "" : (/Runoff/i.test(e.scope || "") ? " — Runoff" : /Primary/i.test(e.scope || "") ? " — Primary" : "");
+  const title = e.office || ((e.name || "") + qualifier);
   const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
   return `
     <div class="election-card">
@@ -2355,7 +2362,7 @@ function renderElection(e) {
             <span class="election-date">${esc(e.date)}</span>
             ${e.scope ? `<span class="election-scope">${esc(e.scope)}</span>` : ""}
           </span>
-          <span class="election-office">${esc(e.office || e.name || "")}</span>
+          <span class="election-office">${esc(title)}</span>
         </span>
         <span class="election-toggle">
           <span class="cand-count">${countLabel}</span>
@@ -2369,6 +2376,8 @@ function renderElection(e) {
 function renderCandidate(c, race) {
   // A primary or runoff winner was NOMINATED, not elected — the badge should say so.
   const nominated = !!(race && /primary|runoff/i.test((race.office || "") + " " + (race.scope || "")));
+  // A proposition or a Yes/No side has no party; the gray "I" tag was a lie on 50 measure cards.
+  const measureCard = !!(race && /ballot measure|ballot question|amendment|initiative|proposition|referend|\bmeasure\b|\bquestion\b/i.test((race.scope || "") + " " + (race.office || "")));
   const winnerClass = c.winner ? ("candidate winner" + (nominated ? " nominee" : "")) : "candidate";
   const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
   const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
@@ -2378,7 +2387,7 @@ function renderCandidate(c, race) {
     <div class="${winnerClass}">
       <div class="cand-head">
         <div class="cand-name">${esc(c.name)}</div>
-        <span class="party-tag party-${esc(c.party)}">${esc(c.party)}</span>
+        ${measureCard ? "" : `<span class="party-tag party-${esc(c.party)}">${esc(c.party)}</span>`}
       </div>
       ${positions ? `<div class="cand-section">
           <div class="cand-section-label">Top Positions</div>

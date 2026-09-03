@@ -12,7 +12,7 @@
 const { extractInlineScripts, cutAtD3, runScript, makeChecker } = require("./lib");
 
 const FEATURED_ABBRS = ["AL", "FL", "NY", "DC"];
-const CONTROL_ABBRS = ["TX", "CA"];
+const CONTROL_ABBRS = ["TX", "CA", "AK", "MO"];   // every live generic-page state (AK/MO carry the unusual data)
 const { check, summary } = makeChecker();
 
 // --- index.html and the fully built state pages: run every inline script once ---
