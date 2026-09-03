@@ -16,7 +16,7 @@
   "fips": "26",
   "lastUpdated": "September 3, 2026",
   "capital": { "name": "Lansing", "lng": -84.5555, "lat": 42.7325 },
-  "sources": "PLACEHOLDER — replaced before build",
+  "sources": "PLACEHOLDER — set from the statewide research before building",
   "countiesFile": "tools/banked/mi-build/counties.js",
   "statewideFile": "tools/banked/mi-build/statewide.js",
   "houseFile": "tools/banked/mi-build/house.js"
