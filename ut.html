@@ -712,7 +712,7 @@
       <strong>UT Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">September 2, 2026</span><br>
+      Last updated: <span id="last-updated">September 4, 2026</span><br>
       Sources: Utah Lieutenant Governor / vote.utah.gov — the 2026 Candidate Filings list with ballot status (last updated Aug 31, 2026), the 2026 Candidate Manual, and the judicial-retention guidance; electionresults.utah.gov for the June 23, 2026 primary; the UGRC / Lt. Governor SGID layer 'Utah US Congress Districts 2026 to 2032' for the court-drawn Map 1A, joined to 2020 census blocks; League of Women Voters of Utah v. Utah State Legislature (Third Judicial District, Judge Dianna M. Gibson); le.utah.gov for S.J.R. 2 and H.J.R. 10; FEC; U.S. Census Bureau 2020 county FIPS file; Deseret News, KUER, Utah News Dispatch, Salt Lake Tribune, Fox 13, Moab Times, Park Record, KSL.</div>
   </div>
 </footer>
@@ -1560,7 +1560,7 @@ const HOUSE_RACES = {
     ] }
 };
 
-const SITE_META = { name: "Utah Elections Hub", lastUpdated: "September 2, 2026" };
+const SITE_META = { name: "Utah Elections Hub", lastUpdated: "September 4, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Utah county-level down-ballot research has not started.)
@@ -1760,11 +1760,12 @@ function openPanel(fips, fromEl) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn't in our Utah dataset.</p></div>`;
   } else {
-    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
-    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    const ds = (built.county.ds && built.county.ds.length > 1) ? [...built.county.ds].sort((a, b) => a - b) : [built.county.d];
+    const dsList = (j) => ds.length < 3 ? ds.join(` ${j} `) : `${ds.slice(0, -1).join(", ")} ${j} ${ds[ds.length - 1]}`;
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${dsList("&")}` : `Congressional District ${ds[0]}`;
     title.textContent   = placeLabel({ ...built.county, fips });
     subtitle.textContent = ds.length > 1
-      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      ? `This ${UNIT.toLowerCase()} is split between districts ${dsList("and")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
       : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);

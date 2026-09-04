@@ -712,7 +712,7 @@
       <strong>VT Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">August 27, 2026</span><br>
+      Last updated: <span id="last-updated">September 4, 2026</span><br>
       Sources: VT Secretary of State (sos.vermont.gov), Ballotpedia, Wikipedia, Cook Political Report, VTDigger, Vermont Public, AP.
     </div>
   </div>
@@ -998,7 +998,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Vermont Elections Hub", lastUpdated: "August 27, 2026" };
+const SITE_META = { name: "Vermont Elections Hub", lastUpdated: "September 4, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Vermont county-level down-ballot research is the next phase.)
@@ -1200,11 +1200,12 @@ function openPanel(fips, fromEl) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn't in our Vermont dataset.</p></div>`;
   } else {
-    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
-    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    const ds = (built.county.ds && built.county.ds.length > 1) ? [...built.county.ds].sort((a, b) => a - b) : [built.county.d];
+    const dsList = (j) => ds.length < 3 ? ds.join(` ${j} `) : `${ds.slice(0, -1).join(", ")} ${j} ${ds[ds.length - 1]}`;
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${dsList("&")}` : `Congressional District ${ds[0]}`;
     title.textContent   = placeLabel({ ...built.county, fips });
     subtitle.textContent = ds.length > 1
-      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      ? `This ${UNIT.toLowerCase()} is split between districts ${dsList("and")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
       : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);

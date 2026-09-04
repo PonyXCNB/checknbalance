@@ -712,7 +712,7 @@
       <strong>VA Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">September 3, 2026</span><br>
+      Last updated: <span id="last-updated">September 4, 2026</span><br>
       Sources: Virginia Department of Elections, Ballotpedia, Wikipedia, AP, Virginia Mercury, Cardinal News, VPM.
     </div>
   </div>
@@ -733,25 +733,37 @@
      Each county's election list is built by combining (2) + the right item from (3).
      ============================================= -->
 <script>
-// ----- (1) Counties + primary 2024 US House district -----
+// ----- (1) Counties + the U.S. House district holding each county’s population plurality -----
 // NOTE: 10 VA county-equivalents are split across multiple districts. The number below is
 // the PRIMARY district by population. Verify against your local board of elections.
+// ── `ds`: every district a county contains (added Sept 4, 2026) ───────────────────
+// `d` is the POPULATION-PLURALITY district and shades the map. `ds` lists EVERY district the
+// county or independent city contains, and getCountyElections shows a race for each one — without it a voter in a
+// split jurisdiction sees only ONE of their possible U.S. House races (the defect found on the flagship
+// Sept 3, 2026). Virginia has 10 split jurisdictions and 144 jurisdiction×district pairs.
+// DERIVED Sept 4, 2026 by tools/derive-ds.js from TWO INDEPENDENT FEDERAL SOURCES that agree on
+// every part kept: (a) the Census Bureau’s county-to-congressional-district relationship file,
+// and (b) locating all of the state’s 2020 census blocks — each with its own population and an
+// internal point — inside TIGERweb’s 120th-Congress district polygons, the districts actually
+// being elected on Nov 3, 2026. The map is the 2021 plan drawn by the Supreme Court of Virginia’s special masters.
+// Parts holding ZERO people were dropped: TIGERweb serves generalized polygons, so a block on a
+// district line can land on the wrong side. Small parts with REAL people are kept.
 const COUNTIES = {
-  "51001":{n:"Accomack",d:2},        "51003":{n:"Albemarle",d:5},       "51005":{n:"Alleghany",d:6},
+  "51001":{n:"Accomack",d:2},        "51003":{n:"Albemarle",d:5, ds: [5, 7]},       "51005":{n:"Alleghany",d:6},
   "51007":{n:"Amelia",d:5},          "51009":{n:"Amherst",d:5},         "51011":{n:"Appomattox",d:5},
   "51013":{n:"Arlington",d:8},       "51015":{n:"Augusta",d:6},         "51017":{n:"Bath",d:6},
-  "51019":{n:"Bedford",d:9},         "51021":{n:"Bland",d:9},           "51023":{n:"Botetourt",d:6},
+  "51019":{n:"Bedford",d:9, ds: [9, 5]},         "51021":{n:"Bland",d:9},           "51023":{n:"Botetourt",d:6},
   "51025":{n:"Brunswick",d:4},       "51027":{n:"Buchanan",d:9},        "51029":{n:"Buckingham",d:5},
   "51031":{n:"Campbell",d:5},        "51033":{n:"Caroline",d:7},        "51035":{n:"Carroll",d:9},
-  "51036":{n:"Charles City",d:4},    "51037":{n:"Charlotte",d:5},       "51041":{n:"Chesterfield",d:4},
+  "51036":{n:"Charles City",d:4},    "51037":{n:"Charlotte",d:5},       "51041":{n:"Chesterfield",d:4, ds: [4, 1]},
   "51043":{n:"Clarke",d:6},          "51045":{n:"Craig",d:9},           "51047":{n:"Culpeper",d:7},
   "51049":{n:"Cumberland",d:5},      "51051":{n:"Dickenson",d:9},       "51053":{n:"Dinwiddie",d:4},
-  "51057":{n:"Essex",d:1},           "51059":{n:"Fairfax",d:11},        "51061":{n:"Fauquier",d:10},
+  "51057":{n:"Essex",d:1},           "51059":{n:"Fairfax",d:11, ds: [11, 8, 10]},        "51061":{n:"Fauquier",d:10},
   "51063":{n:"Floyd",d:9},           "51065":{n:"Fluvanna",d:5},        "51067":{n:"Franklin",d:9},
   "51069":{n:"Frederick",d:6},       "51071":{n:"Giles",d:9},           "51073":{n:"Gloucester",d:1},
   "51075":{n:"Goochland",d:5},       "51077":{n:"Grayson",d:9},         "51079":{n:"Greene",d:7},
-  "51081":{n:"Greensville",d:4},     "51083":{n:"Halifax",d:5},         "51085":{n:"Hanover",d:1},
-  "51087":{n:"Henrico",d:1},         "51089":{n:"Henry",d:9},           "51091":{n:"Highland",d:6},
+  "51081":{n:"Greensville",d:4},     "51083":{n:"Halifax",d:5},         "51085":{n:"Hanover",d:1, ds: [1, 5]},
+  "51087":{n:"Henrico",d:1, ds: [1, 4]},         "51089":{n:"Henry",d:9},           "51091":{n:"Highland",d:6},
   "51093":{n:"Isle of Wight",d:2},   "51095":{n:"James City",d:1},      "51097":{n:"King and Queen",d:1},
   "51099":{n:"King George",d:7},     "51101":{n:"King William",d:1},    "51103":{n:"Lancaster",d:1},
   "51105":{n:"Lee",d:9},             "51107":{n:"Loudoun",d:10},        "51109":{n:"Louisa",d:5},
@@ -761,16 +773,16 @@ const COUNTIES = {
   "51133":{n:"Northumberland",d:1},  "51135":{n:"Nottoway",d:5},        "51137":{n:"Orange",d:7},
   "51139":{n:"Page",d:6},            "51141":{n:"Patrick",d:9},         "51143":{n:"Pittsylvania",d:5},
   "51145":{n:"Powhatan",d:5},        "51147":{n:"Prince Edward",d:5},   "51149":{n:"Prince George",d:4},
-  "51153":{n:"Prince William",d:7},  "51155":{n:"Pulaski",d:9},         "51157":{n:"Rappahannock",d:10},
-  "51159":{n:"Richmond",d:1},        "51161":{n:"Roanoke",d:6},         "51163":{n:"Rockbridge",d:6},
+  "51153":{n:"Prince William",d:7, ds: [7, 10]},  "51155":{n:"Pulaski",d:9},         "51157":{n:"Rappahannock",d:10},
+  "51159":{n:"Richmond",d:1},        "51161":{n:"Roanoke",d:6, ds: [6, 9]},         "51163":{n:"Rockbridge",d:6},
   "51165":{n:"Rockingham",d:6},      "51167":{n:"Russell",d:9},         "51169":{n:"Scott",d:9},
-  "51171":{n:"Shenandoah",d:6},      "51173":{n:"Smyth",d:9},           "51175":{n:"Southampton",d:2},
+  "51171":{n:"Shenandoah",d:6},      "51173":{n:"Smyth",d:9},           "51175":{n:"Southampton",d:2, ds: [2, 4]},
   "51177":{n:"Spotsylvania",d:7},    "51179":{n:"Stafford",d:7},        "51181":{n:"Surry",d:4},
   "51183":{n:"Sussex",d:4},          "51185":{n:"Tazewell",d:9},        "51187":{n:"Warren",d:6},
   "51191":{n:"Washington",d:9},      "51193":{n:"Westmoreland",d:1},    "51195":{n:"Wise",d:9},
   "51197":{n:"Wythe",d:9},           "51199":{n:"York",d:1},
   "51510":{n:"Alexandria City",d:8}, "51520":{n:"Bristol City",d:9},    "51530":{n:"Buena Vista City",d:6},
-  "51540":{n:"Charlottesville City",d:5}, "51550":{n:"Chesapeake City",d:2}, "51570":{n:"Colonial Heights City",d:4},
+  "51540":{n:"Charlottesville City",d:5}, "51550":{n:"Chesapeake City",d:2, ds: [2, 3]}, "51570":{n:"Colonial Heights City",d:4},
   "51580":{n:"Covington City",d:6},  "51590":{n:"Danville City",d:5},   "51595":{n:"Emporia City",d:4},
   "51600":{n:"Fairfax City",d:11},   "51610":{n:"Falls Church City",d:8}, "51620":{n:"Franklin City",d:2},
   "51630":{n:"Fredericksburg City",d:7}, "51640":{n:"Galax City",d:9},  "51650":{n:"Hampton City",d:3},
@@ -1381,7 +1393,8 @@ const HOUSE_RACES = {
           { name: "Ahsen Mujeeb Malik", party: "I", winner: false,
             positions: ["[Verify] — no platform located at this update"],
             differentiators: ["Independent, of Gainesville, on the certified November ballot (Va. Dept. of Elections)"],
-            supporters: [], opponents: [] }
+            supporters: ["Qualifying for the certified November ballot as an independent means clearing Virginia's petition requirement, which most declared independents never do [Verify — structural argument]","Gives VA-10 voters a choice outside two nominees who were settled without a contested Democratic primary [Verify — structural argument]"],
+            opponents: ["No campaign website, platform, fundraising or news coverage could be located, so there is nothing for voters to evaluate [Verify — an absence of located records]","Runs in a D+6 seat against an incumbent with an overwhelming cash advantage, and independents have not been competitive here [Verify — structural argument]"] }
         ]
       },
       {
@@ -1421,7 +1434,8 @@ const HOUSE_RACES = {
           { name: "Dianne Blais", party: "G", winner: false,
             positions: ["[Verify] — no platform located at this update"],
             differentiators: ["Green Party, of Fairfax, on the certified November ballot (Va. Dept. of Elections)"],
-            supporters: [], opponents: [] }
+            supporters: ["A Green on the ballot gives the district's left an alternative in a seat with no competitive general election [Verify — structural argument]","The Fairfax County Greens have described her as strongly anti-war and pro-environment, and she has sought this seat before [Verify — a party chapter's description tied to an earlier candidacy; no 2026 platform located]"],
+            opponents: ["No 2026 campaign platform, website or fundraising could be located, so voters have nothing current to weigh [Verify — an absence of located records]","Walkinshaw won the 2025 special 75.1% to 24.7% in a D+18 district, leaving a third-party candidate no realistic path [Verify — structural argument]"] }
         ]
       },
       {
@@ -1456,7 +1470,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Virginia Elections Hub", lastUpdated: "September 3, 2026" };
+const SITE_META = { name: "Virginia Elections Hub", lastUpdated: "September 4, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — VA county-level down-ballot research is the next phase).
@@ -1658,11 +1672,12 @@ function openPanel(fips, fromEl) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn't in our Virginia dataset.</p></div>`;
   } else {
-    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
-    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    const ds = (built.county.ds && built.county.ds.length > 1) ? [...built.county.ds].sort((a, b) => a - b) : [built.county.d];
+    const dsList = (j) => ds.length < 3 ? ds.join(` ${j} `) : `${ds.slice(0, -1).join(", ")} ${j} ${ds[ds.length - 1]}`;
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${dsList("&")}` : `Congressional District ${ds[0]}`;
     title.textContent   = placeLabel({ ...built.county, fips });
     subtitle.textContent = ds.length > 1
-      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      ? `This ${UNIT.toLowerCase()} is split between districts ${dsList("and")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
       : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);

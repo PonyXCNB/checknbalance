@@ -712,7 +712,7 @@
       <strong>KY Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">September 2, 2026</span><br>
+      Last updated: <span id="last-updated">September 4, 2026</span><br>
       Sources: Kentucky Secretary of State, Kentucky Legislative Research Commission (district statutes), AP-called primary results, FEC filings, campaign sites, Kentucky Lantern, Lexington Herald-Leader, Ballotpedia, Wikipedia, Cook Political Report, Sabato's Crystal Ball, Inside Elections.
     </div>
   </div>
@@ -756,13 +756,25 @@
 // district populations of 750,973/750,972/750,973/750,973/750,973/750,972 -- within 1 of the
 // ideal 750,973 and totaling exactly Kentucky's 4,505,836.
 // 120 counties, 126 county x district pairs.
+// ── `ds`: every district a county contains (added Sept 4, 2026) ───────────────────
+// `d` is the POPULATION-PLURALITY district and shades the map. `ds` lists EVERY district the
+// county contains, and getCountyElections shows a race for each one — without it a voter in a
+// split county sees only ONE of their possible U.S. House races (the defect found on the flagship
+// Sept 3, 2026). Kentucky has 6 split counties and 126 county×district pairs.
+// DERIVED Sept 4, 2026 by tools/derive-ds.js from TWO INDEPENDENT FEDERAL SOURCES that agree on
+// every part kept: (a) the Census Bureau’s county-to-congressional-district relationship file,
+// and (b) locating all of the state’s 2020 census blocks — each with its own population and an
+// internal point — inside TIGERweb’s 120th-Congress district polygons, the districts actually
+// being elected on Nov 3, 2026. The map is the 2022 HB 2 plan.
+// Parts holding ZERO people were dropped: TIGERweb serves generalized polygons, so a block on a
+// district line can land on the wrong side. Small parts with REAL people are kept.
 const COUNTIES = {
   "21001": { n: "Adair", d: 1 },
   "21003": { n: "Allen", d: 1 },
-  "21005": { n: "Anderson", d: 6 },
+  "21005": { n: "Anderson", d: 6, ds: [6, 1] },
   "21007": { n: "Ballard", d: 1 },
   "21009": { n: "Barren", d: 2 },
-  "21011": { n: "Bath", d: 5 },
+  "21011": { n: "Bath", d: 5, ds: [5, 6] },
   "21013": { n: "Bell", d: 5 },
   "21015": { n: "Boone", d: 4 },
   "21017": { n: "Bourbon", d: 6 },
@@ -778,7 +790,7 @@ const COUNTIES = {
   "21037": { n: "Campbell", d: 4 },
   "21039": { n: "Carlisle", d: 1 },
   "21041": { n: "Carroll", d: 4 },
-  "21043": { n: "Carter", d: 5 },
+  "21043": { n: "Carter", d: 5, ds: [5, 4] },
   "21045": { n: "Casey", d: 1 },
   "21047": { n: "Christian", d: 1 },
   "21049": { n: "Clark", d: 6 },
@@ -812,7 +824,7 @@ const COUNTIES = {
   "21105": { n: "Hickman", d: 1 },
   "21107": { n: "Hopkins", d: 1 },
   "21109": { n: "Jackson", d: 5 },
-  "21111": { n: "Jefferson", d: 3 },
+  "21111": { n: "Jefferson", d: 3, ds: [3, 2] },
   "21113": { n: "Jessamine", d: 6 },
   "21115": { n: "Johnson", d: 5 },
   "21117": { n: "Kenton", d: 4 },
@@ -827,7 +839,7 @@ const COUNTIES = {
   "21135": { n: "Lewis", d: 4 },
   "21137": { n: "Lincoln", d: 5 },
   "21139": { n: "Livingston", d: 1 },
-  "21141": { n: "Logan", d: 1 },
+  "21141": { n: "Logan", d: 1, ds: [1, 2] },
   "21143": { n: "Lyon", d: 1 },
   "21145": { n: "McCracken", d: 1 },
   "21147": { n: "McCreary", d: 5 },
@@ -846,7 +858,7 @@ const COUNTIES = {
   "21173": { n: "Montgomery", d: 6 },
   "21175": { n: "Morgan", d: 5 },
   "21177": { n: "Muhlenberg", d: 2 },
-  "21179": { n: "Nelson", d: 4 },
+  "21179": { n: "Nelson", d: 4, ds: [4, 2] },
   "21181": { n: "Nicholas", d: 6 },
   "21183": { n: "Ohio", d: 2 },
   "21185": { n: "Oldham", d: 4 },
@@ -1349,7 +1361,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Kentucky Elections Hub", lastUpdated: "September 2, 2026" };
+const SITE_META = { name: "Kentucky Elections Hub", lastUpdated: "September 4, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Kentucky county-level down-ballot research is the next phase.)
@@ -1551,11 +1563,12 @@ function openPanel(fips, fromEl) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn't in our Kentucky dataset.</p></div>`;
   } else {
-    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
-    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    const ds = (built.county.ds && built.county.ds.length > 1) ? [...built.county.ds].sort((a, b) => a - b) : [built.county.d];
+    const dsList = (j) => ds.length < 3 ? ds.join(` ${j} `) : `${ds.slice(0, -1).join(", ")} ${j} ${ds[ds.length - 1]}`;
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${dsList("&")}` : `Congressional District ${ds[0]}`;
     title.textContent   = placeLabel({ ...built.county, fips });
     subtitle.textContent = ds.length > 1
-      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      ? `This ${UNIT.toLowerCase()} is split between districts ${dsList("and")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
       : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);

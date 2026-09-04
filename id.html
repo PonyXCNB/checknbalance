@@ -712,7 +712,7 @@
       <strong>ID Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">September 3, 2026</span><br>
+      Last updated: <span id="last-updated">September 4, 2026</span><br>
       Sources: Idaho Secretary of State — the CERTIFIED 2026 primary canvass report (archive.voteidaho.gov), the official results API, the candidate-filing system at run.voteidaho.gov, the historical canvass database at canvass.sos.idaho.gov, and the initiatives-and-amendments list — plus the Idaho Commission for Reapportionment&#39;s enacted Plan C03 and its Final Report appendices, U.S. Census Bureau congressional-district relationship files and 2020 PL 94-171 data, FEC filings read directly from docquery.fec.gov, Cook Political Report, Sabato&#39;s Crystal Ball and Inside Elections, the Clerk of the U.S. House roll-call records, and reporting from the Idaho Capital Sun, Idaho Ed News, Boise State Public Radio, the Spokesman-Review, East Idaho News, BoiseDev, the Coeur d&#39;Alene Press, the Sandpoint Reader, KPVI, KMVT, Gem State Chronicle and ProPublica.</div>
   </div>
 </footer>
@@ -1746,7 +1746,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Idaho Elections Hub", lastUpdated: "September 3, 2026" };
+const SITE_META = { name: "Idaho Elections Hub", lastUpdated: "September 4, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Idaho county-level down-ballot research has not started.)
@@ -1946,11 +1946,12 @@ function openPanel(fips, fromEl) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn't in our Idaho dataset.</p></div>`;
   } else {
-    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
-    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    const ds = (built.county.ds && built.county.ds.length > 1) ? [...built.county.ds].sort((a, b) => a - b) : [built.county.d];
+    const dsList = (j) => ds.length < 3 ? ds.join(` ${j} `) : `${ds.slice(0, -1).join(", ")} ${j} ${ds[ds.length - 1]}`;
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${dsList("&")}` : `Congressional District ${ds[0]}`;
     title.textContent   = placeLabel({ ...built.county, fips });
     subtitle.textContent = ds.length > 1
-      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      ? `This ${UNIT.toLowerCase()} is split between districts ${dsList("and")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
       : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);

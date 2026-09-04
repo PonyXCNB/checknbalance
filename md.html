@@ -712,7 +712,7 @@
       <strong>MD Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">August 3, 2026</span><br>
+      Last updated: <span id="last-updated">September 4, 2026</span><br>
       Sources: Maryland State Board of Elections, Ballotpedia, Wikipedia, AP, Maryland Matters, The Baltimore Banner.
     </div>
   </div>
@@ -733,18 +733,30 @@
      Each county's election list is built by combining (2) + the right item from (3).
      ============================================= -->
 <script>
-// ----- (1) Counties + primary 2024 US House district -----
+// ----- (1) Counties + the U.S. House district holding each county’s population plurality -----
 // NOTE: 6 MD county-equivalents are split across multiple districts. The number below is
 // the PRIMARY district by population. Verify against your local board of elections.
+// ── `ds`: every district a county contains (added Sept 4, 2026) ───────────────────
+// `d` is the POPULATION-PLURALITY district and shades the map. `ds` lists EVERY district the
+// county contains, and getCountyElections shows a race for each one — without it a voter in a
+// split county sees only ONE of their possible U.S. House races (the defect found on the flagship
+// Sept 3, 2026). Maryland has 6 split counties and 33 county×district pairs.
+// DERIVED Sept 4, 2026 by tools/derive-ds.js from TWO INDEPENDENT FEDERAL SOURCES that agree on
+// every part kept: (a) the Census Bureau’s county-to-congressional-district relationship file,
+// and (b) locating all of the state’s 2020 census blocks — each with its own population and an
+// internal point — inside TIGERweb’s 120th-Congress district polygons, the districts actually
+// being elected on Nov 3, 2026. The map is the 2022 plan.
+// Parts holding ZERO people were dropped: TIGERweb serves generalized polygons, so a block on a
+// district line can land on the wrong side. Small parts with REAL people are kept.
 const COUNTIES = {
-  "24001":{n:"Allegany",d:6},       "24003":{n:"Anne Arundel",d:3},  "24005":{n:"Baltimore County",d:2},
-  "24009":{n:"Calvert",d:5},        "24011":{n:"Caroline",d:1},      "24013":{n:"Carroll",d:2},
+  "24001":{n:"Allegany",d:6},       "24003":{n:"Anne Arundel",d:3, ds: [3, 5]},  "24005":{n:"Baltimore County",d:2, ds: [2, 1, 7]},
+  "24009":{n:"Calvert",d:5},        "24011":{n:"Caroline",d:1},      "24013":{n:"Carroll",d:2, ds: [2, 3]},
   "24015":{n:"Cecil",d:1},          "24017":{n:"Charles",d:5},       "24019":{n:"Dorchester",d:1},
   "24021":{n:"Frederick",d:6},      "24023":{n:"Garrett",d:6},       "24025":{n:"Harford",d:1},
-  "24027":{n:"Howard",d:3},         "24029":{n:"Kent",d:1},          "24031":{n:"Montgomery",d:8},
-  "24033":{n:"Prince George's",d:4},"24035":{n:"Queen Anne's",d:1},  "24037":{n:"St. Mary's",d:5},
+  "24027":{n:"Howard",d:3},         "24029":{n:"Kent",d:1},          "24031":{n:"Montgomery",d:8, ds: [8, 4, 6]},
+  "24033":{n:"Prince George's",d:4, ds: [4, 5, 8]},"24035":{n:"Queen Anne's",d:1},  "24037":{n:"St. Mary's",d:5},
   "24039":{n:"Somerset",d:1},       "24041":{n:"Talbot",d:1},        "24043":{n:"Washington",d:6},
-  "24045":{n:"Wicomico",d:1},       "24047":{n:"Worcester",d:1},     "24510":{n:"Baltimore City",d:7}
+  "24045":{n:"Wicomico",d:1},       "24047":{n:"Worcester",d:1},     "24510":{n:"Baltimore City",d:7, ds: [7, 2]}
 };
 
 // ----- (2) Statewide elections every county votes in -----
@@ -1225,7 +1237,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Maryland Elections Hub", lastUpdated: "August 3, 2026" };
+const SITE_META = { name: "Maryland Elections Hub", lastUpdated: "September 4, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — MD county-level down-ballot research is the next phase).
@@ -1427,11 +1439,12 @@ function openPanel(fips, fromEl) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn't in our Maryland dataset.</p></div>`;
   } else {
-    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
-    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    const ds = (built.county.ds && built.county.ds.length > 1) ? [...built.county.ds].sort((a, b) => a - b) : [built.county.d];
+    const dsList = (j) => ds.length < 3 ? ds.join(` ${j} `) : `${ds.slice(0, -1).join(", ")} ${j} ${ds[ds.length - 1]}`;
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${dsList("&")}` : `Congressional District ${ds[0]}`;
     title.textContent   = placeLabel({ ...built.county, fips });
     subtitle.textContent = ds.length > 1
-      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      ? `This ${UNIT.toLowerCase()} is split between districts ${dsList("and")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
       : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);

@@ -24,23 +24,23 @@ const VALID_PARTIES = new Set(["D", "R", "I", "L", "G", "NP"]);   // NP = nonpar
 // ---------------------------------------------------------------
 const STATE_PAGES = [
   { page: "nc.html", countyCount: 100, sampleFips: "37129", sampleName: "New Hanover", expectedRaces: 15 },
-  { page: "sc.html", countyCount: 46,  sampleFips: "45019", sampleName: "Charleston",  expectedRaces: 17 },
-  { page: "ga.html", countyCount: 159, sampleFips: "13121", sampleName: "Fulton",      expectedRaces: 18 },
-  { page: "va.html", countyCount: 133, sampleFips: "51059", sampleName: "Fairfax",     expectedRaces: 9 },
-  { page: "md.html", countyCount: 24,  sampleFips: "24031", sampleName: "Montgomery",  expectedRaces: 10 },
+  { page: "sc.html", countyCount: 46,  sampleFips: "45019", sampleName: "Charleston",  expectedRaces: 19 },
+  { page: "ga.html", countyCount: 159, sampleFips: "13121", sampleName: "Fulton",      expectedRaces: 22 },
+  { page: "va.html", countyCount: 133, sampleFips: "51059", sampleName: "Fairfax",     expectedRaces: 13 },
+  { page: "md.html", countyCount: 24,  sampleFips: "24031", sampleName: "Montgomery",  expectedRaces: 14 },
   { page: "de.html", countyCount: 3,   sampleFips: "10003", sampleName: "New Castle",  expectedRaces: 8 },
-  { page: "nj.html", countyCount: 21,  sampleFips: "34003", sampleName: "Bergen",      expectedRaces: 6 },
+  { page: "nj.html", countyCount: 21,  sampleFips: "34039", sampleName: "Union",       expectedRaces: 12 },
   { page: "ny.html", countyCount: 62,  sampleFips: "36001", sampleName: "Albany",      expectedRaces: 6 },
-  { page: "ri.html", countyCount: 5,   sampleFips: "44007", sampleName: "Providence",  expectedRaces: 10 },
-  { page: "nh.html", countyCount: 10,  sampleFips: "33011", sampleName: "Hillsborough", expectedRaces: 6 },
-  { page: "ct.html", countyCount: 8,   sampleFips: "09011", sampleName: "New London",  expectedRaces: 9 },
+  { page: "ri.html", countyCount: 5,   sampleFips: "44007", sampleName: "Providence",  expectedRaces: 12 },
+  { page: "nh.html", countyCount: 10,  sampleFips: "33011", sampleName: "Hillsborough", expectedRaces: 8 },
+  { page: "ct.html", countyCount: 8,   sampleFips: "09009", sampleName: "New Haven",   expectedRaces: 15 },
   { page: "vt.html", countyCount: 14,  sampleFips: "50007", sampleName: "Chittenden",  expectedRaces: 12 },
-  { page: "me.html", countyCount: 16,  sampleFips: "23019", sampleName: "Penobscot",   expectedRaces: 9 },
+  { page: "me.html", countyCount: 16,  sampleFips: "23011", sampleName: "Kennebec",    expectedRaces: 11 },
   { page: "ma.html", countyCount: 14,  sampleFips: "25025", sampleName: "Suffolk",     expectedRaces: 15 },
   { page: "wv.html", countyCount: 55,  sampleFips: "54039", sampleName: "Kanawha",     expectedRaces: 10 },
-  { page: "oh.html", countyCount: 88,  sampleFips: "39035", sampleName: "Cuyahoga",    expectedRaces: 17 },
-  { page: "ky.html", countyCount: 120, sampleFips: "21111", sampleName: "Jefferson",   expectedRaces: 12 },
-  { page: "in.html", countyCount: 92,  sampleFips: "18097", sampleName: "Marion",      expectedRaces: 12 },
+  { page: "oh.html", countyCount: 88,  sampleFips: "39035", sampleName: "Cuyahoga",    expectedRaces: 19 },
+  { page: "ky.html", countyCount: 120, sampleFips: "21111", sampleName: "Jefferson",   expectedRaces: 15 },
+  { page: "in.html", countyCount: 92,  sampleFips: "18097", sampleName: "Marion",      expectedRaces: 15 },
   { page: "ia.html", countyCount: 99,  sampleFips: "19153", sampleName: "Polk",        expectedRaces: 15 },
   // Cook is deliberately the IL sample: it overlaps 11 districts via `ds`, so this count
   // (9 statewide + 11 districts x 2 races) is the regression guard on the multi-district merge.
@@ -384,6 +384,34 @@ for (const page of ["index.html", ...STATE_PAGES.map(p => p.page), "state.html"]
     }
   }
   check(bad.length === 0, `${page}: all type values are past/upcoming/scheduled${bad.length ? ` (bad: ${bad.join(", ")})` : ""}`);
+}
+
+// ---------------------------------------------------------------
+// A page's own SPLIT-COUNTY COMMENT must match its own COUNTIES data.
+// ---------------------------------------------------------------
+// The most consequential error this site has shipped was a county->district table whose
+// COMMENT disagreed with reality: nc.html said "primary 2024 US House district" while the
+// races described the late-2025 redraw, and 28 of 100 counties were wrong (to-do item 9).
+// Nothing surfaced it, because the data was internally consistent and no test asked the
+// comment anything. Pages annotated on Sept 4, 2026 state, in prose, how many counties are
+// split and how many county x district pairs they hold — and THREE of those twelve numbers
+// were wrong the first time they were typed. A number in a comment that nothing checks is a
+// number that will drift, so this asserts the prose against the data it describes.
+console.log("\n— split-county comments match the data —");
+for (const { page } of STATE_PAGES) {
+  const src = extractInlineScripts(page).join("\n");
+  const claim = src.match(/has (\d+) split (?:county|counties|jurisdictions?) and (\d+) \w+×district pairs/);
+  if (!claim) continue;                       // only the annotated pages make the claim
+  const block = (src.match(/const COUNTIES\s*=\s*\{([\s\S]*?)\n\};/) || [])[1] || "";
+  let counties = 0, split = 0, pairs = 0;
+  const re = /"(\d{5})"\s*:\s*\{\s*n:\s*"[^"]*"\s*,\s*d:\s*(\d+)((?:\s*,\s*ds:\s*\[[^\]]*\])?)/g;
+  for (let m; (m = re.exec(block)); ) {
+    counties++;
+    if (m[3]) { split++; pairs += m[3].match(/\[([^\]]*)\]/)[1].split(",").length; }
+    else pairs++;
+  }
+  check(String(split) === claim[1] && String(pairs) === claim[2],
+    `${page}: comment says ${claim[1]} split / ${claim[2]} pairs; data has ${split} / ${pairs}`);
 }
 
 summary("data-logic");

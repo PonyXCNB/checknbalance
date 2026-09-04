@@ -712,7 +712,7 @@
       <strong>WY Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">August 28, 2026</span><br>
+      Last updated: <span id="last-updated">September 4, 2026</span><br>
       Sources: Wyoming Secretary of State (sos.wyo.gov) — the 2026 Official Primary Election Results summaries certified by the State Canvassing Board on Aug 26, 2026, the Statewide Candidates Summary, the Successful Write-In Candidates list, '2026 Offices Up for Election', '2026 Judges Standing for Retention', the 2026 Voter's Guide and the property-tax initiative certificate; U.S. Census Bureau 2020 county FIPS file; FEC; WyoFile's 2026 Election Guide; Cowboy State Daily; Casper Star-Tribune; Gillette News Record; Oil City News; Wyoming Public Media.</div>
   </div>
 </footer>
@@ -1272,7 +1272,7 @@ const HOUSE_RACES = {
           { name: "Elena Del Real", party: "D", winner: false, positions: [], differentiators: ["2,660 votes — 21.8%", "Strongest in Laramie County (660 votes)"], supporters: [], opponents: [] } ] } ] },
 };
 
-const SITE_META = { name: "Wyoming Elections Hub", lastUpdated: "August 28, 2026" };
+const SITE_META = { name: "Wyoming Elections Hub", lastUpdated: "September 4, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Wyoming county-level down-ballot research has not started.)
@@ -1474,11 +1474,12 @@ function openPanel(fips, fromEl) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn't in our Wyoming dataset.</p></div>`;
   } else {
-    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
-    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    const ds = (built.county.ds && built.county.ds.length > 1) ? [...built.county.ds].sort((a, b) => a - b) : [built.county.d];
+    const dsList = (j) => ds.length < 3 ? ds.join(` ${j} `) : `${ds.slice(0, -1).join(", ")} ${j} ${ds[ds.length - 1]}`;
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${dsList("&")}` : `Congressional District ${ds[0]}`;
     title.textContent   = placeLabel({ ...built.county, fips });
     subtitle.textContent = ds.length > 1
-      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      ? `This ${UNIT.toLowerCase()} is split between districts ${dsList("and")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
       : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);

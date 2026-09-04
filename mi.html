@@ -712,7 +712,7 @@
       <strong>MI Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">September 3, 2026</span><br>
+      Last updated: <span id="last-updated">September 4, 2026</span><br>
       Sources: Michigan Bureau of Elections — the general-election candidate listing at mi-boe.entellitrak.com (generated Sept 3, 2026) and the Filing for Office guides; Michigan Secretary of State — the machine-readable county canvass of the Aug 4, 2026 primary at mvic.sos.state.mi.us, all 83 counties; the Board of State Canvassers' own meeting agendas and Statewide Petition Status document; the Michigan Independent Citizens Redistricting Commission's county-split report for the Chestnut congressional plan; Const 1963 art V sections 21 and 30 and MCL 168.52, 168.73, 168.282, 168.590c and 168.591 via legislature.mi.gov; Graveline v. Benson, 430 F.Supp.3d 297 (E.D. Mich. 2019); MCDC Geocorr 2022; Cook Political Report (2026 PVI file and public race pages), Sabato's Crystal Ball, Inside Elections; FEC and Transparency USA; Michigan Advance, Bridge Michigan, Votebeat, Michigan Public, Detroit News, Detroit Free Press, MLive, WCMU, WDET, Crain's Detroit, The Hill, CNN, NBC News.</div>
   </div>
 </footer>
@@ -1703,7 +1703,7 @@ const HOUSE_RACES = {
     ] },
 };
 
-const SITE_META = { name: "Michigan Elections Hub", lastUpdated: "September 3, 2026" };
+const SITE_META = { name: "Michigan Elections Hub", lastUpdated: "September 4, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Michigan county-level down-ballot research has not started.)
@@ -1905,11 +1905,12 @@ function openPanel(fips, fromEl) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn't in our Michigan dataset.</p></div>`;
   } else {
-    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
-    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    const ds = (built.county.ds && built.county.ds.length > 1) ? [...built.county.ds].sort((a, b) => a - b) : [built.county.d];
+    const dsList = (j) => ds.length < 3 ? ds.join(` ${j} `) : `${ds.slice(0, -1).join(", ")} ${j} ${ds[ds.length - 1]}`;
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${dsList("&")}` : `Congressional District ${ds[0]}`;
     title.textContent   = placeLabel({ ...built.county, fips });
     subtitle.textContent = ds.length > 1
-      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      ? `This ${UNIT.toLowerCase()} is split between districts ${dsList("and")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
       : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);

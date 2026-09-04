@@ -712,7 +712,7 @@
       <strong>NE Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">September 3, 2026</span><br>
+      Last updated: <span id="last-updated">September 4, 2026</span><br>
       Sources: Nebraska Secretary of State certified Statewide Candidate Filing List and 2026 Primary Canvass Book, 2026 Election Calendar and judicial-retention list, Nebraska Accountability and Disclosure Commission, U.S. Census Bureau congressional-district relationship files and 2020 PL 94-171 data, FEC, U.S. House Clerk member roster, Cook Political Report, Sabato's Crystal Ball, Inside Elections, Nebraska Public Media, Nebraska Examiner, WOWT, 1011now, KLKN, AP.
     </div>
   </div>
@@ -1865,7 +1865,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Nebraska Elections Hub", lastUpdated: "September 3, 2026" };
+const SITE_META = { name: "Nebraska Elections Hub", lastUpdated: "September 4, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Nebraska county-level down-ballot research is the next phase.
@@ -2066,11 +2066,12 @@ function openPanel(fips, fromEl) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn't in our Nebraska dataset.</p></div>`;
   } else {
-    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
-    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    const ds = (built.county.ds && built.county.ds.length > 1) ? [...built.county.ds].sort((a, b) => a - b) : [built.county.d];
+    const dsList = (j) => ds.length < 3 ? ds.join(` ${j} `) : `${ds.slice(0, -1).join(", ")} ${j} ${ds[ds.length - 1]}`;
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${dsList("&")}` : `Congressional District ${ds[0]}`;
     title.textContent   = placeLabel({ ...built.county, fips });
     subtitle.textContent = ds.length > 1
-      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      ? `This ${UNIT.toLowerCase()} is split between districts ${dsList("and")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
       : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);

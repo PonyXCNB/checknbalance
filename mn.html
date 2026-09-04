@@ -712,7 +712,7 @@
       <strong>MN Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">August 17, 2026</span><br>
+      Last updated: <span id="last-updated">September 4, 2026</span><br>
       Sources: Minnesota Secretary of State raw election-result files (electionresultsfiles.sos.mn.gov) — the Aug 11, 2026 primary and the Nov 5, 2024 and Nov 8, 2022 generals; Minnesota Legislature GIS office county-population-by-district report for the adopted congressional plan (gis.lcc.mn.gov); Wattson v. Simon (Minn. Special Redistricting Panel, Feb 15, 2022); U.S. Census Bureau 2020 P.L. 94-171 and the CD119 county relationship file; Cook Political Report 2026 Partisan Voting Index and its Aug 13, 2026 House ratings; Sabato's Crystal Ball; FEC (bulk All Candidates file and API); candidates' own campaign and official sites; MinnPost, MPR News, Sahan Journal, Star Tribune, Minnesota Reformer, Duluth News Tribune, Post Bulletin, KAXE, KTTC, Fox 9, CBS Minnesota, NOTUS.</div>
   </div>
 </footer>
@@ -1168,7 +1168,7 @@ const HOUSE_RACES = {
           { name: "Jen Schultz", party: "D", winner: false, positions: [], differentiators: ["176,724 votes — 41.92%"], supporters: [], opponents: [] } ] } ] }
 };
 
-const SITE_META = { name: "Minnesota Elections Hub", lastUpdated: "August 17, 2026" };
+const SITE_META = { name: "Minnesota Elections Hub", lastUpdated: "September 4, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Minnesota county-level down-ballot research has not started.)
@@ -1368,11 +1368,12 @@ function openPanel(fips, fromEl) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn't in our Minnesota dataset.</p></div>`;
   } else {
-    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
-    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    const ds = (built.county.ds && built.county.ds.length > 1) ? [...built.county.ds].sort((a, b) => a - b) : [built.county.d];
+    const dsList = (j) => ds.length < 3 ? ds.join(` ${j} `) : `${ds.slice(0, -1).join(", ")} ${j} ${ds[ds.length - 1]}`;
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${dsList("&")}` : `Congressional District ${ds[0]}`;
     title.textContent   = placeLabel({ ...built.county, fips });
     subtitle.textContent = ds.length > 1
-      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      ? `This ${UNIT.toLowerCase()} is split between districts ${dsList("and")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
       : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);

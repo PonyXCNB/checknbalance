@@ -712,7 +712,7 @@
       <strong>RI Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">August 4, 2026</span><br>
+      Last updated: <span id="last-updated">September 4, 2026</span><br>
       Sources: RI Department of State / Board of Elections, Ballotpedia, Wikipedia, Cook Political Report, AP, The Boston Globe, WPRI, Rhode Island Current.
     </div>
   </div>
@@ -739,11 +739,23 @@
 // western/southern towns) — its population majority sits in RI-1. The number below is
 // each county's PRIMARY district by population. Source: RI 2022 congressional
 // redistricting (S.2162/H.7323); Census. [Verify] fine town-level splits with the RI BOE.
+// ── `ds`: every district a county contains (added Sept 4, 2026) ───────────────────
+// `d` is the POPULATION-PLURALITY district and shades the map. `ds` lists EVERY district the
+// county contains, and getCountyElections shows a race for each one — without it a voter in a
+// split county sees only ONE of their possible U.S. House races (the defect found on the flagship
+// Sept 3, 2026). Rhode Island has 1 split county and 6 county×district pairs.
+// DERIVED Sept 4, 2026 by tools/derive-ds.js from TWO INDEPENDENT FEDERAL SOURCES that agree on
+// every part kept: (a) the Census Bureau’s county-to-congressional-district relationship file,
+// and (b) locating all of the state’s 2020 census blocks — each with its own population and an
+// internal point — inside TIGERweb’s 120th-Congress district polygons, the districts actually
+// being elected on Nov 3, 2026. The map is the 2022 plan.
+// Parts holding ZERO people were dropped: TIGERweb serves generalized polygons, so a block on a
+// district line can land on the wrong side. Small parts with REAL people are kept.
 const COUNTIES = {
   "44001":{n:"Bristol",d:1},
   "44003":{n:"Kent",d:2},
   "44005":{n:"Newport",d:1},
-  "44007":{n:"Providence",d:1},
+  "44007":{n:"Providence",d:1, ds: [1, 2]},
   "44009":{n:"Washington",d:2}
 };
 
@@ -1002,7 +1014,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Rhode Island Elections Hub", lastUpdated: "August 4, 2026" };
+const SITE_META = { name: "Rhode Island Elections Hub", lastUpdated: "September 4, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — RI county-level down-ballot research is the next phase.)
@@ -1204,11 +1216,12 @@ function openPanel(fips, fromEl) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn't in our Rhode Island dataset.</p></div>`;
   } else {
-    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
-    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    const ds = (built.county.ds && built.county.ds.length > 1) ? [...built.county.ds].sort((a, b) => a - b) : [built.county.d];
+    const dsList = (j) => ds.length < 3 ? ds.join(` ${j} `) : `${ds.slice(0, -1).join(", ")} ${j} ${ds[ds.length - 1]}`;
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${dsList("&")}` : `Congressional District ${ds[0]}`;
     title.textContent   = placeLabel({ ...built.county, fips });
     subtitle.textContent = ds.length > 1
-      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      ? `This ${UNIT.toLowerCase()} is split between districts ${dsList("and")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
       : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);

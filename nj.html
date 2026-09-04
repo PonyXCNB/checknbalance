@@ -712,7 +712,7 @@
       <strong>NJ Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">August 3, 2026</span><br>
+      Last updated: <span id="last-updated">September 4, 2026</span><br>
       Sources: NJ Division of Elections, Ballotpedia, Wikipedia, AP, New Jersey Globe, NJ Monitor, WHYY.
     </div>
   </div>
@@ -733,17 +733,29 @@
      Each county's election list is built by combining (2) + the right item from (3).
      ============================================= -->
 <script>
-// ----- (1) Counties + primary 2024 US House district -----
+// ----- (1) Counties + the U.S. House district holding each county’s population plurality -----
 // NOTE: 14 of the 21 NJ counties are split across districts (Union is split 4 ways). The number below is
 // the PRIMARY district by population. Verify against your local board of elections.
+// ── `ds`: every district a county contains (added Sept 4, 2026) ───────────────────
+// `d` is the POPULATION-PLURALITY district and shades the map. `ds` lists EVERY district the
+// county contains, and getCountyElections shows a race for each one — without it a voter in a
+// split county sees only ONE of their possible U.S. House races (the defect found on the flagship
+// Sept 3, 2026). New Jersey has 14 split counties and 41 county×district pairs.
+// DERIVED Sept 4, 2026 by tools/derive-ds.js from TWO INDEPENDENT FEDERAL SOURCES that agree on
+// every part kept: (a) the Census Bureau’s county-to-congressional-district relationship file,
+// and (b) locating all of the state’s 2020 census blocks — each with its own population and an
+// internal point — inside TIGERweb’s 120th-Congress district polygons, the districts actually
+// being elected on Nov 3, 2026. The map is the 2022 Redistricting Commission plan.
+// Parts holding ZERO people were dropped: TIGERweb serves generalized polygons, so a block on a
+// district line can land on the wrong side. Small parts with REAL people are kept.
 const COUNTIES = {
-  "34001":{n:"Atlantic",d:2},   "34003":{n:"Bergen",d:5},     "34005":{n:"Burlington",d:3},
+  "34001":{n:"Atlantic",d:2},   "34003":{n:"Bergen",d:5, ds: [5, 9]},     "34005":{n:"Burlington",d:3, ds: [3, 1]},
   "34007":{n:"Camden",d:1},     "34009":{n:"Cape May",d:2},   "34011":{n:"Cumberland",d:2},
-  "34013":{n:"Essex",d:10},     "34015":{n:"Gloucester",d:1}, "34017":{n:"Hudson",d:8},
-  "34019":{n:"Hunterdon",d:7},  "34021":{n:"Mercer",d:12},    "34023":{n:"Middlesex",d:6},
-  "34025":{n:"Monmouth",d:4},   "34027":{n:"Morris",d:11},    "34029":{n:"Ocean",d:4},
-  "34031":{n:"Passaic",d:9},    "34033":{n:"Salem",d:2},      "34035":{n:"Somerset",d:12},
-  "34037":{n:"Sussex",d:5},     "34039":{n:"Union",d:7},      "34041":{n:"Warren",d:7}
+  "34013":{n:"Essex",d:10, ds: [10, 8, 11]},     "34015":{n:"Gloucester",d:1, ds: [1, 2]}, "34017":{n:"Hudson",d:8, ds: [8, 9, 10]},
+  "34019":{n:"Hunterdon",d:7},  "34021":{n:"Mercer",d:12, ds: [12, 3]},    "34023":{n:"Middlesex",d:6, ds: [6, 12]},
+  "34025":{n:"Monmouth",d:4, ds: [4, 3, 6]},   "34027":{n:"Morris",d:11, ds: [11, 7]},    "34029":{n:"Ocean",d:4, ds: [4, 2]},
+  "34031":{n:"Passaic",d:9, ds: [9, 5, 11]},    "34033":{n:"Salem",d:2},      "34035":{n:"Somerset",d:12, ds: [12, 7]},
+  "34037":{n:"Sussex",d:5, ds: [5, 7]},     "34039":{n:"Union",d:7, ds: [7, 8, 10, 12]},      "34041":{n:"Warren",d:7}
 };
 
 // ----- (2) Statewide elections every county votes in -----
@@ -1310,7 +1322,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "New Jersey Elections Hub", lastUpdated: "August 3, 2026" };
+const SITE_META = { name: "New Jersey Elections Hub", lastUpdated: "September 4, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — NJ county-level down-ballot research is the next phase).
@@ -1512,11 +1524,12 @@ function openPanel(fips, fromEl) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn't in our New Jersey dataset.</p></div>`;
   } else {
-    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
-    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    const ds = (built.county.ds && built.county.ds.length > 1) ? [...built.county.ds].sort((a, b) => a - b) : [built.county.d];
+    const dsList = (j) => ds.length < 3 ? ds.join(` ${j} `) : `${ds.slice(0, -1).join(", ")} ${j} ${ds[ds.length - 1]}`;
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${dsList("&")}` : `Congressional District ${ds[0]}`;
     title.textContent   = placeLabel({ ...built.county, fips });
     subtitle.textContent = ds.length > 1
-      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      ? `This ${UNIT.toLowerCase()} is split between districts ${dsList("and")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
       : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);

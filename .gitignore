@@ -25,3 +25,13 @@ tools/banked/counties-10m.json
 
 # Local desktop-app preview config, not part of the site
 .claude/
+
+# Reproducible caches for tools/derive-ds.js (re-fetched from the Census when absent):
+# the 2020 census-block attribute pages (~180MB) and the district polygons. The small
+# DERIVED results (<xx>-ds.json / <xx>-ds-final.json) ARE committed — they are the answer.
+tools/banked/ds-derivation/*-blocks-*.json
+tools/banked/ds-derivation/*-cd0.json
+tools/banked/ds-derivation/*-cd4.json
+tools/banked/ds-derivation/oh-cd120.json
+# Census county -> 119th-CD relationship file, re-fetchable from www2.census.gov
+tools/banked/cd119_county_rel.txt

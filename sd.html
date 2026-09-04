@@ -712,7 +712,7 @@
       <strong>SD Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">September 2, 2026</span><br>
+      Last updated: <span id="last-updated">September 4, 2026</span><br>
       Sources: South Dakota Secretary of State (certified 2026 general-election candidate list, 2026 candidate withdrawal information, and independent-candidate signature requirements), the South Dakota State Board of Canvassers&#39; certification of the July 28, 2026 gubernatorial runoff, electionresults.sd.gov, the Office of the Attorney General, FEC filings, U.S. Census Bureau county geography, Cook Political Report, Sabato&#39;s Crystal Ball, Inside Elections and Decision Desk HQ, and reporting from South Dakota Searchlight, South Dakota News Watch, Dakota News Now, SDPB, KOTA, KELOLAND and Ballotpedia News.</div>
   </div>
 </footer>
@@ -1420,7 +1420,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "South Dakota Elections Hub", lastUpdated: "September 2, 2026" };
+const SITE_META = { name: "South Dakota Elections Hub", lastUpdated: "September 4, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — South Dakota county-level down-ballot research has not started.)
@@ -1620,11 +1620,12 @@ function openPanel(fips, fromEl) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn't in our South Dakota dataset.</p></div>`;
   } else {
-    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
-    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    const ds = (built.county.ds && built.county.ds.length > 1) ? [...built.county.ds].sort((a, b) => a - b) : [built.county.d];
+    const dsList = (j) => ds.length < 3 ? ds.join(` ${j} `) : `${ds.slice(0, -1).join(", ")} ${j} ${ds[ds.length - 1]}`;
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${dsList("&")}` : `Congressional District ${ds[0]}`;
     title.textContent   = placeLabel({ ...built.county, fips });
     subtitle.textContent = ds.length > 1
-      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      ? `This ${UNIT.toLowerCase()} is split between districts ${dsList("and")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
       : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);

@@ -712,7 +712,7 @@
       <strong>ND Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">August 17, 2026</span><br>
+      Last updated: <span id="last-updated">September 4, 2026</span><br>
       Sources: North Dakota Secretary of State — the official election-results API at api.resultsnd.sos.nd.gov (June 9, 2026 primary, certified by the State Canvassing Board on June 24, 2026), the candidate calendar and the measures-on-ballot page (sos.nd.gov); North Dakota Constitution art. V (ndlegis.gov); U.S. Senate senators directory (senate.gov); U.S. Census Bureau 2020 county x congressional-district relationship file; fedorchak.house.gov; North Dakota Monitor; KFGO; InForum; FEC.</div>
   </div>
 </footer>
@@ -970,7 +970,7 @@ const HOUSE_RACES = {
             opponents: ["He lost to Fedorchak in 2024 and enters the rematch far behind on money","Republicans hold every statewide elected office in North Dakota plus legislative supermajorities","He has not held elected office, so his governing record is untested [Verify — structural argument]"] } ] } ] }
 };
 
-const SITE_META = { name: "North Dakota Elections Hub", lastUpdated: "August 17, 2026" };
+const SITE_META = { name: "North Dakota Elections Hub", lastUpdated: "September 4, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — North Dakota county-level down-ballot research has not started.)
@@ -1172,11 +1172,12 @@ function openPanel(fips, fromEl) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn't in our North Dakota dataset.</p></div>`;
   } else {
-    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
-    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    const ds = (built.county.ds && built.county.ds.length > 1) ? [...built.county.ds].sort((a, b) => a - b) : [built.county.d];
+    const dsList = (j) => ds.length < 3 ? ds.join(` ${j} `) : `${ds.slice(0, -1).join(", ")} ${j} ${ds[ds.length - 1]}`;
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${dsList("&")}` : `Congressional District ${ds[0]}`;
     title.textContent   = placeLabel({ ...built.county, fips });
     subtitle.textContent = ds.length > 1
-      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      ? `This ${UNIT.toLowerCase()} is split between districts ${dsList("and")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
       : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);

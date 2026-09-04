@@ -712,7 +712,7 @@
       <strong>GA Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">September 3, 2026</span><br>
+      Last updated: <span id="last-updated">September 4, 2026</span><br>
       Sources: Georgia Secretary of State, Ballotpedia, Wikipedia, AP, Atlanta Journal-Constitution, Georgia Recorder.
     </div>
   </div>
@@ -733,36 +733,48 @@
      Each county's election list is built by combining (2) + the right item from (3).
      ============================================= -->
 <script>
-// ----- (1) Counties + primary 2024 US House district -----
+// ----- (1) Counties + the U.S. House district holding each county’s population plurality -----
 // NOTE: 16 GA counties are split across multiple districts. The number below is
 // the PRIMARY district by population. Verify against your local board of elections.
+// ── `ds`: every district a county contains (added Sept 4, 2026) ───────────────────
+// `d` is the POPULATION-PLURALITY district and shades the map. `ds` lists EVERY district the
+// county contains, and getCountyElections shows a race for each one — without it a voter in a
+// split county sees only ONE of their possible U.S. House races (the defect found on the flagship
+// Sept 3, 2026). Georgia has 16 split counties and 181 county×district pairs.
+// DERIVED Sept 4, 2026 by tools/derive-ds.js from TWO INDEPENDENT FEDERAL SOURCES that agree on
+// every part kept: (a) the Census Bureau’s county-to-congressional-district relationship file,
+// and (b) locating all of the state’s 2020 census blocks — each with its own population and an
+// internal point — inside TIGERweb’s 120th-Congress district polygons, the districts actually
+// being elected on Nov 3, 2026. The map is the 2023 special-session plan.
+// Parts holding ZERO people were dropped: TIGERweb serves generalized polygons, so a block on a
+// district line can land on the wrong side. Small parts with REAL people are kept.
 const COUNTIES = {
   "13001":{n:"Appling",d:1},      "13003":{n:"Atkinson",d:8},     "13005":{n:"Bacon",d:1},
   "13007":{n:"Baker",d:2},        "13009":{n:"Baldwin",d:8},      "13011":{n:"Banks",d:9},
   "13013":{n:"Barrow",d:10},      "13015":{n:"Bartow",d:11},      "13017":{n:"Ben Hill",d:8},
-  "13019":{n:"Berrien",d:8},      "13021":{n:"Bibb",d:2},         "13023":{n:"Bleckley",d:8},
+  "13019":{n:"Berrien",d:8},      "13021":{n:"Bibb",d:2, ds: [2, 8]},         "13023":{n:"Bleckley",d:8},
   "13025":{n:"Brantley",d:1},     "13027":{n:"Brooks",d:8},       "13029":{n:"Bryan",d:1},
   "13031":{n:"Bulloch",d:12},     "13033":{n:"Burke",d:12},       "13035":{n:"Butts",d:10},
   "13037":{n:"Calhoun",d:2},      "13039":{n:"Camden",d:1},       "13043":{n:"Candler",d:12},
   "13045":{n:"Carroll",d:3},      "13047":{n:"Catoosa",d:14},     "13049":{n:"Charlton",d:1},
   "13051":{n:"Chatham",d:1},      "13053":{n:"Chattahoochee",d:2},"13055":{n:"Chattooga",d:14},
-  "13057":{n:"Cherokee",d:11},    "13059":{n:"Clarke",d:10},      "13061":{n:"Clay",d:2},
-  "13063":{n:"Clayton",d:5},      "13065":{n:"Clinch",d:8},       "13067":{n:"Cobb",d:11},
+  "13057":{n:"Cherokee",d:11, ds: [11, 7]},    "13059":{n:"Clarke",d:10},      "13061":{n:"Clay",d:2},
+  "13063":{n:"Clayton",d:5, ds: [5, 13]},      "13065":{n:"Clinch",d:8},       "13067":{n:"Cobb",d:11, ds: [11, 6, 14]},
   "13069":{n:"Coffee",d:8},       "13071":{n:"Colquitt",d:8},     "13073":{n:"Columbia",d:12},
   "13075":{n:"Cook",d:8},         "13077":{n:"Coweta",d:3},       "13079":{n:"Crawford",d:2},
   "13081":{n:"Crisp",d:8},        "13083":{n:"Dade",d:14},        "13085":{n:"Dawson",d:7},
-  "13087":{n:"Decatur",d:2},      "13089":{n:"DeKalb",d:4},       "13091":{n:"Dodge",d:8},
-  "13093":{n:"Dooly",d:2},        "13095":{n:"Dougherty",d:2},    "13097":{n:"Douglas",d:6},
-  "13099":{n:"Early",d:2},        "13101":{n:"Echols",d:8},       "13103":{n:"Effingham",d:1},
+  "13087":{n:"Decatur",d:2},      "13089":{n:"DeKalb",d:4, ds: [4, 5, 13]},       "13091":{n:"Dodge",d:8},
+  "13093":{n:"Dooly",d:2},        "13095":{n:"Dougherty",d:2},    "13097":{n:"Douglas",d:6, ds: [6, 3]},
+  "13099":{n:"Early",d:2},        "13101":{n:"Echols",d:8},       "13103":{n:"Effingham",d:1, ds: [1, 12]},
   "13105":{n:"Elbert",d:10},      "13107":{n:"Emanuel",d:12},     "13109":{n:"Evans",d:12},
-  "13111":{n:"Fannin",d:9},       "13113":{n:"Fayette",d:3},      "13115":{n:"Floyd",d:14},
-  "13117":{n:"Forsyth",d:7},      "13119":{n:"Franklin",d:10},    "13121":{n:"Fulton",d:5},
+  "13111":{n:"Fannin",d:9},       "13113":{n:"Fayette",d:3, ds: [3, 6]},      "13115":{n:"Floyd",d:14},
+  "13117":{n:"Forsyth",d:7},      "13119":{n:"Franklin",d:10},    "13121":{n:"Fulton",d:5, ds: [5, 6, 7]},
   "13123":{n:"Gilmer",d:9},       "13125":{n:"Glascock",d:12},    "13127":{n:"Glynn",d:1},
   "13129":{n:"Gordon",d:11},      "13131":{n:"Grady",d:2},        "13133":{n:"Greene",d:10},
-  "13135":{n:"Gwinnett",d:13},    "13137":{n:"Habersham",d:9},    "13139":{n:"Hall",d:9},
+  "13135":{n:"Gwinnett",d:13, ds: [13, 4, 9, 10]},    "13137":{n:"Habersham",d:9},    "13139":{n:"Hall",d:9, ds: [9, 7]},
   "13141":{n:"Hancock",d:10},     "13143":{n:"Haralson",d:3},     "13145":{n:"Harris",d:3},
-  "13147":{n:"Hart",d:10},        "13149":{n:"Heard",d:3},        "13151":{n:"Henry",d:10},
-  "13153":{n:"Houston",d:8},      "13155":{n:"Irwin",d:8},        "13157":{n:"Jackson",d:9},
+  "13147":{n:"Hart",d:10},        "13149":{n:"Heard",d:3},        "13151":{n:"Henry",d:10, ds: [10, 3, 13]},
+  "13153":{n:"Houston",d:8, ds: [8, 2]},      "13155":{n:"Irwin",d:8},        "13157":{n:"Jackson",d:9},
   "13159":{n:"Jasper",d:10},      "13161":{n:"Jeff Davis",d:8},   "13163":{n:"Jefferson",d:12},
   "13165":{n:"Jenkins",d:12},     "13167":{n:"Johnson",d:12},     "13169":{n:"Jones",d:8},
   "13171":{n:"Lamar",d:3},        "13173":{n:"Lanier",d:8},       "13175":{n:"Laurens",d:12},
@@ -772,7 +784,7 @@ const COUNTIES = {
   "13195":{n:"Madison",d:10},     "13197":{n:"Marion",d:2},       "13199":{n:"Meriwether",d:3},
   "13201":{n:"Miller",d:2},       "13205":{n:"Mitchell",d:2},     "13207":{n:"Monroe",d:8},
   "13209":{n:"Montgomery",d:12},  "13211":{n:"Morgan",d:10},      "13213":{n:"Murray",d:14},
-  "13215":{n:"Muscogee",d:2},     "13217":{n:"Newton",d:13},      "13219":{n:"Oconee",d:10},
+  "13215":{n:"Muscogee",d:2, ds: [2, 3]},     "13217":{n:"Newton",d:13, ds: [13, 10]},      "13219":{n:"Oconee",d:10},
   "13221":{n:"Oglethorpe",d:10},  "13223":{n:"Paulding",d:14},    "13225":{n:"Peach",d:2},
   "13227":{n:"Pickens",d:11},     "13229":{n:"Pierce",d:1},       "13231":{n:"Pike",d:3},
   "13233":{n:"Polk",d:14},        "13235":{n:"Pulaski",d:8},      "13237":{n:"Putnam",d:10},
@@ -789,7 +801,7 @@ const COUNTIES = {
   "13299":{n:"Ware",d:1},         "13301":{n:"Warren",d:12},      "13303":{n:"Washington",d:12},
   "13305":{n:"Wayne",d:1},        "13307":{n:"Webster",d:2},      "13309":{n:"Wheeler",d:12},
   "13311":{n:"White",d:9},        "13313":{n:"Whitfield",d:14},   "13315":{n:"Wilcox",d:8},
-  "13317":{n:"Wilkes",d:12},      "13319":{n:"Wilkinson",d:8},    "13321":{n:"Worth",d:8}
+  "13317":{n:"Wilkes",d:12, ds: [12, 10]},      "13319":{n:"Wilkinson",d:8},    "13321":{n:"Worth",d:8}
 };
 
 // ----- (2) Statewide elections every county votes in -----
@@ -1740,7 +1752,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Georgia Elections Hub", lastUpdated: "September 3, 2026" };
+const SITE_META = { name: "Georgia Elections Hub", lastUpdated: "September 4, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — GA county-level down-ballot research is the next phase).
@@ -1942,11 +1954,12 @@ function openPanel(fips, fromEl) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn't in our Georgia dataset.</p></div>`;
   } else {
-    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
-    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    const ds = (built.county.ds && built.county.ds.length > 1) ? [...built.county.ds].sort((a, b) => a - b) : [built.county.d];
+    const dsList = (j) => ds.length < 3 ? ds.join(` ${j} `) : `${ds.slice(0, -1).join(", ")} ${j} ${ds[ds.length - 1]}`;
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${dsList("&")}` : `Congressional District ${ds[0]}`;
     title.textContent   = placeLabel({ ...built.county, fips });
     subtitle.textContent = ds.length > 1
-      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      ? `This ${UNIT.toLowerCase()} is split between districts ${dsList("and")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
       : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);

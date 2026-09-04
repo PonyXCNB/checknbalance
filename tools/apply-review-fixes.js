@@ -431,11 +431,12 @@ function openPanel(fips, fromEl) {
   panel.setAttribute("aria-hidden", "false");
   body.scrollTop = 0;
 }`, `  } else {
-    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
-    eyebrow.textContent = ds.length > 1 ? \`Congressional Districts \${ds.join(" & ")}\` : \`Congressional District \${ds[0]}\`;
+    const ds = (built.county.ds && built.county.ds.length > 1) ? [...built.county.ds].sort((a, b) => a - b) : [built.county.d];
+    const dsList = (j) => ds.length < 3 ? ds.join(\` \${j} \`) : \`\${ds.slice(0, -1).join(", ")} \${j} \${ds[ds.length - 1]}\`;
+    eyebrow.textContent = ds.length > 1 ? \`Congressional Districts \${dsList("&")}\` : \`Congressional District \${ds[0]}\`;
     title.textContent   = placeLabel({ ...built.county, fips });
     subtitle.textContent = ds.length > 1
-      ? \`This \${UNIT.toLowerCase()} is split between districts \${ds.join(" and ")} \\u2014 check your own ballot for which U.S. House race is yours. All are listed below.\`
+      ? \`This \${UNIT.toLowerCase()} is split between districts \${dsList("and")} \\u2014 check your own ballot for which U.S. House race is yours. All are listed below.\`
       : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);
@@ -598,6 +599,22 @@ function renderNote(note) {`);
     more.textContent = clamped ? "Show more" : "Show less";
     more.setAttribute("aria-expanded", clamped ? "false" : "true");
     return;`);
+
+  // ── Sept 4, 2026 ────────────────────────────────────────────────────────────────────
+  // Split-county drawer header, for counties in THREE OR MORE districts.
+  // The Sept 3 text joined the list with a bare " and " / " & ", which reads as
+  // "districts 3 and 5 and 2 and 4" on Gwinnett (GA, 4), Union (NJ, 4), New Haven (CT, 4)
+  // and Cook (IL, 11). It is now an ordered, comma-separated list with a final conjunction.
+  // Sorting is display-only — `ds` itself stays plurality-first, which is what the merge reads.
+  sub("split-county district list reads as a list",
+    `    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
+    eyebrow.textContent = ds.length > 1 ? \`Congressional Districts \${ds.join(" & ")}\` : \`Congressional District \${ds[0]}\`;`,
+    `    const ds = (built.county.ds && built.county.ds.length > 1) ? [...built.county.ds].sort((a, b) => a - b) : [built.county.d];
+    const dsList = (j) => ds.length < 3 ? ds.join(\` \${j} \`) : \`\${ds.slice(0, -1).join(", ")} \${j} \${ds[ds.length - 1]}\`;
+    eyebrow.textContent = ds.length > 1 ? \`Congressional Districts \${dsList("&")}\` : \`Congressional District \${ds[0]}\`;`);
+  sub("split-county sentence uses the list",
+    `      ? \`This \${UNIT.toLowerCase()} is split between districts \${ds.join(" and ")} \\u2014 check your own ballot`,
+    `      ? \`This \${UNIT.toLowerCase()} is split between districts \${dsList("and")} \\u2014 check your own ballot`);
 
   if (missing.length) { failures.push(`${page}: ${missing.join("; ")}`); continue; }
   const out = s.replace(/\n/g, eol);

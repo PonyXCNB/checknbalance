@@ -712,7 +712,7 @@
       <strong>WI Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">September 3, 2026</span><br>
+      Last updated: <span id="last-updated">September 4, 2026</span><br>
       Sources: Wisconsin Elections Commission (elections.wi.gov) — the certified "Candidates on Ballot by Election" list for the Nov 3, 2026 general, the Aug 11 partisan-primary contest file, the final registered write-in list and the 2024 County-by-County canvasses; Wis. Stat. ch. 3 and § 7.70; Johnson v. Wisconsin Elections Commission, 2022 WI 14; Wisconsin Legislature enrolled joint resolutions (docs.legis.wisconsin.gov); U.S. Census Bureau 2020 P.L. 94-171 and TIGERweb; FEC; Wisconsin Ethics Commission campaign-finance filings; Cook Political Report; Sabato's Crystal Ball; Inside Elections; Wisconsin Public Radio; Wisconsin Examiner; WUWM; Milwaukee Journal Sentinel; PBS Wisconsin; AP.</div>
   </div>
 </footer>
@@ -1159,7 +1159,7 @@ const HOUSE_RACES = {
           { name: "Kristin Lyerly", party: "D", winner: false, positions: [], differentiators: ["178,666 votes — 42.6%"], supporters: [], opponents: [] } ] } ] },
 };
 
-const SITE_META = { name: "Wisconsin Elections Hub", lastUpdated: "September 3, 2026" };
+const SITE_META = { name: "Wisconsin Elections Hub", lastUpdated: "September 4, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Wisconsin county-level down-ballot research has not started.)
@@ -1359,11 +1359,12 @@ function openPanel(fips, fromEl) {
     subtitle.textContent = "";
     body.innerHTML = `<div class="empty-state"><p>This county isn't in our Wisconsin dataset.</p></div>`;
   } else {
-    const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
-    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${ds.join(" & ")}` : `Congressional District ${ds[0]}`;
+    const ds = (built.county.ds && built.county.ds.length > 1) ? [...built.county.ds].sort((a, b) => a - b) : [built.county.d];
+    const dsList = (j) => ds.length < 3 ? ds.join(` ${j} `) : `${ds.slice(0, -1).join(", ")} ${j} ${ds[ds.length - 1]}`;
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${dsList("&")}` : `Congressional District ${ds[0]}`;
     title.textContent   = placeLabel({ ...built.county, fips });
     subtitle.textContent = ds.length > 1
-      ? `This ${UNIT.toLowerCase()} is split between districts ${ds.join(" and ")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      ? `This ${UNIT.toLowerCase()} is split between districts ${dsList("and")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
       : (built.district ? built.district.region : "");
     const grouped = groupByType(built.elections);
     body.innerHTML = renderGrouped(grouped);

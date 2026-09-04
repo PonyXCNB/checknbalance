@@ -288,7 +288,7 @@
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-crest"><strong id="footer-crest">Elections Hub</strong> · A civic side-project, not affiliated with any government agency.</div>
-    <div class="footer-meta">Last updated: <span id="last-updated">September 3, 2026</span></div>
+    <div class="footer-meta">Last updated: <span id="last-updated">September 4, 2026</span></div>
   </div>
 </footer>
 
@@ -338,7 +338,7 @@ const CAP = {
 const params = new URLSearchParams(window.location.search);
 const abbr = (params.get("state") || "").toUpperCase();
 if (!STATES[abbr]) { window.location.replace("index.html#map"); throw new Error("redirecting home: unknown state " + JSON.stringify(abbr)); }
-const SITE_META = { lastUpdated: "September 3, 2026" };
+const SITE_META = { lastUpdated: "September 4, 2026" };
 
 const STATE = STATES[abbr];
 const FIPS = STATE.f;
