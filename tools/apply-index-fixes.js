@@ -105,15 +105,15 @@ sub("hero lede", `    Click any state to meet their election candidates, county 
 // Runs BEFORE the main legend replacement so a page in that state converges.
 sub("legend interim → final", `    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(AK, CA, MO, TX, DC)</span></span>`,
     `    <span class="legend-swatch"><i style="background:#D9BE85;border-color:#B8893C"></i> Marquee races built <span class="legend-count">(DC)</span></span>
-    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(AK, CA, MO, TX)</span></span>`);
+    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(CA, MO, TX)</span></span>`);
 sub("legend counts", `    <span class="legend-swatch"><i style="background:#D9BE85;border-color:#B8893C"></i> Marquee races built</span>
     <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework</span>`,
     `    <span class="legend-swatch"><i style="background:#D9BE85;border-color:#B8893C"></i> Marquee races built <span class="legend-count">(DC)</span></span>
-    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(AK, CA, MO, TX)</span></span>`);
+    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(CA, MO, TX)</span></span>`);
 // The interim (Sept 3, 2026) legend, from the hours when DC was a starter, becomes the final one.
 sub("legend interim → final", `    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(AK, CA, MO, TX, DC)</span></span>`,
     `    <span class="legend-swatch"><i style="background:#D9BE85;border-color:#B8893C"></i> Marquee races built <span class="legend-count">(DC)</span></span>
-    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(AK, CA, MO, TX)</span></span>`);
+    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(CA, MO, TX)</span></span>`);
 // DC's marquee races live in state.html's STATE_RACES (tools/apply-dc-races.js), so it wears the
 // lighter-gold tier honestly; it was briefly a starter on Sept 3, 2026 while that was untrue.
 subRe("DC tier", /const PARTIAL = new Set\(\[[^\]]*\]\);[^\n]*/, `const PARTIAL = new Set(["11"]); // DC — marquee races in state.html's STATE_RACES`, /const PARTIAL = new Set\(\["11"\]\); \/\/ DC — marquee races in state\.html/);

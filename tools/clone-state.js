@@ -122,13 +122,28 @@ const subs = [
   // the county-equivalent noun, in every user-visible string that carries it
   [`${dn.s}-by-${dn.s} guide`, `${tn.s}-by-${tn.s} guide`],           // meta description + hero
   [`Click a ${dn.s} to <em>begin</em>.`, `Click a ${tn.s} to <em>begin</em>.`],
-  [`${dn.P} shaded in gold`, `${tn.P} shaded in gold`],
+
   [`id="panel-eyebrow">${dn.S}</div>`, `id="panel-eyebrow">${tn.S}</div>`],
   [`eyebrow.textContent = "${dn.S} FIPS "`, `eyebrow.textContent = "${tn.S} FIPS "`],
-  [`built.county.n + " ${dn.S}"`, `built.county.n + " ${tn.S}"`],     // the drawer's own headline
+  // The Sept 3, 2026 review replaced the drawer's inline `built.county.n + " County"` with
+  // placeLabel(), which appends the UNIT constant instead. UNIT is now the thing to swap.
+  [`const UNIT = "${dn.S}";`, `const UNIT = "${tn.S}";`],
   // <title>, meta description, crest, brand name
   [`<title>${donorName} Elections Hub</title>`, `<title>${cfg.name} Elections Hub</title>`],
-  [`every ${donorAB} election`, `every ${AB} election`],
+  // Social preview + canonical URL. ⚠ These were NOT covered here until Sept 4, 2026 — the
+  // og:/twitter: block was added to every page by apply-review-fixes.js, which derives the
+  // state name itself, so no PUBLISHED page was ever wrong. A fresh clone, though, inherited
+  // the donor's og:title ("Wyoming Elections Hub" on an Alaska page) and its og:url, which is
+  // exactly what a social card or a crawler reads. Caught by the tool's own donor-token warning.
+  [`<meta property="og:title" content="${donorName} Elections Hub">`,
+   `<meta property="og:title" content="${cfg.name} Elections Hub">`],
+  [`content="https://checknbalance.org/${donorab}.html"`,
+   `content="https://checknbalance.org/${ab}.html"`],
+  [`href="https://checknbalance.org/${donorab}.html"`,
+   `href="https://checknbalance.org/${ab}.html"`],
+  // ⚠ The Sept 3, 2026 review rewrote the meta description to name the state IN FULL
+  // ("every Wyoming election"), not by abbreviation. Anchored on the full name now.
+  [`every ${donorName} election`, `every ${cfg.name} election`],
   [`<div class="crest">${donorAB}</div>`, `<div class="crest">${AB}</div>`],
   [`<span class="brand-name">${donorName} Elections Hub</span>`,
    `<span class="brand-name">${cfg.name} Elections Hub</span>`],
@@ -137,8 +152,7 @@ const subs = [
   [`Click any of the ${cfg.donorCountyCount} ${dn.p}`, `Click any of the ${cfg.countyCount} ${tn.p}`],
   [`<div class="stat"><div class="stat-num">${cfg.donorCountyCount}</div><div class="stat-label">${dn.P}</div></div>`,
    `<div class="stat"><div class="stat-num">${cfg.countyCount}</div><div class="stat-label">${tn.P}</div></div>`],
-  [`<div class="stat"><div class="stat-num"><em>${cfg.donorStatewideCount}</em></div><div class="stat-label">Statewide Races Tracked</div></div>`,
-   `<div class="stat"><div class="stat-num"><em>${cfg.statewideCount}</em></div><div class="stat-label">Statewide Races Tracked</div></div>`],
+
   // map: loading text, svg id, CSS selector, d3 selector
   [`Loading map of ${donorName}…`, `Loading map of ${cfg.name}…`],
   [`#${donorab}map`, `#${ab}map`],
@@ -156,10 +170,28 @@ const subs = [
    `const SITE_META = { name: "${cfg.name} Elections Hub", lastUpdated: "${cfg.lastUpdated}" };`],
 ];
 
+// Replacements the Sept 3, 2026 review DELETED from the shared template. A donor page no
+// longer carries them, so their absence is expected rather than drift — but an older donor
+// might, so they are still attempted, just not required.
+//   "<Counties> shaded in gold"        — that legend sentence was rewritten away entirely.
+//   the Statewide Races stat           — the number is now COMPUTED at runtime from
+//                                        STATEWIDE.filter(type === "upcoming"), via
+//                                        <em id="stat-statewide">, so there is no literal
+//                                        count in the markup to swap. cfg.statewideCount is
+//                                        kept in the config as documentation of the intent.
+const optional = [
+  [`${dn.P} shaded in gold`, `${tn.P} shaded in gold`],
+  [`<div class="stat"><div class="stat-num"><em>${cfg.donorStatewideCount}</em></div><div class="stat-label">Statewide Races Tracked</div></div>`,
+   `<div class="stat"><div class="stat-num"><em>${cfg.statewideCount}</em></div><div class="stat-label">Statewide Races Tracked</div></div>`],
+];
+
 const missed = [];
 for (const [from, to] of subs) {
   if (!html.includes(from)) { missed.push(from); continue; }
   html = html.split(from).join(to);
+}
+for (const [from, to] of optional) {
+  if (html.includes(from)) html = html.split(from).join(to);
 }
 
 // U.S. House seat count — the LABEL is singular on an at-large page ("U.S. House Seat", vt.html)

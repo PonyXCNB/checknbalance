@@ -115,6 +115,11 @@ const STATE_PAGES = [
   // 15 statewide (8 upcoming incl. the retention and ballot-measure cards + 7 Aug 18 primary
   // cards) + 3 at-large House races. Every one of the 23 counties returns 18.
   { page: "wy.html", countyCount: 23,  sampleFips: "56021", sampleName: "Laramie",      expectedRaces: 18 },
+  // Alaska: ONE at-large U.S. House seat, so no borough or census area can be split and every
+  // one of the 29 returns an identical list. Anchorage is simply the largest. 7 statewide
+  // (4 upcoming: Senate, the Gov/Lt-Gov ticket, 2 ballot measures carded together, and the
+  // single statewide judicial retention; plus 3 past) + 4 at-large House races.
+  { page: "ak.html", countyCount: 29,  sampleFips: "02020", sampleName: "Anchorage Municipality", expectedRaces: 11 },
   // Utah: the court-drawn Map 1A. Only THREE split counties (Salt Lake [1,4], Utah [3,4],
   // Weber [2,3]) and an unusually THIN statewide ballot — no U.S. Senate, no Governor, no
   // statewide executive office at all, so STATEWIDE is just 2 constitutional amendments plus

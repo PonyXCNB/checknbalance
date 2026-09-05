@@ -1,0 +1,15 @@
+{
+  "abbr": "AK", "name": "Alaska",
+  "donor": "wy.html", "donorAbbr": "WY", "donorName": "Wyoming",
+  "donorCountyCount": 23, "donorHouseSeats": 1, "donorStatewideCount": 8,
+  "donorFips": "56", "donorLastUpdated": "September 4, 2026", "donorCountyNoun": "county",
+  "out": "ak.html",
+  "countyCount": 29, "houseSeats": 1, "statewideCount": 4, "fips": "02",
+  "countyNoun": "borough",
+  "lastUpdated": "September 4, 2026",
+  "capital": { "name": "Juneau", "lng": -134.420, "lat": 58.302 },
+  "sources": "Alaska Division of Elections (elections.alaska.gov) — the CERTIFIED Aug 18, 2026 Election Summary Report (OFFICIAL RESULTS, Aug 31, 2026), the 2026 general-election candidate list, the Official Election Pamphlet candidate statements, and the 2020/2022/2024 RCV Detailed Reports; Alaska Judicial Council retention evaluations; Office of the Lieutenant Governor; Alaska Public Offices Commission and FEC filings as reported; U.S. Census Bureau 2020 county-equivalent files; Alaska Department of Labor population estimates; Alaska Beacon, Anchorage Daily News, Alaska Public Media, KTOO, The Alaska Current and Alaska Landmine.",
+  "countiesFile": "tools/banked/ak-build/counties.js",
+  "statewideFile": "tools/banked/ak-build/statewide.js",
+  "houseFile": "tools/banked/ak-build/house.js"
+}

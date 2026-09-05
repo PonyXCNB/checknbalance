@@ -42,7 +42,13 @@ for (const page of pages) {
   let s = original.replace(/\r\n/g, "\n");
   const missing = [];
   const stateName = (s.match(/<title>([A-Za-z ]+?) Elections Hub<\/title>/) || [])[1];
-  const unit = ab === "la" ? "Parish" : "County";
+  // The county-equivalent noun. Louisiana has parishes; ALASKA has neither — it mixes 19
+  // organized boroughs with census areas of the Unorganized Borough, and no single word covers
+  // both, so its user-facing copy says "borough or census area" while the UNIT constant (used
+  // for the drawer eyebrow) stays the shorter "Borough". Added Sept 4, 2026 with the AK build.
+  const unit = ab === "la" ? "Parish" : ab === "ak" ? "Borough" : "County";
+  const unitPhrase = ab === "ak" ? "borough or census area" : unit.toLowerCase();
+  const unitPlural = ab === "la" ? "Parishes" : ab === "ak" ? "Boroughs and census areas" : "Counties";
 
   // Replace exactly-once helper: records a miss unless the NEW text is already present (idempotent).
   // "Already applied" is checked FIRST: several replacements keep their anchor text inside the
@@ -263,11 +269,11 @@ for (const page of pages) {
   s = s.replace(/<div class="stat-num"><em>1<\/em><\/div><div class="stat-label">U\.S\. House Seats<\/div>/, `<div class="stat-num"><em>1</em></div><div class="stat-label">U.S. House Seat</div>`);
   sub("legend", `      <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> No data yet</span>
       <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Data available</span>`,
-      `      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Every ${unit.toLowerCase()} is clickable</span>
+      `      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Every ${unitPhrase} is clickable</span>
       <span class="legend-swatch"><i class="legend-star">★</i> State capital</span>`);
-  sub("section sub copy", `        ${unit === "Parish" ? "Parishes" : "Counties"} shaded in gold have detailed election information available. Hover for a quick
+  sub("section sub copy", `        ${unitPlural} shaded in gold have detailed election information available. Hover for a quick
         preview; click to open the full breakdown.`,
-      `        Tap or click any ${unit.toLowerCase()} to open its full ballot — every race, every candidate, and what
+      `        Tap or click any ${unitPhrase} to open its full ballot — every race, every candidate, and what
         supporters and opponents say. On a desktop, hover for a quick preview.`);
   sub("dialog semantics", `<aside class="panel" id="panel" aria-hidden="true">`,
       `<aside class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title" aria-hidden="true">`);

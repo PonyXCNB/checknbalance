@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Alaska Elections Hub</title>
+<meta name="description" content="An interactive borough-by-borough guide to every Alaska election, past and upcoming." />
+<link rel="canonical" href="https://checknbalance.org/ak.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Check n Balance">
+<meta property="og:title" content="Alaska Elections Hub">
+<meta property="og:description" content="An interactive borough-by-borough guide to every Alaska election, past and upcoming.">
+<meta property="og:url" content="https://checknbalance.org/ak.html">
+<meta property="og:image" content="https://checknbalance.org/apple-touch-icon.png">
+<meta name="twitter:card" content="summary">
+
+<!-- Fonts: Cormorant Garamond (classical serif) + Manrope (geometric sans) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:        #0E1726;
+    --ink-soft:   #4A5468;
+    --paper:      #FBF9F4;
+    --paper-pure: #FFFFFF;
+    --gold:       #B8893C;
+    --gold-deep:  #8C6420;
+    --gold-soft:  #E8D9B8;
+    --red:        #B91C2C;
+    --green:      #1F6F2A;
+    --blue:       #1E3D6F;
+    --line:       #E5DDC9;
+    --shadow:     0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+    --serif:      'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:       'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================
+     TOP BAR
+     ============================================ */
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-pure);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  .topbar-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 16px 32px;
+    gap: 16px;
+  }
+  .nav-left {
+    display: flex; align-items: center; gap: 24px;
+    justify-self: start;
+  }
+  .other-states {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px; letter-spacing: 0.04em;
+    color: var(--ink);
+    transition: all .2s ease;
+  }
+  .other-states:hover {
+    background: var(--ink); color: var(--paper-pure);
+    border-color: var(--ink);
+  }
+  .other-states svg { width: 12px; height: 12px; }
+
+  .brand { display: flex; align-items: center; gap: 12px; justify-self: center; }
+  .crest {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    border-radius: 50%;
+    color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+    letter-spacing: 0.04em;
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 17px; letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft); margin-top: 2px;
+  }
+  .topnav { display: flex; gap: 24px; justify-self: end; }
+  .topnav a {
+    font-size: 13px; color: var(--ink-soft);
+    transition: color .2s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero {
+    max-width: 1240px; margin: 0 auto;
+    padding: 96px 32px 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 16px;
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+  h1.hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, 7.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.018em;
+    max-width: 16ch; margin: 0 auto;
+  }
+  h1.hero-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 60ch; margin: 28px auto 0;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 880px; margin: 64px auto 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 38px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-num em { color: var(--gold-deep); font-style: italic; }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ============================================
+     MAP
+     ============================================ */
+  .map-section {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: 38px; letter-spacing: -0.018em; line-height: 1.1;
+  }
+  .section-title em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .section-sub {
+    color: var(--ink-soft); font-size: 14px;
+    max-width: 56ch; margin-top: 8px;
+  }
+  .legend {
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .legend-swatch { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-swatch i {
+    width: 12px; height: 12px; border-radius: 3px; display: inline-block;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+
+  .map-shell {
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+    max-width: calc(min(72vh, 760px) * 1.78 + 16px);
+    margin-left: auto; margin-right: auto;
+  }
+  .map-frame {
+    background:
+      radial-gradient(ellipse at top, rgba(184,137,60,.08), transparent 60%),
+      var(--paper-pure);
+    border-radius: 12px;
+    aspect-ratio: 1.78 / 1;
+    width: 100%;
+    position: relative;
+  }
+  #akmap { width: 100%; height: 100%; display: block; }
+  .map-loading {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-soft); font-size: 14px;
+    background: var(--paper-pure);
+  }
+
+  .county {
+    fill: var(--gold-soft);
+    stroke: var(--paper-pure);
+    stroke-width: 1px;
+    vector-effect: non-scaling-stroke;   /* screen pixels at every map size, not viewBox units */
+    cursor: pointer;
+    transition: fill .15s ease;
+  }
+  /* Hover fills only where a pointer can hover — a phone tap must not leave a county stuck "hovered". */
+  @media (hover: hover) {
+    .county:hover { fill: var(--gold); }
+  }
+  .county:focus-visible  { outline: none; fill: var(--gold); stroke: var(--ink); stroke-width: 2px; }
+  .county.selected       { fill: var(--gold-deep) !important; stroke: var(--ink); stroke-width: 1.5px; }
+
+  /* ---- Capital city marker (muted) ---- */
+  .capital-star { fill: var(--ink); fill-opacity: 0.6; pointer-events: none; }
+  .capital-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    fill-opacity: 0.85;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    transition: opacity .12s ease;
+    white-space: nowrap;
+    z-index: 60;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .tooltip strong { color: var(--gold-soft); font-family: var(--serif); font-size: 14px; font-weight: 500; }
+  .tooltip.below { transform: translate(-50%, 26px); }
+  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }
+
+  /* ============================================
+     DETAILS PANEL (drawer)
+     ============================================ */
+  .panel-overlay {
+    position: fixed; inset: 0;
+    background: rgba(14,23,38,.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    z-index: 100;
+  }
+  .panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(720px, 92vw);
+    background: var(--paper-pure);
+    box-shadow: -10px 0 40px rgba(14,23,38,.15);
+    transform: translateX(100%);
+    visibility: hidden;   /* off-screen AND out of the tab order / accessibility tree */
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1), visibility 0s linear .3s;
+    z-index: 101;
+    display: flex; flex-direction: column;
+  }
+  .panel.open { transform: translateX(0); visibility: visible; transition-delay: 0s; }
+  html.drawer-open { overflow: hidden; }   /* the page behind a full-height drawer must not scroll */
+
+  .panel-header {
+    padding: 24px 36px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: var(--serif); font-size: 36px; font-weight: 400;
+    letter-spacing: -0.018em; line-height: 1.05;
+  }
+  .panel-subtitle {
+    font-size: 13px; color: var(--ink-soft); margin-top: 4px;
+  }
+  .panel-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 16px; color: var(--ink-soft);
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .panel-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .panel-body { overflow-y: auto; overscroll-behavior: contain; padding: 8px 0 60px; flex: 1; }
+
+  /* Group header inside panel */
+  .group-header {
+    padding: 22px 36px 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-header h3 {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .group-header .group-line {
+    flex: 1; height: 1px; background: var(--line);
+  }
+
+  .election-card {
+    padding: 22px 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .election-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 700;
+  }
+  .pill.past     { background: #F1EAD8; color: #7A561B; }
+  .pill.upcoming { background: #FCE8E6; color: var(--red); }
+  .pill.scheduled{ background: #E8F0F2; color: #265D69; }
+  .election-date { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+  .election-scope {
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .election-office {
+    font-family: var(--serif); font-size: 24px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  /* ---- Race brief (the context note) ----
+     Lives INSIDE the expanded panel only. A collapsed card shows the pill, date, office
+     and candidate count and nothing else, so a county's ballot reads as a clean list.
+     Owner-reported twice on Aug 12, 2026: as a header element these notes — 2,187
+     characters at the extreme, and 30% of them opening with a ⚠ flag — buried the
+     candidate data the page exists to show. Set in roman, not italic: extended italic
+     body copy at 12.5px is the thing that read as 'terrible'. Long briefs clamp to about
+     four lines behind a Show more toggle so they never crowd out the cards below. */
+  .election-brief {
+    margin: 2px 0 18px;
+    padding: 12px 16px 13px 17px;
+    border-left: 2px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    background: linear-gradient(90deg, rgba(232,217,184,.30), rgba(232,217,184,0) 94%);
+  }
+  .brief-label {
+    font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold-deep); font-weight: 700; margin-bottom: 7px;
+  }
+  .brief-body { font-size: 13.5px; line-height: 1.62; color: var(--ink-soft); }
+  .brief-body p + p { margin-top: 7px; }
+  .brief-lead { color: var(--ink); }
+  /* Flag glyphs hang in the margin so the text block keeps a straight left edge. */
+  .brief-flag { position: relative; padding-left: 21px; }
+  .brief-mark { position: absolute; left: 0; top: 0; font-size: 11px; color: var(--gold-deep); }
+  .election-brief.clamped .brief-body { max-height: 6.5em; overflow: hidden; -webkit-mask-image: linear-gradient(#000 72%, transparent); mask-image: linear-gradient(#000 72%, transparent); }
+  .brief-more {
+    margin-top: 6px; padding: 6px 0; min-height: 24px;
+    background: none; border: none; cursor: pointer;
+    font-family: var(--sans); font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-deep);
+    border-bottom: 1px solid var(--gold-soft);
+  }
+  .brief-more:hover { border-bottom-color: var(--gold); }
+
+  /* ---- Accordion (collapsible seats) ---- */
+  .election-summary {
+    width: 100%;
+    background: none; border: none; padding: 0; margin: 0;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .election-summary:hover .election-office { color: var(--gold-deep); }
+  .election-summary-main { flex: 1; min-width: 0; }
+  .election-toggle {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+    flex-shrink: 0; padding-top: 2px;
+  }
+  .cand-count {
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--ink-soft); white-space: nowrap;
+  }
+  .chevron {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper);
+    display: grid; place-items: center;
+    transition: transform .25s ease, background .15s ease, border-color .15s ease;
+    color: var(--gold-deep);
+  }
+  .chevron svg { width: 13px; height: 13px; }
+  .election-card.open .chevron { transform: rotate(180deg); background: var(--gold-soft); border-color: var(--gold); }
+  .election-summary:hover .chevron { border-color: var(--gold); }
+
+  .election-detail {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .28s ease;
+  }
+  .election-detail > div { overflow: hidden; min-height: 0; visibility: hidden; transition: visibility 0s linear .28s; }
+  .election-card.open .election-detail { grid-template-rows: 1fr; }
+  .election-card.open .election-detail > div { visibility: visible; transition-delay: 0s; }
+
+  .candidates { display: grid; gap: 14px; margin-top: 18px; }
+  .candidate {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .candidate.winner {
+    border-color: var(--gold);
+    background: linear-gradient(180deg, #FFFCF5 0%, var(--paper) 100%);
+    position: relative;
+  }
+  .candidate.winner::before {
+    content: '★ ELECTED';
+    position: absolute; top: -10px; right: 14px;
+    background: var(--gold-deep); color: white;
+    font-size: 10px; letter-spacing: 0.16em;
+    padding: 3px 9px; border-radius: 4px; font-weight: 700;
+  }
+  .candidate.winner.nominee::before { content: '★ NOMINATED'; }
+  .cand-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cand-name {
+    font-family: var(--serif); font-size: 20px; font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .party-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .party-D { background: #DCE7F5; color: var(--blue); }
+  .party-R { background: #F5DCDC; color: #8C1F1F; }
+  .party-I { background: #E8E8E8; color: #333; }
+  .party-L { background: #F5E8DC; color: #8C5A1F; }
+  .party-G { background: #DCF5E0; color: var(--green); }
+
+  .cand-section { margin-top: 14px; }
+  .cand-section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cand-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .cand-list {
+    list-style: none; padding-left: 0;
+    font-size: 13.5px; color: var(--ink); line-height: 1.5;
+  }
+  .cand-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .cand-list li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 9px; height: 1px; background: var(--gold);
+  }
+
+  /* Supporters/Opponents */
+  .voices {
+    margin-top: 14px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .voices-block {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 13px; line-height: 1.5;
+  }
+  .voices-block.supporters {
+    background: #F2F7F0;
+    border: 1px solid #D4E5CC;
+    color: #1F4D17;
+  }
+  .voices-block.opponents {
+    background: #F9F0EF;
+    border: 1px solid #E8CFCB;
+    color: #7A1F1A;
+  }
+  .voices-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .voices-block ul { list-style: none; padding: 0; margin: 0; }
+  .voices-block li { padding: 3px 0; }
+  .voices-block li::before { content: '\201C'; opacity: .4; }
+  .voices-block li::after  { content: '\201D'; opacity: .4; }
+
+  .empty-state {
+    padding: 60px 36px; text-align: center;
+    color: var(--ink-soft);
+  }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  .footer {
+    border-top: 1px solid var(--line);
+    background: var(--paper-pure);
+    padding: 48px 32px 40px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-crest {
+    font-family: var(--serif); font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta {
+    font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  /* Keyboard users get a visible, on-brand focus ring everywhere. */
+  :focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 3px; }
+  /* Anchor jumps (#map, #sources) must not land under the sticky bar. */
+  .map-section, .footer { scroll-margin-top: 84px; }
+  /* Hero stat labels wrap unevenly on narrow screens; give them a common height. */
+  .stat-label { min-height: 2.6em; }
+  .legend-star { color: var(--ink); opacity: .7; font-size: 12px; margin-right: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  }
+  /* Printing a county's ballot prints the drawer, not the hero and an empty map. */
+  @media print {
+    .topbar, .hero, .map-section, .panel-overlay, .panel-close, .brief-more { display: none !important; }
+    .panel { position: static; width: auto; transform: none; visibility: visible; box-shadow: none; }
+    .panel-body { overflow: visible; }
+    .election-detail { grid-template-rows: 1fr; }
+    .election-detail > div { visibility: visible; }
+    .election-brief.clamped .brief-body { max-height: none; -webkit-mask-image: none; mask-image: none; }
+  }
+  @media (max-width: 900px) {
+    .topbar-inner { grid-template-columns: 1fr auto; }
+    .topnav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { grid-template-columns: auto 1fr; padding: 12px 16px; }
+    .brand-text { display: none; }
+    .other-states { padding: 6px 10px; font-size: 11px; }
+    .hero { padding: 56px 24px 32px; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px 8px; }
+    .map-section { padding: 16px 16px 60px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .panel { width: 100%; }
+    .panel-header { padding: 18px 22px; }
+    .panel-close { width: 44px; height: 44px; }
+    .election-card, .group-header { padding-left: 22px; padding-right: 22px; }
+    .voices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     TOP BAR
+     ============================================= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="nav-left">
+      <a href="index.html" class="other-states" title="Browse other states">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Other States
+      </a>
+    </div>
+    <a href="#" class="brand">
+      <div class="crest">AK</div>
+      <div class="brand-text">
+        <span class="brand-name">Alaska Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+    <nav class="topnav">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+      <a href="#sources">Sources</a>
+    </nav>
+  </div>
+</header>
+
+<!-- =============================================
+     HERO
+     ============================================= -->
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> 2024 – 2028 Election Cycle</div>
+  <h1 class="hero-title">Every Alaska <em>election</em>, in one place.</h1>
+  <p class="hero-lede">
+    A borough-by-borough guide to the races that have shaped — and will shape — our state.
+    Click any of the 29 boroughs to see what's on the ballot, who's running, and what voters,
+    supporters, and opponents are saying.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">29</div><div class="stat-label">Boroughs</div></div>
+    <div class="stat"><div class="stat-num"><em>1</em></div><div class="stat-label">U.S. House Seat</div></div>
+    <div class="stat"><div class="stat-num"><em id="stat-statewide">–</em></div><div class="stat-label">Statewide Races, Nov&nbsp;3</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Civic Power</div></div>
+  </div>
+</section>
+
+<!-- =============================================
+     INTERACTIVE MAP
+     ============================================= -->
+<section id="map" class="map-section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Click a borough to <em>begin</em>.</h2>
+      <p class="section-sub">
+        Tap or click any county to open its full ballot — every race, every candidate, and what
+        supporters and opponents say. On a desktop, hover for a quick preview.
+      </p>
+    </div>
+    <div class="legend">
+      <span class="legend-swatch"><i style="background:#E8D9B8;border-color:#B8893C"></i> Every county is clickable</span>
+      <span class="legend-swatch"><i class="legend-star">★</i> State capital</span>
+    </div>
+  </div>
+
+  <div class="map-shell">
+    <div class="map-frame">
+      <div class="map-loading" id="map-loading">Loading map of Alaska…</div>
+      <svg id="akmap" viewBox="0 0 1000 562" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PANEL (details drawer)
+     ============================================= -->
+<div class="panel-overlay" id="overlay"></div>
+<aside class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title" aria-hidden="true">
+  <div class="panel-header">
+    <div>
+      <div class="panel-eyebrow" id="panel-eyebrow">Borough</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-subtitle" id="panel-subtitle"></div>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- =============================================
+     FOOTER
+     ============================================= -->
+<footer class="footer" id="about">
+  <div class="footer-inner">
+    <div class="footer-crest">
+      <strong>AK Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
+    </div>
+    <div class="footer-meta" id="sources">
+      Last updated: <span id="last-updated">September 4, 2026</span><br>
+      Sources: Alaska Division of Elections (elections.alaska.gov) — the CERTIFIED Aug 18, 2026 Election Summary Report (OFFICIAL RESULTS, Aug 31, 2026), the 2026 general-election candidate list, the Official Election Pamphlet candidate statements, and the 2020/2022/2024 RCV Detailed Reports; Alaska Judicial Council retention evaluations; Office of the Lieutenant Governor; Alaska Public Offices Commission and FEC filings as reported; U.S. Census Bureau 2020 county-equivalent files; Alaska Department of Labor population estimates; Alaska Beacon, Anchorage Daily News, Alaska Public Media, KTOO, The Alaska Current and Alaska Landmine.</div>
+  </div>
+</footer>
+
+<!-- =============================================
+     LIBRARIES
+     ============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0"></script>
+
+<!-- =============================================
+     DATA LAYER
+     Three pieces feed the panel:
+       (1) COUNTIES       — every AK county (all in the single at-large district)
+       (2) STATEWIDE      — races every county votes in (gov, senate, etc.)
+       (3) HOUSE_RACES    — US House race per district
+     Each county's election list is built by combining (2) + the right item from (3).
+     ============================================= -->
+<script>
+// ----- (1) Borough / census area + the U.S. House district (Alaska has exactly one) -----
+// ⚠ ALASKA HAS ONE AT-LARGE U.S. HOUSE SEAT, so every place below carries d:1 and no place
+// can be split. There is no county->district lookup to get wrong here, and no `ds` anywhere.
+//
+// ⚠⚠ ALASKA HAS NO COUNTIES. It has 19 ORGANIZED BOROUGHS (some of them unified
+// city-and-boroughs or municipalities) plus, covering the entire rest of the state, the
+// UNORGANIZED BOROUGH, which the Census Bureau divides into CENSUS AREAS purely for
+// statistics. A census area has no local government at all. Names below are the official
+// Census NAMELSAD, so each already carries its own designation and placeLabel appends nothing.
+//
+// ⚠⚠ THE MAP'S GEOMETRY IS PRE-2019 AND THIS PAGE SAYS SO RATHER THAN PRETENDING OTHERWISE.
+// The site draws from us-atlas@3 `counties-10m.json`, which carries 29 Alaska units and still
+// contains VALDEZ-CORDOVA CENSUS AREA (02261). Alaska split that area on Jan 2, 2019 into
+// CHUGACH (02063) and COPPER RIVER (02066), so 2020-vintage Census geography has 30 units, not
+// 29 — verified in the Census Bureau's own county-to-congressional-district file, which lists
+// Chugach and Copper River and no Valdez-Cordova. The atlas has not been rebuilt on the newer
+// vintage. Because the shapes are what the browser draws, the table below MUST match the atlas;
+// 02261 is therefore kept and labelled with what it has since become. Nothing here depends on
+// the distinction — the whole state votes one at-large ballot — but the label should not lie.
+//
+// ⚠ These are NOT election districts. Alaska administers elections through 40 state House
+// districts and four regional election offices, not through boroughs. The map is a way to find
+// your place on it, not a ballot boundary.
+const COUNTIES = {
+  "02013":{n:"Aleutians East Borough",d:1},
+  "02016":{n:"Aleutians West Census Area",d:1},
+  "02020":{n:"Anchorage Municipality",d:1},
+  "02050":{n:"Bethel Census Area",d:1},
+  "02060":{n:"Bristol Bay Borough",d:1},
+  "02068":{n:"Denali Borough",d:1},
+  "02070":{n:"Dillingham Census Area",d:1},
+  "02090":{n:"Fairbanks North Star Borough",d:1},
+  "02100":{n:"Haines Borough",d:1},
+  "02105":{n:"Hoonah-Angoon Census Area",d:1},
+  "02110":{n:"Juneau City and Borough",d:1},
+  "02122":{n:"Kenai Peninsula Borough",d:1},
+  "02130":{n:"Ketchikan Gateway Borough",d:1},
+  "02150":{n:"Kodiak Island Borough",d:1},
+  "02158":{n:"Kusilvak Census Area",d:1},
+  "02164":{n:"Lake and Peninsula Borough",d:1},
+  "02170":{n:"Matanuska-Susitna Borough",d:1},
+  "02180":{n:"Nome Census Area",d:1},
+  "02185":{n:"North Slope Borough",d:1},
+  "02188":{n:"Northwest Arctic Borough",d:1},
+  "02195":{n:"Petersburg Borough",d:1},
+  "02198":{n:"Prince of Wales-Hyder Census Area",d:1},
+  "02220":{n:"Sitka City and Borough",d:1},
+  "02230":{n:"Skagway Municipality",d:1},
+  "02240":{n:"Southeast Fairbanks Census Area",d:1},
+  "02261":{n:"Valdez-Cordova Census Area (split in 2019 into Chugach and Copper River)",d:1},
+  "02275":{n:"Wrangell City and Borough",d:1},
+  "02282":{n:"Yakutat City and Borough",d:1},
+  "02290":{n:"Yukon-Koyukuk Census Area",d:1}
+};
+
+// ----- (2) STATEWIDE — races every Alaskan votes in -----
+// ⚠ ALASKA'S BALLOT IS SHORT BY DESIGN. The attorney general is APPOINTED, there is no elected
+// secretary of state (the lieutenant governor does that job), and there is no elected treasurer,
+// auditor or education superintendent. So the statewide ballot is: U.S. Senate, the Governor and
+// Lieutenant Governor ticket, two citizen initiatives, and ONE judicial retention.
+// ⚠ TOP-FOUR OPEN PRIMARY + RANKED-CHOICE GENERAL. One primary for everyone; the top four
+// advance; November is counted by ranked choice. Election night publishes FIRST CHOICES ONLY —
+// the RCV rounds follow the final count, so a close race is not settled on the night.
+// ⚠ AS 15.25.100: if an advancing candidate withdraws 64 or more days before the general, the
+// next finisher is elevated. That fired THREE times in 2026 — once in the Senate race and, in
+// the U.S. House race, four times over, putting the EIGHTH-place finisher on the ballot.
+const STATEWIDE = [
+  // ─────────────────────────── UPCOMING ───────────────────────────
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · Statewide", office: "U.S. Senator from Alaska (Class 2)",
+    note: "A TOP-FOUR FIELD WITH TWO DAN SULLIVANS ON IT — AND A FOURTH CANDIDATE WHO FINISHED FIFTH. ✅ Mary Peltola led the certified Aug 18 primary with 49.54% to two-term Sen. Dan Sullivan's 41.40%. ✅ Fourth-place Democrat David Leslie withdrew on Sept 1, the deadline; under AS 15.25.100 the fifth-place finisher, Republican Gerald Heikes, took the slot. ⚠ Daniel J. Sullivan Jr. of Petersburg shares the incumbent's name and party label; the Alaska Supreme Court ordered him onto the ballot on June 29, and Republicans call him a spoiler — he denies it. ⚠ Election night reports FIRST CHOICES ONLY. The ranked-choice rounds follow the final count, so the winner may not be known until about Nov 18. ✅ RCV governs this election whatever happens to Ballot Measure 2, which is on the same ballot.",
+    candidates: [
+      { name: "Mary Peltola", party: "D", winner: false,
+        positions: [
+          "Cut the cost of energy, freight, childcare and housing",
+          "Back ANWR and NPR-A oil and gas, with fishermen at the table",
+          "Term limits, a congressional stock-trading ban, overturn Citizens United"],
+        differentiators: [
+          "Held this state's U.S. House seat from the 2022 special until 2025 — the first Alaska Native ever elected to Congress — and lost it to Begich in 2024",
+          "Raised $6.9M in the second quarter of 2026 and held about $6M on June 30, outraising Sullivan's own committee",
+          "Endorsed by the Alaska AFL-CIO and the American Federation of Government Employees"],
+        supporters: [
+          "Her 'fish, family and freedom' record shows she breaks with national Democrats when Alaska's interests diverge",
+          "She pushed Willow through and wrote an ANWR bill, so resource development and fisheries protection are not opposites for her",
+          "Record Alaska fundraising and organized labor behind her point to real statewide reach"],
+        opponents: [
+          "She co-sponsored the Alaska's Right to Produce Act and then urged House Democrats to vote it down, which critics read as having it both ways",
+          "Sullivan's campaign argues that once in Washington she votes with Democratic leadership",
+          "She already lost statewide in 2024, so the 2022 results may not repeat [Verify — structural argument]"] },
+      { name: "Dan Sullivan (incumbent)", party: "R", winner: false,
+        positions: [
+          "Unleash Alaska energy — ANWR, Willow, Alaska LNG, the Ambler Road",
+          "Extend the tax cuts and back the administration's agenda",
+          "More military, Coast Guard and icebreaker presence in Alaska"],
+        differentiators: [
+          "Two-term senator and retired Marine colonel; chairs the Armed Services readiness and Commerce Coast Guard subcommittees",
+          "Raised about $2M in the second quarter of 2026 and held over $8M on June 30 — a large cash edge even while being outraised",
+          "President Trump said on Sept 2 that he will campaign for him in Alaska in the closing 30 days"],
+        supporters: [
+          "His subcommittee gavels turn directly into Alaska military construction, icebreakers and base investment",
+          "He delivered the permitting and leasing decisions the resource economy runs on",
+          "Cash on hand and a promised presidential visit are real closing-stretch advantages"],
+        opponents: [
+          "He voted for the reconciliation law critics say cut Medicaid and squeezed Alaska hospitals and clinics; he calls that fearmongering",
+          "A sitting senator finishing second in his own primary's first-choice count is a warning sign [Verify — structural argument]",
+          "Critics say he has traded independent Alaska judgment for loyalty to the administration"] },
+      { name: "Daniel J. Sullivan Jr.", party: "R", winner: false,
+        positions: [
+          "Affordable housing, better health-care access, a lower cost of living",
+          "Use tariffs strategically rather than broadly — the current ones raised prices",
+          "Keep ranked-choice voting and the open primary"],
+        differentiators: [
+          "A Petersburg resident who spent about 15 years with the U.S. Forest Service ⚠ some national outlets instead describe him as a retired schoolteacher [Verify — the sources conflict and both may be true in sequence]",
+          "Was an Alaskan Independence Party member and joined the Republicans after that party dissolved",
+          "The Alaska Supreme Court ordered him onto the ballot on June 29, 2026, holding the Division of Elections could not add a 'good faith' eligibility test the constitution does not contain"],
+        supporters: [
+          "A court twice held he meets every lawful qualification, and keeping him off would have let officials invent eligibility rules",
+          "He gives Republicans dissatisfied with the incumbent an alternative without crossing party lines",
+          "He opposed the federal cuts that cost Alaska fisheries science and staffing"],
+        opponents: [
+          "The incumbent and Republican groups say a near-identical name and the same party label are there to confuse voters",
+          "Republicans call him a spoiler and a reported inquiry examined possible coordination with Peltola, which both deny [Verify — reported in a summary source; no named Alaska outlet confirmed the detail]",
+          "He drew under 3% and has negligible campaign infrastructure"] },
+      { name: "Gerald L. Heikes", party: "R", winner: false,
+        positions: [
+          "Strongly opposes abortion, and was promoted as being to the incumbent's right on it",
+          "[Verify] No campaign website or platform statement could be located",
+          "[Verify] No further published positions could be located"],
+        differentiators: [
+          "A Palmer Republican and repeat candidate who also ran for Alaska's at-large U.S. House seat in 2020 and 2024",
+          "Finished FIFTH, 109 votes behind David Leslie, and reached the ballot only when Leslie withdrew on Sept 1 under AS 15.25.100",
+          "A super PAC, Right for Alaska, spent over $1M boosting him; a disclosed funder is William Harris of Lexington, Massachusetts, a prolific donor to Democrats who support abortion rights"],
+        supporters: [
+          "Anti-abortion conservatives get a candidate to the incumbent's right on the ballot",
+          "Ranked-choice voting lets a voter rank him first without wasting the vote, because it transfers",
+          "No organized supporter case for his candidacy could be located [Verify — an absence of located records]"],
+        opponents: [
+          "The money that elevated him came from a super PAC whose funding does not match its stated conservative purpose",
+          "Repeated unsuccessful candidacies and no evident campaign organization [Verify — structural argument]",
+          "He is on the ballot by operation of a withdrawal rule rather than by finishing in the top four"] }
+    ] },
+  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Governor of Alaska (OPEN SEAT)",
+    note: "OPEN SEAT, AND THE NOVEMBER BALLOT WAS NOT SETTLED UNTIL THE LAST DAY. ⚠ Mike Dunleavy is term-limited. Jonathan Kreiss-Tomkins led the Aug 18 top-four primary with 22.5%; runner-up Tom Begich (20.8%) — a former state Senate minority leader, and the uncle of Republican U.S. Rep. Nick Begich III — WITHDREW on Aug 28 and endorsed him, leaving one Democrat against three Republicans under ranked-choice voting. ⚠ Former attorney general Treg Taylor, fifth at 7.3%, was DENIED CERTIFICATION after the Alaska Public Offices Commission voted 4-1 that his financial disclosure did not substantially comply; his running mate Candi English moved up to the governor's line with Taylor's wife Jodi Taylor as hers — and Jodi Taylor's disclosure carries the same defect. ✅ Sabato's Crystal Ball moved the race to Toss-up in early September. ⚠ Governor and Lieutenant Governor are nominated separately but run as ONE TICKET in November — the Division of Elections prints them jointly.",
+    candidates: [
+      { name: "Jonathan Kreiss-Tomkins / Zac Johnson", party: "D", winner: false,
+        positions: [
+          "Fully fund schools and forward-fund education by constitutional amendment",
+          "A moratorium on new data centers until Alaska regulates AI",
+          "Make every oil and gas producer pay the state corporate income tax"],
+        differentiators: [
+          "Ten years in the Alaska House for Sitka and southeast Alaska; chaired House State Affairs for six of them; first elected at 23 by 32 votes",
+          "The field's top fundraiser at $1.8M in the mid-July APOC report — but over 75% of it from outside Alaska, including $372,000 from six Anthropic employees ⚠ reported as over $2M by late August [Verify — no as-of date given]",
+          "The Division of Elections prints this ticket as “Registered Democrat / Nonpartisan” — running mate Zac Johnson, an Anchorage Assembly member, Marine infantry veteran and former state pilot, is registered Nonpartisan"],
+        supporters: [
+          "Ten years winning a district Trump carried, with crossover Republican support, is evidence he can win statewide",
+          "He wrote a bipartisan elections bill with Republican Mike Shower and chaired a cross-ideological fiscal working group, so he can govern with a Republican-leaning legislature",
+          "One Democrat against three Republicans is a real structural edge under ranked-choice voting"],
+        opponents: [
+          "His money is overwhelmingly from Outside — the largest single in-state gift was $7,000 — which raises the question of who he answers to",
+          "Taking large sums from AI-company employees while proposing to regulate AI is a conflict, critics say",
+          "He has never run a large organization, and the governor oversees a workforce of roughly 15,000"] },
+      { name: "Bernadette Wilson / Mike Shower", party: "R", winner: false,
+        positions: [
+          "Pay the full statutory Permanent Fund Dividend — follow the formula in law",
+          "School choice through education savings accounts and backpack funding",
+          "No new taxes; zero-based budgeting and a spending cap instead of new revenue"],
+        differentiators: [
+          "Has never held elected office; owns Denali Disposal, an Anchorage garbage-hauling company",
+          "About $910,000 raised through the pre-primary APOC report — the most individual donors in the field, but only third-most with Alaska addresses, and roughly 60% of the dollars from outside the state",
+          "Endorsed by U.S. Rep. Nick Begich III and U.S. Rep. Byron Donalds ⚠ also reported as endorsed by Sen. Marsha Blackburn [Verify — sourced only to a partisan-leaning outlet]. Running mate: Mike Shower, a former state senator and Senate minority leader who resigned in Nov 2025 to campaign full time"],
+        supporters: [
+          "She was the top Republican vote-getter on Aug 18 and has the clearest claim to consolidate the party's vote",
+          "An owner-operator who has never worked for government speaks to voters who think the state has stagnated",
+          "National conservative validators suggest she can compete on money and message statewide"],
+        opponents: [
+          "Sons of former Gov. Wally Hickel, her great-uncle, publicly objected that her use of his legacy misrepresents his politics",
+          "A fuel supplier won a default judgment against her business after she did not respond, and the state garnished her dividends for two years",
+          "She took 10% in the primary and has no governing record against a budget above $12 billion [Verify — structural argument]"] },
+      { name: "Dave Bronson / Josh Church", party: "R", winner: false,
+        positions: [
+          "Chase higher Permanent Fund investment returns to pay a full statutory dividend",
+          "Build Alaska LNG and expand Cook Inlet drilling, importing LNG in the meantime",
+          "Restrict industrial trawl bycatch and manage fisheries for Alaskans"],
+        differentiators: [
+          "Mayor of Anchorage from 2021 to 2024, and lost re-election with nearly 48%",
+          "Secured roughly $200M for the Don Young Port of Alaska and handed project management to an outside engineering firm",
+          "About $350,000 raised through the pre-primary report — the smallest war chest of the four. Running mate: Josh Church, a Fairbanks financial adviser who has not held elected office"],
+        supporters: [
+          "The only candidate who has actually run a large government, and in a genuinely hostile political environment",
+          "He produced a concrete result at the Port after years of drift",
+          "He refused mask and vaccine mandates during COVID, which is a credential with the Republican base"],
+        opponents: [
+          "His health director fabricated much of a résumé that his own HR never verified — critics call that a management failure",
+          "His homeless navigation center collapsed mid-construction during a fight with the Assembly; he blames the Assembly and critics blame him",
+          "Fellow Republicans asked him to withdraw to avoid splitting the party's vote and he refused"] },
+      { name: "Candi English / Jodi Taylor", party: "R", winner: false,
+        positions: [
+          "Pro-resource-development — keep Alaska open for business [Verify — campaign framing; no standalone platform document located]",
+          "Alaska-funded campaigns rather than Outside money; she cites 94% in-state contributions [Verify — the candidate's own claim]",
+          "[Verify] She has no gubernatorial platform of her own — she campaigned as Treg Taylor's running mate and inherited the ticket's conservative posture"],
+        differentiators: [
+          "Founder and owner of Northern Solutions LLC, an Anchorage and Deadhorse machine shop, after roughly 20 years on the North Slope with ARCO Alaska",
+          "The Taylor-English ticket raised about $1.6M through the pre-primary report, including over $600,000 Taylor self-funded and over $120,000 from English",
+          "⚠ Neither she nor running mate Jodi Taylor has held elected office, and Jodi Taylor's own disclosure carries the same defect that disqualified Treg Taylor — she has 30 days to amend or risk disqualification"],
+        supporters: [
+          "A builder and operator who created one of Alaska's larger machine shops brings private-sector competence the state government lacks",
+          "Her ticket's money came overwhelmingly from Alaskans, in contrast with the Democratic front-runner's",
+          "She keeps a ballot line for the roughly 7% of primary voters who backed the Taylor ticket, rather than letting a disqualification erase them [Verify — structural argument]"],
+        opponents: [
+          "Critics including a longtime Alaska columnist call her a placeholder who will move votes to Wilson or Bronson rather than campaign",
+          "She and her husband gave $100,000 together, above the $5,000 pre-election contribution limit, according to that reporting",
+          "Running the disqualified candidate's wife looks to critics like circumventing an enforcement action, and a legislator has asked the state to prosecute over the disclosure"] }
+    ] },
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Ballot Measure · Statewide", office: "Ballot Measures — Alaska (2 measures)",
+    note: "TWO MEASURES ARE ON THE NOVEMBER BALLOT, AND MEASURE 2 WOULD UNDO THE VERY SYSTEM THIS ELECTION IS BEING RUN UNDER. ⚠ A THIRD, Measure 1 on campaign contribution limits, is ALREADY DECIDED — it was on the AUGUST PRIMARY ballot and passed with about 71% [Verify — certified totals not retrieved]. ✅ On Aug 27, 2026 the Alaska Supreme Court called the state's ballot summary for Measure 2 'true and impartial' but ordered one addition, that Governor and Lieutenant Governor would run separately, before the Sept 2 printing deadline. ⚠ WE DO NOT QUOTE THE BALLOT TITLES HERE: the Division's own title document is a scanned image with no readable text and has been superseded by that court-ordered revision, and the General Election Ballot Measure Pamphlet is not yet posted. The plain-language descriptions below are ours, not the state's wording.",
+    candidates: [
+      { name: "Ballot Measure 2 — repeal the open primary and ranked-choice voting", party: "I", winner: false,
+        positions: [
+          "A YES vote repeals the top-four open primary and returns to party primaries, repeals ranked-choice general elections so a plurality wins, repeals the 2020 campaign-disclosure law, and splits the Governor and Lieutenant Governor back into separately elected offices",
+          "A NO vote keeps all of it: the top-four primary, the ranked-choice general, the 2020 disclosure rules and the joint ticket"],
+        differentiators: [
+          "A citizen initiative, sponsor code 24ESEG. Its sponsors include Bernadette Wilson — who is also on this ballot as a candidate for governor — along with Judy Eledge and Ken McCarty",
+          "⚠ A NEARLY IDENTICAL REPEAL FAILED IN 2024 BY 743 VOTES — 160,973 no to 160,230 yes, confirmed by the state recount completed Dec 11, 2024",
+          "⚠ Because it rewrites the governor's-race statutes, it would also undo the new Measure 1 contribution limits as they apply to candidates for Governor and Lieutenant Governor",
+          "⚠ It does NOT affect this election. The Aug 18 primary was already run top-four, and the November count is ranked-choice regardless of the result [Verify — the measure's own effective date could not be confirmed from a primary source]"],
+        supporters: [
+          "Repeal Now, the yes campaign, argues party primaries and a simple plurality are easier to understand and harder to manipulate than ranked ballots",
+          "Backers say the 2020 system was sold to voters and has not delivered the moderation it promised",
+          "⚠ The yes side is heavily outspent — roughly $1.1M against the no campaign's $5.75M — but its money is concentrated: a Wisconsin super PAC gave the bulk of it after receiving $1.5M from Elon Musk [Verify — figures are journalist-reported from mixed filing dates, not read from a single APOC report]"],
+        opponents: [
+          "No on 2 argues the current system produced the state's most competitive elections in years and lets voters rank a sincere first choice without wasting a vote",
+          "Opponents note the repeal would also delete the 'true source' disclosure law, which is about dark money rather than about ranked ballots",
+          "⚠ The no campaign has raised roughly $5.75M, most of it from Unite America and a Washington nonprofit — so both sides are largely funded from outside Alaska [Verify — as-of dates are mixed]"] },
+      { name: "Ballot Measure 3 — citizen-only voting language", party: "I", winner: false,
+        positions: [
+          "A YES vote rewrites AS 15.05.010 so that ONLY a United States citizen may vote in any Alaska election",
+          "A NO vote leaves the statute as it reads today: a person may vote who is a citizen of the United States"],
+        differentiators: [
+          "A citizen initiative, sponsor code 25USCV, qualified on Mar 17, 2026 with 34,944 verified signatures against a 34,098 requirement, spread across all 40 state House districts",
+          "Sponsored by Alaskans for Citizen Voting, described as an offshoot of the national Americans for Citizen Voting",
+          "⚠ Noncitizen voting is ALREADY unlawful in Alaska elections; the measure changes the wording from a permissive statement to an exclusive one [Verify — the practical legal effect of the change has not been authoritatively analyzed in a source we could locate]"],
+        supporters: [
+          "Backers say making the rule exclusive rather than permissive closes an ambiguity before any local government can act on it",
+          "Supporters point to the signature threshold being cleared in all 40 house districts as evidence of broad reach",
+          "[Verify] No detailed Alaska-specific campaign case for the measure could be located beyond the sponsor's framing"],
+        opponents: [
+          "Critics say it addresses a problem that does not exist, since noncitizens already cannot vote in Alaska",
+          "Opponents argue such measures invite added documentary-proof requirements that burden eligible voters [Verify — a general argument against this class of measure; no Alaska-specific opposition campaign was located]",
+          "[Verify] No organized Alaska opposition committee could be located"] }
+    ] },
+  { date: "Nov 3, 2026", type: "upcoming", scope: "Judicial · Statewide · Retention", office: "Judicial Retention — Alaska (1 statewide jurist)",
+    note: "ONLY ONE JUDGE APPEARS ON EVERY ALASKAN'S BALLOT — Supreme Court Justice Jude Pate. ✅ NO Court of Appeals judge stands for retention in 2026, in the Alaska Judicial Council's own words. ✅ The Council recommends YES on Pate, unanimously, in a release updated Sept 4, 2026. ⚠ TWENTY OTHER JUDGES ARE ON 2026 RETENTION BALLOTS BUT ONLY WITHIN THEIR OWN JUDICIAL DISTRICT — three in the First, one in the Second, twelve in the Third and four in the Fourth — so they are NOT carded here as statewide. ⚠ Two of those district judges carry a recommendation of NO: Kenai Superior Judge Kelly Lawson, 6-0, and Kenai District Judge Martin Fallon, 5-0 with one abstention. A third, Juneau Superior Judge Marianna Carpeneti, received NO RECOMMENDATION after the Council split three against, two for, with two abstentions.",
+    candidates: [
+      { name: "Justice Jude Pate — Alaska Supreme Court", party: "I", winner: false,
+        positions: [
+          "A YES vote retains him on the Alaska Supreme Court",
+          "A NO vote removes him and the seat is refilled through the Judicial Council's nomination process"],
+        differentiators: [
+          "Appointed to the Supreme Court on Jan 20, 2023 ⚠ by Gov. Mike Dunleavy [Verify — inferred from the appointment date; the Council's own documents do not name the appointing governor]",
+          "The Alaska Judicial Council recommends retention, and its vote was UNANIMOUS",
+          "He previously stood for retention in 2022 in an earlier Superior Court position"],
+        supporters: [
+          "The Judicial Council's evaluation — which surveys attorneys, jurors, court staff, peace officers and social workers — returned a unanimous recommendation to retain",
+          "Retention elections are designed to remove judges for demonstrated unfitness, and no such finding was made here",
+          "[Verify] No organized campaign either for or against his retention could be located"],
+        opponents: [
+          "Alaska's retention ballot is the only regular public check on an appointed judiciary, and some voters use it to register disagreement with the court's direction [Verify — a general argument; no Alaska campaign against this justice was located]",
+          "Critics of merit selection argue the Judicial Council that evaluates a judge also nominated them, which they say makes the recommendation less independent [Verify — a structural criticism of the system, not a finding about this justice]",
+          "[Verify] No organized opposition to his retention could be located"] }
+    ] },
+  // ─────────────────────────── PAST ───────────────────────────
+  // Past races keep EMPTY voices — the site's own convention (nc.html). Voices are for races
+  // a voter can still act on.
+  { date: "Aug 18, 2026", type: "past", scope: "Federal · Statewide · Primary", office: "U.S. Senate — Top-Four Open Primary",
+    note: "ALASKA RUNS ONE PRIMARY FOR EVERYONE AND THE TOP FOUR ADVANCE — so nobody here was 'nominated' and no card carries a winner's badge. ✅ Results are OFFICIAL: the Division of Elections' Election Summary Report is stamped OFFICIAL RESULTS and dated Aug 31, 2026. ⚠ THE FOURTH-PLACE FINISHER IS NOT ON THE NOVEMBER BALLOT. Democrat David Leslie withdrew on Sept 1 — the last day it was possible — saying he had faced 'much pressure' from party leadership and other institutions, and under AS 15.25.100 the Director elevated fifth-place Republican Gerald Heikes in his place.",
+    candidates: [
+      { name: "Mary Peltola", party: "D", winner: false,
+        positions: ["82,244 votes — 49.54%"],
+        differentiators: ["Led the field; advanced to the Nov 3 ranked-choice general"],
+        supporters: [], opponents: [] },
+      { name: "Dan Sullivan (incumbent)", party: "R", winner: false,
+        positions: ["68,726 votes — 41.40%"],
+        differentiators: ["Second; advanced. ⚠ In the primary results PDF the party column for the OTHER Sullivan is blank; on the general-election candidate list he is listed as 'Registered Republican'"],
+        supporters: [], opponents: [] },
+      { name: "Daniel J. Sullivan Jr.", party: "R", winner: false,
+        positions: ["4,107 votes — 2.47%"],
+        differentiators: ["Third; advanced. On the ballot by order of the Alaska Supreme Court, June 29, 2026"],
+        supporters: [], opponents: [] },
+      { name: "David B. Leslie (WITHDREW Sept 1, 2026)", party: "D", winner: false,
+        positions: ["Fourth — about 1,850 votes [Verify — derived from the reported 109-vote margin over Heikes, not read off the certified report]"],
+        differentiators: ["Advanced, then withdrew on the Sept 1 deadline; his slot passed to the fifth-place finisher"],
+        supporters: [], opponents: [] },
+      { name: "Gerald L. Heikes", party: "R", winner: false,
+        positions: ["1,741 votes — 1.05%"],
+        differentiators: ["Fifth — 109 votes short of advancing on the night, and on the November ballot anyway once Leslie withdrew"],
+        supporters: [], opponents: [] }
+    ] },
+  { date: "Aug 18, 2026", type: "past", scope: "State · Statewide · Primary", office: "Governor — Top-Four Open Primary",
+    note: "THE PRIMARY DID NOT SETTLE THIS BALLOT — TWO OF THE TOP FIVE ARE NOT THE PEOPLE WHOSE NAMES VOTERS SEE IN NOVEMBER. ⚠ Second-place Tom Begich — a former state Senate minority leader, and the UNCLE of Republican U.S. Rep. Nick Begich III — withdrew on Aug 28 and endorsed Kreiss-Tomkins. ⚠ Fifth-place Treg Taylor was denied certification after the Alaska Public Offices Commission voted 4-1 that his financial disclosure did not substantially comply, and his running mate Candi English took the governor's line instead. ⚠ Percentages below are as reported; raw vote counts for this contest are NOT carded because no certified per-candidate count could be read [Verify]. Turnout was roughly 167,000, about 27%.",
+    candidates: [
+      { name: "Jonathan Kreiss-Tomkins / Zac Johnson", party: "D", winner: false,
+        positions: ["22.5% — led the field and advanced"],
+        differentiators: ["The only Democrat on the November ballot after the runner-up withdrew and endorsed him"],
+        supporters: [], opponents: [] },
+      { name: "Tom Begich / Julia Hnilicka (WITHDREW Aug 28, 2026)", party: "D", winner: false,
+        positions: ["20.8% — second, about 26,384 votes [Verify — the count is as reported; the percentage is the firmer figure]"],
+        differentiators: ["⚠ NOT U.S. Rep. Nick Begich III, who is his NEPHEW and a Republican seeking re-election to Alaska's U.S. House seat on this same ballot. Tom Begich is a former Anchorage state senator and Senate minority leader, and a brother of former U.S. Sen. Mark Begich. He withdrew on Aug 28 and endorsed Kreiss-Tomkins"],
+        supporters: [], opponents: [] },
+      { name: "Bernadette Wilson / Mike Shower", party: "R", winner: false,
+        positions: ["10.0% — third and the leading Republican"],
+        differentiators: ["Advanced to the Nov 3 ranked-choice general"],
+        supporters: [], opponents: [] },
+      { name: "Dave Bronson / Josh Church", party: "R", winner: false,
+        positions: ["8.1% — fourth"],
+        differentiators: ["Advanced; declined Republican requests to withdraw and consolidate the party's vote"],
+        supporters: [], opponents: [] },
+      { name: "Treg Taylor / Candi English (TAYLOR DENIED CERTIFICATION, Aug 2026)", party: "R", winner: false,
+        positions: ["7.3% — fifth"],
+        differentiators: ["The former attorney general was kept off the November ballot after APOC voted 4-1 that his financial disclosure did not substantially comply; his running mate Candi English moved up to the governor's line"],
+        supporters: [], opponents: [] }
+    ] },
+  { date: "Nov 3, 2020", type: "past", scope: "Federal · Statewide", office: "U.S. Senate — 2020 General",
+    note: "THE LAST TIME THIS SEAT WAS ON THE BALLOT, AND THE LAST ONE HELD UNDER THE OLD RULES — 2020 was a partisan primary and a plurality general; ranked-choice voting and the top-four primary took effect afterwards. ✅ Certified by the Division of Elections on Nov 30, 2020. Turnout was 361,291 of 595,647 registered voters, 60.66%.",
+    candidates: [
+      { name: "Dan Sullivan (incumbent)", party: "R", winner: true,
+        positions: ["191,112 votes — 53.90%"],
+        differentiators: ["Won a second term by 12.7 points"],
+        supporters: [], opponents: [] },
+      { name: "Al Gross", party: "D", winner: false,
+        positions: ["146,068 votes — 41.19%"],
+        differentiators: ["Ran as an independent but held the Democratic nomination, so the state's own return labels him DEM"],
+        supporters: [], opponents: [] },
+      { name: "John Wayne Howe", party: "I", winner: false,
+        positions: ["16,806 votes — 4.74%"],
+        differentiators: ["Alaskan Independence Party — carded as independent because the site's party tags do not include the AIP"],
+        supporters: [], opponents: [] }
+    ] },
+];
+// ----- (3) The U.S. House race -----
+// ⚠ ALASKA HAS ONE AT-LARGE SEAT. Every borough and census area votes the same congressional
+// ballot, so there is exactly one district entry and no county-to-district lookup exists.
+const HOUSE_RACES = {
+  1: { name: "U.S. House — AK At-Large", region: "The entire state — all 29 boroughs and census areas vote the same congressional ballot",
+    races: [
+      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · At-Large",
+        note: "EIGHTH PLACE IS ON THE BALLOT. ✅ Rep. Nick Begich won the certified Aug 18 primary with 72,696 votes (44.62%) over nonpartisan Bill Hill's 53,008 (32.53%). ✅ Mary Peltola is NOT in this race — she is running for the U.S. Senate. ⚠ Then FOUR candidates quit by the 5 p.m. Aug 31 deadline: Democrats Matt Schultz (3rd), John Williams (5th) and Yaquelin Reynoso (7th), and Republican Clay Strickland (6th). Under AS 15.25.100 that lifted Democrat Eric Hafner — who is in a New York federal prison and has never visited Alaska — to third, and Libertarian Jim McDermott, who took 1.20%, to fourth. ⚠ Cook, Sabato and Inside Elections all read Likely Republican, but every one of those ratings dates to late 2025, before the primary and the withdrawals [Verify — all three sites blocked direct access; ratings read via Wikipedia]. ⚠ Ranked-choice transfers decided both 2022 and 2024 here.",
+        candidates: [
+          { name: "Nick Begich (incumbent)", party: "R", winner: false,
+            positions: [
+              "Expand oil, gas and mineral development in the NPR-A and ANWR",
+              "Make the tax cuts permanent, including no tax on tips and overtime",
+              "Raise Alaska's share of federal resource revenue from 50% to 70%"],
+            differentiators: [
+              "First-term incumbent, endorsed by President Trump on May 8, 2025; vice chair of the Natural Resources energy and mineral resources subcommittee and of the Transportation railroads subcommittee",
+              "Six bills signed into law as of Aug 19, 2026 — more than any other member — including the Alaska Native Village Municipal Lands Restoration Act and two resolutions undoing Central Yukon and ANWR coastal-plain protections",
+              "FEC committee C00792341: $5,470,446 raised and $3,119,158 on hand through July 29, 2026 — read from the FEC’s own bulk candidate-summary file rather than a news report"],
+            supporters: [
+              "He delivered concrete Alaska-specific wins in a single term, including exempting Alaska Native settlement-trust payments from SNAP eligibility calculations",
+              "Resource development is jobs and a larger state revenue share, and he has moved actual legislation on both",
+              "He won the primary outright by twelve points and holds a six-to-one cash advantage over his nearest rival"],
+            opponents: [
+              "He voted for the 2025 reconciliation bill despite its Medicaid and SNAP changes, calling it a great bill for Alaska, and on Jan 8, 2026 voted against a three-year extension of ACA subsidies that passed the House 230-196",
+              "He has held no open in-person town hall, and a February 2025 telephone forum used screened questions",
+              "State Sen. Forrest Dunbar argues the bipartisan framing is positioning while the votes track the national party almost without exception — and 55% of primary voters chose someone else"] },
+          { name: "Bill Hill", party: "I", winner: false,
+            positions: [
+              "Lower the cost of gas and groceries for working Alaskans",
+              "Ban stock trading by members of Congress and their spouses",
+              "Champion community schools and fight corruption in Washington"],
+            differentiators: [
+              "Superintendent of the Bristol Bay School District 2013-2023 and Alaska Superintendent of the Year in 2023; a commercial fisherman since 1977 and owner of Bristol Bay Brailer; Dena'ina Athabascan, and a first-time candidate for any federal office",
+              "FEC committee C00935437: $1,336,292 raised and $515,886 on hand through July 29, 2026, from the FEC’s own bulk file; the Wheel Dog PAC has spent over $2M supporting him",
+              "Endorsed by the Alaska Democratic Party on Sept 1, 2026, by more than 20 labor groups including the Alaska AFL-CIO, and by Matt Schultz, the Democrat who quit and backed him"],
+            supporters: [
+              "A nonpartisan label fits a state where roughly 60% of voters are registered unaffiliated",
+              "Rural and Alaska Native turnout plus ranked-choice transfers give him a genuine path from second place",
+              "Three Democrats cleared out of the race, consolidating the anti-Begich vote behind him"],
+            opponents: [
+              "Alaska consultants across the spectrum call him a real long shot, and he trailed by twelve points in the primary",
+              "He will not say which party he would caucus with, so voters cannot know what electing him delivers — and Republicans argue the nonpartisan label is functionally Democratic, since the state party endorsed him after he made policy commitments",
+              "The NRCC attacked his remark that some communities need to get off the sauce of oil dependency as anti-development; he says he meant diesel costs in remote villages and that he backs Alaska LNG"] },
+          { name: "Eric Hafner", party: "D", winner: false,
+            positions: [
+              "Drug-law reform and harm reduction [Verify — inferred from his own pamphlet biography, which lists no policy platform]",
+              "Indigenous sovereignty and Native rights [Verify — same source and caveat]",
+              "Labor and public education [Verify — same source and caveat]"],
+            differentiators: [
+              "⚠ HE IS INCARCERATED IN A NEW YORK FEDERAL PRISON, serving 240 months. He pleaded guilty in May 2022 in New Jersey federal court to threatening communications made with intent to extort and to conveying false bomb threats against government offices, a police department and two law firms — conduct between 2016 and 2018, per the U.S. Attorney’s own announcement",
+              "⚠ He has never lived in Alaska and, barring a pardon, could not — the Constitution requires a representative to be an inhabitant of the state when elected, and his own FEC address is a mail-forwarding box in South Dakota. ⚠ Whether he could be SEATED is settled by no ruling; that would be the House’s own judgment [Verify]",
+              "He was also on Alaska’s 2024 ballot, taking 3,417 first-choice votes (1.04%). ⚠ He is FEC-registered but appears in no financial summary at all — no receipts, no disbursements, no cash on hand"],
+            supporters: [
+              "An Anchorage judge held in an 18-page opinion that he is legally qualified to RUN, and the Alaska Supreme Court affirmed 4-1 in September 2024 ⚠ one 2026 account instead reports that the court never took the question up; the two framings conflict [Verify]",
+              "The judge reasoned that ranked-choice voting limits the harm, because a voter can simply rank him last",
+              "Ballot access should not turn on a candidate's popularity [Verify — an inference from that ruling's logic, not an argument any supporter has made]"],
+            opponents: [
+              "The Alaska Democratic Party sued to remove him in 2024, and its then-executive director called the precedent extremely dangerous",
+              "He could not take the seat if elected, so a first-choice vote for him is functionally spent",
+              "His Democrat label risks misleading voters into thinking he is the party’s candidate — it sued to remove him in 2024 and has endorsed Bill Hill. ⚠ In both cycles his candidacy has been amplified by opponents of the Democratic-aligned candidate: openly by the NRCC in 2024, and in August 2026 by an unidentified group texting Alaska voters without the required disclosures"] },
+          { name: "James C. \"Jim\" McDermott", party: "L", winner: false,
+            positions: [
+              "Small government, and an end to IRS intimidation tactics against taxpayers",
+              "At least half of Permanent Fund payouts must go to Alaskans, not to government",
+              "A strong national defense, but no nation-building abroad"],
+            differentiators: [
+              "A retired Air Force master sergeant of 22 and a half years, later a business instructor at the University of Alaska Fairbanks and director of its Small Business Development Center; 35 years in Alaska and in Fairbanks since 2006. ⚠ His pamphlet lists exactly one public position: election commissioner with the Alaska Public Offices Commission",
+              "This is his FOURTH run for this seat, improving each time: 5.2% in 2012, 7.6% in 2014 and about 10.3% in a three-way 2016 general ⚠ his own site says 10.4% [Verify — the pre-2020 result files are no longer posted]. Endorsed by the Alaska Libertarian Party",
+              "⚠ He reached the November ballot from EIGHTH place on 1.20% — the lowest primary share of any Alaska general-election House candidate under the top-four system [Verify — no source states this superlative; it follows from the 2022 and 2024 results]"],
+            supporters: [
+              "Besides the incumbent, he is the only candidate on this ballot who unambiguously lives in Alaska, with 35 years here and deep Fairbanks roots",
+              "His past showings above 10% suggest a genuine constituency for a limited-government option",
+              "He pledges not to seek a third term, and says he left the Republican party over the Patriot Act and the NDAA — a long civil-liberties record rather than a flag of convenience"],
+            opponents: [
+              "He is on the ballot only because four higher finishers quit, and 98.8% of primary voters chose someone else",
+              "He is FEC-registered but appears in no financial summary — no reported receipts at all — against opponents holding $3.1M and $516,000",
+              "Critics of the top-four design say a cascade like this lets parties engineer the general-election field rather than letting voters choose it [Verify — reported as a general criticism of the system; no named critic made it about him]. He learned he had qualified from a reporter, and was tutoring at Fort Wainwright the next morning"] }
+        ] },
+      { date: "Aug 18, 2026", type: "past", scope: "Federal · At-Large · Primary", office: "U.S. House — Top-Four Open Primary",
+        note: "THE PRIMARY PUT FOUR PEOPLE THROUGH AND HALF OF THEM ARE NOT ON THE NOVEMBER BALLOT. ✅ Official results, Aug 31, 2026: 162,932 votes across 401 of 403 precincts. ⚠ Matt Schultz suspended his campaign on July 17 citing national Republican meddling and endorsed Bill Hill; Clay Strickland, John Williams and Yaquelin Reynoso all withdrew by the 5 p.m. Aug 31 deadline — 64 days before the election, the last moment AS 15.25.100 allows a replacement. ⚠ Nobody is 'nominated' in this system and no card carries a winner's badge; the top four simply advance.",
+        candidates: [
+          { name: "Nick Begich (incumbent)", party: "R", winner: false,
+            positions: ["72,696 votes — 44.62%"],
+            differentiators: ["Led the field and advanced"], supporters: [], opponents: [] },
+          { name: "Bill Hill", party: "I", winner: false,
+            positions: ["53,008 votes — 32.53%"],
+            differentiators: ["Second; advanced. Listed by the Division of Elections as Nonpartisan"], supporters: [], opponents: [] },
+          { name: "Matt Schultz (WITHDREW)", party: "D", winner: false,
+            positions: ["13,149 votes — 8.07%"],
+            differentiators: ["Third; suspended his campaign July 17, 2026 and endorsed Bill Hill, then withdrew before the deadline"], supporters: [], opponents: [] },
+          { name: "Eric Hafner", party: "D", winner: false,
+            positions: ["6,175 votes — 3.79%"],
+            differentiators: ["Fourth; advanced, and remains on the November ballot"], supporters: [], opponents: [] },
+          { name: "John B. Williams (WITHDREW Aug 31, 2026)", party: "D", winner: false,
+            positions: ["4,413 votes — 2.71%"],
+            differentiators: ["Fifth; withdrew on the morning of the deadline"], supporters: [], opponents: [] },
+          { name: "Clay Strickland (WITHDREW)", party: "R", winner: false,
+            positions: ["3,681 votes — 2.26%"],
+            differentiators: ["Sixth; withdrew before Aug 31"], supporters: [], opponents: [] },
+          { name: "Yaquelin Reynoso (WITHDREW Aug 31, 2026)", party: "D", winner: false,
+            positions: ["2,928 votes — 1.80%"],
+            differentiators: ["Seventh; withdrew before the 5 p.m. deadline"], supporters: [], opponents: [] },
+          { name: "James C. \"Jim\" McDermott", party: "L", winner: false,
+            positions: ["1,951 votes — 1.20%"],
+            differentiators: ["Eighth — and on the November ballot, because four candidates ahead of him withdrew"], supporters: [], opponents: [] }
+        ] },
+      { date: "Nov 5, 2024", type: "past", scope: "Federal · At-Large", office: "U.S. House — 2024 General",
+        note: "THE RANKED-CHOICE ROUNDS DECIDED IT, AND THEY BROKE FOR BEGICH. ✅ Official results, Nov 30, 2024. First choices: Begich 159,777 (48.49%), Peltola 152,948 (46.42%), John Wayne Howe 13,210 (4.01%), Eric Hafner 3,558 (1.08%). Hafner was eliminated first; when Howe went out, his ballots split 4,817 to Begich and 2,724 to Peltola — enough to settle it. ⚠ Nobody won a first-choice majority, which is exactly the situation ranked-choice voting exists to resolve, and which Ballot Measure 2 would end.",
+        candidates: [
+          { name: "Nick Begich", party: "R", winner: true,
+            positions: ["Round 3: 164,861 votes — 51.22%"],
+            differentiators: ["Won on the third round after starting 2.07 points ahead on first choices"], supporters: [], opponents: [] },
+          { name: "Mary Peltola (incumbent)", party: "D", winner: false,
+            positions: ["Round 3: 156,985 votes — 48.78%"],
+            differentiators: ["Lost the seat she had held since the 2022 special election"], supporters: [], opponents: [] },
+          { name: "John Wayne Howe", party: "I", winner: false,
+            positions: ["Round 1: 13,210 votes — 4.01%"],
+            differentiators: ["Alaskan Independence Party; eliminated in round 2, and his transfers decided the race"], supporters: [], opponents: [] }
+        ] },
+      { date: "Nov 8, 2022", type: "past", scope: "Federal · At-Large", office: "U.S. House — 2022 General",
+        note: "THE OTHER DIRECTION — THE SAME SYSTEM, AND A DEMOCRAT WON. ✅ Official results, Nov 30, 2022. First choices: Peltola 128,755 (48.66%), Sarah Palin 68,330 (25.82%), Nick Begich 62,505 (23.62%), Chris Bye 4,999 (1.89%). ✅ Peltola finished the final round at 137,263 (54.96%) to Palin's 112,471 (45.04%). ⚠ She had already won the Aug 16, 2022 SPECIAL election for the remainder of Don Young's term, 51.48% to 48.52%, after Begich was eliminated and his ballots split toward Palin.",
+        candidates: [
+          { name: "Mary Peltola", party: "D", winner: true,
+            positions: ["Final round: 137,263 votes — 54.96%"],
+            differentiators: ["The first Alaska Native elected to Congress, and the first Democrat to hold this seat since 1973"], supporters: [], opponents: [] },
+          { name: "Sarah Palin", party: "R", winner: false,
+            positions: ["Final round: 112,471 votes — 45.04%"],
+            differentiators: ["The former governor lost the same seat twice in one year, in the August special and again in November"], supporters: [], opponents: [] },
+          { name: "Nick Begich", party: "R", winner: false,
+            positions: ["Round 1: 62,505 votes — 23.62%"],
+            differentiators: ["Eliminated before the final round in both 2022 contests, then won the seat outright in 2024"], supporters: [], opponents: [] }
+        ] }
+    ] }
+};
+
+const SITE_META = { name: "Alaska Elections Hub", lastUpdated: "September 4, 2026" };
+
+// ----- County-level LOCAL races (the down-ballot depth project) -----
+// Sources: (none yet — Alaska county-level down-ballot research has not started.)
+const LOCAL_RACES = {
+  // County-level down-ballot research for Alaska has not started yet.
+  // Follow the nc.html pattern (New Hanover, "37129") when it does.
+};
+
+
+// ---- Draw a muted capital-city marker (star + label) at projected [lng,lat] ----
+function drawCapital(g, projection, cap) {
+  const pt = projection([cap.lng, cap.lat]);
+  if (!pt) return;
+  const [x, y] = pt;
+  // five-point star path centered at origin, radius ~6
+  const star = (cx, cy, r) => {
+    let pts = [];
+    for (let i = 0; i < 10; i++) {
+      const ang = (Math.PI / 5) * i - Math.PI / 2;
+      const rad = i % 2 === 0 ? r : r * 0.42;
+      pts.push([cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad]);
+    }
+    return "M" + pts.map(p => p.join(",")).join("L") + "Z";
+  };
+  const grp = g.append("g").attr("class", "capital-marker");
+  grp.append("path").attr("class", "capital-star").attr("d", star(0, 0, 6.5));
+  grp.append("text").attr("class", "capital-label").attr("x", 10).attr("y", 3).text(cap.name);
+  // Constant on-screen size: scale the marker by viewBox-units-per-CSS-pixel, and again on resize.
+  const svgEl = g.node().ownerSVGElement;
+  const fit = () => {
+    const k = svgEl.viewBox.baseVal.width / Math.max(1, svgEl.getBoundingClientRect().width);
+    grp.attr("transform", `translate(${x},${y}) scale(${k})`);
+  };
+  fit();
+  window.addEventListener("resize", fit);
+}
+
+
+// ----- Build per-county election list -----
+// Order: upcoming → scheduled → past (per user request)
+function getCountyElections(fips) {
+  const county = COUNTIES[fips];
+  if (!county) return null;
+  const district = HOUSE_RACES[county.d];
+  // Counties shared by several districts carry a `ds` list; surface ALL of them. Without this,
+  // a split-county voter sees only their plurality district's race, and a district that is the
+  // plurality of NO county is unreachable entirely (lesson #12). Harmless where no county
+  // carries `ds` — it falls back to [county.d].
+  const districtNums = county.ds && county.ds.length ? county.ds : [county.d];
+  // House race entries store their office name on the parent district object,
+  // so attach it (plus a scope label) to every race so each seat renders with a clear title.
+  const houseRaces = districtNums.flatMap(dn => {
+    const dObj = HOUSE_RACES[dn];
+    if (!dObj) return [];
+    return dObj.races.map(r => ({
+      ...r,
+      office: r.office || dObj.name,
+      scope: r.scope || `Federal · District ${dn}`
+    }));
+  });
+  const localRaces = LOCAL_RACES[fips] || [];
+  // Combine statewide + this county's House races + local races
+  const all = [...STATEWIDE, ...houseRaces, ...localRaces];
+  const order = { upcoming: 0, scheduled: 1, past: 2 };
+  all.sort((a, b) => {
+    const t = order[a.type] - order[b.type];
+    if (t !== 0) return t;
+    // Within type: newest first for past, soonest first for upcoming
+    if (a.type === "past") return new Date(b.date) - new Date(a.date);
+    return new Date(a.date) - new Date(b.date);
+  });
+  return { county, district, elections: all };
+}
+</script>
+
+<!-- =============================================
+     RENDERING LOGIC
+     ============================================= -->
+<script>
+const AK_STATE_FIPS = "02";
+const TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
+
+if (typeof d3 === "undefined" || typeof topojson === "undefined" || typeof d3.json !== "function") {
+  document.getElementById("map-loading").innerHTML = "The interactive map didn\u2019t load \u2014 a script it needs was blocked. <button type=\"button\" class=\"brief-more\" onclick=\"location.reload()\">Try again</button>";
+  document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+  document.getElementById("stat-statewide").textContent = STATEWIDE.filter(r => r.type === "upcoming").length;
+  throw new Error("map libraries did not load");
+}
+const svg = d3.select("#akmap");
+const tooltip = document.getElementById("tooltip");
+const panel   = document.getElementById("panel");
+const overlay = document.getElementById("overlay");
+const loading = document.getElementById("map-loading");
+const UNIT = "Borough";
+
+document.getElementById("last-updated").textContent = SITE_META.lastUpdated;
+document.getElementById("stat-statewide").textContent = STATEWIDE.filter(r => r.type === "upcoming").length;
+
+// "Richmond City County" and "Baltimore City County" are not places. Independent cities and
+// Louisiana parishes get the right word; two real Virginia counties happen to end in "City".
+// ⚠ ALASKA'S PLACE NAMES ALREADY CARRY THEIR OWN DESIGNATION, so nothing is appended here.
+// COUNTIES stores the official Census NAMELSAD — "Aleutians East Borough", "Bethel Census Area",
+// "Juneau City and Borough", "Anchorage Municipality" — because Alaska mixes ORGANIZED BOROUGHS
+// with CENSUS AREAS of the Unorganized Borough, and no single noun is right for both. Appending
+// UNIT the way every other page does would produce "Bethel Census Area Borough". UNIT is still
+// set, because the drawer eyebrow and the not-in-dataset message use it.
+const placeLabel = (c) => c.n;
+// Hovering re-sorted every race on every pointer move; the answer never changes per county.
+const electionsCache = new Map();
+const countyElections = (fips) => { if (!electionsCache.has(fips)) electionsCache.set(fips, getCountyElections(fips)); return electionsCache.get(fips); };
+const HOVER = window.matchMedia && window.matchMedia("(hover: hover)").matches;
+
+loadMap();
+
+function loadMap() {
+d3.json(TOPO_URL).then((us) => {
+  const allCounties = topojson.feature(us, us.objects.counties).features;
+  const ncCounties  = allCounties.filter(d => String(d.id).startsWith(AK_STATE_FIPS));
+
+  // Read the drawing size from the SVG's own viewBox, so the state's shape lives in one place.
+  const { width, height } = (() => { const vb = svg.node().viewBox.baseVal; return { width: vb.width || 1000, height: vb.height || 1000 }; })();
+
+  // A conic equal-area CENTRED ON THIS STATE, so north is up and the shape matches the official
+  // state map. d3.geoAlbers() at its default -96° meridian tilted the far states by 12–37°.
+  // ⚠⚠ ALASKA CROSSES THE ANTIMERIDIAN, SO d3.geoBounds CANNOT DRIVE THE PROJECTION HERE.
+  // The western Aleutians sit at 172–180° EAST while the rest of the state runs 130–180° WEST.
+  // geoBounds reports that correctly, as a WRAPPED box whose west edge is GREATER than its east
+  // edge — and every other page's (lonMin + lonMax) / 2 midpoint then lands near 21°E, a central
+  // meridian on the far side of the planet, which collapses the map to nothing. Unwrap the
+  // eastern-hemisphere longitudes to negative degrees and take the extent directly. This is
+  // exactly what tools/fit-map-frames.js has always done offline for FIPS 02, and doing it here
+  // too is what makes the frame it fitted and the map the browser draws agree. lon0 comes out
+  // near −158.8°, close to the −154° of the standard Alaska Albers.
+  let lonMin = Infinity, lonMax = -Infinity, latMin = Infinity, latMax = -Infinity;
+  (function scanBounds(node) {
+    if (typeof node[0] === "number") {
+      const lon = node[0] > 0 ? node[0] - 360 : node[0];
+      if (lon < lonMin) lonMin = lon;
+      if (lon > lonMax) lonMax = lon;
+      if (node[1] < latMin) latMin = node[1];
+      if (node[1] > latMax) latMax = node[1];
+    } else { for (const child of node) scanBounds(child); }
+  })(ncCounties.map(f => f.geometry.coordinates));
+  const projection = d3.geoConicEqualArea()
+    .rotate([-(lonMin + lonMax) / 2, 0])
+    .parallels([latMin + (latMax - latMin) / 6, latMax - (latMax - latMin) / 6])
+    .fitSize([width - 40, height - 40], { type: "FeatureCollection", features: ncCounties });
+  const path = d3.geoPath().projection(projection);
+
+  const g = svg.append("g").attr("transform", "translate(20, 20)");
+
+  g.selectAll(".county")
+    .data(ncCounties)
+    .enter()
+    .append("path")
+      .attr("class", d => {
+        const fips = String(d.id).padStart(5, "0");
+        return "county" + (COUNTIES[fips] ? " has-data" : "");
+      })
+      .attr("data-fips", d => String(d.id).padStart(5, "0"))
+      .attr("d", path)
+      // A keyboard or screen-reader user must be able to open a county too.
+      .attr("tabindex", 0)
+      .attr("role", "button")
+      .attr("aria-label", d => { const c = COUNTIES[String(d.id).padStart(5, "0")]; return c ? placeLabel({ ...c, fips: String(d.id).padStart(5, "0") }) : "Not in this dataset"; })
+      .on("mousemove", (event, d) => {
+        if (!HOVER) return;
+        const fips = String(d.id).padStart(5, "0");
+        const built = countyElections(fips);
+        if (built) {
+          const upcoming = built.elections.filter(e => e.type === "upcoming").length;
+          const past = built.elections.filter(e => e.type === "past").length;
+          const ds = (built.county.ds && built.county.ds.length > 1) ? built.county.ds : [built.county.d];
+          tooltip.innerHTML = `
+            <strong>${esc(placeLabel({ ...built.county, fips }))}</strong>
+            <div class="tooltip-meta">${upcoming} upcoming · ${past} past · District${ds.length > 1 ? "s" : ""} ${ds.join(" & ")}</div>`;
+        } else {
+          tooltip.innerHTML = `FIPS ${esc(fips)}<div class="tooltip-meta">Not in this dataset</div>`;
+        }
+        tooltip.style.opacity = 1;
+        const rect = svg.node().getBoundingClientRect();
+        const x = event.clientX - rect.left, y = event.clientY - rect.top;
+        // Flip below the cursor near the top edge; keep the box inside the map horizontally.
+        tooltip.classList.toggle("below", y < tooltip.offsetHeight + 28);
+        const half = tooltip.offsetWidth / 2 + 8;
+        tooltip.style.left = Math.max(half, Math.min(rect.width - half, x)) + "px";
+        tooltip.style.top  = y + "px";
+      })
+      .on("mouseleave", () => { tooltip.style.opacity = 0; })
+      .on("keydown", (event, d) => {
+        if (event.key === "Enter" || event.key === " ") { event.preventDefault(); event.currentTarget.dispatchEvent(new MouseEvent("click", { bubbles: true })); }
+      })
+      .on("click", (event, d) => {
+        const fips = String(d.id).padStart(5, "0");
+        tooltip.style.opacity = 0;
+        document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        openPanel(fips, event.currentTarget);
+      });
+
+  // ---- Capital marker: Cheyenne ----
+  drawCapital(g, projection, { name: "Juneau", lng: -134.42, lat: 58.302 });
+
+  loading.style.display = "none";
+}).catch((err) => {
+  if (window.console && console.error) console.error("[map] " + (err && err.message ? err.message : err));
+  loading.innerHTML = "The interactive map didn\u2019t load. <button type=\"button\" class=\"brief-more\" id=\"map-retry\">Try again</button>";
+  document.getElementById("map-retry").addEventListener("click", () => { loading.textContent = "Loading map\u2026"; loadMap(); });
+});
+}
+
+let lastFocus = null;
+function openPanel(fips, fromEl) {
+  const built = countyElections(fips);
+  const body  = document.getElementById("panel-body");
+  const title = document.getElementById("panel-title");
+  const eyebrow = document.getElementById("panel-eyebrow");
+  const subtitle = document.getElementById("panel-subtitle");
+
+  if (!built) {
+    eyebrow.textContent = "Borough FIPS " + fips;
+    title.textContent   = "Not in AK";
+    subtitle.textContent = "";
+    body.innerHTML = `<div class="empty-state"><p>This borough isn't in our Alaska dataset.</p></div>`;
+  } else {
+    const ds = (built.county.ds && built.county.ds.length > 1) ? [...built.county.ds].sort((a, b) => a - b) : [built.county.d];
+    const dsList = (j) => ds.length < 3 ? ds.join(` ${j} `) : `${ds.slice(0, -1).join(", ")} ${j} ${ds[ds.length - 1]}`;
+    eyebrow.textContent = ds.length > 1 ? `Congressional Districts ${dsList("&")}` : `Congressional District ${ds[0]}`;
+    title.textContent   = placeLabel({ ...built.county, fips });
+    subtitle.textContent = ds.length > 1
+      ? `This ${UNIT.toLowerCase()} is split between districts ${dsList("and")} \u2014 check your own ballot for which U.S. House race is yours. All are listed below.`
+      : (built.district ? built.district.region : "");
+    const grouped = groupByType(built.elections);
+    body.innerHTML = renderGrouped(grouped);
+    // A brief only needs "Show more" if the clamp actually hides something.
+    body.querySelectorAll(".election-brief.clamped").forEach(b => {
+      const t = b.querySelector(".brief-body");
+      if (t && t.scrollHeight <= t.clientHeight + 4) { b.classList.remove("clamped"); const m = b.querySelector(".brief-more"); if (m) m.remove(); }
+    });
+  }
+
+  lastFocus = fromEl || document.activeElement;
+  tooltip.style.opacity = 0;
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+  document.documentElement.classList.add("drawer-open");
+  body.scrollTop = 0;
+  setTimeout(() => document.getElementById("panel-close").focus(), 320);
+}
+
+function groupByType(elections) {
+  return {
+    upcoming:  elections.filter(e => e.type === "upcoming"),
+    scheduled: elections.filter(e => e.type === "scheduled"),
+    past:      elections.filter(e => e.type === "past")
+  };
+}
+
+function renderGrouped(g) {
+  const parts = [];
+  if (g.upcoming.length)  parts.push(renderGroup("Upcoming Elections", g.upcoming));
+  if (g.scheduled.length) parts.push(renderGroup("Scheduled", g.scheduled));
+  if (g.past.length)      parts.push(renderGroup("Past Elections", g.past));
+  return parts.join("");
+}
+
+function renderGroup(label, items) {
+  return `
+    <div class="group-header"><h3>${label}</h3><div class="group-line"></div></div>
+    ${items.map(renderElection).join("")}`;
+}
+
+// Split a race note on the ⚠ / ✅ flag glyphs the editorial style already uses, keeping
+// the glyph that introduced each segment. Text before the first flag is the lead. This is
+// presentation only — no wording is altered and nothing is dropped.
+function briefSegments(note) {
+  const out = [];
+  const re = /([\u26A0\uFE0F\u2705]+)\s*/g;
+  let last = 0, mark = "", m;
+  while ((m = re.exec(note)) !== null) {
+    const text = note.slice(last, m.index).trim();
+    if (text) out.push({ mark: mark, text: text });
+    mark = m[1].replace(/\uFE0F/g, "");
+    last = re.lastIndex;
+  }
+  const tail = note.slice(last).trim();
+  if (tail) out.push({ mark: mark, text: tail });
+  return out;
+}
+
+// Escape data before it goes into innerHTML. Notes and card text are plain prose; an ampersand
+// or angle bracket in a future edit must render as itself rather than corrupt the card.
+const esc = (v) => String(v == null ? "" : v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function renderNote(note) {
+  if (!note) return "";
+  const body = briefSegments(note).map(function (s) {
+    return s.mark
+      ? `<p class="brief-flag"><span class="brief-mark" aria-hidden="true">${s.mark}</span>${esc(s.text)}</p>`
+      : `<p class="brief-lead">${esc(s.text)}</p>`;
+  }).join("");
+  // Clamp only what actually needs clamping: the median note is 236 characters, so most
+  // briefs show whole and never render a toggle at all.
+  const long = note.length > 300;
+  return `<div class="election-brief${long ? " clamped" : ""}">
+      <div class="brief-label">About this race</div>
+      <div class="brief-body">${body}</div>
+      ${long ? `<button class="brief-more" type="button" aria-expanded="false">Show more</button>` : ""}
+    </div>`;
+}
+
+function renderElection(e) {
+  const count = (e.candidates && e.candidates.length) || 0;
+  // A ballot measure is recognized by what it is called, not by one exact scope string.
+  const isMeasure = /ballot measure|ballot question|amendment|initiative|proposition|referend|\bmeasure\b|\bquestion\b/i.test((e.scope || "") + " " + (e.office || ""));
+  const isInfo = /^Also on your ballot|— eight seats, ALL UNOPPOSED/i.test(e.office || "");
+  // Measure cards carry Yes/No pairs or one card per proposition — never "candidates".
+  const yesNo = count > 0 && e.candidates.every(c => /^(yes|no)\b/i.test(c.name || ""));
+  const countLabel = count
+    ? (isMeasure ? (yesNo ? "Yes / No" : `${count} measure${count === 1 ? "" : "s"}`) : `${count} candidate${count === 1 ? "" : "s"}`)
+    : (isMeasure ? "Yes / No" : (isInfo ? "Details" : "TBD"));
+  const candidatesHtml = count
+    ? `<div class="candidates">${e.candidates.map(c => renderCandidate(c, e)).join("")}</div>`
+    : (isMeasure || isInfo ? "" : `<div style="margin-top:14px;color:var(--ink-soft);font-size:13px;font-style:italic">Candidates not yet announced.</div>`);
+  // A House primary inherits its district's title; say which contest it is.
+  const qualifier = e.office ? "" : (/Runoff/i.test(e.scope || "") ? " — Runoff" : /Primary/i.test(e.scope || "") ? " — Primary" : "");
+  const title = e.office || ((e.name || "") + qualifier);
+  const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+  return `
+    <div class="election-card">
+      <button class="election-summary" type="button" aria-expanded="false">
+        <span class="election-summary-main">
+          <span class="election-meta">
+            <span class="pill ${esc(e.type)}">${esc(e.type)}</span>
+            <span class="election-date">${esc(e.date)}</span>
+            ${e.scope ? `<span class="election-scope">${esc(e.scope)}</span>` : ""}
+          </span>
+          <span class="election-office">${esc(title)}</span>
+        </span>
+        <span class="election-toggle">
+          <span class="cand-count">${countLabel}</span>
+          <span class="chevron">${chevron}</span>
+        </span>
+      </button>
+      <div class="election-detail"><div>${renderNote(e.note)}${candidatesHtml}</div></div>
+    </div>`;
+}
+
+function renderCandidate(c, race) {
+  // A primary or runoff winner was NOMINATED, not elected — the badge should say so.
+  const nominated = !!(race && /primary|runoff/i.test((race.office || "") + " " + (race.scope || "")));
+  // A proposition or a Yes/No side has no party; the gray "I" tag was a lie on 50 measure cards.
+  const measureCard = !!(race && /ballot measure|ballot question|amendment|initiative|proposition|referend|\bmeasure\b|\bquestion\b/i.test((race.scope || "") + " " + (race.office || "")));
+  const winnerClass = c.winner ? ("candidate winner" + (nominated ? " nominee" : "")) : "candidate";
+  const positions      = (c.positions || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const differentiators= (c.differentiators || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const supporters     = (c.supporters || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  const opponents      = (c.opponents || []).filter(Boolean).map(p => `<li>${esc(p)}</li>`).join("");
+  return `
+    <div class="${winnerClass}">
+      <div class="cand-head">
+        <div class="cand-name">${esc(c.name)}</div>
+        ${measureCard ? "" : `<span class="party-tag party-${esc(c.party)}">${esc(c.party)}</span>`}
+      </div>
+      ${positions ? `<div class="cand-section">
+          <div class="cand-section-label">Top Positions</div>
+          <ul class="cand-list">${positions}</ul></div>` : ""}
+      ${differentiators ? `<div class="cand-section">
+          <div class="cand-section-label">Differentiators</div>
+          <ul class="cand-list">${differentiators}</ul></div>` : ""}
+      ${(supporters || opponents) ? `
+        <div class="voices">
+          ${supporters ? `<div class="voices-block supporters">
+              <div class="voices-label">Supporters say</div>
+              <ul>${supporters}</ul></div>` : ""}
+          ${opponents ? `<div class="voices-block opponents">
+              <div class="voices-label">Opponents say</div>
+              <ul>${opponents}</ul></div>` : ""}
+        </div>` : ""}
+    </div>`;
+}
+
+function closePanel() {
+  if (!panel.classList.contains("open")) return;
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  document.documentElement.classList.remove("drawer-open");
+  tooltip.style.opacity = 0;
+  document.querySelectorAll(".county.selected").forEach(n => n.classList.remove("selected"));
+  if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
+}
+document.getElementById("panel-close").addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+// Accordion: collapse/expand seats. All collapsed by default; click to expand.
+document.getElementById("panel-body").addEventListener("click", (e) => {
+  const more = e.target.closest(".brief-more");
+  if (more) {
+    const brief = more.closest(".election-brief");
+    const clamped = brief.classList.toggle("clamped");
+    more.textContent = clamped ? "Show more" : "Show less";
+    more.setAttribute("aria-expanded", clamped ? "false" : "true");
+    return;
+  }
+  const summary = e.target.closest(".election-summary");
+  if (!summary) return;
+  const card = summary.closest(".election-card");
+  const isOpen = card.classList.toggle("open");
+  summary.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+</script>
+
+</body>
+</html>

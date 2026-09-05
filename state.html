@@ -19,7 +19,7 @@
 <script>
 // Built states have their own page. Send them there before anything paints — this is the ONLY list.
 (function () {
-  var BUILT = "al ar az co ct de fl ga hi ia id il in ks ky la ma md me mi mn ms mt nc nd ne nh nj nm nv ny oh ok or pa ri sc sd tn ut va vt wa wi wv wy".split(" ");
+  var BUILT = "ak al ar az co ct de fl ga hi ia id il in ks ky la ma md me mi mn ms mt nc nd ne nh nj nm nv ny oh ok or pa ri sc sd tn ut va vt wa wi wv wy".split(" ");
   var st = (new URLSearchParams(location.search).get("state") || "").toLowerCase();
   if (BUILT.indexOf(st) !== -1) location.replace(st + ".html" + (location.hash || ""));
 })();

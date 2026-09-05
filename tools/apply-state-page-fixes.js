@@ -49,7 +49,15 @@ const subRe = (label, re, to, already) => {
 // present, and silently skipped otherwise (a fresh page never had it; a current page already moved on).
 const opt = (from, to) => { if (!s.includes(to) && s.includes(from)) s = s.split(from).join(to); };
 const BUILT = fs.readdirSync(ROOT).filter(f => /^[a-z]{2}\.html$/.test(f)).map(f => f.slice(0, 2)).sort();
-const LAST_UPDATED = "September 3, 2026";
+// ⚠ Read the date from state.html's OWN SITE_META rather than hard-coding it. It used to be a
+// literal ("September 3, 2026"), which meant that the moment a scheduled run bumped the page's
+// freshness date this tool (a) reported its "footer" anchor missing and refused to write the
+// page at all — taking the head redirect list, which a new state build MUST regenerate, down
+// with it — and (b) would have rewritten the date BACKWARDS to the literal. Caught Sept 4, 2026
+// building Alaska. tests/uniformity.js asserts the footer date equals SITE_META, so deriving it
+// from SITE_META is also the only value that can ever be correct.
+const LAST_UPDATED = (fs.readFileSync(path.join(ROOT, "state.html"), "utf8")
+  .match(/lastUpdated:\s*"([^"]+)"/) || [])[1] || "September 3, 2026";
 
 // ───────────── HEAD ─────────────
 sub("meta description", `<meta name="description" content="County-by-county election framework for any U.S. state." />`,
@@ -163,6 +171,9 @@ sub("svg label", `<svg id="statemap" viewBox="0 0 1000 530" preserveAspectRatio=
     `<svg id="statemap" viewBox="0 0 1000 530" preserveAspectRatio="xMidYMid meet" role="group" aria-label="County map. Each county is a button that opens its ballot."></svg>`);
 sub("dialog semantics", `<aside class="panel" id="panel" aria-hidden="true">`,
     `<aside class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title" aria-hidden="true">`);
+// "Already applied" is tested on the crest markup alone, NOT on the whole block: the block
+// carries the date, and the date legitimately changes on every scheduled run.
+if (!s.includes(`<strong id="footer-crest">`))
 sub("footer", `    <div class="footer-crest"><strong>Elections Hub</strong> · A civic side-project, not affiliated with any government agency.</div>
     <div class="footer-meta">Last updated: May 2026</div>`,
     `    <div class="footer-crest"><strong id="footer-crest">Elections Hub</strong> · A civic side-project, not affiliated with any government agency.</div>
