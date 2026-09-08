@@ -11,6 +11,11 @@ Format (one line each):
 
 ## Dead ends
 
+2026-09-08 | nh.html | PRIMARY DAY morning refresh (polls still open ~7–8pm) — NO winners published | Free web only (0 Grok): Ballotpedia + NHPR + WMUR + Union Leader + Citizens Count + DDHQ/NPR live pages showing 0% reporting. Fixed Warmington (UNOPPOSED Dem — Kiper not on Dem primary); carded Manzur; replaced NH-1 GOP placeholder with DiLorenzo + Noveletsky; named Beauchemin on NH-2; recorded Urrutia Sept 6 suspension→Shaheen. [Verify] on nh.html 35→19. Voices still 0 gaps (14 candidates). MUST re-run after polls close for AP/SoS nominees | 2026-09-08 evening / 2026-09-09
+2026-09-08 | nh.html | Dead-end entries from 2026-07-20 / 2026-08-03 / 2026-08-27 partially superseded by morning field refresh | Full nominee settlement still blocked until results; do not delete those ledger rows until post-primary cards are rewritten with winners | 2026-09-09
+2026-09-08 | ri.html | LIGHT PREP ONLY for Sept 9 primary — do not invent results | RI primary is TOMORROW (Sept 9, 2026). Page already built pre-primary with provisional fields. Next run: SoS/AP/Ballotpedia results for U.S. Senate (Reed), Governor if contested, RI-1/RI-2, statewide constitutional officers. Do not touch ri.html until results exist. Trigger overrides 21-day skip | 2026-09-09
+2026-09-08 | de.html | Calendar note only | Delaware primary Sept 15, 2026 — next after RI. Keep as upcoming trigger; no edits this pass | 2026-09-15
+
 2026-07-14 | nj.html | NJ-10 2024 general raw totals (past-race note "McIver 81.2% / 15.8%") | This week's research mistakenly targeted the 2026 Dem PRIMARY (verified McIver 84.8% / Poster 15.2%, already on-site without a marker); the 2024 GENERAL figure on the past race is still unverified against a primary source | 2026-08-15
 2026-07-14 | de.html | AG third Democrat Patty Rickman | On the official DE Dept. of Elections candidate-filing list (provisional, filed 7/13/2026) but NO news, campaign site, or Ballotpedia coverage of her or her platform found | 2026-09-15 (DE primary)
 2026-07-14 | de.html | Treasurer Dem filer Mike Miller | On the official DOE candidate list but common name; no distinct campaign/press coverage located to source a platform | 2026-09-15 (DE primary)

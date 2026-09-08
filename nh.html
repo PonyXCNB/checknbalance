@@ -712,7 +712,7 @@
       <strong>NH Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">September 4, 2026</span><br>
+      Last updated: <span id="last-updated">September 8, 2026</span><br>
       Sources: NH Secretary of State (sos.nh.gov), Ballotpedia, Wikipedia, Cook Political Report, NHPR, NH Bulletin, WMUR, AP.
     </div>
   </div>
@@ -766,9 +766,10 @@ const COUNTIES = {
 };
 
 // ----- (2) Statewide elections every county votes in -----
-// NOTE: NH's 2026 state primary is Sept 8, 2026. Contested-primary nominees are NOT
-// final until then — those fields are marked [Verify — primary Sept 8]. The open U.S.
-// Senate seat (Shaheen retiring) and open NH-1 (Pappas running for Senate) are confirmed.
+// NOTE: NH's 2026 state primary is TODAY — Sept 8, 2026 (polls close ~7–8pm by town).
+// Contested-primary nominees are NOT final until results are called — do not invent winners.
+// Morning-of-primary refresh: ballot fields from NHPR / Ballotpedia / WMUR / Union Leader.
+// Open U.S. Senate (Shaheen retiring) and open NH-1 (Pappas for Senate) confirmed.
 const STATEWIDE = [
   // UPCOMING — 2026 General Election (Nov 3, 2026)
   {
@@ -776,16 +777,21 @@ const STATEWIDE = [
     type: "upcoming",
     scope: "Federal · Statewide",
     office: "U.S. Senate — New Hampshire (OPEN SEAT)",
-    note: "OPEN SEAT — Jeanne Shaheen (D) is retiring; NH's first open Senate race since 2010. Rated Lean Democratic (Cook, Sabato). Pappas is the clear Democratic frontrunner; the GOP contest pits former Sens. John E. Sununu (Trump-endorsed) and Scott Brown. Those below are leading contenders, not nominees. [Verify — primary Sept 8].",
+    note: "OPEN SEAT — Jeanne Shaheen (D) is retiring; NH's first open Senate race since 2010. Rated Lean Democratic (Cook / Sabato); Inside Elections Tilt D; DDHQ/The Hill Likely D (early Sept). ⚠ PRIMARY DAY Sept 8, 2026 — nominees not final until results are called (polls close ~7–8pm by town). Democratic ballot: Chris Pappas, Karishma Manzur, David Jarvis, Maxwell Saal, John Vail (Ballotpedia). Late UNH poll (Aug 20–24): Pappas 47%–Manzur 34%. GOP ballot is eight-wide; the live contest is John E. Sununu (Trump-endorsed) vs. Scott Brown (UNH Aug: Sununu ~60%, Brown ~20%). Cards below are leading contenders, not nominees.",
     candidates: [
       { name: "Chris Pappas (D frontrunner)", party: "D", winner: false,
         positions: ["Abortion rights and reproductive freedom","Lower prescription-drug and health costs","Protect pre-existing-condition coverage"],
-        differentiators: ["U.S. Rep (NH-1) since 2018; vacating the House to run","Endorsed by Shaheen and Hassan; leads Democratic field and fundraising","Faces Karishma Manzur in the Sept 8 primary [Verify]"],
+        differentiators: ["U.S. Rep (NH-1) since 2018; vacating the House to run","Endorsed by Shaheen, Hassan, and former VP Harris; ~$15.4M raised / ~$4.3M cash (FEC through Aug 19)","Leads Manzur in late polls (UNH Aug 47–34; Saint Anselm Aug 59–28)"],
         supporters: ["A proven statewide vote-getter for a must-hold seat"],
         opponents: ["A career politician, per GOP framing [Verify attack lines]"] },
+      { name: "Karishma Manzur (D contender)", party: "D", winner: false,
+        positions: ["Ban big money / overturn Citizens United (per campaign)","Medicare for All","Fix housing costs; reject corporate PAC and AIPAC money (per campaign)"],
+        differentiators: ["PhD biochemist / medical scientist; progressive primary challenger","Raised ~$415K with ~$104K cash (FEC through Aug 19) — far behind Pappas","Endorsed by NH Peace Action, Organize for Peace, Courage for Democracy, and several NH state reps"],
+        supporters: ["Progressive lane: Medicare for All and anti-PAC framing from her own site","Late UNH poll showed the race narrowing to 47–34","Peace Action / Indivisible-aligned endorsements contrast with the establishment field"],
+        opponents: ["Cash and name-recognition gap versus a four-term U.S. House member","Shaheen and Hassan are with Pappas","Cook / Sabato still rate the general Lean D — raters assume the better-known nominee"] },
       { name: "John E. Sununu (R contender)", party: "R", winner: false,
         positions: ["Work with the Trump administration","Fiscal conservatism and spending restraint","Opposed the $300B Iran reconstruction fund [Verify]"],
-        differentiators: ["Former U.S. Senator (2003–09)","Trump 'Complete and Total Endorsement' (Feb 2026)","Sept 8 GOP primary vs. Scott Brown"],
+        differentiators: ["Former U.S. Senator (2003–09)","Trump 'Complete and Total Endorsement' (Feb 2026)","Leads eight-candidate GOP primary; late polls ~54–60% vs. Brown ~20–24%"],
         supporters: ["Establishment experience now aligned with Trump"],
         opponents: ["Brown casts him as a late Trump convert [Verify]"] },
       { name: "Scott Brown (R contender)", party: "R", winner: false,
@@ -800,18 +806,18 @@ const STATEWIDE = [
     type: "upcoming",
     scope: "State · Statewide",
     office: "Governor of New Hampshire",
-    note: "Kelly Ayotte (R), elected 2024, runs for a second two-year term. Former Executive Councilor Cinde Warmington is the leading Democrat (also in the Sept 8 primary). Rated Leans Republican (Ayotte favored) [Verify exact rating].",
+    note: "Kelly Ayotte (R), elected 2024, runs for a second two-year term. ⚠ PRIMARY DAY Sept 8. Democratic side: Cinde Warmington is UNOPPOSED and advances to November (NHPR Sept 2) — Jon Kiper left the Dem primary earlier and later failed to qualify as an independent. GOP primary: Ayotte vs. Shaun Fife and Robert McClory (Ballotpedia / NHPR). Rated Leans Republican [Verify exact rater labels].",
     candidates: [
       { name: "Kelly Ayotte (incumbent)", party: "R", winner: false,
         positions: ["Expand Education Freedom Account (school-choice) vouchers","'No income tax, no sales tax' pledge","Public safety"],
-        differentiators: ["Former U.S. Senator (2011–17); elected governor 2024","Small early polling lead","[Verify fuller platform]"],
+        differentiators: ["Former U.S. Senator (2011–17); elected governor 2024","Faces minor GOP primary challengers Fife and McClory on Sept 8","Approval/favorability around 50% in recent coverage (NHPR)"],
         supporters: ["A low-tax, business-friendly record"],
         opponents: ["Democrats target voucher expansion's property-tax impact [Verify]"] },
-      { name: "Cinde Warmington", party: "D", winner: false,
+      { name: "Cinde Warmington (D nominee — unopposed)", party: "D", winner: false,
         positions: ["Opposes voucher expansion and its property-tax impact","Opposes new Medicaid premiums","Abortion rights"],
-        differentiators: ["Former Executive Councilor (2021–25) — the lone Democrat on the council","Leading declared Democrat; faces Jon Kiper in the Sept 8 primary [Verify]","Healthcare attorney"],
+        differentiators: ["Former Executive Councilor (2021–25) — the lone Democrat on the council","Unopposed Democratic nominee for November (NHPR Sept 2)","Healthcare attorney; 2024 Dem primary runner-up to Joyce Craig"],
         supporters: ["A check on one-party control in Concord"],
-        opponents: ["[Verify GOP attack lines]"] }
+        opponents: ["Former Purdue Pharma lobbying work is a live attack line; she released a rebuttal video (NHPR)","Republicans hold the governorship since 2017","Leans-R rating favors Ayotte in November"] }
     ]
   },
 
@@ -861,7 +867,7 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "OPEN SEAT — Chris Pappas (D) is vacating NH-1 to run for U.S. Senate. Rated Likely Democratic (Cook). A crowded Sept 8 Democratic primary (below are leading contenders, not the nominee); the GOP field is also unsettled. ⚠ THE FIELD CHANGED ON AUG 24, 2026: state Rep. Heath Howard, the race's most left-running Democrat, SUSPENDED his campaign and endorsed Carleigh Beriont, saying \"Carleigh and I don't agree on everything, but this race is bigger than both of us.\" He had raised only about $80,000, far short of his rivals. ⚠ Suspending is not withdrawing — New Hampshire's ballot was set at the June filing deadline, so Howard's name is still expected to appear [Verify]. A Saint Anselm College Survey Center poll in August put Sullivan 26%, Shaheen 24% and Beriont 12% — Beriont up from 3% in June and the only other candidate in double digits. First debate Sept 1 at Saint Anselm. [Verify — primary Sept 8].",
+        note: "OPEN SEAT — Chris Pappas (D) is vacating NH-1 to run for U.S. Senate. Rated Likely Democratic (Cook). ⚠ PRIMARY DAY Sept 8 — nominees not final. Democratic ballot still lists nine names (Ballotpedia), but two have suspended: Heath Howard (Aug 24) endorsed Carleigh Beriont; Christian Urrutia (Sept 6) endorsed Stefany Shaheen (WMUR / NHPR / Union Leader) — both names remain on the ballot. Late Tavern Research (Aug 28–31): Sullivan 33%, Shaheen 27%, Beriont 12%. Carol Shea-Porter also endorsed Shaheen (Sept 5–6). GOP live contest: Trump-endorsed Anthony DiLorenzo vs. Hollie Noveletsky (2024 runner-up), with Brian Cole and others also on the ballot (NHPR / Union Leader). Cards below are leading contenders, not nominees.",
         candidates: [
           { name: "Maura Sullivan (D contender)", party: "D", winner: false,
             positions: ["Veterans and national service","Democratic 'fighter' message","[Verify fuller platform]"],
@@ -878,11 +884,16 @@ const HOUSE_RACES = {
             differentiators: ["Chair of the Hampton Selectboard; former union organizer and public school teacher","Raised about $102,000 since January and more than $380,000 since entering, with roughly $88,000 left to spend [Verify — figures reported April 2026, not current]","Won Heath Howard's endorsement on Aug 24, 2026 when he suspended his own campaign"],
             supporters: ["The only candidate besides the two front-runners polling in double digits — 12% in August, up from 3% in June (Saint Anselm College Survey Center)","Consolidating the district's progressive lane after Howard exited and backed her","Local elected experience plus a union and classroom background, in a race otherwise led by better-known names"],
             opponents: ["Still trails Sullivan (26%) and Shaheen (24%) and is far behind both on money","Live Free PAC, a super PAC founded by a former Bernie Sanders 2020 campaign official, is spending on her behalf — an outside-money line her rivals can use [Verify — the PAC's spending total was not located]","A selectboard chair is the thinnest governing resume among the leading contenders [Verify — structural argument]"] },
-          { name: "[Republican nominee — decided in the Sept 8, 2026 primary]", party: "R", winner: false,
-            positions: ["[Decided Sept 8] field platforms thin [Verify]"],
-            differentiators: ["GOP field includes steel-business owner Hollie Noveletsky and others [Verify]","Winner faces the Democratic nominee in November","Sept 8 primary"],
-            supporters: ["An open seat with no incumbent is the party's best shot here","NH-1 has swung between the parties more than any other seat in the state [Verify]"],
-            opponents: ["Cook rates the open seat Likely Democratic","No Republican has held NH-1 since Frank Guinta [Verify]","The nominee emerges Sept 8 with little time and money to consolidate [Verify]"] }
+          { name: "Anthony DiLorenzo (R contender)", party: "R", winner: false,
+            positions: ["America First / Trump agenda alignment","Cut taxes and regulations; Made-in-USA manufacturing (per Trump endorsement framing)","Jobs and small-business growth — Key Auto Group founder"],
+            differentiators: ["Trump 'Complete and Total Endorsement' July 13, 2026; also backed by House GOP leadership","First-time candidate; Portsmouth-area auto-dealer businessman","Self-funding heavily into a late-tightening primary vs. Noveletsky"],
+            supporters: ["Presidential and House GOP leadership endorsements","Open-seat path without a Democratic incumbent","Business-owner jobs narrative"],
+            opponents: ["First-time candidate facing a 2024 primary runner-up who has been campaigning longer","Cook rates the open seat Likely Democratic","Noveletsky argues he has not earned the nomination the New Hampshire way"] },
+          { name: "Hollie Noveletsky (R contender)", party: "R", winner: false,
+            positions: ["Restore U.S. manufacturing; supports Trump tariffs as a tool","Immigration enforcement / America First framing","Nurse practitioner and caregiver lens on health and costs"],
+            differentiators: ["Owns Novel Iron Works (Greenland); 2024 NH-1 GOP primary runner-up","Military veteran and nurse practitioner","Stayed in after Trump endorsed DiLorenzo, calling the endorsement wrong"],
+            supporters: ["Early Saint Anselm polling lead before the race tightened","Tariff/manufacturing message lands with parts of the GOP base","Has put in multi-cycle groundwork in the district"],
+            opponents: ["Trump and House GOP leadership are with DiLorenzo","Cook Likely D seat still favors the Democratic nominee in November","Crowded ballot (Cole and others) can split anti-DiLorenzo votes"] }
         ]
       },
       {
@@ -907,16 +918,21 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "Maggie Goodlander (D) seeks a second term. Cook moved the seat from Lean to Likely Democratic on July 16, 2026. Her 2024 opponent Lily Tang Williams (R) is seeking a rematch; the GOP nominee is decided Sept 8. [Verify — primary Sept 8].",
+        note: "Maggie Goodlander (D) seeks a second term. Cook moved the seat from Lean to Likely Democratic on July 16, 2026. ⚠ PRIMARY DAY Sept 8 — nominees not final. Democratic primary: Goodlander vs. state Rep. Paige Beauchemin (Nashua nurse; Medicare for All) — late UNH Aug poll 59–19 Goodlander. GOP primary: Lily Tang Williams (2024 nominee) vs. Victor Orlando, Dan Nicholson, and Michael Callis (NHPR / Ballotpedia / DDHQ).",
         candidates: [
           { name: "Maggie Goodlander (incumbent)", party: "D", winner: false,
             positions: ["Lower costs and affordability","Reproductive rights","Manufacturing, antitrust and competition"],
-            differentiators: ["Former DOJ / national-security attorney","Won the open seat in 2024","Faces a minor Democratic primary [Verify]"],
+            differentiators: ["Former DOJ / national-security attorney","Won the open seat in 2024","Faces Paige Beauchemin in the Sept 8 Dem primary (leads ~59–19 UNH Aug)"],
             supporters: ["A substantive first-term member on competition and costs"],
             opponents: ["[Verify GOP attack lines]"] },
+          { name: "Paige Beauchemin (D contender)", party: "D", winner: false,
+            positions: ["Medicare for All / healthcare affordability (per campaign and Concord Monitor)","Working-family costs and housing","Maternal health — focus of her NH House work"],
+            differentiators: ["Registered nurse; two-term NH House member from Nashua (Hillsborough 3)","Pitches as the working-class alternative to an establishment incumbent","Raised ~$44K vs. Goodlander's ~$4.2M (FEC through Aug 19)"],
+            supporters: ["Nurse and working-parent biography in a cost-of-living cycle","State House maternal-health record","Progressive lane in a safe-leaning Democratic district"],
+            opponents: ["Massive fundraising and polling gap versus the incumbent","Cook moved the seat to Likely D with Goodlander as the assumed nominee","First-term incumbent already defines the anti-Trump lane"] },
           { name: "Lily Tang Williams (R contender)", party: "R", winner: false,
             positions: ["Balanced-budget amendment and federal spending cuts","National constitutional carry for firearms","Immigration enforcement; aligns herself with Trump"],
-            differentiators: ["2024 GOP nominee (lost ~52–47); Free State movement figure","Seeking a rematch; faces a Sept 8 GOP primary [Verify]","Has challenged Goodlander to more debates this cycle"],
+            differentiators: ["2024 GOP nominee (lost ~52–47); Free State movement figure","Seeking a rematch; faces Orlando / Nicholson / Callis on Sept 8","Has challenged Goodlander to more debates this cycle"],
             supporters: ["Came within about six points in a seat rated Lean D","A 2024 debate performance that went viral is her calling card","Her account of growing up under Communist China anchors her pitch"],
             opponents: ["Still lost by roughly six points, and Cook moved the seat to Likely D on July 16","A balanced-budget-plus-constitutional-carry platform is well right of the district [Verify]","Free State movement ties are used against her by Democrats [Verify]"] }
         ]
@@ -939,7 +955,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "New Hampshire Elections Hub", lastUpdated: "September 4, 2026" };
+const SITE_META = { name: "New Hampshire Elections Hub", lastUpdated: "September 8, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — NH county-level down-ballot research is the next phase.)
