@@ -712,7 +712,7 @@
       <strong>RI Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">September 4, 2026</span><br>
+      Last updated: <span id="last-updated">September 9, 2026</span><br>
       Sources: RI Department of State / Board of Elections, Ballotpedia, Wikipedia, Cook Political Report, AP, The Boston Globe, WPRI, Rhode Island Current.
     </div>
   </div>
@@ -760,177 +760,182 @@ const COUNTIES = {
 };
 
 // ----- (2) Statewide elections every county votes in -----
-// NOTE: RI's 2026 state primary is Sept 9, 2026 (moved off Sept 8 for Labor Day, per
-// the RI Dept. of State). Contested-primary nominees are NOT final until then — those
-// fields are marked [Verify — primary Sept 9]. Incumbents/open seats below are confirmed.
+// NOTE: RI's 2026 state primary is TODAY — Sept 9, 2026 (polls 7am–8pm; Block Island 9am).
+// Nominees NOT final — 0% reporting as of this refresh. Do not invent winners.
+// Sources: WPRI ballot guide, Boston.com/AP preview, Patch, Ballotpedia, Providence Journal.
 const STATEWIDE = [
-  // UPCOMING — 2026 General Election (Nov 3, 2026)
   {
-    date: "Nov 3, 2026",
-    type: "upcoming",
-    scope: "Federal · Statewide",
+    date: "Nov 3, 2026", type: "upcoming", scope: "Federal · Statewide",
     office: "U.S. Senate — Rhode Island",
-    note: "Jack Reed (D), first elected 1996, seeks a 6th term; he chairs (ranking member of) Senate Armed Services. Rated Solid/Safe Democratic — no Republican has won a RI Senate race since 2000. The GOP nominee is decided in the Sept 9 primary (McKay vs. Waters).",
+    note: "Jack Reed (D), first elected 1996, seeks a 6th term; Armed Services leadership. Rated Solid/Safe Democratic. ⚠ PRIMARY DAY Sept 9, 2026 — polls 7am–8pm (Block Island 9am); nominees NOT final (0% reporting as of morning — WPRI / DDHQ / NPR). Democratic primary: Reed vs. Connor Burbridge vs. Luis Daniel Muñoz (Ballotpedia / Providence Journal). GOP primary: Raymond McKay vs. Allen Waters (WPRI). Cards below are contenders, not nominees.",
     candidates: [
-      { name: "Jack Reed (incumbent)", party: "D", winner: false,
-        positions: ["Defense and the Rhode Island submarine industrial base (Armed Services leader)","Veterans' benefits and VA reform","Affordable housing and homelessness"],
-        differentiators: ["Senior Senate Armed Services leadership","Low-profile, bipartisan institutionalist","No serious Democratic primary challenger"],
-        supporters: ["Delivers for a small state through seniority and defense clout"],
-        opponents: ["A three-decade incumbent in an anti-incumbent era [Verify attack lines]"] },
-      { name: "[Republican nominee — decided in the Sept 9, 2026 primary]", party: "R", winner: false,
-        positions: ["[Decided Sept 9] platforms thin this early [Verify]"],
-        differentiators: ["GOP primary: Raymond McKay vs. Allen Waters (2024 RI-1 nominee)","Winner faces Reed in November","Sept 9 primary"],
-        supporters: ["State GOP endorsed Ray McKay, giving the likely nominee party infrastructure","Will run against Jack Reed's nearly three decades in office as a case for change [Verify]","Campaign message centers on affordability, energy costs and federal spending [Verify]"],
-        opponents: ["No Republican has won a Rhode Island statewide race since 2006","Reed led comfortably in spring 2026 UNH Survey Center general-election polling","Nominee unsettled until the Sept. 9 primary, shortening the general-election runway"] }
+    { name: "Jack Reed (incumbent)", party: "D", winner: false,
+      positions: ["Defense and the Rhode Island submarine industrial base (Armed Services leader)", "Veterans' benefits and VA reform", "Affordable housing and homelessness"],
+      differentiators: ["Senior Senate Armed Services leadership", "Low-profile, bipartisan institutionalist", "Faces progressive primary challengers Burbridge and Muñoz today (Providence Journal)"],
+      supporters: ["Delivers for a small state through seniority and defense clout", "Leads primary polls by wide margins (UNH Aug: Reed 54%, Burbridge 18%)", "Massive cash edge — ~$3.6M on hand vs. challengers' low five figures (FEC)"],
+      opponents: ["A three-decade incumbent in an anti-incumbent era", "Progressives say Rhode Island needs bolder leadership (Providence Journal)", "Age (76) is being raised by younger primary challengers"] },
+    { name: "Connor Burbridge (D contender)", party: "D", winner: false,
+      positions: ["Progressive leadership / generational change (per campaign)", "Elder-care and community advocacy lens", "Critiques Reed's longevity in office"],
+      differentiators: ["Elder-care worker mounting a progressive primary challenge (Providence Journal)", "Second in late UNH Aug primary poll at 18% (Reed 54%)", "Raised ~$25K with ~$4K cash (FEC through mid-Aug) — far behind Reed"],
+      supporters: ["Gives primary voters a progressive alternative to a six-term incumbent", "Argues the party needs next-generation leadership", "Best-polling challenger in late surveys"],
+      opponents: ["Cash and name-recognition gap versus Reed is enormous", "National progressive groups have largely stayed out (Providence Journal)", "Safe-D general still assumes Reed or another Democrat wins easily"] },
+    { name: "Luis Daniel Muñoz (D contender)", party: "D", winner: false,
+      positions: ["Progressive / outsider framing from prior statewide runs", "Healthcare background as a physician", "[Verify fuller 2026 Senate platform]"],
+      differentiators: ["Physician; prior independent gubernatorial candidate (2018) and Dem gov primary candidate (2022)", "Low single-digit polling in late primary surveys", "Reported FEC activity near zero in mid-cycle filings"],
+      supporters: ["A ballot alternative for voters wanting someone other than Reed or Burbridge", "Physician biography in a healthcare-cost cycle", "Prior statewide runs give some name familiarity"],
+      opponents: ["Finished far back in prior statewide races", "Polling and fundraising trail both Reed and Burbridge", "Thin 2026 Senate coverage relative to the top two"] },
+    { name: "Raymond McKay (R contender)", party: "R", winner: false,
+      positions: ["Affordability, energy costs and federal spending (party-primary framing)", "Case for change after Reed's nearly three decades", "[Verify fuller platform]"],
+      differentiators: ["State GOP-endorsed Senate candidate (page + WPRI coverage)", "Former RI Republican Assembly president; ran for Senate in 2024", "Faces Allen Waters in today's GOP primary"],
+      supporters: ["Party endorsement and infrastructure if he clears the primary", "UNH general-election polls show Reed ahead but not by 2020-blowout margins", "Runs as the change candidate against a long-serving incumbent"],
+      opponents: ["No Republican has won a Rhode Island U.S. Senate race since 2000", "Reed still leads comfortably in spring/summer UNH general polling", "Nominee unsettled until tonight — short general-election runway"] },
+    { name: "Allen Waters (R contender)", party: "R", winner: false,
+      positions: ["[Verify — 2026 Senate platform thin in coverage]", "Prior RI-1 candidacy experience", "[Verify]"],
+      differentiators: ["2024 RI-1 Republican nominee now seeking the Senate nomination", "Challenges McKay in today's GOP primary (WPRI)", "Less party-establishment backing than McKay"],
+      supporters: ["Gives GOP primary voters a choice beyond the endorsed candidate", "Recent federal-race experience from the 2024 House run", "Can argue he already faced Rhode Island general-election voters"],
+      opponents: ["State party is with McKay", "House loss in a Solid D district does not prove statewide strength", "Coverage of his 2026 Senate platform remains thin"] }
     ]
   },
   {
-    date: "Nov 3, 2026",
-    type: "upcoming",
-    scope: "State · Statewide",
+    date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide",
     office: "Governor of Rhode Island",
-    note: "Dan McKee (D) seeks a full second term but faces a serious Democratic primary rematch from 2022 runner-up Helena Foulkes; the RI Democratic Party declined to endorse for governor (a first since 1948). Rated Solid/Likely Democratic. GOP nominee decided Sept 9 (Guckian/Pelino/Raimondo).",
+    note: "Dan McKee (D) seeks a full second term but faces a serious Democratic primary rematch from 2022 runner-up Helena Foulkes; the RI Democratic Party declined to endorse for governor (a first since 1948). Rated Solid/Likely Democratic. ⚠ PRIMARY DAY Sept 9 — nominees NOT final (0% reporting). Dem: McKee vs. Foulkes (WPRI / AP). GOP: Aaron Guckian vs. Elaine Pelino; Robert Raimondo also appears in some ballot roundups (Wikipedia / UNH poll) while WPRI's ballot list highlights Guckian–Pelino. November also expected to include independents Ken Block, Jasjit Gotra, and C Reynolds (WPRI) — [Verify SoS general list].",
     candidates: [
-      { name: "Dan McKee (incumbent)", party: "D", winner: false,
-        positions: ["'Affordability for All' tax cuts; repeal the 2¢ gas-tax hike","Clean energy — restarted the Revolution Wind offshore project","Housing ($120M affordable-housing fund) and education gains"],
-        differentiators: ["Governor since 2021 (succeeded Raimondo); elected 2022","Runs on a 'Rhode Island 2030' incumbent record","Not endorsed by his own state party at the June convention"],
-        supporters: ["A steady hand who cut taxes and drew down the housing crisis"],
-        opponents: ["Trails Foulkes in local endorsements and polling [Verify]","Ethics/'347 Federal Hill' contract questions dog the administration [Verify]"] },
-      { name: "Helena Foulkes", party: "D", winner: false,
-        positions: ["Housing — 'Rhode Home' fund to build 20,000 units, paid by a 3% tax on income over $1M","Healthcare — raise Medicaid rates, rebuild primary care","Jobs — 'Classroom-to-Career' $100M CTE bond; blue-economy/port investment"],
-        differentiators: ["Former CVS Health executive running as an outsider","2022 primary runner-up (lost to McKee by ~2,700 votes)","Endorsed by AG Peter Neronha and most local Democratic committees"],
-        supporters: ["Executive competence and urgency the incumbent lacks"],
-        opponents: ["A wealthy corporate executive, light on elected experience [Verify]"] },
-      { name: "[Republican nominee — decided in the Sept 9, 2026 primary]", party: "R", winner: false,
-        positions: ["[Decided Sept 9] field platforms thin [Verify]"],
-        differentiators: ["GOP primary: Aaron Guckian (2022 Lt. Gov. nominee), Elaine Pelino, Robert Raimondo","Winner faces the Democratic nominee in November","Sept 9 primary"],
-        supporters: ["Argues a bruising McKee-Foulkes Democratic primary leaves an opening [Verify]","State GOP endorsed Aaron Guckian; Elaine Pelino led a June 2026 GOP primary poll","Runs on cost of living, taxes and state government accountability [Verify]"],
-        opponents: ["No Republican has won the governorship since Donald Carcieri's 2006 re-election","Contested Guckian-Pelino primary delays a unified nominee until Sept. 9","Democratic nominee starts with a large registration and fundraising edge [Verify]"] }
+    { name: "Dan McKee (incumbent)", party: "D", winner: false,
+      positions: ["'Affordability for All' tax cuts; repeal the 2¢ gas-tax hike", "Clean energy — restarted the Revolution Wind offshore project", "Housing ($120M affordable-housing fund) and education gains"],
+      differentiators: ["Governor since 2021 (succeeded Raimondo); elected 2022", "Runs on a 'Rhode Island 2030' incumbent record", "Not endorsed by his own state party; trails Foulkes in summer polls (WPRI / UNH)"],
+      supporters: ["A steady hand who cut taxes and drew down the housing crisis"],
+      opponents: ["Trails Foulkes in local endorsements and polling [Verify]", "Ethics/'347 Federal Hill' contract questions dog the administration [Verify]"] },
+    { name: "Helena Foulkes", party: "D", winner: false,
+      positions: ["Housing — 'Rhode Home' fund to build 20,000 units, paid by a 3% tax on income over $1M", "Healthcare — raise Medicaid rates, rebuild primary care", "Jobs — 'Classroom-to-Career' $100M CTE bond; blue-economy/port investment"],
+      differentiators: ["Former CVS Health executive running as an outsider", "2022 primary runner-up (lost to McKee by ~2,700 votes) — rematch today", "Endorsed by AG Peter Neronha and most local Democratic committees; led summer polls"],
+      supporters: ["Executive competence and urgency the incumbent lacks"],
+      opponents: ["A wealthy corporate executive, light on elected experience [Verify]"] },
+    { name: "Aaron Guckian (R contender)", party: "R", winner: false,
+      positions: ["Cost of living, taxes and state government accountability", "Business / trade-association executive framing", "[Verify fuller platform]"],
+      differentiators: ["State GOP-endorsed candidate for governor (WPRI / AP)", "2022 Republican nominee for lieutenant governor (~68% in that primary)", "Faces Elaine Pelino (and possibly Raimondo) in today's GOP primary"],
+      supporters: ["Party endorsement and prior statewide nominee experience", "Argues a bruising McKee–Foulkes Dem primary leaves an opening", "Trade-association executive résumé on jobs and costs"],
+      opponents: ["Trailed Pelino in summer GOP primary polling (UNH / Embold)", "No Republican has won the governorship since Donald Carcieri's 2006 re-election", "Democratic nominee starts with a large registration and fundraising edge"] },
+    { name: "Elaine Pelino (R contender)", party: "R", winner: false,
+      positions: ["Cost of living and taxes (primary coverage)", "First-time candidate outsider pitch", "[Verify fuller platform]"],
+      differentiators: ["Former actress/model; first-time candidate (AP)", "Led Guckian in summer GOP primary polls (UNH June; Embold Aug)", "Facing the state-party endorsee today"],
+      supporters: ["Polling lead over the party-endorsed rival entering primary day", "Outsider biography in an anti-establishment cycle", "Name ID from coverage of the Guckian–Pelino contest"],
+      opponents: ["State GOP endorsed Guckian", "No prior elected experience", "Even a GOP win tonight still faces a Solid/Likely D general"] }
     ]
   },
   {
-    date: "Nov 3, 2026",
-    type: "upcoming",
-    scope: "State · Statewide",
+    date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide",
     office: "Attorney General — Rhode Island (OPEN SEAT)",
-    note: "OPEN SEAT — Peter Neronha (D) is term-limited (and is not running for governor). A crowded Democratic primary Sept 9 will likely decide the office; Republican Alan Gordon is the lone GOP filer found. Gun policy and ICE/immigration enforcement are the defining fault lines. [Verify final ballot at the RI Dept. of State.]",
+    note: "OPEN SEAT — Peter Neronha (D) is term-limited. ⚠ PRIMARY DAY Sept 9 — Democratic primary among Kim Ahern, Keith Hoffmann, Jason Knight, and Joseph Solomon Jr. will likely decide the office; Republican Alan Gordon is unopposed on the GOP side (WPRI / Patch). Gun policy and ICE/immigration enforcement are the defining fault lines. Nominees NOT final until results are called.",
     candidates: [
-      { name: "Kim Ahern", party: "D", winner: false,
-        positions: ["Keep guns from prohibited persons; ban 'weapons of war'","Opposes aggressive ICE tactics","Consumer and worker protection [Verify]"],
-        differentiators: ["Former chair, RI Cannabis Control Commission","Sept 9 Democratic primary","[Verify fuller platform]"],
-        supporters: ["Cites service under three attorneys general and multiple governors","Former special assistant attorney general and Cannabis Control Commission chair","Only Democrat in the field who has not loaned her own campaign money"],
-        opponents: ["Rivals claim deeper prosecutorial or legislative résumés","Lacks Neronha's endorsement, which went to Hoffmann","Overlaps with Knight and Hoffmann for the same Providence and East Bay voters"] },
-      { name: "Keith Hoffmann", party: "D", winner: false,
-        positions: ["Defend the assault-weapons ban and red-flag laws","ICE accountability","[Verify]"],
-        differentiators: ["Former chief of policy in the AG's office","Sept 9 Democratic primary","[Verify]"],
-        supporters: ["Endorsed by term-limited AG Peter Neronha as the continuity candidate","Former chief of policy who helped build the office's Public Protection Bureau","Led the money race with a $450,000 self-loan plus $200,000-plus in donations"],
-        opponents: ["Self-funding through a $450,000 loan draws scrutiny over grassroots support [Verify]","Never held elected office, unlike legislator rivals Knight and Solomon","Risks being squeezed if progressive voters consolidate behind Ahern"] },
-      { name: "Jason Knight", party: "D", winner: false,
-        positions: ["Sponsored RI's assault-weapons ban","Courthouse-warrant requirements; opposes Trump immigration policy","[Verify]"],
-        differentiators: ["Navy veteran; 10-year state legislator","Sept 9 Democratic primary","[Verify]"],
-        supporters: ["Navy veteran with about 20 years in the courts and 10 in the General Assembly","Sponsored the assault-weapons ban and pushes codifying Roe in state law","Pitches a combined military, courtroom and legislative résumé"],
-        opponents: ["Gun-rights groups target his assault-weapons ban sponsorship [Verify]","Carries a six-figure loan balance from earlier fundraising periods","Base concentrated in the East Bay; splits voters with Ahern and Hoffmann"] },
-      { name: "Joseph Solomon Jr.", party: "D", winner: false,
-        positions: ["More moderate on guns — target 'bad actors,' protect lawful owners","Law-enforcement coordination","[Verify]"],
-        differentiators: ["The field's moderate lane on firearms","Sept 9 Democratic primary","[Verify]"],
-        supporters: ["About 15 years of legal work, a decade as bail commissioner, Warwick prosecutor","Most conservative Democrat in the field, offering clear differentiation","Warwick state representative with a familiar name in the city's politics [Verify]"],
-        opponents: ["Voted against the assault-weapons ban; Hoffmann attacked the vote in debate","Skipped a July candidate forum and drew a public rebuke from Ahern","Analysts say his appeal may be capped outside more conservative areas"] },
-      { name: "Alan Gordon", party: "R", winner: false,
-        positions: ["Opposes firearm restrictions","Anti-abortion","[Verify — cannabis-legalization background]"],
-        differentiators: ["2018/2022 candidate; lone GOP filer found [Verify]","[Verify positions]"],
-        supporters: ["Says his own litigation with the AG's office gives him an accountability view","Longtime cannabis-legalization activist with a consistent, unchanged message","Argues the AG should enforce existing law regardless of personal views"],
-        opponents: ["Spelled out a racial slur at a 2018 AG debate, drawing Providence NAACP criticism","Lost the 2018 attorney general race to Neronha; running again as a repeat candidate","Sole Republican in a state where Democrats have long held the AG's office [Verify]"] }
+    { name: "Kim Ahern", party: "D", winner: false,
+      positions: ["Keep guns from prohibited persons; ban 'weapons of war'", "Opposes aggressive ICE tactics", "Consumer and worker protection [Verify]"],
+      differentiators: ["Former chair, RI Cannabis Control Commission", "Sept 9 Democratic primary", "[Verify fuller platform]"],
+      supporters: ["Cites service under three attorneys general and multiple governors", "Former special assistant attorney general and Cannabis Control Commission chair", "Only Democrat in the field who has not loaned her own campaign money"],
+      opponents: ["Rivals claim deeper prosecutorial or legislative résumés", "Lacks Neronha's endorsement, which went to Hoffmann", "Overlaps with Knight and Hoffmann for the same Providence and East Bay voters"] },
+    { name: "Keith Hoffmann", party: "D", winner: false,
+      positions: ["Defend the assault-weapons ban and red-flag laws", "ICE accountability", "[Verify]"],
+      differentiators: ["Former chief of policy in the AG's office", "Sept 9 Democratic primary", "[Verify]"],
+      supporters: ["Endorsed by term-limited AG Peter Neronha as the continuity candidate", "Former chief of policy who helped build the office's Public Protection Bureau", "Led the money race with a $450,000 self-loan plus $200,000-plus in donations"],
+      opponents: ["Self-funding through a $450,000 loan draws scrutiny over grassroots support [Verify]", "Never held elected office, unlike legislator rivals Knight and Solomon", "Risks being squeezed if progressive voters consolidate behind Ahern"] },
+    { name: "Jason Knight", party: "D", winner: false,
+      positions: ["Sponsored RI's assault-weapons ban", "Courthouse-warrant requirements; opposes Trump immigration policy", "[Verify]"],
+      differentiators: ["Navy veteran; 10-year state legislator", "Sept 9 Democratic primary", "[Verify]"],
+      supporters: ["Navy veteran with about 20 years in the courts and 10 in the General Assembly", "Sponsored the assault-weapons ban and pushes codifying Roe in state law", "Pitches a combined military, courtroom and legislative résumé"],
+      opponents: ["Gun-rights groups target his assault-weapons ban sponsorship [Verify]", "Carries a six-figure loan balance from earlier fundraising periods", "Base concentrated in the East Bay; splits voters with Ahern and Hoffmann"] },
+    { name: "Joseph Solomon Jr.", party: "D", winner: false,
+      positions: ["More moderate on guns — target 'bad actors,' protect lawful owners", "Law-enforcement coordination", "[Verify]"],
+      differentiators: ["The field's moderate lane on firearms", "Sept 9 Democratic primary", "[Verify]"],
+      supporters: ["About 15 years of legal work, a decade as bail commissioner, Warwick prosecutor", "Most conservative Democrat in the field, offering clear differentiation", "Warwick state representative with a familiar name in the city's politics [Verify]"],
+      opponents: ["Voted against the assault-weapons ban; Hoffmann attacked the vote in debate", "Skipped a July candidate forum and drew a public rebuke from Ahern", "Analysts say his appeal may be capped outside more conservative areas"] },
+    { name: "Alan Gordon", party: "R", winner: false,
+      positions: ["Opposes firearm restrictions", "Anti-abortion", "[Verify — cannabis-legalization background]"],
+      differentiators: ["2018/2022 candidate; lone GOP filer found [Verify]", "[Verify positions]"],
+      supporters: ["Says his own litigation with the AG's office gives him an accountability view", "Longtime cannabis-legalization activist with a consistent, unchanged message", "Argues the AG should enforce existing law regardless of personal views"],
+      opponents: ["Spelled out a racial slur at a 2018 AG debate, drawing Providence NAACP criticism", "Lost the 2018 attorney general race to Neronha; running again as a repeat candidate", "Sole Republican in a state where Democrats have long held the AG's office [Verify]"] }
     ]
   },
   {
-    date: "Nov 3, 2026",
-    type: "upcoming",
-    scope: "State · Statewide",
+    date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide",
     office: "Lieutenant Governor — Rhode Island",
-    note: "Sabina Matos (D) seeks a second full term against a crowded Democratic primary Sept 9. Republican John Loughlin and independent Mabel Martinez have filed. Candidate platforms are thinly covered this early [Verify — primary Sept 9].",
+    note: "Sabina Matos (D) seeks a second full term. ⚠ PRIMARY DAY Sept 9 — crowded Democratic primary: Matos vs. Sue AnderBois, Cindy Coyne, Xay Khamsyvoravong, and Ross McCurdy (WPRI). Republican John Loughlin advances on the GOP side; independent Mabel Martinez has also been reported as filing. Nominees NOT final. Candidate platforms remain thinly covered for some challengers [Verify].",
     candidates: [
-      { name: "Sabina Matos (incumbent)", party: "D", winner: false,
-        positions: ["[Verify — primary Sept 9]"],
-        differentiators: ["Lt. Governor since 2021; former Providence City Council president","Crowded Dem primary: Anderbois, Armour Coyne, Khamsyvoravong, McCurdy","Sept 9 primary"],
-        supporters: ["First Dominican-American woman elected statewide in Rhode Island [Verify]","Points to work on food access, small business and health equity [Verify]","Says she stayed and did the job after 2023 rather than resigning"],
-        opponents: ["2023 congressional bid collapsed over fraudulent signatures, some from dead voters","Critics say blaming an outside vendor deflected responsibility for her campaign","Trails challengers in fundraising while carrying roughly $98,000 in loans"] },
-      { name: "John Loughlin", party: "R", winner: false,
-        positions: ["[Verify — primary Sept 9]"],
-        differentiators: ["Former state representative; past congressional candidate","[Verify]"],
-        supporters: ["Iraq war veteran with 26 years in the Army and Air National Guard","Former state representative and House minority whip; 13 years on WPRO radio","Would remake the LG's office into a watchdog targeting fraud, waste and abuse"],
-        opponents: ["Lost a prior congressional bid; critics cast him as a repeat candidate [Verify]","The LG's office lacks statutory inspector general powers he describes [Verify]","No Republican has won the lieutenant governorship in decades [Verify]"] }
+    { name: "Sabina Matos (incumbent)", party: "D", winner: false,
+      positions: ["[Verify — primary Sept 9]"],
+      differentiators: ["Lt. Governor since 2021; former Providence City Council president", "Crowded Dem primary TODAY: AnderBois, Coyne, Khamsyvoravong, McCurdy (WPRI)", "Surviving today's primary is required to reach November vs. Loughlin"],
+      supporters: ["First Dominican-American woman elected statewide in Rhode Island [Verify]", "Points to work on food access, small business and health equity [Verify]", "Says she stayed and did the job after 2023 rather than resigning"],
+      opponents: ["2023 congressional bid collapsed over fraudulent signatures, some from dead voters", "Critics say blaming an outside vendor deflected responsibility for her campaign", "Trails challengers in fundraising while carrying roughly $98,000 in loans"] },
+    { name: "John Loughlin", party: "R", winner: false,
+      positions: ["[Verify — primary Sept 9]"],
+      differentiators: ["Former state representative; past congressional candidate", "[Verify]"],
+      supporters: ["Iraq war veteran with 26 years in the Army and Air National Guard", "Former state representative and House minority whip; 13 years on WPRO radio", "Would remake the LG's office into a watchdog targeting fraud, waste and abuse"],
+      opponents: ["Lost a prior congressional bid; critics cast him as a repeat candidate [Verify]", "The LG's office lacks statutory inspector general powers he describes [Verify]", "No Republican has won the lieutenant governorship in decades [Verify]"] }
     ]
   },
   {
-    date: "Nov 3, 2026",
-    type: "upcoming",
-    scope: "State · Statewide",
+    date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide",
     office: "Secretary of State — Rhode Island",
-    note: "Gregg Amore (D) seeks a second term; he faces only a minor Democratic primary. Republican nominee and platforms [Verify — primary Sept 9].",
+    note: "Gregg Amore (D) seeks a second term. ⚠ PRIMARY DAY Sept 9 — coverage describes only a minor Democratic primary if any; confirm opponents on the live SoS/Board of Elections ballot (vote.ri.gov). Republican nominee and platforms [Verify].",
     candidates: [
-      { name: "Gregg Amore (incumbent)", party: "D", winner: false,
-        positions: ["Elections administration and voter access [Verify]","Open government / public records [Verify]"],
-        differentiators: ["Secretary of State since 2023; former state representative and teacher","[Verify]"],
-        supporters: ["Won nearly 60% in 2022; labor and legislative leaders joined his 2026 kickoff","Backed the Let RI Vote Act expanding mail and early voting options","Former teacher who helped write the state's high school civics requirement"],
-        opponents: ["No opponent has filed, so his record faces little organized scrutiny","Election-integrity critics argue expanded mail voting weakens safeguards [Verify]","Critics may read his gerrymandering commentary as partisan advocacy [Verify]"] }
+    { name: "Gregg Amore (incumbent)", party: "D", winner: false,
+      positions: ["Elections administration and voter access [Verify]", "Open government / public records [Verify]"],
+      differentiators: ["Secretary of State since 2023; former state representative and teacher", "[Verify]"],
+      supporters: ["Won nearly 60% in 2022; labor and legislative leaders joined his 2026 kickoff", "Backed the Let RI Vote Act expanding mail and early voting options", "Former teacher who helped write the state's high school civics requirement"],
+      opponents: ["No opponent has filed, so his record faces little organized scrutiny", "Election-integrity critics argue expanded mail voting weakens safeguards [Verify]", "Critics may read his gerrymandering commentary as partisan advocacy [Verify]"] }
     ]
   },
   {
-    date: "Nov 3, 2026",
-    type: "upcoming",
-    scope: "State · Statewide",
+    date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide",
     office: "General Treasurer — Rhode Island",
-    note: "James Diossa (D) seeks a second term; expected general vs. Republican Micholas Credle. Platforms [Verify — primary Sept 9].",
+    note: "James Diossa (D) seeks a second term; expected general vs. Republican Micholas Credle. ⚠ PRIMARY DAY Sept 9 — no major contested primary flagged in WPRI's top-line ballot guide; confirm on the live ballot. Platforms [Verify].",
     candidates: [
-      { name: "James Diossa (incumbent)", party: "D", winner: false,
-        positions: ["Pension-fund stewardship and financial empowerment [Verify]","Retirement security [Verify]"],
-        differentiators: ["General Treasurer since 2023; former mayor of Central Falls","No serious primary noted","[Verify]"],
-        supporters: ["Cites growth in the roughly $13 billion pension fund and a stronger bond rating","Points to expanded homebuyer programs and millions in eliminated medical debt","Former Central Falls mayor who led the city out of bankruptcy and receivership"],
-        opponents: ["A $500,000 transfer out of Central Falls' pension fund occurred on his watch","Central Falls retirees absorbed deep pension cuts during his mayoral tenure","An outlet editorial has faulted his state ethics disclosure filings [Verify]"] },
-      { name: "Micholas Credle", party: "R", winner: false,
-        positions: ["[Verify — primary Sept 9]"],
-        differentiators: ["Republican filer for General Treasurer [Verify]"],
-        supporters: ["State GOP-endorsed nominee, placing him first on the November ballot","U.S. Army retiree and board president of Newport's Pyramid Club","Political newcomer offering a contrast to an incumbent officeholder [Verify]"],
-        opponents: ["Re-registered as a Republican the same day he opened his campaign account","Had not voted in Rhode Island since 2020 before that re-registration","No reported record of pension or institutional investment experience [Verify]"] }
+    { name: "James Diossa (incumbent)", party: "D", winner: false,
+      positions: ["Pension-fund stewardship and financial empowerment [Verify]", "Retirement security [Verify]"],
+      differentiators: ["General Treasurer since 2023; former mayor of Central Falls", "No serious primary noted", "[Verify]"],
+      supporters: ["Cites growth in the roughly $13 billion pension fund and a stronger bond rating", "Points to expanded homebuyer programs and millions in eliminated medical debt", "Former Central Falls mayor who led the city out of bankruptcy and receivership"],
+      opponents: ["A $500,000 transfer out of Central Falls' pension fund occurred on his watch", "Central Falls retirees absorbed deep pension cuts during his mayoral tenure", "An outlet editorial has faulted his state ethics disclosure filings [Verify]"] },
+    { name: "Micholas Credle", party: "R", winner: false,
+      positions: ["[Verify — primary Sept 9]"],
+      differentiators: ["Republican filer for General Treasurer [Verify]"],
+      supporters: ["State GOP-endorsed nominee, placing him first on the November ballot", "U.S. Army retiree and board president of Newport's Pyramid Club", "Political newcomer offering a contrast to an incumbent officeholder [Verify]"],
+      opponents: ["Re-registered as a Republican the same day he opened his campaign account", "Had not voted in Rhode Island since 2020 before that re-registration", "No reported record of pension or institutional investment experience [Verify]"] }
     ]
   },
-
-  // PAST — recent statewide results for context
   {
-    date: "Nov 5, 2024",
-    type: "past",
-    scope: "Federal · Statewide",
+    date: "Nov 5, 2024", type: "past", scope: "Federal · Statewide",
     office: "President (Rhode Island, 2024)",
     note: "Kamala Harris (D) carried Rhode Island ~58% to ~40% over Donald Trump — a ~13.8-point margin. RI has not voted Republican for president since 1984.",
     candidates: [
-      { name: "Kamala Harris", party: "D", winner: true,
-        positions: ["Reproductive rights","Middle-class economics","Democracy protection"],
-        differentiators: ["Won all 5 RI counties","~314,982 votes (~58%)"],
-        supporters: [], opponents: [] },
-      { name: "Donald Trump", party: "R", winner: false,
-        positions: ["Immigration enforcement","Tax cuts","Deregulation"],
-        differentiators: ["~220,736 votes (~40%) — RI's best GOP presidential share in years [Verify]"],
-        supporters: [], opponents: [] }
+    { name: "Kamala Harris", party: "D", winner: true,
+      positions: ["Reproductive rights", "Middle-class economics", "Democracy protection"],
+      differentiators: ["Won all 5 RI counties", "~314,982 votes (~58%)"],
+      supporters: [],
+      opponents: [] },
+    { name: "Donald Trump", party: "R", winner: false,
+      positions: ["Immigration enforcement", "Tax cuts", "Deregulation"],
+      differentiators: ["~220,736 votes (~40%) — RI's best GOP presidential share in years [Verify]"],
+      supporters: [],
+      opponents: [] }
     ]
   },
   {
-    date: "Nov 8, 2022",
-    type: "past",
-    scope: "State · Statewide",
+    date: "Nov 8, 2022", type: "past", scope: "State · Statewide",
     office: "Governor of Rhode Island (2022)",
     note: "Dan McKee (D) won a full term 57.9% to 38.9% over Republican Ashley Kalus — a ~19-point margin. Helena Foulkes had pushed McKee to a narrow ~2,700-vote win in that year's Democratic primary; the two meet again in 2026.",
     candidates: [
-      { name: "Dan McKee", party: "D", winner: true,
-        positions: ["Post-pandemic recovery","Housing and education","Tax relief"],
-        differentiators: ["Elevated from Lt. Governor when Raimondo joined the Biden Cabinet","Survived a competitive 5-way 2022 Democratic primary"],
-        supporters: [], opponents: [] },
-      { name: "Ashley Kalus", party: "R", winner: false,
-        positions: ["Small-business economics","Public safety","Education choice"],
-        differentiators: ["Businesswoman; 2022 GOP nominee","Lost by ~19 points"],
-        supporters: [], opponents: [] }
+    { name: "Dan McKee", party: "D", winner: true,
+      positions: ["Post-pandemic recovery", "Housing and education", "Tax relief"],
+      differentiators: ["Elevated from Lt. Governor when Raimondo joined the Biden Cabinet", "Survived a competitive 5-way 2022 Democratic primary"],
+      supporters: [],
+      opponents: [] },
+    { name: "Ashley Kalus", party: "R", winner: false,
+      positions: ["Small-business economics", "Public safety", "Education choice"],
+      differentiators: ["Businesswoman; 2022 GOP nominee", "Lost by ~19 points"],
+      supporters: [],
+      opponents: [] }
     ]
   }
-];
+]
 
 // ----- (3) US House races by district -----
 // Each district object holds: 2026 race + 2024 race
@@ -941,37 +946,39 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "Gabe Amo (D) seeks a second full term. Rated Solid/Safe Democratic (Cook). Republican Kellie Keenan and independent Pedro DeSouza have filed.",
+        note: "Gabe Amo (D) seeks a second full term. Rated Solid/Safe Democratic (Cook). ⚠ PRIMARY DAY Sept 9 — Amo drew no serious Democratic primary per WPRI's federal summary; Republican Kellie Keenan and independent Pedro DeSouza are on the November path. Confirm live ballot at vote.ri.gov. Nominees/fields NOT to be invented.",
         candidates: [
-          { name: "Gabe Amo (incumbent)", party: "D", winner: false,
-            positions: ["Gun-violence prevention","Reproductive freedom","Climate resilience and environmental justice"],
-            differentiators: ["First Black Rhode Islander elected to Congress","Former Biden White House intergovernmental-affairs official","Won the seat in a 2023 special election"],
-            supporters: ["An effective, well-connected young member for a safe-D seat"],
-            opponents: ["[Verify GOP attack lines]"] },
-          { name: "Kellie Keenan", party: "R", winner: false,
-            positions: ["Affordability and the cost of living","Housing costs and availability","Energy costs"],
-            differentiators: ["Providence public-health consultant and small business owner","State GOP-endorsed nominee","Campaigns on a deliberately non-partisan frame"],
-            supporters: ["State GOP-endorsed nominee running on affordability, housing and energy costs","Public health consultant and small business owner pitching a non-partisan frame","Argues Rhode Islanders work hard and still feel like they are falling behind"],
-            opponents: ["RI-1 is rated Solid Democratic; Amo drew no primary challenger [Verify]","Platform lists priorities without detailed federal policy specifics [Verify]","No prior elected experience and limited statewide name recognition [Verify]"] },
-          { name: "Pedro DeSouza", party: "I", winner: false,
-            positions: ["No federal income tax on the first $50,000 of income","Cap credit-card interest rates at 15%","Single-payer health coverage; limit corporate buying of single-family homes"],
-            differentiators: ["Independent candidate from Woonsocket","Runs on grassroots-only fundraising as a non-career politician","Calls for ending U.S. aid to Israel"],
-            supporters: ["Working-class, non-career-politician pitch built on grassroots-only fundraising","Proposes no federal income tax on the first $50,000 and a 15% card rate cap","Backs single-payer coverage and limits on corporate single-family home buying"],
-            opponents: ["Running outside both parties, without either one's ballot organization","Calls for ending U.S. aid to Israel, a position that draws sharp criticism [Verify]","Independent bids in RI-1 have historically drawn low single-digit shares [Verify]"] }
+        { name: "Gabe Amo (incumbent)", party: "D", winner: false,
+          positions: ["Gun-violence prevention", "Reproductive freedom", "Climate resilience and environmental justice"],
+          differentiators: ["First Black Rhode Islander elected to Congress", "Former Biden White House intergovernmental-affairs official", "Won the seat in a 2023 special election"],
+          supporters: ["An effective, well-connected young member for a safe-D seat"],
+          opponents: ["[Verify GOP attack lines]"] },
+        { name: "Kellie Keenan", party: "R", winner: false,
+          positions: ["Affordability and the cost of living", "Housing costs and availability", "Energy costs"],
+          differentiators: ["Providence public-health consultant and small business owner", "State GOP-endorsed nominee", "Campaigns on a deliberately non-partisan frame"],
+          supporters: ["State GOP-endorsed nominee running on affordability, housing and energy costs", "Public health consultant and small business owner pitching a non-partisan frame", "Argues Rhode Islanders work hard and still feel like they are falling behind"],
+          opponents: ["RI-1 is rated Solid Democratic; Amo drew no primary challenger [Verify]", "Platform lists priorities without detailed federal policy specifics [Verify]", "No prior elected experience and limited statewide name recognition [Verify]"] },
+        { name: "Pedro DeSouza", party: "I", winner: false,
+          positions: ["No federal income tax on the first $50,000 of income", "Cap credit-card interest rates at 15%", "Single-payer health coverage; limit corporate buying of single-family homes"],
+          differentiators: ["Independent candidate from Woonsocket", "Runs on grassroots-only fundraising as a non-career politician", "Calls for ending U.S. aid to Israel"],
+          supporters: ["Working-class, non-career-politician pitch built on grassroots-only fundraising", "Proposes no federal income tax on the first $50,000 and a 15% card rate cap", "Backs single-payer coverage and limits on corporate single-family home buying"],
+          opponents: ["Running outside both parties, without either one's ballot organization", "Calls for ending U.S. aid to Israel, a position that draws sharp criticism [Verify]", "Independent bids in RI-1 have historically drawn low single-digit shares [Verify]"] }
         ]
       },
       {
         date: "Nov 5, 2024", type: "past",
         note: "Gabe Amo (D) won his first full term 63.0% to 32.0% over Republican Allen Waters (independent C.D. Reynolds also ran).",
         candidates: [
-          { name: "Gabe Amo", party: "D", winner: true,
-            positions: ["Reproductive rights","Gun safety","Climate action"],
-            differentiators: ["Won by ~31 points","~139,352 votes (63.0%)"],
-            supporters: [], opponents: [] },
-          { name: "Allen Waters", party: "R", winner: false,
-            positions: ["Fiscal conservatism","Border security","Small government"],
-            differentiators: ["2024 GOP nominee; now running for U.S. Senate in 2026","~70,742 votes (32.0%)"],
-            supporters: [], opponents: [] }
+        { name: "Gabe Amo", party: "D", winner: true,
+          positions: ["Reproductive rights", "Gun safety", "Climate action"],
+          differentiators: ["Won by ~31 points", "~139,352 votes (63.0%)"],
+          supporters: [],
+          opponents: [] },
+        { name: "Allen Waters", party: "R", winner: false,
+          positions: ["Fiscal conservatism", "Border security", "Small government"],
+          differentiators: ["2024 GOP nominee; now running for U.S. Senate in 2026", "~70,742 votes (32.0%)"],
+          supporters: [],
+          opponents: [] }
         ]
       }
     ]
@@ -982,39 +989,51 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "Seth Magaziner (D) seeks a third term. Rated Solid/Safe Democratic (Cook). He faces a minor Democratic primary from ex-state Rep. Spencer Dickinson; the GOP nominee is decided Sept 9 (Skoly vs. Mellor).",
+        note: "Seth Magaziner (D) seeks a third term. Rated Solid/Safe Democratic (Cook). ⚠ PRIMARY DAY Sept 9 — Dem primary: Magaziner vs. ex-state Rep. Spencer Dickinson (minor). GOP primary: Dr. Stephen Skoly vs. Vic Mellor (WPRI). Nominees NOT final (0% reporting).",
         candidates: [
-          { name: "Seth Magaziner (incumbent)", party: "D", winner: false,
-            positions: ["Protect Social Security and Medicare","Reproductive rights, ACA and gun safety","Government ethics — ban congressional stock trading, term limits"],
-            differentiators: ["Ranking Member, House Homeland Security counterterrorism subcommittee","Former RI General Treasurer","Faces only a minor primary challenge"],
-            supporters: ["A workmanlike member focused on kitchen-table security"],
-            opponents: ["[Verify GOP attack lines]"] },
-          { name: "[Republican nominee — decided in the Sept 9, 2026 primary]", party: "R", winner: false,
-            positions: ["[Decided Sept 9] platforms thin [Verify]"],
-            differentiators: ["GOP primary: Dr. Stephen Skoly (Cranston oral surgeon) vs. Vic Mellor","Winner faces Magaziner in November","Sept 9 primary"],
-            supporters: ["RI-2 is the state's more competitive seat; Magaziner won a close 2022 race","State GOP endorsed Dr. Stephen Skoly; Vic Mellor is contesting the primary","Nominee expected to run on cost of living and federal spending [Verify]"],
-            opponents: ["Magaziner has since won by wider margins and holds a large cash edge [Verify]","Contested primary leaves the nominee undecided until Sept. 9","Mellor declined to seek the party endorsement, signaling a divided field"] }
+        { name: "Seth Magaziner (incumbent)", party: "D", winner: false,
+          positions: ["Protect Social Security and Medicare", "Reproductive rights, ACA and gun safety", "Government ethics — ban congressional stock trading, term limits"],
+          differentiators: ["Ranking Member, House Homeland Security counterterrorism subcommittee", "Former RI General Treasurer", "Faces ex-state Rep. Spencer Dickinson in today's Democratic primary"],
+          supporters: ["A workmanlike member focused on kitchen-table security"],
+          opponents: ["[Verify GOP attack lines]"] },
+        { name: "Spencer Dickinson (D contender)", party: "D", winner: false,
+          positions: ["[Verify — limited 2026 primary coverage]", "[Verify]", "[Verify]"],
+          differentiators: ["Former state representative challenging Magaziner today", "Described in coverage as a minor primary challenge", "Sept 9 Democratic primary"],
+          supporters: ["Gives Democratic primary voters a ballot alternative to the incumbent", "Prior General Assembly experience", "Can focus criticism on Magaziner's House record"],
+          opponents: ["Incumbent holds a large cash and name-recognition edge", "Coverage consistently frames this as a long-shot primary", "Safe-D district still favors Magaziner in November if he advances"] },
+        { name: "Stephen Skoly (R contender)", party: "R", winner: false,
+          positions: ["Cost of living and federal spending (party-primary framing)", "[Verify fuller platform]", "[Verify]"],
+          differentiators: ["Cranston oral surgeon; state GOP-endorsed RI-2 candidate", "Faces Vic Mellor in today's GOP primary", "RI-2 is the state's more competitive House seat historically"],
+          supporters: ["Party endorsement and professional-community network", "RI-2 was closer in 2022 than RI-1", "Can run on kitchen-table costs against Magaziner"],
+          opponents: ["Magaziner has since won by wider margins and holds a cash edge", "Contested primary delays a unified nominee until tonight", "Cook still rates the seat Solid/Safe Democratic"] },
+        { name: "Vic Mellor (R contender)", party: "R", winner: false,
+          positions: ["[Verify — 2026 platform coverage thin]", "[Verify]", "[Verify]"],
+          differentiators: ["Contesting Skoly for the GOP nomination today", "Declined to seek the party endorsement, signaling a divided field", "Sept 9 Republican primary"],
+          supporters: ["Offers GOP primary voters a choice beyond the endorsee", "Can argue the endorsement process did not settle the race", "Any nominee inherits RI-2's relatively better GOP history"],
+          opponents: ["State party is with Skoly", "Skipping the endorsement can limit early infrastructure", "Still faces a Solid D general against Magaziner"] }
         ]
       },
       {
         date: "Nov 5, 2024", type: "past",
         note: "Seth Magaziner (D) won re-election 55.8% to 39.8% over Republican Steven Corvi.",
         candidates: [
-          { name: "Seth Magaziner", party: "D", winner: true,
-            positions: ["Social Security and Medicare","Reproductive rights","Public safety"],
-            differentiators: ["Won by ~16 points","~153,439 votes (55.84%)"],
-            supporters: [], opponents: [] },
-          { name: "Steven Corvi", party: "R", winner: false,
-            positions: ["Fiscal restraint","Border security","Veterans"],
-            differentiators: ["2024 GOP nominee","~109,381 votes (39.81%)"],
-            supporters: [], opponents: [] }
+        { name: "Seth Magaziner", party: "D", winner: true,
+          positions: ["Social Security and Medicare", "Reproductive rights", "Public safety"],
+          differentiators: ["Won by ~16 points", "~153,439 votes (55.84%)"],
+          supporters: [],
+          opponents: [] },
+        { name: "Steven Corvi", party: "R", winner: false,
+          positions: ["Fiscal restraint", "Border security", "Veterans"],
+          differentiators: ["2024 GOP nominee", "~109,381 votes (39.81%)"],
+          supporters: [],
+          opponents: [] }
         ]
       }
     ]
   }
-};
+}
 
-const SITE_META = { name: "Rhode Island Elections Hub", lastUpdated: "September 4, 2026" };
+const SITE_META = { name: "Rhode Island Elections Hub", lastUpdated: "September 9, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — RI county-level down-ballot research is the next phase.)
