@@ -39,7 +39,7 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 | `de.html` | Delaware — sixth fully built state (3 counties, 1 at-large seat). ⚠ Primary is **Sept 15, 2026**, filing deadline July 14 — fields provisional; open Treasurer seat (Ramone). No LOCAL_RACES yet |
 | `nj.html` | New Jersey — seventh fully built state (21 counties, 12 districts, June 2 primary results, NJ-11 special history). Kean toss-up in NJ-7; no GOP candidate in NJ-8. No LOCAL_RACES yet |
 | `ny.html` | New York — eighth fully built state (62 counties, all 26 districts, June 23 primary results). Added July 14, 2026. NO 2026 U.S. Senate; statewide = Gov (Hochul–Blakeman)/AG (James–Komatireddy)/Comptroller (DiNapoli–Hernandez). Marquee: NY-17 Lawler Toss Up; NY-3/4/19 Lean D. Upsets: Goldman lost NY-10 primary to Lander; Espaillat lost NY-13 to Avila Chevalier; open seats NY-7/12/21. Voices (supporters/opponents) not yet added; NY-6 GOP nominee is [Verify]. No LOCAL_RACES yet |
-| `ri.html` | Rhode Island — ninth fully built state (5 counties, 2 districts, Sept 9, 2026 **PRIMARY DAY** — morning field refresh; nominees pending evening results). Statewide: Senate (Reed vs. Burbridge/Muñoz Dem; McKay vs. Waters GOP); Governor (McKee–Foulkes Dem rematch; Guckian–Pelino GOP); open AG; Lt Gov/SoS/Treasurer; RI-1 Amo & RI-2 Magaziner (Skoly vs. Mellor GOP) both Solid D. Built July 20, 2026. No LOCAL_RACES yet |
+| `ri.html` | Rhode Island — ninth fully built state (5 counties, 2 districts, Sept 9, 2026 primary **SETTLED** — WPRI/CNN/AP/Ocean State Media-called nominees; unofficial pending certification). Statewide: Senate **Reed (D) vs. McKay (R)** (+ ind. Bahry); Governor **Foulkes (D) vs. Guckian (R)** (+ inds. Block/Gotra/C.D. Reynolds) after Foulkes unseated McKee; open AG **Ahern (D) vs. Gordon (R)**; Lt Gov **Matos (D) vs. Loughlin (R)**; SoS Amore (D) unopposed; Treasurer Diossa (D) vs. Credle (R); RI-1 Amo/Keenan; RI-2 Magaziner vs. Mellor (Skoly defeated; Dickinson failed petition). Locals noted: Providence mayor Dem Morales over Smiley; Pawtucket mayor Dem Greenman over Grebien. Built July 20, 2026. No LOCAL_RACES yet |
 | `nh.html` | New Hampshire — tenth fully built state (10 counties incl. split Hillsborough/Merrimack, 2 districts, Sept 8, 2026 primary **SETTLED** — AP/CNN/NBC/WMUR-called nominees). OPEN Senate: **Pappas (D) vs. Sununu (R)**, Lean D; Gov **Ayotte (R) vs. Warmington (D)**; OPEN NH-1: **Stefany Shaheen (D) vs. Anthony DiLorenzo (R)**, Likely D; NH-2: **Goodlander (D) vs. Lily Tang Williams (R)**, Likely D. Built July 20, 2026. No LOCAL_RACES yet |
 | `ct.html` | Connecticut — eleventh fully built state (8 traditional counties, 5 districts, Aug 11 primary pending). NO 2026 U.S. Senate; six statewide constitutional offices (Gov Lamont seeking a 3rd term vs. GOP nominee Ryan Fazio, Solid D; LG/AG/SoS/Treasurer/Comptroller). Marquee: CT-1, where 14-term John Larson LOST the convention endorsement to Luke Bronin. Built July 22, 2026. No LOCAL_RACES yet |
 | `vt.html` | Vermont — twelfth fully built state (14 counties, 1 at-large district, Aug 11 primary pending). NO 2026 U.S. Senate; Gov Phil Scott (R) seeking a 6th 2-yr term (Solid R), Lt Gov Rodgers (R), OPEN Auditor (Hoffer retiring), U.S. House at-large Balint (D, Solid D). Built July 22, 2026. No LOCAL_RACES yet |
@@ -228,13 +228,15 @@ Finally `node tools/fit-map-frames.js` so the new page's map frame takes the sta
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of September 8, 2026)
+## Current state (as of September 10, 2026)
 - **Built bloc = 47 states + DC PARTIAL marquee.** Fully built: everything except CA, MO, TX (starter framework) and DC (marquee-only). Alaska (47th) and Louisiana are built — do NOT treat the Sept 3 "AK CA LA MO TX remaining" line as live.
-- **NH primary is TODAY (Sept 8, 2026).** Morning refresh on `nh.html` corrected ballot fields and election-day language; **no winners invented** while polls are still open (close ~7–8pm by town). Re-run tonight / Sept 9 for AP/SoS nominees.
-- **MO is NOT ready to build.** Banked research incomplete (`statewide-research.md` unfinished, map/Prop A gate, thin `mo-cd120.json`). Do not start `mo.html`.
-- **CA and TX remain unbuilt** (starter only). Do not start those page builds in the NH-primary pass.
-- **Mentioned-dates scanner WIP (Sept 7) is in tree:** `tools/mentioned-dates.js`, `tests/mentioned-dates.js`, wired into `tools/verify-report.js` + `tests/run-all.js`, plus a tiny `index.html` fact-card wording fix. Keep and ship with the next green commit.
-- **Sept 3 narrative below is SUPERSEDED** for remaining-state counts (it still listed AK/LA as unbuilt).
+- **RI primary SETTLED (Sept 9, 2026).** `ri.html` locked to November nominees (WPRI/CNN/AP/Ocean State Media; unofficial pending certification). Foulkes unseated McKee; Guckian projected over Pelino in a razor-close GOP race; Dickinson/Waters/defeated primary cards removed. Voices 0 gaps.
+- **NH primary SETTLED (Sept 8, 2026).** `nh.html` already on AP/CNN/NBC/WMUR-called nominees; Verify 0. Light-touch only unless certified totals appear.
+- **DE primary is NEXT (Sept 15, 2026).** Prep/ledger only — do not invent results.
+- **MO is NOT ready to build.** Banked research incomplete (`statewide-research.md` unfinished, map/Prop A gate, thin `mo-cd120.json`). Do not start `mo.html`. Untracked `tools/banked/mo-build/` + `mo-cd120.json` must not be discarded.
+- **CA and TX remain unbuilt** (starter only). Do not start those page builds.
+- **Mentioned-dates scanner is in tree:** `tools/mentioned-dates.js`, `tests/mentioned-dates.js`, wired into `tools/verify-report.js` + `tests/run-all.js`.
+- **Sept 3 / Sept 8 narratives below are SUPERSEDED** for remaining-state counts and NH/RI primary status.
 
 ## Superseded — current state as of September 3, 2026
 - **MI (full, added Sept 3, 2026) — 45th state.** See the file-inventory row. 130 candidate cards, 0 voices gaps, 394 [Verify].
