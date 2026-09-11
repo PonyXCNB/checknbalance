@@ -576,3 +576,28 @@ Free web only (0 Grok). SITE_META bumped to Sept 11 on changed pages. Baseline 3
 LEFT: AZ minor-party / write-in absences; KS structural Verifies and Steven Johnson 2026-platform hole; TN independent Gov blanks and Hagerty voice Verifies; GA premium/rate structural Verifies; SC Graham-Nordone thin platform; DE Sep 15 winners; MO/CA/TX unbuilt; MI board/regents honest nulls; FL challenger unfunded structurals.
 
 Grok queries: 0 session total.
+
+## 2026-09-11 — Verify backlog clear batch 9 (Wave 9: OK/UT house.gov+campaign+Cook, WA FEC)
+
+Free web only (0 Grok). SITE_META bumped to Sept 11 on changed pages (ok already Sept 11; ut/wa bumped). Baseline 3584 → 3571 (−13).
+
+### ok.html (−5)
+- Tom Cole: opponent line no longer claims platform is committee-only — cole.house.gov/issues menu covers energy/immigration/defense/appropriations.
+- John Croisant: Indivisible Tulsa County + Protect Tulsa Public Schools endorsements (Indivisible endorsement page; Ballotpedia endorsement list).
+- Croisant / Jena Nelson forecaster lines: Cook Political Report Solid R on OK-1 / OK-5 (cookpolitical.com House ratings, Sept 11, 2026).
+- Stephanie Bice Cook upset-remote line hardened from cookpolitical.com OK-05 race page + ratings list.
+
+### ut.html (−6)
+- Blake Moore: Mike Johnson primary endorsement (Deseret News Mar 30, 2026 article body).
+- Peter Crosby: family military/public-service tradition from petercrosbyforcongress.org/about.
+- Celeste Maloy: public-lands sale criticism from St. George News / KUER (amendment later pulled).
+- Riley Owen / Kent Udell cash refreshed from FEC weball26 through June 30 (,568 vs McAdams ,350; Udell ,533/,335 vs Maloy .45M/,379).
+- Jonny Larsen occupation: systems administrator at St. Mark's Heart Center — healthcare IT (LinkedIn; resolves health-care vs IT conflict).
+
+### wa.html (−2)
+- Rick Larsen contributions ,038,786 through July 15, 2026 (FEC weball26).
+- Spencer Meline outraised ~24:1 vs Schrier on receipts (FEC weball26).
+
+LEFT / skipped: FL weball cash markers that are honest nulls (no committee / under-threshold); DE Sep 15 inventing; MI board/regents mass; MO/CA/TX builds; ledgered absences; OK/UT structural Verifies and minor-party blanks; untracked mo-build/banked scratch.
+
+Grok queries: 0 session total.
