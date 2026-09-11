@@ -601,3 +601,25 @@ Free web only (0 Grok). SITE_META bumped to Sept 11 on changed pages (ok already
 LEFT / skipped: FL weball cash markers that are honest nulls (no committee / under-threshold); DE Sep 15 inventing; MI board/regents mass; MO/CA/TX builds; ledgered absences; OK/UT structural Verifies and minor-party blanks; untracked mo-build/banked scratch.
 
 Grok queries: 0 session total.
+## 2026-09-11 — Verify backlog clear batch 10 (Wave 10: OK statewide platforms + UT-1 depth + FL Jolly cash date)
+
+Free web only (0 Grok). SITE_META bumped to Sept 11 on ok/ut/fl. Baseline 3571 → 3556 (−15).
+
+### ok.html (−12)
+- T.W. Shannon: school choice / federal scholarship tax credit (News9/NewsOn6 Dallas speech); red tape / merit / taxpayer dollars (votetwshannon.com/about); three Cs (News9 interview). Opposition-framed opponent line rewritten with sourced planks.
+- Kelly Forbes: full platform from forbesforoklahoma.com (economy/CareerTech/Native Nations, public education, healthcare/tourism/accountability); bio deepened; pronouns fixed to he/him; campaign-org absence cleared (site live; cash Verify kept).
+- Cindy Byrd: unclaimed property + competitive bidding (KOCO/NonDoc); highest-return / anti-ESG (NonDoc/Gaylord News); cindybyrd.com/platform efficiency planks.
+- Robert Franklin: teacher workforce, science of reading, counselors/behavioral health (News9/Oklahoma Voice/Journal Record); third-grade retention overreach (Journal Record).
+- Kevin West: votekevinwest.com/priorities (trades pipeline, small business, teach-before-you-fine, veterans, AI task force).
+
+### ut.html (−2)
+- Riley Owen: position depth from Deseret News Aug 11 / KUER (housing/zoning, social-media age gate, AI efficiency, Great Salt Lake incentives) — no marker clear, depth only.
+- Elias Henry Montgomery: LinkedIn bio clears self-described occupation Verify; eliasmontgomery.com clears agenda self-described Verify.
+
+### fl.html (−1)
+- David Jolly cash dated to Aug 21, 2026 via Florida Politics summarizing Division of Elections reports (~$2M+ campaign / under $1M Florida 2026 PC); prior exact $2.9M/$864,937 lacked an as-of date.
+
+LEFT / skipped: OK Ethics cash still unretrievable (Forbes/Byrd/West/Echols/Coffey/etc.); OK/UT structural Verifies and minor-party blanks; Kelly Forbes cash; DE Sep 15 inventing; MI board/regents mass; MO/CA/TX builds; FL honest nulls / Hart Research caveat; ledgered absences; untracked mo-build/banked scratch.
+
+Grok queries: 0 session total.
+
