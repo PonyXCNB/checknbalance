@@ -649,3 +649,31 @@ Aug 25 SoS-certified House nominees by **district NUMBER** (Wave 27 certificate)
 2. colecounty.org/441/Sample-Ballots — still August Combined Sample + SoS PII lookup (Wave 33).
 3. jcebmo.org/sample-ballot/ — name/DOB gated (Wave 33 reconfirm).
 
+
+## MAP / PROP A GATE - WAVE 34 UPDATE (September 11, 2026, evening ET)
+
+**STATUS: gate still OPEN for mo.html.** No mo.html started. Currency-test still incomplete (no public Nov CD sample-label table). Parcel notes reconfirmed, not closed.
+
+### Currency-test (still NOT closed)
+- **Boone County / map posture:** ABC17 Sept 10, 2026 — Boone Clerk Brianna Lennon says the office is preparing November ballots on the **2022 congressional map** per Missouri Supreme Court directive that the 2025 "Missouri First" map is not law; SoS Hoskins ordered 2022-map use. Federal Eastern District Judge Stephen Clark had ordered 2025-map use (primary votes argument); briefing set **Sept 17** (day before UOCAVA ballots). No public Nov CD sample-ballot PDF/table unlocked this pass.
+- **Cole County:** colecounty.org/441/Sample-Ballots still shows **August 4, 2026 Combined Sample Ballot** only; personalized Nov lookups still via SoS PII voter-registration flow (Wave 34 free-web recheck).
+- **Jackson / STL:** JCEB sample-ballot path remains name/DOB lookup; no new public Nov CD label PDF found Wave 34.
+- **Still no public statewide (or even single-county public-PDF) November sample-ballot district-label table matched to `mo-cd120.json`.**
+
+### Continuity / parcel (not closed)
+- **Brattin / Herrera / Onder:** no new street/parcel unlock this pass. Prior banked notes stand (Brattin Cass / Harrisonville → 2022 MO-4 flag; Herrera Raymore office + 5th-copy; Onder Lake St. Louis / Augusta split watch).
+
+### Court / UOCAVA
+- Sept 17 federal briefing / UOCAVA ~Sept 18–19 watch still live (ABC17 Sept 10). Gate stays OPEN until a public non-PII Nov CD label table exists.
+
+### Exact remaining blockers before mo.html
+1. SoS/LEA Nov district-label currency-test vs `mo-cd120.json` (public sample ballots or equivalent non-PII table).
+2. Finish parcel/VTD residence checks (Brattin flagged; Onder Lake St. Louis / Augusta split; Herrera KC parcel vs Raymore office).
+3. Party certification / ballot-order lock confirming Aug 25 certificate names still govern Nov under 2022 lines.
+4. Watch Sept 17 briefing / UOCAVA through ballot-print deadlines.
+
+### Sources added this wave
+1. abc17news.com Sept 10, 2026 — Boone LEA preparing 2022-map Nov ballots; Sept 17 briefing / UOCAVA watch.
+2. colecounty.org/441/Sample-Ballots — still August Combined Sample + SoS PII lookup (Wave 34).
+3. jcebmo.org/sample-ballot/ — name/DOB gated (Wave 34 reconfirm).
+

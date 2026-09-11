@@ -848,7 +848,7 @@ const STATEWIDE = [
     type: "upcoming",
     scope: "State · Statewide",
     office: "Comptroller — Maryland",
-    note: "Brooke Lierman (D), the first woman elected Maryland Comptroller, seeks a second term against businesswoman Sonya Dunn (R). [Verify — low-coverage race]",
+    note: "Brooke Lierman (D), the first woman elected Maryland Comptroller, seeks a second term against businesswoman Sonya Dunn (R).",
     candidates: [
       { name: "Brooke Lierman (incumbent)", party: "D", winner: false,
         positions: ["Modernize Comptroller systems — Tax Connect and cloud payroll (marylandcomptroller.gov)","Economic data / Board of Revenue Estimate to guide growth after federal job cuts (WMDT)","Taxpayer service, unclaimed property, and Board of Public Works oversight (The Banner; campaign)"],
@@ -856,10 +856,22 @@ const STATEWIDE = [
         supporters: ["Broad labor and environmental coalition"],
         opponents: ["[Verify] — GOP criticism not well documented"] },
       { name: "Sonya Dunn", party: "R", winner: false,
-        positions: ["The comptroller as a 'fiscal watchdog'","Taxpayer transparency","Concerns about the state's financial future"],
-        differentiators: ["Businesswoman and media personality; military spouse","Unopposed for the nomination","[Verify]"],
+        positions: [
+              "Comptroller as independent nonpartisan fiscal watchdog — consecutive multibillion structural deficits, 2025 credit-rating downgrade, procurement/grant oversight, Board of Public Works accountability (votesonyadunn.com Why I'm Running; FOX45 Spotlight on Maryland Aug 19, 2026)",
+              "Taxpayer transparency — real-time financial reporting / dashboard framing; independent audits for waste/fraud/abuse; strengthen procurement oversight (votesonyadunn.com; Baltimore Sun 2026 Comptroller profiles)",
+              "Tax-structure overhaul pitch — late-1960s system 'not working for Marylanders in the 21st century'; first-100-days stress-test / procurement / audit plan (FOX45; Baltimore Sun)"
+            ],
+        differentiators: [
+              "Businesswoman/media executive, autism mom, retired military spouse; CEO/founder JEMH Enterprises (votesonyadunn.com Meet Sonya)",
+              "Unopposed for the nomination",
+              "Campaign site votesonyadunn.com publishes Why I'm Running + Meet Sonya fiscal plan (Wave 34)"
+            ],
         supporters: ["A private-sector and media background rather than a career in Annapolis","Runs squarely on taxpayer transparency and fiscal watchdogging"],
-        opponents: ["Faces an incumbent who won this office by a wide statewide margin [Verify]","No prior elected office or public financial-management record [Verify]","Little campaign coverage or fundraising located [Verify]"] }
+        opponents: [
+              "Faces an incumbent who won statewide in 2022; FOX45 notes Dunn ~$400 cash vs Lierman >$2M (Aug 2026 SBE reports cited in Spotlight on Maryland)",
+              "No prior elected office — private-sector / advocacy bio rather than Annapolis financial-management record (votesonyadunn.com)",
+              "Huge fundraising gap against a labor-backed incumbent (structural / FOX45)"
+            ] }
     ]
   },
   {
@@ -1045,10 +1057,18 @@ const HOUSE_RACES = {
             supporters: ["Workhorse legislator with a bipartisan record"],
             opponents: ["Progressive critics cite AIPAC super-PAC support in her 2024 primary [Verify current]"] },
           { name: "Berney Flowers", party: "R", winner: false,
-            positions: ["[Verify] — low coverage","[Verify]","[Verify]"],
-            differentiators: ["Air Force veteran; prior congressional candidate","Won a four-way primary with 48.9%","[Verify]"],
+            positions: [
+              "Election integrity — voter ID, roll maintenance, ballot chain-of-custody, transparent audits, mail-ballot signature verification (Maryland Matters 2026 MD-3 GOP primary voter guide)",
+              "Secure border + faster legal processing; fiscal discipline / energy expansion / housing-barrier cuts / healthcare competition to lower costs (same Maryland Matters guide)",
+              "Protect Social Security and Medicare solvency with waste reduction and oversight; Air Force veteran framing (Maryland Matters bio + guide)"
+            ],
+            differentiators: [
+              "Air Force veteran; prior MD-3 2024 GOP primary contender (finished third at 17.3% — Maryland SBE / Wikipedia)",
+              "Won a four-way primary with 48.9%",
+              "Maryland Matters publishes full 2026 primary voter-guide answers on elections, immigration, affordability, foreign policy, and safety-net (Wave 34 free-web)"
+            ],
             supporters: ["Military service record and a second run at the same seat","Won a contested four-way primary outright with 48.9%"],
-            opponents: ["Democrats took this open seat 59.3%–37.9% in 2024","A prior congressional bid did not come close [Verify]","No published 2026 platform located [Verify]"] }
+            opponents: ["Democrats took this open seat 59.3%–37.9% in 2024","2024 MD-3 GOP primary: finished third at 17.3% behind Steinberger (25.1%) and Baker (19.9%) — Maryland SBE","Safe-D district math against an incumbent freshman (structural)"] }
         ]
       },
       {
@@ -1081,10 +1101,18 @@ const HOUSE_RACES = {
             supporters: ["Experienced advocate with real legal chops"],
             opponents: ["Primary challengers ran to his left on generational change [Verify]"] },
           { name: "George McDermott", party: "R", winner: false,
-            positions: ["[Verify] — minimal coverage","[Verify]","[Verify]"],
-            differentiators: ["Perennial candidate; repeat nominee (9.7% in 2024)","Unopposed in the primary","[Verify]"],
-            supporters: ["Keeps a two-party choice on the ballot in Maryland's most one-sided district","Persistence has made him the district's default Republican option [Verify]"],
-            opponents: ["Took 9.7% here in 2024 — the most lopsided House result in the state","A perennial candidacy with no measurable campaign or fundraising [Verify]"] }
+            positions: [
+              "Judicial / government accountability — cameras in court proceedings; expose waste/fraud/abuse in the justice system; hold officers to constitutional oaths (georgemcdermott.com Mission; Power Voter priorities)",
+              "Border infrastructure support; equal-justice-under-law framing (iVoterGuide / campaign questionnaires mirrored on site)",
+              "⚠ Platform is overwhelmingly a decades-long personal litigation / secretJustice through-line rather than a standard House issues matrix (Wave 34 free-web)"
+            ],
+            differentiators: [
+              "Perennial candidate; repeat nominee (9.7% in 2024)",
+              "Unopposed in the primary",
+              "Campaign site georgemcdermott.com remains live with Mission/Principles/Courts pages (Wave 34)"
+            ],
+            supporters: ["Keeps a two-party choice on the ballot in Maryland's most one-sided district","Persistence has made him the district's default Republican option across many cycles (Ballotpedia election history)"],
+            opponents: ["Took 9.7% here in 2024 — the most lopsided House result in the state","Perennial candidacy with minimal conventional fundraising or district-policy coverage beyond the judicial-accountability theme (Wave 34)"] }
         ]
       },
       {
@@ -1197,10 +1225,18 @@ const HOUSE_RACES = {
             supporters: ["Irreplaceable seniority and moral authority for Baltimore"],
             opponents: ["Challengers argued it's time for new energy and stronger constituent service"] },
           { name: "Scott Collier", party: "R", winner: false,
-            positions: ["[Verify] — minimal coverage","[Verify]","[Verify]"],
-            differentiators: ["Repeat nominee (took ~17.2% against Mfume in 2024)","Unopposed in the 2026 GOP primary","[Verify platform]"],
-            supporters: ["Willing to contest a seat his party usually leaves uncontested","Ran here before, so voters have seen the name [Verify]"],
-            opponents: ["Lost this district 80.3%–17.2% in 2024","No 2026 platform, fundraising or campaign activity located [Verify]"] }
+            positions: [
+              "Crime, gangs, drugs, juvenile/criminal justice, education, economic concerns, and illegal immigration as top district priorities (scottcollier.org Issues page)",
+              "End food deserts; continue working with law-enforcement community and officer-support groups (same Issues page)",
+              "Opposes federal abortion protections post-Dobbs (states' rights / life-at-conception); opposes 'senseless' overseas wars and favors restoring peace in Middle East/Ukraine (scottcollier.org Issues / BallotReady)"
+            ],
+            differentiators: [
+              "Repeat nominee (took ~17.2% against Mfume in 2024)",
+              "Unopposed in the 2026 GOP primary",
+              "Issues page live at scottcollier.org/scott-collier-for-congress-the-issues/ (Wave 34 free-web; HTTP)"
+            ],
+            supporters: ["Willing to contest a seat his party usually leaves uncontested","Repeat MD-7 nominee — name familiarity from prior cycles (Ballotpedia / campaign site)"],
+            opponents: ["Lost this district 80.3%–17.2% in 2024","Safe-D seat against a five-decade Baltimore incumbent; Issues page exists but conventional fundraising remains thin (structural / Wave 34)"] }
         ]
       },
       {
@@ -1233,10 +1269,18 @@ const HOUSE_RACES = {
             supporters: ["The party's foremost constitutional voice against executive overreach"],
             opponents: ["Republicans cast him as a partisan, impeachment-obsessed showman [Verify]"] },
           { name: "Cheryl Riley", party: "R", winner: false,
-            positions: ["[Verify] — low coverage","[Verify]","[Verify]"],
-            differentiators: ["Won a four-way primary with 43.3%","Prior district candidacies [Verify]","[Verify]"],
-            supporters: ["Emerged from a genuinely contested four-way Republican primary","Has run in this district before, building some name familiarity [Verify]"],
-            opponents: ["Raskin won this seat 80.2%–18.2% in 2024","Won her primary with 43.3% — a plurality, not a mandate","No published 2026 platform located [Verify]"] }
+            positions: [
+              "Election Day as federal holiday; REAL ID for voter ID; limit mail-in voting to active-duty military overseas and citizens with documented disabilities (Maryland Matters 2026 MD-8 GOP primary voter guide)",
+              "Halt immigration until dangerous individuals are identified/removed; stricter vetting for future legal immigration; cut wasteful spending, housing-rule barriers, energy independence (oil/gas/nuclear), healthcare price transparency (same guide + cheryl4maryland.com)",
+              "Protect Social Security and Medicare — raise payroll tax cap, workforce growth, Medicare transparency/fraud prevention; Safety / Prosperity / Freedom framing on campaign home (Maryland Matters + cheryl4maryland.com)"
+            ],
+            differentiators: [
+              "Won a four-way primary with 43.3%",
+              "2024 MD-8 Republican nominee against Raskin (Maryland Matters / Ballotpedia)",
+              "Campaign site cheryl4maryland.com publishes Safety/Prosperity/Freedom planks (Wave 34 free-web)"
+            ],
+            supporters: ["Emerged from a genuinely contested four-way Republican primary","Prior MD-8 general nominee — built name familiarity from the 2024 cycle (Maryland Matters)"],
+            opponents: ["Raskin won this seat 80.2%–18.2% in 2024","Won her primary with 43.3% — a plurality, not a mandate","Safe-D district math against House Judiciary ranking member (structural)"] }
         ]
       },
       {
