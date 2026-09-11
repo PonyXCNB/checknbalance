@@ -449,3 +449,21 @@ Cleared sourced `[Verify]` **positions** (not voices) on major-party cards with 
 - LEFT: House challengers with thin coverage (Hollowell detail, Matt Day), structural voice markers
 
 Grok queries this batch: 0 (free web only).
+
+## 2026-09-11 — Verify backlog clear batch 2 (SC statewide + OK-4 Cole + MD incumbents + NC Edwards)
+
+### sc.html (~26 markers)
+Weaver, Wright, Loftis, Coe, Burkhold, Boozer, Stumbo, Belton, Simpson, Blanding (1 Verify kept on thin third plank) — campaign sites, Live 5, The State, SC Daily Gazette, FITSNews, WSPA, WSOC, Substack.
+
+### ok.html (3)
+Tom Cole OK-4 from cole.house.gov energy/immigration + Appropriations record.
+
+### md.html (~10)
+Lierman (comptroller.gov / Banner / WMDT); Brown (OAG / Maryland Matters / Daily Record); Olszewski, Elfreth, McClain Delaney, Mfume (Jewish Dems profiles + prior page emphasis cleared).
+
+### nc.html (+3)
+Chuck Edwards withdrew card: Helene recovery, tourism, public lands (edwards.house.gov).
+
+LEFT: Hammond low-info SoS; Libertarian/Forward SC House challengers; MD challengers with no coverage; DE Sept 15 primary placeholders (no invented winners).
+
+Grok queries: 0 cumulative this session.
