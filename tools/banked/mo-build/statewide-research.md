@@ -621,3 +621,31 @@ Aug 25 SoS-certified House nominees by **district NUMBER** (Wave 27 certificate)
 2. komu.com Boone 2022-map return; ~40% of Boone voters see a different CD than August; mailed samples ~2 weeks out.
 3. boonemo.gov/clerk/elections/ — mailed sample-ballot practice restated (Wave 32).
 
+
+## MAP / PROP A GATE - WAVE 33 UPDATE (September 11, 2026, late ET)
+
+**STATUS: gate still OPEN for mo.html.** No mo.html started. Currency-test still incomplete (no public Nov CD sample-label table). Parcel notes reconfirmed, not closed.
+
+### Currency-test (still NOT closed)
+- **Boone County:** Wave 33 free-web recheck — Boone Clerk voter lookup still says sample-ballot info appears **five to six weeks before** each election (report.boonecountymo.org); KOMU/ABC17 prior coverage still governs (2022 map for Nov; mailed samples ~2 weeks out). No public Nov CD sample-ballot PDF/table unlocked this pass.
+- **Cole County:** colecounty.org Sample Ballots page still points to the **August 4, 2026 Combined Sample Ballot** and redirects personalized Nov lookups to SoS voter-registration PII flow (Wave 33).
+- **Jackson / STL:** Jackson JCEB sample-ballot path remains name/DOB lookup; no new public Nov CD label PDF found Wave 33.
+- **Still no public statewide (or even single-county public-PDF) November sample-ballot district-label table matched to `mo-cd120.json`.**
+
+### Continuity / parcel (not closed)
+- **Brattin / Herrera / Onder:** no new street/parcel unlock this pass. Prior banked notes stand (Brattin Cass / Harrisonville → 2022 MO-4 flag; Herrera Raymore office + 5th-copy; Onder Lake St. Louis / Augusta split watch).
+
+### Court / UOCAVA
+- Federal briefing Sept 17 / UOCAVA ~Sept 19 watch still live from prior ABC17 coverage. No LEA public Nov CD table unlocked by Wave 33.
+
+### Exact remaining blockers before mo.html
+1. SoS/LEA Nov district-label currency-test vs `mo-cd120.json` (public sample ballots or equivalent non-PII table).
+2. Finish parcel/VTD residence checks (Brattin flagged; Onder Lake St. Louis / Augusta split; Herrera KC parcel vs Raymore office).
+3. Party certification / ballot-order lock confirming Aug 25 certificate names still govern Nov under 2022 lines.
+4. Watch 8th Circuit / Sept 17 briefing / UOCAVA through ballot-print deadlines.
+
+### Sources added this wave
+1. report.boonecountymo.org voter lookup — sample ballots 5–6 weeks before election (Wave 33).
+2. colecounty.org/441/Sample-Ballots — still August Combined Sample + SoS PII lookup (Wave 33).
+3. jcebmo.org/sample-ballot/ — name/DOB gated (Wave 33 reconfirm).
+
