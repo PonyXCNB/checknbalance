@@ -497,3 +497,25 @@ Free web only (0 Grok). House.gov / official pages unless noted. SITE_META bumpe
 LEFT this wave: VA 2025 Jones past-race; VA/NJ challenger absences; DE Sept 15 winners; MO/CA/TX unbuilt; untracked mo-build files untouched; MI board/regents mass skipped.
 
 Grok queries: 0 session total.
+## 2026-09-11 — Verify backlog clear batch 6 (Wave 3: competitive federal + house.gov density)
+
+Free web only (0 Grok). SITE_META bumped to Sept 11 on changed pages. Baseline 3826 → 3792 (−34).
+
+### Competitive federal
+- nc.html Buckhout (3): DCCC carpetbagger attack (dccc.org); ~$2M loan + outside PAC ads (WFAE / FEC-linked); loan figure hardened.
+- oh.html Conroy (5): ericconroy.com/issues now loads (jobs/border/defense+VA/SS-Medicare); bio supporter; Red Bridge Leadership PAC ~$278K IE (FEC-linked). Ledger 2026-08-03 Conroy hole CLOSED.
+- nj.html Pino (0 Verify delta): positions upgraded from rosiepinofornj.com/issues (affordability/energy, public safety/border, school choice/health).
+- va.html VA-5: already sourced (McGuire house.gov prior wave; Perriello campaign site) — no remaining platform Verifies.
+
+### RI statewide (campaign pages)
+- Ahern consumer/worker plank (ahernforag.com/issues); Gordon cannabis/litigation background (Boston Globe; Ocean State Media); Foulkes opponent lines from WPRI/CNN primary coverage; Guckian platform from aaronforri.com (cost of living/housing, tax relief, primary-care/education).
+
+### House.gov / official density
+- fl.html Luna (luna.house.gov Epstein/stock-trading/border); Gimenez (gimenez.house.gov/issues); Steube Ways & Means + border (steube.house.gov/issues/*).
+- ok.html Lucas agriculture + all-of-the-above energy (lucas.house.gov/resources/*).
+- az.html Ansari housing/immigration (ansari.house.gov/issues/*); Grijalva immigration/housing/literacy (grijalva.house.gov + Tucson Agenda/Cactus Politics); Fontes (electfontes.com/policies); Mayes (krismayes.com/not-finished).
+- oh.html Balderson/Carey remaining voice Verifies cleared against prior house.gov sourcing.
+
+LEFT: Weise/OH challenger absences; DE Sept 15 winners; MO/CA/TX unbuilt; untracked mo-build untouched; MI board/regents mass; Hobbs/Biggs consolidated issues pages still missing; structural Verifies kept.
+
+Grok queries: 0 session total.
