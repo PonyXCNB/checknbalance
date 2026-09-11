@@ -900,3 +900,40 @@ Skipped: DE inventing (until after Sept 15); MI board/regents mass; NM CFIS inve
 Grok queries: 0.
 
 2026-09-11 | ok/az/ms/ks/ne/ar/la/fl/co/al/tn + mo-build | Wave 47 sourced [Verify] clear | Free web only (0 Grok). Baseline 2599→2490 (−109). OK Guardian FinancialSummary cash unlock (9 orgs); Hourihan BEACON $4,467.06; MS Weddle date + judicial pads; KS structural; NE Stine/Block; AR Milligan/Parsons. Honest locks Wave 47. MO gate still OPEN — Cole Aug sample; briefs Sept 15 / args Sept 17; UOCAVA Sept 19; no mo.html. Skip DE inventing / MI board mass / NM CFIS inventing. Voices 0. SITE_META Wave 47 on touched pages. | standing
+
+## 2026-09-11 - Verify backlog clear batch 49 (Wave 49: MI individuals + KS judicial pads + FL leftovers + locks/MO gate)
+
+Free web only (0 Grok). SITE_META bumped to September 11, 2026 (Wave 49) on changed pages. Baseline 2267 → 2095 (−172). Voices 0. Green tests → local commit. NO PUSH.
+
+### mi.html (−106 page / net toward −172 grand)
+- Remaining high-count MI individuals (NOT board/regents mass): Magoon/Jock/Muszynski/Teagan/Mickevicius/Shabazz/Rayburn/Pettus/Casha/Goodwin/Vayko/Vlahos/Clayton/Walkowicz/Ishac/Teasdale/Sosnowski/Sanders/Light/Coleman/Davenport/Kirby + Smiley FEC/structural pads.
+- Shared absence + structural patterns cleared Wave 49 (exclusive candidate windows).
+
+### ks.html (−31)
+- All 9 appellate retention jurists: KBA "On the November 3, 2026 ballot are…" + Ballotpedia/Wikipedia for Rosen/Walsh; SoS elections_upcoming_candidate.aspx election=36 live but table not bot-extractable this pass.
+- Structural retention / absence-of-opposition pads cleared.
+- Hohe FEC absence + structural; Kobach national-litigation structural only (self-claim / opponent-characterization Verifies retained).
+- Lund/Koehn platforms still locked — Wave 49 recheck (LPKS slate live; rickoehn.com personal).
+
+### fl.html (−28)
+- Schwartzel/Gruters/Dennison/Adeimy sourced clears; Parrott weball26 null reconfirm (Neil Parrott MD-06 only).
+- Structural batch: Cammack/Haridopolos/Bilirakis/Lee/People/Montavon/Franklin/Gibson/Simmons/Martin.
+
+### az.html (−7 net)
+- Cease lock Wave 49 (azgp.org/mikecease.com ENOTFOUND) + fund/opp absence pads; Swing/Aversa/Sterbinsky/Butierez pads.
+
+### ok.html / nm.html / al.html / tn.html / la.html (0 net Verifies; locks reconfirmed)
+- OK Perry: Guardian org hunt still unmatched (false positives Lauren Perry / Perry OK city); Pre-General Oct 20–26.
+- NM CFIS: login.cfis.sos.state.nm.us HTTP 200; CandidateMain year dropdown still tops at 2020; cfis.sos.nm.gov DNS ENOTFOUND; First General due Sept 14 — not inventing.
+- Cotten Launching Soon; Houston /issues 404; Yoshi unpaid-invoice + /issues 404.
+
+### MO gate (still OPEN — no mo.html)
+- Cole sample ballots still August-only (Wave 49 live WebFetch).
+- Briefs Sept 15 / 8th Cir args Sept 17 / UOCAVA Sept 19 still ahead.
+- SCOTUS Sept 10 stay keeps 2022 map; Hoskins contempt purged.
+
+Skipped: DE inventing (until after Sept 15); MI board/regents mass; NM CFIS inventing (First General due Sept 14).
+
+Grok queries: 0.
+
+2026-09-11 | mi/ks/fl/az/ok/nm/al/tn/la + mo-build | Wave 49 sourced [Verify] clear | Free web only (0 Grok). Baseline 2267→2095 (−172). MI individuals batch; KS judicial KBA pads; FL leftovers + Parrott; locks reconfirm. MO gate still OPEN — Cole Aug sample; briefs Sept 15 / args Sept 17; UOCAVA Sept 19; no mo.html. Skip DE inventing / MI board mass / NM CFIS inventing. Voices 0. SITE_META Wave 49 on touched pages. | standing
