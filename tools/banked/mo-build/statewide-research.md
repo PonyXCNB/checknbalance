@@ -108,3 +108,45 @@ Already banked Sept 11 (KMBC fair-ballot + AG OP-2026-001). See PROPOSITION A se
 1. SoS Nov ballot district-label currency-test vs `mo-cd120.json`.
 2. Full August→2022 candidate-continuity matrix.
 3. Watch 8th Circuit / further SCOTUS action through UOCAVA window.
+
+
+## MAP / PROP A GATE - WAVE 15 UPDATE (September 11, 2026, afternoon ET)
+
+**STATUS: gate still OPEN for mo.html.** No mo.html started. Currency-test still incomplete; continuity matrix advanced from free web + 1 Grok lead pass (leads verified against AP/NBC/USA Today/Ballotpedia/Wikipedia where cited below).
+
+### Currency-test (still NOT closed)
+
+- Still need SoS / LEA **November** sample-ballot district labels by county matched to banked `mo-cd120.json` (2022 plan).
+- Free-web Sept 11 afternoon: no public statewide Nov district-label table located; personalized Nov ballots remain behind SoS voter lookup (PII). Cole County sample still primary-era when last checked in wave 14.
+- Administrative confirmation that LEAs will use 2022 lines continues (Hoskins direction after SCOTUS stay) — **not** a label-by-label currency proof.
+
+### Continuity matrix (PARTIAL — August HB1 nominees → November 2022 geography)
+
+August 4 primaries ran on HB 1 (2025) lines; November uses 2022 lines after Missouri Supreme Court + SCOTUS stay of federal TRO. Independently confirmed Aug nominees (AP/NBC/USA Today/Ballotpedia/Wikipedia):
+
+| Dist | D nominee (Aug) | R nominee (Aug) | Free-web Nov/2022-map notes |
+|------|-----------------|-----------------|-----------------------------|
+| MO-1 | Wesley Bell (beat Cori Bush ~59%–37%) | Paul Berry | Heavily Dem St. Louis seat; map change impact described as smaller than KC corridor in coverage reviewed |
+| MO-2 | Fred Wellman | Ann Wagner (inc.) | St. Louis County suburbs; Wagner renominated |
+| MO-3 | Bethany Mann (per Ballotpedia/Grok lead) | Bob Onder (inc.; beat Fraser) | Onder was a federal plaintiff seeking to keep HB 1; ABC17 quotes campaign arguing 2022 geography differs from primary turf |
+| MO-4 | Jordan Herrera (named in KC Star mismatch coverage — treat as reporting, not SoS cert) | Mark Alford (inc.) | Herrera cited as facing counties/voters where she was not on the Aug ballot under 2022 revert |
+| MO-5 | Emanuel Cleaver (unopposed Dem) | Rick Brattin (~45% R primary) | Clearest continuity story: under 2022 map District 5 shrinks back to KC-centered shape; Brattin remains Cleaver's billed R opponent in coverage; ~59% of potential HB1-D5 voters were new to that version (AP) |
+| MO-6 | D nominee not confirmed from free-web summaries this pass | Chris Stigall (R) | Open/shifted seat context in some coverage; **D nominee TBD in this matrix** |
+| MO-7 | Missi Hesketh (Ballotpedia) | Eric Burlison (inc.) | SW Missouri; Burlison renominated |
+| MO-8 | Chris Reichard (local guide) | Jason Smith (inc.) | SE Missouri; Smith renominated |
+
+Still required before carding House races:
+
+1. Residence / filing-district check for **every** August nominee against the 2022 map (who is drawn out; same-party rivals sharing a Nov district; open seats created by map revert).
+2. Party certification / ballot-order confirmation from SoS once Nov ballots are locked (~UOCAVA window).
+3. Fill MO-6 D and any contested nominee-name gaps from primary sources, not aggregators alone.
+
+### Prop A
+
+Already banked. Remains on Nov ballot per court posture.
+
+### Still OPEN before mo.html
+
+1. SoS Nov ballot district-label currency-test vs `mo-cd120.json`.
+2. Finish candidate×district continuity matrix (esp. MO-6 D; residence checks).
+3. Watch 8th Circuit / further SCOTUS action through UOCAVA / ballot-print deadlines.
