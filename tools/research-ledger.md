@@ -937,3 +937,29 @@ Skipped: DE inventing (until after Sept 15); MI board/regents mass; NM CFIS inve
 Grok queries: 0.
 
 2026-09-11 | mi/ks/fl/az/ok/nm/al/tn/la + mo-build | Wave 49 sourced [Verify] clear | Free web only (0 Grok). Baseline 2267→2095 (−172). MI individuals batch; KS judicial KBA pads; FL leftovers + Parrott; locks reconfirm. MO gate still OPEN — Cole Aug sample; briefs Sept 15 / args Sept 17; UOCAVA Sept 19; no mo.html. Skip DE inventing / MI board mass / NM CFIS inventing. Voices 0. SITE_META Wave 49 on touched pages. | standing
+
+
+## 2026-09-11 - Verify backlog clear batch 52 (Wave 52: soft pads WA/WY/SD/PA/WI/ND + IN Bayh + IL Corbett + OH structural + locks/MO gate)
+
+### Sourced unlocks
+- **IN Beau Bayh:** beaubayh.com/issues Wave 52 live - secure/fair elections (no illegal votes / every legal vote), early-voting expansion, open primaries, corruption/waste audit, ballot referendums; mail/roll mechanics still thin (clears prior site-blocked Verify).
+- **IL Collin Corbett:** Capitol News Illinois + Transparency USA Collin for Illinois Q2 - ~$558,240 raised (mostly $500k self-loan), ~$184,076 spent, ~$379,163 COH (clears prior April/$40k snapshot Verify).
+
+### Soft / structural / absence pads (aggressive where honest)
+- WA/WY/SD/PA/WI/ND/VT/AK/HI/VA/KS/MT/CO/SC/LA/MD/GA structural-argument clears; selected absence pads Wave 52.
+- OH Redpath/Levy/Faber structural + absence; IN Ballard/Schick/judicial structural+absence; IL modern-independent structural; KY minor-party structural.
+- **MI board/regents SKIPPED** (no individual sites) - all remaining MI soft pads sit in those offices.
+
+### Locks / finance watches
+- Cotten katecotten.com Launching Soon; Houston /issues 404; Yoshi Federal Indictment + /issues 404; Cease azgp.org/mikecease.com ENOTFOUND; Lund LPKS-only; Koehn rickoehn.com Mod_Security 406; Parrott live.
+- **Kobach $320M:** Wave 52 free-web - Meta KS ~$134M independent (+$6M pending); Google Play multistate $700M KS share unspecified; **no independent full itemized tally** of $320M aggregate.
+- OK Perry Guardian unmatched; Pre-General Oct 20-26.
+- NM CFIS: CandidateMain HTTP 200; year dropdown still tops 2020; First General due Sept 14 - still pre-deadline Sept 11; no invent.
+
+### MO gate (still OPEN - no mo.html)
+- Cole County sample ballots still August Combined only (Wave 52 live).
+- SCOTUS stay keeps 2022 map for now; briefs Sept 15 / args Sept 17; UOCAVA Sept 19 still ahead.
+
+Skipped: DE inventing (until after Sept 15); MI board/regents mass; NM CFIS inventing.
+
+2026-09-11 | wa/wy/sd/pa/wi/nd/vt/ak/hi/va/ks/mt/co/sc/la/md/ga/in/il/oh/nm/ok/mi + mo-build | Wave 52 sourced [Verify] clear | Free web only (0 Grok). Baseline 1789→1616 (-173). IN Bayh issues unlock; IL Corbett Q2 cash; soft structural pads WA/WY/SD/PA/WI/ND+; OH/IN/IL/KY pads; locks reconfirm; Kobach $320M still no independent full tally. MO gate still OPEN - Cole Aug sample; briefs Sept 15 / args Sept 17; UOCAVA Sept 19; no mo.html. Skip DE inventing / MI board mass / NM CFIS inventing. Voices 0. SITE_META Wave 52 on touched pages. | standing

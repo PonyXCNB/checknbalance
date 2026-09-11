@@ -1227,3 +1227,35 @@ Aug 25 SoS-certified House nominees by **district NUMBER** (Wave 27 certificate)
 4. **LA Williams:** Sixth District survey caveats locked as attributed (not invented for LA-2).
 5. Lock rechecks Wave 51: katecotten.com HTTP 200 Launching Soon; rozforalabama.com /issues 404; yoshimatthews.com unpaid-invoice + /issues 404; azgp.org / mikecease.com ENOTFOUND; Lund LPKS-only; Koehn rickoehn.com Mod_Security 406; Parrott H6FL06316 still $0. OK Perry Guardian unmatched; Pre-General Oct 20-26. NM CFIS: login.cfis.sos.state.nm.us HTTP 200; First General due Sept 14 - still pre-deadline today Sept 11 (year-dropdown past-2020 check deferred to post-Sept 14).
 
+
+
+## MAP / PROP A GATE - WAVE 52 UPDATE (September 11, 2026, evening ET)
+
+**STATUS: gate still OPEN for mo.html.** No mo.html started. Currency-test still incomplete (no public Nov CD sample-label table). Today is still Sept 11 - Sept 15 briefs / Sept 17 args / UOCAVA Sept 19 have not arrived yet. Skip DE inventing until after Sept 15.
+
+### Court posture (Wave 52 free-web reconfirm)
+- **U.S. Supreme Court:** stay of Judge Clark TRO remains in force - 2022 map governs November for now (Missouri Times Sept 10 / Votebeat Sept 11 continuity; no Wave 52 contrary ruling located).
+- **8th Circuit (Onder v. Missouri):** expedited calendar still lists simultaneous briefs **Sept 15** and remote oral arguments **Sept 17**. Briefs are not due yet (today still Sept 11); no public posting of those briefs located Wave 52.
+- **UOCAVA:** military/overseas ballots must transmit by **Sept 19**. Gate watch remains live through UOCAVA and ballot-print deadlines.
+- **Prop A / referendum** on HB 1 remains on the November ballot.
+
+### Currency-test (still NOT closed)
+- **Cole County:** colecounty.org/441/Sample-Ballots **still** only links **August 4, 2026 Combined Sample Ballot** (Wave 52 live fetch; page text has August only - no November/General sample link).
+- **Boone / Jackson / STL:** no new public countywide Nov CD-label PDF matched to mo-cd120.json this pass.
+- **Still no public statewide (or even single-county public-PDF) November sample-ballot district-label table matched to `mo-cd120.json`.**
+
+### Continuity / parcel (not closed)
+- No new street/parcel unlock this pass for Brattin / Herrera / Onder. Prior banked notes stand.
+
+### Exact remaining blockers before mo.html
+1. SoS/LEA Nov district-label currency-test vs `mo-cd120.json` (public sample ballots or equivalent non-PII table).
+2. Finish parcel/VTD residence checks (Brattin; Onder Lake St. Louis / Augusta; Herrera KC parcel vs Raymore office).
+3. Party certification / ballot-order lock confirming Aug 25 certificate names still govern Nov under 2022 lines (or under whichever map survives post-Sept 17).
+4. Watch Sept 15 briefs / Sept 17 8th Cir argument / UOCAVA Sept 19 through ballot-print deadlines.
+
+### Sources / locks added this wave
+1. colecounty.org/441/Sample-Ballots - still August Combined Sample only (Wave 52 live fetch).
+2. **IN Bayh unlock:** beaubayh.com/issues Wave 52 live - secure/fair elections (no illegal votes / every legal vote), early voting, open primaries, corruption audit, ballot referendums; mail/roll mechanics still thin.
+3. **IL Corbett cash unlock:** Capitol News Illinois + Transparency USA Collin for Illinois Q2 - ~$558,240 raised (mostly $500k self-loan), ~$184,076 spent, ~$379,163 COH.
+4. **KS Kobach $320M:** Wave 52 free-web recheck - Meta Kansas share independently reported ~$134M (+$6M Cambridge-related pending); Google Play multistate $700M total with KS share unspecified; no independent itemized full tally of campaign's $320M restitution aggregate located.
+5. Lock rechecks Wave 52: katecotten.com HTTP 200 Launching Soon; rozforalabama.com /issues 404; yoshimatthews.com title Federal Indictment + /issues 404; azgp.org / mikecease.com ENOTFOUND; Lund LPKS-only; Koehn rickoehn.com Mod_Security 406; Parrott andrewparrott.com live. OK Perry Guardian unmatched; Pre-General Oct 20-26. NM CFIS: cfis.state.nm.us/media CandidateMain HTTP 200; year dropdown still tops at 2020; First General due Sept 14 - still pre-deadline today Sept 11.
