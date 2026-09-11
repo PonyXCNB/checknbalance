@@ -963,3 +963,31 @@ Grok queries: 0.
 Skipped: DE inventing (until after Sept 15); MI board/regents mass; NM CFIS inventing.
 
 2026-09-11 | wa/wy/sd/pa/wi/nd/vt/ak/hi/va/ks/mt/co/sc/la/md/ga/in/il/oh/nm/ok/mi + mo-build | Wave 52 sourced [Verify] clear | Free web only (0 Grok). Baseline 1789→1616 (-173). IN Bayh issues unlock; IL Corbett Q2 cash; soft structural pads WA/WY/SD/PA/WI/ND+; OH/IN/IL/KY pads; locks reconfirm; Kobach $320M still no independent full tally. MO gate still OPEN - Cole Aug sample; briefs Sept 15 / args Sept 17; UOCAVA Sept 19; no mo.html. Skip DE inventing / MI board mass / NM CFIS inventing. Voices 0. SITE_META Wave 52 on touched pages. | standing
+
+
+## 2026-09-11 - Verify backlog clear batch 53 (Wave 53: IN Ballard unlock + IL Topinka/Solomon + soft pads + locks/MO gate)
+
+### Sourced unlocks
+- **IN Greg Ballard:** gregballard.com + IndyStar/WFYI Aug 25 - precinct-customized nonpartisan voters guide (~$2.5M), will not endorse/fundraise for other candidates; campaign releases Sept 9 clerk/poll-worker training + Aug 28 nonpartisan Recount Commission of retired judges. Clears Wave 52 "no policy platform" absence pads.
+- **IN Beau Bayh:** beaubayh.com/issues → /priorities redirect Wave 53 live (same secure/fair + early voting + open primaries + corruption + referendums; mail/roll still thin).
+- **IN Jessica Bailey:** No Democrat has held comptroller since Dec. 1, 1986 (Indiana Citizen) — clears "decades" Verify.
+- **IL Topinka 2014:** No R comptroller win since Topinka 2014 re-election (NBC Chicago; Mendoza beat appointed Munger 2016 special).
+- **IL Max Solomon:** maxsolomon.info Wave 53 title-only / no readable policy body; Transparency USA ~$875 contrib + ~$4,040 loans / ~$3,174 spent.
+
+### Soft / structural / absence pads
+- WA/PA/WI/LA/DE/KS soft structural+absence variants; OH Pruss/Walsh structural; IN retention/Schick/Kebe/Elliott pads; KY minor structural.
+- **MI board/regents SKIPPED** (no individual sites this pass).
+
+### Locks / finance watches
+- Cotten Launching Soon; Houston /issues 404; Yoshi unpaid-invoice page (+ /issues 404); Cease ENOTFOUND; Lund LPKS-only; Koehn www.rickoehn.com 200 personal blog not campaign platform; Parrott live.
+- **Kobach $320M:** Meta KS ~$134M independent (+$6M pending); Google Play $700M multistate KS share unspecified; still no independent full itemized tally.
+- OK Perry Guardian unmatched; Pre-General Oct 20-26.
+- NM CFIS: year dropdown still tops 2020; First General due Sept 14 — still pre-deadline Sept 11; no invent.
+
+### MO gate (still OPEN - no mo.html)
+- Cole County sample ballots still August Combined only (Wave 53 live).
+- SCOTUS stay keeps 2022 map for now; briefs Sept 15 / args Sept 17; UOCAVA Sept 19 still ahead.
+
+Skipped: DE inventing (only soft absence pad); MI board/regents mass; NM CFIS inventing.
+
+2026-09-11 | wa/pa/wi/ks/la/de/in/il/oh/ok/nm/ky + mo-build | Wave 53 sourced [Verify] clear | Free web only (0 Grok). Baseline 1616→1579 (-37). IN Ballard voters-guide unlock; IL Topinka/Solomon; Bayh /priorities; soft pads WA/PA/WI+; locks reconfirm; Kobach $320M still no independent full tally. MO gate still OPEN - Cole Aug sample; briefs Sept 15 / args Sept 17; UOCAVA Sept 19; no mo.html. Skip DE inventing / MI board mass / NM CFIS inventing. Voices 0. SITE_META Wave 53 on touched pages. | standing
