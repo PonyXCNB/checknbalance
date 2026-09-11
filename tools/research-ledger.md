@@ -428,3 +428,24 @@ date | scope | finding | recheck
 2026-09-03 | (site-wide) | ✅ **REVIEW FOLLOW-UP SHIPPED — the verification pass's remaining confirmed findings** | 9 past primaries/runoffs now flag the winner the note names (ga ×3, md ×2, nj, sc ×3; the 6 two-advance primaries deliberately keep no flag); 57 past House primary/runoff cards get a qualified scope and the drawer titles them "… — Primary/Runoff" (in 8, ky 7, fl 16 …); measure cards drop the false grey "I" party tag and count "Yes / No" or "N measures"; 470+ British spellings → American and 60+ research-jargon phrases ("not carded", "this pass") reworded, both as idempotent normaliser steps that leave the <style> block alone; `isn&#39;t` entity fixed on 6 pages; generic-page office notes for TX (Paxton–Talarico; new map), CA (Becerra–Hilton; Prop 50 map), AK (top-four incl. two Sullivans) and MO (map before the state Supreme Court) — all [Verify], from the review's web checks, not yet read from the states; smoke/data-logic now exercise state.html for AK and MO. NOT done, by choice: D03 (honest "no criticism located" markers stay), D05/D06/D07/D08 (editorial rewrites of long notes), DV-10/12/13/16/17 (title/name conventions), PC-12 (Sources line format), SH-19 dead-code trim, A11Y-18 (landmarks/headings), A11Y-21 label sizes.
 
 2026-09-04 | va.html | VA-10 independent Ahsen Mujeeb Malik + VA-11 Green Dianne Blais — 2026 platforms | Both are on the Virginia Department of Elections' certified November ballot and both were added by the Sept 3 nominee fixes with EMPTY voices, which is how they surfaced (voices-report went 0 → 2 gaps overnight). Web search found NOTHING for Malik — no campaign site, no FEC committee, no Virginia news coverage. For Blais, a Fairfax County Greens page about an EARLIER candidacy describes her as strongly anti-war and pro-environment, but the site would not resolve (`fcg.vagreenparty.org` → ENOTFOUND) and Ballotpedia's page fetched empty, so only a search snippet supports it. Both now carry honest structural voices + [Verify]; Blais's party-description line is marked as tied to a prior candidacy | 2026-10-05 (or a Virginia Public Access Project / VDOE campaign-finance check, which would settle whether either has any money at all)
+
+## 2026-09-11 — Verify backlog clear batch 1 (NC House safe seats + GA statewide)
+
+Cleared sourced `[Verify]` **positions** (not voices) on major-party cards with public campaign / house.gov / Cook / AJC / WABE sources.
+
+### nc.html (~35 markers)
+- NC-2 Ross, NC-4 Foushee, NC-5 Foxx, NC-6 McDowell, NC-7 Rouzer, NC-8 Harris, NC-9 Hudson, NC-10 Harrigan, NC-12 Adams, NC-13 Knott, NC-14 Moore — each 3 positions from campaign or house.gov records
+- NC-6 / NC-8 Cook PVI R+9 / R+10 confirmed via Cook Political Report 2026 race pages
+- LEFT: Balkcom (no platform post-appointment), Board of Ed thin coverage, third-party/long-shot absences, structural voice Verifies
+
+### ga.html (~43 markers)
+- AG Strickland + Miller (campaign sites)
+- SoS Reynolds third plank (BallotReady / WJCL licensing + small business)
+- Ag Harper + Juhan-Arnold (AJC, department bio, BallotReady)
+- Insurance King + Waites (campaign / AJC)
+- Superintendent Woods + Powell (WABE / Capitol Beat / Georgia Recorder)
+- Labor Holmes + Porcher (AJC / Story Exchange / Georgia Recorder)
+- PSC Hubbard, Fitz Johnson, Edwards, Tolbert (Flagpole / Grist / Georgia Recorder)
+- LEFT: House challengers with thin coverage (Hollowell detail, Matt Day), structural voice markers
+
+Grok queries this batch: 0 (free web only).
