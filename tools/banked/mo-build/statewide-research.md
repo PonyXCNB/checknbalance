@@ -272,3 +272,30 @@ Already banked. Remains on Nov ballot per court posture.
 2. Residence / filing-district check for **every** August nominee against the 2022 map.
 3. Party certification / ballot-order once Nov ballots lock (~UOCAVA).
 4. Watch further appellate action through ballot-print deadlines.
+
+
+## MAP / PROP A GATE - WAVE 21 UPDATE (September 11, 2026, afternoon ET)
+
+**STATUS: gate still OPEN for mo.html.** No mo.html started.
+
+### Hoskins administrative direction (new this wave)
+
+- Jefferson City News Tribune, Sept 11, 2026 (Jack Wardynski): after U.S. Supreme Court stay of the federal TRO authorizing HB 1 / Missouri First Map, Secretary of State Denny Hoskins said: "Following the United States Supreme Court's stay, the only governing court order in effect is from the Missouri Supreme Court. In accordance with that order, my office is directing local election authorities to use the 2022 congressional map."
+- Same-day coverage: Mo. Supreme Court found him in contempt for earlier instructing LEAs to use the 2025 map, then purged contempt after noon reversal; AG Hanaway described 2022 map as governing "for now."
+- 8th Circuit hearing still scheduled ~Sept 15; UOCAVA/absentee window ~Sept 19 remains the practical ballot-print deadline watch.
+
+### Currency-test status
+
+- Administrative line now matches the Wave 19 Hoskins/News Tribune 2022-map directive and the Mo. Supreme Court order — **progress**, but still not a completed currency-test.
+- Still missing: a public statewide November **district-label** sample-ballot table matched county-by-county to `mo-cd120.json` (personalized Nov ballots remain behind SoS voter lookup / PII).
+
+### Residence / continuity matrix
+
+- Still partial. Prior pairing notes stand. Parcel-level 2022-map residence checks for the full August nominee set remain required before mo.html.
+
+### Still OPEN before mo.html
+
+1. SoS / LEA Nov district-label currency-test vs `mo-cd120.json` (Hoskins LEA directive helps but does not finish the table).
+2. Residence / filing-district check for **every** August nominee against the 2022 map.
+3. Party certification / ballot-order once Nov ballots lock (~UOCAVA).
+4. Watch 8th Circuit (~Sept 15) and further appellate action through ballot-print deadlines.
