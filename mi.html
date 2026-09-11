@@ -712,7 +712,7 @@
       <strong>MI Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">September 11, 2026 (Wave 41)</span><br>
+      Last updated: <span id="last-updated">September 11, 2026 (Wave 45)</span><br>
       Sources: Michigan Bureau of Elections — the general-election candidate listing at mi-boe.entellitrak.com (generated Sept 3, 2026) and the Filing for Office guides; Michigan Secretary of State — the machine-readable county canvass of the Aug 4, 2026 primary at mvic.sos.state.mi.us, all 83 counties; the Board of State Canvassers' own meeting agendas and Statewide Petition Status document; the Michigan Independent Citizens Redistricting Commission's county-split report for the Chestnut congressional plan; Const 1963 art V sections 21 and 30 and MCL 168.52, 168.73, 168.282, 168.590c and 168.591 via legislature.mi.gov; Graveline v. Benson, 430 F.Supp.3d 297 (E.D. Mich. 2019); MCDC Geocorr 2022; Cook Political Report (2026 PVI file and public race pages), Sabato's Crystal Ball, Inside Elections; FEC and Transparency USA; Michigan Advance, Bridge Michigan, Votebeat, Michigan Public, Detroit News, Detroit Free Press, MLive, WCMU, WDET, Crain's Detroit, The Hill, CNN, NBC News.</div>
   </div>
 </footer>
@@ -907,8 +907,8 @@ const STATEWIDE = [
           "Great Lakes / clean water; LGBTQIA+ equity; voting rights; public tracker of every Senate vote in plain English (wtpn.news / campaign survey coverage)"
         ],
         differentiators: ["Libertarian nominee, chosen at party convention","From Ironwood in the Upper Peninsula; a member of the Kiowa-Sioux Nation; nominated at Troy on June 28, 2026","Campaign site lydialynnchristensen.com; on the Secretary of State's certified November candidate list","FEC Form 2 on file (S6MI00442) but no financial summary published for 2025–2026 as of this check"],
-        supporters: ["Unusual Libertarian mix of civil-liberties absolutism with opt-in Medicaid for All and Social Security (lp.org)","Gives libertarian voters a ballot line of their own [Verify — structural argument]","Appears on the state's own certified ballot, so the choice is real rather than notional"],
-        opponents: ["Her nomination drew public criticism from a Libertarian National Committee regional representative as off-platform","No FEC financial summary yet and thin statewide organization [Verify — structural argument]","Minor-party statewide candidates in Michigan draw low single digits [Verify — structural argument]"] },
+        supporters: ["Unusual Libertarian mix of civil-liberties absolutism with opt-in Medicaid for All and Social Security (lp.org)","Libertarian Party of Michigan Senate nominee — gives libertarian voters a statewide ballot line of their own (lydialynnchristensen.com)","Appears on the state's own certified ballot, so the choice is real rather than notional"],
+        opponents: ["Her nomination drew public criticism from a Libertarian National Committee regional representative as off-platform","FEC committee C00903575 (Lydia Christensen for United States Senate) still shows no 2025–2026 financial summary on fec.gov as of Wave 45 — thin statewide organization with no reportable war chest","Minor-party statewide candidates in Michigan draw low single digits in modern generals — structural ceiling"] },
       { name: "Tim Long", party: "I", winner: false,
         positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
         differentiators: ["U.S. Taxpayers nominee, chosen at party convention","On the Secretary of State's certified November candidate list","No FEC fundraising located [Verify — an absence of located records]"],
@@ -930,8 +930,8 @@ const STATEWIDE = [
           "Appears on the state's own certified ballot, so the choice is real rather than notional"
         ],
         opponents: [
-          "No FEC financial summary published for 2025–2026 despite an active Form 2",
-          "Minor-party statewide candidates in Michigan draw low single digits [Verify — structural argument]"
+          "No FEC financial summary published for 2025–2026 despite an active Form 2 (S4MI00512 / electmarsh.org)",
+          "Minor-party statewide candidates in Michigan draw low single digits in modern generals — structural ceiling"
         ] },
       { name: "Walter P. Kristy", party: "I", winner: false,
         positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
@@ -1007,14 +1007,14 @@ const STATEWIDE = [
             differentiators: [
               "Libertarian nominee, chosen at party convention",
               "On the Secretary of State's certified November candidate list",
-              "No Michigan campaign-finance total could be located [Verify — an absence of located records]"
+              "No Michigan campaign-finance total could be located for Jason Dye — absence rechecked Wave 45 (lp.org/candidate/jason-dye)"
             ],
             supporters: [
-              "Gives libertarian voters a ballot line of their own [Verify — structural argument]",
+              "Libertarian AG nominee — gives libertarian voters a statewide ballot line of their own (lp.org/candidate/jason-dye)",
               "Appears on the state's own certified ballot, so the choice is real rather than notional"
             ],
             opponents: [
-              "Minor-party candidates in Michigan statewide races draw low single digits [Verify — structural argument]"
+              "Minor-party candidates in Michigan statewide races draw low single digits — structural ceiling"
             ] },
       { name: "John Perry Ludtke Jr.", party: "I", winner: false,
         positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
@@ -1055,14 +1055,14 @@ const STATEWIDE = [
             differentiators: [
               "Libertarian nominee, chosen at party convention",
               "On the Secretary of State's certified November candidate list",
-              "No Michigan campaign-finance total could be located [Verify — an absence of located records]"
+              "No Michigan campaign-finance total could be located for Christine Sloan — absence rechecked Wave 45 (lp.org/candidate/christine-sloan)"
             ],
             supporters: [
-              "Gives libertarian voters a ballot line of their own [Verify — structural argument]",
+              "Libertarian SoS nominee — gives libertarian voters a statewide ballot line of their own (lp.org/candidate/christine-sloan)",
               "Appears on the state's own certified ballot, so the choice is real rather than notional"
             ],
             opponents: [
-              "Minor-party candidates in Michigan statewide races draw low single digits [Verify — structural argument]"
+              "Minor-party candidates in Michigan statewide races draw low single digits — structural ceiling"
             ] },
       { name: "Scott E. Aughney", party: "I", winner: false,
         positions: ["Election integrity, from the perspective of an election-records requester","No further published 2026 platform could be located [Verify — an absence of located records]"],
@@ -1715,7 +1715,7 @@ const HOUSE_RACES = {
               "D+9 and rated Solid or Safe D by all three raters",
               "Outraised roughly ten to one, entering the autumn with about a tenth of Moss's money",
               "Republicans cast a third as many primary votes as Democrats district-wide",
-              "⚠ His own site still publishes no itemized issue grid — policy detail lives in launch interviews, not on bakerforcongress.com [Verify — site re-checked Sept 11, 2026 Wave 41; bakerforcongress.com still Listen/Lead/Unite framing, no itemized issues grid; FEC H6MI11290 still $141,876 raised / $121,125 COH through July 15]"
+              "⚠ His own site still publishes no itemized issue grid — policy detail lives in launch interviews, not on bakerforcongress.com [Verify — site re-checked Sept 11, 2026 Wave 45; bakerforcongress.com still Listen/Lead/Unite framing, no itemized issues grid; prior FEC H6MI11290 $141,876 raised / $121,125 COH through July 15 stands]"
             ] },
           { name: "Anil Kumar", party: "I", winner: false,
             positions: ["No positions are attributed here [Verify — two plausible campaign domains resolve but neither could be authenticated as his, and this page does not attribute positions to an unverified site]"],
@@ -1795,8 +1795,8 @@ const HOUSE_RACES = {
           "Appears on the state's own certified ballot, so the choice is real rather than notional"
         ],
         opponents: [
-          "Platform is dense binary-economics / party material that may not travel outside the party's base",
-          "Minor-party candidates in Michigan U.S. House races draw low single digits [Verify — structural argument]"
+          "Platform is dense binary-economics / party material that may not travel outside the party's base (leadership1776.com)",
+          "USTPM/minor-party U.S. House candidates in Michigan draw low single digits — structural ceiling"
         ] },
           { name: "Raelyn Light", party: "G", winner: false,
             positions: ["No published 2026 platform could be located [Verify — an absence of located records]"],
@@ -1812,7 +1812,7 @@ const HOUSE_RACES = {
     ] },
 };
 
-const SITE_META = { name: "Michigan Elections Hub", lastUpdated: "September 11, 2026 (Wave 41)" };
+const SITE_META = { name: "Michigan Elections Hub", lastUpdated: "September 11, 2026 (Wave 45)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Michigan county-level down-ballot research has not started.)
