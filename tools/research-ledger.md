@@ -1,3 +1,5 @@
+
+2026-09-11 | fl/sc/ut/ks/tn + mo-build | Wave 19 sourced [Verify] clear | Free web only (0 Grok). FL Gillespie neilgillespie4senate.blogspot.com; SC Reeside Live5+lp.org, Corriea brianforliberty.com, Ethridge jessica4sc.com; UT Ayden aydenscott4congress.com; KS Lund/Koehn JoCo roster (SoS still 403); TN Abidi/Scoggin/Seeman/Hatley/Brewer/Pinkston campaign sites + Firefly. OK Guardian drill-down still ASP errors — leave Pre-General Oct 20–26. AZ Cease still no 2026 statement (Clean Elections None Provided / Website TBD). house.gov markers already 0. MO gate OPEN — currency-test + residence matrix still incomplete; no mo.html. Voices 0. Skipped DE inventing + MI board/regents. | standing
 # Research ledger — dead ends and retry dates
 
 Purpose: stop re-researching the same hopeless [Verify] markers every week.
