@@ -690,3 +690,42 @@ Free web only (0 Grok). SITE_META kept September 11 on changed pages. Baseline 3
 Grok queries: 0 this wave (session remaining budget untouched beyond prior afternoon 1).
 
 2026-09-11 | az.html / fl.html / ok.html / mo-build | Wave 16 sourced [Verify] clear + MO-6 Smead + OK Ethics org harden | Free web: Redkey Foundation Economics; Benoit tishabenoit.com pillars; Presmyk lespresmyk.com; Arias ariasforcongress.us UNITY; DWS affordability/Everglades; Guardian bulk CSVs + org IDs (no invented COH). MO gate OPEN — Smead fills MO-6 D; currency-test still open; no mo.html. Voices 0. | standing
+
+
+## 2026-09-11 — Verify backlog clear batch 18 (Wave 18: AZ Corp Comm cash + GA/SC platforms + FL Gillespie FEC + UT/KS/ID harden + MO Hoskins)
+
+Free web only (0 Grok). SITE_META September 11 on changed pages (id bumped from Sept 4). Baseline 3414 → 3367 (−47). Voices 0. Green tests → commit 0f0cb9d.
+
+### az.html (−3)
+- Kevin Thompson / Jonathon Hill / Brian Matlock: Transparency USA contrib/expend through June 30, 2026 (Thompson $338,739/$337,087; Hill $399,282/$390,051; Matlock $23,394/$24,291) — ending cash not published as discrete field (same pattern as Pratte; no invented COH).
+- Mike Cease: AZGP 2026_candidates lists ENDORSED + Website TBD — no 2026 issue statement beyond that; platform Verify retained.
+
+### fl.html (−1)
+- Neil J. Gillespie: FEC weball26 S6FL00863 (file spells GILESPIE) $12,297 raised / $837 COH through July 29, 2026; Form 2 / C00943399. Platform still missing. Dennison/Jassenoff already had weball pockets from prior waves.
+
+### ga.html (−29)
+- Matt Day: votemattday.com pledges (SS/Medicare, PBM, budget/farm/term-limits).
+- Maura Keller: maurakeller.com Priorities (affordability, agriculture/Right to Repair, healthcare + veterans).
+- James Duffie: FairTax / education / LE from Highlight Georgia July 20 interview + jimduffie.com.
+- John Salvesen: bongo4congress.com (thin; representation/FedNow/health themes).
+- Kevin Martin: kevinmartinforcongress.com schools/budget/crime-defense pillars.
+
+### sc.html (−7)
+- Courtney McClain: affordable housing / single-payer / student support from campaign Bluesky (@mcclainforsc); mcclainforsc.com live but issues-thin.
+- Andy Kaplan: andykaplan4congress.com three pillars (Clean Government / Working Congress / Deliver Results).
+
+### id.html (−1) / ut.html (−4) / ks.html (−2) / ok.html (0 net)
+- Gomez: weball26 H4ID01149 $0/$0 through Mar 31, 2026.
+- Cottam FEC absence hardened; Stoddard/Easley bios confirmed via Deseret News Mar 13.
+- Graham / Jacob: no weball26 rows — absence hardened.
+- OK Guardian: Pre-General window Oct 20–26, 2026 noted on 9 Pre-Runoff cash Verifies; still no ending cash (no invented COH).
+
+### MO gate (still OPEN — no mo.html)
+- Hoskins directing 2022 map after SCOTUS stay (News Tribune Sept 11); currency-test still NOT closed; residence matrix still partial.
+
+### Skipped
+- DE inventing; MI board/regents mass; house.gov Verify seam already largely cleared; TN bare independents (no sites); Cease 2026 platform; KS Lund/Koehn platforms; Guardian interactive COH; Ayden Scott blank.
+
+Grok queries: 0 this wave.
+
+2026-09-11 | az/fl/ga/sc/id/ut/ks/ok + mo-build | Wave 18 sourced [Verify] clear + MO Hoskins 2022-map note | Free web + Transparency USA + FEC weball26 + campaign sites. 3414→3367 (−47). Voices 0. MO gate OPEN — no mo.html. | standing
