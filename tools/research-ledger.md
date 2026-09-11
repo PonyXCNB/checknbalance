@@ -792,3 +792,34 @@ Grok queries: 0.
 
 ## 2026-09-11 - Verify backlog clear batch 40 (Wave 40: NY Komatireddy/Cinquemani/D18/Langworthy/Gies/Kennedy + locks/FEC harden + MO gate)
 2026-09-11 | ny/la/al/tn/az/co/oh/fl/ok + mo-build | Wave 40 sourced [Verify] clear | Free web only (0 Grok). Baseline 2935→2929 (-6). Wave 40a: NY Komatireddy first-elective-office (sarithafornewyork.com / Holtzman Vogel); Cinquemani money (Midterm Project $0 / no weball26 H6NY16173; former 2004 nominee not first-time); D18 uncontested primaries (NYS BOE cert / DDHQ / Ballotpedia — no totals); Langworthy Energy Choice Act H.R.3699 via Energy and Commerce (congress.gov); Gies structural 2:1 R/C vs D/WFP (WBEN); Kennedy 2004 office + Apr 30 2024 special ~14.1% turnout. Honest rechecks: Cotten still Launching Soon; Houston /issues 404; Yoshi Federal Indictment + /issues 404; Cease azgp.org DNS ENOTFOUND (search-index Website:TBD); Christy /platform now HTTP 500 (was SALAMJP). FEC absence rechecks Wave 40 (OH Barrington, CO Blau/Dennison/Clark, FL Parrott, LA Glass/Collins, OK White/Stinnett/Nieves). MO gate still OPEN — SCOTUS Sept 10 stay keeps 2022 map; Hoskins contempt purged same day; Cole still Aug sample; briefs Sept 15 / args Sept 17; UOCAVA Sept 19; no public Nov CD table; no mo.html. Skip DE inventing / MI board mass. Voices 0. SITE_META Wave 40 on touched pages. | standing
+
+## 2026-09-11 - Verify backlog clear batch 41 (Wave 41: GA statewide sourced clears + locks/FEC harden + MO gate)
+
+Free web only (0 Grok). SITE_META bumped to September 11, 2026 (Wave 41) on changed pages. Baseline 2929 → 2914 (−15). Voices 0. Green tests → local commit. NO PUSH.
+
+### ga.html (−14)
+- Senate note: Cook Lean Democratic (Ballotpedia Sept 2026 / NYT midterms tracker); Sabato Likely D already noted.
+- Josh McLaurin: blank differentiator + opponents cleared via WABE / Atlanta Press Club bipartisan record + Georgia Recorder May 4 Parkes criticism.
+- Brian Strickland: Senate Judiciary chair / Henry County litigator (stricklandforgeorgia.com/meet-brian; firm bio); opponents contrast with Miller prosecutor résumé.
+- Tanya Miller: federal AUSA + undefeated Fulton homicide prosecutor; House Dem Caucus chair; Case Western Hall of Fame / ACTL (tanyaforgeorgia.com/about; Wikipedia; legis bio; Courier Georgia Sept 8).
+- Penny Brown Reynolds: absence-of-criticism hardened (Wave 41).
+- Tyler Harper / Katherine Juhan-Arnold: blank differentiators sourced (agr.georgia.gov / AJC / BallotReady); Harper industry-backing Verify cleared.
+
+### oh.html (−1)
+- OH-11 2024 baseline: Brown 78.3% / Rapoport 19.6% (NYT certified / Ballotpedia) — exact-percentage Verify cleared.
+
+### Locks / FEC absences (still locked; Wave 41 recheck)
+- Cotten katecotten.com Launching Soon; Houston rozforalabama.com /issues 404; Yoshi /issues 404 + Federal Indictment; Cease azgp.org DNS ENOTFOUND; Christy /platform HTTP 500 (FEC H6CO01331 unchanged through June 30).
+- FEC absences reconfirmed Wave 41 weball26: OH Barrington, CO Blau/(Dennison-Clark pocket), FL Parrott, LA Glass/Collins, OK White/Stinnett/Nieves; Benoit still null.
+- Ethan Baker site still no issues grid (Verify retained; FEC H6MI11290 pocket restated).
+
+### MO gate (still OPEN — no mo.html)
+- Briefs Sept 15 / 8th Cir args Sept 17 / UOCAVA Sept 19 still ahead.
+- Cole sample ballots still August-only; no public Nov CD table; parcels not closed.
+- SCOTUS Sept 10 stay keeps 2022 map; Hoskins contempt purged.
+
+Skipped: DE inventing (until after Sept 15); MI board/regents mass; NM CFIS inventing (filings due Sept 14).
+
+Grok queries: 0.
+
+2026-09-11 | ga/oh/la/al/tn/az/co/ok/fl/mi + mo-build | Wave 41 sourced [Verify] clear | Free web only (0 Grok). Baseline 2929→2914 (−15). GA Cook Lean D + McLaurin/Strickland/Miller/Penny/Harper/Juhan clears; OH-11 78.3% baseline. Honest locks/FEC Wave 41 rechecks. MO gate still OPEN — Cole Aug sample; briefs Sept 15 / args Sept 17; UOCAVA Sept 19; no mo.html. Skip DE inventing / MI board mass. Voices 0. SITE_META Wave 41 on touched pages. | standing
