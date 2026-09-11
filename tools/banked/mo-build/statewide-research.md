@@ -402,3 +402,32 @@ Already banked. Remains on Nov ballot per court posture.
 2. Residence / filing-district check for **every** August nominee against the 2022 map.
 3. Party certification / ballot-order once Nov ballots lock (~UOCAVA).
 4. Watch **Sept 15 8th Circuit** / further appellate action through ballot-print deadlines.
+## MAP / PROP A GATE — WAVE 27 UPDATE (September 11, 2026, late afternoon ET)
+
+**STATUS: gate still OPEN for mo.html.** No mo.html started.
+
+### Currency-test (still NOT closed)
+- Free-web Wave 27: Pike County clerk sample-ballot page lists **November 3, 2026 General Election — 0 files**. Personalized Nov ballots remain behind SoS voter lookup (PII). No public statewide Nov district-label table located.
+- Votebeat (Sept 11) and county clerks (Boone Lennon; Jasper Davis; St. Louis Stream) confirm administrative direction to use the **2022** map; that is operational confirmation, not a label-by-label currency proof vs `mo-cd120.json`.
+
+### Continuity audit (advanced — banked from SoS certified list)
+Downloaded Wave 27: `tools/banked/mo-build/mo-certified-w27.pdf` (SoS `2026GeneralElectionCertifiedCandidates.pdf`, certified Aug 25, 2026 by Denny Hoskins). Machine-readable extract in `mo-certified-w27.txt`.
+
+**U.S. House nominees by district NUMBER (from the Aug 25 certificate):**
+
+| Dist | Republican | Democrat | Third / Independent (as listed) |
+| --- | --- | --- | --- |
+| 1 | Paul Berry III | Wesley Bell | Tom Schmitz |
+| 2 | Ann Wagner | Fred Wellman | Brandon Coulter Daugherty |
+| 3 | Bob Onder | Bethany E Mann | Jim Higgins |
+| 4 | Mark Alford | Jordan Herrera | Thomas Holbrook |
+| 5 | Rick Brattin | Emanuel Cleaver, II | Randall (Randy) Langkraehr |
+| 6 | Chris Stigall | Josh Smead | Andy Maidment |
+| 7 | Eric W. Burlison | Missi Hesketh | Kevin Craig |
+| 8 | Jason T. Smith | Chris Reichard | Rebecca Sharpe Lombard |
+
+**Still required before carding House races:** residence / filing-district check for every August nominee against the **2022** map geography (who is drawn out of the Nov district that shares their district NUMBER, who shares a Nov district with a same-party rival). District NUMBERS on the certificate do not prove 2022-geography continuity after the HB 1 primary. **Not closed from free web today.**
+
+### Court / UOCAVA watch
+- Underlying 8th Circuit appeal still live after SCOTUS stay of Clark TRO; UOCAVA / overseas ballot window ~Sept 19 per prior coverage. Re-check before any mo.html build.
+
