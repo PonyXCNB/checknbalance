@@ -249,3 +249,26 @@ Already banked. Remains on Nov ballot per court posture.
 2. Residence / filing-district check for **every** August nominee against the 2022 map.
 3. Party certification / ballot-order once Nov ballots lock (~UOCAVA).
 4. Watch further appellate action through ballot-print deadlines.
+
+
+## MAP / PROP A GATE - WAVE 20 UPDATE (September 11, 2026, afternoon ET)
+
+**STATUS: gate still OPEN for mo.html.** No mo.html started.
+
+### No new appellate / administrative close this wave
+
+- Wave 19 Hoskins/News Tribune 2022-map directive still the governing administrative line.
+- Wave 20 did not locate a public statewide November **district-label** sample-ballot table matched to `mo-cd120.json`.
+- Personalized Nov ballots remain behind SoS voter lookup (PII). LEA instructions ≠ label-by-label currency proof.
+
+### Residence / continuity matrix
+
+- Still partial. Prior pairing notes stand (Bell/Berry, Wagner/Wellman, Onder, Alford/Herrera-reported, Cleaver/Brattin, Stigall, Burlison/Hesketh, Smith/Reichard, Smead/Stigall).
+- Parcel-level 2022-map residence checks for the full August nominee set remain required before mo.html.
+
+### Still OPEN before mo.html
+
+1. SoS / LEA Nov district-label currency-test vs `mo-cd120.json`.
+2. Residence / filing-district check for **every** August nominee against the 2022 map.
+3. Party certification / ballot-order once Nov ballots lock (~UOCAVA).
+4. Watch further appellate action through ballot-print deadlines.
