@@ -840,3 +840,36 @@ Aug 25 SoS-certified House nominees by **district NUMBER** (Wave 27 certificate)
 3. votebeat.org / SCOTUSblog - SCOTUS Sept 10 path keeps 2022 map for now (reconfirm).
 4. ballotpedia.org Missouri Proposition A page - Prop A still on Nov ballot.
 
+
+## MAP / PROP A GATE - WAVE 40 UPDATE (September 11, 2026, late evening ET)
+
+**STATUS: gate still OPEN for mo.html.** No mo.html started. Currency-test still incomplete (no public Nov CD sample-label table). Parcel notes reconfirmed, not closed. Today is still Sept 11 - Sept 15 briefs / Sept 17 args / UOCAVA Sept 19 have not arrived yet.
+
+### Court posture (Wave 40 free-web reconfirm + Sept 10-11 developments)
+- **U.S. Supreme Court (Sept 10, 2026):** stay of Judge Clark TRO granted (26A326 People Not Politicians v. Onder) — 2022 map governs November for now (SCOTUSblog / CNN / Bloomberg Law). Stay remains pending 8th Cir appeal disposition (+ cert if sought).
+- **Missouri Supreme Court (Sept 10):** found Secretary Hoskins in civil contempt for the Sept 8 HB 1 email directive, then held he purged contempt by directing LEAs back to the **2022 map** (News-Leader Sept 11; SCOTUSblog update; electionlawblog contempt order).
+- **8th Circuit:** expedited appeal calendar still lists simultaneous briefs **Sept 15** and remote oral arguments **Sept 17, 10 a.m.** (Missouri Times prior calendar; no public posting of those briefs located Wave 40 — they are not due yet).
+- **UOCAVA:** military/overseas ballots must transmit by **Sept 19** (Votebeat / prior notes). Gate watch remains live through UOCAVA and ballot-print deadlines.
+- **Prop A / referendum** on HB 1 remains on the November ballot (Ballotpedia / Missouri Times).
+
+### Currency-test (still NOT closed)
+- **Cole County:** colecounty.org/441/Sample-Ballots **still** only links **August 4, 2026 Combined Sample Ballot** (Wave 40 live fetch); no November sample PDF unlocked.
+- **Boone / Jackson / STL:** no new public countywide Nov CD-label PDF matched to mo-cd120.json this pass (voter lookup remains PII-gated where checked previously).
+- **Still no public statewide (or even single-county public-PDF) November sample-ballot district-label table matched to `mo-cd120.json`.**
+
+### Continuity / parcel (not closed)
+- No new street/parcel unlock this pass for Brattin / Herrera / Onder. Prior banked notes stand.
+
+### Exact remaining blockers before mo.html
+1. SoS/LEA Nov district-label currency-test vs `mo-cd120.json` (public sample ballots or equivalent non-PII table).
+2. Finish parcel/VTD residence checks (Brattin; Onder Lake St. Louis / Augusta; Herrera KC parcel vs Raymore office).
+3. Party certification / ballot-order lock confirming Aug 25 certificate names still govern Nov under 2022 lines (or under whichever map survives post-Sept 17).
+4. Watch Sept 15 briefs / Sept 17 8th Cir argument / UOCAVA Sept 19 through ballot-print deadlines.
+
+### Sources added this wave
+1. colecounty.org/441/Sample-Ballots - still August Combined Sample only (Wave 40 live fetch).
+2. scotusblog.com Sept 10 - SCOTUS stay of Clark TRO; Hoskins contempt purged same day.
+3. news-leader.com Sept 11 - Hoskins contempt / purged; 2022 map directive.
+4. themissouritimes.com - 8th Cir briefs Sept 15 / args Sept 17 calendar (reconfirm; briefs not yet public).
+5. weball26.zip fresh pull Wave 40 - Cinquemani H6NY16173 still absent; Christy H6CO01331 still $2,056.95/$354.16/$1,702.79 through June 30.
+
