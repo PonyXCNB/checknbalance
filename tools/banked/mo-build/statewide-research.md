@@ -299,3 +299,23 @@ Already banked. Remains on Nov ballot per court posture.
 2. Residence / filing-district check for **every** August nominee against the 2022 map.
 3. Party certification / ballot-order once Nov ballots lock (~UOCAVA).
 4. Watch 8th Circuit (~Sept 15) and further appellate action through ballot-print deadlines.
+
+
+## MAP / PROP A GATE - WAVE 22 UPDATE (September 11, 2026, afternoon ET)
+
+**STATUS: gate still OPEN for mo.html.** No mo.html started.
+
+### Currency-test status
+
+- No new statewide district-label sample-ballot table vs `mo-cd120.json` this wave.
+- Hoskins Sep 11 News Tribune LEA directive to use the 2022 map (after SCOTUS stay / Mo. Supreme Court order) remains the latest administrative line — progress toward currency, not completion.
+
+### Residence / continuity matrix
+
+- Still partial. Parcel-level 2022-map residence checks for the full August nominee set remain required before mo.html.
+
+### Still OPEN before mo.html
+
+1. SoS / LEA Nov district-label currency-test vs `mo-cd120.json`.
+2. Residence / filing-district check for every August nominee against the 2022 map.
+3. Party certification / ballot-order once Nov ballots lock (~UOCAVA; 8th Circuit ~Sept 15 watch).
