@@ -12,6 +12,8 @@ Format (one line each):
 ## Dead ends
 
 
+2026-09-11 | nv.html / ga.html / sc.html | Wave 6 sourced [Verify] clear | Free web only (0 Grok). NV major-party statewide + NV-1/NV-2 platforms from TNI questionnaires, electteresa.com, Nevada Current/Sierra Nevada Ally, Nevada Sentinel republish; GA official May 19/June 16 margins (Harper/Holmes unopposed, Bottoms 56.23%, Cowan 64.98%); SC primary margins (Wright/Boozer/Peterson/Andrews runners). Skipped IAP/Lib thin blanks, DE Sep 15, MO/CA/TX, MI board/regents, FL structural/PAC nulls. | standing
+
 2026-09-11 | fl.html / pa.html / in.html / ny.html / ga.html | Wave 5 sourced [Verify] clear | Free web + FEC weball26 bulk (0 Grok). FL cash batch vs weball26; PA Marty Young voteyoung.com; IN Mrvan/Regnitz/Shreve COH; NY-6 Joseph Chou (NYC BOE contest list + NBC/Cozen/FEC); GA SoS runoff Fleming 64.50% / Reynolds 63.10%. Left DE Sep 15, MO untracked, MI board/regents, FL structural/PAC nulls. | standing
 
 2026-09-11 | ok.html / az.html / fl.html / ri.html | Wave 4 sourced [Verify] clear | Free web + FEC API (0 Grok). OK: State Election Board certified Aug 25 runoff Sept 1 (oklahoma.gov OFFICIAL RESULTS); June primary Official Results — cleared 13 unofficial-pending markers. AZ: Biggs from biggsforarizona.com/issues; Hobbs Arizona First from katiehobbs.org; Mark Lamb from marklamb.us. FL: Ingoglia from blaiseforflorida.com/issues; Trump FL-1/3/6 via USA Today Network/Naples News; Laurel Lee + Brian Mast cash from FEC API. RI: Block from blockforgovernor.com/issues; Gotra GRIT from governorgotra.com; Matos from ltgov.ri.gov + sabinamatos.com. Left Reynolds/Credle/Mellor/Bahry/McKay/Loughlin nulls; OK structural; MI board/regents; DE Sep 15; MO banked untracked. | standing
