@@ -763,3 +763,29 @@ Grok queries: 0 this wave.
 
 
 
+
+## 2026-09-11 — Verify backlog clear batch 37 (Wave 37: NY Staton/Hannon/Gallant/Halpin/LiPetri/Hysenaj/Niles/Cohen/Kim + FEC harden + locked rechecks + MO gate)
+
+Free web only (0 Grok). SITE_META bumped to September 11, 2026 (Wave 37) on changed pages. Baseline 2985 → 2955 (−30). Voices 0. Green tests → local commit. NO PUSH.
+
+### ny.html (−14)
+- Will Staton: platform pillars from statonforcongress.com; FEC H6NY22197 ~$16.3k; structural opp clears.
+- Dennis Hannon: concrete homepage delivery items (PBM/energy leases/AI minors/capital punishment) clear thin-specifics knock.
+- Gallant/Halpin/LiPetri/Hysenaj opponent Verifies rewritten with FEC / Wikipedia / Long Island Press / Dielli sourcing.
+- Niles: NYC BOE Prima Facie Voice petition insufficient (930 vs 3,500); write-in confirmation; Nov status still [Verify].
+- Cohen: Ballotpedia WFP confirm; platform still absent [Verify].
+- Kim: Wikipedia filed-paperwork only; still unconfirmed for Nov [Verify].
+
+### FEC / structural harden
+- OH Barrington, CO Blau/Dennison/Clark, FL Parrott/C.Dennison, LA Glass/Collins, OK White/Stinnett/Nieves: weball26 Wave 37 absences hardened; structural Verifies cleared where safe. FL C.Dennison already had H6FL07249 pocket.
+
+### Locked rechecks (still locked)
+- Cotten Launching Soon; Houston /issues 404; Yoshi /issues 404; Cease azgp.org DNS ENOTFOUND; Christy /platform still SALAMJP spam.
+
+### MO gate (still OPEN — no mo.html)
+- Briefs Sept 15 / 8th Cir args Sept 17 / UOCAVA Sept 19 still ahead.
+- Cole sample ballots still August-only; no public Nov CD table.
+
+Skipped: DE inventing; MI board mass.
+
+Grok queries: 0.
