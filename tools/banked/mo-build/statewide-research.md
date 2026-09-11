@@ -150,3 +150,27 @@ Already banked. Remains on Nov ballot per court posture.
 1. SoS Nov ballot district-label currency-test vs `mo-cd120.json`.
 2. Finish candidate×district continuity matrix (esp. MO-6 D; residence checks).
 3. Watch 8th Circuit / further SCOTUS action through UOCAVA / ballot-print deadlines.
+
+
+## MAP / PROP A GATE - WAVE 16 UPDATE (September 11, 2026, late afternoon ET)
+
+**STATUS: gate still OPEN for mo.html.** No mo.html started.
+
+### Continuity matrix advance — MO-6 D filled
+
+- **MO-6 D nominee = Josh Smead** (architect, Liberty, MO). Confirmed by KCUR (Aug 4 primary night), KCTV5 (Aug 5), and STLPR Politically Speaking (Sept 2, 2026). Beat Matt Levine and Scot Pondelick in the August Democratic primary; faces Chris Stigall (R) in November.
+- **Residence note (partial):** Smead is Liberty-based (Clay County). Under the **2025/HB1** map, Clay County was pulled more fully into MO-6; under the **2022** map that governs November, Clay/Platte Kansas City-north areas have historically sat in Graves's MO-6 while Cleaver's MO-5 held most of KC proper — Smead's Liberty residence is inside traditional MO-6 geography on both plans in coverage reviewed, but a parcel-level 2022-map check is still outstanding for the full nominee set.
+- Matrix row update: MO-6 | Josh Smead (D) | Chris Stigall (R) | Open seat (Graves retiring); Smead/Stigall pairing reported consistently across KC outlets.
+
+### Currency-test (still NOT closed)
+
+- Still no public statewide November sample-ballot district-label table matched to `mo-cd120.json`.
+- Personalized Nov ballots remain behind SoS voter lookup (PII). Cole County sample still primary-era when last checked.
+- Administrative confirmation that LEAs will use 2022 lines continues — not a label-by-label currency proof.
+
+### Still OPEN before mo.html
+
+1. SoS / LEA Nov district-label currency-test vs `mo-cd120.json`.
+2. Residence / filing-district check for **every** August nominee against the 2022 map (Smead/Liberty advanced; others still pending).
+3. Party certification / ballot-order once Nov ballots lock (~UOCAVA).
+4. Watch further appellate action through ballot-print deadlines.

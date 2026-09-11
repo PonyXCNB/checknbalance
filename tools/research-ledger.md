@@ -661,3 +661,32 @@ LEFT / skipped: MI board/regents mass; DE Sept 15; RI Board certification when p
 Grok queries: 0 session total.
 
 2026-09-11 | ok.html / az.html / pa.html / il.html / mo-build | Wave 15 sourced [Verify] clear + MO gate research | Free web + FEC weball26 refresh + CCEC 2026 VEG PDF + kevinldawson.com + teriann4azgov.org + 1 Grok lead (MO continuity). OK: Thomas $456 hardened to weball26 S6OK04163; Dawson Labor platform/bio from campaign site (cash still Ethics-unpulled). AZ: Lombardo/Hourihan/Collier platforms + ballot presence via CCEC VEG (azsos.gov Cloudflare-blocked); Green Party sham disavowals sourced as opponents. PA/IL: Stuski/Arriaga/Noack/Hershey still absent from weball26 evening re-check. MO: gate still OPEN — continuity matrix partial (Bell/Berry, Wagner/Wellman, Onder, Alford/Herrera-reported, Cleaver/Brattin, Stigall, Burlison/Hesketh, Smith/Reichard); currency-test still incomplete; no mo.html. NM CFIS still unreachable (next general reports due Sept 14). RI Board certification still unofficial through Sept 12-15 mail/UOCAVA window. NH SoS Excel 403 to automated fetch (documented). Skipped DE inventing + MI board/regents. Voices 0. | standing
+
+
+## 2026-09-11 - Verify backlog clear batch 16 (Wave 16: AZ Redkey/Benoit/Presmyk + FL Arias/DWS + OK Ethics org harden + MO-6 Smead)
+
+Free web only (0 Grok). SITE_META kept September 11 on changed pages. Baseline 3439 → 3433 (−6). Voices 0. Green tests → commit.
+
+### az.html (−4)
+- David Redkey: Foundation Economics platform from davidredkey4congress.com; FEC H6AZ01322 weball26 $0/$0 through July 1, 2026; Green write-in/certification Verifies kept.
+- Tisha Benoit: budget + seven pillars from tishabenoit.com /issues; FEC still no summary [Verify kept].
+- Les Presmyk: Goals & Priorities from lespresmyk.com (mine safety/training, abandoned-mine inventory with ADEQ, MSHA/San Xavier training, UArizona/ASU partnerships).
+
+### fl.html (−2)
+- Victor Arias: UNITY pillars recovered from ariasforcongress.us JS bundle (Environment/Economy Everglades–red tide; Healthcare/Medicare drugs; Veterans VA red tape; Unifying / Bi-Partisan Reform). Prior votearias.us outage noted.
+- Debbie Wasserman Schultz: affordability (CBS Miami) + Everglades/Appropriations record (campaign Meet Debbie) replace "record rather than itemised platform" Verify.
+
+### ok.html (0 net — Ethics harden, Verifies retained)
+- Guardian bulk CSVs downloaded (as-of 9/11/2026 12:03 AM). Pre-Runoff filings confirmed on org pages; ASP report drill-downs Runtime Error for automated fetch; bulk extracts lack ending-balance fields — **no invented COH**.
+- Org IDs banked/hardened into cash Verifies: Echols 11756, Coffey 11949, Forbes 11876, Byrd Treasurer 12335, West 11914, Dawson 12295, Sullivan 12098, MacIntyre 12375, Eastman 12361.
+
+### MO gate (still OPEN — no mo.html)
+- Continuity: **MO-6 D = Josh Smead** (Liberty architect; KCUR/KCTV5/STLPR). Residence note partial (Liberty/Clay inside traditional MO-6 on both maps in coverage; parcel-level matrix still open).
+- Currency-test still NOT closed (no public Nov district-label table vs mo-cd120.json).
+
+### Skipped
+- DE inventing; MI board/regents mass; NM CFIS (filings due Sept 14 — early); RI/NH certification waits; Guardian ending-cash until interactive report path works; UT/ID/KS minor-party mass blanks.
+
+Grok queries: 0 this wave (session remaining budget untouched beyond prior afternoon 1).
+
+2026-09-11 | az.html / fl.html / ok.html / mo-build | Wave 16 sourced [Verify] clear + MO-6 Smead + OK Ethics org harden | Free web: Redkey Foundation Economics; Benoit tishabenoit.com pillars; Presmyk lespresmyk.com; Arias ariasforcongress.us UNITY; DWS affordability/Everglades; Guardian bulk CSVs + org IDs (no invented COH). MO gate OPEN — Smead fills MO-6 D; currency-test still open; no mo.html. Voices 0. | standing
