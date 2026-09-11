@@ -197,3 +197,32 @@ Already banked. Remains on Nov ballot per court posture.
 2. Residence / filing-district check for **every** August nominee against the 2022 map (Smead/Liberty and Brattin notes advanced; others still pending).
 3. Party certification / ballot-order once Nov ballots lock (~UOCAVA).
 4. Watch further appellate action through ballot-print deadlines.
+
+
+## MAP / PROP A GATE - WAVE 18 UPDATE (September 11, 2026, evening ET)
+
+**STATUS: gate still OPEN for mo.html.** No mo.html started.
+
+### Administrative / appellate (Sept 11)
+
+- **Hoskins directing 2022 map for November:** Jefferson City News Tribune (Sept 11, 2026) quotes SoS Denny Hoskins: after the U.S. Supreme Court stay, "the only governing court order in effect is from the Missouri Supreme Court" and his office is directing LEAs to use the **2022** congressional map. AG Hanaway: 2022 map governs "for now" outside an "extreme world" further SCOTUS reversal.
+- **No second primary:** Hoskins said the state has no intention of re-running a primary on 2022 lines before November (same News Tribune piece).
+- Prop A (HB 1 referendum) remains on the November ballot; HB 1 lines were used in August but are not the governing Nov districts under the Missouri Supreme Court order.
+
+### Residence / continuity matrix (still partial)
+
+- Prior wave notes on **Smead (Liberty/Clay → MO-6 on both maps in coverage)** and **Brattin (map-dependent residence risk)** stand.
+- Wave 18 did **not** close parcel-level 2022-map checks for the full August nominee set — still required before mo.html.
+- Continuity pairing notes from Waves 15–17 (Bell/Berry, Wagner/Wellman, Onder, Alford/Herrera-reported, Cleaver/Brattin, Stigall, Burlison/Hesketh, Smith/Reichard, Smead/Stigall) remain the working matrix; no new nominee swaps sourced this wave.
+
+### Currency-test (still NOT closed)
+
+- Still no public statewide November sample-ballot **district-label** table matched to `mo-cd120.json`.
+- Personalized Nov ballots remain behind SoS voter lookup (PII). LEA administrative instructions ≠ label-by-label currency proof.
+
+### Still OPEN before mo.html
+
+1. SoS / LEA Nov district-label currency-test vs `mo-cd120.json`.
+2. Residence / filing-district check for **every** August nominee against the 2022 map.
+3. Party certification / ballot-order once Nov ballots lock (~UOCAVA).
+4. Watch further appellate action through ballot-print deadlines.
