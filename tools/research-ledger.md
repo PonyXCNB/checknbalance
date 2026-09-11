@@ -525,3 +525,25 @@ Free web only (0 Grok). SITE_META bumped to Sept 11 on changed pages. Baseline 3
 LEFT: Weise/OH challenger absences; DE Sept 15 winners; MO/CA/TX unbuilt; untracked mo-build untouched; MI board/regents mass; Hobbs/Biggs consolidated issues pages still missing; structural Verifies kept.
 
 Grok queries: 0 session total.
+
+## 2026-09-11 — Verify backlog clear batch 7 (Wave 7: NV-3/4 TNI + AZ Petersen + NM Torrez/Cunningham + SC Reddy)
+
+Free web only (0 Grok). SITE_META bumped to Sept 11 on changed pages. Baseline 3641 → 3613 (−28).
+
+### nv.html (−17)
+- Susie Lee / Marty O'Donnell (NV-3): TNI questionnaire (SAVE Act, immigration, tariffs, ACA, Medicaid, SS, lands bill).
+- Steven Horsford / Cody Whipple (NV-4): TNI questionnaire (same battery; Horsford RELIEF Act / SS 2100; Whipple SAVE/Medicaid/tariff balls-and-strikes).
+
+### az.html (−2)
+- Warren Petersen: petersenforag.com/issues (rule of law, public safety, women's sports / 2A / sovereignty).
+
+### nm.html (−8)
+- Raul Torrez: raultorrez.com (kids/online safety, Cold Case/MMIP, consumer/PFAS/reproductive rights).
+- Greg Cunningham: Searchlight NM + iVoterGuide (border/Medicaid eligibility; 2A / waste audits).
+
+### sc.html (−1)
+- Rom Reddy ~14% [Verify] → 14.2% official primary share.
+
+LEFT: NV IAP/Lib thin blanks; AZ AARP-poll / structural Verifies; NM CFIS cash / Kane thin; DE Sep 15; MO/CA/TX; MI board/regents; FL honest nulls.
+
+Grok queries: 0 session total.
