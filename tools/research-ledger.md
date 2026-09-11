@@ -859,3 +859,44 @@ Grok queries: 0.
 
 2026-09-11 | ga/oh/al/la/tn/az/co + mo-build | Wave 42 sourced [Verify] clear | Free web only (0 Grok). Baseline 2914→2874 (−40). GA Insurance/Ag/School/Labor/PSC clears; OH Faber Medicaid/teachers sourced. Honest locks Wave 42 rechecks. MO gate still OPEN — Cole Aug sample; briefs Sept 15 / args Sept 17; UOCAVA Sept 19; no mo.html. Skip DE inventing / MI board mass / NM CFIS. Voices 0. SITE_META Wave 42 on touched pages. | standing
 
+## 2026-09-11 - Verify backlog clear batch 47 (Wave 47: OK Guardian cash unlock + Hourihan + MS/NE judicial + KS structural + AR pads + locks/MO gate)
+
+Free web only (0 Grok). SITE_META bumped to September 11, 2026 (Wave 47) on changed pages. Baseline 2599 → 2490 (−109). Voices 0. Green tests → local commit. NO PUSH.
+
+### ok.html (−20 net page; Guardian FinancialSummary UNLOCK)
+Pre-Runoff ending cash (period end 08/10/2026) via CommitteeFinancialSummary.aspx?Comm={id} — CommitteeDetail still 404:
+- Forbes 11876 $8,458.80; Echols 11756 $221,249.55; Coffey 11949 $288,642.74; Byrd 12335 $39,153.03; West 11914 $24,118.74; Dawson 12295 $1,422.93; MacIntyre 12375 $2,311.38; Eastman 12361 $589.88; Sullivan 12098 $72,075.56.
+- Structural clears: Echols/Coffey/MacIntyre/Eastman/Sullivan opponent Verifies.
+- Kiefer Perry: no OrganizationID matched — absence hardened (no invent).
+
+### az.html (−1)
+- Teri Hourihan: BEACON/seethemoney Q2 ending cash $4,467.06 on ~$40,242 cycle receipts (committee 102014, filed July 13; azcentral July 23).
+- Cease lock recheck Wave 47 (azgp.org still ENOTFOUND).
+
+### ms.html (−41)
+- Weddle appointment date cleared: appointed Sept 25, 2024 / term began Oct 14, 2024 (governorreeves.ms.gov; courts.ms.gov).
+- Weddle/Hopson/Barnes/McDonald/McCarty/Lawrence judicial bare pads + structural clears; Boyanton structural.
+
+### ks.html (−29)
+- Statewide structural batch (Hamilton/Graham/Masterson/Klemp/Holscher/Ohaebosim/Mann/Day/Morgan/Johnson/Luengo/Hawkins/Sykes/Mann CD1).
+- Lund/Koehn: still no personal platforms — Wave 47 harden (LPKS slate; rickoehn.com personal not office platform) [Verify retained on positions].
+
+### ne.html (−10)
+- Stine/Block Workers' Comp retention bare pads + structural clears.
+
+### ar.html (−7)
+- Milligan / Parsons / Kalagias structural clears.
+
+### la.html (−1) / fl.html (0 net) / co.html (0) / al.html (0) / tn.html (0)
+- Lauren Jewett R+20 structural; scottjewett.com LIVE Wave 47 (was 403); Cotten still Launching Soon; Houston /issues 404; Yoshi unpaid-invoice; Christy christyforamerica.us LIVE thin pillars (original .com TLS fail / hacked 9/2 note).
+
+### MO gate (still OPEN — no mo.html)
+- Cole sample ballots still August-only (Wave 47 live WebFetch).
+- Briefs Sept 15 / 8th Cir args Sept 17 / UOCAVA Sept 19 still ahead.
+- SCOTUS Sept 10 stay keeps 2022 map; Hoskins contempt purged.
+
+Skipped: DE inventing (until after Sept 15); MI board/regents mass; NM CFIS inventing (First General due Sept 14; CandidateMain still unusable this pass).
+
+Grok queries: 0.
+
+2026-09-11 | ok/az/ms/ks/ne/ar/la/fl/co/al/tn + mo-build | Wave 47 sourced [Verify] clear | Free web only (0 Grok). Baseline 2599→2490 (−109). OK Guardian FinancialSummary cash unlock (9 orgs); Hourihan BEACON $4,467.06; MS Weddle date + judicial pads; KS structural; NE Stine/Block; AR Milligan/Parsons. Honest locks Wave 47. MO gate still OPEN — Cole Aug sample; briefs Sept 15 / args Sept 17; UOCAVA Sept 19; no mo.html. Skip DE inventing / MI board mass / NM CFIS inventing. Voices 0. SITE_META Wave 47 on touched pages. | standing
