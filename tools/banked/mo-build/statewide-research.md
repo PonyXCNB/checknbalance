@@ -1161,3 +1161,37 @@ Aug 25 SoS-certified House nominees by **district NUMBER** (Wave 27 certificate)
 4. **Parrott FEC:** weball26 bulk has NO H6FL06316 / Andrew Parrott row (Neil Parrott MD-06 only); site still Ready to serve you; $0 absence stands.
 5. Lock rechecks Wave 49: katecotten.com still Launching Soon HTTP 200; rozforalabama.com/issues still 404; yoshimatthews.com unpaid-invoice + /issues 404; azgp.org / mikecease.com ENOTFOUND; Lund/Koehn still no personal office platforms (LPKS slate only; rickoehn.com personal). NM CFIS: login.cfis.sos.state.nm.us HTTP 200; www.cfis.state.nm.us/media CandidateMain year dropdown still tops at 2020; cfis.sos.nm.gov DNS ENOTFOUND; First General filings due Sept 14 - not yet.
 
+
+## MAP / PROP A GATE - WAVE 50 UPDATE (September 11, 2026, evening ET)
+
+**STATUS: gate still OPEN for mo.html.** No mo.html started. Currency-test still incomplete (no public Nov CD sample-label table). Today is still Sept 11 - Sept 15 briefs / Sept 17 args / UOCAVA Sept 19 have not arrived yet. Skip DE inventing until after Sept 15.
+
+### Court posture (Wave 50 free-web reconfirm)
+- **U.S. Supreme Court (Sept 10, 2026):** stay of Judge Clark TRO remains in force - 2022 map governs November for now (Missouri Times). Stay remains pending 8th Cir appeal disposition (+ cert if sought).
+- **8th Circuit (Onder v. Missouri, No. 26-2797):** expedited calendar still lists simultaneous briefs **Sept 15** and remote oral arguments **Sept 17, 10 a.m.** (Missouri Times Wave 50 reconfirm). No public posting of those briefs located Wave 50 - they are not due yet (today still Sept 11).
+- **UOCAVA:** military/overseas ballots must transmit by **Sept 19**. Gate watch remains live through UOCAVA and ballot-print deadlines.
+- **Prop A / referendum** on HB 1 remains on the November ballot.
+
+### Currency-test (still NOT closed)
+- **Cole County:** colecounty.org/441/Sample-Ballots **still** only links **August 4, 2026 Combined Sample Ballot** (Wave 50 live fetch; page text has August only - no November/General sample link).
+- **Boone / Jackson / STL:** no new public countywide Nov CD-label PDF matched to mo-cd120.json this pass.
+- **Still no public statewide (or even single-county public-PDF) November sample-ballot district-label table matched to `mo-cd120.json`.**
+
+### Continuity / parcel (not closed)
+- No new street/parcel unlock this pass for Brattin / Herrera / Onder. Prior banked notes stand.
+
+### Exact remaining blockers before mo.html
+1. SoS/LEA Nov district-label currency-test vs `mo-cd120.json` (public sample ballots or equivalent non-PII table).
+2. Finish parcel/VTD residence checks (Brattin; Onder Lake St. Louis / Augusta; Herrera KC parcel vs Raymore office).
+3. Party certification / ballot-order lock confirming Aug 25 certificate names still govern Nov under 2022 lines (or under whichever map survives post-Sept 17).
+4. Watch Sept 15 briefs / Sept 17 8th Cir argument / UOCAVA Sept 19 through ballot-print deadlines.
+
+### Sources / locks added this wave
+1. colecounty.org/441/Sample-Ballots - still August Combined Sample only (Wave 50 live fetch).
+2. themissouritimes.com/supreme-court-passes-on-new-congressional-map/ - SCOTUS stay + 8th Cir briefs Sept 15 / args Sept 17 calendar reconfirm; briefs not yet public.
+3. **AZ Swing ballot unlock:** FOX 10 Phoenix Sept 10, 2026 Clean Elections CD-6 coverage lists Gary Swing among five Nov 3 candidates and quotes his SoS nomination-paper statement - clears prior Facebook-only certifiability uncertainty.
+4. **Kobach crime claim:** KBI July 6, 2026 Crime Index bulletin independently confirms 2025 crime index rate lowest in 57 years; $320M restitution remains campaign self-claim.
+5. **Lloyd endorsements:** votedouglloyd.com/sheriff-endorsements static named sheriff list (Wave 50); clears prior JS-only extract lock.
+6. **OK Perry:** Guardian org hunt Wave 50 still unmatched; Pre-General window Oct 20-26; Ballotpedia finance blank.
+7. Lock rechecks Wave 50: katecotten.com TLS fail this pass (prior Launching Soon); rozforalabama.com/issues still 404; yoshimatthews.com unpaid-invoice + /issues 404; azgp.org / mikecease.com unreachable; Lund LPKS-only; Koehn rickoehn.com TLS error; Parrott site live + $0. NM CFIS: login.cfis.sos.state.nm.us HTTP 200; www.cfis.state.nm.us/media up; cfis.sos.nm.gov DNS ENOTFOUND; First General due Sept 14 - still pre-deadline today Sept 11.
+
