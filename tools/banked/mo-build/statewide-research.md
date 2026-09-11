@@ -50,7 +50,7 @@ Primary sources: Missouri Secretary of State certified candidate list (Aug 25, 2
 - Exact SoS-certified ballot title / Yes–No language for Proposition A (SoS ballot-measure page may still lag).
 - Final county×district population table for the **2022** map in machine-readable form suitable for mo-cd120.json (need derivation, not HB 1 file).
 - Whether any August primary winner is drawn out of their November district under the 2022 map (candidate continuity audit required before carding House races).
-- 8th Circuit / further SCOTUS action after Sept 15 hearing window.
+- ~~8th Circuit / further SCOTUS action after Sept 15 hearing window~~ **PARTIAL Sept 11:** 8th Circuit declined to stay Clark TRO; full SCOTUS then stayed Clark — 2022 map directed by Hoskins. Underlying appeal still live; re-check before build.
 
 
 ## PROPOSITION A — OFFICIAL BALLOT LANGUAGE (banked September 11, 2026)
@@ -70,3 +70,41 @@ State and local governmental entities estimate no costs or savings.
 **Build note:** November 2026 House races still use the **2022** map under current state-court posture even if voters approve Prop A; Prop A's practical effect is forward-looking (HB 1 effective later if approved) unless a later court order says otherwise. Re-check after any 8th Circuit / SCOTUS action.
 
 **mo-cd120.json:** Banked September 11, 2026 from `mo-cd119-baseline.txt` (2022 plan): 115 county-equivalents, 9 split counties. Gate for mo.html remains OPEN pending currency-test against SoS November ballot labels and candidate-continuity audit.
+
+
+## MAP / PROP A GATE — WAVE 14 UPDATE (September 11, 2026, evening ET)
+
+**STATUS: gate still OPEN for mo.html.** No mo.html started. Research advanced; currency-test and continuity audit still incomplete.
+
+### Court posture as of Sept 11, 2026 (free web)
+
+- **U.S. Supreme Court (Sept 11):** Full Court stayed Chief Judge Stephen Clark's Eastern District TRO that had ordered use of the 2025 HB 1 map for November. Stay keeps the Missouri Supreme Court's Sept 3 holding operative: November runs on the **2022** map; Prop A stays on the ballot (Missouri Independent / KTTN Jason Hancock; Votebeat Jessica Huseman et al., Sept 11).
+- **8th Circuit (Sept 10):** Declined to stay Clark's TRO; that is why the emergency application returned to Justice Kavanaugh / the full Court (Missouri Independent).
+- **Hoskins after the stay:** Directed local election authorities to use the 2022 congressional map; AG Hanaway followed (Missouri Independent).
+- **Underlying federal case:** Stay is temporary while the 8th Circuit appeal proceeds; not a merits decision. Re-check before any mo.html build if the 8th Circuit or SCOTUS flips posture again before UOCAVA / ballot-print deadlines (~Sept 19 military/overseas noted in coverage).
+
+### Currency-test (NOT closed)
+
+- Need SoS / LEA **November** sample-ballot district labels by county (or equivalent machine-readable assignment) matched to banked `mo-cd120.json` (2022 plan; 115 counties / 9 splits).
+- Free-web check Sept 11: Cole County sample-ballot page still points at the **August 4 primary** combined sample; personalized Nov ballots sit behind SoS voter-outreach lookup (PII). No public statewide Nov district-label table located.
+- County clerks publicly confirm they will use 2022 lines (St. Louis County Stream; Boone County Lennon) — administrative confirmation, **not** a label-by-label currency proof.
+
+### Continuity audit (PARTIAL — banked notes only)
+
+August primary used HB 1 lines; November uses 2022 lines. Free-web continuity notes (not a full candidate×district matrix):
+
+- AP estimate: nearly **1 in 4** potential voters statewide (~1M+) may see different House candidate choices than in the primary (PBS / AP).
+- St. Louis County: ~**60,000** voters move to a different congressional district (First Alert 4 quoting Rick Stream).
+- Boone County: ~**40%** of voters see a different district than August (KOMU quoting Clerk Brianna Lennon); clerk site can show both 2022 and 2025 assignments.
+- MO-5 pairing under the numbered district: Cleaver (D, unopposed Aug Dem) vs Brattin (R, Aug winner) remain the certified nominees for District 5, but the **geography** of District 5 shrinks back to the Kansas City–centered 2022 shape (KCUR / AP). Brattin was among federal plaintiffs seeking to keep HB 1 lines.
+- Still required before carding House races: residence / filing-district check for **every** August nominee against the 2022 map (who is drawn out, who shares a Nov district with a same-party rival, open seats created by map revert). **Not done from free web today.**
+
+### Prop A ballot language
+
+Already banked Sept 11 (KMBC fair-ballot + AG OP-2026-001). See PROPOSITION A section below.
+
+### Still OPEN before mo.html
+
+1. SoS Nov ballot district-label currency-test vs `mo-cd120.json`.
+2. Full August→2022 candidate-continuity matrix.
+3. Watch 8th Circuit / further SCOTUS action through UOCAVA window.

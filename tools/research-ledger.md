@@ -623,3 +623,39 @@ LEFT / skipped: OK Ethics cash still unretrievable (Forbes/Byrd/West/Echols/Coff
 
 Grok queries: 0 session total.
 
+
+## 2026-09-11 — Verify backlog clear batch 14 (Wave 14: NM statewide platforms + PA/IL FEC harden + MA/NH/RI date phrasing + MO gate advance)
+
+Free web only (0 Grok). SITE_META bumped to Sept 11 on changed pages (nh was Sept 9). Baseline 3487 → 3457 (−30). Voices 0. Green tests → commit.
+
+### nm.html (−23)
+- Samuel Kane: platform from samfornewmexico.org (safety/fentanyl+LE, Flock privacy, data-center/utility accountability); bio deepened (Las Cruces attorney / firm since mid-2000s). CFIS cash Verify kept.
+- Laura Montoya: financial literacy / Baby Bonds / NM STABLE from lauramontoya4nm.com; first woman/Latina treasurer framing; Ellison transparency critique sourced.
+- Jim Ellison: three commitments from ellisonfornm.com (investment performance report, Dec 31 annual report, unclaimed-property transfer); CFA + PRC; governor→treasurer path from Albuquerque Journal.
+- Joseph Maestas: waste/fraud, vulnerable residents, capital-outlay reform from maestas4nm.net; CFE/PE + PRC/mayor bio from VOTE411.
+- Joshua James Ryan Lawrence: audit-everything / NM auditors / DOGE-AI planks from News From The States interview; film/events + 2022 sheriff primary ~14%. Credential Verify kept.
+
+### pa.html (−3)
+- Aurora Stuski: Form 99 (Apr 12, 2026) below $5k threshold — processing-lag Verify retired; opponent line hardened to Form 99 / no weball26.
+- Jessica Arriaga: FEC H6PA02205 still no financial summary as of Sept 11 (organisational paperwork only) — Verify retired; structural Verifies kept.
+- Stuski/Arriaga weball summaries still NOT processed — no invented totals.
+
+### il.html (−4)
+- Mike Noack: no weball26 row; Ballotpedia/OpenSecrets $0 — absence hardened.
+- Ed Hershey: 2022 3.5% (4,605) / 2024 5.2% (10,704) from Ballotpedia/NYT; FEC absence hardened. Minor-party structural Verify kept.
+
+### ma.html / nh.html / ri.html (pending-date cleanup; DE untouched)
+- MA: Sept 1 “unopposed” strings rewritten with “won … unopposed” so mentioned-dates marks settled (AG/Treasurer/Auditor/MA-2/MA-3/MA-6).
+- NH: Warmington line settled; SoS Excel page exists (sos.nh.gov/2026-state-primary-election-results) but Akamai 403 blocked automated download — no Excel tallies banked this wave.
+- RI: Senate/Treasurer notes keep “unofficial pending certification” (Board portal still SPA / not certified as of Sept 11) but move “won/result/%” next to Sept 9 for the scanner.
+- DE: no winners invented (Sept 15 still upcoming).
+
+### MO gate (still OPEN — no mo.html)
+- Banked Wave 14 research update: full SCOTUS stay of Clark TRO (Sept 11); Hoskins directing 2022 map; 8th Circuit had declined stay of Clark then SCOTUS stayed.
+- Currency-test NOT closed (no public Nov district-label table; Cole sample still Aug primary).
+- Continuity audit PARTIAL only (AP ~1/4 voters; STLCO ~60k; Boone ~40%; Cleaver/Brattin MO-5 pairing notes) — full nominee×2022 matrix still required.
+- Prop A ballot language + mo-cd120.json already banked prior wave.
+
+LEFT / skipped: MI board/regents mass; DE Sept 15; RI Board certification when posted; NH SoS Excel via browser; MO currency-test + full continuity; CA/TX; FL/high-count honest nulls; NM CFIS cash; weball still-empty Stuski/Arriaga/Noack/Hershey if later summaries appear.
+
+Grok queries: 0 session total.
