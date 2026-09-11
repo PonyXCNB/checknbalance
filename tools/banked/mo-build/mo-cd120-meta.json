@@ -1,0 +1,8 @@
+{
+  "source": "mo-cd119-baseline.txt",
+  "map": "2022 enacted plan � operative for Nov 2026",
+  "banked": "2026-09-11",
+  "counties": 115,
+  "splitCounties": 9,
+  "note": "mo-cd120.json is flat FIPS->districts for all 115 county-equivalents. mo-cd120-splits.json is apply-ds-ready (splits only)."
+}
