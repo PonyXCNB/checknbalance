@@ -528,3 +528,41 @@ Aug 25 SoS-certified House nominees by **district NUMBER** (Wave 27 certificate)
 6. jcebmo.org/election-information/on-the-ballot/ — voter lookup; no public Nov CD sample.
 7. `mo-cd119-baseline.txt` — Cass County wholly CD 4 (re-confirmed).
 
+
+## MAP / PROP A GATE — WAVE 30 UPDATE (September 11, 2026, evening ET)
+
+**STATUS: gate still OPEN for mo.html.** No mo.html started. Currency-test still incomplete (no public Nov CD sample-label table). Parcel notes reconfirmed, not closed.
+
+### Currency-test (still NOT closed)
+- **Cole County** sample-ballots page still posts only the **August 4, 2026 primary** combined sample, then points voters to the SoS personalized "Check Your Voter Registration" lookup (PII).
+- **Boone County Clerk** elections page: sample ballots are **mailed ~two weeks before** the election; online lookup remains personalized. ABC17 (Sept 10, 2026): Clerk Lennon proceeding on the **2022 map**; watching a **Sept 17** briefing (two days before UOCAVA ballots). KOMU: ~40% of Boone voters will see a different CD in November than in August; clerk site can show 2022 vs 2025 assignments but that is **voter-lookup**, not a public table.
+- **Jackson County Election Board** `jcebmo.org/sample-ballot/`: first-name / last-name / DOB (and PIN) lookup — not a public Nov district-label PDF.
+- **St. Louis County**: Sample Ballot Lookup is address-gated. St. Louis American (Sept 8): county **Sept 1 ballot-content report is informational, not a final sample ballot**. The August 2026 FIO PDF on extcontent.stlouisco.com/BOE/ is the **PRIMARY** content report (lists August GOP names such as Pfeifer/Fraser, not Nov nominees).
+- **St. Louis city**: St. Louis American — Board had **not posted** its November sample ballot as of Sept 7.
+- **Still no public statewide (or even single-county public-PDF) November sample-ballot district-label table matched to `mo-cd120.json`.**
+
+### Continuity / parcel (not closed)
+- **Brattin (Dist 5 NUMBER / Harrisonville, Cass):** reconfirmed Wave 30 (Missouri Independent Aug 4; KCUR Aug 4; Ballotpedia). senate.mo.gov bio: native Cass / Greenwood; "currently resides on his 40-acre hunting paradise" — **no street**. Cass wholly **2022 MO-4** per `mo-cd119-baseline.txt`. Continuity flag stands; do not imply 2022 MO-5 residence.
+- **Herrera (Dist 4 NUMBER):** no new street/parcel this pass. Wave 29 Raymore office (Cass → 2022 MO-4) + "Missouri's 5th" site copy still the last banked facts.
+- **Onder (Dist 3 NUMBER):** no new street/parcel. Lake St. Louis remains a known 2022 MO-2/MO-3 split city; House.gov still county-only (St. Charles).
+
+### Court / UOCAVA
+- ABC17 Sept 10: Boone following 2022 map after Hoskins directive / Mo. Supreme Court; federal Judge Clark 2025-map TRO still in the mix; **briefing ~Sept 17**; UOCAVA ~Sept 19 watch still live.
+- St. Louis American lists Dist 1/2/3 Nov U.S. House names matching the Aug 25 certificate — **news reporting, not an LEA sample-ballot table.**
+
+### Exact remaining blockers before mo.html
+1. SoS/LEA Nov district-label currency-test vs `mo-cd120.json` (public sample ballots or equivalent non-PII table).
+2. Finish parcel/VTD residence checks (Brattin flagged; Onder Lake St. Louis / Augusta split; Herrera KC parcel vs Raymore office).
+3. Party certification / ballot-order lock confirming Aug 25 certificate names still govern Nov under 2022 lines.
+4. Watch 8th Circuit / Sept 17 briefing / UOCAVA through ballot-print deadlines.
+
+### Sources added this wave
+1. colecounty.org/441/Sample-Ballots — August primary sample only; SoS PII lookup.
+2. boonemo.gov/clerk/elections/ — mailed sample ~two weeks before; no public Nov CD table.
+3. ABC17, Sept 10, 2026 — Boone using 2022 map; Sept 17 briefing / UOCAVA watch.
+4. KOMU — ~40% of Boone voters change CD Aug→Nov; personalized 2022 vs 2025 lookup.
+5. jcebmo.org/sample-ballot/ — name/DOB lookup.
+6. St. Louis American, Sept 8, 2026 — city sample not posted as of Sept 7; county Sept 1 report not a final sample; Dist 1/2/3 names listed.
+7. extcontent.stlouisco.com/BOE/FIO/August2026FIO.pdf — August PRIMARY FIO, not November.
+8. Missouri Independent / KCUR Aug 4, 2026; Ballotpedia; senate.mo.gov/Brattin — Harrisonville / Cass / no street.
+
