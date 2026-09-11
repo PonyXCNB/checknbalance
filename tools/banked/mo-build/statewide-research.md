@@ -174,3 +174,26 @@ Already banked. Remains on Nov ballot per court posture.
 2. Residence / filing-district check for **every** August nominee against the 2022 map (Smead/Liberty advanced; others still pending).
 3. Party certification / ballot-order once Nov ballots lock (~UOCAVA).
 4. Watch further appellate action through ballot-print deadlines.
+
+
+## MAP / PROP A GATE - WAVE 17 UPDATE (September 11, 2026, late afternoon ET)
+
+**STATUS: gate still OPEN for mo.html.** No mo.html started.
+
+### Residence / continuity matrix notes (public reporting only)
+
+- **Josh Smead (D-MO-6):** Liberty architect (Clay County). Coverage (STLPR Sept 2; KCUR July 8) treats Liberty/Clay as inside the **2025/HB1** MO-6 that pulled all of Clay/Platte north-KC into MO-6. Under the **2022** map that governs November, MO-5 was described as entirely within Clay and Jackson (Missouri Independent Feb 26, 2026), so parcel-level assignment of a Liberty address still needs a 2022-map check — not closed.
+- **Rick Brattin (R-MO-5):** Missouri Independent (Feb 26, 2026) reported he **does not live in the (then-HB1) 5th** and said he would establish a home in-district if he wins; familiarity cites Johnson County / SD-31. On the **2022** map, MO-5 was Clay+Jackson-only — Brattin's residence mismatch risk is therefore map-dependent and still not parcel-proved.
+- **Administrative:** Jasper County Clerk relayed SoS instruction to use the **2022** map for November (KZRG Sept 10, 2026) — reinforces LEA compliance, still not a label-by-label currency-test vs `mo-cd120.json`.
+
+### Currency-test (still NOT closed)
+
+- No public statewide November sample-ballot district-label table matched to `mo-cd120.json`.
+- Personalized Nov ballots remain behind SoS voter lookup (PII).
+
+### Still OPEN before mo.html
+
+1. SoS / LEA Nov district-label currency-test vs `mo-cd120.json`.
+2. Residence / filing-district check for **every** August nominee against the 2022 map (Smead/Liberty and Brattin notes advanced; others still pending).
+3. Party certification / ballot-order once Nov ballots lock (~UOCAVA).
+4. Watch further appellate action through ballot-print deadlines.
