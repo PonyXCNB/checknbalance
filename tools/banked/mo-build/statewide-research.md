@@ -1292,3 +1292,36 @@ Aug 25 SoS-certified House nominees by **district NUMBER** (Wave 27 certificate)
 4. **IL Topinka 2014 / Solomon:** Topinka last R comptroller win confirmed; maxsolomon.info title-only (no readable policy body); Transparency USA Solomon ~$875 + $4k loans.
 5. **KS Kobach $320M:** Wave 53 free-web recheck - Meta KS ~$134M independent (+$6M pending); Google Play multistate $700M KS share unspecified; still no independent itemized full tally of $320M aggregate.
 6. Lock rechecks Wave 53: katecotten.com Launching Soon; rozforalabama.com /issues 404; yoshimatthews.com now "unpaid invoice prevents this page from displaying" (+ /issues 404); azgp.org / mikecease.com ENOTFOUND; Lund LPKS-only; www.rickoehn.com HTTP 200 but personal blog (Ric's Website) not a campaign platform; andrewparrott.com live. OK Perry Guardian unmatched; Pre-General Oct 20-26. NM CFIS: CandidateMain HTTP 200; year dropdown still tops at 2020 (options 2004-2020); First General due Sept 14 - still pre-deadline today Sept 11.
+
+
+## MAP / PROP A GATE - WAVE 54 UPDATE (September 11, 2026, evening ET)
+
+**STATUS: gate still OPEN for mo.html.** No mo.html started. Currency-test still incomplete (no public Nov CD sample-label table). Today is still Sept 11 - Sept 15 briefs / Sept 17 args / UOCAVA Sept 19 have not arrived yet. Skip DE inventing until after Sept 15.
+
+### Court posture (Wave 54 free-web reconfirm)
+- **U.S. Supreme Court:** stay of Judge Clark TRO remains in force - 2022 map governs November for now (Missouri Times; SCOTUS 26A326 stay order Sept 10 continuity; no Wave 54 contrary SCOTUS ruling located).
+- **8th Circuit (Onder v. Missouri, No. 26-2797):** expedited calendar still lists simultaneous briefs **Sept 15** and remote oral arguments **Sept 17** (10 a.m.; Onder plaintiffs 10 min / Missouri+Hoskins 10 / Von Glahn+People Not Politicians 20). Briefs are not due yet (today still Sept 11); no public posting of those briefs located Wave 54. 8th Cir Sept 9 order denied stay pending appeal / summary reversal.
+- **UOCAVA:** military/overseas ballots must transmit by **Sept 19**. Gate watch remains live through UOCAVA and ballot-print deadlines.
+- **Prop A / referendum** on HB 1 remains on the November ballot.
+
+### Currency-test (still NOT closed)
+- **Cole County:** colecounty.org/441/Sample-Ballots **still** only links **August 4, 2026 Combined Sample Ballot** (Wave 54 live fetch; page has August link, no November/General sample link).
+- **Boone / Jackson / STL:** no new public countywide Nov CD-label PDF matched to mo-cd120.json this pass.
+- **Still no public statewide (or even single-county public-PDF) November sample-ballot district-label table matched to `mo-cd120.json`.**
+
+### Continuity / parcel (not closed)
+- No new street/parcel unlock this pass for Brattin / Herrera / Onder. Prior banked notes stand.
+
+### Exact remaining blockers before mo.html
+1. SoS/LEA Nov district-label currency-test vs `mo-cd120.json` (public sample ballots or equivalent non-PII table).
+2. Finish parcel/VTD residence checks (Brattin; Onder Lake St. Louis / Augusta; Herrera KC parcel vs Raymore office).
+3. Party certification / ballot-order lock confirming Aug 25 certificate names still govern Nov under 2022 lines (or under whichever map survives post-Sept 17).
+4. Watch Sept 15 briefs / Sept 17 8th Cir argument / UOCAVA Sept 19 through ballot-print deadlines.
+
+### Sources / locks added this wave
+1. colecounty.org/441/Sample-Ballots - still August Combined Sample only (Wave 54 live fetch).
+2. **OH Bill Redpath:** FEC S6OH00429 / C00937300 - $24,200.39 raised, $23,470.04 spent, $730.35 COH through June 30, 2026 (fec.gov); billredpath.com platform already on card.
+3. **IL:** Jim Ryan R AG left 2003; George Ryan R SoS left 1999; Solomon 22,990 write-ins confirmed on ISBE Election Vote Totals (elections.il.gov).
+4. **IN Engling:** early-voting shorten ~2 weeks + longer daily hours (WOWO/FOX59 June 2026); voting-machine security still no sourced position.
+5. **SC Belton:** jasonbeltonforsc.com positions already on card; primary 50.6-49.4 (NBC/Wikipedia); labor VP sourced.
+6. Lock rechecks Wave 54: katecotten.com Launching Soon; rozforalabama.com /issues 404; yoshimatthews.com unpaid invoice (+ /issues 404); azgp.org / mikecease.com ENOTFOUND; Lund LPKS-only; www.rickoehn.com personal blog; andrewparrott.com live personal bio. OK Perry: Guardian.ok.gov Cloudflare-blocked this pass; Pre-General Oct 20-26. NM CFIS year dropdown still tops 2020; First General Sept 14 still ahead (today Sept 11). Kobach $320M still no independent full tally.

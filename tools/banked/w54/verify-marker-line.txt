@@ -1,0 +1,1 @@
+VERIFY-REPORT marker-line: Totals by page grand total: 1552 (before 1579; delta -27). Top: mi 78, nm 67, ky 57, il 57, id 57, oh 55, sc 54, or 54, nv 48, in 46, pa 45, nc 42, ms 42, co 42, al 42, ct 40, ia 40, sd 39, mn 39, ma 37. MO gate still OPEN.

@@ -991,3 +991,29 @@ Skipped: DE inventing (until after Sept 15); MI board/regents mass; NM CFIS inve
 Skipped: DE inventing (only soft absence pad); MI board/regents mass; NM CFIS inventing.
 
 2026-09-11 | wa/pa/wi/ks/la/de/in/il/oh/ok/nm/ky + mo-build | Wave 53 sourced [Verify] clear | Free web only (0 Grok). Baseline 1616→1579 (-37). IN Ballard voters-guide unlock; IL Topinka/Solomon; Bayh /priorities; soft pads WA/PA/WI+; locks reconfirm; Kobach $320M still no independent full tally. MO gate still OPEN - Cole Aug sample; briefs Sept 15 / args Sept 17; UOCAVA Sept 19; no mo.html. Skip DE inventing / MI board mass / NM CFIS inventing. Voices 0. SITE_META Wave 53 on touched pages. | standing
+
+
+## 2026-09-11 - Verify backlog clear batch 54 (Wave 54: MI UM Regents site unlocks + OH Redpath FEC + IL years/canvass + IN Engling + SC Belton + soft pads + locks/MO gate)
+
+### Sourced unlocks
+- **MI UM Regents:** Lena Epstein (lenaforuofm.com Affordable/Accessible/Accountable), Michael Schostak (michaelschostak.com Michigan-first + fiscal stewardship), Amir Makled (amirmakled.com access/affordability/free expression) — Wave 54 live site unlocks; clears absence pads + structural Verifies on those three cards.
+- **OH Bill Redpath:** FEC S6OH00429 / C00937300 $24,200.39 raised / $23,470.04 spent / $730.35 COH through June 30, 2026 (fec.gov) — clears Wave 52 "no sourceable campaign spending" absence pad.
+- **IL:** Jim Ryan R AG left 2003; George Ryan R SoS left 1999; Solomon 22,990 write-ins confirmed on ISBE Election Vote Totals (elections.il.gov).
+- **IN Max Engling:** early-voting shorten ~2 weeks + expanded daily hours (WOWO/FOX59 June 2026); voting-machine security still no sourced position (absence stands Wave 54).
+- **SC Jason Belton:** jasonbeltonforsc.com positions already on card; primary 50.6–49.4 (NBC/Wikipedia); labor VP sourced (Holy City Sinner / Wikipedia).
+
+### Soft / structural / absence pads
+- Soft clear on sd/pa/sc/al/fl/ok/ut/mn/id/wi/la/az leftovers; **MI board/regents mass SKIPPED** except the three individual-site unlocks above.
+- Skip DE inventing until after Sept 15.
+
+### Locks / finance watches
+- Cotten Launching Soon; Houston /issues 404; Yoshi unpaid-invoice page (+ /issues 404); Cease ENOTFOUND; Lund LPKS-only; Koehn personal blog; Parrott live personal bio.
+- **Kobach $320M:** Meta KS ~$134M (+$6M pending); Google Play $700M multistate KS share unspecified; still no independent full itemized tally.
+- OK Perry: Guardian.ok.gov Cloudflare-blocked this pass; still unmatched; Pre-General Oct 20–26.
+- NM CFIS: year dropdown still tops 2020; First General due Sept 14 — still pre-deadline Sept 11; no invent.
+
+### MO gate (still OPEN - no mo.html)
+- Cole County sample ballots still August Combined only (Wave 54 live).
+- SCOTUS stay keeps 2022 map for now; briefs Sept 15 / args Sept 17; UOCAVA Sept 19 still ahead.
+
+2026-09-11 | mi/oh/il/in/sc/ok/ks/nm + soft pages + mo-build | Wave 54 sourced [Verify] clear | Free web only (0 Grok). Baseline 1579→1552 (-27). MI UM Regents Epstein/Schostak/Makled site unlocks; OH Redpath FEC; IL years/canvass; IN Engling early-vote; SC Belton primary/labor; soft pads; locks reconfirm; Kobach $320M still no independent full tally. MO gate still OPEN - Cole Aug sample; briefs Sept 15 / args Sept 17; UOCAVA Sept 19; no mo.html. Skip DE inventing / MI board mass without sites / NM CFIS inventing. Voices 0. SITE_META Wave 54 on touched pages. | standing
