@@ -467,3 +467,11 @@ Chuck Edwards withdrew card: Helene recovery, tourism, public lands (edwards.hou
 LEFT: Hammond low-info SoS; Libertarian/Forward SC House challengers; MD challengers with no coverage; DE Sept 15 primary placeholders (no invented winners).
 
 Grok queries: 0 cumulative this session.
+
+## 2026-09-11 — Verify backlog clear batch 3 (DE McBride/York, PA Scanlon, AL Sewell/Figures)
+
+- de.html: McBride third plank from mcbride.house.gov (Medicaid/SNAP/ACA); York third from auditor.delaware.gov mission language. LEFT: Sept 15 primary placeholders, Dave Graham thin platform, AG/Treasurer voice Verifies.
+- pa.html: Scanlon firearms plank from scanlon.house.gov.
+- al.html: Sewell from sewell.house.gov/issues; Figures from figures.house.gov health/veterans + Ballotpedia.
+
+Grok queries: still 0.
