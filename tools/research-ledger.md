@@ -547,3 +547,32 @@ Free web only (0 Grok). SITE_META bumped to Sept 11 on changed pages. Baseline 3
 LEFT: NV IAP/Lib thin blanks; AZ AARP-poll / structural Verifies; NM CFIS cash / Kane thin; DE Sep 15; MO/CA/TX; MI board/regents; FL honest nulls.
 
 Grok queries: 0 session total.
+
+## 2026-09-11 — Verify backlog clear batch 8 (Wave 8: AZ Yee/Mansour/Norton, KS statewide cash, TN Hagerty/Blackburn/Green, GA King/Waites/Porcher/PSC5, SC McLeod)
+
+Free web only (0 Grok). SITE_META bumped to Sept 11 on changed pages. Baseline 3613 → 3584 (−29).
+
+### az.html (−5)
+- Kimberly Yee: Back to Basics / ESA oversight / classroom-funding planks from AZ Luminaria questionnaire, KTAR, Arizona Republic (campaign-site hole closed).
+- Nick Mansour / Elijah Norton cash refreshed from Veridus July 17 Q2 roundup (through June 30: ~$821K / ~$301K); Mansour Q1 seethemoney PDF confirmed $771,576 on March 31. Race note stale-June-2025 warning retired.
+
+### ks.html (−11)
+- Kris Kobach $606,809 and Chris Mann $642,618 as of July 23 (Topeka Capital-Journal Aug 4 + Mann SW02CM_202607 PDF). War-chest / fundraising-disadvantage lines rewritten to match Mann's slight cash lead.
+- Statewide cash filled: Proctor $141,974; Day $47,798; Hawkins $420,678; Sykes $239,404; Johnson $216,140; Luengo $8,215 (same CJ Aug 4).
+- Cindy Holscher $64,934 caveat cleared via CJ July 31 ($64,933.65). Masterson cash already sourced prior wave.
+
+### tn.html (−4)
+- Bill Hagerty first-term / Japan ambassador sourced to hagerty.senate.gov/about.
+- Marsha Blackburn "Senator since 2019" cleared; Blackburn $2,691,224 and Jerri Green $118,002 dated to Aug 14, 2026 TREF refresh via Tennessee Firefly.
+
+### ga.html (−8)
+- John King first-Hispanic + appointment/election dates from oci.georgia.gov / Kemp / GPB.
+- Waites / Porcher runoff blanks hardened to Georgia enhancedvoting / DDHQ official shares (58.70% / 61.73%).
+- PSC District 5: OPEN — Pridemore vacated for House (Ballotpedia News; Georgia Recorder); Edwards/Tolbert blanks filled.
+
+### sc.html (−1)
+- Mullins McLeod was on the June 9 Dem governor primary ballot; finished third at 10.7% (NBC / FITSNews / WBTV).
+
+LEFT: AZ minor-party / write-in absences; KS structural Verifies and Steven Johnson 2026-platform hole; TN independent Gov blanks and Hagerty voice Verifies; GA premium/rate structural Verifies; SC Graham-Nordone thin platform; DE Sep 15 winners; MO/CA/TX unbuilt; MI board/regents honest nulls; FL challenger unfunded structurals.
+
+Grok queries: 0 session total.
