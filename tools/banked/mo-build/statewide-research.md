@@ -319,3 +319,31 @@ Already banked. Remains on Nov ballot per court posture.
 1. SoS / LEA Nov district-label currency-test vs `mo-cd120.json`.
 2. Residence / filing-district check for every August nominee against the 2022 map.
 3. Party certification / ballot-order once Nov ballots lock (~UOCAVA; 8th Circuit ~Sept 15 watch).
+
+
+## MAP / PROP A GATE - WAVE 23 UPDATE (September 11, 2026, evening ET)
+
+**STATUS: gate still OPEN for mo.html.** No mo.html started.
+
+### Administrative / appellate (Sept 11, additional corroboration)
+
+- Votebeat (Sept 11, 2026) and The Missouri Times: U.S. Supreme Court stayed E.D. Mo. Judge Stephen Clark's order that would have forced the 2025/HB 1 map for November. Hoskins: after the stay, "the only governing court order in effect is from the Missouri Supreme Court" and LEAs are directed to the **2022** map.
+- Prop A (HB 1 referendum) remains on the November ballot; HB 1 lines are not the governing Nov districts under the Missouri Supreme Court order.
+- No second primary. UOCAVA/military ballots were the near-term print deadline cited in coverage.
+
+### Currency-test (still NOT closed)
+
+- Still no public statewide November sample-ballot **district-label** table matched to `mo-cd120.json`.
+- Personalized Nov ballots remain behind SoS voter lookup (PII). LEA administrative instructions ≠ label-by-label currency proof.
+
+### Residence / continuity matrix (still partial)
+
+- Parcel-level 2022-map checks for the full August nominee set remain required before mo.html.
+- Continuity pairing notes from Waves 15–18 stand; no new nominee swaps sourced this wave.
+
+### Still OPEN before mo.html
+
+1. SoS / LEA Nov district-label currency-test vs `mo-cd120.json`.
+2. Residence / filing-district check for **every** August nominee against the 2022 map.
+3. Party certification / ballot-order once Nov ballots lock (~UOCAVA).
+4. Watch further appellate action through ballot-print deadlines.
