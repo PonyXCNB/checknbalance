@@ -483,3 +483,17 @@ Grok queries: still 0.
 - ga.html: McLaurin positions refreshed from joshmclaurin.com (Medicaid/housing/abortion ban/voting rights) + kept teacher-pay plank.
 
 Grok queries: 0 session total.
+
+## 2026-09-11 — Verify backlog clear batch 5 (VA/NJ/RI/CT incumbents + OH Balderson/Carey)
+
+Free web only (0 Grok). House.gov / official pages unless noted. SITE_META bumped to Sept 11 on changed pages.
+
+- va.html (7): Scott ranking-member title (bobbyscott.house.gov); McClellan VRA/SAVE + E&C (mcclellan.house.gov); McGuire H.R. 1 spending/border (mcguire.house.gov); Cline FY26 appropriations + H.R. 8077 (cline.house.gov); Beyer AI/gun-safety (beyer.house.gov); Subramanyam data-center cost plan (subramanyam.house.gov); Walkinshaw ACA credits + VRA (walkinshaw.house.gov).
+- nj.html (7): Van Drew offshore wind (vandrew.house.gov); Conaway ACA credits (conaway.house.gov/issues/health); Smith TVPA H.R. 1144 + March for Life (chrissmith.house.gov); Gottheimer SALT marriage penalty + BDS bill (gottheimer.house.gov); Pallone E&C coverage defense (pallone.house.gov); Menendez Passaic Ave CPF (menendez.house.gov); Pou ACA credits + PRO Act (pou.house.gov).
+- oh.html (6): Balderson priorities page (balderson.house.gov/priorities); Carey tax/energy/housing (carey.house.gov/priorities). LEFT: OH challengers with no platform (Conroy, Weise, Mazzuckelli, Leonard, Barrington, Christian, Peterson).
+- ri.html (7): Matos Fair Price Grocery Agenda (Providence Journal / RI Current); Amore Voting Rights Act + History Center (Providence Journal); Diossa Baby Bonds / Secure Choice (treasury.ri.gov). LEFT: independent Gov/Senate platforms; Mellor RI-2; GOP attack-line Verifies on Amo/Magaziner. No invented DE-style results; RI figures still unofficial pending certification.
+- ct.html (1): Bysiewicz Council on Women and Girls / state-service access (portal.ct.gov). LEFT: House challenger thin platforms; Tong/Thomas/Scanlon differentiator Verifies.
+
+LEFT this wave: VA 2025 Jones past-race; VA/NJ challenger absences; DE Sept 15 winners; MO/CA/TX unbuilt; untracked mo-build files untouched; MI board/regents mass skipped.
+
+Grok queries: 0 session total.
