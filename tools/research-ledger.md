@@ -475,3 +475,11 @@ Grok queries: 0 cumulative this session.
 - al.html: Sewell from sewell.house.gov/issues; Figures from figures.house.gov health/veterans + Ballotpedia.
 
 Grok queries: still 0.
+
+## 2026-09-11 — Verify backlog clear batch 4 (FL Moody, IL Budzinski/Miller, GA McLaurin refresh)
+
+- fl.html: Ashley Moody positions from ashleymoody.com/priorities + WGCU (site now has issues page; old Verify was stale).
+- il.html: Budzinski + Mary Miller from committee/House records (honest attribution).
+- ga.html: McLaurin positions refreshed from joshmclaurin.com (Medicaid/housing/abortion ban/voting rights) + kept teacher-pay plank.
+
+Grok queries: 0 session total.
