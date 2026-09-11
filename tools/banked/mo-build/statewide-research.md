@@ -431,3 +431,54 @@ Downloaded Wave 27: `tools/banked/mo-build/mo-certified-w27.pdf` (SoS `2026Gener
 ### Court / UOCAVA watch
 - Underlying 8th Circuit appeal still live after SCOTUS stay of Clark TRO; UOCAVA / overseas ballot window ~Sept 19 per prior coverage. Re-check before any mo.html build.
 
+
+## MAP / PROP A GATE — WAVE 28 UPDATE (September 11, 2026, evening ET)
+
+**STATUS: gate still OPEN for mo.html.** No mo.html started. Continuity audit advanced materially against banked `mo-cd120.json` / `mo-cd119-baseline.txt` (2022 plan) + free-web residence notes; currency-test still incomplete.
+
+### Court / administrative (re-check; no flip)
+- Prior waves stand: after U.S. Supreme Court stay of E.D. Mo. Judge Clark's TRO, SoS Hoskins directed LEAs to the **2022** map (Votebeat / News Tribune / PBS-AP Sept 10–11). Prop A remains on Nov ballot. No second primary. 8th Circuit / UOCAVA watch (~Sept 15–19) still live.
+- Votebeat (Sept 11): counties had both map configs ready in the statewide voter system; the blocker was **which box to check**, not a missing GIS rebuild — still **not** a label-by-label currency table vs `mo-cd120.json`.
+
+### Currency-test (still NOT closed)
+- Still no public statewide November sample-ballot **district-label** table matched county-by-county to `mo-cd120.json`.
+- Personalized Nov ballots remain behind SoS voter lookup (PII). LEA admin instructions ≠ currency proof.
+
+### Continuity matrix vs 2022 geography (Wave 28 — free web)
+
+Banked 2022 plan geography (from `mo-cd119-baseline.txt` / `mo-cd120.json`): **MO-5 = Clay + Jackson only** (both split with neighboring districts); **MO-4** includes whole **Cass**; **MO-6** includes Liberty and Holt (Clay portions) per Wikipedia 118th composition; **MO-8** includes **Arnold** (Jefferson); **MO-3** includes **St. Peters** (St. Charles); **MO-2** includes **Wildwood** / Ballwin (St. Louis County portion); **MO-7** includes Forsyth/Taney; **MO-1** = St. Louis City + northern St. Louis County portion.
+
+Aug 25 SoS-certified House nominees by **district NUMBER** (Wave 27 certificate) mapped to **2022 residence notes**:
+
+| Dist | R / D / 3rd (cert) | Residence note (free web) | 2022-map fit (vs district NUMBER) |
+| --- | --- | --- | --- |
+| 1 | Paul Berry III / Wesley Bell / Tom Schmitz | Bell: Clayton (Wikipedia delegation; SoS filing Amherst Ave St. Louis 63130). Berry: SoS mailing Big Bend Blvd St. Louis 63117. | **Likely OK** for Bell (Clayton historically MO-1). Berry mailing is St. Louis City/County corridor — MO-1-compatible, not parcel-proved. |
+| 2 | Ann Wagner / Fred Wellman / Brandon Coulter Daugherty | Wagner: Ballwin. Wellman: **Wildwood** (campaign bio; KCUR/STLPR). | **OK** — Wildwood/Ballwin sit in 2022 MO-2 (Wikipedia MO-2). |
+| 3 | Bob Onder / Bethany E Mann / Jim Higgins | Onder: Lake St. Louis. Mann: **St. Peters** (campaign site; ABC17/KOMU). | **OK for Mann** — Wikipedia MO-3 lists St. Peters wholly in MO-3. Lake St. Louis is listed as split 2/3 — Onder city **not parcel-proved** to the MO-3 side. |
+| 4 | Mark Alford / Jordan Herrera / Thomas Holbrook | Alford: **Lake Winnebago** (Cass County) per Wikipedia delegation. Herrera: KC-area Dem; KC Star (Aug 6) primary win under HB1 lines; still billed vs Alford for Dist 4. | **OK for Alford** — Cass wholly MO-4 on 2022 plan. **Herrera geography mismatch risk:** Aug HB1 MO-4 ≠ Nov 2022 MO-4 county set (counties/voters where he was not on Aug ballot). Still on Aug 25 certificate for Dist 4 NUMBER. |
+| 5 | Rick Brattin / Emanuel Cleaver II / Randall Langkraehr | Cleaver: Kansas City (incumbent). **Brattin: Harrisonville, Cass County** (Missouri Independent Feb 26, 2026; Sedalia Democrat; KSHB). Said he does **not** live in (then-HB1) MO-5 and would move if elected; Cass was inside HB1 MO-5 but is **outside** 2022 MO-5. | **Cleaver OK** (KC in 2022 MO-5). **Brattin CONTINUITY FLAG:** Cass County = **2022 MO-4**, not MO-5. Remains certified R nominee for District **NUMBER** 5; in-district residence is not a federal ballot requirement — but carding must not imply he lives in 2022 MO-5. Nov MO-5 geography shrinks back to Clay+Jackson. |
+| 6 | Chris Stigall / Josh Smead / Andy Maidment | Smead: **Liberty, Clay County** (KQ2; votesmead.com; SoS filing Progress Dr Liberty 64069). Stigall: **Holt, MO** (Clay/Clinton city; Trenton Telegraph; stigallforcongress.com; KC Star). | **OK** — Wikipedia MO-6 118th list includes Liberty and Holt in Clay portion of MO-6. Open seat (Graves retiring). |
+| 7 | Eric W. Burlison / Missi Hesketh / Kevin Craig | Burlison: Ozark (Christian County). Hesketh: SoS mailing Forsyth 65653 (Taney). | **OK** — Christian + Taney wholly in 2022 MO-7. |
+| 8 | Jason T. Smith / Chris Reichard / Rebecca Sharpe Lombard | Smith: Salem (Dent). Reichard: **Arnold** (Jefferson) — Leader Paper Aug 18, 2026; SoS filing Hazel Dr Arnold 63010. | **OK** — Wikipedia MO-8 118th composition lists Arnold; Leader Paper: eastern Jefferson incl. Arnold is MO-8. (MO-8 lines largely unchanged HB1↔2022 per Wikipedia footnote.) |
+
+### What this means for the gate
+- Continuity audit is **advanced but not closed**: Brattin Cass→MO-4-not-5 is the clearest residence/geography dent; Herrera Aug-vs-Nov MO-4 county mismatch remains a reporting-level continuity risk; Onder Lake St. Louis split still needs a parcel/VTD check.
+- **Currency-test remains the hard blocker** for closing the gate (no public Nov district-label table).
+- **Do NOT start mo.html.** Prefer finishing the research bank. Exact remaining blockers before mo.html:
+  1. SoS/LEA Nov district-label currency-test vs `mo-cd120.json`.
+  2. Finish parcel/VTD residence checks (priority: Brattin already flagged; Onder Lake St. Louis split; remaining third-party nominees).
+  3. Party certification / ballot-order lock (~UOCAVA) confirming Aug 25 certificate names still govern Nov under 2022 lines.
+  4. Watch 8th Circuit / further appellate action through ballot-print deadlines.
+
+### Sources added this wave
+1. Missouri Independent (Rudi Keller), Feb 26, 2026 — Brattin Harrisonville / does not live in (HB1) 5th; 2022 MO-5 = Clay+Jackson only.
+2. Sedalia Democrat — Brattin resides Cass County; would move to Johnson County if elected (HB1-era framing).
+3. KSHB — Brattin of Harrisonville after map ruling.
+4. Wikipedia — Missouri congressional delegation residences; MO-3 / MO-6 / MO-8 118th composition lists (St. Peters; Liberty/Holt; Arnold).
+5. KQ2 / votesmead.com — Smead Liberty since 2017.
+6. Trenton Telegraph / stigallforcongress.com — Stigall Holt; born Richmond (Ray).
+7. Wellman campaign / KCUR / STLPR — Wellman Wildwood.
+8. Leader Paper (Aug 18, 2026) — Reichard Arnold vs Smith MO-8.
+9. Votebeat (Sept 11, 2026) — dual-map admin readiness; SCOTUS stay → 2022 map.
+10. SoS Aug 25, 2026 certified list (already banked `mo-certified-w27.pdf`).
+
