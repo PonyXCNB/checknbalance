@@ -709,3 +709,37 @@ Aug 25 SoS-certified House nominees by **district NUMBER** (Wave 27 certificate)
 3. colecounty.org/441/Sample-Ballots — still August Combined Sample + SoS PII lookup (Wave 35).
 4. abc17news.com Sept 10 — Boone 2022-map prep continuity (reconfirm).
 
+
+## MAP / PROP A GATE - WAVE 36 UPDATE (September 11, 2026, evening ET)
+
+**STATUS: gate still OPEN for mo.html.** No mo.html started. Currency-test still incomplete (no public Nov CD sample-label table). Parcel notes reconfirmed, not closed.
+
+### Court posture (updated this pass)
+- **U.S. Supreme Court (Sept 10, 2026):** unsigned stay of Eastern District Judge Stephen Clark's Sept 8 TRO still governs — 2022 congressional map for November for now (Missouri Times / Votebeat Sept 11 / First Alert 4).
+- **8th Circuit:** expedited appeal of Clark's order — simultaneous briefs still due **Sept 15**; remote oral arguments **Sept 17, 10 a.m.** (Missouri Times). No Wave 36 public indication briefs have posted early.
+- **UOCAVA:** military/overseas ballots must transmit by **Sept 19** (45/46 days before Nov 3; Votebeat / KCTV / Missourinet). Gate watch remains live through UOCAVA and ballot-print deadlines.
+- **Prop A / referendum** on HB 1 remains on the November ballot.
+- **St. Louis County LEA (First Alert 4, Sept 10):** Rick Stream said officials were advised to prepare Nov ballots on the 2022 lines; ~60,000 STL County voters would be in a different CD than the August primary.
+
+### Currency-test (still NOT closed)
+- **Cole County:** colecounty.org/441/Sample-Ballots **still** shows only **August 4, 2026 Combined Sample Ballot**; personalized Nov lookups still via SoS PII voter-registration flow (Wave 36 free-web reconfirm).
+- **Boone County:** ABC17 / KOMU still the governing LEA posture — preparing Nov ballots on **2022 map**; voter lookup remains name/DOB gated; no public countywide Nov CD label PDF unlocked Wave 36.
+- **Jackson / STL city:** St. Louis American Sept recap is a news rundown, not a public countywide Nov CD-label table matched to mo-cd120.json. STL County August FIO PDF is an August primary content report, not a November sample.
+- **SoS certified-candidates PDF** lists Nov U.S. House nominees by district number — that is a candidate list, **not** a precinct/CD label table.
+- **Still no public statewide (or even single-county public-PDF) November sample-ballot district-label table matched to `mo-cd120.json`.**
+
+### Continuity / parcel (not closed)
+- **Brattin / Herrera / Onder:** no new street/parcel unlock this pass. Prior banked notes stand.
+
+### Exact remaining blockers before mo.html
+1. SoS/LEA Nov district-label currency-test vs `mo-cd120.json` (public sample ballots or equivalent non-PII table).
+2. Finish parcel/VTD residence checks (Brattin flagged; Onder Lake St. Louis / Augusta split; Herrera KC parcel vs Raymore office).
+3. Party certification / ballot-order lock confirming Aug 25 certificate names still govern Nov under 2022 lines (or under whichever map survives Sept 17).
+4. Watch Sept 15 briefs / Sept 17 8th Cir argument / UOCAVA Sept 19 through ballot-print deadlines.
+
+### Sources added this wave
+1. votebeat.org Sept 11, 2026 — SCOTUS stay timing vs UOCAVA; 2022 map for now.
+2. firstalert4.com Sept 10, 2026 — STL County LEA preparing 2022-map Nov ballots; ~60k CD switch.
+3. colecounty.org/441/Sample-Ballots — still August Combined Sample + SoS PII lookup (Wave 36).
+4. themissouritimes.com Sept 10 — 8th Cir briefs Sept 15 / args Sept 17 (reconfirm).
+
