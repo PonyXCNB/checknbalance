@@ -482,3 +482,49 @@ Aug 25 SoS-certified House nominees by **district NUMBER** (Wave 27 certificate)
 9. Votebeat (Sept 11, 2026) — dual-map admin readiness; SCOTUS stay → 2022 map.
 10. SoS Aug 25, 2026 certified list (already banked `mo-certified-w27.pdf`).
 
+
+## MAP / PROP A GATE — WAVE 29 UPDATE (September 11, 2026, late evening ET)
+
+**STATUS: gate still OPEN for mo.html.** No mo.html started. Continuity notes deepened (Herrera / Onder / Brattin); currency-test still incomplete.
+
+### Currency-test (still NOT closed)
+- Boone County Clerk elections page: "View My Sample Ballot" / "Polling Location & Sample Ballot" resolve to **personalized voter-lookup servlets** (`report.boonemo.gov/mrcjava/servlet/...`) — not a public Nov district-label table.
+- Jackson County Election Board "On the Ballot" page is a **voter-ID lookup form** plus Sept 1 special-recall notice; no posted Nov sample ballots with U.S. House district labels.
+- St. Louis County / Pike LEA fetches: Cloudflare challenge / DNS miss this pass. Personalized SoS voter lookup remains PII-gated.
+- **Still no public statewide (or even single-county public-PDF) November sample-ballot district-label table matched to `mo-cd120.json`.**
+
+### Continuity deepen — free web (Wave 29)
+
+**Brattin (Dist 5 NUMBER / Cass residence):** prior Wave 28 flag stands — Harrisonville, Cass County = **2022 MO-4** per `mo-cd119-baseline.txt` (Cass wholly CD 4). Remains Aug 25 certificate R nominee for District **NUMBER** 5. Do not imply 2022 MO-5 residence.
+
+**Herrera (Dist 4 NUMBER):**
+- Sedalia Democrat (Dec 26, 2025): Jordan Herrera of Kansas City running for the **newly drawn Fourth**.
+- Campaign site jordanjherrera.com (fetched Wave 29): bio still says "running for Congress to bring that same steadiness to **Missouri's 5th**" — copy not updated after map flip / certificate.
+- Contact page: mailing **601 E. 12th St. PO Box 15308 Kansas City MO 64106**; office **103 South Jefferson St. Raymore MO 64083**.
+- Raymore is in **Cass County** → wholly **2022 MO-4** per banked baseline. KC mailing is Jackson County (split 4/5/6 on 2022 plan) — residence parcel still not proved; office address is MO-4-compatible.
+- Continuity risk remains: Aug HB1 MO-4 ≠ Nov 2022 MO-4 county set for voters who never saw him on their Aug ballot; site branding still says 5th.
+
+**Onder (Dist 3 NUMBER / Lake St. Louis):**
+- Missourinet (July 30, 2024): while running for MO-3 he said he then lived in the **Second District** after moving to **Augusta** late 2023; planned to buy in the Third.
+- House.gov About (fetched via free web Wave 29): "reside in **St. Charles County**" only — no street/city; Cottleville district office listed.
+- Wikipedia / CICLT still list Lake St. Louis; Lake St. Louis is a known **MO-2 / MO-3 split city** on the 2022 plan.
+- **Parcel/VTD still NOT closed** — city-level labels conflict across sources (Augusta 2024 self-report vs Lake St. Louis shorthand vs county-only House bio).
+
+### Court / UOCAVA
+- No flip from Wave 28: 2022 map direction after SCOTUS stay; 8th Circuit / ~Sept 15–19 UOCAVA watch still live.
+
+### Exact remaining blockers before mo.html
+1. SoS/LEA Nov district-label currency-test vs `mo-cd120.json` (public sample ballots or equivalent non-PII table).
+2. Finish parcel/VTD residence checks (Brattin flagged; Onder Lake St. Louis / Augusta split; Herrera KC parcel vs Raymore office).
+3. Party certification / ballot-order lock confirming Aug 25 certificate names still govern Nov under 2022 lines.
+4. Watch 8th Circuit / further appellate action through ballot-print deadlines.
+
+### Sources added this wave
+1. jordanjherrera.com home + /contact (Wave 29 fetch) — "Missouri's 5th" bio copy; Raymore office; KC mailing.
+2. Sedalia Democrat, Dec 26, 2025 — Herrera of Kansas City for newly drawn Fourth.
+3. Missourinet, July 30, 2024 — Onder Augusta / then-MO-2 residence; plan to buy in MO-3.
+4. onder.house.gov/about — St. Charles County residence only; Cottleville office.
+5. Boone County Clerk elections page — personalized sample-ballot servlets only.
+6. jcebmo.org/election-information/on-the-ballot/ — voter lookup; no public Nov CD sample.
+7. `mo-cd119-baseline.txt` — Cass County wholly CD 4 (re-confirmed).
+
