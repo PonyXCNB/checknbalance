@@ -823,3 +823,34 @@ Skipped: DE inventing (until after Sept 15); MI board/regents mass; NM CFIS inve
 Grok queries: 0.
 
 2026-09-11 | ga/oh/la/al/tn/az/co/ok/fl/mi + mo-build | Wave 41 sourced [Verify] clear | Free web only (0 Grok). Baseline 2929→2914 (−15). GA Cook Lean D + McLaurin/Strickland/Miller/Penny/Harper/Juhan clears; OH-11 78.3% baseline. Honest locks/FEC Wave 41 rechecks. MO gate still OPEN — Cole Aug sample; briefs Sept 15 / args Sept 17; UOCAVA Sept 19; no mo.html. Skip DE inventing / MI board mass. Voices 0. SITE_META Wave 41 on touched pages. | standing
+
+
+## 2026-09-11 - Verify backlog clear batch 42 (Wave 42: GA Insurance/Ag/School/Labor/PSC + OH Faber + locks + MO gate)
+
+Free web only (0 Grok). SITE_META bumped to September 11, 2026 (Wave 42) on changed pages. Baseline 2914 → 2874 (−40). Voices 0. Green tests → local commit. NO PUSH.
+
+### ga.html (−38)
+- Insurance: King/Waites race note + opponents cleared via votejohnking.com/issues, Georgia Recorder May 16, AJC, Georgia Watch, Insurance Journal runoff.
+- Agriculture: Harper/Juhan note + opponents via tylerharperga.com/issues, AJC, FOX 5 Kemp-endorsement response.
+- School Superintendent: Woods plan (woodsforsuper.com/plan) + tenure; Powell Ballotpedia/Southerner clears.
+- Labor: Rivera Holmes appointment (gov.georgia.gov / dol.georgia.gov / AP) + Porcher runoff/platform sourcing.
+- PSC D3 rematch: Hubbard 2025 special totals (Ballotpedia) + full-term framing (AJC / The Current); Fitz residency/primary.
+- PSC D5: Edwards/Tolbert affordability / engineer / 3–2 board framing (AJC; GPB).
+
+### oh.html (−2)
+- Keith Faber Medicaid home-care waiver comments + Disability Rights Ohio / OCJ July–Aug 2026; teachers-union friction via SB5/Issue 2 + OFT June 2023 letter.
+
+### Locks (still locked; Wave 42 recheck)
+- Cotten katecotten.com Launching Soon; Houston rozforalabama.com/issues 404 (rosilynhouston.com = ministry, not Treasurer platform); Yoshi /issues 404; Cease azgp.org ENOTFOUND; Christy christyforamerica.com home+/platform HTTP 500.
+
+### MO gate (still OPEN — no mo.html)
+- Briefs Sept 15 / 8th Cir args Sept 17 / UOCAVA Sept 19 still ahead.
+- Cole sample ballots still August-only (Wave 42 live WebFetch); no public Nov CD table; parcels not closed.
+- SCOTUS Sept 10 stay keeps 2022 map; Hoskins contempt purged.
+
+Skipped: DE inventing (until after Sept 15); MI board/regents mass; NM CFIS inventing (filings due Sept 14).
+
+Grok queries: 0.
+
+2026-09-11 | ga/oh/al/la/tn/az/co + mo-build | Wave 42 sourced [Verify] clear | Free web only (0 Grok). Baseline 2914→2874 (−40). GA Insurance/Ag/School/Labor/PSC clears; OH Faber Medicaid/teachers sourced. Honest locks Wave 42 rechecks. MO gate still OPEN — Cole Aug sample; briefs Sept 15 / args Sept 17; UOCAVA Sept 19; no mo.html. Skip DE inventing / MI board mass / NM CFIS. Voices 0. SITE_META Wave 42 on touched pages. | standing
+
