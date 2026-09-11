@@ -228,10 +228,12 @@ Finally `node tools/fit-map-frames.js` so the new page's map frame takes the sta
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of September 10, 2026)
+## Current state (as of September 11, 2026)
 - **Built bloc = 47 states + DC PARTIAL marquee.** Fully built: everything except CA, MO, TX (starter framework) and DC (marquee-only). Alaska (47th) and Louisiana are built — do NOT treat the Sept 3 "AK CA LA MO TX remaining" line as live.
 - **RI primary SETTLED (Sept 9, 2026).** `ri.html` locked to November nominees (WPRI/CNN/AP/Ocean State Media; unofficial pending certification). Foulkes unseated McKee; Guckian projected over Pelino in a razor-close GOP race; Dickinson/Waters/defeated primary cards removed. Voices 0 gaps.
 - **NH primary SETTLED (Sept 8, 2026).** `nh.html` already on AP/CNN/NBC/WMUR-called nominees; Verify 0. Light-touch only unless certified totals appear.
+- **MA Sept 1 primary CERTIFIED (PD43+).** Unofficial/pending primary language cleared Sept 11; Brensley carded as SoS GOP write-in nominee (21,330 certified).
+- **CO ballot CERTIFIED Sept 4.** Prop NN + Amendments 81–87 / Props 132–137 letters on page; Libertarian SoS is Sean Vadney (court-ordered after Astley withdrawal).
 - **DE primary is NEXT (Sept 15, 2026).** Prep/ledger only — do not invent results.
 - **MO is NOT ready to build.** Banked research incomplete (`statewide-research.md` unfinished, map/Prop A gate, thin `mo-cd120.json`). Do not start `mo.html`. Untracked `tools/banked/mo-build/` + `mo-cd120.json` must not be discarded.
 - **CA and TX remain unbuilt** (starter only). Do not start those page builds.

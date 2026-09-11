@@ -712,7 +712,7 @@
       <strong>CO Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">September 4, 2026</span><br>
+      Last updated: <span id="last-updated">September 11, 2026</span><br>
       Sources: Colorado Secretary of State 2026 Primary Statewide Abstract of Votes Cast, certified ballot-order grid and petition-sufficiency lists, Colorado Office of Judicial Performance Evaluation, U.S. Census Bureau congressional-district relationship files and the 119th CD Summary File, FEC, U.S. House Clerk member roster, Colorado Public Radio candidate questionnaires, Colorado Sun issue guides, Colorado Newsline, Colorado Politics, Denver Gazette, AP.
     </div>
   </div>
@@ -807,9 +807,9 @@ const COUNTIES = {
 // ballot-order grid from the July 28, 2026 lot drawing, the SoS petition-sufficiency list, and the
 // official 2026 Primary Statewide Abstract of Votes Cast (a 43-page scanned PDF with no text layer,
 // rendered to images and read visually — every certified primary figure here comes from it).
-// ⚠ THE NOVEMBER BALLOT IS NOT YET LEGALLY CERTIFIED. The SoS certifies ballot content to counties
-// 57 days out — Sept 7, 2026 (Labor Day, so it may shift to Sept 8) — and designated election
-// officials certify order and content at 60 days, Sept 4. This is the field as it stands.
+// ✅ NOVEMBER BALLOT CERTIFIED Sept 4, 2026 (Colorado SoS press release + official candidate list).
+// Designated-election-official certification window and the 57-day letter-assignment calendar are closed.
+// Field below reflects the certified candidate list and Amendment/Proposition letters.
 // ⚠⚠ THE BENNET QUESTION, RESOLVED: Sen. Michael Bennet RAN FOR GOVERNOR AND LOST the Democratic
 // primary to Phil Weiser 56.88%–43.12%. He did NOT resign, remains a sitting U.S. senator (Class III,
 // term to 2029), and has endorsed Hickenlooper. There is NO 2026 Senate vacancy and no appointment
@@ -1028,7 +1028,7 @@ const STATEWIDE = [
     type: "upcoming",
     scope: "State · Statewide",
     office: "Secretary of State — Colorado (OPEN SEAT)",
-    note: "An open seat — Jena Griswold is term-limited and running for Attorney General. Jefferson County Clerk and Recorder Amanda Gonzalez won the Democratic primary by nearly 29 points over a sitting state senator; James Wiley was unopposed on the Republican side. Whoever wins will administer the 2028 presidential election in Colorado. Sabato rated this Safe Democratic, though that rating is from Aug 7, 2025 and is over a year old. Five parties hold certified lines for this office — American Constitution, Forward and Libertarian in addition to the two major parties.",
+    note: "An open seat — Jena Griswold is term-limited and running for Attorney General. Jefferson County Clerk and Recorder Amanda Gonzalez won the Democratic primary by nearly 29 points over a sitting state senator; James Wiley was unopposed on the Republican side. ✅ CERTIFIED BALLOT (Colorado SoS Sept 4, 2026 official candidate list): Libertarian nominee is Sean Vadney — Denver District Judge Adam J. Espinosa ordered him onto the ballot after Alex Astley withdrew Aug 26 one day past the minor-party replacement window (Colorado Politics / Colorado Sun / court order 26CV33176). Also certified: Amanda Campbell (American Constitution) and Celeste Landry (Forward). Whoever wins will administer the 2028 presidential election in Colorado. Sabato rated this Safe Democratic (Aug 7, 2025 rating is stale).",
     candidates: [
       { name: "Amanda Gonzalez", party: "D", winner: false,
         positions: [
@@ -1071,7 +1071,12 @@ const STATEWIDE = [
           "⚠ His site asserts the outgoing Secretary of State's tenure produced \"endless scandals\" and that voting machines \"threaten our sovereignty with AI\" — election officials and Democrats dispute those characterizations, and NO source substantiating them could be located",
           "A substantial fundraising deficit against a well-funded opponent",
           "Election administrators question whether blockchain addresses any documented failure in Colorado's paper-ballot-plus-risk-limiting-audit system [Verify — structural argument]"
-        ] }
+        ] },
+      { name: "Sean Vadney", party: "L", winner: false,
+        positions: ["[Verify] No detailed platform located beyond Libertarian ballot-line continuity after the Astley withdrawal"],
+        differentiators: ["Court-ordered onto the Sept 4 certified ballot after Astley withdrew Aug 26 one day past the statutory replacement window","26-year-old Highlands Ranch resident named by the Libertarian vacancy committee Aug 29 (Colorado Politics / Colorado Sun)"],
+        supporters: ["Gives Colorado's roughly 33,000 active Libertarian voters a nominee after the party nearly lost its SoS line","Judge Espinosa found substantial compliance and that adding him would not delay ballot prep"],
+        opponents: ["Entered via vacancy litigation rather than a primary contest","Thin public record against two major-party nominees who have been campaigning for months [Verify — structural]"] }
     ]
   },
   {
@@ -1148,16 +1153,16 @@ const STATEWIDE = [
     date: "Nov 3, 2026",
     type: "upcoming",
     scope: "Ballot Measure · Statewide",
-    office: "Referred Measure — State Public K-12 Education Funding (SB26-135)",
-    note: "The ONLY measure referred by the Legislature this cycle — and notably, NO constitutional amendments were referred at all (seven concurrent resolutions were introduced in 2026 and none passed; five in 2025, none passed). This is a statutory measure requiring a simple majority. It asks whether state K-12 investment should rise 2% annually for ten years, funded NOT by raising taxes but by raising the state fiscal-year spending limit by the amount spent on K-12 as a voter-approved revenue change under TABOR, with an annual independent audit. ⚠ NO PROPOSITION LETTER HAS BEEN ASSIGNED YET — under state law referred measures receive letters at certification, which is Sept 7, 2026. Do not expect the designation used in early coverage to be final.",
+    office: "Proposition NN — State Public K-12 Education Funding (SB26-135)",
+    note: "Proposition NN — State Public K-12 Education Funding (SB26-135). ✅ CERTIFIED Sept 4, 2026 (Colorado SoS press release + Amendments and Propositions page). The ONLY statewide measure referred by the Legislature this cycle — no constitutional amendments were referred (seven concurrent resolutions were introduced in 2026 and none passed). Statutory measure; simple majority. Asks whether state K-12 investment should rise 2% annually for ten years, funded NOT by raising taxes but by raising the state fiscal-year spending limit by the amount spent on K-12 as a voter-approved revenue change under TABOR, with an annual independent audit.",
     candidates: []
   },
   {
     date: "Nov 3, 2026",
     type: "upcoming",
     scope: "Ballot Measure · Statewide",
-    office: "Citizen Initiatives — seven certified, seven more pending",
-    note: "SEVEN citizen initiatives have been ruled sufficient and are on the ballot, identified here by initiative number and the Secretary of State's own caption because ⚠ NO AMENDMENT LETTER OR PROPOSITION NUMBER HAS BEEN ASSIGNED YET (certification is Sept 7, 2026; initiated amendments number from 60 and initiated statutes from 101). They are: #85 Penalties for Fentanyl Crimes (statute); #95 Law Enforcement Reporting Requirements to Federal Authorities (constitutional — needs 55%); #108 Penalties for Human Trafficking of a Minor (statute); #109 Male and Female Participation in School Sports (statute); #110 Prohibit Certain Surgeries on Minors (statute); #175 State Revenue Supporting Road Transportation (constitutional — 55%); and #177 Right to Natural Gas (constitutional — 55%). ⚠ #177's sufficiency issued on AUG 6, 2026 — one day before this page was built — so its elector-protest window has not closed and it is certified but contestable. ⚠ ALL SEVEN can still be WITHDRAWN by their designated representatives through Sept 4, 2026. ⚠ SEVEN MORE initiatives are in signature-line review with a decision deadline of Sept 2, 2026, including a graduated income tax that would remove TABOR's uniform-rate requirement, an income tax rate cap, congressional redistricting, and mail-ballot voter ID. This ballot is not final [Verify after Sept 7].",
+    office: "Statewide ballot measures — 14 certified (Amendments 81–87 + Propositions 132–137 + Prop NN)",
+    note: "✅ CERTIFIED Sept 4, 2026 (Colorado SoS press release): 14 statewide measures. CONSTITUTIONAL (55%): Amendment 81 Law Enforcement Reporting Requirements to Federal Authorities (#95); Amendment 82 Right to Natural Gas (#177); Amendment 83 Constitutional Right to Hunt and Fish (#302); Amendment 84 Mail Ballot Voter Identification (#362); Amendment 85 Plain Language Ballot Questions (#234); Amendment 86 Congressional Redistricting (#256); Amendment 87 Graduated Income Tax (#195). STATUTORY (majority): Proposition 132 Penalties for Fentanyl Crimes (#85); Proposition 133 Penalties for Human Trafficking of a Minor (#108); Proposition 134 Male and Female Participation in School Sports (#109); Proposition 135 Prohibit Certain Surgeries for Minors (#110); Proposition 136 Income Tax Rate Cap (#232); Proposition 137 Designate Sporting Goods Sales Tax Revenue for Conservation (#308); plus referred Proposition NN (SB26-135) carded separately. Also on some Front Range ballots: Ballot Issue 7A (Front Range Passenger Rail / Colorado Connector). Earlier draft language about Sept 7 letter assignment and 'seven more pending' is SUPERSEDED.",
     candidates: []
   },
 
@@ -1784,7 +1789,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Colorado Elections Hub", lastUpdated: "September 4, 2026" };
+const SITE_META = { name: "Colorado Elections Hub", lastUpdated: "September 11, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Colorado county-level down-ballot research is the next phase.
