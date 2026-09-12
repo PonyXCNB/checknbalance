@@ -712,7 +712,7 @@
       <strong>OH Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">September 11, 2026 (Wave 55)</span><br>
+      Last updated: <span id="last-updated">September 11, 2026 (Wave 58)</span><br>
       Sources: Ohio Secretary of State, Ohio Redistricting Commission, Ballotpedia, Wikipedia, Cook Political Report, Sabato's Crystal Ball, Inside Elections, Ohio Capital Journal, Cleveland.com / The Plain Dealer, The Columbus Dispatch, Cincinnati Enquirer, Signal Ohio, WOSU, Spectrum News 1, AP/NBC.
     </div>
   </div>
@@ -924,7 +924,7 @@ const STATEWIDE = [
     type: "upcoming",
     scope: "State · Statewide",
     office: "Secretary of State of Ohio (OPEN SEAT)",
-    note: "OPEN SEAT — Frank LaRose is running for Auditor instead. The office runs Ohio's elections and its business filings. Backdrop: DeWine vetoed an absentee-ballot photo-ID provision and an override fight was pending as of late June 2026 [Verify outcome].",
+    note: "OPEN SEAT — Frank LaRose is running for Auditor instead. The office runs Ohio's elections and its business filings. Backdrop: DeWine vetoed HB 472 (absentee-ballot photo-ID) June 25, 2026; the Ohio Senate status page still ends at Veto receipt that day, and no override vote has been reported as of Wave 58 (News 5 / Ohio Capital Journal June coverage; legislature may revisit after November).",
     candidates: [
       { name: "Robert Sprague", party: "R", winner: false,
         positions: ["An election-security plan he bills as the most secure in Ohio history","Front-end citizenship checks on voter registration","All-paper ballots and a bipartisan precinct audit in every county"],
@@ -1043,7 +1043,7 @@ const STATEWIDE = [
     type: "past",
     scope: "Federal · Statewide",
     office: "Republican Primary — U.S. Senate (SPECIAL ELECTION)",
-    note: "Appointed Sen. Jon Husted was unopposed for the Republican nomination. [Verify certified totals — ohiosos.gov returns 403 to automated fetch, so figures come from news tabulations that agree with each other.]",
+    note: "Appointed Sen. Jon Husted was unopposed for the Republican nomination. ✅ Ballotpedia reports the results CERTIFIED: Husted 736,413 (100%). ohiosos.gov / liveresults still return 403 / security-block to automated fetch Wave 58, so the certified figure is cited via Ballotpedia rather than a direct SoS PDF pull.",
     candidates: [
       { name: "Jon Husted", party: "R", winner: true,
         positions: ["Unopposed — 100% of the Republican primary vote","Appointed to the seat in January 2025"],
@@ -1056,15 +1056,15 @@ const STATEWIDE = [
     type: "past",
     scope: "Federal · Statewide",
     office: "Democratic Primary — U.S. Senate (SPECIAL ELECTION)",
-    note: "Sherrod Brown won the nomination with about 89.4% over Ron Kincaid. [Verify certified totals against the Ohio Secretary of State.]",
+    note: "Sherrod Brown won the nomination with 89.4% over Ron Kincaid. ✅ Ballotpedia reports CERTIFIED totals: Brown 712,106 (89.4%) / Kincaid 84,405 (10.6%), total 796,511. ohiosos.gov still 403 to automated fetch Wave 58.",
     candidates: [
       { name: "Sherrod Brown", party: "D", winner: true,
         positions: ["Won the nomination with about 89.4%","Held Ohio's other Senate seat 2007–2025"],
         differentiators: ["Returned to the ballot 18 months after losing the Class 1 seat"],
         supporters: [], opponents: [] },
       { name: "Ron Kincaid", party: "D", winner: false,
-        positions: ["Took about 10.6% against a former senator","[Verify]"],
-        differentiators: ["[Verify background]"],
+        positions: ["Took 84,405 votes (10.6%) against Brown in the certified special Democratic primary (Ballotpedia)","Columbus Dispatch candidate profile (Apr 6, 2026): American Dividend Plan, health-care access, housing affordability, disability/autism advocacy"],
+        differentiators: ["Centerville native; 30+ years as an IT consultant / small-business owner (Dispatch; BallotReady)","Longtime autism-family advocate and Special Olympics coach (Dispatch profile)","Raised about $42,800 / spent about $45,272 in the primary cycle (OpenSecrets / FEC via Ballotpedia)"],
         supporters: [], opponents: [] }
     ]
   },
@@ -1753,7 +1753,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Ohio Elections Hub", lastUpdated: "September 11, 2026 (Wave 55)" };
+const SITE_META = { name: "Ohio Elections Hub", lastUpdated: "September 11, 2026 (Wave 58)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Ohio county-level down-ballot research is the next phase.)
