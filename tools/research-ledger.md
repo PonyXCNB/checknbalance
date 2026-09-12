@@ -1104,3 +1104,31 @@ Skipped: DE inventing (only soft absence pad); MI board/regents mass; NM CFIS in
 
 2026-09-11 | in/pa/oh/id/or/nv/ok/nm/ks/mi + mo-build | Wave 62 sourced [Verify] clear | Free web only (0 Grok). Baseline 1277→1199 (-78). IN Decio/Ford canvass+FEC; OH Putsch platform + Innovation Ohio 20%; PA Mackenzie SNAP + Bradstock FEC; ID Sierra still on ballot; OR cleared to 0; locks reconfirm; Kobach $320M still no independent full tally. MO gate still OPEN - Cole Aug sample; briefs Sept 15 / args Sept 17; UOCAVA Sept 19; no mo.html. Skip DE inventing / MI board mass without sites / NM CFIS inventing. Voices 0. SITE_META Wave 62 on touched pages. | standing
 
+
+## 2026-09-11 - Verify backlog clear batch 70 (Wave 70: CO Chew/Lopez/judicial/Wiley + MS Baucom + MN myballot + IA Cournoyer + AL Rogers + soft pads / locks/MO gate)
+
+### Sourced unlocks
+- **CO Chew spoiler:** Baisley campaign (Mary Elizabeth Fabian) via Colorado Politics Jul 14 / Aug 12.
+- **CO Chew self-fund critique:** Colorado Pols July diary title (Democratic-aligned outlet named).
+- **CO Lopez policy:** greglopez.co/issues (DOGE/zero-based, 25k starter homes, CDOT/E-470, wolf abandon, school choice, TABOR, energy/PUC, local control, rural hospitals) + KKCO Aug 29.
+- **CO judicial:** OJPE Meets Performance Standards for Hood + six COA (knowyourjudge / Colorado Politics Aug 4); Harris timeliness note (Colorado Politics Aug 14); structural retention pads soft-cleared.
+- **CO Wiley endorsements:** wileyforcolorado.com/endorsements — Teddy Collins, Ken DeGraaf, Pikes Peak Firearms Coalition; Rocky Mountain Voice Mark Cook.
+- **MS Baucom:** Magnolia Tribune Aug 26 interview (EUDR deregulation, guns/drugs overreach, younger-Americans frame; health/safety technician; no FEC summary).
+- **MN Reeves / Jackson:** myballotmn.sos.mn.gov certified State Auditor / MN-5; Jackson FEC H6MN05373/C00846790 registered, no financial-summary receipts.
+- **IA Cournoyer:** SoS Canvass Summary Jun 22 — 100,013–84,686 (54.00%–45.72%) over Maas.
+- **AL Rogers:** AUSA Northern District of Alabama Civil Division Jan 1989–Sep 1995 (campaign bio / BallotReady / LinkedIn).
+- Soft structural/absence pads: CO Vadney/Neguse/Crow/Pettersen/Brown/Mangeris; MS Kelly/Johnson/Thompson/Eller/Chiaradio/Kiehle/Hulum cash-margin arithmetic; IA LP/independent structural.
+
+### Locks / finance watches
+- Skip DE inventing until after Sep 15.
+- NM CFIS First General due Sep 14 — cash only after if available.
+- OK Perry Pre-General Oct 20–26; guardian still unmatched standing.
+- OH SoS / MI sites / Kobach $320M still locked (no independent full tally).
+- Grok 0 this wave.
+
+### MO gate (still OPEN - no mo.html)
+- UOCAVA Sep 19 still ahead; SCOTUS briefs Sep 15 / args Sep 17 still ahead.
+- sos.mo.gov 403 standing; currency-test NOT closed; NO mo.html.
+
+2026-09-11 | co/ms/mn/ia/al + soft + mo-bank | Wave 70 sourced [Verify] clear | Free web only (0 Grok). Baseline 970→924 (-46). CO Chew/Lopez/judicial/Wiley; MS Baucom Magnolia Tribune; MN myballot Reeves/Jackson; IA Cournoyer canvass; AL Rogers AUSA; soft structural pads. Locks hold: skip DE inventing until after Sep 15; NM CFIS after Sep 14 only; OK Perry Oct 20-26; OH SoS/MI/Kobach locked. MO gate still OPEN — UOCAVA Sep 19; currency-test not closed; NO mo.html. Voices 0. SITE_META Wave 70 on touched pages. | standing
+
