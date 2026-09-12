@@ -1040,3 +1040,30 @@ Skipped: DE inventing (only soft absence pad); MI board/regents mass; NM CFIS in
 - SCOTUS stay keeps 2022 map for now; briefs Sept 15 / args Sept 17; UOCAVA Sept 19 still ahead.
 
 2026-09-11 | mi/nm/ok/ks + soft pages + mo-build | Wave 55 sourced [Verify] clear | Free web only (0 Grok). Baseline 1552→1467 (-85). MI Brown/Moeggenberg/Collins site unlocks; NM CFIS/structural soft; locks reconfirm; Kobach $320M still no independent full tally. MO gate still OPEN - Cole Aug sample; briefs Sept 15 / args Sept 17; UOCAVA Sept 19; no mo.html. Skip DE inventing / MI board mass without sites / NM CFIS inventing. Voices 0. SITE_META Wave 55 on touched pages. | standing
+
+
+## 2026-09-11 - Verify backlog clear batch 56 (Wave 56: MI Tilley site unlock + IL Ford/Getty/ISBE/Clerk + SC Hammond/Wright + ID Roth off-ballot + locks/MO gate)
+
+### Sourced unlocks
+- **MI State Board Tiffany Tilley:** votetiffanytilley.com live - strong public schools / equitable funding; literacy; educator pipeline; whole-child / safe welcoming schools; Co-VP incumbent, MBA UDM, PhD candidate (Wave 56). Pritchett still no live 2026 site (votejudypritchett.com ENOTFOUND).
+- **IL-7 La Shawn Ford:** Danny Davis endorsement from dannykdavis.com + Oak Park Wednesday Journal + Roll Call (Davis campaign chair). ISBE certified primary 23.72% / 24,408 over Conyears-Ervin 20.53% / 21,120; Koppie 64.96% (Ballotpedia certified). WBEZ "handpicked successor" sourced.
+- **IL-4 Chris Getty:** chrisgettyforcongress.com live + Suburban Chicagoland / RB Landmark / Southwest Regional Publishing - cost of living, immigration/public safety, restore trust / election integrity. Lyons mayor / township supervisor bio.
+- **IL-4 House rebuke:** clerk.house.gov Roll Call 292 is 236-183 (23 Democrats) Nov 18, 2025 - resolves prior source conflict.
+- **SC SoS Mark Hammond:** sos.sc.gov S.715 (signed May 18, 2026) solicitor-name disclosure + Give Smart SC / Public Charities record. Belton tenure contrast already on his card.
+- **SC Supt Sylvia Wright:** wright2026sc.com R.E.N.E.W. + anti-ESTF/S.62 public-funds argument; The State already on positions.
+- **ID Senate David Roth:** OFF the November ballot. Withdrawal form Aug 28 (Idaho Capital Sun Sept 2); Sept 4 deadline passed; no Democratic substitute named as of Sept 11. Upcoming card now Risch / Achilles / Fleming / Loesby only. Achilles policies reconfirmed achillesforidaho.com/policies.
+- **KY-2 Megan Wingfield:** wingfieldforcongress.com live; leftover Medicare-for-All hard-sell marker sourced as structural against Cook PVI R+20 already on the page.
+
+### Locks / finance watches
+- Cotten still Launching Soon (HTTP 200); Houston /issues 404; Yoshi unpaid-invoice + Federal Indictment title (/issues 404); Cease mikecease.com + azgp.org ENOTFOUND; Lund LPKS-only; Koehn personal blog; Parrott live personal bio.
+- **Kobach $320M:** still campaign claim on kriskobach.com; Meta KS ~$134M + $6M pending (AG/CJOnline/Reflector); Google Play $700M multistate KS share unspecified - no independent full tally (Wave 56).
+- OK Perry: guardian.ok.gov (no-www) homepage + CandidateSearch GET 200 this pass; www.guardian.ok.gov still ENOTFOUND; still unmatched (no Kiefer Perry OrganizationID); Ballotpedia finance blank; Pre-General Oct 20-26.
+- NM CFIS: CandidateMain HTTP 200; year-dropdown still tops 2020 (2004-2020); First General due Sept 14 still ahead (today Sept 11) - no invent.
+- Skip DE inventing until after Sept 15.
+- MI board mass SKIPPED for candidates without individual sites (Pritchett/Essner/Mohr/etc.).
+
+### MO gate (still OPEN - no mo.html)
+- Cole County sample ballots still August Combined only (Wave 56 live; hasNov=false).
+- SCOTUS stay keeps 2022 map for now; briefs Sept 15 / args Sept 17; UOCAVA Sept 19 still ahead.
+
+2026-09-11 | mi/il/sc/id/ky/nm/ok/ks + mo-build | Wave 56 sourced [Verify] clear | Free web only (0 Grok). Baseline 1467→1438 (-29). MI Tilley votetiffanytilley.com unlock; IL Ford Davis/ISBE 23.72% + Getty site + Clerk 236-183; SC Hammond S.715/Give Smart + Wright wright2026sc.com; ID Roth removed from Nov card (Aug 28 withdrawal; no Dem substitute). Locks reconfirm Cotten/Houston/Yoshi/Cease/Lund/Koehn/Parrott; Kobach $320M still no independent full tally. MO gate still OPEN - Cole Aug sample; briefs Sept 15 / args Sept 17; UOCAVA Sept 19; no mo.html. Skip DE inventing / MI board mass without sites / NM CFIS inventing. Voices 0. SITE_META Wave 56 on touched pages. | standing
