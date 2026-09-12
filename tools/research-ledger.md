@@ -1017,3 +1017,26 @@ Skipped: DE inventing (only soft absence pad); MI board/regents mass; NM CFIS in
 - SCOTUS stay keeps 2022 map for now; briefs Sept 15 / args Sept 17; UOCAVA Sept 19 still ahead.
 
 2026-09-11 | mi/oh/il/in/sc/ok/ks/nm + soft pages + mo-build | Wave 54 sourced [Verify] clear | Free web only (0 Grok). Baseline 1579→1552 (-27). MI UM Regents Epstein/Schostak/Makled site unlocks; OH Redpath FEC; IL years/canvass; IN Engling early-vote; SC Belton primary/labor; soft pads; locks reconfirm; Kobach $320M still no independent full tally. MO gate still OPEN - Cole Aug sample; briefs Sept 15 / args Sept 17; UOCAVA Sept 19; no mo.html. Skip DE inventing / MI board mass without sites / NM CFIS inventing. Voices 0. SITE_META Wave 54 on touched pages. | standing
+
+
+## 2026-09-11 - Verify backlog clear batch 55 (Wave 55: MI Board/Regents Brown/Moeggenberg/Collins site unlocks + NM CFIS/structural soft + locks/MO gate)
+
+### Sourced unlocks
+- **MI UM Regents Paul Brown:** gobluevotebrown.com - Go Blue Guarantee tuition-free to $125k (Ann Arbor 33% / Flint 41% / Dearborn 50%); Union Regent record (unions 9 to 18; union share 26% to 50%); access/affordability education+healthcare; LEO/AFT + Granholm MEDC / Biden SBA council (Wave 55 live).
+- **MI State Board Bree Moeggenberg:** bree4misboe.com - accountability/transparency after citing 44th national ranking; Merit curriculum standards; outcomes; MI Teacher's Bill of Rights nav (Wave 55 live).
+- **MI State Board Terence Collins:** collins4misboe.com / ClearPath Education - fiscal responsibility, parents' rights, transparency; Grosse Pointe school-board / Big 3 financial-analyst bio (Wave 55 live).
+- Soft structural/absence pads on MI leftovers after unlocks; NM structural + CFIS absence pads; soft OR/NV structural leftovers.
+
+### Locks / finance watches
+- Cotten Launching Soon; Houston /issues 404; Yoshi unpaid-invoice page (+ /issues 404); Cease ENOTFOUND; Lund LPKS-only; Koehn personal blog; Parrott live personal bio.
+- **Kobach $320M:** Meta KS ~$134M (+$6M pending); Google Play $700M multistate KS share unspecified; still no independent full itemized tally (Wave 55 free-web reconfirm Reflector/CJOnline/AG KS).
+- OK Perry: Guardian.ok.gov Cloudflare 403 blocked this pass; still unmatched; Pre-General Oct 20-26.
+- NM CFIS: year dropdown still tops 2020; First General due Sept 14 - still pre-deadline Sept 11; no invent.
+- Skip DE inventing until after Sept 15.
+- MI board mass SKIPPED for candidates without individual sites (Tilley/Pritchett/Essner/Mohr/etc.).
+
+### MO gate (still OPEN - no mo.html)
+- Cole County sample ballots still August Combined only (Wave 55 live; hasNov=false).
+- SCOTUS stay keeps 2022 map for now; briefs Sept 15 / args Sept 17; UOCAVA Sept 19 still ahead.
+
+2026-09-11 | mi/nm/ok/ks + soft pages + mo-build | Wave 55 sourced [Verify] clear | Free web only (0 Grok). Baseline 1552→1467 (-85). MI Brown/Moeggenberg/Collins site unlocks; NM CFIS/structural soft; locks reconfirm; Kobach $320M still no independent full tally. MO gate still OPEN - Cole Aug sample; briefs Sept 15 / args Sept 17; UOCAVA Sept 19; no mo.html. Skip DE inventing / MI board mass without sites / NM CFIS inventing. Voices 0. SITE_META Wave 55 on touched pages. | standing

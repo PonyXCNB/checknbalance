@@ -1325,3 +1325,36 @@ Aug 25 SoS-certified House nominees by **district NUMBER** (Wave 27 certificate)
 4. **IN Engling:** early-voting shorten ~2 weeks + longer daily hours (WOWO/FOX59 June 2026); voting-machine security still no sourced position.
 5. **SC Belton:** jasonbeltonforsc.com positions already on card; primary 50.6-49.4 (NBC/Wikipedia); labor VP sourced.
 6. Lock rechecks Wave 54: katecotten.com Launching Soon; rozforalabama.com /issues 404; yoshimatthews.com unpaid invoice (+ /issues 404); azgp.org / mikecease.com ENOTFOUND; Lund LPKS-only; www.rickoehn.com personal blog; andrewparrott.com live personal bio. OK Perry: Guardian.ok.gov Cloudflare-blocked this pass; Pre-General Oct 20-26. NM CFIS year dropdown still tops 2020; First General Sept 14 still ahead (today Sept 11). Kobach $320M still no independent full tally.
+
+
+## MAP / PROP A GATE - WAVE 55 UPDATE (September 11, 2026, evening ET)
+
+**STATUS: gate still OPEN for mo.html.** No mo.html started. Currency-test still incomplete (no public Nov CD sample-label table). Today is still Sept 11 - Sept 15 briefs / Sept 17 args / UOCAVA Sept 19 have not arrived yet. Skip DE inventing until after Sept 15.
+
+### Court posture (Wave 55 free-web reconfirm)
+- **U.S. Supreme Court:** stay keeps 2022 map governing November for now (Missouri Times; no Wave 55 contrary SCOTUS ruling located).
+- **8th Circuit:** expedited calendar still lists simultaneous briefs **Sept 15** and remote oral arguments **Sept 17** (10 a.m.). Briefs are not due yet (today still Sept 11); no public posting of those briefs located Wave 55.
+- **UOCAVA:** military/overseas ballots must transmit by **Sept 19**. Gate watch remains live through UOCAVA and ballot-print deadlines.
+- **Prop A / referendum** on HB 1 remains on the November ballot.
+
+### Currency-test (still NOT closed)
+- **Cole County:** colecounty.org/441/Sample-Ballots **still** only links **August Combined Sample Ballot** (Wave 55 live fetch; hasAug=true, hasNov=false; no November/General sample link).
+- **Boone / Jackson / STL:** no new public countywide Nov CD-label PDF matched to mo-cd120.json this pass.
+- **Still no public statewide (or even single-county public-PDF) November sample-ballot district-label table matched to `mo-cd120.json`.**
+
+### Continuity / parcel (not closed)
+- No new street/parcel unlock this pass for Brattin / Herrera / Onder. Prior banked notes stand.
+
+### Exact remaining blockers before mo.html
+1. SoS/LEA Nov district-label currency-test vs `mo-cd120.json` (public sample ballots or equivalent non-PII table).
+2. Finish parcel/VTD residence checks (Brattin; Onder Lake St. Louis / Augusta; Herrera KC parcel vs Raymore office).
+3. Party certification / ballot-order lock confirming Aug 25 certificate names still govern Nov under 2022 lines (or under whichever map survives post-Sept 17).
+4. Watch Sept 15 briefs / Sept 17 8th Cir argument / UOCAVA Sept 19 through ballot-print deadlines.
+
+### Sources / locks added this wave
+1. colecounty.org/441/Sample-Ballots - still August Combined Sample only (Wave 55 live fetch).
+2. **MI State Board / UM Regents:** Bree Moeggenberg bree4misboe.com; Terence Collins collins4misboe.com; Paul Brown gobluevotebrown.com - Wave 55 live site unlocks.
+3. Lock rechecks Wave 55: katecotten.com Launching Soon; rozforalabama.com /issues 404; yoshimatthews.com unpaid invoice (+ /issues 404); azgp.org / mikecease.com ENOTFOUND; Lund LPKS-only; www.rickoehn.com personal blog; andrewparrott.com live personal bio.
+4. OK Perry: Guardian.ok.gov Cloudflare 403 blocked this pass; still unmatched; Pre-General Oct 20-26.
+5. NM CFIS: year dropdown still tops 2020; First General due Sept 14 - still pre-deadline Sept 11; no invent.
+6. Kobach $320M: Meta KS ~$134M (+$6M pending); Google Play $700M multistate KS share unspecified; still no independent full itemized tally.
