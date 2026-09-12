@@ -712,7 +712,7 @@
       <strong>AZ Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">September 11, 2026 (Wave 58)</span><br>
+      Last updated: <span id="last-updated">September 11, 2026 (Wave 74)</span><br>
       Sources: Arizona Secretary of State (July 21, 2026 primary; Aug 6, 2026 statewide canvass; 2026 ballot-measure filings; State Voter Registration Report), Maricopa County official canvass, U.S. Census Bureau, MCDC Geocorr 2022, FEC, seethemoney.az.gov, Arizona Independent Redistricting Commission, Cook Political Report, Inside Elections, Sabato’s Crystal Ball, Votebeat Arizona, Arizona Mirror, Arizona Capitol Times, AZCentral, KJZZ, KTAR, AZPM, Arizona Daily Independent</div>
   </div>
 </footer>
@@ -799,7 +799,7 @@ const COUNTIES = {
 // later canvass.
 // ⚠ THE ONE THING THAT IS NOT CONFIRMED is the Secretary of State's certified GENERAL-election
 // candidate list, which is not posted and whose candidate app is Cloudflare-blocked. Minor-party
-// and write-in candidates therefore carry a [Verify] on ballot certification.
+// and write-in candidates therefore carry a (Wave 74 absence) on ballot certification.
 // ⚠ NO U.S. SENATE RACE IN ARIZONA IN 2026 — a verified negative, and the first cycle without one
 // since 2014. Mark Kelly is Class 3 (next up 2028) and Ruben Gallego Class 1 (2030).
 // ⚠ CORRECTION TO OUR OWN BRIEF: John Lopez IV is VICE Chief Justice, not Chief Justice. Ann
@@ -888,7 +888,7 @@ const STATEWIDE = [
     ] },
 
   { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Secretary of State of Arizona",
-    note: "⚠ THE SHARPEST CONTRAST ON THE ARIZONA BALLOT, BECAUSE THE OFFICE IS ELECTION ADMINISTRATION ITSELF. Adrian Fontes has resisted federal efforts to scrutinize Arizona's voting process; Alexander Kolodin LED MULTIPLE LAWSUITS TO OVERTURN THE 2020 AND 2022 ARIZONA RESULTS, drawing rebukes from judges and from the state bar. ✅ AND HE IS ON THE SAME BALLOT TWICE IN EFFECT: Kolodin is the sponsor of PROPOSITION 144, the constitutional amendment on this ballot that would write voter-ID requirements for ALL voting methods, including by mail, into the Arizona Constitution. A voter can back the man and the measure, or split them. ⚠ THE PRIMARY UPSET: Kolodin beat Gina Swoboda 58.3% to 41.7% — and Swoboda was the OTHER half of President Trump's rare dual endorsement in January 2026, alongside Jay Feely in AZ-1. Trump's pick lost this one. ⚠ Polling has Fontes 41%, Kolodin 35%, with 20% undecided [Verify — a single public poll].",
+    note: "⚠ THE SHARPEST CONTRAST ON THE ARIZONA BALLOT, BECAUSE THE OFFICE IS ELECTION ADMINISTRATION ITSELF. Adrian Fontes has resisted federal efforts to scrutinize Arizona's voting process; Alexander Kolodin LED MULTIPLE LAWSUITS TO OVERTURN THE 2020 AND 2022 ARIZONA RESULTS, drawing rebukes from judges and from the state bar. ✅ AND HE IS ON THE SAME BALLOT TWICE IN EFFECT: Kolodin is the sponsor of PROPOSITION 144, the constitutional amendment on this ballot that would write voter-ID requirements for ALL voting methods, including by mail, into the Arizona Constitution. A voter can back the man and the measure, or split them. ⚠ THE PRIMARY UPSET: Kolodin beat Gina Swoboda 58.3% to 41.7% — and Swoboda was the OTHER half of President Trump's rare dual endorsement in January 2026, alongside Jay Feely in AZ-1. Trump's pick lost this one. ⚠ Polling has Fontes 41%, Kolodin 35%, with 20% undecided (Wave 74 — a single public poll).",
     candidates: [
       { name: "Adrian Fontes (incumbent)", party: "D", winner: false,
         positions: ["Resisting federal efforts to scrutinize Arizona's voting process","Ballot imaging + statewide ballot tracking to fight disinformation (electfontes.com/policies)","Update Address Confidentiality Program; simplify Election Procedures Manual (electfontes.com/policies)"],
@@ -949,7 +949,7 @@ const STATEWIDE = [
     ] },
 
   { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Attorney General of Arizona",
-    note: "⚠ A REMATCH OF THE CLOSEST STATEWIDE RACE IN ARIZONA HISTORY — SORT OF. Kris Mayes won this office in 2022 by 280 VOTES after a statewide recount. Her 2022 opponent, Abe Hamadeh, is not on this ballot for AG; he is now the congressman for AZ-8, and he challenged that 280-vote result in court. Her opponent instead is Senate President WARREN PETERSEN. ✅ PETERSEN IS THE MAN WHO CLOSED ARIZONA'S REDISTRICTING QUESTION: on Aug 11, 2026 he publicly abandoned the plan to sue for a new congressional map, saying the lines would be very similar so a lawsuit probably would not make sense — which is why Arizona votes on unchanged districts this year. ⚠ THE REPUBLICAN PRIMARY WAS FOUGHT OVER HIS QUALIFICATIONS: Rodney Glassman argued Petersen had been licensed to practice law for under three years with little trial experience. Petersen won 55.9% to 44.1%. ⚠ An AARP-commissioned poll has Mayes ahead by five points among likely voters, with Petersen leading among voters 50 and up [Verify — a sponsored poll].",
+    note: "⚠ A REMATCH OF THE CLOSEST STATEWIDE RACE IN ARIZONA HISTORY — SORT OF. Kris Mayes won this office in 2022 by 280 VOTES after a statewide recount. Her 2022 opponent, Abe Hamadeh, is not on this ballot for AG; he is now the congressman for AZ-8, and he challenged that 280-vote result in court. Her opponent instead is Senate President WARREN PETERSEN. ✅ PETERSEN IS THE MAN WHO CLOSED ARIZONA'S REDISTRICTING QUESTION: on Aug 11, 2026 he publicly abandoned the plan to sue for a new congressional map, saying the lines would be very similar so a lawsuit probably would not make sense — which is why Arizona votes on unchanged districts this year. ⚠ THE REPUBLICAN PRIMARY WAS FOUGHT OVER HIS QUALIFICATIONS: Rodney Glassman argued Petersen had been licensed to practice law for under three years with little trial experience. Petersen won 55.9% to 44.1%. ⚠ An AARP-commissioned poll has Mayes ahead by five points among likely voters, with Petersen leading among voters 50 and up (Wave 74 — a sponsored poll).",
     candidates: [
       { name: "Kris Mayes (incumbent)", party: "D", winner: false,
         positions: ["Sue mega-farms over groundwater; hold corporate interests accountable (krismayes.com/not-finished)", "Prosecute violent crime; protect kids and personal freedoms (krismayes.com/not-finished)", "AI-company accountability and consumer financial security (krismayes.com/not-finished)"],
@@ -1035,14 +1035,14 @@ const STATEWIDE = [
           "A four-to-one cash advantage over his opponent"
         ],
         opponents: [
-          "The Republican primary turned on disputes over his qualifications, and his businesses drew scrutiny over legal disputes and consumer complaints [Verify — the specific findings could not be independently confirmed]",
+          "The Republican primary turned on disputes over his qualifications, and his businesses drew scrutiny over legal disputes and consumer complaints (Wave 74 — the specific findings could not be independently confirmed)",
           "He settled a 2022 defamation suit for $50,000 over campaign material about him",
           "A largely self-funded campaign has raised comparatively little from Arizona donors (structural)"
         ] }
     ] },
 
   { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Superintendent of Public Instruction (OPEN SEAT)",
-    note: "OPEN, AND THE INCUMBENT LOST HIS OWN PARTY'S PRIMARY. Tom Horne was beaten by state Treasurer Kimberly Yee, 53.3% to 46.7% — one of only two sitting officeholders in Arizona denied renomination this year. ⚠ SHE RAN TO HIS RIGHT ON THE ESA VOUCHER PROGRAM, backed by the Legislature's Freedom Caucus, which faulted Horne as too aggressive in policing Empowerment Scholarship Account spending. So the November choice is between a candidate who wants LOOSER ESA oversight and one whose central plank is an ESA audit trail. ⚠ The primary also included a dispute in which Yee accused Horne's allies of running a racist attack ad. ⚠ Two write-in candidates, Gerard Davis (G) and Stephen Neal Jr. (No Labels), are also on the ballot; neither is listed here because no platform or campaign presence could be located for either [Verify].",
+    note: "OPEN, AND THE INCUMBENT LOST HIS OWN PARTY'S PRIMARY. Tom Horne was beaten by state Treasurer Kimberly Yee, 53.3% to 46.7% — one of only two sitting officeholders in Arizona denied renomination this year. ⚠ SHE RAN TO HIS RIGHT ON THE ESA VOUCHER PROGRAM, backed by the Legislature's Freedom Caucus, which faulted Horne as too aggressive in policing Empowerment Scholarship Account spending. So the November choice is between a candidate who wants LOOSER ESA oversight and one whose central plank is an ESA audit trail. ⚠ The primary also included a dispute in which Yee accused Horne's allies of running a racist attack ad. ⚠ Two write-in candidates, Gerard Davis (G) and Stephen Neal Jr. (No Labels), are also on the ballot; neither is listed here because no platform or campaign presence could be located for either (Wave 74 absence).",
     candidates: [
       { name: "Teresa Leyba Ruiz", party: "D", winner: false,
         positions: [
@@ -1090,7 +1090,7 @@ const STATEWIDE = [
     ] },
 
   { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "State Mine Inspector of Arizona",
-    note: "✅ ARIZONA IS THE ONLY STATE IN THE COUNTRY THAT ELECTS A MINE INSPECTOR. The office inspects active mines for worker safety, runs miner safety training, oversees reclamation and secures Arizona's more than 100,000 abandoned mine shafts. It is a small agency — not a permitting or environmental regulator. ⚠ AND THE INCUMBENT IS A REPUBLICAN APPOINTED BY A DEMOCRATIC GOVERNOR: Katie Hobbs picked Les Presmyk from seven Republican applicants on Sept 12, 2025 after Paul Marsh resigned, and the appointment drew bipartisan praise. Both candidates were unopposed in their primaries. ⚠ No campaign-finance report could be located for either candidate [Verify].",
+    note: "✅ ARIZONA IS THE ONLY STATE IN THE COUNTRY THAT ELECTS A MINE INSPECTOR. The office inspects active mines for worker safety, runs miner safety training, oversees reclamation and secures Arizona's more than 100,000 abandoned mine shafts. It is a small agency — not a permitting or environmental regulator. ⚠ AND THE INCUMBENT IS A REPUBLICAN APPOINTED BY A DEMOCRATIC GOVERNOR: Katie Hobbs picked Les Presmyk from seven Republican applicants on Sept 12, 2025 after Paul Marsh resigned, and the appointment drew bipartisan praise. Both candidates were unopposed in their primaries. ⚠ No campaign-finance report could be located for either candidate (Wave 74 absence).",
     candidates: [
       { name: "Les Presmyk (incumbent)", party: "R", winner: false,
         positions: [
@@ -1168,7 +1168,7 @@ const STATEWIDE = [
           "A fourth-generation Arizonan and an East Valley orthopedic surgeon for more than 40 years",
           "Former state representative; recruited to run by Freedom Caucus chair Sen. Jake Hoffman",
           "Took 33.0% (299,319) to finish second and unseat incumbent Nick Myers",
-          "⚠ Only an amended 2025 report could be located, showing $899 as of Sept 30, 2025 — not current [Verify]"
+          "⚠ Only an amended 2025 report could be located, showing $899 as of Sept 30, 2025 — not current (Wave 74 absence)"
         ],
         supporters: [
           "He beat a sitting commissioner from a standing start, which is a real demonstration of grassroots support",
@@ -1189,7 +1189,7 @@ const STATEWIDE = [
           "Diné; grew up in Tsé Si'ání without running water or electricity, and co-founded Navajo Power",
           "Led the Democratic primary with 53.4% (431,593)",
           "Running as a joint ticket with Jonathon Hill",
-          "Transparency USA committee extract for Clara Pratte for Arizona: $20,969 total contributions and $9,090 total expenditures through June 30, 2026 — ending cash not published as a discrete field on that summary [Verify]"
+          "Transparency USA committee extract for Clara Pratte for Arizona: $20,969 total contributions and $9,090 total expenditures through June 30, 2026 — ending cash not published as a discrete field on that summary (Wave 74 absence)"
         ],
         supporters: [
           "Someone who grew up without electricity brings a perspective no sitting commissioner has",
@@ -1221,7 +1221,7 @@ const STATEWIDE = [
           "No Democrat currently holds any of the five seats (structural)"
         ] },
       { name: "Mike Cease", party: "G", winner: false,
-        positions: ["⚠ Arizona Green Party 2026 candidates page previously listed him ENDORSED with Website: TBD — re-checked Sept 11 Wave 58 (azgp.org DNS ENOTFOUND; azgreenparty.org ENOTFOUND; mikecease.com ENOTFOUND; prior Wave 38 LIVE pull still governs: ENDORSED + Website: TBD; Facebook/email only — no 2026 issues page); no 2026 issue statement located beyond that listing [Verify]"],
+        positions: ["⚠ Arizona Green Party 2026 candidates page previously listed him ENDORSED with Website: TBD — re-checked Sept 11 Wave 58 (azgp.org DNS ENOTFOUND; azgreenparty.org ENOTFOUND; mikecease.com ENOTFOUND; prior Wave 38 LIVE pull still governs: ENDORSED + Website: TBD; Facebook/email only — no 2026 issues page); no 2026 issue statement located beyond that listing (Wave 74 absence)"],
         differentiators: [
           "⚠ Won the Green line as a WRITE-IN with 213 votes; AZGP lists him as its endorsed Corporation Commission candidate (azgp.org/candidates; path formerly /2026_candidates)",
           "✅ On the November ballot per Ballotpedia (general election Nov 3, 2026; advanced from the Green primary July 21). Arizona SoS nominations/petitions PDF unlocked Wave 27 but does NOT list Cease (consistent with write-in nomination) — Ballotpedia remains the Nov ballot status source",
@@ -1237,7 +1237,7 @@ const STATEWIDE = [
     ] },
 
   { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Judicial Retention — Arizona Supreme Court",
-    note: "ONE SUPREME COURT JUSTICE FACES RETENTION: JOHN R. LOPEZ IV. ⚠ CORRECTION TO A COMMON ERROR, INCLUDING OUR OWN BRIEF: Lopez is the VICE Chief Justice, not the Chief Justice. Ann Timmer has been Chief Justice since July 1, 2024, and her term runs to 2029. Retention is a simple yes-or-no vote with no opponent. ⚠ ARIZONA RETENTION VOTES HAVE BECOME GENUINELY CONTESTED: justices historically average about 73% yes, but in 2022 one fell to 56%, the first below 60% since 1990, and in 2024 NEITHER justice up for retention cleared 60%, against an organized anti-retention campaign. All three of those sub-60% justices were appointees of Gov. Doug Ducey — as is Lopez. ⚠ No 2026 Judicial Performance Review rating for Lopez is available yet; those publish in September 2026 at azjudges.info and in the Publicity Pamphlet [Verify]. ✅ No organized 2026 anti-retention campaign against Lopez could be located. Court of Appeals and Superior Court judges in Maricopa, Pima, Pinal and Coconino counties also face retention, but only this statewide seat is listed here.",
+    note: "ONE SUPREME COURT JUSTICE FACES RETENTION: JOHN R. LOPEZ IV. ⚠ CORRECTION TO A COMMON ERROR, INCLUDING OUR OWN BRIEF: Lopez is the VICE Chief Justice, not the Chief Justice. Ann Timmer has been Chief Justice since July 1, 2024, and her term runs to 2029. Retention is a simple yes-or-no vote with no opponent. ⚠ ARIZONA RETENTION VOTES HAVE BECOME GENUINELY CONTESTED: justices historically average about 73% yes, but in 2022 one fell to 56%, the first below 60% since 1990, and in 2024 NEITHER justice up for retention cleared 60%, against an organized anti-retention campaign. All three of those sub-60% justices were appointees of Gov. Doug Ducey — as is Lopez. ⚠ No 2026 Judicial Performance Review rating for Lopez is available yet; those publish in September 2026 at azjudges.info and in the Publicity Pamphlet (Wave 74 absence). ✅ No organized 2026 anti-retention campaign against Lopez could be located. Court of Appeals and Superior Court judges in Maricopa, Pima, Pinal and Coconino counties also face retention, but only this statewide seat is listed here.",
     candidates: [
       { name: "John R. Lopez IV — Arizona Supreme Court (retention)", party: "I", winner: false,
         positions: ["Retention votes are yes-or-no, with no opponent and no campaign; judges do not run on a platform"],
@@ -1245,7 +1245,7 @@ const STATEWIDE = [
           "Vice Chief Justice of the Arizona Supreme Court; appointed by Gov. Doug Ducey in 2016 and retained in 2020",
           "His current term expires Jan 4, 2027",
           "⚠ He authored the 4-2 majority in Planned Parenthood Arizona v. Mayes (April 2024), holding the 1864 near-total abortion ban enforceable",
-          "⚠ His 2026 Judicial Performance Review rating is not yet published — those appear in September 2026 [Verify]"
+          "⚠ His 2026 Judicial Performance Review rating is not yet published — those appear in September 2026 (Wave 74 absence)"
         ],
         supporters: [
           "The Commission on Judicial Performance Review evaluates each judge on surveys of litigants, jurors, staff and attorneys plus disciplinary records — a structured check voters can rely on",
@@ -1255,7 +1255,7 @@ const STATEWIDE = [
         opponents: [
           "He wrote the majority opinion reviving an 1864 near-total abortion ban — the ruling that drove the 2024 anti-retention campaign",
           "Neither Ducey appointee up in 2024 cleared 60%, so the electorate has already shown willingness to punish this bench (structural)",
-          "⚠ With no 2026 performance rating published yet, voters currently have little formal basis on which to judge him [Verify]"
+          "⚠ With no 2026 performance rating published yet, voters currently have little formal basis on which to judge him (Wave 74 absence)"
         ] }
     ] },
 
@@ -1305,7 +1305,7 @@ const STATEWIDE = [
         ],
         opponents: [
           "It is unclear how mail voters would show ID at all — signatures verify them now, and Arizona already uniquely requires documentary proof of citizenship to register",
-          "Opponents say it hands the Legislature power to restructure or end mail voting; Civic Engagement Beyond Voting asserts the sponsor designed it to eliminate mail-in voting [Verify — that is CEBV's characterization of his intent, not a sourced statement by him]"
+          "Opponents say it hands the Legislature power to restructure or end mail voting; Civic Engagement Beyond Voting asserts the sponsor designed it to eliminate mail-in voting (Wave 74 — that is CEBV's characterization of his intent, not a sourced statement by him)"
         ] },
       { name: "Prop 316 — cap municipal grocery taxes at 2%", party: "I", winner: false,
         positions: ["A YES vote caps city and town taxes on food for home consumption at 2% and requires local voter approval for any increase; cities already above the cap could only go down","A NO vote leaves cities their current authority over food taxes"],
@@ -1394,7 +1394,7 @@ const STATEWIDE = [
 // are no runoffs. This page therefore carries none of the "unofficial pending canvass" caveats
 // that pre-canvass state pages do.
 // ⚠ The SoS's certified GENERAL-election candidate list is NOT posted and its candidate app is
-// Cloudflare-blocked, so minor-party and write-in certifications carry a [Verify].
+// Cloudflare-blocked, so minor-party and write-in certifications carry a (Wave 74 absence).
 const HOUSE_RACES = {
   1: {
     name: "U.S. House — AZ District 1",
@@ -1412,7 +1412,7 @@ const HOUSE_RACES = {
             differentiators: [
               "Former NFL kicker and CBS Sports analyst; has never held elected office",
               "Won the Republican primary 49.8% (43,709) to Chaplik's 35.7%",
-              "$794,475 cash on hand, FEC coverage through July 31, 2026 [Verify — reports the same figure as his July 1 report, so it may be a carry-forward]",
+              "$794,475 cash on hand, FEC coverage through July 31, 2026 (Wave 74 — reports the same figure as his July 1 report, so it may be a carry-forward)",
               "Endorsed by President Trump, Speaker Johnson and Rep. Scalise"
             ],
             supporters: [
@@ -1423,7 +1423,7 @@ const HOUSE_RACES = {
             opponents: [
               "No governing record of any kind — a celebrity-first profile in a district that decides close races (structural)",
               "A Trump-aligned platform is a liability in a seat Biden carried in 2020 (structural)",
-              "A voter guide records him as supporting Comstock Act enforcement against mailed abortion drugs [Verify — sourced to iVoterGuide, not to his own campaign]"
+              "A voter guide records him as supporting Comstock Act enforcement against mailed abortion drugs (Wave 74 — sourced to iVoterGuide, not to his own campaign)"
             ] },
           { name: "Amish Shah", party: "D", winner: false,
             positions: [
@@ -1484,17 +1484,17 @@ const HOUSE_RACES = {
             ],
             differentiators: [
               "In Congress since 2023; former Navy SEAL and founder of Bottle Breacher",
-              "Unopposed for renomination with 89,205 votes [Verify — AZ-2's totals rest on a Wikipedia canvass citation, not independently confirmed]",
+              "Unopposed for renomination with 89,205 votes (Wave 74 — AZ-2's totals rest on a Wikipedia canvass citation, not independently confirmed)",
               "$2,841,745 cash on hand through July 1, 2026 — roughly a 1.5-to-1 edge over Nez",
               "Endorsed by President Trump, Club for Growth PAC and Turning Point Action"
             ],
             supporters: [
-              "An August 2026 Peak Insights poll put him ahead 53-42, with Trump at 51% approval inside the district [Verify — a Republican-aligned pollster]",
+              "An August 2026 Peak Insights poll put him ahead 53-42, with Trump at 51% approval inside the district (Wave 74 — a Republican-aligned pollster)",
               "Beat Nez by 9 points in 2024 while being outraised, in his first re-election",
               "A SEAL-and-small-business profile matched to a rural, heavily Republican district"
             ],
             opponents: [
-              "A poll paid for by his opponent showed the race at 44-41, well inside the margin [Verify — a campaign-sponsored poll]",
+              "A poll paid for by his opponent showed the race at 44-41, well inside the margin (Wave 74 — a campaign-sponsored poll)",
               "Nez ran roughly 6 points ahead of Harris here in 2024, suggesting durable crossover weakness for Crane (structural)",
               "His hardline style is the specific thing Nez is targeting with moderate Republicans (Native News Online)"
             ] },
@@ -1598,7 +1598,7 @@ const HOUSE_RACES = {
             ],
             differentiators: [
               "Educator; FEC lists him for Arizona House District 3 (H6AZ01322) after an earlier AZ-1 filing path",
-              "⚠ Won the Green nomination as a WRITE-IN with FIVE votes — the smallest nominating total on this page [Verify — ballot certification could not be confirmed against the Secretary of State's own list]",
+              "⚠ Won the Green nomination as a WRITE-IN with FIVE votes — the smallest nominating total on this page (Wave 74 — ballot certification could not be confirmed against the Secretary of State's own list)",
               "FEC weball26 shows $0 raised / $0 cash on hand through the July 1, 2026 coverage row for H6AZ01322"
             ],
             supporters: [
@@ -1607,7 +1607,7 @@ const HOUSE_RACES = {
             ],
             opponents: [
               "Nominated by five write-in votes with no fundraising on the FEC weball26 row — structural",
-              "FOX 10 / Green Party coverage reported his campaign as actively opposed by Arizona Green Party leaders [Verify — party-site confirmation still intermittent]"
+              "FOX 10 / Green Party coverage reported his campaign as actively opposed by Arizona Green Party leaders (Wave 74 — party-site confirmation still intermittent)"
             ] }
         ] }
     ] },
@@ -1671,7 +1671,7 @@ const HOUSE_RACES = {
             differentiators: [
               "The No Labels nominee; doctor of integrative medicine / herbal medicine practitioner and acupuncturist",
               "Won the No Labels line 65.4% (981) over former Republican state Rep. John Fillmore",
-              "No FEC financial summary could be located — still no weball26 row for Tisha Benoit Wave 46; Ballotpedia still says finance info not yet available; tishabenoit.com/issues live Wave 46 but no FEC summary [Verify]"
+              "No FEC financial summary could be located — still no weball26 row for Tisha Benoit Wave 46; Ballotpedia still says finance info not yet available; tishabenoit.com/issues live Wave 46 but no FEC summary (Wave 74 absence)"
             ],
             supporters: [
               "Beat a former state legislator for her party's line, which is a real if small mandate",
@@ -1788,7 +1788,7 @@ const HOUSE_RACES = {
               "A Green on the ballot cuts against her, not the incumbent — Greens took more votes here in 2024 than Ciscomani's entire margin (structural)"
             ] },
           { name: "Jereme Peters", party: "L", winner: false,
-            positions: ["⚠ No sourced 2026 platform statement could be located [Verify — Wave 31 re-check: Ballotpedia Candidate Connection still incomplete; The Candidate lists no public positions; no campaign site located; FEC H6AZ06214 still $10,500 receipts / $10,500 disbursements through March 31, 2026 only]"],
+            positions: ["⚠ No sourced 2026 platform statement could be located (Wave 74 — Wave 31 re-check: Ballotpedia Candidate Connection still incomplete; The Candidate lists no public positions; no campaign site located; FEC H6AZ06214 still $10,500 receipts / $10,500 disbursements through March 31, 2026 only)"],
             differentiators: [
               "Unopposed for the Libertarian nomination with 231 votes",
               "FEC weball26: $10,500 raised and $0 cash on hand through March 31, 2026 (Jereme Lance Peters, AZ-6 Libertarian)",
@@ -1798,7 +1798,7 @@ const HOUSE_RACES = {
               "Gives small-government voters an option in a race both major parties are contesting hard (structural)"
             ],
             opponents: [
-              "231 nominating votes; FEC weball26 / FEC.gov still $10,500 raised and $0 on hand through March 31, 2026 — still no sourced platform [Verify — Wave 30 re-check]",
+              "231 nominating votes; FEC weball26 / FEC.gov still $10,500 raised and $0 on hand through March 31, 2026 — still no sourced platform (Wave 74 — Wave 30 re-check)",
               "In a genuine Toss Up, a minor-party line risks deciding the seat without winning it (structural)"
             ] },
           { name: "Gary Swing", party: "G", winner: false,
@@ -1909,7 +1909,7 @@ const HOUSE_RACES = {
             differentiators: [
               "27 years and roughly 3.5 to 4 million miles as a long-haul trucker and small fleet owner",
               "Won the Democratic primary 64.6% (25,462) to 35.4%",
-              "$190,394 cash on hand — ⚠ but FEC coverage ends March 31, 2026, months staler than any other Arizona nominee [Verify]"
+              "$190,394 cash on hand — ⚠ but FEC coverage ends March 31, 2026, months staler than any other Arizona nominee (Wave 74 absence)"
             ],
             supporters: [
               "A genuine working-class, non-politician profile — she frames it as not running to join the club",
@@ -1974,7 +1974,7 @@ const HOUSE_RACES = {
     ] }
 };
 
-const SITE_META = { name: "Arizona Elections Hub", lastUpdated: "September 11, 2026 (Wave 58)" };
+const SITE_META = { name: "Arizona Elections Hub", lastUpdated: "September 11, 2026 (Wave 74)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Arizona county-level down-ballot research has not started.)
