@@ -228,15 +228,15 @@ Finally `node tools/fit-map-frames.js` so the new page's map frame takes the sta
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of September 11, 2026 — evening wrap)
+## Current state (as of September 12, 2026 — morning Wave 76)
 - **Built bloc = 47 states + DC PARTIAL marquee.** Fully built: everything except CA, MO, TX (starter framework on the map) and DC (marquee-only). No `mo.html` / `ca.html` / `tx.html` on disk. Alaska (47th) and Louisiana are built — do NOT treat the Sept 3 "AK CA LA MO TX remaining" line as live.
 - **Verify backlog essentially done: grand total 3**, all on `nm.html` (intentional locks — do NOT invent-clear):
   1. SoS open seat — Ramona L. Goolsby differentiators (CFIS cash; First General due **Sep 14**)
   2. Judicial retention race note (57% approval bar / Sep 18 retention context)
   3. General Obligation bond questions ballot-text note
-  Day drop across Waves 29–75 ~3988→3. Tip `fafec52`. Local branch ahead of `origin/main` ~48 (midnight one-shot push only — do not push from day-wrap agents).
-- **RI / NH / MA / CO** primary/certification status unchanged from earlier Sep 11 bullets (RI Sept 9 settled; NH Sept 8 settled; MA Sept 1 certified PD43+; CO ballot certified Sept 4).
-- **DE primary is NEXT (Sept 15, 2026).** Prep/ledger only — do not invent results or winners.
+  Day drop across Waves 29–75 ~3988→3. Verify still 3 (nm locks). Wave 76 = DE field sync only (0 Verify change). Branch even with `origin/main` after midnight batch — **do not push** (Netlify credit hold); local commits OK after green tests.
+- **RI / NH / MA / CO** primary/certification status: RI Sept 9 + NH Sept 8 still SETTLED on AP/CNN calls but **not yet swapped to certified SoS/BOE totals** this pass (NH SoS clerk tallies with amendment disclaimer; RI BOE UOCAVA/cure window through Sept 12–15). MA Sept 1 certified PD43+; CO ballot certified Sept 4.
+- **DE primary is NEXT (Sept 15, 2026).** Wave 76 synced `de.html` to DOE primary+general lists (updated 2026-09-11) + Delaware LIVE voters guide: Dem Senate primary Coons/Appelhans/Hansen/Louve; GOP Katz/Shulli; House GOP Arminio/Cooper/Whalen (Murphy withdrawn); AG Dem Jennings/Bensing/Rickman + Graham Provisional; Auditor York vs Callaway + Cassidy. Prep only — do not invent results or winners.
 - **MO gate OPEN — still NO `mo.html`.** Research bank is advanced (not "thin"): `tools/banked/mo-build/statewide-research.md`, `mo-cd120.json` from the **2022** plan (115 counties / 9 splits), certified-list extract banked. Remaining blockers: **UOCAVA Sep 19**, Nov sample-ballot currency-test (`sos.mo.gov` 403 standing), parcel/continuity audits, post–Sep 15 briefs / Sep 17 8th Cir args. See the GATE STATUS section at the top of `statewide-research.md`. Keep the bank; do not discard; do not start the page.
 - **CA and TX remain unbuilt** (starter only). DC stays PARTIAL marquee. Do not start those full page builds from this wrap.
 - **Voices site-wide: 0 gaps** (~1576 upcoming/scheduled candidates). Owner to-do item 4 is keep-at-0, not a content backlog.
