@@ -1,0 +1,65 @@
+# MO gate bank notes — consolidated Sep 11, 2026 evening day wrap
+
+Research only. Still NO mo.html.
+
+### _w67-mo-bank.txt
+
+WAVE 67 MO BANK (research only — DO NOT build mo.html)
+Date: 2026-09-11 (America/New_York)
+UOCAVA: Sep 19, 2026 still ahead (52 USC 20302 = 45 days before Nov 3).
+Map: SCOTUSblog Sep 10/11 reporting — U.S. Supreme Court order blocked use of 2025 HB 1 map; 2022 map expected for Nov 3 general; Missouri Supreme Court Sep 3 referendum ruling + federal TRO collision resolved toward 2022 lines for UOCAVA printing.
+Currency-test: NOT closed — sos.mo.gov still Cloudflare 403 to automated fetch Wave 67; no county-by-county ballot currency proof yet.
+Gate: OPEN. Still NO mo.html.
+
+---
+
+### _w68-mo-bank.txt
+
+WAVE 68 MO BANK (research only — DO NOT build mo.html)
+Date: 2026-09-11 (America/New_York) — still Sep 11; UOCAVA Sep 19 still ahead.
+UOCAVA: Sep 19, 2026 = 45 days before Nov 3 (52 USC 20302). Gate stays OPEN until after UOCAVA + currency-test.
+Map: Wave 67 bank holds — SCOTUS blocked HB 1 / 2025 map; 2022 map expected for Nov printing.
+Currency-test: NOT closed — sos.mo.gov still Cloudflare 403 to automated fetch; no county-by-county ballot proof.
+Gate: OPEN. Still NO mo.html. Bank only.
+
+---
+
+### _w70-mo-bank.txt
+
+WAVE 70 MO BANK (research only — DO NOT build mo.html)
+Date: 2026-09-11 (America/New_York ~9:30 PM ET)
+UOCAVA: Sep 19, 2026 still ahead (52 USC 20302 = 45 days before Nov 3).
+Map: SCOTUS order still keeps 2022 map for Nov; briefs Sep 15 / args Sep 17 still ahead as of Wave 70.
+Currency-test: NOT closed — sos.mo.gov still Cloudflare 403 to automated fetch (standing lock); no county-by-county Nov ballot currency proof yet.
+Cole County: prior waves found August Combined sample only (hasNov=false); not re-probed this pass beyond standing.
+Gate: OPEN. Still NO mo.html. Bank only until UOCAVA Sep 19 + currency-test close.
+
+---
+
+### _w71-mo-bank.txt
+
+WAVE 71 MO BANK (research only — DO NOT build mo.html)
+Date: 2026-09-11 (America/New_York ~9:45 PM ET)
+UOCAVA: Sep 19, 2026 still ahead (52 USC 20302 = 45 days before Nov 3).
+Map: SCOTUS still keeps 2022 map for Nov; briefs Sep 15 / args Sep 17 still ahead as of Wave 71.
+Currency-test: NOT closed — sos.mo.gov still Cloudflare 403 to automated fetch (standing lock); no county-by-county Nov ballot currency proof yet.
+Gate: OPEN. Still NO mo.html. Bank only until UOCAVA Sep 19 + currency-test close.
+NM CFIS: First General still due Sep 14 — cash only after (today Sep 11).
+DE: skip inventing winners until after Sep 15 primary.
+OK Perry Pre-General: Oct 20-26 still ahead.
+OH SoS 403 / MI board sites / Kobach $320M: still locked.
+
+---
+
+### _w72-mo-bank.txt
+
+WAVE 72 MO BANK (research only - DO NOT build mo.html)
+Date: 2026-09-11 (America/New_York ~9:45+ PM ET / Wave 72 finalize)
+UOCAVA: Sep 19, 2026 still ahead (52 USC 20302 = 45 days before Nov 3).
+Map: SCOTUS still keeps 2022 map for Nov; briefs Sep 15 / args Sep 17 still ahead as of Wave 72.
+Currency-test: NOT closed - sos.mo.gov still Cloudflare 403 to automated fetch (standing lock); no county-by-county Nov ballot currency proof yet.
+Gate: OPEN. Still NO mo.html. Bank only until UOCAVA Sep 19 + currency-test close.
+NM CFIS: First General still due Sep 14 - cash only after (tonight Sep 11 still locked).
+DE: skip inventing winners until after Sep 15 primary. NO fabricated DE winners.
+OK Perry Pre-General: Oct 20-26 still ahead.
+OH SoS 403 / MI board sites / Kobach $320M: still locked.

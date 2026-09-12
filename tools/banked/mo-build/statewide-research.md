@@ -2,7 +2,42 @@
 Research file for checknbalance.org. Compiled September 8, 2026.
 Primary sources: Missouri Secretary of State certified candidate list (Aug 25, 2026), SoS certified ballot-measure page, Missouri Supreme Court, MEC/FEC.
 
-**STATUS: IN PROGRESS — see bottom for sources and COULD NOT CONFIRM.**
+**STATUS: GATE OPEN (research advanced; still NO mo.html). See GATE STATUS section below.**
+
+## GATE STATUS + REMAINING BLOCKERS + NEXT CALENDAR (Day wrap Sep 11, 2026 evening ET)
+
+**Gate: OPEN. Still NO `mo.html`.** Research-only until blockers below close. Do not invent a build.
+
+### What is banked (ready to use when the gate closes)
+- `tools/banked/mo-build/statewide-research.md` — statewide ballot write-up (Auditor + Amendments 3/7/8 + Prop A + Justice Wilson retention; House research in-file).
+- `tools/banked/mo-cd120.json` + `mo-build/mo-cd120-meta.json` / `mo-cd120-splits.json` — **2022 enacted plan**, 115 county-equivalents, 9 split counties (banked Sep 11 from `mo-cd119-baseline.txt`).
+- `mo-certified-w27.pdf/.txt` — Aug 25, 2026 SoS certified candidate list extract.
+- Wave bank notes: `tools/_w67-mo-bank.txt` … `_w72-mo-bank.txt` (copied into `mo-build/` as `daywrap-mo-bank-notes.txt` for the midnight ship).
+
+### Court / map posture (as of Sep 11 evening)
+- **2022 map governs November** under current posture (Hoskins Sep 10 LEA direction; Mo. Supreme Court Sep 3 / Sep 10; U.S. Supreme Court stay of federal TRO Sep 10).
+- **Prop A** (HB 1 veto referendum) stays on the Nov 3 ballot; Yes/No fair-ballot language banked — November House races still use 2022 lines unless a later order says otherwise.
+- **8th Circuit (`Onder v. Missouri`, No. 26-2797):** simultaneous briefs **Sep 15**; remote oral args **Sep 17** (~10 a.m.). Re-check after both before any build.
+
+### Exact remaining blockers (do not start mo.html until these move)
+1. **UOCAVA / ballot-print:** military/overseas transmit deadline **Sep 19, 2026** (52 USC 20302 = 45 days before Nov 3). Gate watch stays live through UOCAVA.
+2. **Currency-test NOT closed:** no public Nov sample-ballot / LEA district-label table matched to `mo-cd120.json` yet. `sos.mo.gov` still Cloudflare **403** to automated fetch (standing). Cole County sample-ballots page still August Combined only (`hasNov=false`).
+3. **Continuity / parcel audits unfinished:** Brattin (Cass→MO-4 flag); Onder (Lake St. Louis / Augusta); Herrera (KC parcel vs Raymore office).
+4. **Party certification / ballot-order lock:** confirm Aug 25 certificate names still govern Nov under 2022 lines (or whichever map survives post–Sep 17).
+
+### Next calendar (watch, do not invent)
+| Date | Event |
+|------|-------|
+| **Sep 15** | 8th Cir briefs due; **DE primary** (separate lock — no invented DE winners) |
+| **Sep 17** | 8th Cir remote oral arguments |
+| **Sep 19** | **UOCAVA** ballot transmit deadline — earliest realistic gate-close watch |
+| After UOCAVA + currency-test | Re-evaluate mo.html build (still NO page until then) |
+
+### Standing sibling locks (not MO, but same evening wrap)
+- **NM CFIS:** First General due **Sep 14** — the 3 remaining Verify markers on `nm.html` are intentional; cash only after filings are public.
+- OK Perry Pre-General Oct 20–26; OH SoS / MI board / Kobach $320M still locked.
+
+---
 
 ## STRUCTURAL CONFIRMATIONS (leads verified/refuted)
 
