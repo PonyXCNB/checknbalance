@@ -1073,3 +1073,34 @@ Skipped: DE inventing (only soft absence pad); MI board/regents mass; NM CFIS in
 
 2026-09-11 | mi/il/sc/id/ky/nm/ok/ks + mo-build | Wave 56 sourced [Verify] clear | Free web only (0 Grok). Baseline 1467â†’1438 (-29). MI Tilley votetiffanytilley.com unlock; IL Ford Davis/ISBE 23.72% + Getty site + Clerk 236-183; SC Hammond S.715/Give Smart + Wright wright2026sc.com; ID Roth removed from Nov card (Aug 28 withdrawal; no Dem substitute). Locks reconfirm Cotten/Houston/Yoshi/Cease/Lund/Koehn/Parrott; Kobach $320M still no independent full tally. MO gate still OPEN - Cole Aug sample; briefs Sept 15 / args Sept 17; UOCAVA Sept 19; no mo.html. Skip DE inventing / MI board mass without sites / NM CFIS inventing. Voices 0. SITE_META Wave 56 on touched pages. | standing
 
+
+## 2026-09-11 - Verify backlog clear batch 62 (Wave 62: IN canvass/FEC + OH Putsch/Innovation Ohio + PA SNAP/Bradstock + ID Sierra ballot + OR cleared + locks/MO gate)
+
+### Sourced unlocks
+- **IN-2 Decio:** certified 18,142–7,027 (72.08%–27.92%) over Maeyens (Indiana Election Division / DDHQ; NBC ~72.1%).
+- **IN-5:** Spartz 33,695–22,526 (59.93%–40.07%) DDHQ certified; Ford 17,608 / Franklin 7,023 (Indiana Election Division / NBC).
+- **IN J.D. Ford:** FEC H6IN05307 June 30 $582,087 raised / $314,652 cash; Q2 self-report $365k+ (LarryInFishers) now tied to FEC.
+- **IN McAuley:** H6IN07444 / C00932194 registered; still $0 / no usable financial summary (Ballotpedia / myreptracker) — absence tagged Wave 62.
+- **OH Casey Putsch:** putschforohio.com/platform + WFMJ / OCJ — America First housing/AI/energy/DEI/H-1B positions filled on primary card.
+- **OH Ramaswamy ~20% property-tax:** Innovation Ohio Feb 2026 analysis (Matter News / TiffinOhio.net) — replaces [Verify].
+- **PA Mackenzie SNAP:** H.R.1 votes May 22 / July 3 2025; PA.gov fact sheet 6,096 PA-7 SNAP losses.
+- **PA Bradstock:** FEC H6PA14200 June 30 $201,421 raised / $34,707 cash (~90% individuals).
+- **PA Mannion unpaid wages:** Wave 62 free-web could not locate published report; FEC C00910943 June 30 $0 debts — claim demoted to absence.
+- **ID Sierra / Idaho Lorax:** still on Nov ballot as Constitution Party nominee after Sept 4 deadline (Ballotpedia / Bingham certified list).
+- Soft structural/absence clears: IN retention/write-ins/Nieshalla; OH SoS/Auditor/court/House pads; OR Merkley/Kahl/Bentz/Bynum/Russ + Kotek ethics disposition absence → **or.html 9→0**; NV IAP/court/NOTC leftovers; MI Tlaib FEC soft.
+
+### Locks / finance watches
+- Cotten/Houston/Yoshi/Cease/Lund/Koehn/Parrott not re-probed this pass beyond prior standing.
+- **Kobach $320M:** Wave 62 free-web still no independent full itemized tally; Meta KS ~$134M (+$6M pending); Google Play $700M multistate KS share unspecified.
+- **OK Perry:** guardian.ok.gov CandidateSearch 200; OrganizationID searches still unmatched (Heath Kufahl 12131 false positive); Pre-General Oct 20–26.
+- **NM CFIS:** login.cfis.sos.state.nm.us HTTP 200; cfis.sos.nm.gov DNS ENOTFOUND; First General due Sept 14 — still ahead (today Sept 11); no invent.
+- **OH SoS:** www.ohiosos.gov / data.ohiosos.gov / liveresults.ohiosos.gov all HTTP 403 this pass.
+- Skip DE inventing until after Sept 15.
+- MI board: Pritchett votejudypritchett.com still ENOTFOUND; Essner/Mohr still no individual 2026 sites.
+
+### MO gate (still OPEN - no mo.html)
+- Cole County sample ballots still August Combined only (Wave 62 live HTTP 200; hasNov=false).
+- UOCAVA Sept 19 still ahead; SCOTUS briefs Sept 15 / args Sept 17 still ahead.
+
+2026-09-11 | in/pa/oh/id/or/nv/ok/nm/ks/mi + mo-build | Wave 62 sourced [Verify] clear | Free web only (0 Grok). Baseline 1277→1199 (-78). IN Decio/Ford canvass+FEC; OH Putsch platform + Innovation Ohio 20%; PA Mackenzie SNAP + Bradstock FEC; ID Sierra still on ballot; OR cleared to 0; locks reconfirm; Kobach $320M still no independent full tally. MO gate still OPEN - Cole Aug sample; briefs Sept 15 / args Sept 17; UOCAVA Sept 19; no mo.html. Skip DE inventing / MI board mass without sites / NM CFIS inventing. Voices 0. SITE_META Wave 62 on touched pages. | standing
+

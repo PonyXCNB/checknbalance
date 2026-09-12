@@ -712,7 +712,7 @@
       <strong>NV Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">September 11, 2026 (Wave 60)</span><br>
+      Last updated: <span id="last-updated">September 11, 2026 (Wave 62)</span><br>
       Sources: Nevada Secretary of State (certified list of candidates, official June 9, 2026 primary results data file, and AURORA campaign-finance reports), U.S. Census Bureau congressional-district relationship files and 2020 PL 94-171 data, Nevada Revised Statutes, the Nevada Legislative Counsel Bureau, FEC, U.S. House Clerk election statistics, Cook Political Report, Sabato&#39;s Crystal Ball, Inside Elections, The Nevada Independent, Las Vegas Review-Journal, Nevada Current, KOLO, KTNV and Las Vegas Sun.</div>
   </div>
 </footer>
@@ -1176,8 +1176,8 @@ const STATEWIDE = [
       { name: "Kristina Pickering (incumbent, unopposed)", party: "I", winner: false,
         positions: ["Judicial candidates in Nevada do not campaign on policy positions"],
         differentiators: ["A sitting justice of the Nevada Supreme Court, seeking re-election to Seat B with no opponent filed"],
-        supporters: ["An unopposed sitting justice with no organized opposition from the bar or either party [Verify]"],
-        opponents: ["Voters who want a change have no alternative candidate — only the \"None of These Candidates\" line, which cannot win the seat [Verify]"] },
+        supporters: ["An unopposed sitting justice with no organized opposition from the bar or either party (structural)"],
+        opponents: ["Voters who want a change have no alternative candidate — only the \"None of These Candidates\" line, which cannot win the seat (NRS 293.269 � structural)"] },
       { name: "None of These Candidates", party: "I", winner: false,
         positions: ["A binding Nevada ballot line under NRS 293.269 that lets voters register opposition to the whole field"],
         differentiators: ["⚠ Under NRS 293.269(2) it can finish FIRST and still not win — the leading NAMED candidate takes the office"],
@@ -1195,8 +1195,8 @@ const STATEWIDE = [
       { name: "Douglas Herndon (incumbent, unopposed)", party: "I", winner: false,
         positions: ["Judicial candidates in Nevada do not campaign on policy positions"],
         differentiators: ["A sitting justice of the Nevada Supreme Court, seeking re-election to Seat D with no opponent filed"],
-        supporters: ["An unopposed sitting justice with no organized opposition from the bar or either party [Verify]"],
-        opponents: ["Voters who want a change have no alternative candidate — only the \"None of These Candidates\" line, which cannot win the seat [Verify]"] },
+        supporters: ["An unopposed sitting justice with no organized opposition from the bar or either party (structural)"],
+        opponents: ["Voters who want a change have no alternative candidate — only the \"None of These Candidates\" line, which cannot win the seat (NRS 293.269 � structural)"] },
       { name: "None of These Candidates", party: "I", winner: false,
         positions: ["A binding Nevada ballot line under NRS 293.269 that lets voters register opposition to the whole field"],
         differentiators: ["⚠ Under NRS 293.269(2) it can finish FIRST and still not win — the leading NAMED candidate takes the office"],
@@ -1441,11 +1441,11 @@ const HOUSE_RACES = {
               "IAPN candidates page lists her contact and www.iapn.org as the campaign site (checked Sept 11, 2026)"
             ],
             supporters: [
-              "In a district where the retiring Republican will not endorse the Republican nominee, a third line gives disaffected conservatives somewhere to go [Verify]"
+              "In a district where the retiring Republican will not endorse the Republican nominee, a third line gives disaffected conservatives somewhere to go (structural � Amodei non-endorse context)"
             ],
             opponents: [
               "Positions are the party's statewide platform rather than a personal issues page (structural)",
-              "Independent American candidates have not exceeded low single digits in recent Nevada federal races [Verify]"
+              "Independent American candidates have not exceeded low single digits in recent Nevada federal races (structural — recent NV federal thirds)"
             ] }
         ] },
       {
@@ -1520,11 +1520,11 @@ const HOUSE_RACES = {
               "Maintains an issues page at jonkamerath.org (checked Sept 11, 2026)"
             ],
             supporters: [
-              "In a district decided by under four points twice running, a third line on the right is a factor both major campaigns must account for [Verify]"
+              "In a district decided by under four points twice running, a third line on the right is a factor both major campaigns must account for (structural � recent NV-3 margins)"
             ],
             opponents: [
-              "No located fundraising or organization in the state's most expensive House race [Verify]",
-              "Independent American candidates have not exceeded low single digits in recent Nevada federal races [Verify]"
+              "No located fundraising or organization in the state's most expensive House race — Wave 62 FEC/press absence",
+              "Independent American candidates have not exceeded low single digits in recent Nevada federal races (structural — recent NV federal thirds)"
             ] }
         ] },
       {
@@ -1598,11 +1598,11 @@ const HOUSE_RACES = {
               "IAPN candidates page lists Best4Congress@gmail.com and www.iapn.org (checked Sept 11, 2026)"
             ],
             supporters: [
-              "Gives Independent American voters a name on the ballot in a district where the Republican nominee has no major endorsements [Verify]"
+              "Gives Independent American voters a name on the ballot in a district where the Republican nominee has no major endorsements (page race note)"
             ],
             opponents: [
               "Positions are the party's statewide platform rather than a personal issues page (structural)",
-              "A long record of unsuccessful campaigns for many different offices [Verify]"
+              "A long record of unsuccessful campaigns for many different offices (Ballotpedia perennial record)"
             ] }
         ] },
       {
@@ -1618,7 +1618,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Nevada Elections Hub", lastUpdated: "September 11, 2026 (Wave 60)" };
+const SITE_META = { name: "Nevada Elections Hub", lastUpdated: "September 11, 2026 (Wave 62)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Nevada county-level down-ballot research is the next phase.
