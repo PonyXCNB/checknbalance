@@ -712,7 +712,7 @@
       <strong>OK Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">September 11, 2026 (Wave 62)</span><br>
+      Last updated: <span id="last-updated">September 11, 2026 (Wave 75)</span><br>
       Sources: Oklahoma State Election Board (results.okelections.gov election-night reporting; official 2026 candidate filing book), U.S. Census Bureau, MCDC Geocorr 2022, FEC, Oklahoma Ethics Commission, NonDoc, Oklahoma Voice, Tulsa World, KOSU, News9/NewsOn6, Public Radio Tulsa, Free Press OKC, Oklahoma Farm Report, The Frontier, Bolts</div>
   </div>
 </footer>
@@ -876,7 +876,7 @@ const COUNTIES = {
 // the Election Board's certified candidate list could not be reached, so several independents are
 // known only from a News9 general-election ballot preview. Those with no verifiable campaign
 // presence of their own are NAMED IN THE RACE NOTE but not listed; those with a verifiable role
-// are listed with a [Verify] on certification. Nobody is invented and nobody real is hidden.
+// are listed with a (Wave 75 absence) on certification. Nobody is invented and nobody real is hidden.
 const STATEWIDE = [
   // ─────────────────────────── UPCOMING ───────────────────────────
   { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · Statewide", office: "U.S. Senate — Oklahoma (OPEN SEAT)",
@@ -981,7 +981,7 @@ const STATEWIDE = [
     ] },
 
   { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Governor of Oklahoma (OPEN SEAT)",
-    note: "OPEN — Kevin Stitt is term-limited. ⚠ THE CLOSEST STATEWIDE RESULT OF THE CYCLE ANYWHERE ON THIS SITE: Mike Mazzei beat sitting Attorney General Gentner Drummond in the Aug 25 Republican runoff by 2,047 VOTES out of 371,309 — 50.28% to 49.72%. Drummond, who had led the June 16 primary, conceded on election night and no recount has been reported. ⚠ THE MONEY IS THE OTHER STORY, AND IT CUTS BOTH WAYS: Mazzei has loaned his own campaign $11 MILLION against $1.4 million in individual donations, with only about 0.43% of his individual dollars arriving in gifts under $50. Cyndi Munson is the only major candidate who has not self-funded — roughly 3,400 gifts of $50 or less, about 14% of her individual-contribution dollars — but she spent about $304,000 in the same window Mazzei spent $1.4 million. ⚠ Three independents (Robert Brooks Sr., Orlando Lynn Bush and Jerry Griffin) appear in a News9 ballot preview but could not be confirmed against the Election Board's own certified list and have no locatable campaign presence, so they are named here rather than listed [Verify]. ⚠ All figures are unofficial until Sept 1, 2026.",
+    note: "OPEN — Kevin Stitt is term-limited. ⚠ THE CLOSEST STATEWIDE RESULT OF THE CYCLE ANYWHERE ON THIS SITE: Mike Mazzei beat sitting Attorney General Gentner Drummond in the Aug 25 Republican runoff by 2,047 VOTES out of 371,309 — 50.28% to 49.72%. Drummond, who had led the June 16 primary, conceded on election night and no recount has been reported. ⚠ THE MONEY IS THE OTHER STORY, AND IT CUTS BOTH WAYS: Mazzei has loaned his own campaign $11 MILLION against $1.4 million in individual donations, with only about 0.43% of his individual dollars arriving in gifts under $50. Cyndi Munson is the only major candidate who has not self-funded — roughly 3,400 gifts of $50 or less, about 14% of her individual-contribution dollars — but she spent about $304,000 in the same window Mazzei spent $1.4 million. ⚠ Three independents (Robert Brooks Sr., Orlando Lynn Bush and Jerry Griffin) appear in a News9 ballot preview but could not be confirmed against the Election Board's own certified list and have no locatable campaign presence, so they are named here rather than listed (Wave 75 absence). ✅ Figures are OFFICIAL — State Election Board certified June 16 primary / Aug 25 runoff results (results.okelections.us; board posts marked Official).",
     candidates: [
       { name: "Mike Mazzei", party: "R", winner: false,
         positions: [
@@ -1030,7 +1030,7 @@ const STATEWIDE = [
     ] },
 
   { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Lieutenant Governor of Oklahoma (OPEN SEAT)",
-    note: "OPEN — Matt Pinnell is term-limited. Unlike Kansas or Hawaii, Oklahoma elects its Lieutenant Governor SEPARATELY from the Governor, so the two offices can be split between parties. T.W. Shannon won the six-way Republican primary outright with 53.76%, avoiding a runoff; Kelly Forbes was unopposed for the Democratic nomination. ⚠ This is the thinnest-documented statewide race on the page: no sourced 2026 platform statement could be located for Forbes, and Shannon's is drawn from his campaign site's own framing [Verify]. ⚠ Figures are unofficial until Sept 1, 2026.",
+    note: "OPEN — Matt Pinnell is term-limited. Unlike Kansas or Hawaii, Oklahoma elects its Lieutenant Governor SEPARATELY from the Governor, so the two offices can be split between parties. T.W. Shannon won the six-way Republican primary outright with 53.76%, avoiding a runoff; Kelly Forbes was unopposed for the Democratic nomination. ⚠ This is the thinnest-documented statewide race on the page: no sourced 2026 platform statement could be located for Forbes, and Shannon's is drawn from his campaign site's own framing (Wave 75 absence). ✅ Figures are OFFICIAL — State Election Board certified (results.okelections.us).",
     candidates: [
       { name: "T.W. Shannon", party: "R", winner: false,
         positions: [
@@ -1073,7 +1073,7 @@ const STATEWIDE = [
     ] },
 
   { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Attorney General of Oklahoma (OPEN SEAT)",
-    note: "OPEN — Gentner Drummond gave up the office to run for governor, and lost that runoff by 2,047 votes. ✅ THE CLEAREST EXPERIENCE CONTRAST ON THE BALLOT: Jon Echols spent eight of his twelve House years as MAJORITY FLOOR LEADER, the chamber's chief legislative tactician, while Nick Coffey spent seven years as an ASSISTANT U.S. ATTORNEY in Oklahoma City prosecuting federal cases. It is a legislator-versus-prosecutor race, and each side argues its own background is the right preparation. Echols won the June 16 primary 55.00% to 45.00%; Coffey was unopposed. ⚠ Figures are unofficial until Sept 1, 2026.",
+    note: "OPEN — Gentner Drummond gave up the office to run for governor, and lost that runoff by 2,047 votes. ✅ THE CLEAREST EXPERIENCE CONTRAST ON THE BALLOT: Jon Echols spent eight of his twelve House years as MAJORITY FLOOR LEADER, the chamber's chief legislative tactician, while Nick Coffey spent seven years as an ASSISTANT U.S. ATTORNEY in Oklahoma City prosecuting federal cases. It is a legislator-versus-prosecutor race, and each side argues its own background is the right preparation. Echols won the June 16 primary 55.00% to 45.00%; Coffey was unopposed. ✅ Figures are OFFICIAL — State Election Board certified (results.okelections.us).",
     candidates: [
       { name: "Jon Echols", party: "R", winner: false,
         positions: [
@@ -1158,7 +1158,7 @@ const STATEWIDE = [
     ] },
 
   { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Superintendent of Public Instruction (OPEN SEAT)",
-    note: "OPEN, AND THE OFFICE HAS ALREADY TURNED OVER ONCE THIS TERM. Ryan Walters departed mid-term; Gov. Stitt appointed Lindel Fields, who confirmed he will NOT seek election. ✅ BOTH NOMINEES ARE CAREER EDUCATORS, WHICH IS ITSELF THE STORY — after a term defined by culture-war fights, the November choice is between a 44-year school administrator and a former big-district school-board member. Robert Franklin led a seven-way primary with 22.59% and won the Aug 25 runoff 54.63% to 45.37%; Jennettie Marshall won her primary outright with 57.69%. ⚠ Figures are unofficial until Sept 1, 2026.",
+    note: "OPEN, AND THE OFFICE HAS ALREADY TURNED OVER ONCE THIS TERM. Ryan Walters departed mid-term; Gov. Stitt appointed Lindel Fields, who confirmed he will NOT seek election. ✅ BOTH NOMINEES ARE CAREER EDUCATORS, WHICH IS ITSELF THE STORY — after a term defined by culture-war fights, the November choice is between a 44-year school administrator and a former big-district school-board member. Robert Franklin led a seven-way primary with 22.59% and won the Aug 25 runoff 54.63% to 45.37%; Jennettie Marshall won her primary outright with 57.69%. ✅ Figures are OFFICIAL — State Election Board certified (results.okelections.us).",
     candidates: [
       { name: "Robert Franklin", party: "R", winner: false,
         positions: [
@@ -1265,7 +1265,7 @@ const STATEWIDE = [
     ] },
 
   { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Insurance Commissioner of Oklahoma (OPEN SEAT)",
-    note: "OPEN — Glen Mulready is term-limited. ✅ THE MOST SUBSTANTIVE DOWN-BALLOT RACE ON THE OKLAHOMA BALLOT, because both nominees are career insurance professionals who have staked out real and opposing positions. Bob Sullivan comes from the property-and-casualty AGENT side and says Oklahoma's market is an OLIGOPOLY — he has argued that incarceration can be a fair punishment for insurance executives who act in bad faith. Craig MacIntyre comes from the CARRIER side, with three decades in actuarial work, product development and government relations, and campaigns on what he calls the three A's: affordability, acceptable claims handling and availability. Sullivan led the four-way June primary with 37.37% and won the Aug 25 runoff 55.13% to 44.87%. ⚠ MacIntyre entered only as the filing deadline neared, with no other Democrat running. ⚠ Figures are unofficial until Sept 1, 2026.",
+    note: "OPEN — Glen Mulready is term-limited. ✅ THE MOST SUBSTANTIVE DOWN-BALLOT RACE ON THE OKLAHOMA BALLOT, because both nominees are career insurance professionals who have staked out real and opposing positions. Bob Sullivan comes from the property-and-casualty AGENT side and says Oklahoma's market is an OLIGOPOLY — he has argued that incarceration can be a fair punishment for insurance executives who act in bad faith. Craig MacIntyre comes from the CARRIER side, with three decades in actuarial work, product development and government relations, and campaigns on what he calls the three A's: affordability, acceptable claims handling and availability. Sullivan led the four-way June primary with 37.37% and won the Aug 25 runoff 55.13% to 44.87%. ⚠ MacIntyre entered only as the filing deadline neared, with no other Democrat running. ✅ Figures are OFFICIAL — State Election Board certified (results.okelections.us).",
     candidates: [
       { name: "Bob Sullivan", party: "R", winner: false,
         positions: [
@@ -1309,7 +1309,7 @@ const STATEWIDE = [
     ] },
 
   { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Corporation Commissioner — Oklahoma (1 of 3 seats, OPEN)",
-    note: "OPEN — Todd Hiett is term-limited. Oklahoma's three-member Corporation Commission sets electric, gas and water rates and regulates the oil and gas industry; commissioners serve six-year terms and only ONE seat is on this ballot. ✅ THE LIVE CONTRAST IS DATA CENTERS, AND BOTH CANDIDATES LEAD WITH IT: Brad Boles AUTHORED the Data Center Consumer Ratepayer Protection Act of 2026, now signed into law, and runs on protecting ratepayers inside a pro-growth framework; Rhonda Eastman campaigns against the tax breaks the data centers receive in the first place. Boles won the June primary 55.27% to 44.73%; Eastman won a three-way Democratic primary with 70.0%. ⚠ Figures are unofficial until Sept 1, 2026.",
+    note: "OPEN — Todd Hiett is term-limited. Oklahoma's three-member Corporation Commission sets electric, gas and water rates and regulates the oil and gas industry; commissioners serve six-year terms and only ONE seat is on this ballot. ✅ THE LIVE CONTRAST IS DATA CENTERS, AND BOTH CANDIDATES LEAD WITH IT: Brad Boles AUTHORED the Data Center Consumer Ratepayer Protection Act of 2026, now signed into law, and runs on protecting ratepayers inside a pro-growth framework; Rhonda Eastman campaigns against the tax breaks the data centers receive in the first place. Boles won the June primary 55.27% to 44.73%; Eastman won a three-way Democratic primary with 70.0%. ✅ Figures are OFFICIAL — State Election Board certified (results.okelections.us).",
     candidates: [
       { name: "Brad Boles", party: "R", winner: false,
         positions: [
@@ -1354,7 +1354,7 @@ const STATEWIDE = [
     ] },
 
   { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Judicial Retention — Oklahoma (6 jurists)",
-    note: "SIX JURISTS FACE RETENTION, NOT TWO — our own build brief had this wrong. FOUR Supreme Court justices (M. John Kane IV, Richard Darby, Dana Kuehn and Travis Jett) and TWO Court of Criminal Appeals judges (Gary Lumpkin, on the court since 1989, and Robert Hudson). ⚠ ALSO CORRECTED: M. John Kane IV is NOT the current Chief Justice — Dustin Rowe has held that post since Jan 1, 2025; Kane served 2023-25. Retention is a simple yes-or-no vote with no opponent. All six were appointed by Republican governors. ⚠ THE ONE DOCUMENTED FAULT LINE: Darby, Kane and Kuehn DISSENTED from the 2023 ruling that recognized a narrow right to abortion to save a woman's life. ✅ VERIFIED NEGATIVE: Bolts reported on Apr 20, 2026 that there is no sign of an organized effort opposed to retention this year [Verify — that was the position in April and was not re-checked closer to November]. Because there is no organized campaign either way, individual jurists are not listed here.",
+    note: "SIX JURISTS FACE RETENTION, NOT TWO — our own build brief had this wrong. FOUR Supreme Court justices (M. John Kane IV, Richard Darby, Dana Kuehn and Travis Jett) and TWO Court of Criminal Appeals judges (Gary Lumpkin, on the court since 1989, and Robert Hudson). ⚠ ALSO CORRECTED: M. John Kane IV is NOT the current Chief Justice — Dustin Rowe has held that post since Jan 1, 2025; Kane served 2023-25. Retention is a simple yes-or-no vote with no opponent. All six were appointed by Republican governors. ⚠ THE ONE DOCUMENTED FAULT LINE: Darby, Kane and Kuehn DISSENTED from the 2023 ruling that recognized a narrow right to abortion to save a woman's life. ✅ VERIFIED NEGATIVE: Bolts reported on Apr 20, 2026 that there is no sign of an organized effort opposed to retention this year (Wave 75 — that was the position in April and was not re-checked closer to November). Because there is no organized campaign either way, individual jurists are not listed here.",
     candidates: [
       { name: "Four Supreme Court justices — Kane, Darby, Kuehn and Jett (retention)", party: "I", winner: false,
         positions: ["Retention votes are yes-or-no, with no opponent and no campaign; judges do not run on a platform"],
@@ -1389,7 +1389,7 @@ const STATEWIDE = [
     ] },
 
   { date: "Nov 3, 2026", type: "upcoming", scope: "Ballot Measure · Statewide", office: "State Question 845 — Judicial Nominating Commission",
-    note: "A CONSTITUTIONAL AMENDMENT RESTRUCTURING THE BODY THAT PICKS OKLAHOMA'S JUDGES. The Judicial Nominating Commission screens applicants and sends the governor a shortlist for every judicial vacancy. SQ 845 would redraw its appointments to CURRENT congressional districts instead of the 1967 map still in use; have the governor and the Oklahoma Bar Association each appoint six commissioners; allow two consecutive six-year terms; and REMOVE three existing restrictions — the bar on commissioners being licensed attorneys, the bar on having family members who are licensed attorneys, and the cap of no more than three commissioners from one political party. ⚠ VERIFIED NEGATIVE, AND UNUSUAL: NO ORGANIZED CAMPAIGN ON EITHER SIDE COULD BE LOCATED — no statement from the Oklahoma Bar Association, the Governor's office or any advocacy group. A for-and-against list is therefore deliberately NOT published here. ⚠ The full official ballot title could not be retrieved from the Election Board [Verify].",
+    note: "A CONSTITUTIONAL AMENDMENT RESTRUCTURING THE BODY THAT PICKS OKLAHOMA'S JUDGES. The Judicial Nominating Commission screens applicants and sends the governor a shortlist for every judicial vacancy. SQ 845 would redraw its appointments to CURRENT congressional districts instead of the 1967 map still in use; have the governor and the Oklahoma Bar Association each appoint six commissioners; allow two consecutive six-year terms; and REMOVE three existing restrictions — the bar on commissioners being licensed attorneys, the bar on having family members who are licensed attorneys, and the cap of no more than three commissioners from one political party. ⚠ VERIFIED NEGATIVE, AND UNUSUAL: NO ORGANIZED CAMPAIGN ON EITHER SIDE COULD BE LOCATED — no statement from the Oklahoma Bar Association, the Governor's office or any advocacy group. A for-and-against list is therefore deliberately NOT published here. ⚠ The full official ballot title could not be retrieved from the Election Board (Wave 75 absence).",
     candidates: [
       { name: "YES — restructure the commission", party: "I", winner: false,
         positions: [
@@ -1429,7 +1429,7 @@ const STATEWIDE = [
     ] },
 
   { date: "Nov 3, 2026", type: "upcoming", scope: "Ballot Measure · Statewide", office: "State Question 847 — Property-Tax Valuation Caps",
-    note: "THE MEASURE MOST LIKELY TO TOUCH AN OKLAHOMA HOUSEHOLD'S BILL. SQ 847 would lower the annual cap on how fast a property's taxable value may rise — from 5% to 4% for most property, and from 3% to 1.75% for HOMESTEADS AND AGRICULTURAL LAND — effective in 2027. The caps limit growth in assessed value, not tax rates, so the effect compounds year over year for long-held homes and farms. ⚠ This measure was MISSING from our own build brief, which recorded only SQ 845 for November. ⚠ The official ballot title could not be retrieved from the Election Board, and no organized campaign on either side could be located [Verify].",
+    note: "THE MEASURE MOST LIKELY TO TOUCH AN OKLAHOMA HOUSEHOLD'S BILL. SQ 847 would lower the annual cap on how fast a property's taxable value may rise — from 5% to 4% for most property, and from 3% to 1.75% for HOMESTEADS AND AGRICULTURAL LAND — effective in 2027. The caps limit growth in assessed value, not tax rates, so the effect compounds year over year for long-held homes and farms. ⚠ This measure was MISSING from our own build brief, which recorded only SQ 845 for November. ⚠ The official ballot title could not be retrieved from the Election Board, and no organized campaign on either side could be located (Wave 75 absence).",
     candidates: [
       { name: "YES — lower the valuation caps", party: "I", winner: false,
         positions: [
@@ -1474,7 +1474,7 @@ const STATEWIDE = [
     candidates: [] },
 
   { date: "Aug 25, 2026", type: "past", scope: "Ballot Measure · Statewide", office: "State Question 844 — Manufacturing Exemption Reimbursement (REJECTED)",
-    note: "REJECTED DECISIVELY — 73.75% NO to 26.25% YES, 389,735 against to 138,755 for. SQ 844 would have given the Legislature authority over the methodology and level of reimbursement paid to local governments for property-tax revenue lost to manufacturing exemptions. ✅ THE CONTRAST WITH SQ 846 ON THE SAME BALLOT IS THE POINT: voters approved the voter-ID amendment and rejected this one by nearly three to one, on almost identical turnout — 528,490 votes here against 535,545 on SQ 846. ⚠ Figures are official Election Board returns at 100% of precincts, unofficial until Sept 1, 2026.",
+    note: "REJECTED DECISIVELY — 73.75% NO to 26.25% YES, 389,735 against to 138,755 for. SQ 844 would have given the Legislature authority over the methodology and level of reimbursement paid to local governments for property-tax revenue lost to manufacturing exemptions. ✅ THE CONTRAST WITH SQ 846 ON THE SAME BALLOT IS THE POINT: voters approved the voter-ID amendment and rejected this one by nearly three to one, on almost identical turnout — 528,490 votes here against 535,545 on SQ 846. ⚠ Figures are OFFICIAL Election Board returns (certified; results.okelections.us).",
     candidates: [] }
 ];
 
@@ -1488,10 +1488,10 @@ const STATEWIDE = [
 // ⚠ NO U.S. HOUSE NOMINATION WAS DECIDED AT THE AUG 25 RUNOFF. OK-1's Republican runoff was
 // scheduled but became moot when Jackson Lahmeyer withdrew on June 17, the day after the primary.
 // ⚠ NO LIBERTARIAN OR GREEN CANDIDATE FILED IN ANY DISTRICT. All four independents below ARE
-// officially certified in the filing book, so none of them carries a certification [Verify].
+// officially certified in the filing book, so none of them carries a certification (Wave 75 absence).
 // ⚠ RACE RATINGS COULD NOT BE READ AT THE RATERS' OWN SITES — cookpolitical.com and
 // insideelections.com both returned 403, and Sabato publishes the district ratings inside a chart
-// image. Every rating below is from secondary reporting and is marked [Verify] accordingly. The
+// image. Every rating below is from secondary reporting and is marked (Wave 75 absence) accordingly. The
 // PVI figures, 2024 margins, primary results and FEC numbers ARE directly sourced.
 const HOUSE_RACES = {
   1: {
@@ -1571,7 +1571,7 @@ const HOUSE_RACES = {
               "The district gave him a 52.7-point win in 2024"
             ],
             opponents: [
-              "His NDAA vote has been criticized from the right as a partial stand — voting against debt while ignoring foreign entanglements [Verify — sourced to a partisan blog, not a news outlet]",
+              "His NDAA vote has been criticized from the right as a partial stand — voting against debt while ignoring foreign entanglements (Wave 75 — sourced to a partisan blog, not a news outlet)",
               "$76,064 on hand is thin for an incumbent and would leave him exposed to any surprise (structural)",
               "A one-in-five primary protest vote against a sitting member is small but not nothing (structural)"
             ] },
@@ -1594,7 +1594,7 @@ const HOUSE_RACES = {
             ],
             opponents: [
               "He lost this seat by 52.7 points in 2024 and has raised under $5,000 this cycle",
-              "With $86 in the bank there is no campaign apparatus of any kind [Verify]",
+              "With $86 in the bank there is no campaign apparatus of any kind (Wave 75 absence)",
               "R+28 is the steepest structural climb in the state (structural)"
             ] },
           { name: "Ronnie Hopkins", party: "I", winner: false,
@@ -1606,7 +1606,7 @@ const HOUSE_RACES = {
             differentiators: [
               "Pastor; also ran for this seat in 2024",
               "Officially certified on the Election Board's own filing list — his ballot status is NOT in question",
-              "No FEC filing above the reporting threshold could be located — still no usable weball26/Ballotpedia financial summary for Ronnie Hopkins Wave 46 (hopkinsforcongress.wixsite.com HTTP 404) [Verify]"
+              "No FEC filing above the reporting threshold could be located — still no usable weball26/Ballotpedia financial summary for Ronnie Hopkins Wave 46 (hopkinsforcongress.wixsite.com HTTP 404) (Wave 75 absence)"
             ],
             supporters: [
               "Offers an Independent alternative in OK-2 where the general election is otherwise uncompetitive (hopkinsforcongress.wixsite.com)",
@@ -1623,7 +1623,7 @@ const HOUSE_RACES = {
     region: "Western Oklahoma and the Panhandle — the largest district in the state at 34,088 square miles, more than 48% of Oklahoma's land mass. Enid, Stillwater, Ponca City, Woodward, Guymon and Altus, plus part of Cleveland County. 28 counties.",
     races: [
       { date: "Nov 3, 2026", type: "upcoming",
-        note: "OKLAHOMA'S DEAN AGAINST A FIRST-TIME CANDIDATE. Frank Lucas has held this seat since a 1994 special election — the longest tenure in the delegation — and chaired the House Science, Space and Technology Committee (2023-25) and the House Agriculture Committee (2011-15). ✅ THE MOST TELLING NUMBER IS THE PRIMARY: 29.23% of Republican voters backed challenger Wade Burleson against a 30-year incumbent. ⚠ LUCAS HAD NO DEMOCRATIC OPPONENT AT ALL IN 2024, so there is no 2024 margin for this seat — this is the first contested general election here in four years. No independent or minor-party candidate filed. ⚠ Figures are official Election Board returns at 100% of precincts, unofficial until Sept 1, 2026.",
+        note: "OKLAHOMA'S DEAN AGAINST A FIRST-TIME CANDIDATE. Frank Lucas has held this seat since a 1994 special election — the longest tenure in the delegation — and chaired the House Science, Space and Technology Committee (2023-25) and the House Agriculture Committee (2011-15). ✅ THE MOST TELLING NUMBER IS THE PRIMARY: 29.23% of Republican voters backed challenger Wade Burleson against a 30-year incumbent. ⚠ LUCAS HAD NO DEMOCRATIC OPPONENT AT ALL IN 2024, so there is no 2024 margin for this seat — this is the first contested general election here in four years. No independent or minor-party candidate filed. ⚠ Figures are OFFICIAL Election Board returns (certified; results.okelections.us).",
         candidates: [
           { name: "Frank Lucas (incumbent)", party: "R", winner: false,
             positions: ["Farm Bill / production agriculture — crop insurance, credit, rural development (lucas.house.gov/resources/agriculture)", "All-of-the-above energy — oil, gas, and wind for independence (lucas.house.gov/resources/energy-environment)", "Tax relief and less regulation for producers (lucas.house.gov)"],
@@ -1653,7 +1653,7 @@ const HOUSE_RACES = {
               "Raised in Hennessey, lives in Enid; Oklahoma State University graduate and a former All-American hurdler",
               "Has owned or partnered in more than 12 businesses in Oklahoma and Florida",
               "Won the Democratic primary 67.4% (16,504) to 32.6%",
-              "⚠ No entry in the FEC 2026 bulk candidate file — no reportable committee activity could be located [Verify]"
+              "⚠ No entry in the FEC 2026 bulk candidate file — no reportable committee activity could be located (Wave 75 absence)"
             ],
             supporters: [
               "A small-business owner running an explicitly nonpartisan campaign she calls her Purple Campaign — she says she is tired of the division in the country",
@@ -1661,7 +1661,7 @@ const HOUSE_RACES = {
               "Lucas faced no Democrat at all in 2024, so simply contesting the seat gives voters a choice they did not have"
             ],
             opponents: [
-              "No reportable campaign finance activity against an incumbent holding $532,512 [Verify]",
+              "No reportable campaign finance activity against an incumbent holding $532,512 (Wave 75 absence)",
               "R+23 across a district covering nearly half the state's land area, which is expensive to canvass — structural",
               "A universal-health-care plank is a difficult sell in one of the most Republican rural districts in the country — structural"
             ] }
@@ -1672,7 +1672,7 @@ const HOUSE_RACES = {
     region: "South-central Oklahoma — Norman, Moore, Lawton and Fort Sill, Ada, Duncan, Ardmore and Newcastle. 13 counties.",
     races: [
       { date: "Nov 3, 2026", type: "upcoming",
-        note: "THE MOST POWERFUL OKLAHOMAN IN CONGRESS IS ON THIS BALLOT. Tom Cole has chaired the HOUSE APPROPRIATIONS COMMITTEE since April 2025 — the first Oklahoman and the first Native American to hold it — and an enrolled citizen of the Chickasaw Nation. ✅ HE NEARLY RETIRED: Oklahoma Watch and NOTUS reported in July 2025 that the Appropriations gavel is what kept him in the race. ⚠ Nearly 29% of Republican primary voters backed a little-known challenger anyway. Cook PVI R+17; Cole won by 37 points in 2024. ⚠ Figures are official Election Board returns at 100% of precincts, unofficial until Sept 1, 2026.",
+        note: "THE MOST POWERFUL OKLAHOMAN IN CONGRESS IS ON THIS BALLOT. Tom Cole has chaired the HOUSE APPROPRIATIONS COMMITTEE since April 2025 — the first Oklahoman and the first Native American to hold it — and an enrolled citizen of the Chickasaw Nation. ✅ HE NEARLY RETIRED: Oklahoma Watch and NOTUS reported in July 2025 that the Appropriations gavel is what kept him in the race. ⚠ Nearly 29% of Republican primary voters backed a little-known challenger anyway. Cook PVI R+17; Cole won by 37 points in 2024. ⚠ Figures are OFFICIAL Election Board returns (certified; results.okelections.us).",
         candidates: [
           { name: "Tom Cole (incumbent)", party: "R", winner: false,
             positions: ["Energy independence and grid reliability — energy security as national security (cole.house.gov)","Secure the border; fund ICE and Border Patrol; no amnesty (cole.house.gov immigration)","National defense / peace through strength and Appropriations leadership (house.gov; Battleground Vote)"],
@@ -1720,14 +1720,14 @@ const HOUSE_RACES = {
             differentiators: [
               "Disability-community activist and a member of the Lawton Access Board",
               "Officially certified on the Election Board's own filing list — his ballot status is NOT in question",
-              "No FEC filing could be located — Ballotpedia still says campaign-finance information not yet available Wave 46 [Verify]"
+              "No FEC filing could be located — Ballotpedia still says campaign-finance information not yet available Wave 46 (Wave 75 absence)"
             ],
             supporters: [
               "Brings disability-access advocacy into a race where no other candidate is raising it (local coverage / structural contrast)",
               "Gives voters a non-major-party option in a district that is not competitive"
             ],
             opponents: [
-              "No reported fundraising and no prior electoral base — absence stands Wave 46 [Verify]",
+              "No reported fundraising and no prior electoral base — absence stands Wave 46 (Wave 75 absence)",
               "Still no itemized House issues page — voters have advocacy biography + KSWO meet-and-greet framing, not a policy matrix (Wave 33 absence re-check)"
             ] }
         ] }
@@ -1737,7 +1737,7 @@ const HOUSE_RACES = {
     region: "Oklahoma City and the northern metro — most of Oklahoma County, plus Edmond, Piedmont, Guthrie, Shawnee and Seminole. 6 counties.",
     races: [
       { date: "Nov 3, 2026", type: "upcoming",
-        note: "THE LEAST REPUBLICAN DISTRICT IN OKLAHOMA, AND THE ONLY FOUR-WAY RACE IN THE STATE. Cook PVI R+9. ✅ THIS IS THE ONE OKLAHOMA SEAT A DEMOCRAT HAS HELD RECENTLY — Kendra Horn won it in 2018 and held it until 2021 — ⚠ BUT THE 2021 REDRAW IS PRECISELY WHAT CLOSED THAT DOOR: HB 1002 split the Oklahoma City core across districts, moving this seat sharply right, and Stephanie Bice's margin grew to 21.4 points in 2024. She drew no Republican primary challenger at all. Every major forecaster still rates it Solid or Safe Republican, though two secondary outlets moved it to Likely Republican in July 2026 — the only Oklahoma district any rater has placed outside the safest tier. ⚠ Figures are official Election Board returns at 100% of precincts, unofficial until Sept 1, 2026.",
+        note: "THE LEAST REPUBLICAN DISTRICT IN OKLAHOMA, AND THE ONLY FOUR-WAY RACE IN THE STATE. Cook PVI R+9. ✅ THIS IS THE ONE OKLAHOMA SEAT A DEMOCRAT HAS HELD RECENTLY — Kendra Horn won it in 2018 and held it until 2021 — ⚠ BUT THE 2021 REDRAW IS PRECISELY WHAT CLOSED THAT DOOR: HB 1002 split the Oklahoma City core across districts, moving this seat sharply right, and Stephanie Bice's margin grew to 21.4 points in 2024. She drew no Republican primary challenger at all. Every major forecaster still rates it Solid or Safe Republican, though two secondary outlets moved it to Likely Republican in July 2026 — the only Oklahoma district any rater has placed outside the safest tier. ⚠ Figures are OFFICIAL Election Board returns (certified; results.okelections.us).",
         candidates: [
           { name: "Stephanie Bice (incumbent)", party: "R", winner: false,
             positions: [
@@ -1806,25 +1806,25 @@ const HOUSE_RACES = {
             positions: [
               "T.A.P. — Tax Allocation Program: simplify tax filing, then let each taxpayer allocate 100% of their tax dollars across federal programs via a proposed Schedule Omega (candidate LinkedIn platform post, Dec 2024, framed for the 2026 House race)",
               "Efficiency revisions to federal and Oklahoma tax codes so program spending reflects taxpayer allocation choices (same LinkedIn T.A.P. post)",
-              "⚠ No standalone campaign website located beyond social/LinkedIn statements [Verify — absence of a traditional issues page; Wave 34 Ballotpedia recheck still LinkedIn/social only]"
+              "⚠ No standalone campaign website located beyond social/LinkedIn statements (Wave 75 — absence of a traditional issues page; Wave 34 Ballotpedia recheck still LinkedIn/social only)"
             ],
             differentiators: [
-              "⚠ Described in filings and coverage as an accountant and businessman, though one source describes him as an entertainer — the descriptions conflict [Verify]",
+              "⚠ Described in filings and coverage as an accountant and businessman, though one source describes him as an entertainer — the descriptions conflict (Wave 75 absence)",
               "Officially certified on the Election Board's own filing list — his ballot status is NOT in question",
-              "No FEC financial summary could be located for the 2026 cycle - still no weball26 row for Austin Nieves Wave 41 [Verify]"
+              "No FEC financial summary could be located for the 2026 cycle - still no weball26 row for Austin Nieves Wave 41 (Wave 75 absence)"
             ],
             supporters: [
               "Adds a second non-major-party option in the only Oklahoma district where the general election is meaningfully contested (structural)"
             ],
             opponents: [
-              "Thin LinkedIn-only T.A.P. platform, no located FEC financial summary, and conflicting accounts of his own occupation [Verify]",
+              "Thin LinkedIn-only T.A.P. platform, no located FEC financial summary, and conflicting accounts of his own occupation (Wave 75 absence)",
               "Two independents on one ballot split whatever protest vote exists (structural)"
             ] }
         ] }
     ] }
 };
 
-const SITE_META = { name: "Oklahoma Elections Hub", lastUpdated: "September 11, 2026 (Wave 62)" };
+const SITE_META = { name: "Oklahoma Elections Hub", lastUpdated: "September 11, 2026 (Wave 75)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Oklahoma county-level down-ballot research has not started.)

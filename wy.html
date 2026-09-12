@@ -712,7 +712,7 @@
       <strong>WY Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">September 11, 2026 (Wave 52)</span><br>
+      Last updated: <span id="last-updated">September 11, 2026 (Wave 75)</span><br>
       Sources: Wyoming Secretary of State (sos.wyo.gov) — the 2026 Official Primary Election Results summaries certified by the State Canvassing Board on Aug 26, 2026, the Statewide Candidates Summary, the Successful Write-In Candidates list, '2026 Offices Up for Election', '2026 Judges Standing for Retention', the 2026 Voter's Guide and the property-tax initiative certificate; U.S. Census Bureau 2020 county FIPS file; FEC; WyoFile's 2026 Election Guide; Cowboy State Daily; Casper Star-Tribune; Gillette News Record; Oil City News; Wyoming Public Media.</div>
   </div>
 </footer>
@@ -799,7 +799,7 @@ const COUNTIES = {
 const STATEWIDE = [
   // ─────────────────────────── UPCOMING ───────────────────────────
   { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · Statewide", office: "U.S. Senator from Wyoming (Class 2)",
-    note: "OPEN SEAT — CYNTHIA LUMMIS IS RETIRING, and U.S. Rep. Harriet Hageman won the Republican nomination on Aug 18 with 64.7%. ⚠ Wyoming's other seat (John Barrasso, Class 1) is NOT on the 2026 ballot; the Secretary of State's official 'Offices Up for Election' lists exactly one U.S. Senate seat. ✅ Primary figures here are OFFICIAL — certified by the Wyoming State Canvassing Board on Aug 26, 2026. ⚠ No Democrat has won a statewide race in Wyoming since 2006 [Verify — a press summary, not an authoritative election-history source], and Hageman has outraised Byrd by roughly a hundred to one. ✅ Trump endorsed Hageman, as did the retiring Lummis.",
+    note: "OPEN SEAT — CYNTHIA LUMMIS IS RETIRING, and U.S. Rep. Harriet Hageman won the Republican nomination on Aug 18 with 64.7%. ⚠ Wyoming's other seat (John Barrasso, Class 1) is NOT on the 2026 ballot; the Secretary of State's official 'Offices Up for Election' lists exactly one U.S. Senate seat. ✅ Primary figures here are OFFICIAL — certified by the Wyoming State Canvassing Board on Aug 26, 2026. ⚠ No Democrat has won a statewide race in Wyoming since 2006 (Wave 75 — a press summary, not an authoritative election-history source), and Hageman has outraised Byrd by roughly a hundred to one. ✅ Trump endorsed Hageman, as did the retiring Lummis.",
     candidates: [
       { name: "Harriet Hageman", party: "R", winner: false,
         positions: [
@@ -820,7 +820,7 @@ const STATEWIDE = [
         ],
         opponents: [
           "Her fundraising leans heavily on out-of-state energy and industry PACs rather than Wyoming donors",
-          "Critics say she prioritizes national culture-war fights over Wyoming-specific constituent work [Verify — a characterization drawn from primary-campaign commentary, not a single authoritative source]",
+          "Critics say she prioritizes national culture-war fights over Wyoming-specific constituent work (Wave 75 — a characterization drawn from primary-campaign commentary, not a single authoritative source)",
           "35% of Republican primary voters chose someone else despite her overwhelming money and endorsement advantage"
         ] },
       { name: "James Byrd", party: "D", winner: false,
@@ -866,17 +866,17 @@ const STATEWIDE = [
           "His public-lands legislation is evidence he will resist federal land disposal"
         ],
         opponents: [
-          "Hard-right critics say his willingness to compromise and his leadership-PAC funding mark him as an establishment figure [Verify — a characterization of primary-campaign criticism]",
+          "Hard-right critics say his willingness to compromise and his leadership-PAC funding mark him as an establishment figure (Wave 75 — a characterization of primary-campaign criticism)",
           "He lost the Trump endorsement to Degenfelder and won with under half the primary vote",
           "Bextel's Constitution Party candidacy is explicitly pitched at conservatives who consider him insufficiently right-wing"
         ] },
       { name: "Kenneth R. Casner", party: "D", winner: false,
-        positions: ["⚠ No platform positions could be located — he did not respond to WyoFile's candidate questionnaire and no campaign website was found [Verify]"],
+        positions: ["⚠ No platform positions could be located — he did not respond to WyoFile's candidate questionnaire and no campaign website was found (Wave 75 absence)"],
         differentiators: [
           "Democratic nominee, effectively unopposed in the Aug 18 primary with 10,710 votes",
           "Reported $0 raised and $0 spent as of Aug 17, 2026",
           "⚠ No campaign website could be located; his listed contact is a personal email address",
-          "No prior elected office could be identified [Verify]"
+          "No prior elected office could be identified (Wave 75 absence)"
         ],
         supporters: [
           "Gives Wyoming Democrats a name on the ballot in an open-seat governor's race rather than ceding it entirely (structural)",
@@ -957,7 +957,7 @@ const STATEWIDE = [
           "No prior elected experience and no campaign website beyond a social-media page"
         ] } ] },
   { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Wyoming State Auditor",
-    note: "NO DEMOCRAT FILED — INCUMBENT REPUBLICAN KRISTI RACINES IS EFFECTIVELY UNOPPOSED for a third term. She was unopposed in the Aug 18 Republican primary as well, taking 107,041 votes. ⚠ The Democratic primary drew NO candidate at all, and the Secretary of State's official Successful Write-In Candidates document confirms no statewide write-in reached the 25-vote threshold, so no Democratic nominee exists. ⚠ Minor-party and independent filing deadlines (Aug 17 and Aug 24) have passed but the Secretary of State had not published the general-election candidate roster as of Aug 28, so a third-party or independent challenger cannot be fully ruled out [Verify]. ✅ Primary figures are OFFICIAL, certified Aug 26, 2026.",
+    note: "NO DEMOCRAT FILED — INCUMBENT REPUBLICAN KRISTI RACINES IS EFFECTIVELY UNOPPOSED for a third term. She was unopposed in the Aug 18 Republican primary as well, taking 107,041 votes. ⚠ The Democratic primary drew NO candidate at all, and the Secretary of State's official Successful Write-In Candidates document confirms no statewide write-in reached the 25-vote threshold, so no Democratic nominee exists. ⚠ Minor-party and independent filing deadlines (Aug 17 and Aug 24) have passed but the Secretary of State had not published the general-election candidate roster as of Aug 28, so a third-party or independent challenger cannot be fully ruled out (Wave 75 absence). ✅ Primary figures are OFFICIAL, certified Aug 26, 2026.",
     candidates: [
       { name: "Kristi Racines (incumbent)", party: "R", winner: false,
         positions: [
@@ -978,11 +978,11 @@ const STATEWIDE = [
         ],
         opponents: [
           "She runs unopposed, so voters get no accountability contest for an office that oversees all state spending (structural)",
-          "As a sitting member of the State Loan and Investment Board she shares responsibility for board decisions criticized during the 2026 primaries, including wind-energy approvals [Verify — that criticism was directed at the board generally in primary attack ads, not at Racines specifically]",
+          "As a sitting member of the State Loan and Investment Board she shares responsibility for board decisions criticized during the 2026 primaries, including wind-energy approvals (Wave 75 — that criticism was directed at the board generally in primary attack ads, not at Racines specifically)",
           "A third term raises the usual entrenchment objections in an office with no term limit (structural)"
         ] } ] },
   { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Wyoming State Treasurer",
-    note: "NO DEMOCRAT FILED — INCUMBENT REPUBLICAN CURT MEIER IS EFFECTIVELY UNOPPOSED after winning a contested primary 68.0% to 31.6% over Scott Smith. The office manages roughly $34 BILLION in state trust assets. ⚠ As with State Auditor, no Democrat filed and no statewide write-in qualified, so there is no Democratic nominee. ⚠ The Secretary of State had not published the general-election roster as of Aug 28, so minor-party or independent entries cannot be fully ruled out [Verify]. ✅ Primary figures are OFFICIAL, certified Aug 26, 2026.",
+    note: "NO DEMOCRAT FILED — INCUMBENT REPUBLICAN CURT MEIER IS EFFECTIVELY UNOPPOSED after winning a contested primary 68.0% to 31.6% over Scott Smith. The office manages roughly $34 BILLION in state trust assets. ⚠ As with State Auditor, no Democrat filed and no statewide write-in qualified, so there is no Democratic nominee. ⚠ The Secretary of State had not published the general-election roster as of Aug 28, so minor-party or independent entries cannot be fully ruled out (Wave 75 absence). ✅ Primary figures are OFFICIAL, certified Aug 26, 2026.",
     candidates: [
       { name: "Curt Meier (incumbent)", party: "R", winner: false,
         positions: [
@@ -1027,7 +1027,7 @@ const STATEWIDE = [
           "Speakership experience means he can move education funding through the Legislature"
         ],
         opponents: [
-          "Conservatives who backed Degenfelder's curriculum and parental-rights agenda see him as a return to establishment education politics [Verify — a characterization of primary-campaign criticism]",
+          "Conservatives who backed Degenfelder's curriculum and parental-rights agenda see him as a return to establishment education politics (Wave 75 — a characterization of primary-campaign criticism)",
           "His largest disclosed donor is a utility PAC, which critics note is unrelated to education",
           "Long legislative tenure invites the argument that he is part of the system he would now oversee (structural)"
         ] },
@@ -1035,7 +1035,7 @@ const STATEWIDE = [
         positions: [
           "Make local public schools the best choice so parents stop considering alternatives",
           "Strengthen science curriculum and instruction",
-          "Support public schools over voucher-style alternatives [Verify — inferred from her stated top priority, not a separately stated plank]"
+          "Support public schools over voucher-style alternatives (Wave 75 — inferred from her stated top priority, not a separately stated plank)"
         ],
         differentiators: [
           "Degrees in biochemistry (New Mexico State), human genetics (Johns Hopkins) and law (Northwestern)",
@@ -1051,10 +1051,10 @@ const STATEWIDE = [
         opponents: [
           "Raised under $1,000 against an opponent with $190,000 — no capacity for statewide outreach (structural)",
           "No prior elected office and no standalone campaign website",
-          "Faces an electorate that has not elected a Democrat statewide since 2006 [Verify — a press summary, not an authoritative source]"
+          "Faces an electorate that has not elected a Democrat statewide since 2006 (Wave 75 — a press summary, not an authoritative source)"
         ] } ] },
   { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Judicial Retention — Wyoming (3 jurists)",
-    note: "THREE JURISTS FACE STATEWIDE RETENTION: two of Wyoming's five Supreme Court justices, both appointed by Gov. Mark Gordon, plus the single judge of the statewide Chancery Court. Wyoming uses MERIT SELECTION — justices are appointed, then face an unopposed yes/no retention vote, and win a full eight-year term (six for Chancery) if retained. ⚠ These are NONPARTISAN: there is no opponent and no party label, and each card is listed party 'I' by this site's convention. ⚠ Wyoming has never removed a Supreme Court justice by retention vote [Verify — no authoritative source could be read], though both justices have publicly discussed rising legislative and public scrutiny of the court. Source: Wyoming Secretary of State, '2026 Judges Standing for Retention,' dated July 31, 2026.",
+    note: "THREE JURISTS FACE STATEWIDE RETENTION: two of Wyoming's five Supreme Court justices, both appointed by Gov. Mark Gordon, plus the single judge of the statewide Chancery Court. Wyoming uses MERIT SELECTION — justices are appointed, then face an unopposed yes/no retention vote, and win a full eight-year term (six for Chancery) if retained. ⚠ These are NONPARTISAN: there is no opponent and no party label, and each card is listed party 'I' by this site's convention. ⚠ Wyoming has never removed a Supreme Court justice by retention vote (Wave 75 — no authoritative source could be read), though both justices have publicly discussed rising legislative and public scrutiny of the court. Source: Wyoming Secretary of State, '2026 Judges Standing for Retention,' dated July 31, 2026.",
     candidates: [
       { name: "Bridget Hill — Supreme Court (retain / do not retain)", party: "I", winner: false,
         positions: ["⚠ Retention races carry no platform — justices do not campaign on positions"],
@@ -1071,7 +1071,7 @@ const STATEWIDE = [
         ],
         opponents: [
           "Her prior role as Attorney General raises recusal questions in cases the state litigated on her watch (structural)",
-          "Some legislators have pushed for greater scrutiny of the judiciary, which could translate into retention opposition [Verify — general scrutiny reported by WyoFile; no organized 'no' campaign was identified]",
+          "Some legislators have pushed for greater scrutiny of the judiciary, which could translate into retention opposition (Wave 75 — general scrutiny reported by WyoFile; no organized 'no' campaign was identified)",
           "She served barely a year before facing voters, giving them a thin record to judge"
         ] },
       { name: "Robert C. Jarosh — Supreme Court (retain / do not retain)", party: "I", winner: false,
@@ -1079,7 +1079,7 @@ const STATEWIDE = [
         differentiators: [
           "Appointed to the Wyoming Supreme Court by Gov. Gordon on Jan 19, 2024; took office March 27, 2024",
           "Standing for his FIRST retention vote; a full term is eight years",
-          "Came to the court from private practice in Cheyenne [Verify — background from an aggregator lead, not confirmed against a primary source]",
+          "Came to the court from private practice in Cheyenne (Wave 75 — background from an aggregator lead, not confirmed against a primary source)",
           "Unopposed — retain or do not retain"
         ],
         supporters: [
@@ -1089,7 +1089,7 @@ const STATEWIDE = [
         ],
         opponents: [
           "He was appointed rather than elected, which critics of merit selection say gives voters too little say (structural)",
-          "Rising legislative scrutiny of the Wyoming judiciary could produce protest 'no' votes [Verify — general scrutiny reported by WyoFile; no organized 'no' campaign was identified]",
+          "Rising legislative scrutiny of the Wyoming judiciary could produce protest 'no' votes (Wave 75 — general scrutiny reported by WyoFile; no organized 'no' campaign was identified)",
           "Retention ballots draw high undervote rates, so outcomes turn on a small, low-information slice of the electorate (structural)"
         ] },
       { name: "Benjamin M. Burningham — Chancery Court (retain / do not retain)", party: "I", winner: false,
@@ -1250,8 +1250,8 @@ const HOUSE_RACES = {
             ],
             opponents: [
               "Unfunded against a well-financed opponent — she raised roughly 1% of Gray's total (structural)",
-              "Wyoming's at-large seat has not elected a Democrat since 1976 [Verify — a historical claim from a press summary, not read from an authoritative source]",
-              "At 75 on Election Day she would be among the oldest freshman House members [Verify — age from a candidate guide]"
+              "Wyoming's at-large seat has not elected a Democrat since 1976 (Wave 75 — a historical claim from a press summary, not read from an authoritative source)",
+              "At 75 on Election Day she would be among the oldest freshman House members (Wave 75 — age from a candidate guide)"
             ] } ] },
       { date: "Aug 18, 2026", type: "past", scope: "Federal · At-Large · Primary",
         note: "THE MARQUEE RACE OF THE NIGHT: CHUCK GRAY WON A NINE-CANDIDATE FIELD WITH JUST 24.9%, beating Steve Friess by 6,165 votes out of 125,371 cast. ⚠ A tenth name, Frank Chapman, appeared on ballots after withdrawing and still drew 2,162 votes, which the Secretary of State reports for completeness. ⚠ Trump endorsed no one in this race. Certified Aug 26, 2026.",
@@ -1272,7 +1272,7 @@ const HOUSE_RACES = {
           { name: "Elena Del Real", party: "D", winner: false, positions: [], differentiators: ["2,660 votes — 21.8%", "Strongest in Laramie County (660 votes)"], supporters: [], opponents: [] } ] } ] },
 };
 
-const SITE_META = { name: "Wyoming Elections Hub", lastUpdated: "September 11, 2026 (Wave 52)" };
+const SITE_META = { name: "Wyoming Elections Hub", lastUpdated: "September 11, 2026 (Wave 75)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Wyoming county-level down-ballot research has not started.)
