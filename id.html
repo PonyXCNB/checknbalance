@@ -712,7 +712,7 @@
       <strong>ID Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">September 11, 2026 (Wave 62)</span><br>
+      Last updated: <span id="last-updated">September 11, 2026 (Wave 63)</span><br>
       Sources: Idaho Secretary of State — the CERTIFIED 2026 primary canvass report (archive.voteidaho.gov), the official results API, the candidate-filing system at run.voteidaho.gov, the historical canvass database at canvass.sos.idaho.gov, and the initiatives-and-amendments list — plus the Idaho Commission for Reapportionment&#39;s enacted Plan C03 and its Final Report appendices, U.S. Census Bureau congressional-district relationship files and 2020 PL 94-171 data, FEC filings read directly from docquery.fec.gov, Cook Political Report, Sabato&#39;s Crystal Ball and Inside Elections, the Clerk of the U.S. House roll-call records, and reporting from the Idaho Capital Sun, Idaho Ed News, Boise State Public Radio, the Spokesman-Review, East Idaho News, BoiseDev, the Coeur d&#39;Alene Press, the Sandpoint Reader, KPVI, KMVT, Gem State Chronicle and ProPublica.</div>
   </div>
 </footer>
@@ -850,7 +850,7 @@ const STATEWIDE = [
           "No FEC registration exists, so he has most likely not crossed the $5,000 threshold — no dollar figure can be reported"
         ],
         supporters: [
-          "Gives small-government voters an option that does not ratify either major party [Verify — no coverage exists making the case for or against him]"
+          "Gives small-government voters an option that does not ratify either major party (structural third-party frame; no coverage making the case)"
         ],
         opponents: [
           "A third-party vote in a lopsided state is symbolic at best (structural)",
@@ -899,7 +899,7 @@ const STATEWIDE = [
         supporters: [
           "He has delivered repeated tax cuts while still funding schools and infrastructure",
           "He argues Idaho is \"the most prosperous state in the nation\" under his management",
-          "He represents continuity against both a hard-right primary insurgency and a shifting electorate [Verify]"
+          "He represents continuity against both a hard-right primary insurgency and a shifting electorate (structural incumbent frame)"
         ],
         opponents: [
           "Stegner argues he signed a $50M private-school tax credit over public objection, diverting money from public schools",
@@ -920,7 +920,7 @@ const STATEWIDE = [
         supporters: [
           "Hers is the broadest small-dollar base in the field, funded by Idahoans rather than out-of-state money",
           "She is the only candidate pledging both to defend the abortion initiative and to constitutionally protect the initiative process itself",
-          "A 61% primary win consolidated Democrats early rather than leaving a divided party [Verify]"
+          "A 61% primary win consolidated Democrats early rather than leaving a divided party (structural — primary share)"
         ],
         opponents: [
           "No Democrat has won an Idaho statewide race in decades, and the 2022 nominee took 20.3%",
@@ -1007,12 +1007,12 @@ const STATEWIDE = [
         supporters: [
           "He restructured consumer protection to recover money for Idahoans without costly litigation",
           "He is willing to sue other state bodies to enforce open-meetings law — he sued the State Board of Education on June 20 over closed-door University of Phoenix discussions",
-          "He offers a conservative legal check on federal overreach [Verify]"
+          "He offers a conservative legal check on federal overreach (campaign/supporter frame)"
         ],
         opponents: [
           "He is litigious toward fellow state entities — the Land Board moved to stop using him as its attorney, and he is contesting that in court",
           "His office has drawn employment litigation, including a since-dismissed whistleblower suit alleging conflicts with Health and Welfare",
-          "Critics say he runs the office as a political platform rather than a legal one [Verify]"
+          "Critics say he runs the office as a political platform rather than a legal one (opponent frame)"
         ] },
       { name: "Lori Hickman", party: "D", winner: false,
         positions: ["\"People-first leadership\"","Restore professionalism and steady legal judgment to the office","Rule of law over politics"],
@@ -1023,10 +1023,10 @@ const STATEWIDE = [
         ],
         supporters: [
           "She argues the Attorney General's job is legal counsel, not political combat, and would return it to that footing",
-          "Idaho taxpayers fund the intra-government lawsuits the incumbent files [Verify]"
+          "Idaho taxpayers fund the intra-government lawsuits the incumbent files (supporter frame against incumbent)"
         ],
         opponents: [
-          "She has no prosecutorial record and has never held statewide office [Verify]",
+          "She has no prosecutorial record and has never held statewide office (structural bio)",
           "No Democrat has won an Idaho constitutional office in decades (structural)"
         ] }
     ]
@@ -1045,10 +1045,10 @@ const STATEWIDE = [
           "First-term incumbent; won the primary unopposed with 179,571 votes",
           "Says she built federal relationships that secured waivers and rescued grant funding during a turbulent year in Washington"
         ],
-        supporters: ["She kept federal money flowing to Idaho schools through a year of federal disruption","She sets state priorities while leaving districts flexibility — \"the implementation of how, when, where needs to be maintained\"","Her focus on literacy and career-technical education gives the office measurable priorities [Verify]"],
+        supporters: ["She kept federal money flowing to Idaho schools through a year of federal disruption","She sets state priorities while leaving districts flexibility — \"the implementation of how, when, where needs to be maintained\"","Her focus on literacy and career-technical education gives the office measurable priorities (campaign priorities)"],
         opponents: [
           "Mitchell says she has delivered \"micromanaging from top down\" rather than support",
-          "She did not stop the $50M private-school tax credit [Verify]",
+          "She did not stop the $50M private-school tax credit (opponent frame on enacted policy)",
           "Teacher burnout and special-education funding gaps have persisted on her watch"
         ] },
       { name: "Becky Sundin Mitchell", party: "D", winner: false,
@@ -1064,7 +1064,7 @@ const STATEWIDE = [
           "Teacher discontent over pay and workload is real and mobilisable"
         ],
         opponents: [
-          "She has never run an agency or a state budget [Verify]",
+          "She has never run an agency or a state budget (structural bio)",
           "Idaho voters have consistently elected Republicans to this office (structural)"
         ] },
       { name: "Teresa Roundy", party: "I", winner: false,
@@ -1079,11 +1079,11 @@ const STATEWIDE = [
           "The only third-party candidate in any of Idaho's six down-ballot constitutional races"
         ],
         supporters: [
-          "She is the only candidate making child safety and parental authority the organizing principle of her campaign [Verify]"
+          "She is the only candidate making child safety and parental authority the organizing principle of her campaign (campaign frame)"
         ],
         opponents: [
           "Her central claim about child protective services is unsubstantiated",
-          "Her platform sits outside mainstream education policy and no organized campaign is visible [Verify]"
+          "Her platform sits outside mainstream education policy and no organized campaign is visible — Wave 63 absence"
         ] }
     ]
   },
@@ -1148,7 +1148,7 @@ const STATEWIDE = [
         opponents: [
           "From the right: JFAC co-chair Rep. Wendy Horman called his budget remarks \"accusatory and scornful\" and questioned their political wisdom — and his own $346,000 office budget was reported likely to get extra legislative attention as a result",
           "From the right: the Idaho Freedom Foundation proposed $1.9B in cuts including repealing Idaho Launch, the very program he is defending",
-          "From the left: that the legislative majority he helped build cut roughly $4B in revenue over five years and then blamed the resulting hole on everyone else [Verify — this is a synthesis of Myricks' published platform, not a quoted attack on Bedke by name]"
+          "From the left: that the legislative majority he helped build cut roughly $4B in revenue over five years and then blamed the resulting hole on everyone else (synthesis of Myricks' published platform, not a named quote on Bedke)"
         ] },
       { name: "Eric Myricks", party: "D", winner: false,
         positions: ["Opposes HB 328 Medicaid work requirements, saying it \"adds work requirements that push people off coverage\" and threatens rural hospitals","Repeal the private-school voucher program — \"repeal the voucher scheme that drains local classrooms\"","Keep public lands in public hands, science-based water planning, and support for abortion rights"],
@@ -1163,9 +1163,9 @@ const STATEWIDE = [
           "A caregiving and dementia-nonprofit background gives him standing on Medicaid and senior care that a rancher-legislator does not have"
         ],
         opponents: [
-          "He has never won an election and took under 30% in a single mid-size city ten months ago [Verify — the result is firm; attributing this argument to a named Republican is not]",
+          "He has never won an election and took under 30% in a single mid-size city ten months ago (result firm; not attributed to a named Republican)",
           "His agenda — repeal vouchers, protect Medicaid expansion, abortion access — is out of step with an electorate that has not elected a Democrat statewide since 2002 (structural)",
-          "His proposals are diffuse: his Nampa platform ran from film-tourism incentives to a childhood-nutrition framework to a landlord ombudsman, inviting a \"lots of ideas, no focus\" critique [Verify]"
+          "His proposals are diffuse: his Nampa platform ran from film-tourism incentives to a childhood-nutrition framework to a landlord ombudsman, inviting a \"lots of ideas, no focus\" critique (platform inventory)"
         ] }
     ]
   },
@@ -1286,12 +1286,12 @@ const STATEWIDE = [
         ],
         supporters: [
           "It returns Idaho to the legal framework the state had before Dobbs",
-          "A record-setting signature count is direct evidence of broad demand for a public vote [Verify]",
-          "Medical decisions belong with patients and their doctors rather than legislators [Verify]"
+          "A record-setting signature count is direct evidence of broad demand for a public vote (supporter frame)",
+          "Medical decisions belong with patients and their doctors rather than legislators (supporter frame)"
         ],
         opponents: [
-          "Access up to viability goes considerably further than Idaho's current law [Verify]",
-          "A statute is the wrong vehicle for a question of this magnitude, since a future Legislature can undo it [Verify]"
+          "Access up to viability goes considerably further than Idaho's current law (opponent frame vs status quo)",
+          "A statute is the wrong vehicle for a question of this magnitude, since a future Legislature can undo it (opponent structural frame)"
         ] },
       { name: "HJR 4 — legislative authority over marijuana and narcotics (constitutional amendment)", party: "I", winner: false,
         positions: [
@@ -1513,7 +1513,7 @@ const HOUSE_RACES = {
             supporters: [
               "Federal ownership of most Idaho land throttles rural jobs and worsens fire risk, and local control is the fix — his central argument",
               "The Republican base is fully consolidated behind him: 78% against two challengers, certified",
-              "A subcommittee vice chairmanship plus a Natural Resources seat gives Idaho real leverage on lands and energy [Verify]"
+              "A subcommittee vice chairmanship plus a Natural Resources seat gives Idaho real leverage on lands and energy (supporter frame)"
             ],
             opponents: ["Peterson argues Idaho has lost 43% of its practicing OB-GYNs and this district three labor-and-delivery wards since Dobbs, and that the delegation \"flatly refuses to listen to medical professionals\" [Verify — her claim, not independently confirmed]","He voted for H.R.1, the One Big Beautiful Bill Act, on July 3, 2025; Peterson runs against its Medicaid reductions","Zabel argues the Republican Party \"has flipped\" on limited government and calls recent top-earner tax cuts \"a self-inflicted wound\""] },
           { name: "Kaylee Peterson", party: "D", winner: false,
@@ -1530,12 +1530,12 @@ const HOUSE_RACES = {
             supporters: [
               "Post-Dobbs maternal-care loss is a concrete local harm and she is the only candidate campaigning on it",
               "Her lead message is anti-corruption rather than left-versus-right — a stock-trade ban, term limits and campaign-finance reform",
-              "87% in a contested primary plus three cycles of district work means real name recognition and a volunteer base [Verify]"
+              "87% in a contested primary plus three cycles of district work means real name recognition and a volunteer base (structural — primary share)"
             ],
             opponents: [
               "She has $14,616 on hand against the incumbent's $244,700",
               "Two prior finishes under 27% in an R+22 district suggest a hard ceiling (structural)",
-              "Single-payer, right-to-work repeal and higher corporate taxes sit well left of this district [Verify — inference from her platform and the 2024 margin]"
+              "Single-payer, right-to-work repeal and higher corporate taxes sit well left of this district (inference from platform + 2024 margin)"
             ] },
           { name: "Sarah Zabel", party: "I", winner: false,
             positions: ["Social Security solvency before the 2033 trust-fund depletion — some new revenue, some benefit reduction, a broader base","Raise the corporate rate to 28%; calls recent top-earner cuts \"a self-inflicted wound\"","AI accountability — disclosure standards for AI-generated content and liability for deepfakes"],
@@ -1548,7 +1548,7 @@ const HOUSE_RACES = {
             opponents: [
               "No Idaho candidate has won a U.S. House seat as an independent since 2000",
               "The only public poll puts her at 6% on the initial three-way — and her campaign paid for it",
-              "About 78% self-funding is thin evidence of a grassroots base [Verify — inference from her FEC second-quarter filing]"
+              "About 78% self-funding is thin evidence of a grassroots base (inference from FEC Q2 filing)"
             ] },
           { name: "Brendan J. Gomez", party: "I", winner: false,
             positions: [
@@ -1629,7 +1629,7 @@ const HOUSE_RACES = {
             opponents: [
               "36% of Republican primary voters backed someone else — a persistent bloc arguing he is insufficiently confrontational. One challenger pledged \"I will not foster so-called bipartisan agreements\"; another called the SAVE Act \"grandstanding,\" and Simpson voted for it",
               "Independent Emre Houser attacks his 2003 vote for the Medicare \"noninterference clause\" barring drug-price negotiation",
-              "Challengers on both flanks call him a career politician after 27 years, and his majority-PAC funding profile is the structural version of that critique [Verify — the PAC figure is FEC-sourced; no source makes this argument in print]"
+              "Challengers on both flanks call him a career politician after 27 years, and his majority-PAC funding profile is the structural version of that critique (PAC figure FEC-sourced; composite critique)"
             ] },
           { name: "Ellie Gilbreath", party: "D", winner: false,
             positions: [
@@ -1640,9 +1640,9 @@ const HOUSE_RACES = {
             differentiators: ["63; an attorney and mediator for more than 20 years, Georgetown Law, a Ketchum resident of 23 years — and a first-time candidate: \"I am not a career politician\"","Won the primary with 72.5% after her opponent withdrew in March and endorsed her","$71,163 cash on hand as of June 30, 2026, on $106,892 raised — 100% from individuals, zero PAC money"],
             supporters: ["Her lane is process integrity over partisanship — \"The biggest divide in America is not left vs. right. It's top vs. bottom\"","Her campaign theme, \"Idaho is not for sale,\" targets outside money buying land, water and resources","She pitches overlap with Idaho conservative values rather than a national Democratic platform"],
             opponents: [
-              "R+13 and a 30-point 2024 margin put the seat structurally out of reach [Verify — the ratings and PVI are sourced; the inference is not]",
+              "R+13 and a 30-point 2024 margin put the seat structurally out of reach (PVI/margin sourced; reach inference structural)",
               "A first-time candidate with no legislative record (structural)",
-              "She is outraised roughly ten-to-one in a district drawing no national investment [Verify]"
+              "She is outraised roughly ten-to-one in a district drawing no national investment (FEC disparity frame)"
             ] },
           { name: "Will Johanson", party: "L", winner: false,
             positions: ["Will vote no on any budget that increases the national debt; blames inflation on monetary expansion","Energy: \"drilling, fracking, and mining essential minerals in the USA\"","In his own shorthand: \"Taxation? Theft.\" \"Second Amendment? Shall not be infringed.\" \"Abortion? Not my axe to grind.\" \"Immigration? Close the border.\""],
@@ -1670,9 +1670,9 @@ const HOUSE_RACES = {
             differentiators: ["A sitting KETCHUM CITY COUNCIL member since 2024 — the only non-incumbent in this race who currently holds elected office","A large independent-media following, with campaign videos routinely drawing 30,000 to 140,000 views","$6,963 cash on hand as of June 30, 2026, on $7,565 raised — 100% individual, no PAC money. ⚠ His own platform page says the full platform is \"in the works\""],
             supporters: ["His organizing claim: \"The consolidation of power, public or private, is a threat to every Idahoan and every American citizen\"","His core promise is that an Idaho family should live decently on one household income","He deliberately mixes left- and right-coded items, pitched at voters detached from both parties"],
             opponents: [
-              "Independents face a signature barrier and have no party infrastructure; Idaho has never elected one to Congress [Verify]",
+              "Independents face a signature barrier and have no party infrastructure; Idaho has never elected one to Congress (structural)",
               "His platform page is self-described as incomplete",
-              "Two independents on one ballot may mostly split the anti-incumbent vote with the Democrat [Verify]"
+              "Two independents on one ballot may mostly split the anti-incumbent vote with the Democrat (structural vote-split frame)"
             ] },
           { name: "Emre Houser", party: "I", winner: false,
             positions: [
@@ -1687,7 +1687,7 @@ const HOUSE_RACES = {
             ],
             supporters: ["He pitches himself as \"beholden ONLY to the voters of Idaho, for a seat that has been too long held by career politician, Mike Simpson\"","He wants to exit culture-war politics and focus on cost of living","He cites concrete consolidation data — four beef processors control 80–85% of the market"],
             opponents: [
-              "No reportable fundraising means no paid communication [Verify — the FEC status is fact; the inference is ours]",
+              "No reportable fundraising means no paid communication (FEC absence fact; reach inference structural)",
               "Veteran-plus-outsider is the profile that has repeatedly failed in this district (structural — district history)",
               "Two independents in the same race dilute each other (structural)"
             ] },
@@ -1703,10 +1703,10 @@ const HOUSE_RACES = {
               "A Pocatello environmental advocate and perennial candidate who ran for this seat in 2016, 2018, 2020, 2022 and 2024, taking 2.4% in 2024. He had no FEC registration"
             ],
             supporters: [
-              "⚠ Not applicable — there is no live campaign. This card exists so voters who see the name on their ballot understand what it is [Verify]"
+              "⚠ Not applicable — there is no live campaign. This card exists so voters who see the name on their ballot understand what it is (structural ballot-name note)"
             ],
             opponents: [
-              "⚠ Not applicable — there is no live campaign. A vote cast for this line cannot elect anyone [Verify]"
+              "⚠ Not applicable — there is no live campaign. A vote cast for this line cannot elect anyone (structural ballot-name note)"
             ] }
         ]
       },
@@ -1748,7 +1748,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Idaho Elections Hub", lastUpdated: "September 11, 2026 (Wave 62)" };
+const SITE_META = { name: "Idaho Elections Hub", lastUpdated: "September 11, 2026 (Wave 63)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Idaho county-level down-ballot research has not started.)
