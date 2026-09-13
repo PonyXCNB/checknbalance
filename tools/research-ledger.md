@@ -1135,3 +1135,20 @@ Skipped: DE inventing (only soft absence pad); MI board/regents mass; NM CFIS in
 2026-09-11 | co/ms/mn/ia/al + soft + mo-bank | Wave 70 sourced [Verify] clear | Free web only (0 Grok). Baseline 970→924 (-46). CO Chew/Lopez/judicial/Wiley; MS Baucom Magnolia Tribune; MN myballot Reeves/Jackson; IA Cournoyer canvass; AL Rogers AUSA; soft structural pads. Locks hold: skip DE inventing until after Sep 15; NM CFIS after Sep 14 only; OK Perry Oct 20-26; OH SoS/MI/Kobach locked. MO gate still OPEN — UOCAVA Sep 19; currency-test not closed; NO mo.html. Voices 0. SITE_META Wave 70 on touched pages. | standing
 
 2026-09-11 | day-wrap finalize | Verify 3 confirmed; MO gate consolidated; midnight notes | Evening wrap (no Grok). `node tools/verify-report.js` grand total **3**, all nm.html (CFIS / retention / ballot-text) — do not invent-clear. Unpushed `origin/main..HEAD` = **48** commits (`4ff1f2a`…`fafec52`). MO: GATE STATUS + blockers + calendar written into `tools/banked/mo-build/statewide-research.md`; wave notes consolidated to `daywrap-mo-bank-notes.txt`; still **NO mo.html** (UOCAVA Sep 19; currency-test open; sos.mo.gov 403). CLAUDE.md current-state refreshed to match. Landing BUILT 47 / September 2026 footer OK. Voices 0. Owner to-do: nothing newly open without inventing. `MIDNIGHT_PUSH_NOTES.md` written for one-shot push. Local commit only — **NO PUSH**. | standing
+
+## 2026-09-13 - Wave 77 morning (NH official SoS tallies + RI/DE/NM/MO gate check)
+
+### Sourced unlocks / ships
+- **nh.html Senate + NH-1 + NH-2:** Official SoS race totals via InDepthNH Garry Rayno Sep 10 (https://indepthnh.org/2026/09/10/democrats-turn-out-40000-more-voters-than-republicans/) — Sununu 75,789 (68%) / Brown 29,672 (27%) / GOP 111,018; Pappas 100,053 (65%) / Manzur 50,307 (33%) / Dem 153,343; Shaheen 29,571 / Sullivan 27,859 / Beriont 18,032 (Dem 80,173); DiLorenzo 29,409 (51%) / Noveletsky 14,980 / Cole 8,050 (GOP 57,118); Goodlander 59,817 (82%) / Beauchemin 13,205; Williams 31,357 (59%) / Nicholson 6,470 / Orlando 6,309 / Callis 3,808. Replaced AP early-return language. SITE_META → Sep 13, 2026.
+- **nh.html Governor:** SoS has NOT released official gov figures (InDepthNH). Kept Ayotte AP unofficial ~100,183 / ~92%; Warmington uncontested.
+
+### Leave alone / locks
+- **ri.html:** BOE timeline Sep 12–15 UOCAVA/cure; calendar military/overseas due Sep 14 4pm; portal still "unofficial until certified" — no certified PDF/XLS yet. Nominees already match called field.
+- **de.html:** Field unchanged since Wave 76 — House GOP Arminio/Cooper/Whalen; Murphy withdrawn. Primary Sep 15 — do not invent winners.
+- **nm.html ×3 [Verify]:** First General CFIS due Sep 14 — no early clearable Goolsby First-General filing; leave CFIS / 57% retention / GO-bond ballot-text locks.
+- **mo.html:** GATE OPEN — UOCAVA Sep 19; briefs Sep 15; 8th Cir args Sep 17; 2022 map after SCOTUS stay; no build.
+
+### Ops
+- Verify grand total still **3** (nm locks). Grok 0. Brief: `tools/_w77-research.md`. Local commit only — **NO PUSH** (Netlify credit hold). Do not commit `tools/_w*` scratch.
+
+2026-09-13 | nh.html + docs | Wave 77 NH SoS tallies ship | Free web only (0 Grok). NH Senate/House official SoS via InDepthNH Sep 10; gov AP-unofficial. RI leave (UOCAVA Sep 14 4pm). DE field unchanged. NM 3 locks hold. MO gate open (briefs 15 / args 17 / UOCAVA 19). Verify 3. SITE_META nh Sep 13. Local commit — NO PUSH. | standing

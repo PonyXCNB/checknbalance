@@ -712,7 +712,7 @@
       <strong>NH Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">September 11, 2026</span><br>
+      Last updated: <span id="last-updated">September 13, 2026</span><br>
       Sources: NH Secretary of State (sos.nh.gov), Ballotpedia, Wikipedia, Cook Political Report, NHPR, NH Bulletin, WMUR, AP.
     </div>
   </div>
@@ -766,23 +766,25 @@ const COUNTIES = {
 };
 
 // ----- (2) Statewide elections every county votes in -----
-// NOTE: NH's 2026 state primary was Sept 8, 2026. Nominees below are AP/CNN/NBC/WMUR-called;
-// figures are UNOFFICIAL pending state certification. Sources: AP wire (Boston.com),
-// NHPR, WMUR, CNN, NBC, Al Jazeera. Open Senate (Shaheen retiring) + open NH-1 confirmed.
+// NOTE: NH's 2026 state primary was Sept 8, 2026. Senate + House tallies below use OFFICIAL
+// Secretary of State race totals reported by InDepthNH (Garry Rayno, Sep 10, 2026).
+// Governor still lacks official SoS figures — Ayotte uses AP unofficial. Full statewide
+// certification package (gov / Exec Council / legislature town sheets) still pending.
+// Open Senate (Shaheen retiring) + open NH-1 confirmed.
 const STATEWIDE = [
   {
     date: "Nov 3, 2026", type: "upcoming", scope: "Federal · Statewide",
     office: "U.S. Senate — New Hampshire (OPEN SEAT)",
-    note: "OPEN SEAT — Jeanne Shaheen (D) is retiring; NH's first open Senate race since 2010. ✅ Sept 8 primary (AP/CNN/NBC-called; unofficial pending certification): Chris Pappas (D) defeated Karishma Manzur and others; John E. Sununu (R) defeated Scott Brown and others. Early-night returns (NHPR/NBC, partial): Pappas ~62–36 vs. Manzur; Sununu ~70–25 vs. Brown — not final. November: Pappas vs. Sununu. Rated Lean Democratic (Cook / Sabato); Inside Elections Tilt D; DDHQ/The Hill Likely D.",
+    note: "OPEN SEAT — Jeanne Shaheen (D) is retiring; NH's first open Senate race since 2010. ✅ Sept 8 primary — official SoS tallies via InDepthNH Sep 10 (full statewide certification package still pending for races SoS has not posted): Chris Pappas (D) 100,053 (65%) over Karishma Manzur 50,307 (33%), Dem total 153,343; John E. Sununu (R) 75,789 (68%) over Scott Brown 29,672 (27%), GOP total 111,018. November: Pappas vs. Sununu. Rated Lean Democratic (Cook / Sabato); Inside Elections Tilt D; DDHQ/The Hill Likely D.",
     candidates: [
     { name: "Chris Pappas (D nominee)", party: "D", winner: false,
       positions: ["Abortion rights and reproductive freedom", "Lower prescription-drug and health costs", "Protect pre-existing-condition coverage"],
-      differentiators: ["U.S. Rep (NH-1) since 2018; vacating the House to run", "Won the Sept 8 Democratic primary over Manzur (AP/NBC-called; early returns ~62–36, unofficial)", "Endorsed by Shaheen, Hassan, and former VP Harris; ~$15.4M raised / ~$4.3M cash (FEC through Aug 19)"],
+      differentiators: ["U.S. Rep (NH-1) since 2018; vacating the House to run", "Won the Sept 8 Democratic primary 100,053–50,307 (65%–33%) over Manzur (official SoS totals via InDepthNH Sep 10; Dem race total 153,343)", "Endorsed by Shaheen, Hassan, and former VP Harris; ~$15.4M raised / ~$4.3M cash (FEC through Aug 19)"],
       supporters: ["A proven statewide vote-getter for a must-hold Democratic seat", "Shaheen/Hassan/Harris endorsement stack and a large cash reserve", "Frames Sununu as aligned with Trump policies New Hampshire independents dislike"],
       opponents: ["Sununu calls him a career politician who is ineffective and partisan (AP wire, Sept 8)", "GOP outside groups already attacking him on taxes (NBC)", "Open-seat midterm dynamics give Republicans their best NH Senate shot since 2010"] },
     { name: "John E. Sununu (R nominee)", party: "R", winner: false,
       positions: ["Work with the Trump administration", "Fiscal conservatism and spending restraint", "Critic of Pappas as partisan and out of touch (victory-night framing)"],
-      differentiators: ["Former U.S. Senator (2003–09) and U.S. Rep; son/brother of former NH governors", "Won the Sept 8 GOP primary over Scott Brown and others (AP/CNN/NBC-called; early returns ~70–25 vs. Brown, unofficial)", "Trump 'Complete and Total Endorsement' (Feb 2026) despite past criticism of Trump"],
+      differentiators: ["Former U.S. Senator (2003–09) and U.S. Rep; son/brother of former NH governors", "Won the Sept 8 GOP primary 75,789–29,672 (68%–27%) over Brown (official SoS totals via InDepthNH Sep 10; GOP race total 111,018)", "Trump 'Complete and Total Endorsement' (Feb 2026) despite past criticism of Trump"],
       supporters: ["Established NH Republican brand with presidential and national-party backing", "Republicans see an independent-voter opening on taxes with Ayotte also on the ticket", "Primary consolidation came early; Brown never closed the gap (NHPR)"],
       opponents: ["Pappas ties him to Trump and corporate-friendly policies (AP wire, Sept 8)", "Lost this same seat to Shaheen in 2008 after one Senate term", "Cook / Sabato still rate the race Lean Democratic"] }
     ]
@@ -790,11 +792,11 @@ const STATEWIDE = [
   {
     date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide",
     office: "Governor of New Hampshire",
-    note: "Kelly Ayotte (R), elected 2024, seeks a second two-year term. ✅ Sept 8: Ayotte won the GOP primary over Shaun Fife and Robert McClory (AP/CNN). Cinde Warmington was unopposed in the Democratic primary and advances to November (NHPR). Rated Leans Republican.",
+    note: "Kelly Ayotte (R), elected 2024, seeks a second two-year term. ✅ Sept 8: Ayotte won the GOP primary over Shaun Fife and Robert McClory — SoS has NOT released official governor figures yet; AP last unofficial figure ~100,183 votes / ~92% (InDepthNH Sep 10). Cinde Warmington was unopposed in the Democratic primary and advances to November (NHPR). Rated Leans Republican.",
     candidates: [
     { name: "Kelly Ayotte (incumbent)", party: "R", winner: false,
       positions: ["Expand Education Freedom Account (school-choice) vouchers", "'No income tax, no sales tax' pledge", "Public safety"],
-      differentiators: ["Former U.S. Senator (2011–17); elected governor 2024", "Won the Sept 8 GOP primary over little-known challengers (AP/CNN)", "Approval/favorability around 50% in recent coverage (NHPR)"],
+      differentiators: ["Former U.S. Senator (2011–17); elected governor 2024", "Won the Sept 8 GOP primary over little-known challengers — AP unofficial ~100,183 / ~92%; official SoS governor totals not yet released (InDepthNH Sep 10)", "Approval/favorability around 50% in recent coverage (NHPR)"],
       supporters: ["A low-tax, business-friendly record in a state that elects governors every two years", "Cleared her primary easily and keeps the GOP Concord infrastructure", "Last Republican to win a NH U.S. Senate race (2010) still carries statewide name ID"],
       opponents: ["Democrats target voucher expansion's property-tax impact", "Warmington paints her as protecting one-party control in Concord", "Two-year cycle means midterm headwinds can bite even popular governors"] },
     { name: "Cinde Warmington (D nominee)", party: "D", winner: false,
@@ -849,16 +851,16 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "OPEN SEAT — Chris Pappas (D) vacated NH-1 to run for U.S. Senate. ✅ Sept 8 primary (AP-called; unofficial): Stefany Shaheen (D) ~37% over Maura Sullivan ~35% and Carleigh Beriont ~22% with ~87% reporting (WMUR). Anthony DiLorenzo (R, Trump-endorsed) won the GOP primary over Hollie Noveletsky and others (AP/CNN). November: Shaheen vs. DiLorenzo. Rated Likely Democratic (Cook).",
+        note: "OPEN SEAT — Chris Pappas (D) vacated NH-1 to run for U.S. Senate. ✅ Sept 8 primary — official SoS tallies via InDepthNH Sep 10: Stefany Shaheen (D) 29,571 (~37%) over Maura Sullivan 27,859 (~35%) and Carleigh Beriont 18,032 (~22.5%); Dem ballots 80,173. Anthony DiLorenzo (R, Trump-endorsed) 29,409 (51%) over Hollie Noveletsky 14,980 (26%) and Brian Cole 8,050 (14%); GOP ballots 57,118. November: Shaheen vs. DiLorenzo. Rated Likely Democratic (Cook).",
         candidates: [
         { name: "Stefany Shaheen (D nominee)", party: "D", winner: false,
           positions: ["Healthcare / diabetes-care advocacy", "Reproductive rights", "Anti-Trump / costs framing from victory-night remarks (WMUR)"],
-          differentiators: ["Former Portsmouth city councilor; daughter of Sen. Jeanne Shaheen", "Won a close Sept 8 Dem primary ~37–35–22 over Sullivan and Beriont (WMUR, ~87% in, unofficial)", "Raised ~$400K in Q2; ~$2.2M cycle to date (pre-primary FEC figures)"],
+          differentiators: ["Former Portsmouth city councilor; daughter of Sen. Jeanne Shaheen", "Won a close Sept 8 Dem primary 29,571–27,859–18,032 (~37%–35%–22.5%) over Sullivan and Beriont (official SoS totals via InDepthNH Sep 10; Dem ballots 80,173)", "Raised ~$400K in Q2; ~$2.2M cycle to date (pre-primary FEC figures)"],
           supporters: ["A known Seacoast name with local governing experience", "Personal advocacy on diabetes care drives her health platform", "Carol Shea-Porter and Christian Urrutia backed her before primary day"],
           opponents: ["House Republicans' campaign arm calls her a 'nepo baby' and 'DC elitist'", "Sullivan trailed in fundraising but nearly matched her on primary night", "Cook Likely D still requires consolidating a bitter primary"] },
         { name: "Anthony DiLorenzo (R nominee)", party: "R", winner: false,
           positions: ["America First / Trump agenda alignment", "Cut taxes and regulations; Made-in-USA manufacturing (per Trump endorsement framing)", "Jobs and small-business growth — Key Auto Group founder"],
-          differentiators: ["Trump 'Complete and Total Endorsement' July 13, 2026; also backed by House GOP leadership", "Won the Sept 8 GOP primary over Noveletsky and others (AP/CNN)", "First-time candidate; Portsmouth-area auto-dealer businessman"],
+          differentiators: ["Trump 'Complete and Total Endorsement' July 13, 2026; also backed by House GOP leadership", "Won the Sept 8 GOP primary 29,409–14,980–8,050 (51%–26%–14%) over Noveletsky and Cole (official SoS totals via InDepthNH Sep 10; GOP ballots 57,118)", "First-time candidate; Portsmouth-area auto-dealer businessman"],
           supporters: ["Presidential and House GOP leadership endorsements", "NRCC lists the open seat as a top target", "Business-owner jobs narrative without a Democratic incumbent"],
           opponents: ["First-time candidate against a nominee with a famous NH political name", "Cook rates the open seat Likely Democratic", "Primary rivals argued he had not earned the nomination the New Hampshire way"] }
         ]
@@ -887,16 +889,16 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "Maggie Goodlander (D) seeks a second term. ✅ Sept 8 primary (AP-called): Goodlander defeated state Rep. Paige Beauchemin in the Democratic primary; Lily Tang Williams won the Republican primary over Victor Orlando, Dan Nicholson, and Michael Callis (AP / Al Jazeera / Boston.com AP wire). November is a 2024 rematch. Cook moved the seat to Likely Democratic on July 16, 2026.",
+        note: "Maggie Goodlander (D) seeks a second term. ✅ Sept 8 primary — official SoS tallies via InDepthNH Sep 10: Goodlander 59,817 (82%) over state Rep. Paige Beauchemin 13,205 (18%); Lily Tang Williams (R) 31,357 (59%) over Dan Nicholson 6,470 (12%), Victor Orlando 6,309 (12%), and Michael Anthony Callis 3,808 (7%). November is a 2024 rematch. Cook moved the seat to Likely Democratic on July 16, 2026.",
         candidates: [
         { name: "Maggie Goodlander (incumbent)", party: "D", winner: false,
           positions: ["Lower costs and affordability", "Reproductive rights", "Manufacturing, antitrust and competition"],
-          differentiators: ["Former DOJ / national-security attorney", "Won the open seat in 2024 (~53–47 over Tang Williams)", "Won the Sept 8 Dem primary over Beauchemin (AP-called)"],
+          differentiators: ["Former DOJ / national-security attorney", "Won the open seat in 2024 (~53–47 over Tang Williams)", "Won the Sept 8 Dem primary 59,817–13,205 (82%–18%) over Beauchemin (official SoS totals via InDepthNH Sep 10)"],
           supporters: ["A substantive first-term member on competition and costs", "Cleared her progressive primary challenge and keeps Likely D rating", "Large fundraising edge (~$4.2M FEC through Aug 19 pre-primary)"],
           opponents: ["Tang Williams came within about six points in 2024 and is seeking a rematch", "Progressives who backed Beauchemin may need re-energizing for November", "National midterm environment can compress Likely D margins"] },
         { name: "Lily Tang Williams (R nominee)", party: "R", winner: false,
           positions: ["Balanced-budget amendment and federal spending cuts", "National constitutional carry for firearms", "Immigration enforcement; aligns herself with Trump"],
-          differentiators: ["2024 GOP nominee (lost ~52–47); Free State movement figure", "Won the Sept 8 GOP primary on her third attempt at the seat (AP)", "Has challenged Goodlander to more debates this cycle"],
+          differentiators: ["2024 GOP nominee (lost ~52–47); Free State movement figure", "Won the Sept 8 GOP primary 31,357 (59%) over Nicholson/Orlando/Callis (official SoS totals via InDepthNH Sep 10)", "Has challenged Goodlander to more debates this cycle"],
           supporters: ["Came within about six points in a seat then rated Lean D", "A 2024 debate performance that went viral is her calling card", "Her account of growing up under Communist China anchors her pitch"],
           opponents: ["Still lost by roughly six points, and Cook moved the seat to Likely D on July 16", "A balanced-budget-plus-constitutional-carry platform sits right of the district's center", "Free State movement ties are used against her by Democrats"] }
         ]
@@ -921,7 +923,7 @@ const HOUSE_RACES = {
   }
 }
 
-const SITE_META = { name: "New Hampshire Elections Hub", lastUpdated: "September 11, 2026" };
+const SITE_META = { name: "New Hampshire Elections Hub", lastUpdated: "September 13, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — NH county-level down-ballot research is the next phase.)
