@@ -228,20 +228,18 @@ Finally `node tools/fit-map-frames.js` so the new page's map frame takes the sta
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of September 13, 2026 — morning Wave 77)
+## Current state (as of September 14, 2026 — morning Wave 78)
 - **Built bloc = 47 states + DC PARTIAL marquee.** Fully built: everything except CA, MO, TX (starter framework on the map) and DC (marquee-only). No `mo.html` / `ca.html` / `tx.html` on disk. Alaska (47th) and Louisiana are built — do NOT treat the Sept 3 "AK CA LA MO TX remaining" line as live.
-- **Verify backlog essentially done: grand total 3**, all on `nm.html` (intentional locks — do NOT invent-clear):
-  1. SoS open seat — Ramona L. Goolsby differentiators (CFIS cash; First General due **Sep 14**)
-  2. Judicial retention race note (57% approval bar / Sep 18 retention context)
-  3. General Obligation bond questions ballot-text note
-  Day drop across Waves 29–75 ~3988→3. Verify still 3 (nm locks). Wave 77 = NH official SoS tallies via InDepthNH Sep 10 (Senate + both House); governor still AP-unofficial. Branch may be ahead of `origin/main` — **do not push** (Netlify credit hold); local commits OK after green tests.
-- **NH Sept 8:** `nh.html` updated Wave 77 with **official SoS race totals** reported by InDepthNH (Garry Rayno, Sep 10) for Senate + NH-1 + NH-2. Governor still lacks official SoS figures (AP ~100,183 / ~92% for Ayotte). Full statewide certification package (gov / Exec Council / legislature town sheets) still pending. SITE_META → September 13, 2026.
-- **RI Sept 9:** nominees SETTLED on WPRI/CNN/AP calls; **BOE not certified** — UOCAVA/military-overseas + cure window through **Sep 14 4 p.m.** Leave `ri.html` until certified package posts.
-- **DE primary is NEXT (Sept 15, 2026).** Wave 76 field still current (DOE 2026-09-11): Dem Senate Coons/Appelhans/Hansen/Louve; GOP Katz/Shulli; House GOP Arminio/Cooper/Whalen (Murphy withdrawn). Prep only — do not invent results or winners.
-- **MO gate OPEN — still NO `mo.html`.** UOCAVA **Sep 19**; 8th Cir briefs **Sep 15** / args **Sep 17**; SCOTUS stay keeps **2022 map** for now; Hoskins contempt purged. `sos.mo.gov` 403 / Nov sample currency-test still open. Keep bank; do not start the page.
+- **Verify backlog: grand total 1**, on `nm.html` only (intentional lock — do NOT invent-clear):
+  1. SoS open seat — Ramona L. Goolsby differentiators (CFIS First General due **Sep 14**; Transparency USA still through June 27 only as of Wave 78 morning)
+  Cleared Wave 78: NM GO bond dollar conflict (SoS certified CA/GOB PDF) + judicial retention roster (SoS portal — Bacon / Thomson / Hanisee all Qualified).
+- **NH Sept 8:** `nh.html` still has official SoS Senate/House tallies via InDepthNH Sep 10; governor still AP-unofficial (~100,183 / ~92%) — SoS has not posted a 2026 governor primary package. SITE_META → September 13, 2026 (Wave 77; unchanged this run).
+- **RI Sept 9:** nominees SETTLED on WPRI/CNN/AP calls; **BOE not certified** as of Sept 14 morning — UOCAVA/military-overseas + cure window through **Sep 14 4 p.m.** Leave unofficial language until Final Results. SITE_META → September 14, 2026 (Wave 78 freshness bump only).
+- **DE primary is TOMORROW (Sept 15, 2026).** DOE primary list last updated 2026-09-11 07:56 PM — field unchanged from Wave 76 (Dem Senate Coons/Appelhans/Hansen/Louve; GOP Katz/Shulli; House GOP Arminio/Cooper/Whalen). Prep only — do not invent results or winners.
+- **MO gate still OPEN — still NO `mo.html`.** Map litigation fluid (Prop A on ballot; federal TRO / SCOTUS stay history); UOCAVA **Sep 19**; 8th Cir calendar still live. Keep bank; do not start the page.
 - **CA and TX remain unbuilt** (starter only). DC stays PARTIAL marquee.
-- **Voices site-wide: 0 gaps.** Landing: `BUILT` = 47; footer "Last updated: September 2026".
-- **Mentioned-dates scanner is in tree.** Sept 3 / Sept 8 / Wave 76 narratives below are SUPERSEDED for NH SoS-tally status and Wave number.
+- **Voices site-wide: 0 gaps.** Landing: `BUILT` = 47; footer "Last updated: September 2026". **Netlify credit hold remains — local commits OK; do not push.**
+- **Mentioned-dates scanner is in tree.**
 
 ## Superseded — current state as of September 3, 2026
 - **MI (full, added Sept 3, 2026) — 45th state.** See the file-inventory row. 130 candidate cards, 0 voices gaps, 394 [Verify].
