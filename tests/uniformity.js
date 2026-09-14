@@ -85,19 +85,27 @@ console.log("\n— cross-page —");
   check(dupes.length === 0, `no two pages share an identical Sources line${dupes.length ? ` — ${dupes.join(", ")}` : ""}`);
 }
 
-// ---- index.html: the map, the list and the legend agree with the pages that exist ----
+// ---- index.html: the map and the legend agree with the pages that exist ----
 {
   const src = fs.readFileSync(path.join(SITE_ROOT, "index.html"), "utf8");
   const built = (src.match(/const BUILT = \{([^}]*)\}/) || ["", ""])[1].match(/"([a-z]{2})\.html"/g) || [];
   check(built.length === pages.length, `index.html: BUILT lists ${built.length} pages, ${pages.length} exist`);
-  const listed = new Set((src.match(/<li><a class="[a-z]+" href="([a-z]{2}\.html)"/g) || []).map(m => m.match(/([a-z]{2}\.html)/)[1]));
-  const missingFromList = pages.filter(p => !listed.has(p));
-  check(missingFromList.length === 0, `index.html: the state list links every built page${missingFromList.length ? ` — missing ${missingFromList.join(", ")}` : ""}`);
-  const items = (src.match(/<li><a class="(?:built|partial|starter)" href="/g) || []).length;
-  check(items === 51, `index.html: the state list has 51 entries (${items})`);
+  check(src.includes('href="states.html"'), "index.html: links to states.html (states in list format)");
+  check(!src.includes('class="state-list"'), "index.html: the full state list lives on states.html, not the landing page");
   const partialEmpty = /const PARTIAL = new Set\(\[\]\)/.test(src);
   check(partialEmpty === !src.includes("Marquee races built <span"), "index.html: the legend shows a Marquee tier only if a state is in it");
   check(src.includes('.filter(d => ST[String(d.id).padStart(2, "0")])'), "index.html: territories are filtered out of the label pass");
+}
+
+// ---- states.html: the list-format page agrees with the pages that exist ----
+{
+  const src = fs.readFileSync(path.join(SITE_ROOT, "states.html"), "utf8");
+  const listed = new Set((src.match(/<li><a class="[a-z]+" href="([a-z]{2}\.html)"/g) || []).map(m => m.match(/([a-z]{2}\.html)/)[1]));
+  const missingFromList = pages.filter(p => !listed.has(p));
+  check(missingFromList.length === 0, `states.html: the state list links every built page${missingFromList.length ? ` — missing ${missingFromList.join(", ")}` : ""}`);
+  const items = (src.match(/<li><a class="(?:built|partial|starter)" href="/g) || []).length;
+  check(items === 51, `states.html: the state list has 51 entries (${items})`);
+  check(src.includes('href="index.html"'), "states.html: links back to the map (index.html)");
 }
 
 // ---- state.html: its redirect list is the list of built pages ----

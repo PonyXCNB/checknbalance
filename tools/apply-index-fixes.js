@@ -119,7 +119,7 @@ sub("legend interim → final", `    <span class="legend-swatch"><i style="backg
 subRe("DC tier", /const PARTIAL = new Set\(\[[^\]]*\]\);[^\n]*/, `const PARTIAL = new Set(["11"]); // DC — marquee races in state.html's STATE_RACES`, /const PARTIAL = new Set\(\["11"\]\); \/\/ DC — marquee races in state\.html/);
 sub("map svg label", `<svg id="usmap" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet"></svg>`,
     `<svg id="usmap" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Map of the United States. Each state is a link to its election guide."></svg>`);
-// The state list, generated from the same tables the map uses, so it can never disagree with it.
+// The state list lives on states.html (linked from under the map). Regenerate its <ul> from BUILT.
 {
   const NAME = {"01":"Alabama","02":"Alaska","04":"Arizona","05":"Arkansas","06":"California","08":"Colorado","09":"Connecticut","10":"Delaware","11":"District of Columbia","12":"Florida","13":"Georgia","15":"Hawaii","16":"Idaho","17":"Illinois","18":"Indiana","19":"Iowa","20":"Kansas","21":"Kentucky","22":"Louisiana","23":"Maine","24":"Maryland","25":"Massachusetts","26":"Michigan","27":"Minnesota","28":"Mississippi","29":"Missouri","30":"Montana","31":"Nebraska","32":"Nevada","33":"New Hampshire","34":"New Jersey","35":"New Mexico","36":"New York","37":"North Carolina","38":"North Dakota","39":"Ohio","40":"Oklahoma","41":"Oregon","42":"Pennsylvania","44":"Rhode Island","45":"South Carolina","46":"South Dakota","47":"Tennessee","48":"Texas","49":"Utah","50":"Vermont","51":"Virginia","53":"Washington","54":"West Virginia","55":"Wisconsin","56":"Wyoming"};
   const ST = {"01":"AL","02":"AK","04":"AZ","05":"AR","06":"CA","08":"CO","09":"CT","10":"DE","11":"DC","12":"FL","13":"GA","15":"HI","16":"ID","17":"IL","18":"IN","19":"IA","20":"KS","21":"KY","22":"LA","23":"ME","24":"MD","25":"MA","26":"MI","27":"MN","28":"MS","29":"MO","30":"MT","31":"NE","32":"NV","33":"NH","34":"NJ","35":"NM","36":"NY","37":"NC","38":"ND","39":"OH","40":"OK","41":"OR","42":"PA","44":"RI","45":"SC","46":"SD","47":"TN","48":"TX","49":"UT","50":"VT","51":"VA","53":"WA","54":"WV","55":"WI","56":"WY"};
@@ -133,25 +133,25 @@ sub("map svg label", `<svg id="usmap" viewBox="0 0 1000 620" preserveAspectRatio
     const tag = built.has(f) ? "Full guide" : (partial.has(f) ? "Marquee races" : "Starter");
     return `      <li><a class="${cls}" href="${href}"><i aria-hidden="true"></i>${NAME[f]}<small>${tag}</small></a></li>`;
   }).join("\n");
-  const nav = `
-<!-- Every state as a real link: reachable by keyboard and screen reader, crawlable, and tappable on a
-     phone where the map's smallest states are a few pixels wide. Generated from the same BUILT /
-     PARTIAL tables the map uses (tools/apply-index-fixes.js). -->
-<nav class="state-list" aria-label="Choose your state">
-  <h2>Or choose your <em>state</em>.</h2>
-  <p>Not sure you are registered? Deadlines vary by state — check <a href="https://vote.gov" rel="noopener">vote.gov</a>.</p>
-  <ul>
-${items}
-  </ul>
-</nav>
-`;
-  const anchor = `  <div class="home-note" id="home-note"></div>\n</section>\n`;
-  if (s.includes('class="state-list"')) { /* already present (regenerated below if stale) */ }
-  else if (s.includes(anchor)) s = s.replace(anchor, anchor + nav);
-  else missing.push("state list anchor");
-  // Keep the list current with the tables: replace an existing list wholesale when it differs.
-  s = s.replace(/\n<!-- Every state as a real link[\s\S]*?<\/nav>\n/, nav);
+  const listFile = path.join(ROOT, "states.html");
+  if (!fs.existsSync(listFile)) missing.push("states.html missing");
+  else {
+    const listRaw = fs.readFileSync(listFile, "utf8");
+    const listEol = /\r\n/.test(listRaw) ? "\r\n" : "\n";
+    let list = listRaw.replace(/\r\n/g, "\n");
+    const nextUl = `<ul>\n${items}\n  </ul>`;
+    if (!/<ul>[\s\S]*?<\/ul>/.test(list)) missing.push("states.html <ul>");
+    else {
+      list = list.replace(/<ul>[\s\S]*?<\/ul>/, nextUl);
+      const listOut = list.replace(/\n/g, listEol);
+      if (listOut !== listRaw && !CHECK) fs.writeFileSync(listFile, listOut);
+      console.log(listOut === listRaw ? "states.html: state list unchanged" : `states.html state list ${CHECK ? "would be" : ""} rewritten`);
+    }
+  }
+  // Landing page keeps a text link under the map (not the full list).
+  if (!s.includes('href="states.html"')) missing.push("index.html link to states.html");
 }
+
 // Facts: say what the sources actually support, and link them.
 sub("fact 1", `        Average share of eligible Americans who vote in primary elections — the contests that decide who even
         appears on the November ballot. In 2024, only about 34 million of roughly 149 million eligible voters
@@ -208,7 +208,7 @@ subRe("dead starPath", /function starPath\(cx, cy, r\) \{[\s\S]*?\n\}\n\n/, "", 
 sub("cdn guard", `d3.json(TOPO_URL).then((us) => {
   const states = topojson.feature(us, us.objects.states).features`,
     `if (typeof d3 === "undefined" || typeof topojson === "undefined") {
-  document.getElementById("map-loading").innerHTML = "The map didn\\u2019t load \\u2014 use the state list below.";
+  document.getElementById("map-loading").innerHTML = "The map didn\\u2019t load \\u2014 <a href=\\"states.html\\">view states in list format</a>.";
 }
 d3.json(TOPO_URL).then((us) => {
   // states-10m also carries five territories (60/66/69/72/78); geoAlbersUsa cannot project them, so
@@ -285,7 +285,7 @@ sub("home glow on callout", `      g.selectAll(".state")
       note.textContent = \`Highlighted: \${NAME[fips]} \\u2014 a guess from your network address (looked up once via ipapi.co, not stored).\`;`);
 sub("map failure copy", `  loading.innerHTML = "Couldn't load map data. Check your internet connection.<br><small>" + err.message + "</small>";`,
     `  if (window.console && console.error) console.error("[map] " + (err && err.message ? err.message : err));
-  loading.innerHTML = "The map didn\\u2019t load \\u2014 use the state list below.";`);
+  loading.innerHTML = "The map didn\\u2019t load \\u2014 <a href=\\"states.html\\">view states in list format</a>.";`);
 sub("form failure copy", `          ? "This form isn't accepting messages right now — that's a fault on our end, not anything you did. It's been logged and we're on it. Sorry for the wasted typing."`,
     `          ? "This form isn't accepting messages right now — that's a fault on our end, not anything you did. Please try again later; sorry for the wasted typing."`);
 subRe("form console runbook", /          console\.error\(\n            "\[contribute\] submission failed: "[\s\S]*?\n          \);/,

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>All states — Check n Balance</title>
+<meta name="description" content="Choose your state from a full list of 50 states and DC — keyboard-, screen-reader-, and crawler-friendly links into every election guide on Check n Balance." />
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#FBF9F4">
+<link rel="canonical" href="https://checknbalance.org/states.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Check n Balance">
+<meta property="og:title" content="All states — Check n Balance">
+<meta property="og:description" content="A list of every state and DC with links into each election guide.">
+<meta property="og:url" content="https://checknbalance.org/states.html">
+<meta property="og:image" content="https://checknbalance.org/apple-touch-icon.png">
+<meta name="twitter:card" content="summary">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink:#0E1726; --ink-soft:#4A5468; --paper:#FBF9F4; --paper-pure:#FFFFFF;
+    --gold:#B8893C; --gold-deep:#8C6420; --gold-soft:#E8D9B8;
+    --line:#E5DDC9;
+    --serif:'Cormorant Garamond', Georgia, serif;
+    --sans:'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+    --shadow:0 1px 2px rgba(14,23,38,.04), 0 8px 24px rgba(14,23,38,.06);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+  body { font-family: var(--sans); color: var(--ink); background: var(--paper); line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+
+  .topbar { border-bottom: 1px solid var(--line); background: var(--paper-pure); position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px); }
+  .topbar-inner { max-width: 1240px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 16px 32px; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .crest {
+    width: 38px; height: 38px; display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--gold), var(--gold-deep));
+    border-radius: 50%; color: white; font-family: var(--serif); font-weight: 600; font-size: 15px;
+    box-shadow: 0 2px 8px rgba(184,137,60,.35);
+  }
+  .brand-text { display: flex; flex-direction: column; }
+  .brand-name { font-family: var(--serif); font-weight: 500; font-size: 17px; line-height: 1.1; }
+  .brand-sub { font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--ink-soft); margin-top: 2px; }
+
+  .page-intro { max-width: 1240px; margin: 0 auto; padding: 48px 32px 8px; text-align: center; }
+  .page-intro .back { display: inline-block; font-size: 13px; color: var(--gold-deep); border-bottom: 1px solid var(--gold-soft); margin-bottom: 22px; }
+  .page-intro .back:hover { border-bottom-color: var(--gold-deep); }
+  .page-intro h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(32px, 5vw, 48px); letter-spacing: -0.018em; line-height: 1.1; }
+  .page-intro h1 em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .page-intro p { color: var(--ink-soft); font-size: 15px; max-width: 58ch; margin: 12px auto 0; }
+
+  .list-legend { display: flex; align-items: center; gap: 22px; font-size: 12px; color: var(--ink-soft); margin: 28px auto 0; justify-content: center; flex-wrap: wrap; max-width: 1240px; padding: 0 32px; }
+  .list-legend span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .list-legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; border: 1px solid rgba(0,0,0,.08); }
+
+  .state-list { max-width: 1240px; margin: 0 auto; padding: 22px 32px 56px; }
+  .state-list h2 { font-family: var(--serif); font-weight: 400; font-size: 26px; letter-spacing: -0.01em; text-align: center; margin: 0 0 6px; }
+  .state-list h2 em { color: var(--gold-deep); font-style: italic; font-weight: 500; }
+  .state-list p { text-align: center; font-size: 13px; color: var(--ink-soft); margin: 0 0 22px; }
+  .state-list p a { color: var(--gold-deep); border-bottom: 1px solid var(--gold-soft); }
+  .state-list ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 6px 18px; }
+  .state-list li a { display: flex; align-items: center; gap: 9px; padding: 7px 8px; border-radius: 8px; font-size: 14px; color: var(--ink); transition: background .15s ease; }
+  .state-list li a:hover { background: var(--paper-pure); }
+  .state-list li a i { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; border: 1px solid rgba(0,0,0,.08); background: #F1E9D2; }
+  .state-list li a.built i { background: var(--gold); border-color: var(--gold-deep); }
+  .state-list li a.partial i { background: #D9BE85; border-color: var(--gold); }
+  .state-list li a small { color: var(--ink-soft); font-size: 11px; margin-left: auto; letter-spacing: .04em; white-space: nowrap; }
+  :focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 3px; }
+
+  .footer { border-top: 1px solid var(--line); background: var(--paper-pure); padding: 48px 32px 40px; margin-top: 20px; }
+  .footer-inner { max-width: 1240px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .footer-crest { font-family: var(--serif); font-size: 15px; color: var(--ink-soft); }
+  .footer-crest strong { color: var(--gold-deep); font-weight: 500; }
+  .footer-meta { font-size: 12px; color: var(--ink-soft); line-height: 1.6; }
+  .footer-meta a { color: var(--gold-deep); border-bottom: 1px solid var(--gold-soft); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="index.html" class="brand">
+      <div class="crest">US</div>
+      <div class="brand-text">
+        <span class="brand-name">National Elections Hub</span>
+        <span class="brand-sub">An Independent Civic Project</span>
+      </div>
+    </a>
+  </div>
+</header>
+
+<section class="page-intro">
+  <a class="back" href="index.html">← Back to the map</a>
+  <h1>States in <em>list</em> format.</h1>
+  <p>Every state and D.C. as a real link — for keyboards, screen readers, search engines, phones, and the day the map CDN is slow.</p>
+</section>
+
+<div class="list-legend" aria-hidden="true">
+  <span><i style="background:#B8893C;border-color:#8C6420"></i> Fully built</span>
+  <span><i style="background:#D9BE85;border-color:#B8893C"></i> Marquee races built</span>
+  <span><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework</span>
+</div>
+
+<!-- Every state as a real link: reachable by keyboard and screen reader, crawlable, and tappable on a
+     phone where the map's smallest states are a few pixels wide. Generated from the same BUILT /
+     PARTIAL tables the map uses (tools/apply-index-fixes.js). Lives on states.html (linked from the
+     landing-page map). -->
+<nav class="state-list" aria-label="Choose your state">
+  <h2>Choose your <em>state</em>.</h2>
+  <p>Not sure you are registered? Deadlines vary by state — check <a href="https://vote.gov" rel="noopener">vote.gov</a>.</p>
+  <ul>
+      <li><a class="built" href="al.html"><i aria-hidden="true"></i>Alabama<small>Full guide</small></a></li>
+      <li><a class="built" href="ak.html"><i aria-hidden="true"></i>Alaska<small>Full guide</small></a></li>
+      <li><a class="built" href="az.html"><i aria-hidden="true"></i>Arizona<small>Full guide</small></a></li>
+      <li><a class="built" href="ar.html"><i aria-hidden="true"></i>Arkansas<small>Full guide</small></a></li>
+      <li><a class="starter" href="state.html?state=CA"><i aria-hidden="true"></i>California<small>Starter</small></a></li>
+      <li><a class="built" href="co.html"><i aria-hidden="true"></i>Colorado<small>Full guide</small></a></li>
+      <li><a class="built" href="ct.html"><i aria-hidden="true"></i>Connecticut<small>Full guide</small></a></li>
+      <li><a class="built" href="de.html"><i aria-hidden="true"></i>Delaware<small>Full guide</small></a></li>
+      <li><a class="partial" href="state.html?state=DC"><i aria-hidden="true"></i>District of Columbia<small>Marquee races</small></a></li>
+      <li><a class="built" href="fl.html"><i aria-hidden="true"></i>Florida<small>Full guide</small></a></li>
+      <li><a class="built" href="ga.html"><i aria-hidden="true"></i>Georgia<small>Full guide</small></a></li>
+      <li><a class="built" href="hi.html"><i aria-hidden="true"></i>Hawaii<small>Full guide</small></a></li>
+      <li><a class="built" href="id.html"><i aria-hidden="true"></i>Idaho<small>Full guide</small></a></li>
+      <li><a class="built" href="il.html"><i aria-hidden="true"></i>Illinois<small>Full guide</small></a></li>
+      <li><a class="built" href="in.html"><i aria-hidden="true"></i>Indiana<small>Full guide</small></a></li>
+      <li><a class="built" href="ia.html"><i aria-hidden="true"></i>Iowa<small>Full guide</small></a></li>
+      <li><a class="built" href="ks.html"><i aria-hidden="true"></i>Kansas<small>Full guide</small></a></li>
+      <li><a class="built" href="ky.html"><i aria-hidden="true"></i>Kentucky<small>Full guide</small></a></li>
+      <li><a class="built" href="la.html"><i aria-hidden="true"></i>Louisiana<small>Full guide</small></a></li>
+      <li><a class="built" href="me.html"><i aria-hidden="true"></i>Maine<small>Full guide</small></a></li>
+      <li><a class="built" href="md.html"><i aria-hidden="true"></i>Maryland<small>Full guide</small></a></li>
+      <li><a class="built" href="ma.html"><i aria-hidden="true"></i>Massachusetts<small>Full guide</small></a></li>
+      <li><a class="built" href="mi.html"><i aria-hidden="true"></i>Michigan<small>Full guide</small></a></li>
+      <li><a class="built" href="mn.html"><i aria-hidden="true"></i>Minnesota<small>Full guide</small></a></li>
+      <li><a class="built" href="ms.html"><i aria-hidden="true"></i>Mississippi<small>Full guide</small></a></li>
+      <li><a class="starter" href="state.html?state=MO"><i aria-hidden="true"></i>Missouri<small>Starter</small></a></li>
+      <li><a class="built" href="mt.html"><i aria-hidden="true"></i>Montana<small>Full guide</small></a></li>
+      <li><a class="built" href="ne.html"><i aria-hidden="true"></i>Nebraska<small>Full guide</small></a></li>
+      <li><a class="built" href="nv.html"><i aria-hidden="true"></i>Nevada<small>Full guide</small></a></li>
+      <li><a class="built" href="nh.html"><i aria-hidden="true"></i>New Hampshire<small>Full guide</small></a></li>
+      <li><a class="built" href="nj.html"><i aria-hidden="true"></i>New Jersey<small>Full guide</small></a></li>
+      <li><a class="built" href="nm.html"><i aria-hidden="true"></i>New Mexico<small>Full guide</small></a></li>
+      <li><a class="built" href="ny.html"><i aria-hidden="true"></i>New York<small>Full guide</small></a></li>
+      <li><a class="built" href="nc.html"><i aria-hidden="true"></i>North Carolina<small>Full guide</small></a></li>
+      <li><a class="built" href="nd.html"><i aria-hidden="true"></i>North Dakota<small>Full guide</small></a></li>
+      <li><a class="built" href="oh.html"><i aria-hidden="true"></i>Ohio<small>Full guide</small></a></li>
+      <li><a class="built" href="ok.html"><i aria-hidden="true"></i>Oklahoma<small>Full guide</small></a></li>
+      <li><a class="built" href="or.html"><i aria-hidden="true"></i>Oregon<small>Full guide</small></a></li>
+      <li><a class="built" href="pa.html"><i aria-hidden="true"></i>Pennsylvania<small>Full guide</small></a></li>
+      <li><a class="built" href="ri.html"><i aria-hidden="true"></i>Rhode Island<small>Full guide</small></a></li>
+      <li><a class="built" href="sc.html"><i aria-hidden="true"></i>South Carolina<small>Full guide</small></a></li>
+      <li><a class="built" href="sd.html"><i aria-hidden="true"></i>South Dakota<small>Full guide</small></a></li>
+      <li><a class="built" href="tn.html"><i aria-hidden="true"></i>Tennessee<small>Full guide</small></a></li>
+      <li><a class="starter" href="state.html?state=TX"><i aria-hidden="true"></i>Texas<small>Starter</small></a></li>
+      <li><a class="built" href="ut.html"><i aria-hidden="true"></i>Utah<small>Full guide</small></a></li>
+      <li><a class="built" href="vt.html"><i aria-hidden="true"></i>Vermont<small>Full guide</small></a></li>
+      <li><a class="built" href="va.html"><i aria-hidden="true"></i>Virginia<small>Full guide</small></a></li>
+      <li><a class="built" href="wa.html"><i aria-hidden="true"></i>Washington<small>Full guide</small></a></li>
+      <li><a class="built" href="wv.html"><i aria-hidden="true"></i>West Virginia<small>Full guide</small></a></li>
+      <li><a class="built" href="wi.html"><i aria-hidden="true"></i>Wisconsin<small>Full guide</small></a></li>
+      <li><a class="built" href="wy.html"><i aria-hidden="true"></i>Wyoming<small>Full guide</small></a></li>
+  </ul>
+</nav>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-crest"><strong>Elections Hub</strong> · A civic side-project, not affiliated with any government agency.</div>
+    <div class="footer-meta">Last updated: September 2026 · <a href="index.html#contribute">Report a correction</a> · Prefer the <a href="index.html">map view</a>?</div>
+  </div>
+</footer>
+
+</body>
+</html>
