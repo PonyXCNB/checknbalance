@@ -712,7 +712,7 @@
       <strong>DE Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">September 12, 2026 (Wave 76 — DOE primary/general sync)</span><br>
+      Last updated: <span id="last-updated">September 15, 2026 (Wave 79 — election-day field; DOE list 07:56 AM; 0% reporting)</span><br>
       Sources: Delaware Department of Elections, Ballotpedia, Wikipedia, AP, Delaware Public Media, WDEL, WHYY.
     </div>
   </div>
@@ -746,14 +746,14 @@ const COUNTIES = {
 const STATEWIDE = [
   // UPCOMING — 2026 General Election (Nov 3, 2026)
   // NOTE: Delaware's primary is Sept 15, 2026 (filing deadline July 14). Fields below synced
-  // Sept 12, 2026 against DOE prim_fcddt_2026.html + genl_fcddt_2026.html (updated 2026-09-11)
-  // and Delaware LIVE Sept 15 voters guide — DO NOT invent winners before polls close.
+  // Sept 12, 2026 against DOE prim_fcddt_2026.html + genl_fcddt_2026.html (updated 2026-09-15 07:56 AM)
+  // and Delaware LIVE Sept 15 voters guide — DO NOT invent winners before polls close / AP calls (DDHQ still 0% morning ET).
   {
     date: "Nov 3, 2026",
     type: "upcoming",
     scope: "Federal · Statewide",
     office: "U.S. Senate — Delaware",
-    note: "Chris Coons (D) seeks another term. Delaware's primary is Sept 15, 2026 — BOTH parties have contested primaries (DOE primary list updated 2026-09-11; Delaware LIVE voters guide updated Sept 10). Dem field: Coons, Jeff Appelhans, E. No-Trump Hansen, Mary Louve. GOP field: Michael \"Dr. Mike\" Katz vs John Shulli. Nominees are NOT decided until Sept 15 — do not invent winners. Rated Solid/Safe Democratic (Cook, Sabato, Inside Elections). No Republican has won a Delaware Senate race since 1994. Early in-person voting ran ahead of the primary (Delaware LIVE).",
+    note: "Chris Coons (D) seeks another term. Delaware's primary is Sept 15, 2026 — BOTH parties have contested primaries (DOE primary list updated 2026-09-15 07:56 AM; Delaware LIVE voters guide updated Sept 10). Dem field: Coons, Jeff Appelhans, E. No-Trump Hansen, Mary Louve. GOP field: Michael \"Dr. Mike\" Katz vs John Shulli. Nominees are NOT decided until Sept 15 — do not invent winners. Rated Solid/Safe Democratic (Cook, Sabato, Inside Elections). No Republican has won a Delaware Senate race since 1994. Early in-person voting ran ahead of the primary (Delaware LIVE).",
     candidates: [
       {
         name: "Chris Coons (incumbent)",
@@ -767,7 +767,7 @@ const STATEWIDE = [
         differentiators: [
           "Senator since the 2010 special election; former New Castle County Executive",
           "Endorsed by Gov. Meyer, Sen. Blunt Rochester, Rep. McBride, and AG Jennings",
-          "Faces a four-way Sept 15 Democratic primary against Jeff Appelhans, E. No-Trump Hansen, and Mary Louve (DOE prim_fcddt_2026.html, updated 2026-09-11; WHYY Aug 22 voter guide)"
+          "Faces a four-way Sept 15 Democratic primary against Jeff Appelhans, E. No-Trump Hansen, and Mary Louve (DOE prim_fcddt_2026.html, updated 2026-09-15 07:56 AM; WHYY Aug 22 voter guide)"
         ],
         supporters: [
           "Seniority and appropriations clout deliver for a small state",
@@ -849,7 +849,7 @@ const STATEWIDE = [
         positions: ["[Decided Sept 15] Field themes: healthcare access and prescription costs","Border security and fentanyl","National security"],
         differentiators: [
           "Two-way GOP primary: Dr. Mike Katz (anesthesiologist; won the April GOP convention endorsement ~82%; former DEMOCRATIC state senator who ran for this seat in 2024 as an independent, taking 3.9%) vs. John Shulli (retired Army colonel, Army War College instructor)",
-          "Only Katz and Shulli appear on the DOE Republican primary list (prim_fcddt_2026.html, updated 2026-09-11) — no third Republican filed",
+          "Only Katz and Shulli appear on the DOE Republican primary list (prim_fcddt_2026.html, updated 2026-09-15 07:56 AM) — no third Republican filed",
           "Winner faces Coons in November"
         ],
         supporters: ["Katz's physician-outsider pitch targets downstate healthcare shortages"],
@@ -862,7 +862,7 @@ const STATEWIDE = [
     type: "upcoming",
     scope: "State · Statewide",
     office: "Attorney General — Delaware",
-    note: "Sept 15 Democratic primary is THREE-WAY: incumbent Kathy Jennings, ACLU-DE legal director Dwayne J. Bensing, and Patty Rickman (DOE prim_fcddt_2026.html, updated 2026-09-11; Delaware LIVE / WHYY / Spotlight Delaware). The Republican nominee did NOT come through a primary — no Republican filed by the July 14 deadline, then on Aug 24, 2026 the state Republican Party nominated Army and Delaware National Guard veteran David C. \"Dave\" Graham. DOE general list (genl_fcddt_2026.html, updated 2026-09-11) still lists Graham as Provisional. ⚠ Graham is not a lawyer; the Delaware Constitution does not require the attorney general to be one. Early voting ran ahead of Sept 15 (WHYY / Delaware LIVE).",
+    note: "Sept 15 Democratic primary is THREE-WAY: incumbent Kathy Jennings, ACLU-DE legal director Dwayne J. Bensing, and Patty Rickman (DOE prim_fcddt_2026.html, updated 2026-09-15 07:56 AM; Delaware LIVE / WHYY / Spotlight Delaware). The Republican nominee did NOT come through a primary — no Republican filed by the July 14 deadline, then on Aug 24, 2026 the state Republican Party nominated Army and Delaware National Guard veteran David C. \"Dave\" Graham. DOE general list (genl_fcddt_2026.html, updated 2026-09-15 07:56 AM) still lists Graham as Provisional. ⚠ Graham is not a lawyer; the Delaware Constitution does not require the attorney general to be one. Early voting ran ahead of Sept 15 (WHYY / Delaware LIVE).",
     candidates: [
       { name: "Kathy Jennings (incumbent)", party: "D", winner: false,
         positions: ["Violent-crime reduction — touts all-time-low violent crime statewide","Litigation against Trump-administration actions; defending gun-safety laws and abortion access","White-collar, corruption, and trafficking enforcement; record environmental and opioid settlements"],
@@ -881,7 +881,7 @@ const STATEWIDE = [
         opponents: ["Not a lawyer and virtually unknown in political circles — steep climb vs. a two-term incumbent (WHYY)"] },
       { name: "Dave Graham", party: "R", winner: false,
         positions: ["Financial oversight and government accountability (Wave 75 — the themes his campaign is reported to be built on; no published platform located)","Responsible management of the department's operations (Wave 75 — as above)","Military service as the frame for public duty (Wave 75 — as above)"],
-        differentiators: ["Named by the state Republican committee on Aug 24, 2026, not chosen in a primary","DOE genl_fcddt_2026.html (updated 2026-09-11) still lists him Provisional — SBI background / residency review pending","U.S. Army and Delaware National Guard veteran; retired Delaware-licensed CPA","About 25 years as an accountant and at the Delaware Department of Finance since 2003","Announced on WDEL's Rick Jensen Show on July 30, 2026"],
+        differentiators: ["Named by the state Republican committee on Aug 24, 2026, not chosen in a primary","DOE genl_fcddt_2026.html (updated 2026-09-15 07:56 AM) still lists him Provisional — SBI background / residency review pending","U.S. Army and Delaware National Guard veteran; retired Delaware-licensed CPA","About 25 years as an accountant and at the Delaware Department of Finance since 2003","Announced on WDEL's Rick Jensen Show on July 30, 2026"],
         supporters: ["Gives Republicans a name on a ballot line that was going to be blank","Two decades of state finance experience argues for an office run as a management job (Wave 75 — his expected campaign frame, per Delaware LIVE)","A committee nomination let the party recover from missing the filing deadline"],
         opponents: ["He is not a lawyer, and would lead the state's legal department (Wave 75 — noted by Delaware LIVE; no opponent has yet made it an attack)","Nominated by committee weeks after the deadline, with no primary voters behind him","No campaign platform, fundraising or organization could be located — absence stands Wave 53"] }
     ]
@@ -893,11 +893,22 @@ const STATEWIDE = [
     office: "State Treasurer — Delaware (OPEN SEAT)",
     note: "Colleen Davis (D) is not seeking a third term. Three Democrats face a Sept 15 primary; Mike Ramone — the 2024 gubernatorial nominee and the best-known Republican in the state — filed as the GOP candidate and is unopposed for the nomination (Delaware Dept. of Elections candidate list).",
     candidates: [
-      { name: "[Democratic nominee — decided in the Sept 15, 2026 primary]", party: "D", winner: false,
-        positions: ["[Decided Sept 15] — three-way field, platforms thinly covered (Wave 75 absence)"],
-        differentiators: ["Three-way Democratic primary (field set at the July 14, 2026 deadline, per the Delaware Dept. of Elections candidate list): Ted Lauzen (wealth-advisory partner, Iraq/Afghanistan veteran), Michael A. Smith (economist and nonprofit leader), and Mike Miller (Sussex County accounting-business owner who has run for U.S. House)","Winner faces Republican Mike Ramone in November","Sept 15 primary"],
-        supporters: ["All three Democrats bring finance backgrounds — wealth advising, economics, accounting","Delaware has not elected a Republican treasurer since 2014 (Wave 75 absence)","The eventual nominee inherits a statewide Democratic registration edge"],
-        opponents: ["A three-way primary leaves the nominee only seven weeks to face a known opponent","None of the three has run statewide before, unlike Ramone","Primary platforms remain thinly covered this far out (Wave 75 absence)"] },
+      { name: "Ted Lauzen", party: "D", winner: false,
+        positions: ["[Verify] Wealth-advisory / veteran finance themes — thin coverage (Wave 79)"],
+        differentiators: ["On the Sept 15 Democratic primary ballot (DOE prim_fcddt_2026.html, updated 2026-09-15 07:56 AM)","Wealth-advisory partner; Iraq/Afghanistan veteran (prior Wave notes)","Winner of this primary faces Mike Ramone (R) in November"],
+        supporters: ["Finance + veteran resume in an open Treasurer seat"],
+        opponents: ["Three-way Dem primary; platforms thinly covered"] },
+      { name: "Mike Miller", party: "D", winner: false,
+        positions: ["[Verify] Accounting / small-business themes — thin coverage (Wave 79)"],
+        differentiators: ["On the Sept 15 Democratic primary ballot (DOE prim_fcddt_2026.html, updated 2026-09-15 07:56 AM)","Sussex County accounting-business owner; has run for U.S. House (prior Wave notes)"],
+        supporters: ["Downstate accounting/business background"],
+        opponents: ["Three-way Dem primary; platforms thinly covered"] },
+      { name: "Michael Alexander Smith", party: "D", winner: false,
+        positions: ["[Verify] Economist / nonprofit finance themes — thin coverage (Wave 79)"],
+        differentiators: ["On the Sept 15 Democratic primary ballot (DOE prim_fcddt_2026.html, updated 2026-09-15 07:56 AM)","Economist and nonprofit leader; campaign site michaelsmithde.com (DOE listing)"],
+        supporters: ["Economist/nonprofit finance pitch"],
+        opponents: ["Three-way Dem primary; platforms thinly covered"] },
+      
       { name: "Mike Ramone", party: "R", winner: false,
         positions: ["Transparency and fiscal accountability","Scrutiny of the long-term economic impact of state policy","An 'independent voice' watchdog in an all-Democratic Dover"],
         differentiators: ["2024 gubernatorial nominee (43.9% against Meyer) — the GOP's highest name recognition","16 years in the state House, including as Minority Leader","Filed with the Delaware Dept. of Elections; unopposed for the GOP nomination"],
@@ -910,7 +921,7 @@ const STATEWIDE = [
     type: "upcoming",
     scope: "State · Statewide",
     office: "State Auditor — Delaware",
-    note: "Lydia York (D) seeks a second term. No primary — she drew no primary challenger. The November ballot is contested: York (D) vs April Callaway (R) vs Austin Cassidy (Independent Party of DE). All three are Qualified on DOE genl_fcddt_2026.html (updated 2026-09-11); Delaware LIVE Sept 15 voters guide matches. Do not invent primary winners here — there is no Auditor primary.",
+    note: "Lydia York (D) seeks a second term. No primary — she drew no primary challenger. The November ballot is contested: York (D) vs April Callaway (R) vs Austin Cassidy (Independent Party of DE). All three are Qualified on DOE genl_fcddt_2026.html (updated 2026-09-15 07:56 AM); Delaware LIVE Sept 15 voters guide matches. Do not invent primary winners here — there is no Auditor primary.",
     candidates: [
       { name: "Lydia York (incumbent)", party: "D", winner: false,
         positions: ["Professionalizing the office after the McGuiness scandal","Routine, on-time audit delivery (statewide federal-awards audit, April 2026)","Simplicity, accuracy, efficiency, and economy in state spending (auditor.delaware.gov)"],
@@ -989,7 +1000,7 @@ const HOUSE_RACES = {
             opponents: ["GOP field frames the race around cost of living, crime, and education (Wave 75 — specific attack lines not separately sourced)"] },
           { name: "[Republican nominee — decided in the Sept 15, 2026 primary]", party: "R", winner: false,
             positions: ["[Decided Sept 15] Field themes: workforce development and small-business deregulation","Lower costs and spending cuts","School choice and parental rights"],
-            differentiators: ["Three-way GOP primary (DOE prim_fcddt_2026.html, updated 2026-09-11): Joseph \"Dr. Joe\" Arminio (Wilmington native; political scientist/author — WHYY), Earl L. Cooper (Wilmington businessman/former pastor; ran in the 2024 DEMOCRATIC primary against McBride), and John J. Whalen (retired Delaware State Police; McBride's 2024 general-election opponent)","Lee Murphy (2020/2022 nominee) WITHDRAWN 7/21/2026 on DOE general list — do not card him","Winner faces McBride in November"],
+            differentiators: ["Three-way GOP primary (DOE prim_fcddt_2026.html, updated 2026-09-15 07:56 AM): Joseph \"Dr. Joe\" Arminio (Wilmington native; political scientist/author — WHYY), Earl L. Cooper (Wilmington businessman/former pastor; ran in the 2024 DEMOCRATIC primary against McBride), and John J. Whalen (retired Delaware State Police; McBride's 2024 general-election opponent)","Lee Murphy (2020/2022 nominee) WITHDRAWN 7/21/2026 on DOE general list — do not card him","Winner faces McBride in November"],
             supporters: ["Cooper's community-development record is the field's strongest local résumé"],
             opponents: ["Cooper's 2024-Democrat-to-2026-Republican switch invites questions (Wave 75 absence)"] }
         ]
@@ -1012,7 +1023,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Delaware Elections Hub", lastUpdated: "September 12, 2026 (Wave 76 — DOE primary/general sync)" };
+const SITE_META = { name: "Delaware Elections Hub", lastUpdated: "September 15, 2026 (Wave 79 — election-day field; DOE list 07:56 AM; 0% reporting)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — DE county-level down-ballot research is the next phase).
