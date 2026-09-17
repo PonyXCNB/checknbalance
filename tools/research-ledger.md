@@ -1172,3 +1172,18 @@ Trigger: DE Sept 15 primary (routine had marked succeeded without PC work; tip s
 - `CLAUDE.md`: DE/RI blurbs.
 
 2026-09-17 | de.html + ri.html + CLAUDE.md | Wave 80 DE primary nominees + RI BOE cert | Free web + DOE CSV (0 Grok). Verify 4→1 (cleared 3 DE Treasurer). Local commit only — do not push (Ryan ask-before-push after ea032c6).
+
+## 2026-09-17 - Wave 81 (NH gov + NM Goolsby re-check + CLAUDE current-state)
+
+Ryan batch before push of `580d374`. Local only.
+
+### Research
+- **NH gov:** SoS Excel/hub still Akamai 403. InDepthNH Sep 10 (Rayno) still the best cite — SoS has not released official governor figures; AP ~100,183 / ~92%. InDepthNH Sep 12 Distant Dome has different unofficial totals without SoS attribution — not used. Left `nh.html` AP-unofficial.
+- **NM Goolsby:** Transparency USA still through 06/27/2026. CFIS portals unusable (old decommissioned; login shell; cfis.sos.nm.gov 500). Left [Verify] locked. Grand total still **1**.
+- Grok queries: **0**.
+
+### Edits
+- `CLAUDE.md`: Current state → September 17 Wave 81 (DE Wave 80 nominees, RI BOE-certified, NH/Goolsby dead ends, push hold).
+- No HTML race edits.
+
+2026-09-17 | CLAUDE.md | Wave 81 docs refresh | Free web only (0 Grok). NH+Goolsby left. Local commit — NO PUSH.
