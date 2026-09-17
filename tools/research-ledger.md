@@ -1154,3 +1154,21 @@ Skipped: DE inventing (only soft absence pad); MI board/regents mass; NM CFIS in
 - Verify grand total still **3** (nm locks). Grok 0. Brief: `tools/_w77-research.md`. Local commit only — **NO PUSH** (Netlify credit hold). Do not commit `tools/_w*` scratch.
 
 2026-09-13 | nh.html + docs | Wave 77 NH SoS tallies ship | Free web only (0 Grok). NH Senate/House official SoS via InDepthNH Sep 10; gov AP-unofficial. RI leave (UOCAVA Sep 14 4pm). DE field unchanged. NM 3 locks hold. MO gate open (briefs 15 / args 17 / UOCAVA 19). Verify 3. SITE_META nh Sep 13. Local commit — NO PUSH. | standing
+
+## 2026-09-17 - Wave 80 morning reconnect catch-up (DE primary results + RI BOE cert)
+
+Trigger: DE Sept 15 primary (routine had marked succeeded without PC work; tip still ea032c6 Wave 79). Brendan PC connected.
+
+### Research
+- **DE statewide + House:** Delaware DOE open-data CSV `https://data.delaware.gov/resource/yg7x-kgjc.csv?election_name=2026%20Primary%20Election` (data_as_of 2026-09-16T00:59:22) — Coons 78.0% / Katz 77.3% / Jennings 71.2% / Lauzen 45.3% / Arminio 47.9%. Cross-checked WHYY (Sep 15–16), Spotlight Delaware (Sep 16), Delaware Public Media (Lauzen), WGMD (updated Sep 16 — unofficial; county cert ~Fri Sep 18). ENR HTML is JS-only; CSV is the machine-readable source.
+- **RI:** Board of Elections certified Sept 9 primary on Sept 15 (What's Up Newp; News From The States; Boston Globe) — one recount + two rereads; no statewide outcome changed; turnout 20.09%.
+- **NH gov:** SoS results hub exists (`sos.nh.gov/2026-state-primary-election-results`) but Excel downloads returned 403 from this environment; left Ayotte as AP-unofficial pending a clean SoS tally pull.
+- **NM Goolsby CFIS:** No new First General cash figures located this pass — Verify left.
+- Grok queries: **0** (free web + DOE CSV sufficient).
+
+### Edits
+- `de.html`: Wave 80 — November nominees + past primary cards; cleared 3 Treasurer [Verify] markers with WHYY platform language for Lauzen; SITE_META Sep 17.
+- `ri.html`: replace unofficial-pending language with BOE-certified Sep 15; SITE_META Sep 17.
+- `CLAUDE.md`: DE/RI blurbs.
+
+2026-09-17 | de.html + ri.html + CLAUDE.md | Wave 80 DE primary nominees + RI BOE cert | Free web + DOE CSV (0 Grok). Verify 4→1 (cleared 3 DE Treasurer). Local commit only — do not push (Ryan ask-before-push after ea032c6).

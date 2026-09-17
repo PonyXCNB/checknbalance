@@ -383,7 +383,7 @@
      Lives INSIDE the expanded panel only. A collapsed card shows the pill, date, office
      and candidate count and nothing else, so a county's ballot reads as a clean list.
      Owner-reported twice on Aug 12, 2026: as a header element these notes — 2,187
-     characters at the extreme, and 30% of them opening with a ⚠ flag — buried the
+     characters at the extreme, and 30% of them opening with a NOTE: flag — buried the
      candidate data the page exists to show. Set in roman, not italic: extended italic
      body copy at 12.5px is the thing that read as 'terrible'. Long briefs clamp to about
      four lines behind a Show more toggle so they never crowd out the cards below. */
@@ -712,7 +712,7 @@
       <strong>RI Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">September 14, 2026 (Wave 78)</span><br>
+      Last updated: <span id="last-updated">September 17, 2026 (Wave 80 — BOE primary certification)</span><br>
       Sources: RI Department of State / Board of Elections, Ballotpedia, Wikipedia, Cook Political Report, AP, CNN, The Boston Globe, WPRI, Ocean State Media, Rhode Island Current.
     </div>
   </div>
@@ -760,23 +760,24 @@ const COUNTIES = {
 };
 
 // ----- (2) Statewide elections every county votes in -----
-// NOTE: RI's 2026 state primary was Sept 9, 2026. Nominees below are WPRI/CNN/AP/Ocean State Media-called;
-// unofficial pending Board of Elections certification. Do not invent margins beyond reported figures.
+// NOTE: RI's 2026 state primary was Sept 9, 2026. Nominees below are WPRI/CNN/AP/Ocean State Media-called
+// and Board of Elections–CERTIFIED on Sept 15, 2026 (What's Up Newp / News From The States / Boston Globe:
+// one recount + two rereads; no statewide outcome changed; turnout 20.09% / 158,973 ballots).
 // Sources: WPRI, CNN, AP (via WSJ), Ocean State Media, News From The States, Rhode Island Current, Green Papers.
 const STATEWIDE = [
   {
     date: "Nov 3, 2026", type: "upcoming", scope: "Federal · Statewide",
     office: "U.S. Senate — Rhode Island",
-    note: "Jack Reed (D), first elected 1996, seeks a 6th term; Armed Services leadership. Rated Solid/Safe Democratic. ✅ Sept 9 result (Ocean State Media / News From The States; still unofficial — Board of Elections has not posted certification as of Sept 14 morning): Reed won ~76%–14%–10% over Burbridge and Muñoz on early Board tallies. Raymond McKay (R) won the GOP primary unopposed — Allen Waters did not appear on the GOP Senate ballot. Independent Michael Bahry is also on the November path (News From The States; Green Papers).",
+    note: "Jack Reed (D), first elected 1996, seeks a 6th term; Armed Services leadership. Rated Solid/Safe Democratic. ✅ Sept 9 result (Ocean State Media / News From The States; BOE-certified Sep 15 (What's Up Newp / News From The States): Reed won ~76%–14%–10% over Burbridge and Muñoz on early Board tallies. Raymond McKay (R) won the GOP primary unopposed — Allen Waters did not appear on the GOP Senate ballot. Independent Michael Bahry is also on the November path (News From The States; Green Papers).",
     candidates: [
     { name: "Jack Reed (incumbent)", party: "D", winner: false,
       positions: ["Defense and the Rhode Island submarine industrial base (Armed Services leader)", "Veterans' benefits and VA reform", "Affordable housing and homelessness"],
-      differentiators: ["Senior Senate Armed Services leadership", "Low-profile, bipartisan institutionalist", "Won the Sept 9 Democratic primary over Burbridge and Muñoz (Ocean State Media; ~76% unofficial)"],
+      differentiators: ["Senior Senate Armed Services leadership", "Low-profile, bipartisan institutionalist", "Won the Sept 9 Democratic primary over Burbridge and Muñoz (Ocean State Media; ~76% BOE-certified)"],
       supporters: ["Delivers for a small state through seniority and defense clout", "Cleared progressive primary challengers by a wide margin", "Massive cash edge — ~$3.6M on hand vs. challengers' low five figures (FEC, pre-primary)"],
       opponents: ["A three-decade incumbent in an anti-incumbent era", "Progressives say Rhode Island needs bolder leadership (Providence Journal)", "Age (76) was raised by younger primary challengers"] },
     { name: "Raymond McKay", party: "R", winner: false,
       positions: ["Affordability, energy costs and federal spending", "Case for change after Reed's nearly three decades", "(Wave 74 — fuller general-election platform not located)"],
-      differentiators: ["State GOP-endorsed Senate nominee; won the Sept 9 GOP primary unopposed (Ocean State Media; unofficial pending certification)", "Former RI Republican Assembly president; ran for Senate in 2024", "November field also includes independent Michael Bahry"],
+      differentiators: ["State GOP-endorsed Senate nominee; won the Sept 9 GOP primary unopposed (Ocean State Media; BOE-certified Sep 15)", "Former RI Republican Assembly president; ran for Senate in 2024", "November field also includes independent Michael Bahry"],
       supporters: ["Party endorsement and infrastructure with no primary fight to recover from", "UNH general-election polls showed Reed ahead but not by 2020-blowout margins", "Runs as the change candidate against a long-serving incumbent"],
       opponents: ["No Republican has won a Rhode Island U.S. Senate race since 2000", "Reed still leads comfortably in spring/summer UNH general polling", "Safe-D seat leaves little room for an upset"] },
     { name: "Michael Bahry", party: "I", winner: false,
@@ -789,7 +790,7 @@ const STATEWIDE = [
   {
     date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide",
     office: "Governor of Rhode Island",
-    note: "Helena Foulkes (D) is the Democratic nominee after defeating incumbent Gov. Dan McKee on Sept 9 — CNN/AP/WPRI-called; AP early tallies ~62%–38% (WSJ). Aaron Guckian (R) is the Republican nominee — WPRI-projected over Elaine Pelino in a very close race (~51%–49% / ~200–300 vote margins in late returns; unofficial pending certification). November also includes independents Ken Block, Jasjit “Jay” Gotra, and C.D. Reynolds (Ocean State Media / WPRI / Rhode Island Current). Rated Solid/Likely Democratic.",
+    note: "Helena Foulkes (D) is the Democratic nominee after defeating incumbent Gov. Dan McKee on Sept 9 — CNN/AP/WPRI-called; AP early tallies ~62%–38% (WSJ). Aaron Guckian (R) is the Republican nominee — WPRI-projected over Elaine Pelino in a very close race (~51%–49% / ~200–300 vote margins in late returns; BOE-certified Sep 15). November also includes independents Ken Block, Jasjit “Jay” Gotra, and C.D. Reynolds (Ocean State Media / WPRI / Rhode Island Current). Rated Solid/Likely Democratic.",
     candidates: [
     { name: "Helena Foulkes", party: "D", winner: false,
       positions: ["Housing — 'Rhode Home' fund to build 20,000 units, paid by a 3% tax on income over $1M", "Healthcare — raise Medicaid rates, rebuild primary care", "Jobs — 'Classroom-to-Career' $100M CTE bond; blue-economy/port investment"],
@@ -798,7 +799,7 @@ const STATEWIDE = [
       opponents: ["Former CVS Health executive with limited prior elected experience (WPRI/CNN primary coverage)", "Republicans cast her 3% tax-on-income-over-$1M housing fund as anti-business", "November field adds Guckian plus three independents, which can splinter the center"] },
     { name: "Aaron Guckian", party: "R", winner: false,
       positions: ["Lower cost of living — housing supply, utilities, and health costs (aaronforri.com)", "Tax relief, cut fees, and leaner state government (aaronforri.com)", "Primary-care shortage and education/workforce investment (aaronforri.com)"],
-      differentiators: ["WPRI-projected GOP nominee after a razor-close Sept 9 primary over Elaine Pelino (unofficial pending certification)", "State GOP-endorsed; 2022 Republican nominee for lieutenant governor", "Former Carcieri administration staffer"],
+      differentiators: ["WPRI-projected GOP nominee after a razor-close Sept 9 primary over Elaine Pelino (BOE-certified Sep 15)", "State GOP-endorsed; 2022 Republican nominee for lieutenant governor", "Former Carcieri administration staffer"],
       supporters: ["Party endorsement and prior statewide nominee experience", "Cleared a MAGA-aligned challenger who had led summer polls", "Argues a bruising Dem primary and bridge-era anger leave an opening"],
       opponents: ["Won by a razor-thin margin — Pelino supporters may not consolidate", "No Republican has won the governorship since Donald Carcieri's 2006 re-election", "Democratic nominee starts with a large registration and fundraising edge"] },
     { name: "Ken Block", party: "I", winner: false,
@@ -821,7 +822,7 @@ const STATEWIDE = [
   {
     date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide",
     office: "Attorney General — Rhode Island (OPEN SEAT)",
-    note: "OPEN SEAT — Peter Neronha (D) is term-limited. ✅ Sept 9 (WPRI / Ocean State Media): Kim Ahern won the Democratic primary over Keith Hoffmann, state Rep. Jason Knight, and state Rep. Joseph Solomon Jr. Republican Alan Gordon was unopposed. Gun policy and ICE/immigration enforcement were the defining primary fault lines. Unofficial pending certification.",
+    note: "OPEN SEAT — Peter Neronha (D) is term-limited. ✅ Sept 9 (WPRI / Ocean State Media): Kim Ahern won the Democratic primary over Keith Hoffmann, state Rep. Jason Knight, and state Rep. Joseph Solomon Jr. Republican Alan Gordon was unopposed. Gun policy and ICE/immigration enforcement were the defining primary fault lines. BOE-certified Sep 15.",
     candidates: [
     { name: "Kim Ahern", party: "D", winner: false,
       positions: ["Keep guns from prohibited persons; ban 'weapons of war'", "Opposes aggressive ICE tactics", "Consumer protection, utility-rate fights, wage theft / worker rights (ahernforag.com/issues)"],
@@ -838,7 +839,7 @@ const STATEWIDE = [
   {
     date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide",
     office: "Lieutenant Governor — Rhode Island",
-    note: "Sabina Matos (D) seeks a second full term. ✅ Sept 9 (WPRI / Ocean State Media): Matos won the Democratic nomination over Providence City Councilor Sue AnderBois, former state Sen. Cindy Coyne, Newport City Councilor Xay Khamsyvoravong, and Ross McCurdy. Republican John Loughlin II was unopposed. Independent Mabel Martinez failed to meet the signature threshold and is NOT on the November ballot (Rhode Island Current). Unofficial pending certification.",
+    note: "Sabina Matos (D) seeks a second full term. ✅ Sept 9 (WPRI / Ocean State Media): Matos won the Democratic nomination over Providence City Councilor Sue AnderBois, former state Sen. Cindy Coyne, Newport City Councilor Xay Khamsyvoravong, and Ross McCurdy. Republican John Loughlin II was unopposed. Independent Mabel Martinez failed to meet the signature threshold and is NOT on the November ballot (Rhode Island Current). BOE-certified Sep 15.",
     candidates: [
     { name: "Sabina Matos (incumbent)", party: "D", winner: false,
       positions: ["Fair Price Grocery Agenda — food inflation, food deserts, local grocers (Providence Journal; RI Current)", "Small business / employee-ownership center legislation (Providence Journal 2026 session)", "Health equity and primary-care access (RI Current July 2026 forum)"],
@@ -855,7 +856,7 @@ const STATEWIDE = [
   {
     date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide",
     office: "Secretary of State — Rhode Island",
-    note: "Gregg Amore (D) seeks a second term. ✅ Unopposed: the only Democrat who qualified for the primary ballot; no Republican filed for secretary of state (Ocean State Media; Boston Globe). A Democratic challenger (Anthony Tamba) fell short on signatures (Rhode Island Current). Unofficial pending certification of the primary canvass.",
+    note: "Gregg Amore (D) seeks a second term. ✅ Unopposed: the only Democrat who qualified for the primary ballot; no Republican filed for secretary of state (Ocean State Media; Boston Globe). A Democratic challenger (Anthony Tamba) fell short on signatures (Rhode Island Current). BOE-certified Sep 15 of the primary canvass.",
     candidates: [
     { name: "Gregg Amore (incumbent)", party: "D", winner: false,
       positions: ["Rhode Island Voting Rights Act to keep elections accessible (Providence Journal Feb 2026)", "State History Center bond and business-identity-theft filings (Providence Journal)"],
@@ -867,7 +868,7 @@ const STATEWIDE = [
   {
     date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide",
     office: "General Treasurer — Rhode Island",
-    note: "James Diossa (D) seeks a second term vs. Republican Micholas Credle. ✅ Sept 9 result: Diossa won with no Democratic primary opponent; Credle won the GOP side unopposed (Ocean State Media; DDHQ uncontested). Still unofficial — Board certification not posted as of Sept 14 morning.",
+    note: "James Diossa (D) seeks a second term vs. Republican Micholas Credle. ✅ Sept 9 result: Diossa won with no Democratic primary opponent; Credle won the GOP side unopposed (Ocean State Media; DDHQ uncontested). BOE-certified Sep 15 (What's Up Newp / News From The States).",
     candidates: [
     { name: "James Diossa (incumbent)", party: "D", winner: false,
       positions: ["Investing in Rhode Islanders — Baby Bonds and Secure Choice retirement (treasury.ri.gov)", "Pension stewardship plus crime-victim compensation expansion (treasury.ri.gov; Providence Journal)"],
@@ -926,7 +927,7 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "Gabe Amo (D) seeks a second full term. Rated Solid/Safe Democratic (Cook). ✅ Sept 9: Amo and Republican Kellie Keenan were both unopposed in their party primaries (Ocean State Media). Independent Pedro DeSouza is also on the November path. Unofficial pending certification.",
+        note: "Gabe Amo (D) seeks a second full term. Rated Solid/Safe Democratic (Cook). ✅ Sept 9: Amo and Republican Kellie Keenan were both unopposed in their party primaries (Ocean State Media). Independent Pedro DeSouza is also on the November path. BOE-certified Sep 15.",
         candidates: [
         { name: "Gabe Amo (incumbent)", party: "D", winner: false,
           positions: ["Gun-violence prevention", "Reproductive freedom", "Climate resilience and environmental justice"],
@@ -969,7 +970,7 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "Seth Magaziner (D) seeks a third term. Rated Solid/Safe Democratic (Cook). ✅ Sept 9 (Ocean State Media / WPRI): Magaziner was unopposed — Spencer Dickinson failed to qualify / did not appear as a primary challenger. Vic Mellor won the Republican primary over Stephen Skoly. Unofficial pending certification.",
+        note: "Seth Magaziner (D) seeks a third term. Rated Solid/Safe Democratic (Cook). ✅ Sept 9 (Ocean State Media / WPRI): Magaziner was unopposed — Spencer Dickinson failed to qualify / did not appear as a primary challenger. Vic Mellor won the Republican primary over Stephen Skoly. BOE-certified Sep 15.",
         candidates: [
         { name: "Seth Magaziner (incumbent)", party: "D", winner: false,
           positions: ["Protect Social Security and Medicare", "Reproductive rights, ACA and gun safety", "Government ethics — ban congressional stock trading, term limits"],
@@ -1003,7 +1004,7 @@ const HOUSE_RACES = {
   }
 }
 
-const SITE_META = { name: "Rhode Island Elections Hub", lastUpdated: "September 14, 2026 (Wave 78)" };
+const SITE_META = { name: "Rhode Island Elections Hub", lastUpdated: "September 17, 2026 (Wave 80 — BOE primary certification)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — RI county-level down-ballot research is the next phase.)
@@ -1253,7 +1254,7 @@ function renderGroup(label, items) {
     ${items.map(renderElection).join("")}`;
 }
 
-// Split a race note on the ⚠ / ✅ flag glyphs the editorial style already uses, keeping
+// Split a race note on the NOTE: / ✅ flag glyphs the editorial style already uses, keeping
 // the glyph that introduced each segment. Text before the first flag is the lead. This is
 // presentation only — no wording is altered and nothing is dropped.
 function briefSegments(note) {
