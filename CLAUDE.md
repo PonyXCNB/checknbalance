@@ -230,7 +230,7 @@ Finally `node tools/fit-map-frames.js` so the new page's map frame takes the sta
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of September 18, 2026 — Wave 83 NH gov SoS tallies + Villee; tip pending)
+## Current state (as of September 18, 2026 — Wave 83 NH gov SoS tallies + Villee; tip `0b760bf`)
 - **Built bloc = 47 states + DC PARTIAL marquee.** Fully built: everything except CA, MO, TX (starter framework on the map) and DC (marquee-only). No `mo.html` / `ca.html` / `tx.html` on disk. Alaska (47th) and Louisiana are built — do NOT treat the Sept 3 "AK CA LA MO TX remaining" line as live.
 - **Verify backlog: grand total 1**, on `nm.html` only (intentional lock — do NOT invent-clear):
   1. SoS open seat — Ramona L. Goolsby differentiators (CFIS First General due **Sep 14**; Wave 81 re-check: Transparency USA still through **June 27**; CFIS portals still unusable — leave locked).
