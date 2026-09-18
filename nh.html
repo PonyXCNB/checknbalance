@@ -713,7 +713,7 @@
       <strong>NH Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">September 13, 2026</span><br>
+      Last updated: <span id="last-updated">September 18, 2026</span><br>
       Sources: NH Secretary of State (sos.nh.gov), Ballotpedia, Wikipedia, Cook Political Report, NHPR, NH Bulletin, WMUR, AP.
     </div>
   </div>
@@ -793,18 +793,23 @@ const STATEWIDE = [
   {
     date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide",
     office: "Governor of New Hampshire",
-    note: "Kelly Ayotte (R), elected 2024, seeks a second two-year term. ✅ Sept 8: Ayotte won the GOP primary over Shaun Fife and Robert McClory — SoS has NOT released official governor figures yet; AP last unofficial figure ~100,183 votes / ~92% (InDepthNH Sep 10). Cinde Warmington was unopposed in the Democratic primary and advances to November (NHPR). Rated Leans Republican.",
+    note: "Kelly Ayotte (R), elected 2024, seeks a second two-year term. ✅ Sept 8 primary — official SoS tallies via InDepthNH Garry Rayno Sep 12 (same clerk-return package Wave 77 used for Senate/House; full statewide certification package still pending for races SoS Excel has not posted as certified): Ayotte 100,920 (91.9%) over Shaun Fife 4,418 (4.0%) and Bob Wayne McClory 3,890 (3.5%), write-ins 644 (0.6%), GOP total 109,872; Cinde Warmington unopposed on the Democratic ballot 126,223 (96.4%) with write-ins 4,788 (3.6%), Dem total 131,011. November three-way: Ayotte vs. Warmington vs. Libertarian Stephen Villee (ballot-qualified Aug 29 — Ballot Access News / villee4nh.com). Rated Leans Republican.",
     candidates: [
     { name: "Kelly Ayotte (incumbent)", party: "R", winner: false,
       positions: ["Expand Education Freedom Account (school-choice) vouchers", "'No income tax, no sales tax' pledge", "Public safety"],
-      differentiators: ["Former U.S. Senator (2011–17); elected governor 2024", "Won the Sept 8 GOP primary over little-known challengers — AP unofficial ~100,183 / ~92%; official SoS governor totals not yet released (InDepthNH Sep 10)", "Approval/favorability around 50% in recent coverage (NHPR)"],
+      differentiators: ["Former U.S. Senator (2011–17); elected governor 2024", "Won the Sept 8 GOP primary 100,920–4,418–3,890 (91.9%) — official SoS tallies via InDepthNH Sep 12", "Approval/favorability around 50% in recent coverage (NHPR)"],
       supporters: ["A low-tax, business-friendly record in a state that elects governors every two years", "Cleared her primary easily and keeps the GOP Concord infrastructure", "Last Republican to win a NH U.S. Senate race (2010) still carries statewide name ID"],
       opponents: ["Democrats target voucher expansion's property-tax impact", "Warmington paints her as protecting one-party control in Concord", "Two-year cycle means midterm headwinds can bite even popular governors"] },
     { name: "Cinde Warmington (D nominee)", party: "D", winner: false,
       positions: ["Opposes voucher expansion and its property-tax impact", "Opposes new Medicaid premiums", "Abortion rights"],
-      differentiators: ["Former Executive Councilor (2021–25) — the lone Democrat on the council", "Won Democratic nomination — NHPR Sept 2 result; no Sept 8 Dem primary contest", "Healthcare attorney; 2024 Dem primary runner-up to Joyce Craig"],
+      differentiators: ["Former Executive Councilor (2021–25) — the lone Democrat on the council", "Unopposed Democratic primary — 126,223 votes (96.4%) on the Dem ballot (InDepthNH Sep 12 / SoS tallies)", "Healthcare attorney; 2024 Dem primary runner-up to Joyce Craig"],
       supporters: ["A check on one-party control in Concord", "Healthcare and Executive Council record against voucher expansion", "Cleared the primary without spending on a contested Dem field"],
-      opponents: ["Former Purdue Pharma lobbying work is a live attack line; she released a rebuttal video (NHPR)", "Republicans have held the governorship since 2017", "Leans-R rating favors Ayotte in November"] }
+      opponents: ["Former Purdue Pharma lobbying work is a live attack line; she released a rebuttal video (NHPR)", "Republicans have held the governorship since 2017", "Leans-R rating favors Ayotte in November"] },
+    { name: "Stephen Villee", party: "L", winner: false,
+      positions: ["Adopt approval voting to end the spoiler problem for third parties (villee4nh.com)", "Fully legalize adult cannabis — NH is the only New England state that has not (villee4nh.com)", "Defend the Guard — require a congressional war declaration before activating the NH National Guard (villee4nh.com)"],
+      differentiators: ["Ballot-qualified Libertarian — 1,653 valid CD-1 + 1,736 valid CD-2 signatures (Ballot Access News Aug 29, 2026)", "Software developer; Free State Project mover #6 (2003); former treasurer of NH Liberty Alliance and Free State Project (lp.org)", "Campaign goal is ≥4% to restore Libertarian major-party status; openly frames himself as a long-shot (villee4nh.com)"],
+      supporters: ["Gives NH voters a ballot-qualified smaller-government alternative to the two majors (Ballot Access News / villee4nh.com)", "Four concrete legislative priorities already tested in recent House bills (approval voting, cannabis, Defend the Guard, medical psilocybin)", "Early Free State Project mover with long local liberty-org résumé (lp.org)"],
+      opponents: ["Third-party math — he himself says he probably will not be elected (villee4nh.com)", "Long-term secession / wind-down-welfare framing alienates plurality voters outside the liberty niche", "Leans-R race still centers on Ayotte–Warmington; a Libertarian line can split the anti-Ayotte or anti-Warmington protest vote"] }
     ]
   },
   {
@@ -924,7 +929,7 @@ const HOUSE_RACES = {
   }
 }
 
-const SITE_META = { name: "New Hampshire Elections Hub", lastUpdated: "September 13, 2026" };
+const SITE_META = { name: "New Hampshire Elections Hub", lastUpdated: "September 18, 2026" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — NH county-level down-ballot research is the next phase.)

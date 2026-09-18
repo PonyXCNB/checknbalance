@@ -230,17 +230,17 @@ Finally `node tools/fit-map-frames.js` so the new page's map frame takes the sta
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of September 17, 2026 — Wave 81 docs refresh; tip Wave 80 `580d374`)
+## Current state (as of September 18, 2026 — Wave 83 NH gov SoS tallies + Villee; tip pending)
 - **Built bloc = 47 states + DC PARTIAL marquee.** Fully built: everything except CA, MO, TX (starter framework on the map) and DC (marquee-only). No `mo.html` / `ca.html` / `tx.html` on disk. Alaska (47th) and Louisiana are built — do NOT treat the Sept 3 "AK CA LA MO TX remaining" line as live.
 - **Verify backlog: grand total 1**, on `nm.html` only (intentional lock — do NOT invent-clear):
   1. SoS open seat — Ramona L. Goolsby differentiators (CFIS First General due **Sep 14**; Wave 81 re-check: Transparency USA still through **June 27**; CFIS portals still unusable — leave locked).
   Cleared Wave 78: NM GO bond dollar conflict (SoS certified CA/GOB PDF) + judicial retention roster (SoS portal — Bacon / Thomson / Hanisee all Qualified).
-- **NH Sept 8:** `nh.html` still has official SoS Senate/House tallies via InDepthNH Sep 10; **governor still AP-unofficial** (~100,183 / ~92%). Wave 81: SoS Excel/hub still **Akamai 403**; InDepthNH Sep 10 explicitly says SoS has not released official governor figures — leave AP language.
+- **NH Sept 8:** `nh.html` has official SoS Senate/House tallies via InDepthNH Sep 10 **and** governor tallies via InDepthNH Garry Rayno Sep 12 (Ayotte 100,920 / 91.9%; Warmington 126,223 / 96.4%). Wave 83 also carded Libertarian **Stephen Villee** (Ballot Access News Aug 29). SoS Excel/hub still Akamai-blocked to automated fetch; clerk-return amendment disclaimer still on SoS results hub.
 - **RI Sept 9 / Wave 80:** nominees settled; **BOE-certified Sep 15** language shipped in local tip `580d374`.
-- **DE Sept 15 primary (Wave 80, local `580d374`):** DOE open-data CSV nominees (still **Unofficial** until county certification ~**Sep 18**): Senate Coons/Katz; House McBride/Arminio; AG Jennings/Graham; Treasurer Lauzen/Ramone; Auditor York / Callaway (R) + Cassidy (I).
+- **DE Sept 15 primary:** DOE results page still labeled **Unofficial Results** as of morning Sep 18 (absentee tabulation completed all three counties; Kent RD-33 R recount confirmed). County certification is *scheduled* Sep 18 but has **not** flipped the public label to Official — leave Unofficial. Nominees unchanged: Senate Coons/Katz; House McBride/Arminio; AG Jennings/Graham; Treasurer Lauzen/Ramone; Auditor York / Callaway (R) + Cassidy (I).
 - **MO gate still OPEN — still NO `mo.html`.** Map litigation fluid (Prop A on ballot; federal TRO / SCOTUS stay history); UOCAVA **Sep 19**; 8th Cir calendar still live. Keep bank; do not start the page.
 - **CA and TX remain unbuilt** (starter only). DC stays PARTIAL marquee.
-- **Voices site-wide: 0 gaps.** Landing: `BUILT` = 47; footer "Last updated: September 2026". **Ryan holding Netlify push** of local tip `580d374` (and any Wave 81 commit) — local commits OK; do not push until he asks.
+- **Voices site-wide: 0 gaps.** Landing: `BUILT` = 47; footer "Last updated: September 2026". **Netlify auto-publish authorized** again after Wave 82 — push when tests are green.
 - **My Ballot (Wave 82):** topnav link on landing, states list, and every built state page → https://www.vote411.org/ballot (VOTE411 / League of Women Voters; target=_blank). Label: My Ballot.
 - **Mentioned-dates scanner is in tree.**
 
