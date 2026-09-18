@@ -1187,3 +1187,5 @@ Ryan batch before push of `580d374`. Local only.
 - No HTML race edits.
 
 2026-09-17 | CLAUDE.md | Wave 81 docs refresh | Free web only (0 Grok). NH+Goolsby left. Local commit — NO PUSH.
+
+2026-09-18 | site-wide topnav | Wave 82 My Ballot → VOTE411 | Ryan chose Option C label My Ballot. No race HTML. DE still Unofficial. Local+push authorized.

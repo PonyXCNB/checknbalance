@@ -51,6 +51,13 @@
   .brand-name { font-family: var(--serif); font-weight: 500; font-size: 17px; line-height: 1.1; }
   .brand-sub { font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--ink-soft); margin-top: 2px; }
 
+  .topnav { display: flex; gap: 22px; align-items: center; }
+  .topnav a {
+    color: var(--ink-soft); text-decoration: none; font-size: 13px; font-weight: 600;
+    transition: color .15s ease;
+  }
+  .topnav a:hover { color: var(--gold-deep); }
+
   .hero { max-width: 1240px; margin: 0 auto; padding: 80px 32px 40px; text-align: center; }
   .eyebrow {
     display: inline-flex; align-items: center; gap: 10px; padding: 7px 16px; border: 1px solid var(--gold);
@@ -255,6 +262,9 @@
         <span class="brand-sub">An Independent Civic Project</span>
       </div>
     </a>
+    <nav class="topnav" aria-label="Site">
+      <a href="https://www.vote411.org/ballot" target="_blank" rel="noopener noreferrer">My Ballot</a>
+    </nav>
   </div>
 </header>
 

@@ -59,6 +59,10 @@ for (const page of pages) {
   check(!src.includes("No data yet"), `${page}: the legend no longer describes a "No data yet" tier`);
   check(src.includes('id="stat-statewide"'), `${page}: the statewide hero stat is computed from data`);
   check(/<aside class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title"/.test(src), `${page}: the drawer is a labelled dialog`);
+  check(
+    src.includes('>My Ballot</a>') && src.includes('vote411.org/ballot'),
+    `${page}: topnav My Ballot links to VOTE411`
+  );
   check(src.includes('href="#sources"') && src.includes('id="sources"'), `${page}: the nav's Sources link has a target`);
   check(src.includes(`<link rel="canonical" href="https://checknbalance.org/${ab}.html">`), `${page}: canonical URL names this page`);
   check(src.includes("geoConicEqualArea"), `${page}: state-centred conic projection`);

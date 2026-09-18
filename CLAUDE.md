@@ -241,6 +241,7 @@ Finally `node tools/fit-map-frames.js` so the new page's map frame takes the sta
 - **MO gate still OPEN — still NO `mo.html`.** Map litigation fluid (Prop A on ballot; federal TRO / SCOTUS stay history); UOCAVA **Sep 19**; 8th Cir calendar still live. Keep bank; do not start the page.
 - **CA and TX remain unbuilt** (starter only). DC stays PARTIAL marquee.
 - **Voices site-wide: 0 gaps.** Landing: `BUILT` = 47; footer "Last updated: September 2026". **Ryan holding Netlify push** of local tip `580d374` (and any Wave 81 commit) — local commits OK; do not push until he asks.
+- **My Ballot (Wave 82):** topnav link on landing, states list, and every built state page → https://www.vote411.org/ballot (VOTE411 / League of Women Voters; target=_blank). Label: My Ballot.
 - **Mentioned-dates scanner is in tree.**
 
 ## Superseded — current state as of September 3, 2026
