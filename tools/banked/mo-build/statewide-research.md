@@ -1393,3 +1393,12 @@ Aug 25 SoS-certified House nominees by **district NUMBER** (Wave 27 certificate)
 4. OK Perry: Guardian.ok.gov Cloudflare 403 blocked this pass; still unmatched; Pre-General Oct 20-26.
 5. NM CFIS: year dropdown still tops 2020; First General due Sept 14 - still pre-deadline Sept 11; no invent.
 6. Kobach $320M: Meta KS ~$134M (+$6M pending); Google Play $700M multistate KS share unspecified; still no independent full itemized tally.
+
+
+## MAP / PROP A GATE — WAVE 84 (September 21, 2026)
+
+**STATUS: gate still OPEN for mo.html** (currency-test not closed). No mo.html started.
+
+- **Map for Nov 2026:** 2022 districts govern (Missouri Supreme Court Sep 3, 2026; SCOTUS stay keeps 2025 map out). Prop A (HB 1 referendum) on Nov 3 ballot.
+- **UOCAVA Sep 19:** deadline passed; overseas/military ballots went out under the 2022 map (Votebeat / reporting).
+- **Still blocking build:** public Nov sample-ballot / county CD-label currency-test vs `mo-cd120.json`; parcel continuity audits (Brattin / Herrera / Onder).

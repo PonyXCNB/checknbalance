@@ -230,18 +230,17 @@ Finally `node tools/fit-map-frames.js` so the new page's map frame takes the sta
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of September 18, 2026 — Wave 83 NH gov SoS tallies + Villee; tip `0b760bf`)
-- **Built bloc = 47 states + DC PARTIAL marquee.** Fully built: everything except CA, MO, TX (starter framework on the map) and DC (marquee-only). No `mo.html` / `ca.html` / `tx.html` on disk. Alaska (47th) and Louisiana are built — do NOT treat the Sept 3 "AK CA LA MO TX remaining" line as live.
+## Current state (as of September 21, 2026 — Wave 84 catch-up; tip was Wave 83 `31298a8`)
+- **Built bloc = 47 states + DC PARTIAL marquee.** Fully built: everything except CA, MO, TX (starter framework on the map) and DC (marquee-only). No `mo.html` / `ca.html` / `tx.html` on disk.
 - **Verify backlog: grand total 1**, on `nm.html` only (intentional lock — do NOT invent-clear):
-  1. SoS open seat — Ramona L. Goolsby differentiators (CFIS First General due **Sep 14**; Wave 81 re-check: Transparency USA still through **June 27**; CFIS portals still unusable — leave locked).
-  Cleared Wave 78: NM GO bond dollar conflict (SoS certified CA/GOB PDF) + judicial retention roster (SoS portal — Bacon / Thomson / Hanisee all Qualified).
-- **NH Sept 8:** `nh.html` has official SoS Senate/House tallies via InDepthNH Sep 10 **and** governor tallies via InDepthNH Garry Rayno Sep 12 (Ayotte 100,920 / 91.9%; Warmington 126,223 / 96.4%). Wave 83 also carded Libertarian **Stephen Villee** (Ballot Access News Aug 29). SoS Excel/hub still Akamai-blocked to automated fetch; clerk-return amendment disclaimer still on SoS results hub.
-- **RI Sept 9 / Wave 80:** nominees settled; **BOE-certified Sep 15** language shipped in local tip `580d374`.
-- **DE Sept 15 primary:** DOE results page still labeled **Unofficial Results** as of morning Sep 18 (absentee tabulation completed all three counties; Kent RD-33 R recount confirmed). County certification is *scheduled* Sep 18 but has **not** flipped the public label to Official — leave Unofficial. Nominees unchanged: Senate Coons/Katz; House McBride/Arminio; AG Jennings/Graham; Treasurer Lauzen/Ramone; Auditor York / Callaway (R) + Cassidy (I).
-- **MO gate still OPEN — still NO `mo.html`.** Map litigation fluid (Prop A on ballot; federal TRO / SCOTUS stay history); UOCAVA **Sep 19**; 8th Cir calendar still live. Keep bank; do not start the page.
+  1. SoS open seat — Ramona L. Goolsby differentiators (Wave 84: Transparency USA Cloudflare-blocked from tools; no sourced post–Sep 14 First General COH — leave locked).
+- **DE Sept 15 primary:** DOE **certified** results **Sep 18, 2026** (Bay to Bay News / Department of Elections). November card unchanged: Senate Coons/Katz; House McBride/Arminio; AG Jennings/Graham; Treasurer Lauzen/Ramone; Auditor York / Callaway (R)+Cassidy (I). `de.html` SITE_META Wave 84.
+- **NH:** governor official SoS tallies via InDepthNH Sep 12 (Wave 83) + Libertarian Villee on Nov card.
+- **RI:** BOE-certified Sep 15 (Wave 80).
+- **My Ballot:** topnav → VOTE411 on landing, states list, and all built state pages (Wave 82).
+- **MO gate still OPEN — still NO `mo.html`.** Nov 2026 uses the **2022 map** (Mo. Supreme Court Sep 3; SCOTUS stay of 2025 map); Prop A on ballot; UOCAVA **Sep 19** passed. Currency-test vs `mo-cd120.json` (public Nov sample-ballot district labels) still not closed — bank only; do not start the page.
 - **CA and TX remain unbuilt** (starter only). DC stays PARTIAL marquee.
-- **Voices site-wide: 0 gaps.** Landing: `BUILT` = 47; footer "Last updated: September 2026". **Netlify auto-publish authorized** again after Wave 82 — push when tests are green.
-- **My Ballot (Wave 82):** topnav link on landing, states list, and every built state page → https://www.vote411.org/ballot (VOTE411 / League of Women Voters; target=_blank). Label: My Ballot.
+- **Voices site-wide: 0 gaps.** Landing: `BUILT` = 47; footer "Last updated: September 2026". Ask before push unless Ryan has authorized.
 - **Mentioned-dates scanner is in tree.**
 
 ## Superseded — current state as of September 3, 2026

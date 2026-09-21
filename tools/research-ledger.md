@@ -1191,3 +1191,18 @@ Ryan batch before push of `580d374`. Local only.
 2026-09-17 | CLAUDE.md | Wave 81 docs refresh | Free web only (0 Grok). NH+Goolsby left. Local commit — NO PUSH.
 
 2026-09-18 | site-wide topnav | Wave 82 My Ballot → VOTE411 | Ryan chose Option C label My Ballot. No race HTML. DE still Unofficial. Local+push authorized.
+
+
+## 2026-09-21 — Wave 84 catch-up (PC back online after weekend offline)
+
+### Research
+- **DE:** Bay to Bay News Sep 18 — DOE certified Tuesday primary (incl. HD-33 recount). Nominees unchanged.
+- **NM Goolsby:** Transparency USA Cloudflare from fetch; no invent-clear of [Verify].
+- **MO:** 2022 map for Nov; UOCAVA passed; currency-test still open — no mo.html.
+- Grok: **0**.
+
+### Edits
+- `de.html`: Unofficial → DOE-certified Sep 18; SITE_META Wave 84.
+- `CLAUDE.md` + MO bank gate note.
+
+2026-09-21 | de.html + docs | Wave 84 DE certified + MO gate note | Free web (0 Grok). Ask before push.
