@@ -63,3 +63,10 @@ NM CFIS: First General still due Sep 14 - cash only after (tonight Sep 11 still 
 DE: skip inventing winners until after Sep 15 primary. NO fabricated DE winners.
 OK Perry Pre-General: Oct 20-26 still ahead.
 OH SoS 403 / MI board sites / Kobach $320M: still locked.
+
+### Wave 85 MO BANK (research only — DO NOT build mo.html)
+Date: 2026-09-22 (America/New_York) morning reconnect catch-up
+UOCAVA: Sep 19 mailed (KOMU / Missouri Independent via News-Leader Sept 22) — LEAs sent overseas ballots on the 2022 map.
+Map: 8th Circuit ruled Sept 21 for the 2025 map (Onder v. von Glahn, 26-2797) but STAYED the injunction until Sept 28, 5 p.m. CT for SCOTUS review (Reuters / Bloomberg / Courthouse News PDF). SCOTUS prior stay (26A326) still in the mix. LEAs still printing/mailing on 2022 lines as of Sept 22 coverage.
+Currency-test: NOT closed — no statewide Nov district-label sample-ballot table proved vs mo-cd120.json this pass; map itself may flip again before Sept 28.
+Gate: OPEN. Still NO mo.html. Watch Sept 28 SCOTUS window.
