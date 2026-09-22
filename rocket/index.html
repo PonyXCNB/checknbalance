@@ -1,0 +1,1738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <meta name="description" content="A gentle 3D rocket ride from Earth to every planet. Arrow keys steer. She cannot crash.">
+  <title>Blast off — a rocket ride to the planets</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #f7f4ee;
+      --gold: #ffd78a;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #8ec8ff;
+      font-family: Nunito, "Trebuchet MS", sans-serif;
+    }
+    canvas#view {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    #hud {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      color: var(--ink);
+    }
+    #vignette {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 58%, rgba(0, 0, 0, 0.28) 100%);
+    }
+    #top {
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      width: min(920px, 94vw);
+    }
+    #pearls {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      justify-content: center;
+      background: rgba(8, 16, 36, 0.34);
+      border-radius: 999px;
+      padding: 7px 12px;
+    }
+    .pearl {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      opacity: 0.38;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+      transition: transform 0.25s ease, opacity 0.25s ease, box-shadow 0.25s ease;
+    }
+    .pearl.been { opacity: 1; }
+    .pearl.now {
+      opacity: 1;
+      transform: scale(1.55);
+      box-shadow: 0 0 0 3px #fff, 0 0 12px rgba(255, 255, 255, 0.8);
+    }
+    #next {
+      min-height: 1.2em;
+      font-family: Fredoka, ui-rounded, sans-serif;
+      font-size: clamp(18px, 2.4vw, 28px);
+      letter-spacing: 0.01em;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+    }
+    #stars {
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      font-family: Fredoka, ui-rounded, sans-serif;
+      font-size: clamp(28px, 4vw, 44px);
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    }
+    #stars.pop { animation: pop 0.28s ease; }
+    #mute {
+      pointer-events: auto;
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      font: 700 16px/1 Nunito, sans-serif;
+      color: var(--ink);
+      background: rgba(10, 16, 36, 0.4);
+      border: 1px solid rgba(255, 244, 220, 0.28);
+      border-radius: 999px;
+      padding: 10px 16px;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+    }
+    #mute:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+    .card {
+      position: absolute;
+      left: 50%;
+      bottom: 5vh;
+      transform: translateX(-50%);
+      width: min(740px, 94vw);
+      text-align: center;
+      background: rgba(8, 14, 32, 0.46);
+      border: 1px solid rgba(255, 244, 220, 0.22);
+      border-radius: 32px;
+      padding: 22px 28px 18px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+    }
+    .card h1, #count {
+      font-family: Fredoka, ui-rounded, "Trebuchet MS", sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin: 0;
+      line-height: 0.95;
+    }
+    .card h1 { font-size: clamp(52px, 8vw, 96px); }
+    .kicker {
+      margin: 8px 0 0;
+      font-family: Fredoka, ui-rounded, sans-serif;
+      font-size: clamp(22px, 3vw, 34px);
+      color: var(--gold);
+    }
+    .fact, .order {
+      margin: 10px 0 0;
+      font-size: clamp(18px, 2.3vw, 26px);
+      font-weight: 800;
+    }
+    .order { line-height: 1.35; }
+    .press {
+      margin: 14px 0 0;
+      font-family: Fredoka, ui-rounded, sans-serif;
+      font-size: clamp(20px, 2.6vw, 30px);
+    }
+    .press.live { animation: glow 1.5s ease-in-out infinite; }
+    .hintline, .reassure {
+      margin: 8px 0 0;
+      font-size: 15px;
+      font-weight: 700;
+      color: rgba(247, 244, 238, 0.82);
+    }
+    #count {
+      position: absolute;
+      left: 50%;
+      top: 40%;
+      transform: translate(-50%, -50%);
+      font-size: clamp(88px, 16vw, 180px);
+      text-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+      white-space: nowrap;
+    }
+    #count.go { font-size: clamp(46px, 8vw, 104px); }
+    #hint {
+      position: absolute;
+      left: 50%;
+      bottom: 14px;
+      transform: translateX(-50%);
+      margin: 0;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      color: rgba(255, 255, 255, 0.88);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.55);
+    }
+    #loading, #fail {
+      position: absolute;
+      left: 50%;
+      top: 46%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      font-family: Fredoka, ui-rounded, sans-serif;
+      font-size: clamp(28px, 4vw, 42px);
+      text-align: center;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+    }
+    #fail {
+      width: min(560px, 90vw);
+      font-size: 22px;
+      line-height: 1.4;
+      background: rgba(8, 14, 32, 0.72);
+      border-radius: 24px;
+      padding: 22px 26px;
+    }
+    [hidden] { display: none !important; }
+    .sr {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+    @keyframes glow { 50% { opacity: 0.45; } }
+    @keyframes pop {
+      50% { transform: scale(1.18); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .press.live, #stars.pop { animation: none; }
+      .pearl { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="view" aria-hidden="true"></canvas>
+  <div id="vignette" aria-hidden="true"></div>
+  <div id="hud">
+    <p id="loading">Warming up the engines…</p>
+    <p id="fail" hidden>The rocket pictures could not start. Try Chrome or Edge, with an internet connection, and allow graphics for this page.</p>
+    <button id="mute" type="button" hidden aria-pressed="false">Sound on</button>
+    <div id="stars" hidden>★ 0</div>
+    <div id="top">
+      <div id="pearls" hidden></div>
+      <div id="next"></div>
+    </div>
+    <div id="count" hidden>3</div>
+    <div class="card" id="card" hidden>
+      <div id="panel-ready">
+        <h1>Blast off</h1>
+        <p class="kicker">to the planets</p>
+        <p class="press live">Press any key</p>
+        <p class="hintline">Arrow keys steer · Space goes faster · M quiets the sound</p>
+        <p class="reassure">The rocket finds every planet. Mashing keys is part of the fun.</p>
+      </div>
+      <div id="panel-visit" hidden>
+        <h1 id="visit-name">Mars</h1>
+        <p class="kicker" id="visit-kicker">The red planet</p>
+        <p class="fact" id="visit-fact">Rusty dust makes it red.</p>
+      </div>
+      <div id="panel-done" hidden>
+        <h1>Hooray</h1>
+        <p class="kicker">You flew past every planet</p>
+        <p class="order">Mercury · Venus · Earth · Mars<br>Jupiter · Saturn · Uranus · Neptune<br>and the Moon and the Sun</p>
+        <p class="press live">Press any key to fly again</p>
+      </div>
+    </div>
+    <p id="hint" hidden>Arrow keys steer · Space goes faster · Every other key plays a note</p>
+    <p id="announce" class="sr" aria-live="polite"></p>
+  </div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module">
+    const $ = (id) => document.getElementById(id);
+    const loading = $("loading");
+    const failEl = $("fail");
+    const card = $("card");
+    const panelReady = $("panel-ready");
+    const panelVisit = $("panel-visit");
+    const panelDone = $("panel-done");
+    const visitName = $("visit-name");
+    const visitKicker = $("visit-kicker");
+    const visitFact = $("visit-fact");
+    const countEl = $("count");
+    const nextEl = $("next");
+    const starsEl = $("stars");
+    const pearlsEl = $("pearls");
+    const hintEl = $("hint");
+    const muteBtn = $("mute");
+    const announce = $("announce");
+    const canvas = $("view");
+
+    function showFail(msg) {
+      loading.hidden = true;
+      failEl.hidden = false;
+      failEl.textContent = msg;
+    }
+
+    const params = new URLSearchParams(location.search);
+    const FAST = params.get("fast") === "1" ? 14 : 1;
+    const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    try {
+      const THREE = await import("three");
+      const { EffectComposer } = await import("three/addons/postprocessing/EffectComposer.js");
+      const { RenderPass } = await import("three/addons/postprocessing/RenderPass.js");
+      const { UnrealBloomPass } = await import("three/addons/postprocessing/UnrealBloomPass.js");
+      const { OutputPass } = await import("three/addons/postprocessing/OutputPass.js");
+      boot(THREE, { EffectComposer, RenderPass, UnrealBloomPass, OutputPass });
+    } catch (err) {
+      console.error(err);
+      showFail("The rocket pictures could not be loaded. Check the internet connection, then refresh this page.");
+    }
+
+    function boot(THREE, post) {
+      const STOPS = [
+        { id: "moon", name: "The Moon", kicker: "Earth's partner", fact: "It travels around the Earth.", x: 10, y: 30, z: -100, r: 4.5, kind: "moon", tint: "#d7dbe3" },
+        { id: "mars", name: "Mars", kicker: "The red planet", fact: "Rusty dust makes it red.", x: -14, y: 26, z: -250, r: 5.7, kind: "mars", tint: "#e07048" },
+        { id: "jupiter", name: "Jupiter", kicker: "The giant planet", fact: "It is the biggest planet of all.", x: 16, y: 34, z: -430, r: 13.2, kind: "jupiter", tint: "#e6b07a" },
+        { id: "saturn", name: "Saturn", kicker: "The ringed planet", fact: "Its rings are made of ice and rock.", x: -8, y: 28, z: -640, r: 11, kind: "saturn", tint: "#f0d7a0" },
+        { id: "uranus", name: "Uranus", kicker: "The sideways planet", fact: "It spins tipped over on its side.", x: 18, y: 36, z: -830, r: 7.3, kind: "uranus", tint: "#7ee0d8" },
+        { id: "neptune", name: "Neptune", kicker: "The far blue planet", fact: "It is the windiest planet.", x: -12, y: 24, z: -1010, r: 7, kind: "neptune", tint: "#5b78ff" },
+        { id: "venus", name: "Venus", kicker: "The brightest planet", fact: "Thick clouds cover the whole planet.", x: 14, y: 32, z: -1190, r: 6.2, kind: "venus", tint: "#f0d29a" },
+        { id: "mercury", name: "Mercury", kicker: "The smallest planet", fact: "It is the closest planet to the Sun.", x: -6, y: 27, z: -1355, r: 3.5, kind: "mercury", tint: "#c4b4a4" },
+        { id: "sun", name: "The Sun", kicker: "Our star", fact: "It is a star, and its light warms the Earth.", x: 0, y: 42, z: -1560, r: 22, kind: "sun", tint: "#ffcf70" },
+        { id: "home", name: "Earth", kicker: "Our home", fact: "Oceans, air, and people live here.", x: 0, y: 16, z: -1780, r: 12, kind: "earth", tint: "#6db3ff" },
+      ];
+
+      const EARTH_R = 12;
+      const EARTH_C = new THREE.Vector3(0, -14.4, 0);
+      const ASCENT_A = new THREE.Vector3(0, -1.42, 0);
+      const ASCENT_B = new THREE.Vector3(0, 33, -30);
+
+      const held = new Set();
+      let state = "ready";
+      let legIndex = -1;
+      let legU = 0;
+      let legLen = 1;
+      const legA = new THREE.Vector3();
+      const legB = new THREE.Vector3();
+      const offset = new THREE.Vector2(0, 0);
+      let ascentU = 0;
+      let ascentV = 0;
+      let countT = 0;
+      let countStep = -1;
+      let visitT = 0;
+      let visitDur = 6.4;
+      let landT = 0;
+      const landFrom = new THREE.Vector3();
+      const landTo = new THREE.Vector3();
+      let collected = 0;
+      let spaceAmount = 0;
+      let ringBoost = 0;
+      let muted = params.get("mute") === "1";
+      let time = 0;
+      let turnSaid = false;
+      let saidHome = false;
+      let audio = null;
+      let master = null;
+      let engineGain = null;
+      let engineFilter = null;
+      let lastNoteAt = 0;
+      let smokeClock = 0;
+
+      const BEATS = [
+        { t: 0, label: "3", freq: 494 },
+        { t: 0.62, label: "2", freq: 494 },
+        { t: 1.24, label: "1", freq: 494 },
+        { t: 1.86, label: "BLAST OFF!", freq: 740 },
+      ];
+
+      let renderer;
+      try {
+        renderer = new THREE.WebGLRenderer({
+          canvas,
+          antialias: true,
+          powerPreference: "high-performance",
+          preserveDrawingBuffer: params.get("shot") === "1",
+        });
+      } catch (err) {
+        console.error(err);
+        showFail("This computer could not draw the 3D rocket. Try another browser.");
+        return;
+      }
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.05;
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.6);
+      renderer.setPixelRatio(dpr);
+
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x8ec8ff);
+      scene.fog = new THREE.Fog(0x8ec8ff, 36, 240);
+      const camera = new THREE.PerspectiveCamera(58, 1, 0.1, 2200);
+      const camPos = new THREE.Vector3(3.3, 0.1, 5.8);
+      const lookPos = new THREE.Vector3(0, -2.4, -0.4);
+      camera.position.copy(camPos);
+
+      scene.add(new THREE.HemisphereLight(0xcfe6ff, 0x1a1030, 0.72));
+      const sunKey = new THREE.DirectionalLight(0xfff4dd, 1.25);
+      sunKey.position.set(40, 60, 30);
+      scene.add(sunKey);
+      const fill = new THREE.DirectionalLight(0x9eb6ff, 0.38);
+      fill.position.set(-30, 10, 20);
+      scene.add(fill);
+
+      const composer = new post.EffectComposer(renderer);
+      composer.addPass(new post.RenderPass(scene, camera));
+      const bloom = new post.UnrealBloomPass(new THREE.Vector2(1, 1), 0.48, 0.42, 0.88);
+      composer.addPass(bloom);
+      composer.addPass(new post.OutputPass());
+
+      function resize() {
+        const w = window.innerWidth;
+        const h = Math.max(1, window.innerHeight);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setPixelRatio(dpr);
+        renderer.setSize(w, h);
+        composer.setPixelRatio(dpr);
+        composer.setSize(w, h);
+      }
+      resize();
+      window.addEventListener("resize", resize);
+
+      const softTex = makeSoftTex(THREE);
+      const starDecal = makeStarTex(THREE);
+      const ringTex = makeRingTex(THREE);
+      const earthTex = makePlanetTex(THREE, "earth", 512, 256);
+      const cloudTex = makeCloudTex(THREE);
+
+      const earthPivot = new THREE.Group();
+      earthPivot.position.copy(EARTH_C);
+      scene.add(earthPivot);
+      const earthBall = new THREE.Mesh(
+        new THREE.SphereGeometry(EARTH_R, 64, 48),
+        new THREE.MeshStandardMaterial({ map: earthTex, roughness: 0.72, metalness: 0.04 })
+      );
+      earthPivot.add(earthBall);
+      const earthClouds = new THREE.Mesh(
+        new THREE.SphereGeometry(EARTH_R * 1.03, 48, 32),
+        new THREE.MeshStandardMaterial({ map: cloudTex, transparent: true, depthWrite: false, roughness: 1 })
+      );
+      earthPivot.add(earthClouds);
+      earthPivot.add(atmosphere(THREE, EARTH_R * 1.1, "#8ec8ff", 2.4));
+
+      const pad = buildPad(THREE);
+      pad.position.set(0, -2.28, 0);
+      scene.add(pad);
+
+      const clouds = [];
+      for (let i = 0; i < 16; i++) {
+        const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: softTex, color: 0xffffff, transparent: true, opacity: 0.85, depthWrite: false }));
+        const ang = (i / 16) * Math.PI * 2;
+        const rad = 4 + (i % 4) * 2.2;
+        s.position.set(Math.cos(ang) * rad, -1 + (i % 5) * 3.4, -6 - (i % 6) * 3.5);
+        const sc = 3.5 + (i % 3) * 1.6;
+        s.scale.set(sc, sc * 0.62, 1);
+        scene.add(s);
+        clouds.push(s);
+      }
+
+      const stopPivots = [];
+      const moonRigs = [];
+      let sunPivot = null;
+      let sunCorona = null;
+      let sunLight = null;
+      for (const stop of STOPS) {
+        const built = addWorld(THREE, stop);
+        stopPivots.push(built.pivot);
+        if (built.moons) moonRigs.push(...built.moons);
+        if (stop.kind === "sun") {
+          sunPivot = built.pivot;
+          sunCorona = built.corona;
+          sunLight = built.light;
+        }
+      }
+
+      const asteroids = [];
+      {
+        const geo = new THREE.IcosahedronGeometry(1, 0);
+        const mat = new THREE.MeshStandardMaterial({ color: 0x8d7566, roughness: 0.92, flatShading: true });
+        for (let i = 0; i < 18; i++) {
+          const rock = new THREE.Mesh(geo, mat);
+          const side = i % 2 === 0 ? 1 : -1;
+          rock.position.set(side * (12 + (i % 5) * 4.5), 24 + (i % 6) * 3.2, -300 - i * 6.5);
+          const sc = 0.45 + (i % 4) * 0.38;
+          rock.scale.set(sc, sc * 0.75, sc * 1.1);
+          rock.rotation.set(i, i * 0.4, i * 0.2);
+          scene.add(rock);
+          asteroids.push(rock);
+        }
+      }
+
+      const rocket = buildRocket(THREE, softTex, starDecal);
+      rocket.scale.setScalar(1.25);
+      rocket.position.copy(ASCENT_A);
+      scene.add(rocket);
+      const flameLight = new THREE.PointLight(0xff9328, 0, 14, 2);
+      flameLight.position.set(0, 0, 1.4);
+      rocket.add(flameLight);
+
+      const trail = [];
+      for (let i = 0; i < 12; i++) {
+        const m = new THREE.Mesh(
+          new THREE.SphereGeometry(0.14, 8, 8),
+          new THREE.MeshBasicMaterial({ color: 0xffc56a, transparent: true, depthWrite: false })
+        );
+        m.visible = false;
+        scene.add(m);
+        trail.push(m);
+      }
+
+      const sparkles = [];
+      const sparkGeo = new THREE.SphereGeometry(0.1, 6, 6);
+      for (let i = 0; i < 42; i++) {
+        const m = new THREE.Mesh(sparkGeo, new THREE.MeshBasicMaterial({ color: 0xffe08a, transparent: true, depthWrite: false }));
+        m.visible = false;
+        m.userData.life = 0;
+        scene.add(m);
+        sparkles.push(m);
+      }
+      const smokes = [];
+      for (let i = 0; i < 22; i++) {
+        const m = new THREE.Sprite(new THREE.SpriteMaterial({ map: softTex, color: 0xf4f7fb, transparent: true, depthWrite: false, opacity: 0 }));
+        m.visible = false;
+        m.userData.life = 0;
+        scene.add(m);
+        smokes.push(m);
+      }
+
+      const starGeo = new THREE.BufferGeometry();
+      const starCount = 2800;
+      const starPos = new Float32Array(starCount * 3);
+      for (let i = 0; i < starCount; i++) {
+        starPos[i * 3] = (Math.random() - 0.5) * 420;
+        starPos[i * 3 + 1] = Math.random() * 180 - 20;
+        starPos[i * 3 + 2] = 40 - Math.random() * 2000;
+      }
+      starGeo.setAttribute("position", new THREE.BufferAttribute(starPos, 3));
+      const starField = new THREE.Points(starGeo, new THREE.PointsMaterial({
+        color: 0xfff8ea, size: 1.15, sizeAttenuation: true, transparent: true, opacity: 0, depthWrite: false,
+      }));
+      scene.add(starField);
+
+      const pickups = [];
+      sprinklePickups(THREE);
+
+      for (const stop of STOPS) {
+        const dot = document.createElement("span");
+        dot.className = "pearl";
+        dot.style.background = stop.tint;
+        dot.title = stop.name;
+        pearlsEl.appendChild(dot);
+      }
+
+      const baseQuat = new THREE.Quaternion();
+      const desiredQ = new THREE.Quaternion();
+      const lookM = new THREE.Matrix4();
+      const scratch = new THREE.Vector3();
+      const scratch2 = new THREE.Vector3();
+      const up = new THREE.Vector3(0, 1, 0);
+      const engineWorld = new THREE.Vector3();
+
+      window.__blast = {
+        ready: true,
+        get phase() { return state; },
+        get world() { return legIndex >= 0 ? STOPS[legIndex].id : ""; },
+        get stars() { return collected; },
+        get space() { return spaceAmount; },
+        pos() { return { x: rocket.position.x, y: rocket.position.y, z: rocket.position.z }; },
+      };
+
+      loading.hidden = true;
+      muteBtn.hidden = false;
+      starsEl.hidden = false;
+      pearlsEl.hidden = false;
+      applyMute();
+      showPanel("ready");
+      sayLine("Blast off to the planets. Press any key.");
+
+      if (params.get("jump")) jumpTo(params.get("jump"));
+      else if (FAST > 1 || params.get("play") === "1") beginTrip();
+
+      window.addEventListener("keydown", onKeyDown);
+      window.addEventListener("keyup", (e) => held.delete(e.code));
+      muteBtn.addEventListener("click", () => {
+        ensureAudio();
+        muted = !muted;
+        applyMute();
+        muteBtn.blur();
+      });
+
+      let last = performance.now();
+      requestAnimationFrame(frame);
+
+      function frame(now) {
+        const dt = Math.min(0.05, (now - last) / 1000) * (document.hidden ? 0 : 1);
+        last = now;
+        if (dt > 0) update(dt);
+        composer.render(dt);
+        requestAnimationFrame(frame);
+      }
+
+      function update(dt) {
+        time += dt;
+        const boost = held.has("Space");
+        const steerX = (held.has("ArrowRight") || held.has("KeyD") ? 1 : 0) - (held.has("ArrowLeft") || held.has("KeyA") ? 1 : 0);
+        const steerY = (held.has("ArrowUp") || held.has("KeyW") ? 1 : 0) - (held.has("ArrowDown") || held.has("KeyS") ? 1 : 0);
+
+        if (state === "countdown") {
+          countT += dt * FAST;
+          while (countStep + 1 < BEATS.length && countT >= BEATS[countStep + 1].t) {
+            countStep++;
+            const beat = BEATS[countStep];
+            countEl.textContent = beat.label;
+            countEl.classList.toggle("go", beat.label.length > 2);
+            tone(beat.freq, beat.label.length > 2 ? 0.28 : 0.12, "sine", 0.09);
+            if (countStep === 3) chord();
+          }
+          if (countT >= 2.55) startAscent();
+        }
+
+        if (state === "ascent") {
+          const accel = (boost ? 9 : 5.5) * FAST;
+          const cap = (boost ? 16 : 11) * FAST;
+          ascentV = Math.min(cap, ascentV + accel * dt);
+          const span = Math.max(1, ASCENT_B.distanceTo(ASCENT_A));
+          ascentU = Math.min(1, ascentU + (ascentV * dt) / span);
+          rocket.position.lerpVectors(ASCENT_A, ASCENT_B, ascentU);
+          nudgeOffset(dt, steerX, steerY, ascentU > 0.72 ? 1.2 : 4.2);
+          rocket.position.x += offset.x;
+          rocket.position.y += offset.y * 0.35;
+          faceAlong(scratch.copy(ASCENT_B).sub(ASCENT_A).normalize(), steerX, dt);
+          if (ascentU >= 1) beginLeg(0);
+          smokeClock += dt;
+          if (smokeClock > 0.07) {
+            smokeClock = 0;
+            puff();
+          }
+        } else if (state === "fly") {
+          const spd = (boost ? 34 : 21) * FAST * (ringBoost > 0 ? 1.28 : 1);
+          legU += (spd * dt) / legLen;
+          if (legU >= 0.74) {
+            offset.x = THREE.MathUtils.damp(offset.x, 0, 6, dt);
+            offset.y = THREE.MathUtils.damp(offset.y, 0, 6, dt);
+          } else {
+            nudgeOffset(dt, steerX, steerY, 6.4);
+          }
+          if (legU >= 1) {
+            legU = 1;
+            placeOnRail();
+            completeLeg();
+          } else {
+            placeOnRail();
+          }
+          scratch.copy(legB).sub(legA);
+          if (scratch.lengthSq() > 0.001) faceAlong(scratch.normalize(), steerX, dt);
+        } else if (state === "visit") {
+          visitT += dt * FAST;
+          const stop = STOPS[legIndex];
+          if (stop.kind === "sun") {
+            const hover = approachOf(stop, scratch);
+            rocket.position.set(
+              hover.x + Math.sin(visitT * 0.7) * 3.2,
+              hover.y + Math.sin(visitT * 1.1) * 1.4,
+              hover.z
+            );
+            faceAlong(scratch2.set(stop.x - rocket.position.x, stop.y - rocket.position.y, stop.z - rocket.position.z).normalize(), steerX, dt);
+          } else {
+            const a = Math.PI * Math.min(1, visitT / visitDur);
+            const rad = orbitR(stop);
+            rocket.position.set(
+              stop.x + Math.sin(a) * rad,
+              stop.y + Math.sin(a * 2) * 0.9,
+              stop.z + Math.cos(a) * rad
+            );
+            const ahead = 0.12;
+            const a2 = Math.min(Math.PI, a + ahead);
+            scratch.set(stop.x + Math.sin(a2) * rad, rocket.position.y, stop.z + Math.cos(a2) * rad);
+            faceAlong(scratch.sub(rocket.position).normalize(), steerX, dt);
+          }
+          if (visitT >= visitDur) finishVisit();
+        } else if (state === "land") {
+          landT += dt * FAST;
+          const k = THREE.MathUtils.clamp(landT / 4.1, 0, 1);
+          const e = 1 - Math.pow(1 - k, 3);
+          rocket.position.lerpVectors(landFrom, landTo, e);
+          faceAlong(scratch.set(0, 1, -0.05).normalize(), 0, dt);
+          if (k >= 1) finishLanding();
+        } else {
+          const bob = reduceMotion ? 0 : Math.sin(time * 1.6) * 0.12;
+          rocket.position.set(ASCENT_A.x, ASCENT_A.y + bob, ASCENT_A.z);
+          faceAlong(scratch.set(0, 1, 0), 0, dt);
+        }
+
+        ringBoost = Math.max(0, ringBoost - dt);
+        const flying = state === "ascent" || state === "fly" || state === "visit" || state === "land";
+        if (flying) checkPickups();
+
+        const targetSpace = state === "ready" || state === "countdown" ? 0 : state === "ascent" ? THREE.MathUtils.clamp(ascentU * 1.2, 0, 1) : 1;
+        spaceAmount += (targetSpace - spaceAmount) * (1 - Math.exp(-dt * 1.6));
+        const day = new THREE.Color(0x8ec8ff);
+        const night = new THREE.Color(0x070b16);
+        scene.background.copy(day).lerp(night, spaceAmount);
+        scene.fog.color.copy(scene.background);
+        scene.fog.near = 36 + spaceAmount * 70;
+        scene.fog.far = 240 + spaceAmount * 1200;
+        starField.material.opacity = spaceAmount * 0.95;
+        if (sunPivot) {
+          const show = smoothstep(0.45, 0.9, spaceAmount);
+          sunPivot.visible = show > 0.02;
+          if (sunCorona) sunCorona.material.opacity = show * 0.9;
+          if (sunLight) sunLight.intensity = show * 6;
+        }
+
+        earthBall.rotation.y += dt * 0.05;
+        earthClouds.rotation.y += dt * 0.08;
+        for (const pivot of stopPivots) {
+          if (pivot.userData.spin) pivot.userData.spin.rotation.y += dt * pivot.userData.spinSpeed;
+        }
+        for (const rig of moonRigs) {
+          rig.angle += dt * rig.speed;
+          rig.mesh.position.set(Math.cos(rig.angle) * rig.radius, Math.sin(rig.angle * 0.4) * 0.5, Math.sin(rig.angle) * rig.radius);
+        }
+        for (const rock of asteroids) rock.rotation.y += dt * 0.25;
+
+        const flame = flameLevel(boost);
+        const flicker = 0.82 + Math.sin(time * 37) * 0.08 + Math.sin(time * 21) * 0.06;
+        rocket.userData.flame.scale.set(1, 1, Math.max(0.01, flame * flicker));
+        rocket.userData.flame.visible = flame > 0.02;
+        rocket.userData.glow.scale.setScalar(1.4 + flame * 1.8);
+        rocket.userData.glow.material.opacity = Math.min(0.95, flame * 0.75);
+        flameLight.intensity = flame * 8;
+        if (rocket.userData.arm) {
+          const wave = state === "visit" || state === "land" || state === "done";
+          rocket.userData.arm.rotation.z = wave && !reduceMotion ? -0.4 + Math.sin(time * 7) * 0.65 : -0.45;
+        }
+
+        engineWorld.set(0, 0, 1.35);
+        rocket.localToWorld(engineWorld);
+        for (let i = trail.length - 1; i > 0; i--) {
+          trail[i].position.copy(trail[i - 1].position);
+          const k = (1 - i / trail.length) * flame;
+          trail[i].visible = k > 0.05;
+          trail[i].scale.setScalar(0.25 + k * 0.85);
+          trail[i].material.opacity = k * 0.55;
+        }
+        trail[0].position.copy(engineWorld);
+        trail[0].visible = flame > 0.05;
+
+        for (const s of sparkles) {
+          if (s.userData.life <= 0) continue;
+          s.userData.life -= dt;
+          s.position.x += s.userData.vx * dt;
+          s.position.y += s.userData.vy * dt;
+          s.position.z += s.userData.vz * dt;
+          s.scale.setScalar(Math.max(0, s.userData.life) * 1.5);
+          s.visible = s.userData.life > 0;
+        }
+        for (const s of smokes) {
+          if (s.userData.life <= 0) continue;
+          s.userData.life -= dt;
+          s.position.x += s.userData.vx * dt;
+          s.position.y += s.userData.vy * dt;
+          s.position.z += s.userData.vz * dt;
+          const k = Math.max(0, s.userData.life / s.userData.max);
+          s.material.opacity = k * 0.45;
+          s.scale.setScalar(s.userData.size * (1.4 - k));
+          s.visible = s.userData.life > 0;
+        }
+        for (const p of pickups) {
+          if (!p.got) p.mesh.rotation.y += dt * 1.4;
+        }
+
+        updateCamera(dt);
+        paintPearls();
+        if (engineGain && audio) {
+          const hum = !flying || muted ? 0 : boost ? 0.07 : 0.04;
+          engineGain.gain.setTargetAtTime(hum, audio.currentTime, 0.08);
+          if (engineFilter) engineFilter.frequency.setTargetAtTime(boost ? 520 : 240, audio.currentTime, 0.08);
+        }
+      }
+
+      function nudgeOffset(dt, steerX, steerY, room) {
+        offset.x += steerX * 11 * dt;
+        offset.y += steerY * 8 * dt;
+        if (!steerX) offset.x *= Math.exp(-dt * 1.35);
+        if (!steerY) offset.y *= Math.exp(-dt * 1.35);
+        offset.x = THREE.MathUtils.clamp(offset.x, -room, room);
+        offset.y = THREE.MathUtils.clamp(offset.y, -room, room);
+      }
+
+      function placeOnRail() {
+        rocket.position.lerpVectors(legA, legB, THREE.MathUtils.clamp(legU, 0, 1));
+        rocket.position.x += offset.x;
+        rocket.position.y += offset.y;
+      }
+
+      function faceAlong(dir, steerX, dt) {
+        const d = scratch2.copy(dir);
+        if (d.lengthSq() < 1e-6) d.set(0, 0, -1);
+        d.normalize();
+        d.x += steerX * 0.28;
+        d.normalize();
+        up.set(0, 1, 0);
+        if (Math.abs(d.dot(up)) > 0.92) up.set(0, 0, 1);
+        // Matrix4.lookAt points +Z along (eye − target). The nose is local −Z,
+        // so the eye is the rocket and the target is a point along the flight path.
+        scratch.copy(rocket.position).add(d);
+        lookM.lookAt(rocket.position, scratch, up);
+        desiredQ.setFromRotationMatrix(lookM);
+        const k = 1 - Math.exp(-dt * (reduceMotion ? 4 : 6));
+        baseQuat.slerp(desiredQ, k);
+        rocket.quaternion.copy(baseQuat);
+        rocket.rotateZ(-offset.x * 0.06);
+      }
+
+      function updateCamera(dt) {
+        const desired = scratch;
+        const look = scratch2;
+        if (state === "visit") {
+          const stop = STOPS[legIndex];
+          const dist = stop.kind === "sun" ? stop.r + 58 : Math.max(orbitR(stop) + 9, stop.r * 3.15);
+          desired.set(stop.x + (stop.kind === "sun" ? 8 : 0), stop.y + stop.r * 0.42, stop.z + dist);
+          look.set(stop.x, stop.y, stop.z);
+        } else if (state === "ready" || state === "countdown") {
+          desired.set(rocket.position.x + 3.3, rocket.position.y + 1.55, rocket.position.z + 5.8);
+          look.set(rocket.position.x, rocket.position.y - 0.95, rocket.position.z - 0.4);
+        } else if (state === "ascent") {
+          desired.set(rocket.position.x + 3.6, rocket.position.y + 1.15, rocket.position.z + 6.3);
+          look.set(rocket.position.x, rocket.position.y + 0.2, rocket.position.z - 1.2);
+        } else if (state === "land" || state === "done") {
+          desired.set(rocket.position.x + 4.2, rocket.position.y + 2.6, rocket.position.z + 7.4);
+          look.set(rocket.position.x, rocket.position.y + 0.5, rocket.position.z - 2);
+        } else {
+          desired.set(rocket.position.x + 0.4, rocket.position.y + 1.7, rocket.position.z + 5.6);
+          look.set(rocket.position.x, rocket.position.y + 0.35, rocket.position.z - 12);
+        }
+        const lam = state === "visit" ? 2.4 : 2.8;
+        camPos.lerp(desired, 1 - Math.exp(-dt * lam));
+        lookPos.lerp(look, 1 - Math.exp(-dt * 3.1));
+        camera.position.copy(camPos);
+        camera.lookAt(lookPos);
+        const wantFov = held.has("Space") && (state === "fly" || state === "ascent") && !reduceMotion ? 63 : 58;
+        camera.fov += (wantFov - camera.fov) * (1 - Math.exp(-dt * 3));
+        camera.updateProjectionMatrix();
+      }
+
+      function flameLevel(boost) {
+        if (state === "countdown") return countT > 1.86 ? 0.55 : 0;
+        if (state === "ready" || state === "done") return 0;
+        if (state === "land") return Math.max(0, 1 - landT / 3.4);
+        return (boost ? 1.45 : 0.9) * (ringBoost > 0 ? 1.2 : 1);
+      }
+
+      function startAscent() {
+        state = "ascent";
+        ascentU = 0;
+        ascentV = 2.2 * FAST;
+        offset.set(0, 0);
+        countEl.hidden = true;
+        showPanel(null);
+        hintEl.hidden = false;
+        nextEl.textContent = "Up we go";
+        sayLine("Blast off!");
+        speak("Blast off!");
+      }
+
+      function beginTrip() {
+        if (state === "countdown" || state === "ascent" || state === "fly" || state === "visit" || state === "land") return;
+        resetWorld();
+        if (FAST > 1) {
+          startAscent();
+          return;
+        }
+        state = "countdown";
+        countT = 0;
+        countStep = -1;
+        countEl.hidden = false;
+        countEl.classList.remove("go");
+        countEl.textContent = "3";
+        showPanel(null);
+        hintEl.hidden = true;
+        nextEl.textContent = "";
+      }
+
+      function beginLeg(index) {
+        legIndex = index;
+        legA.copy(rocket.position);
+        approachOf(STOPS[index], legB);
+        legU = 0;
+        legLen = Math.max(12, legB.distanceTo(legA));
+        state = "fly";
+        showPanel(null);
+        hintEl.hidden = false;
+        const stop = STOPS[index];
+        if (stop.id === "venus" && !turnSaid) {
+          turnSaid = true;
+          nextEl.textContent = "Back toward the Sun";
+          sayLine("Now we fly back toward the Sun.");
+          setTimeout(() => {
+            if (state === "fly" && legIndex === index) nextEl.textContent = "Next · " + stop.name;
+          }, 2600 / FAST);
+        } else {
+          nextEl.textContent = index === 0 ? "To the Moon" : "Next · " + stop.name;
+        }
+      }
+
+      function completeLeg() {
+        const stop = STOPS[legIndex];
+        if (stop.kind === "home") startLand();
+        else startVisit();
+      }
+
+      function startVisit() {
+        state = "visit";
+        visitT = 0;
+        const stop = STOPS[legIndex];
+        visitDur = stop.kind === "sun" ? 7.2 : stop.kind === "saturn" || stop.kind === "jupiter" ? 7 : 6.2;
+        showVisit(stop);
+        speak(stop.name + ". " + stop.kicker + ". " + stop.fact);
+        chord();
+        burst(rocket.position, 16);
+        hintEl.hidden = true;
+        nextEl.textContent = "";
+      }
+
+      function finishVisit() {
+        const next = legIndex + 1;
+        if (next >= STOPS.length) {
+          startLand();
+          return;
+        }
+        beginLeg(next);
+      }
+
+      function startLand() {
+        state = "land";
+        landT = 0;
+        landFrom.copy(rocket.position);
+        const home = STOPS[STOPS.length - 1];
+        landTo.set(home.x, home.y + home.r + 0.95, home.z);
+        showVisit(home);
+        if (!saidHome) {
+          saidHome = true;
+          speak("Earth. Our home. " + home.fact);
+        }
+        nextEl.textContent = "Coming home";
+        hintEl.hidden = true;
+      }
+
+      function finishLanding() {
+        state = "done";
+        nextEl.textContent = "";
+        showPanel("done");
+        speak("Hooray! You flew past every planet. Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, and Neptune.");
+        sayLine("Hooray! You flew past every planet.");
+        chord();
+        burst(rocket.position, 24);
+      }
+
+      function resetWorld() {
+        state = "ready";
+        legIndex = -1;
+        legU = 0;
+        ascentU = 0;
+        ascentV = 0;
+        visitT = 0;
+        landT = 0;
+        collected = 0;
+        ringBoost = 0;
+        turnSaid = false;
+        saidHome = false;
+        if (window.speechSynthesis) speechSynthesis.cancel();
+        offset.set(0, 0);
+        rocket.position.copy(ASCENT_A);
+        starsEl.textContent = "★ 0";
+        for (const p of pickups) {
+          p.got = false;
+          p.mesh.visible = true;
+          p.mesh.scale.setScalar(1);
+        }
+        countEl.hidden = true;
+        hintEl.hidden = true;
+        nextEl.textContent = "";
+        showPanel("ready");
+      }
+
+      function jumpTo(id) {
+        const idx = STOPS.findIndex((s) => s.id === id);
+        if (idx < 0) return;
+        resetWorld();
+        spaceAmount = 1;
+        approachOf(STOPS[idx], rocket.position);
+        rocket.position.z += 18;
+        beginLeg(idx);
+      }
+
+      function showPanel(which) {
+        card.hidden = which == null;
+        panelReady.hidden = which !== "ready";
+        panelVisit.hidden = which !== "visit";
+        panelDone.hidden = which !== "done";
+      }
+
+      function showVisit(stop) {
+        visitName.textContent = stop.name;
+        visitKicker.textContent = stop.kicker;
+        visitFact.textContent = stop.fact;
+        visitName.style.color = "#fffaf2";
+        visitName.style.textShadow = "0 6px 24px " + stop.tint;
+        showPanel("visit");
+        sayLine(stop.name + ". " + stop.kicker + ". " + stop.fact);
+      }
+
+      function sayLine(text) {
+        announce.textContent = text;
+      }
+
+      function paintPearls() {
+        const idx = state === "ascent" ? 0 : legIndex;
+        const nodes = pearlsEl.children;
+        for (let i = 0; i < nodes.length; i++) {
+          const been = state === "done" || (idx > i && state !== "ready" && state !== "countdown");
+          const now = state !== "ready" && state !== "countdown" && state !== "done" && i === idx;
+          nodes[i].classList.toggle("been", been);
+          nodes[i].classList.toggle("now", now);
+        }
+      }
+
+      function orbitR(stop) {
+        if (stop.kind === "saturn") return stop.r * 2.2 + 3.2;
+        if (stop.kind === "uranus") return stop.r * 1.9 + 2;
+        if (stop.kind === "jupiter") return stop.r + 7.6;
+        if (stop.kind === "sun") return stop.r + 40;
+        return stop.r + 5.3;
+      }
+
+      function approachOf(stop, target) {
+        if (stop.kind === "sun") return target.set(stop.x, stop.y - 5, stop.z + stop.r + 40);
+        if (stop.kind === "home") return target.set(stop.x, stop.y + stop.r + 6.5, stop.z + 20);
+        return target.set(stop.x, stop.y, stop.z + orbitR(stop));
+      }
+
+      function checkPickups() {
+        for (const p of pickups) {
+          if (p.got) continue;
+          const dx = rocket.position.x - p.mesh.position.x;
+          const dy = rocket.position.y - p.mesh.position.y;
+          const dz = rocket.position.z - p.mesh.position.z;
+          const d2 = dx * dx + dy * dy + dz * dz;
+          const reach = p.ring ? 6.8 : 7.2;
+          if (d2 < reach * reach) {
+            p.got = true;
+            p.mesh.visible = false;
+            if (p.ring) {
+              ringBoost = 0.95;
+              tone(520, 0.1, "triangle", 0.06);
+              tone(780, 0.16, "triangle", 0.06, 0.08);
+              burst(p.mesh.position, 8, 0x9ad7ff);
+            } else {
+              collected++;
+              starsEl.textContent = "★ " + collected;
+              starsEl.classList.remove("pop");
+              void starsEl.offsetWidth;
+              starsEl.classList.add("pop");
+              tone(760 + (collected % 6) * 40, 0.09, "sine", 0.05);
+              burst(p.mesh.position, 5, 0xffd45a);
+            }
+          }
+        }
+      }
+
+      function sprinklePickups(THREE) {
+        const starMat = new THREE.MeshStandardMaterial({
+          color: 0xffe08a, emissive: 0xffb703, emissiveIntensity: 0.85, roughness: 0.35,
+        });
+        const starMeshGeo = new THREE.OctahedronGeometry(0.42, 0);
+        const ringMat = new THREE.MeshBasicMaterial({
+          color: 0xb7ecff, transparent: true, opacity: 0.85, side: THREE.DoubleSide, depthWrite: false,
+        });
+        const guardPoint = new THREE.Vector3();
+        const points = [ASCENT_A.clone(), ASCENT_B.clone()];
+        laySegment(points[0], points[1], "ascent", starMeshGeo, starMat, ringMat);
+        for (let i = 0; i < STOPS.length; i++) {
+          const stop = STOPS[i];
+          const next = approachOf(stop, new THREE.Vector3());
+          laySegment(points[points.length - 1], next, stop.kind, starMeshGeo, starMat, ringMat);
+          if (stop.kind === "home") break;
+          if (stop.kind === "sun") {
+            points.push(new THREE.Vector3(stop.x, stop.y - 6, stop.z - stop.r - 26));
+          } else {
+            points.push(new THREE.Vector3(stop.x, stop.y, stop.z - orbitR(stop)));
+          }
+        }
+
+        function laySegment(a, b, kind, geo, mat, rmat) {
+          const span = b.distanceTo(a);
+          if (span < 24) return;
+          const count = Math.max(2, Math.round(span / 28));
+          for (let k = 1; k <= count; k++) {
+            const t = k / (count + 1);
+            const p = new THREE.Vector3().lerpVectors(a, b, t);
+            const ang = t * 9 + span;
+            p.x += Math.cos(ang) * 1.7;
+            p.y += Math.sin(ang) * 1.7;
+            if (tooClose(p)) continue;
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.position.copy(p);
+            scene.add(mesh);
+            pickups.push({ mesh, got: false, ring: false });
+          }
+          if (kind === "sun" || kind === "home" || span < 70) return;
+          const mid = new THREE.Vector3().lerpVectors(a, b, 0.55);
+          const ring = new THREE.Mesh(new THREE.TorusGeometry(2.5, 0.09, 8, 28), rmat);
+          ring.position.copy(mid);
+          const tangent = new THREE.Vector3().copy(b).sub(a).normalize();
+          ring.lookAt(mid.clone().add(tangent));
+          scene.add(ring);
+          pickups.push({ mesh: ring, got: false, ring: true });
+        }
+
+        function tooClose(p) {
+          if (p.distanceTo(EARTH_C) < EARTH_R + 3) return true;
+          for (const s of STOPS) {
+            const guard = s.kind === "sun" ? s.r + 8 : s.r + 3;
+            if (p.distanceTo(guardPoint.set(s.x, s.y, s.z)) < guard) return true;
+          }
+          return false;
+        }
+      }
+
+      function addWorld(THREE, stop) {
+        const pivot = new THREE.Group();
+        pivot.position.set(stop.x, stop.y, stop.z);
+        scene.add(pivot);
+        const spin = new THREE.Group();
+        pivot.add(spin);
+        pivot.userData.spin = spin;
+        pivot.userData.spinSpeed = stop.kind === "sun" ? 0.04 : 0.18;
+
+        if (stop.kind === "sun") {
+          const sun = new THREE.Mesh(
+            new THREE.SphereGeometry(stop.r, 48, 32),
+            new THREE.MeshBasicMaterial({ color: 0xfff3c4 })
+          );
+          spin.add(sun);
+          const corona = new THREE.Sprite(new THREE.SpriteMaterial({
+            map: softTex, color: 0xffb347, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0,
+          }));
+          corona.scale.set(stop.r * 5.2, stop.r * 5.2, 1);
+          pivot.add(corona);
+          const light = new THREE.PointLight(0xfff0c8, 0, 420, 2);
+          pivot.add(light);
+          pivot.visible = false;
+          return { pivot, corona, light, moons: null };
+        }
+
+        const tex = stop.kind === "earth" ? earthTex : makePlanetTex(THREE, stop.kind, stop.r > 10 ? 512 : 384, stop.r > 10 ? 256 : 192);
+        const mat = new THREE.MeshStandardMaterial({
+          map: tex,
+          roughness: stop.kind === "venus" ? 0.55 : 0.82,
+          metalness: 0.03,
+          emissive: new THREE.Color(stop.tint),
+          emissiveIntensity: stop.kind === "venus" ? 0.08 : 0.03,
+        });
+        const sphere = new THREE.Mesh(new THREE.SphereGeometry(stop.r, 48, 32), mat);
+        const holder = stop.kind === "uranus" ? new THREE.Group() : spin;
+        if (stop.kind === "uranus") {
+          holder.rotation.z = 1.15;
+          spin.add(holder);
+          pivot.userData.spin = holder;
+        }
+        holder.add(sphere);
+        if (stop.kind === "earth") {
+          const clouds = new THREE.Mesh(
+            new THREE.SphereGeometry(stop.r * 1.03, 40, 28),
+            new THREE.MeshStandardMaterial({ map: cloudTex, transparent: true, depthWrite: false, roughness: 1 })
+          );
+          holder.add(clouds);
+        }
+        const glow = stop.kind === "earth" ? "#7eb6ff" : stop.tint;
+        pivot.add(atmosphere(THREE, stop.r * 1.12, glow, stop.kind === "earth" ? 2.5 : 2.1));
+
+        if (stop.kind === "saturn" || stop.kind === "uranus") {
+          const inner = stop.kind === "saturn" ? stop.r * 1.35 : stop.r * 1.45;
+          const outer = stop.kind === "saturn" ? stop.r * 2.15 : stop.r * 1.85;
+          const ring = new THREE.Mesh(
+            new THREE.RingGeometry(inner, outer, 96),
+            new THREE.MeshBasicMaterial({
+              map: ringTex,
+              color: stop.kind === "saturn" ? 0xfff0d2 : 0xc8fff6,
+              side: THREE.DoubleSide,
+              transparent: true,
+              depthWrite: false,
+            })
+          );
+          ring.rotation.x = stop.kind === "saturn" ? 1.02 : Math.PI / 2;
+          holder.add(ring);
+        }
+
+        const moons = [];
+        if (stop.kind === "jupiter" || stop.kind === "saturn") {
+          const specs = stop.kind === "jupiter"
+            ? [[stop.r * 1.7, 0.55, 0.35, 0xe6d2b5], [stop.r * 2.15, 0.4, -0.22, 0xb7b7b7]]
+            : [[stop.r * 2.45, 0.48, 0.2, 0xf0e2c8]];
+          for (const [radius, size, speed, color] of specs) {
+            const mesh = new THREE.Mesh(
+              new THREE.SphereGeometry(size, 14, 12),
+              new THREE.MeshStandardMaterial({ color, roughness: 0.8 })
+            );
+            pivot.add(mesh);
+            moons.push({ mesh, radius, speed, angle: Math.random() * 6 });
+          }
+        }
+
+        if (stop.kind === "home") {
+          const homePad = buildPad(THREE);
+          homePad.position.y = stop.r + 0.15;
+          pivot.add(homePad);
+        }
+        return { pivot, moons };
+      }
+
+      function buildPad(THREE) {
+        const g = new THREE.Group();
+        const deck = new THREE.Mesh(
+          new THREE.CylinderGeometry(3.3, 3.5, 0.28, 28),
+          new THREE.MeshStandardMaterial({ color: 0xc8d0dc, roughness: 0.55, metalness: 0.2 })
+        );
+        g.add(deck);
+        const rim = new THREE.Mesh(
+          new THREE.TorusGeometry(3.15, 0.08, 8, 32),
+          new THREE.MeshBasicMaterial({ color: 0xffd45a })
+        );
+        rim.rotation.x = Math.PI / 2;
+        rim.position.y = 0.16;
+        g.add(rim);
+        for (let i = 0; i < 6; i++) {
+          const lamp = new THREE.Mesh(
+            new THREE.SphereGeometry(0.12, 10, 10),
+            new THREE.MeshBasicMaterial({ color: i % 2 ? 0xff5d73 : 0xffe08a })
+          );
+          const a = (i / 6) * Math.PI * 2;
+          lamp.position.set(Math.cos(a) * 2.7, 0.28, Math.sin(a) * 2.7);
+          g.add(lamp);
+        }
+        const tower = new THREE.Mesh(
+          new THREE.BoxGeometry(0.28, 2.4, 0.28),
+          new THREE.MeshStandardMaterial({ color: 0xf4f1ea, roughness: 0.6 })
+        );
+        tower.position.set(2.15, 1.3, 0);
+        g.add(tower);
+        const beacon = new THREE.Mesh(new THREE.SphereGeometry(0.16, 10, 10), new THREE.MeshBasicMaterial({ color: 0xff4d4d }));
+        beacon.position.set(2.15, 2.6, 0);
+        g.add(beacon);
+        return g;
+      }
+
+      function buildRocket(THREE, glowMap, decalMap) {
+        const rocket = new THREE.Group();
+        const cream = new THREE.MeshStandardMaterial({ color: 0xf6f1e6, roughness: 0.42, metalness: 0.04 });
+        const coral = new THREE.MeshStandardMaterial({ color: 0xff5d73, roughness: 0.4 });
+        const blue = new THREE.MeshStandardMaterial({ color: 0x2f6fe0, roughness: 0.42, metalness: 0.06 });
+        const gold = new THREE.MeshStandardMaterial({ color: 0xf0c14a, roughness: 0.32, metalness: 0.32 });
+        const glass = new THREE.MeshStandardMaterial({
+          color: 0xc5e6ff, roughness: 0.08, metalness: 0.04, transparent: true, opacity: 0.5,
+          emissive: 0x1d4d86, emissiveIntensity: 0.4,
+        });
+        const dark = new THREE.MeshStandardMaterial({ color: 0x2a303c, roughness: 0.55, metalness: 0.25 });
+        const suitMat = new THREE.MeshStandardMaterial({ color: 0x7fd1c7, roughness: 0.5 });
+
+        const body = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.46, 1.7, 24), cream);
+        body.rotation.x = -Math.PI / 2;
+        rocket.add(body);
+
+        const nose = new THREE.Mesh(new THREE.ConeGeometry(0.4, 0.86, 24), coral);
+        nose.rotation.x = -Math.PI / 2;
+        nose.position.z = -1.22;
+        rocket.add(nose);
+
+        const band = new THREE.Mesh(new THREE.CylinderGeometry(0.48, 0.48, 0.14, 24), gold);
+        band.rotation.x = -Math.PI / 2;
+        band.position.z = 0.2;
+        rocket.add(band);
+
+        const astro = new THREE.Group();
+        astro.position.set(0, 0.16, -0.02);
+        const suit = new THREE.Mesh(new THREE.SphereGeometry(0.15, 16, 16), suitMat);
+        suit.scale.set(1, 1.2, 0.8);
+        const helm = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), new THREE.MeshStandardMaterial({ color: 0xf7f7f7, roughness: 0.3 }));
+        helm.position.y = 0.2;
+        const visor = new THREE.Mesh(new THREE.SphereGeometry(0.075, 12, 12), new THREE.MeshStandardMaterial({
+          color: 0x17324f, roughness: 0.12, metalness: 0.45, emissive: 0x0c2744, emissiveIntensity: 0.5,
+        }));
+        visor.position.set(0, 0.21, -0.05);
+        const arm = new THREE.Mesh(new THREE.CapsuleGeometry(0.035, 0.14, 4, 8), suitMat);
+        arm.position.set(0.16, 0.05, 0);
+        astro.add(suit, helm, visor, arm);
+        rocket.add(astro);
+        rocket.userData.arm = arm;
+
+        const win = new THREE.Mesh(new THREE.SphereGeometry(0.23, 20, 16), glass);
+        win.position.set(0, 0.34, -0.05);
+        rocket.add(win);
+
+        const finShape = new THREE.Shape();
+        finShape.moveTo(0, 0);
+        finShape.lineTo(0.78, 0.38);
+        finShape.lineTo(0.08, 0.62);
+        finShape.closePath();
+        const finGeo = new THREE.ExtrudeGeometry(finShape, { depth: 0.07, bevelEnabled: false });
+        finGeo.translate(0, -0.18, -0.035);
+        for (let i = 0; i < 3; i++) {
+          const fin = new THREE.Mesh(finGeo, i === 1 ? coral : blue);
+          const a = (i / 3) * Math.PI * 2;
+          fin.position.set(Math.cos(a) * 0.42, Math.sin(a) * 0.42, 0.58);
+          fin.rotation.z = a;
+          rocket.add(fin);
+        }
+
+        const bell = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.34, 0.26, 16, 1, true), dark);
+        bell.rotation.x = Math.PI / 2;
+        bell.position.z = 1.02;
+        rocket.add(bell);
+
+        const flame = new THREE.Group();
+        flame.position.z = 1.12;
+        const inner = new THREE.Mesh(new THREE.ConeGeometry(0.16, 0.7, 12), new THREE.MeshBasicMaterial({ color: 0xfff6c4 }));
+        inner.rotation.x = Math.PI / 2;
+        inner.position.z = 0.28;
+        const outer = new THREE.Mesh(new THREE.ConeGeometry(0.3, 1.15, 14), new THREE.MeshBasicMaterial({
+          color: 0xff8418, transparent: true, opacity: 0.88, depthWrite: false,
+        }));
+        outer.rotation.x = Math.PI / 2;
+        outer.position.z = 0.42;
+        flame.add(inner, outer);
+        rocket.add(flame);
+        rocket.userData.flame = flame;
+
+        const glow = new THREE.Sprite(new THREE.SpriteMaterial({
+          map: glowMap, color: 0xffa020, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false,
+        }));
+        glow.position.z = 1.7;
+        glow.scale.set(2.1, 2.1, 1);
+        rocket.add(glow);
+        rocket.userData.glow = glow;
+
+        const badge = new THREE.Mesh(new THREE.CircleGeometry(0.16, 20), new THREE.MeshBasicMaterial({
+          map: decalMap, transparent: true, depthWrite: false,
+        }));
+        badge.position.set(0, 0.5, 0.25);
+        badge.rotation.x = -Math.PI / 2;
+        rocket.add(badge);
+        return rocket;
+      }
+
+      function atmosphere(THREE, radius, color, power) {
+        const mat = new THREE.ShaderMaterial({
+          uniforms: {
+            glowColor: { value: new THREE.Color(color) },
+            power: { value: power },
+          },
+          transparent: true,
+          side: THREE.BackSide,
+          depthWrite: false,
+          blending: THREE.AdditiveBlending,
+          vertexShader: `
+            varying vec3 vNormal;
+            void main() {
+              vNormal = normalize(normalMatrix * normal);
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+          `,
+          fragmentShader: `
+            varying vec3 vNormal;
+            uniform vec3 glowColor;
+            uniform float power;
+            void main() {
+              float d = clamp(0.65 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 0.0, 1.0);
+              float f = pow(d, power);
+              gl_FragColor = vec4(glowColor, f);
+            }
+          `,
+        });
+        return new THREE.Mesh(new THREE.SphereGeometry(radius, 40, 28), mat);
+      }
+
+      function burst(origin, n, color) {
+        let spawned = 0;
+        for (const s of sparkles) {
+          if (s.userData.life > 0) continue;
+          s.visible = true;
+          s.position.copy(origin);
+          s.userData.life = 0.45 + Math.random() * 0.35;
+          s.userData.vx = (Math.random() - 0.5) * 7;
+          s.userData.vy = (Math.random() - 0.5) * 7;
+          s.userData.vz = (Math.random() - 0.5) * 7;
+          s.material.color.set(color || Math.random() * 0xffffff);
+          if (!color) s.material.color.setHSL(Math.random(), 0.75, 0.62);
+          if (++spawned >= n) break;
+        }
+      }
+
+      function puff() {
+        for (const s of smokes) {
+          if (s.userData.life > 0) continue;
+          engineWorld.set(0, 0, 1.2);
+          rocket.localToWorld(engineWorld);
+          s.visible = true;
+          s.position.copy(engineWorld);
+          s.userData.life = 0.8;
+          s.userData.max = 0.8;
+          s.userData.size = 1.6 + Math.random();
+          s.userData.vx = (Math.random() - 0.5) * 0.8;
+          s.userData.vy = 0.4 + Math.random() * 0.6;
+          s.userData.vz = 0.2;
+          return;
+        }
+      }
+
+      function onKeyDown(e) {
+        if (["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.code)) {
+          if (!(e.target === muteBtn && e.code === "Space")) e.preventDefault();
+        }
+        held.add(e.code);
+        if (e.repeat) return;
+        if (e.code === "Escape") {
+          speechSynthesis && speechSynthesis.cancel();
+          resetWorld();
+          sayLine("Back on the launch pad. Press any key.");
+          return;
+        }
+        if (e.code === "KeyM") {
+          ensureAudio();
+          muted = !muted;
+          applyMute();
+          return;
+        }
+        ensureAudio();
+        if (/^Key[A-Z]$/.test(e.code) || /^Digit[0-9]$/.test(e.code)) playKey(e.code);
+        burst(rocket.position, 6);
+        if (state === "ready" || state === "done") beginTrip();
+      }
+
+      function applyMute() {
+        muteBtn.textContent = muted ? "Sound off" : "Sound on";
+        muteBtn.setAttribute("aria-pressed", muted ? "true" : "false");
+        if (master && audio) master.gain.setTargetAtTime(muted ? 0 : 0.9, audio.currentTime, 0.05);
+        if (muted && window.speechSynthesis) speechSynthesis.cancel();
+      }
+
+      function ensureAudio() {
+        if (audio) {
+          if (audio.state === "suspended") audio.resume();
+          return;
+        }
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return;
+        audio = new AC();
+        master = audio.createGain();
+        master.gain.value = muted ? 0 : 0.9;
+        master.connect(audio.destination);
+        const len = audio.sampleRate * 2;
+        const buf = audio.createBuffer(1, len, audio.sampleRate);
+        const data = buf.getChannelData(0);
+        let brown = 0;
+        for (let i = 0; i < len; i++) {
+          const white = Math.random() * 2 - 1;
+          brown = (brown + 0.02 * white) / 1.02;
+          data[i] = brown * 3.2;
+        }
+        const src = audio.createBufferSource();
+        src.buffer = buf;
+        src.loop = true;
+        engineFilter = audio.createBiquadFilter();
+        engineFilter.type = "lowpass";
+        engineFilter.frequency.value = 240;
+        engineGain = audio.createGain();
+        engineGain.gain.value = 0;
+        src.connect(engineFilter);
+        engineFilter.connect(engineGain);
+        engineGain.connect(master);
+        src.start();
+      }
+
+      function tone(freq, dur, type, vol, delay = 0) {
+        if (!audio || muted || FAST > 1) return;
+        const t = audio.currentTime + delay;
+        const o = audio.createOscillator();
+        const g = audio.createGain();
+        o.type = type;
+        o.frequency.setValueAtTime(freq, t);
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(Math.max(0.0002, vol), t + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+        o.connect(g);
+        g.connect(master);
+        o.start(t);
+        o.stop(t + dur + 0.03);
+      }
+
+      function chord() {
+        tone(523, 0.18, "triangle", 0.07);
+        tone(659, 0.2, "triangle", 0.06, 0.07);
+        tone(784, 0.28, "triangle", 0.06, 0.14);
+      }
+
+      function playKey(code) {
+        const nowMs = performance.now();
+        if (nowMs - lastNoteAt < 42) return;
+        lastNoteAt = nowMs;
+        const scale = [262, 294, 330, 392, 440, 523, 587, 659];
+        let n = 0;
+        for (const ch of code) n += ch.charCodeAt(0);
+        tone(scale[n % scale.length], 0.16, "triangle", 0.05);
+      }
+
+      function speak(text) {
+        if (muted || FAST > 1 || !window.speechSynthesis) return;
+        const u = new SpeechSynthesisUtterance(text);
+        u.rate = 0.94;
+        u.pitch = 1.08;
+        u.lang = "en-US";
+        const voices = speechSynthesis.getVoices();
+        const voice = voices.find((v) => /en[-_]US/i.test(v.lang) && /samantha|google us english|female/i.test(v.name))
+          || voices.find((v) => /en[-_]US/i.test(v.lang))
+          || voices.find((v) => /^en/i.test(v.lang));
+        if (voice) u.voice = voice;
+        speechSynthesis.cancel();
+        speechSynthesis.resume();
+        speechSynthesis.speak(u);
+      }
+
+      if (window.speechSynthesis) {
+        speechSynthesis.onvoiceschanged = () => {};
+        speechSynthesis.getVoices();
+      }
+    }
+
+    function smoothstep(e0, e1, x) {
+      const t = Math.max(0, Math.min(1, (x - e0) / (e1 - e0)));
+      return t * t * (3 - 2 * t);
+    }
+
+    function mulberry32(seed) {
+      let a = seed >>> 0;
+      return function () {
+        a |= 0;
+        a = (a + 0x6d2b79f5) | 0;
+        let t = Math.imul(a ^ (a >>> 15), 1 | a);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    function makeNoise(seed) {
+      const rand = mulberry32(seed);
+      const g = new Float32Array(64 * 64);
+      for (let i = 0; i < g.length; i++) g[i] = rand();
+      return function (x, y) {
+        const x0 = Math.floor(x) & 63;
+        const y0 = Math.floor(y) & 63;
+        const x1 = (x0 + 1) & 63;
+        const y1 = (y0 + 1) & 63;
+        const sx = x - Math.floor(x);
+        const sy = y - Math.floor(y);
+        const u = sx * sx * (3 - 2 * sx);
+        const v = sy * sy * (3 - 2 * sy);
+        const a = g[y0 * 64 + x0];
+        const b = g[y0 * 64 + x1];
+        const c = g[y1 * 64 + x0];
+        const d = g[y1 * 64 + x1];
+        return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+      };
+    }
+
+    function fbm(noise, x, y) {
+      return noise(x, y) * 0.55 + noise(x * 2 + 5, y * 2) * 0.3 + noise(x * 4 + 9, y * 4) * 0.15;
+    }
+
+    function canvasTexture(THREE, w, h, draw) {
+      const c = document.createElement("canvas");
+      c.width = w;
+      c.height = h;
+      draw(c.getContext("2d"), w, h);
+      const tex = new THREE.CanvasTexture(c);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.anisotropy = 8;
+      return tex;
+    }
+
+    function makeSoftTex(THREE) {
+      return canvasTexture(THREE, 64, 64, (g) => {
+        const grd = g.createRadialGradient(32, 32, 2, 32, 32, 32);
+        grd.addColorStop(0, "rgba(255,255,255,0.95)");
+        grd.addColorStop(1, "rgba(255,255,255,0)");
+        g.fillStyle = grd;
+        g.fillRect(0, 0, 64, 64);
+      });
+    }
+
+    function makeStarTex(THREE) {
+      return canvasTexture(THREE, 64, 64, (g) => {
+        g.translate(32, 32);
+        g.fillStyle = "#ffd45a";
+        g.beginPath();
+        for (let i = 0; i < 10; i++) {
+          const r = i % 2 === 0 ? 28 : 12;
+          const a = -Math.PI / 2 + (i * Math.PI) / 5;
+          g.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+        }
+        g.closePath();
+        g.fill();
+      });
+    }
+
+    function makeRingTex(THREE) {
+      return canvasTexture(THREE, 8, 128, (g, w, h) => {
+        for (let y = 0; y < h; y++) {
+          const t = y / h;
+          const gap = t > 0.46 && t < 0.53;
+          const shade = 210 + Math.sin(t * 50) * 28;
+          const alpha = gap ? 0 : 0.15 + (1 - t) * 0.75;
+          g.fillStyle = `rgba(${shade | 0},${(shade - 18) | 0},${(shade - 48) | 0},${alpha})`;
+          g.fillRect(0, y, w, 1);
+        }
+      });
+    }
+
+    function makeCloudTex(THREE) {
+      return canvasTexture(THREE, 512, 256, (ctx, w, h) => {
+        const noise = makeNoise(99);
+        const img = ctx.createImageData(w, h);
+        for (let y = 0; y < h; y++) {
+          for (let x = 0; x < w; x++) {
+            const n = fbm(noise, (x / w) * 6, (y / h) * 3);
+            const a = n > 0.58 ? Math.min(210, (n - 0.58) * 700) : 0;
+            const i = (y * w + x) * 4;
+            img.data[i] = 255;
+            img.data[i + 1] = 255;
+            img.data[i + 2] = 255;
+            img.data[i + 3] = a;
+          }
+        }
+        ctx.putImageData(img, 0, 0);
+      });
+    }
+
+    function makePlanetTex(THREE, kind, w, h) {
+      return canvasTexture(THREE, w, h, (ctx, width, height) => {
+        if (kind === "venus") {
+          const grd = ctx.createLinearGradient(0, 0, 0, height);
+          grd.addColorStop(0, "#f6e2b0");
+          grd.addColorStop(0.5, "#e7c27a");
+          grd.addColorStop(1, "#f3d59a");
+          ctx.fillStyle = grd;
+          ctx.fillRect(0, 0, width, height);
+          ctx.strokeStyle = "rgba(255,248,220,0.35)";
+          ctx.lineWidth = 8;
+          for (let i = 0; i < 7; i++) {
+            ctx.beginPath();
+            ctx.moveTo(0, height * (0.15 + i * 0.12));
+            ctx.bezierCurveTo(width * 0.3, height * (0.05 + i * 0.12), width * 0.6, height * (0.28 + i * 0.1), width, height * (0.12 + i * 0.12));
+            ctx.stroke();
+          }
+          return;
+        }
+        const noise = makeNoise(kind.length * 17 + width);
+        const craters = [];
+        if (kind === "moon" || kind === "mercury") {
+          const rand = mulberry32(kind === "moon" ? 4 : 9);
+          for (let i = 0; i < 10; i++) craters.push([rand(), rand(), 0.03 + rand() * 0.06]);
+        }
+        const img = ctx.createImageData(width, height);
+        for (let y = 0; y < height; y++) {
+          const v = y / (height - 1);
+          const lat = (v - 0.5) * Math.PI;
+          for (let x = 0; x < width; x++) {
+            const u = x / width;
+            const n = fbm(noise, u * 7, v * 4);
+            let r;
+            let g;
+            let b;
+            if (kind === "earth") {
+              const ice = Math.abs(lat) > 1.2 ? 1 : Math.abs(lat) > 1.0 ? (Math.abs(lat) - 1.0) / 0.2 : 0;
+              if (ice > 0.45) {
+                r = 236; g = 244; b = 248;
+              } else if (n > 0.6) {
+                const lush = fbm(noise, u * 12 + 2, v * 7);
+                if (n > 0.74) { r = 196; g = 174; b = 112; }
+                else { r = 64 + lush * 50; g = 128 + lush * 70; b = 62; }
+              } else {
+                r = 18 + n * 30; g = 78 + n * 70; b = 168 + n * 60;
+              }
+            } else if (kind === "moon") {
+              r = g = b = 150 + n * 70;
+              for (const c of craters) {
+                const du = Math.min(Math.abs(u - c[0]), 1 - Math.abs(u - c[0]));
+                const dv = v - c[1];
+                const d = Math.hypot(du * 2, dv);
+                if (d < c[2]) {
+                  const shade = d < c[2] * 0.45 ? 90 : 120;
+                  r = g = b = shade;
+                }
+              }
+            } else if (kind === "mars") {
+              r = 176 + n * 50; g = 72 + n * 30; b = 42;
+              if (n > 0.7) { r = 120; g = 54; b = 36; }
+              if (v < 0.08 || v > 0.92) { r = 236; g = 230; b = 226; }
+            } else if (kind === "jupiter") {
+              const band = Math.sin(v * 46 + Math.sin(u * Math.PI * 2) * 0.35);
+              const mix = (band + 1) / 2;
+              r = 214 - mix * 50; g = 156 - mix * 40; b = 96 - mix * 20;
+              const dx = (u - 0.62) * 2.1;
+              const dy = (v - 0.42) * 3.4;
+              if (dx * dx + dy * dy < 0.018) { r = 196; g = 78; b = 48; }
+            } else if (kind === "saturn") {
+              const band = Math.sin(v * 30);
+              r = 232 + band * 12; g = 206 + band * 16; b = 150;
+            } else if (kind === "uranus") {
+              r = 170 + n * 20; g = 230 + n * 15; b = 226;
+            } else if (kind === "neptune") {
+              const band = Math.sin(v * 18) * 10;
+              r = 40 + n * 20; g = 70 + n * 30 + band; b = 210 + n * 30;
+            } else {
+              r = g = b = 140 + n * 80;
+              for (const c of craters) {
+                const du = Math.min(Math.abs(u - c[0]), 1 - Math.abs(u - c[0]));
+                const dv = v - c[1];
+                if (Math.hypot(du * 2, dv) < c[2]) r = g = b = 110;
+              }
+            }
+            const i = (y * width + x) * 4;
+            img.data[i] = r;
+            img.data[i + 1] = g;
+            img.data[i + 2] = b;
+            img.data[i + 3] = 255;
+          }
+        }
+        ctx.putImageData(img, 0, 0);
+      });
+    }
+  </script>
+</body>
+</html>
