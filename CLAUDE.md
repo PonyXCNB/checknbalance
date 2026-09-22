@@ -76,11 +76,12 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 | `favicon.png` | 32px PNG fallback |
 | `favicon.ico` | Multi-size ICO (16/32/48) at root for legacy auto-discovery |
 | `apple-touch-icon.png` | 180px iOS home-screen icon |
-| `netlify.toml` | Netlify config: publish the repo root, no build command. Temporary 302s from `/ca`, `/mo`, `/tx`, `/dc` (and the `.html` forms) to `state.html?state=` until those pages exist |
+| `netlify.toml` | Netlify config: publish the repo root, no build command. The only redirect list: temporary 302s from `/ca`, `/ca.html`, `/ca/`, `/california` (and the same for MO, TX, DC) to `state.html?state=`. No `_redirects` file |
 | `sitemap.xml` | Static sitemap: home, states list, `state.html`, every built `??.html`, plus CA/MO/TX starter and DC marquee routes |
 | `robots.txt` | Points crawlers at the sitemap |
 | `analytics.js` | Plausible hook on every public page. Does nothing until `PLAUSIBLE_DOMAIN` is set — see `docs/analytics-and-utm.md` |
-| `docs/analytics-and-utm.md` | How to turn on analytics (Netlify Web Analytics, or one line in `analytics.js`) and the UTM convention for promo links |
+| `docs/analytics-and-utm.md` | How to turn on analytics (Netlify Web Analytics, or one line in `analytics.js`) |
+| `docs/UTM-CONVENTION.md` | The one promo-link pattern: `utm_source=x`, `utm_medium=social`, `utm_campaign=cnb-calendar-YYYY-MM` |
 | `tests/` | Node.js test suite — see the Testing section |
 | `CLAUDE.md` / `.gitignore` | This file / git hygiene (not published, harmless if deployed) |
 

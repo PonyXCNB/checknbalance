@@ -32,6 +32,7 @@ const toml = fs.readFileSync(path.join(SITE_ROOT, "netlify.toml"), "utf8");
 const rules = redirectRules(toml);
 check(rules.length > 0 && rules.every(r => r.from && r.to && r.status), "netlify.toml: every redirect has from, to, and status");
 check(!toml.includes("force = true"), "netlify.toml: redirects do not force over a real file");
+check(!fs.existsSync(path.join(SITE_ROOT, "_redirects")), "redirects live only in netlify.toml, not a second _redirects file");
 
 for (const [ab, AB] of ALIASES) {
   const target = `/state.html?state=${AB}`;
@@ -45,6 +46,26 @@ for (const [ab, AB] of ALIASES) {
         `netlify.toml: ${from} → ${target} (302)`);
     }
   }
+}
+const EXTRA = [
+  ["/ca/", "CA"],
+  ["/california", "CA"],
+  ["/california/", "CA"],
+  ["/mo/", "MO"],
+  ["/missouri", "MO"],
+  ["/missouri/", "MO"],
+  ["/tx/", "TX"],
+  ["/texas", "TX"],
+  ["/texas/", "TX"],
+  ["/dc/", "DC"],
+  ["/district-of-columbia", "DC"],
+  ["/district-of-columbia/", "DC"],
+];
+for (const [from, AB] of EXTRA) {
+  const target = `/state.html?state=${AB}`;
+  const hit = rules.filter(r => r.from === from);
+  check(hit.length === 1 && hit[0].to === target && hit[0].status === "302",
+    `netlify.toml: ${from} → ${target} (302)`);
 }
 
 const built = fs.readdirSync(SITE_ROOT).filter(f => /^[a-z]{2}\.html$/.test(f)).sort();
@@ -107,7 +128,11 @@ const untagged = publicPages.filter(page => {
 check(untagged.length === 0, `every public page loads analytics.js once${untagged.length ? " — " + untagged.join(", ") : ""}`);
 
 const doc = fs.readFileSync(path.join(SITE_ROOT, "docs/analytics-and-utm.md"), "utf8");
-check(doc.includes("utm_campaign") && doc.includes("cnb_YYYYMMDD"), "docs: UTM campaign convention is written down");
 check(doc.includes("PLAUSIBLE_DOMAIN") && doc.includes("Enable Analytics"), "docs: both analytics choices tell Ryan the next step");
+check(doc.includes("docs/UTM-CONVENTION.md") && !doc.includes("cnb_YYYYMMDD"), "analytics doc points at the one UTM convention");
+const utm = fs.readFileSync(path.join(SITE_ROOT, "docs/UTM-CONVENTION.md"), "utf8");
+check(utm.includes("utm_source=x") && utm.includes("cnb-calendar-YYYY-MM"), "UTM convention: source x and calendar campaign");
+check(utm.includes("nc.html") && utm.includes("state.html?state=CA"), "UTM convention lands on canonical pages, not the CA redirect");
+check(!locs.some(u => /^https:\/\/checknbalance\.org\/[a-z]{2}$/.test(u)), "sitemap lists built states as .html, not bare /nc paths");
 
 summary("public-shell");

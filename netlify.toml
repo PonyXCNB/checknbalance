@@ -16,7 +16,15 @@
 #
 # A destination that already has ?state= drops any other query string,
 # including UTM tags. Promo links should use the real landing URL
-# (see docs/analytics-and-utm.md), not these aliases.
+# (see docs/UTM-CONVENTION.md), not these aliases.
+#
+# One redirect file only. Do not add a root `_redirects` — Netlify would
+# apply both and the two lists would fight.
+#
+# Trailing-slash and full-name shortcuts are included because those
+# addresses 404 on the live site the same way /ca does. Built states
+# already answer at /nc and /nc.html, so they are not listed here.
+# The sitemap uses the .html address.
 
 [[redirects]]
   from = "/ca"
@@ -95,5 +103,65 @@
 
 [[redirects]]
   from = "/DC.html"
+  to = "/state.html?state=DC"
+  status = 302
+
+[[redirects]]
+  from = "/ca/"
+  to = "/state.html?state=CA"
+  status = 302
+
+[[redirects]]
+  from = "/mo/"
+  to = "/state.html?state=MO"
+  status = 302
+
+[[redirects]]
+  from = "/tx/"
+  to = "/state.html?state=TX"
+  status = 302
+
+[[redirects]]
+  from = "/dc/"
+  to = "/state.html?state=DC"
+  status = 302
+
+[[redirects]]
+  from = "/california"
+  to = "/state.html?state=CA"
+  status = 302
+
+[[redirects]]
+  from = "/california/"
+  to = "/state.html?state=CA"
+  status = 302
+
+[[redirects]]
+  from = "/missouri"
+  to = "/state.html?state=MO"
+  status = 302
+
+[[redirects]]
+  from = "/missouri/"
+  to = "/state.html?state=MO"
+  status = 302
+
+[[redirects]]
+  from = "/texas"
+  to = "/state.html?state=TX"
+  status = 302
+
+[[redirects]]
+  from = "/texas/"
+  to = "/state.html?state=TX"
+  status = 302
+
+[[redirects]]
+  from = "/district-of-columbia"
+  to = "/state.html?state=DC"
+  status = 302
+
+[[redirects]]
+  from = "/district-of-columbia/"
   to = "/state.html?state=DC"
   status = 302
