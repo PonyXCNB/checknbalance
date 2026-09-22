@@ -2,3 +2,98 @@
 # Netlify publishes the repo root as-is on every push to main.
 [build]
   publish = "."
+
+# California, Missouri, Texas, and the District of Columbia do not have
+# their own pages yet. /ca.html (and the bare /ca path) were 404s. Send
+# those addresses to the starter or marquee page that already works:
+#   CA, MO, TX → starter framework
+#   DC        → marquee races
+#
+# 302, not 301: these are temporary. A permanent redirect would stick in
+# browsers after a real ca.html is published. force is off, so once that
+# file exists Netlify serves the file and ignores the matching rule.
+# Delete the four rules for a state in the same commit that adds its page.
+#
+# A destination that already has ?state= drops any other query string,
+# including UTM tags. Promo links should use the real landing URL
+# (see docs/analytics-and-utm.md), not these aliases.
+
+[[redirects]]
+  from = "/ca"
+  to = "/state.html?state=CA"
+  status = 302
+
+[[redirects]]
+  from = "/ca.html"
+  to = "/state.html?state=CA"
+  status = 302
+
+[[redirects]]
+  from = "/CA"
+  to = "/state.html?state=CA"
+  status = 302
+
+[[redirects]]
+  from = "/CA.html"
+  to = "/state.html?state=CA"
+  status = 302
+
+[[redirects]]
+  from = "/mo"
+  to = "/state.html?state=MO"
+  status = 302
+
+[[redirects]]
+  from = "/mo.html"
+  to = "/state.html?state=MO"
+  status = 302
+
+[[redirects]]
+  from = "/MO"
+  to = "/state.html?state=MO"
+  status = 302
+
+[[redirects]]
+  from = "/MO.html"
+  to = "/state.html?state=MO"
+  status = 302
+
+[[redirects]]
+  from = "/tx"
+  to = "/state.html?state=TX"
+  status = 302
+
+[[redirects]]
+  from = "/tx.html"
+  to = "/state.html?state=TX"
+  status = 302
+
+[[redirects]]
+  from = "/TX"
+  to = "/state.html?state=TX"
+  status = 302
+
+[[redirects]]
+  from = "/TX.html"
+  to = "/state.html?state=TX"
+  status = 302
+
+[[redirects]]
+  from = "/dc"
+  to = "/state.html?state=DC"
+  status = 302
+
+[[redirects]]
+  from = "/dc.html"
+  to = "/state.html?state=DC"
+  status = 302
+
+[[redirects]]
+  from = "/DC"
+  to = "/state.html?state=DC"
+  status = 302
+
+[[redirects]]
+  from = "/DC.html"
+  to = "/state.html?state=DC"
+  status = 302

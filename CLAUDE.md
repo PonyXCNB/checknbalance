@@ -76,7 +76,11 @@ no-build-step simplicity unless there's a compelling reason to change it (discus
 | `favicon.png` | 32px PNG fallback |
 | `favicon.ico` | Multi-size ICO (16/32/48) at root for legacy auto-discovery |
 | `apple-touch-icon.png` | 180px iOS home-screen icon |
-| `netlify.toml` | Netlify config: publish the repo root, no build command |
+| `netlify.toml` | Netlify config: publish the repo root, no build command. Temporary 302s from `/ca`, `/mo`, `/tx`, `/dc` (and the `.html` forms) to `state.html?state=` until those pages exist |
+| `sitemap.xml` | Static sitemap: home, states list, `state.html`, every built `??.html`, plus CA/MO/TX starter and DC marquee routes |
+| `robots.txt` | Points crawlers at the sitemap |
+| `analytics.js` | Plausible hook on every public page. Does nothing until `PLAUSIBLE_DOMAIN` is set — see `docs/analytics-and-utm.md` |
+| `docs/analytics-and-utm.md` | How to turn on analytics (Netlify Web Analytics, or one line in `analytics.js`) and the UTM convention for promo links |
 | `tests/` | Node.js test suite — see the Testing section |
 | `CLAUDE.md` / `.gitignore` | This file / git hygiene (not published, harmless if deployed) |
 
@@ -1033,7 +1037,8 @@ node tests/run-all.js
 | `tests/fixtures/state-label-rings.json` | Projected, simplified state outlines for the 42 inline-label states (48KB). Built by `tools/gen-label-fixture.js`; records the projection it came from so `label-fit.js` fails loudly instead of checking stale geometry |
 | `tests/uniformity.js` | **Every state page is the SAME page with different data.** Added Sept 3, 2026 after the site self-review found 53 spellings of five scope ideas, a legend describing a tier no page has, seven pages styling a `#ncmap` that did not exist on them, three footers citing Ohio's sources, a hero stat wrong on a dozen pages and static footer dates disagreeing with `SITE_META`. Asserts per page: the scope grammar `<Level> · <Reach>[ · <Qualifier>]`, `Mon D, YYYY` dates, no empty-string card pads, no doubled `scope:` keys, uppercase open-seat tags, footer date = SITE_META, svg id = CSS selector, no "No data yet" legend, computed statewide stat, dialog drawer, Sources nav target, canonical URL, conic projection, frame aspect = viewBox, keyboard-reachable counties, pinned CDN versions; cross-page: no two Sources lines identical; index: BUILT count = pages on disk, link to states.html, no inline state-list, Marquee legend iff PARTIAL non-empty, territories filtered; states.html: state list = 51 with every built page + back link to index; state.html: head redirect list = pages on disk, footer date = SITE_META |
 | `tests/lib.js` | Shared helpers: inline-script extraction, the d3 cut, DOM stubs, vm sandbox runner |
-| `tests/run-all.js` | Runs all six suites; exits non-zero if anything fails |
+| `tests/public-shell.js` | Redirects for CA/MO/TX/DC, `sitemap.xml` matches the pages on disk, `robots.txt` points at it, landing descriptions do not claim every race is built, and `analytics.js` ships with an empty domain |
+| `tests/run-all.js` | Runs every suite, including `public-shell.js`; exits non-zero if anything fails |
 | `tools/verify-report.js` | Compact inventory of every [Verify] marker + time-sensitive race dates across all built pages. **Weekly refreshes work from this report, not full page reads** (~10× cheaper) |
 | `tools/voices-report.js` | Lists every candidate in an UPCOMING race that is missing supporters/opponents ("voices"), per page + a total. `--summary` for counts only, or pass a page name. Voices are a REQUIRED field (owner, July 24, 2026) — use this to find the gaps instead of reading pages |
 | `tools/apply-voices.js` | Injects researched voices into a page from a JSON file (`{office: {candidate: {supporters, opponents}}}`) without reflowing the rest of the file. Only fills EMPTY arrays in `upcoming` races, and reports any researched entry it could not place (so a name typo can't silently no-op). `--dry` to preview |
