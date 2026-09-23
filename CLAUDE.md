@@ -230,17 +230,18 @@ Finally `node tools/fit-map-frames.js` so the new page's map frame takes the sta
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of September 21, 2026 — Wave 84 catch-up; tip was Wave 83 `31298a8`)
-- **Built bloc = 47 states + DC PARTIAL marquee.** Fully built: everything except CA, MO, TX (starter framework on the map) and DC (marquee-only). No `mo.html` / `ca.html` / `tx.html` on disk.
+## Current state (as of September 23, 2026 — Wave 86 morning reconnect catch-up; tip was Wave 85 `92460b7`)
+- **Built bloc = 47 states + DC PARTIAL marquee.** Fully built: everything except CA, MO, TX (starter framework on the map) and DC (marquee-only). `ak.html` is built (Wave 85). No `mo.html` / `ca.html` / `tx.html` on disk.
 - **Verify backlog: grand total 1**, on `nm.html` only (intentional lock — do NOT invent-clear):
-  1. SoS open seat — Ramona L. Goolsby differentiators (Wave 84: Transparency USA Cloudflare-blocked from tools; no sourced post–Sep 14 First General COH — leave locked).
-- **DE Sept 15 primary:** DOE **certified** results **Sep 18, 2026** (Bay to Bay News / Department of Elections). November card unchanged: Senate Coons/Katz; House McBride/Arminio; AG Jennings/Graham; Treasurer Lauzen/Ramone; Auditor York / Callaway (R)+Cassidy (I). `de.html` SITE_META Wave 84.
-- **NH:** governor official SoS tallies via InDepthNH Sep 12 (Wave 83) + Libertarian Villee on Nov card.
+  1. SoS open seat — Ramona L. Goolsby differentiators (Wave 86: Money Trail NM still May 27–Jun 27 window only; Transparency USA Cloudflare-blocked from tools and still $52,751/$20,952/$25k loan when reachable; CFIS Data Download year dropdown now lists 2026 but filing-period cascade POST returns 500 — leave locked).
+- **DE Sept 15 primary:** DOE **certified** results **Sep 18, 2026** (Bay to Bay News / Department of Elections). November card unchanged. Mentioned-dates "pending" hits are scanner false-positives against already-certified prose.
+- **NH:** governor + Senate/House official SoS clerk-return tallies via InDepthNH (Sep 10/12). Wave 86 fixed stale header that still claimed AP-unofficial for governor. SoS Excel still Akamai-403 to automated fetch; hub notes subject to clerk amendments.
 - **RI:** BOE-certified Sep 15 (Wave 80).
 - **My Ballot:** topnav → VOTE411 on landing, states list, and all built state pages (Wave 82).
-- **MO gate still OPEN — still NO `mo.html`.** Nov 2026 uses the **2022 map** (Mo. Supreme Court Sep 3; SCOTUS stay of 2025 map); Prop A on ballot; UOCAVA **Sep 19** passed. Currency-test vs `mo-cd120.json` (public Nov sample-ballot district labels) still not closed — bank only; do not start the page.
-- **CA and TX remain unbuilt** (starter only). DC stays PARTIAL marquee.
-- **Voices site-wide: 0 gaps.** Landing: `BUILT` = 47; footer "Last updated: September 2026". Ask before push unless Ryan has authorized.
+- **MO gate still OPEN — still NO `mo.html`.** 8th Circuit Sept 21 for 2025 map; own stay to **Sept 28 5pm CT** for SCOTUS. **Third SCOTUS emergency appeal filed late Sept 22** (CNN Sep 23); Kavanaugh asked response by Wed afternoon Sept 23. Overseas/absentee ballots already on **2022 map**. Currency-test vs public Nov sample-ballot district labels still not closed — bank only; do not start the page.
+- **CA and TX remain unbuilt** (starter only; maps settled but no banked build this run). DC stays PARTIAL marquee.
+- **Election sprint PR #1** still open/draft (redirects/sitemap/UTM) — do NOT merge without Ryan ask: https://github.com/PonyXCNB/checknbalance/pull/1
+- **Voices site-wide: 0 gaps.** Landing: `BUILT` = 47; legend (47)/(DC)/(CA, MO, TX); footer "Last updated: September 2026". Ryan authorized normal auto-publish after green tests.
 - **Mentioned-dates scanner is in tree.**
 
 ## Superseded — current state as of September 3, 2026
