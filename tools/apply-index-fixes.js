@@ -37,6 +37,14 @@ const sub = (label, from, to) => {
   if (s.includes(from)) { s = s.split(from).join(to); return; }
   missing.push(label);
 };
+// Same as sub, but any one of several older wordings counts as the anchor.
+const subAny = (label, froms, to) => {
+  if (to && s.includes(to)) return;
+  for (const from of froms) {
+    if (from && s.includes(from)) { s = s.split(from).join(to); return; }
+  }
+  missing.push(label);
+};
 const subRe = (label, re, to, already) => {
   if (re.test(s)) { s = s.replace(re, to); return; }
   if (already && already.test(s)) return;
@@ -49,8 +57,11 @@ const subRe = (label, re, to, already) => {
 subRe("head links", /<meta name="theme-color" content="#FBF9F4">\n(?!<link rel="canonical")/,
     `<meta name="theme-color" content="#FBF9F4">\n<link rel="canonical" href="https://checknbalance.org/">\n<link rel="preconnect" href="https://cdn.jsdelivr.net">\n`,
     /<link rel="canonical" href="https:\/\/checknbalance\.org\/">/);
-sub("meta description", `<meta name="description" content="An interactive 50-state atlas of election coverage." />`,
-    `<meta name="description" content="A nonpartisan, county-by-county guide to who is on your November 3, 2026 ballot — every state, every race, with sourced positions and the arguments for and against each candidate." />`);
+const HONEST_DESC = `<meta name="description" content="47 states fully built, DC marquee races, CA/MO/TX starter pages. Nonpartisan county-by-county guides to the November 3, 2026 ballot, working toward all fifty." />`;
+subAny("meta description", [
+  `<meta name="description" content="An interactive 50-state atlas of election coverage." />`,
+  `<meta name="description" content="A nonpartisan, county-by-county guide to who is on your November 3, 2026 ballot — every state, every race, with sourced positions and the arguments for and against each candidate." />`,
+], HONEST_DESC);
 
 // ───────────── CSS ─────────────
 sub("scroll padding", `  html { scroll-behavior: smooth; }`, `  html { scroll-behavior: smooth; scroll-padding-top: 88px; }`);
@@ -214,12 +225,15 @@ d3.json(TOPO_URL).then((us) => {
   // states-10m also carries five territories (60/66/69/72/78); geoAlbersUsa cannot project them, so
   // their labels became transform(NaN,NaN) — ten console errors a load. Keep the 51 we name.
   const states = topojson.feature(us, us.objects.states).features.filter(d => ST[String(d.id).padStart(2, "0")])`);
+const OLD_OG = `<meta property="og:description" content="A nonpartisan, county-by-county guide to every race in every state, with sourced positions and the arguments for and against each candidate.">`;
+const NEW_OG = `<meta property="og:description" content="47 states fully built, DC marquee races, CA/MO/TX starter pages. Nonpartisan county-by-county guides to the November 3, 2026 ballot, working toward all fifty.">`;
+if (s.includes(OLD_OG)) s = s.split(OLD_OG).join(NEW_OG);
 sub("social meta", `<link rel="canonical" href="https://checknbalance.org/">`,
     `<link rel="canonical" href="https://checknbalance.org/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Check n Balance">
 <meta property="og:title" content="Check n Balance — who is on your November 3, 2026 ballot">
-<meta property="og:description" content="A nonpartisan, county-by-county guide to every race in every state, with sourced positions and the arguments for and against each candidate.">
+${NEW_OG}
 <meta property="og:url" content="https://checknbalance.org/">
 <meta property="og:image" content="https://checknbalance.org/apple-touch-icon.png">
 <meta name="twitter:card" content="summary">`);
