@@ -1212,3 +1212,10 @@ Ryan batch before push of `580d374`. Local only.
 - `CLAUDE.md` + MO bank gate note.
 
 2026-09-21 | de.html + docs | Wave 84 DE certified + MO gate note | Free web (0 Grok). Ask before push.
+
+## 2026-09-25 — Wave 88 (weekday 8am daily)
+
+- **Verify:** still **1** (NM Goolsby CFIS/Money Trail — First General after Sept 14 still not in public aggregates; Money Trail still May 27–Jun 27 window). Left locked. 0 Grok.
+- **MO:** SCOTUS 26A388 still pending (docket through Sept 23 filings only; no order as of Sept 25 morning ET). 8th Cir stay to Sept 28 5pm CT. Bank note `tools/banked/mo-gate/wave88-scotus-26A388.md`. No mo.html.
+- **CA:** Map plan proved = Prop 50 / AB 604. County↔CD `ds` from SWDB AB604 block equivalency (`tools/banked/ca-build/map/`). Colusa = CD4 per statute (Senate HTML table wrong). Plurality `d` + currency-test still open — no ca.html. No Senate 2026.
+- **TX:** still backlog/unbanked. Voices 0. Landing unchanged (47 / DC / CA,MO,TX).

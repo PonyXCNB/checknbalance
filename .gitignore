@@ -35,3 +35,6 @@ tools/banked/ds-derivation/*-cd4.json
 tools/banked/ds-derivation/oh-cd120.json
 # Census county -> 119th-CD relationship file, re-fetchable from www2.census.gov
 tools/banked/cd119_county_rel.txt
+
+tools/banked/ca-build/map/ab604/
+
