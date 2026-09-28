@@ -70,3 +70,11 @@ UOCAVA: Sep 19 mailed (KOMU / Missouri Independent via News-Leader Sept 22) — 
 Map: 8th Circuit ruled Sept 21 for the 2025 map (Onder v. von Glahn, 26-2797) but STAYED the injunction until Sept 28, 5 p.m. CT for SCOTUS review (Reuters / Bloomberg / Courthouse News PDF). SCOTUS prior stay (26A326) still in the mix. LEAs still printing/mailing on 2022 lines as of Sept 22 coverage.
 Currency-test: NOT closed — no statewide Nov district-label sample-ballot table proved vs mo-cd120.json this pass; map itself may flip again before Sept 28.
 Gate: OPEN. Still NO mo.html. Watch Sept 28 SCOTUS window.
+
+### Wave 89 MO BANK (research only — DO NOT build mo.html)
+Date: 2026-09-28 (America/New_York) morning reconnect catch-up
+MAP GATE: CLOSED by SCOTUS 26A388 stay GRANTED Sept 25, 2026 — 2022 map for Nov 2026; lower courts barred from forcing 2025 map. 8th Cir Sept 28 5pm CT window moot.
+Currency-test: ADVANCED not closed — Vernon CD-4, St Francois CD-8, St Charles CD-2+3 match mo-cd120.json; KSGF SW hubs listed; Cole not statewide-proved.
+Continuity/parcel: still open (Brattin/Herrera/Onder flags). Still NO mo.html.
+Ballot measures on samples: Amends 3/6/7/8 + Prop A.
+See tools/banked/mo-gate/wave89-scotus-26A388.md

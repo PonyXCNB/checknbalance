@@ -230,20 +230,20 @@ Finally `node tools/fit-map-frames.js` so the new page's map frame takes the sta
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of September 25, 2026 — Wave 88 weekday 8am daily; tip was Wave 87 `3b0b02f`)
+## Current state (as of September 28, 2026 — Wave 89 morning reconnect catch-up; tip was Wave 88 `0e802f9`)
 - **Built bloc = 47 states + DC PARTIAL marquee.** Fully built: everything except CA, MO, TX (starter framework on the map) and DC (marquee-only). `ak.html` is built (Wave 85). No `mo.html` / `ca.html` / `tx.html` on disk.
 - **Verify backlog: grand total 1**, on `nm.html` only (intentional lock — do NOT invent-clear):
-  1. SoS open seat — Ramona L. Goolsby differentiators (Wave 88: Money Trail NM still shows **May 27–Jun 27** window only — closing cash ~$53,704 / $25k debt; Transparency USA still ~$52,751 / $20,952 / $25k loan; CFIS Data Download lists year 2026 but filing-period cascade still unusable for First General; no post–Sept 14 public aggregate located — leave locked).
+  1. SoS open seat — Ramona L. Goolsby differentiators (Wave 89: Money Trail NM still **May 27–Jun 27** only — closing cash ~$53,704 / $25k debt; Transparency USA still ~$52,751 / $20,952 / $25k loan; no post–Sept 14 First General public aggregate located — leave locked).
 - **DE Sept 15 primary:** DOE **certified** results **Sep 18, 2026** (Bay to Bay News / Department of Elections). November card unchanged. Mentioned-dates "pending" hits are scanner false-positives against already-certified prose.
 - **NH:** governor + Senate/House official SoS clerk-return tallies via InDepthNH (Sep 10/12). Wave 86 fixed stale header that still claimed AP-unofficial for governor. SoS Excel still Akamai-403 to automated fetch; hub notes subject to clerk amendments.
 - **RI:** BOE-certified Sep 15 (Wave 80).
 - **My Ballot:** topnav → VOTE411 on landing, states list, and all built state pages (Wave 82).
-- **MO gate still OPEN — still NO `mo.html`.** 8th Circuit stay through **Sept 28 5pm CT**. SCOTUS **26A388** (PNP v. Onder): responses/amici/PNP reply filed Sept 23; **as of morning Sept 25 ET still no disposition** on the docket. Overseas/absentee ballots on **2022 map**. Currency-test still open — bank only (`tools/banked/mo-gate/wave88-scotus-26A388.md`); do not start the page.
-- **CA bank advanced (Wave 88):** Nominees still from SoS **Aug 27, 2026** cert PDF. **Map plan proved:** 2026 uses **Prop 50 / AB 604** (not CRC 2021 / not CD119). County↔CD `ds` matrix derived from official SWDB block equivalency (`tools/banked/ca-build/map/`). Plurality `d` still block-count hint only; currency-test vs Nov sample ballots still open — **no `ca.html` yet**. No U.S. Senate 2026 (Padilla 2028 / Schiff 2030). TX still unbuilt/unbanked. DC stays PARTIAL marquee.
+- **MO map gate CLOSED (Wave 89) — still NO `mo.html`.** SCOTUS **26A388** stay **GRANTED Sept 25, 2026** (per curiam): lower courts must not bar the **2022 map** or force the **2025 map** for the 2026 congressional election. 8th Cir Sept 28 5pm CT window is moot. **Currency-test ADVANCED not closed** — Vernon CD-4, St. Francois CD-8, St. Charles CD-2+3, Cole CD-3, Greene/Jasper/Barry CD-7 public Nov samples/guides match `mo-cd120.json`; statewide 115-county / split matrix still open; continuity/parcel (Brattin/Herrera/Onder) still open. Bank: `tools/banked/mo-gate/wave89-scotus-26A388.md`. Nov samples also show Amendments **3/6/7/8** + Prop A.
+- **CA bank (Wave 89 recheck):** Nominees still from SoS **Aug 27, 2026** cert PDF. Map plan still **Prop 50 / AB 604**. County↔CD `ds` matrix banked; plurality `d` still block-count hint only; currency-test vs Nov sample ballots still open — **no `ca.html` yet**. No U.S. Senate 2026.
+- **TX bank started (Wave 89):** 2025 mid-decade map governs 2026 (SCOTUS upheld Apr 27, 2026 per Texas Tribune). CD119 stale. Early notes only in `tools/banked/tx-build/README.md` — no `tx.html`.
 - **Election sprint PR #1** still open/draft (redirects/sitemap/UTM) — do NOT merge without Ryan ask: https://github.com/PonyXCNB/checknbalance/pull/1
 - **Voices site-wide: 0 gaps.** Landing: `BUILT` = 47; legend (47)/(DC)/(CA, MO, TX); footer "Last updated: September 2026". Ryan authorized normal auto-publish after green tests.
 - **Mentioned-dates scanner is in tree.**
-
 ## Superseded — current state as of September 3, 2026
 - **MI (full, added Sept 3, 2026) — 45th state.** See the file-inventory row. 130 candidate cards, 0 voices gaps, 394 [Verify].
 - **⚠⚠ THE FLAGSHIP WAS SHOWING SPLIT-COUNTY VOTERS ONLY ONE OF THEIR U.S. HOUSE RACES, AND HAD BEEN SINCE AUG 11.**

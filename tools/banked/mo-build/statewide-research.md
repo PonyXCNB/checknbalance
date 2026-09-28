@@ -2,7 +2,7 @@
 Research file for checknbalance.org. Compiled September 8, 2026.
 Primary sources: Missouri Secretary of State certified candidate list (Aug 25, 2026), SoS certified ballot-measure page, Missouri Supreme Court, MEC/FEC.
 
-**STATUS: GATE OPEN (research advanced; still NO mo.html). See GATE STATUS section below.**
+**STATUS: MAP GATE CLOSED (SCOTUS 26A388 stay granted Sept 25, 2026 — 2022 map for Nov). Currency-test ADVANCED not closed; continuity/parcel still open. Still NO mo.html. See `tools/banked/mo-gate/wave89-scotus-26A388.md` (Wave 89).**
 
 ## GATE STATUS + REMAINING BLOCKERS + NEXT CALENDAR (Day wrap Sep 11, 2026 evening ET)
 

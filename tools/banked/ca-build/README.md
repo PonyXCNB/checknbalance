@@ -85,3 +85,4 @@ Full CD 1–52 pairs are in the cert PDF; do not paraphrase from aggregators whe
 
 - **87:** Banked statewide + House pair inventory from SoS cert PDF.
 - **88:** Map plan proved (AB 604); county↔CD `ds` matrix from official block equivalency; Senate-table Colusa error noted; no `ca.html`.
+- **89:** Recheck only — pop-weighted plurality `d` still open (block-count hint only); currency-test vs Nov sample/lookup CD labels still open; no `ca.html`. No new map flip.
