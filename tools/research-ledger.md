@@ -1221,3 +1221,23 @@ Ryan batch before push of `580d374`. Local only.
 - **MO:** SCOTUS 26A388 still pending (docket through Sept 23 filings only; no order as of Sept 25 morning ET). 8th Cir stay to Sept 28 5pm CT. Bank note `tools/banked/mo-gate/wave88-scotus-26A388.md`. No mo.html.
 - **CA:** Map plan proved = Prop 50 / AB 604. County↔CD `ds` from SWDB AB604 block equivalency (`tools/banked/ca-build/map/`). Colusa = CD4 per statute (Senate HTML table wrong). Plurality `d` + currency-test still open — no ca.html. No Senate 2026.
 - **TX:** still backlog/unbanked. Voices 0. Landing unchanged (47 / DC / CA,MO,TX).
+
+## 2026-09-28 — Wave 89 (morning reconnect catch-up; tip before `0e802f9`)
+
+- **MO map CLOSED:** SCOTUS 26A388 stay GRANTED Sept 25 → Nov uses 2022 map. Currency-test advanced (Vernon/St. Francois/St. Charles/Cole/Greene/Jasper/Barry). Still no mo.html.
+- **TX bank started:** mid-decade 2025 map / SCOTUS Apr 2026. CD119 stale.
+- **CA:** recheck only. Verify 1→1 Goolsby. Grok 0. Commit `b771b23` pushed.
+
+## 2026-09-29 — Wave 90 (weekday daily)
+
+### Research
+- **MO currency-test FURTHER ADVANCED:** Official Nov samples closed St. Louis City CD-1; Webster 4+7; Camden 3+4; whole Cass/Benton/Miller/Lawrence/Stone/Taney/Howell/Phelps/Barry vs `mo-cd120.json`. St. Louis County / Jackson / Clay advanced (guides + 2022-map board notices) but sample styles still open; Jefferson/Boone/Warren + continuity/parcel open. Still NO mo.html. Bank: `mo-gate/wave90-currency-test.md` + `mo-build/currency-w90/`.
+- **TX bank expanded:** Plan C2333 (TLC); SoS Aug 28 ballot cert PDF + all 38 House pairs + statewide ticket → `tx-build/wave90/`. No tx.html.
+- **CA:** recheck only — plurality `d` + currency-test still open. No ca.html.
+- **NM Goolsby:** Money Trail still May 27–Jun 27 (~$53,704 / $25k debt). Leave [Verify] locked. Grand total **1**.
+- Grok queries: **0**.
+
+### Edits
+- Bank + `CLAUDE.md` Current state → Wave 90. No live HTML race changes. Voices 0. Landing unchanged.
+
+2026-09-29 | mo/tx/ca bank + CLAUDE.md | Wave 90 MO currency + TX cert bank | Free web only (0 Grok). Verify 1→1. Auto-publish after green tests.

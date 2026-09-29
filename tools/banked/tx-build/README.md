@@ -1,22 +1,35 @@
-# Texas build bank — Wave 89 starter (2026-09-28)
+﻿# Texas build bank — Wave 90 (2026-09-29)
 
-**STATUS: unbuilt / early bank only. No `tx.html`.**
+**STATUS: unbuilt / bank expanding. No `tx.html`.**
 
-## Map which-plan (Wave 89 free-web)
+## Map which-plan
 
-- **2026 uses the mid-decade 2025 congressional map** signed by Gov. Abbott Aug 29, 2025.
-- SCOTUS stayed a district-court injunction Dec 2025 and **upheld** the map Apr 27, 2026 (Texas Tribune coverage) — plan governs 2026 midterms.
-- ⚠ Census CD119 / pre-2025 plan is **STALE** for Texas (same mid-decade trap class as CA/AL/FL/TN).
+- **2026 uses Plan C2333** — congressional plan enacted by the 89th Legislature, 2nd Called Session (mid-decade 2025 map).
+- Texas Legislative Council current-districts page: plans in effect for the 2026 elections include **PlanC2333** (Congress). Representatives elected under prior PlanC2193 serve until Jan 2027.
+- SCOTUS upheld the map Apr 27, 2026 (Texas Tribune) — governs 2026 midterms.
+- ⚠ Census CD119 / PlanC2193 is **STALE** for Texas county↔CD work.
 
-## Next research (before drafting counties / clone)
+## Wave 90 bank additions
 
-1. Obtain official block equivalency or county↔CD matrix for the **2025 enacted** plan (Texas Legislative Council / Census partner file — not CD119).
-2. Currency-test against county sample ballots / SoS voter lookup CD labels.
-3. SoS certified Nov 2026 candidate list (all 38 House seats + statewide).
-4. Confirm which statewide offices are on the 2026 ballot (Senate Class? Gov odd-year?).
-5. Voices for every upcoming nominee before ship.
+1. **SoS Ballot Certification PDF** (Aug 28, 2026) mirrored:
+   - `wave90/2026-ballot-cert.pdf` (from sos.texas.gov)
+   - `wave90/2026-ballot-cert-govdelivery.pdf` (GovDelivery copy)
+2. **Parsed nominees** → `wave90/nominees-from-cert.json`
+   - Statewide: U.S. Senate (Paxton / Talarico / Brown), Governor (Abbott / Hinojosa / Dixon), Lt. Gov, AG, Comptroller, Land, Ag, Railroad + judicial retentions as in cert.
+   - All **38** U.S. House districts with party nominees from the cert (see JSON).
+3. County-level CD appearances in the cert are a **weak** split hint only (cert is per-county ballot listing). Still need official TLC block equivalency / county↔CD matrix for PlanC2333 before drafting `ds`.
 
-## Sources (leads)
+## Still required before tx.html
 
+1. Official **PlanC2333** block equivalency or county↔CD matrix (Capitol Data Portal / TLC — not CD119).
+2. Currency-test vs county sample ballots / voter lookup CD labels.
+3. Voices for every upcoming nominee.
+4. Confirm special elections on Nov 3 (SoS page lists SD-22 and HD-93 specials) — card carefully if overlapping.
+
+## Sources
+
+- https://www.sos.texas.gov/elections/forms/2026-ballot-cert.pdf
+- https://www.sos.texas.gov/elections/laws/2026-november-general-election.shtml
+- https://redistricting.capitol.texas.gov/current-districts
 - https://www.texastribune.org/2026/04/27/texas-redistricting-map-ruling-us-supreme-court-upheld-2026-midterms/
-- https://en.wikipedia.org/wiki/2025_Texas_redistricting (aggregator — verify against TLC / court)
+- Prior: Wave 89 README starter
