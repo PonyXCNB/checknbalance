@@ -230,17 +230,17 @@ Finally `node tools/fit-map-frames.js` so the new page's map frame takes the sta
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of September 29, 2026 — Wave 90 daily; tip was Wave 89 `b771b23`)
+## Current state (as of September 30, 2026 — Wave 91 daily; tip was Wave 90 `24c7f7e`)
 - **Built bloc = 47 states + DC PARTIAL marquee.** Fully built: everything except CA, MO, TX (starter framework on the map) and DC (marquee-only). `ak.html` is built (Wave 85). No `mo.html` / `ca.html` / `tx.html` on disk.
 - **Verify backlog: grand total 1**, on `nm.html` only (intentional lock — do NOT invent-clear):
-  1. SoS open seat — Ramona L. Goolsby differentiators (Wave 90: Money Trail NM still **May 27–Jun 27** only — closing cash ~$53,704 / $25k debt; no post–Sept 14 First General public aggregate located — leave locked).
+  1. SoS open seat — Ramona L. Goolsby differentiators (Wave 91: Money Trail NM + Transparency USA still **May 27–Jun 27 / through 06/27/2026** only — closing cash ~$53,704 / $25k debt; no post–Sept 14 First General public aggregate located — leave locked).
 - **DE Sept 15 primary:** DOE **certified** results **Sep 18, 2026**. Mentioned-dates "pending" hits remain scanner false-positives against certified prose.
 - **NH:** governor + Senate/House official SoS clerk-return tallies via InDepthNH (Sep 10/12). SoS Excel still Akamai-403 to automated fetch.
 - **RI:** BOE-certified Sep 15 (Wave 80).
 - **My Ballot:** topnav → VOTE411 on landing, states list, and all built state pages (Wave 82).
-- **MO map gate CLOSED (Wave 89) — currency-test FURTHER ADVANCED Wave 90 — still NO `mo.html`.** SCOTUS **26A388** → November **2022 map**. Wave 90 official samples closed **St. Louis City CD-1**, **Webster 4+7**, **Camden 3+4**, plus whole-county Cass/Benton/Miller/Lawrence/Stone/Taney/Howell/Phelps/Barry matches to `mo-cd120.json`. St. Louis County / Jackson / Clay advanced via guides + election-board 2022-map notices but still need county sample styles; Jefferson/Boone/Warren splits + continuity/parcel still open. Bank: `tools/banked/mo-gate/wave90-currency-test.md` + `mo-build/currency-w90/`. Amendments **3/6/7/8** + Prop A on city/county samples.
-- **CA bank (Wave 90 recheck):** Unchanged — SoS **Aug 27, 2026** cert; Prop 50 / AB 604; `ds` banked; plurality `d` block-hint only; currency-test open — **no `ca.html`**. Note: `tools/banked/ca-build/wave90-recheck.md`.
-- **TX bank expanded (Wave 90):** Plan **C2333** confirmed (TLC current-districts). SoS **Aug 28, 2026** ballot certification PDF banked + all 38 House pairs + statewide ticket parsed to `tools/banked/tx-build/wave90/`. Still need PlanC2333 county↔CD matrix + currency-test — **no `tx.html`**.
+- **MO map gate CLOSED (Wave 89) — currency-test FURTHER ADVANCED Wave 91 — still NO `mo.html`.** SCOTUS **26A388** → November **2022 map**. Wave 91 closed a **Jackson County / Kansas City Election Board CD-5** official Nov ballot style (Brattin/Cleaver/Langkraehr) matching `mo-cd120` CD-5; Brattin-on-MO-5 continuity corroborated. Still open: St. Louis County Nov FIO/sample, Jackson CD-4/CD-6 styles, Clay sample, Jefferson/Boone/Warren splits, Onder/Herrera parcels. Prior Wave 90 closes stand (STL City CD-1, Webster 4+7, Camden 3+4, wholes Cass/Benton/Miller/Lawrence/Stone/Taney/Howell/Phelps/Barry + Wave 89 set). Bank: `tools/banked/mo-gate/wave91-currency-test.md` + `mo-build/currency-w91/`.
+- **CA bank (Wave 91 recheck):** Unchanged — SoS **Aug 27, 2026** cert; Prop 50 / AB 604; `ds` banked; plurality `d` block-hint only; currency-test open — **no `ca.html`**. Note: `tools/banked/ca-build/wave91-recheck.md`.
+- **TX bank (Wave 91): PlanC2333 county↔CD matrix BANKED from official TLC Red-150/155.** `tools/banked/tx-build/wave91/` — 254 counties (224 whole / 30 split after excluding Chambers CD-14 zero-pop), all 38 districts, pop-weighted plurality `d`, plurality-of-no-county **7/18/24/30/38**. SoS Aug 28 cert + 38 House pairs still in `wave90/`. Still need **currency-test** vs county samples — **no `tx.html`**.
 - **Election sprint PR #1** still open/draft — do NOT merge without Ryan ask: https://github.com/PonyXCNB/checknbalance/pull/1
 - **Voices site-wide: 0 gaps.** Landing: `BUILT` = 47; legend (47)/(DC)/(CA, MO, TX); footer "Last updated: September 2026". Ryan authorized normal auto-publish after green tests.
 - **Mentioned-dates scanner is in tree.**
