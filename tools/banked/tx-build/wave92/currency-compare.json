@@ -1,0 +1,5655 @@
+{
+  "as_of": "2026-10-01",
+  "wave": 92,
+  "source": "https://www.sos.texas.gov/elections/forms/2026-district-chart-nov-3-general-election.pdf",
+  "source_title": "Texas SoS District Chart Report \u2014 2026 Nov 3 General Election (US CONGRESS column by county)",
+  "plan_bank": "C2333 wave91 county-cd-matrix.json",
+  "status_counts": {
+    "exact_suffix": 245,
+    "PARSE_GAP": 8,
+    "manual_harris": 1
+  },
+  "rows": [
+    {
+      "county": "Anderson",
+      "bank": [
+        5
+      ],
+      "bank_z": [
+        5
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        5
+      ],
+      "sos_tail": [
+        12,
+        15,
+        1,
+        369,
+        87,
+        8,
+        3,
+        5
+      ]
+    },
+    {
+      "county": "Andrews",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        8,
+        15,
+        109,
+        88,
+        31,
+        19
+      ]
+    },
+    {
+      "county": "Angelina",
+      "bank": [
+        36
+      ],
+      "bank_z": [
+        36
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        36
+      ],
+      "sos_tail": [
+        12,
+        15,
+        159,
+        159,
+        217,
+        9,
+        9,
+        3,
+        36
+      ]
+    },
+    {
+      "county": "Aransas",
+      "bank": [
+        15,
+        27
+      ],
+      "bank_z": [
+        15,
+        27
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        15,
+        27
+      ],
+      "sos_tail": [
+        13,
+        15,
+        156,
+        36,
+        2,
+        32,
+        18,
+        15,
+        27
+      ]
+    },
+    {
+      "county": "Archer",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        2,
+        15,
+        69,
+        13
+      ]
+    },
+    {
+      "county": "Armstrong",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        47,
+        86,
+        31,
+        13
+      ]
+    },
+    {
+      "county": "Atascosa",
+      "bank": [
+        28
+      ],
+      "bank_z": [
+        28
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        28
+      ],
+      "sos_tail": [
+        4,
+        15,
+        81,
+        218,
+        80,
+        19,
+        24,
+        28
+      ]
+    },
+    {
+      "county": "Austin",
+      "bank": [
+        27
+      ],
+      "bank_z": [
+        27
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        27
+      ],
+      "sos_tail": [
+        1,
+        14,
+        15,
+        8,
+        155,
+        85,
+        18,
+        27
+      ]
+    },
+    {
+      "county": "Bailey",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        7,
+        15,
+        287,
+        88,
+        31,
+        19
+      ]
+    },
+    {
+      "county": "Bandera",
+      "bank": [
+        21
+      ],
+      "bank_z": [
+        21
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        21
+      ],
+      "sos_tail": [
+        4,
+        15,
+        198,
+        53,
+        24,
+        21
+      ]
+    },
+    {
+      "county": "Bastrop",
+      "bank": [
+        10,
+        27
+      ],
+      "bank_z": [
+        10,
+        27
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        10,
+        27
+      ],
+      "sos_tail": [
+        3,
+        15,
+        11,
+        5,
+        17,
+        5,
+        10,
+        27
+      ]
+    },
+    {
+      "county": "Baylor",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        11,
+        15,
+        69,
+        28,
+        13
+      ]
+    },
+    {
+      "county": "Bee",
+      "bank": [
+        15
+      ],
+      "bank_z": [
+        15
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        15
+      ],
+      "sos_tail": [
+        13,
+        15,
+        156,
+        36,
+        43,
+        15
+      ]
+    },
+    {
+      "county": "Bell",
+      "bank": [
+        17,
+        31
+      ],
+      "bank_z": [
+        17,
+        31
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        17,
+        31
+      ],
+      "sos_tail": [
+        3,
+        15,
+        169,
+        264,
+        478,
+        54,
+        55,
+        24,
+        17,
+        31
+      ]
+    },
+    {
+      "county": "Bexar",
+      "bank": [
+        20,
+        21,
+        23,
+        35
+      ],
+      "bank_z": [
+        20,
+        21,
+        23,
+        35
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        20,
+        21,
+        23,
+        35
+      ],
+      "sos_tail": [
+        121,
+        122,
+        123,
+        124,
+        125,
+        19,
+        21,
+        26,
+        20,
+        21,
+        23,
+        35
+      ]
+    },
+    {
+      "county": "Blanco",
+      "bank": [
+        21
+      ],
+      "bank_z": [
+        21
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        21
+      ],
+      "sos_tail": [
+        3,
+        15,
+        424,
+        5,
+        19,
+        21
+      ]
+    },
+    {
+      "county": "Borden",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        11,
+        15,
+        83,
+        31,
+        19
+      ]
+    },
+    {
+      "county": "Bosque",
+      "bank": [
+        17
+      ],
+      "bank_z": [
+        17
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        17
+      ],
+      "sos_tail": [
+        10,
+        15,
+        220,
+        14,
+        13,
+        22,
+        17
+      ]
+    },
+    {
+      "county": "Bowie",
+      "bank": [
+        1,
+        4
+      ],
+      "bank_z": [
+        1,
+        4
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        1,
+        4
+      ],
+      "sos_tail": [
+        6,
+        15,
+        19,
+        102,
+        1,
+        1,
+        1,
+        4
+      ]
+    },
+    {
+      "county": "Brazoria",
+      "bank": [
+        14,
+        22,
+        36
+      ],
+      "bank_z": [
+        14,
+        22,
+        36
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        14,
+        22,
+        36
+      ],
+      "sos_tail": [
+        20,
+        149,
+        239,
+        300,
+        412,
+        7,
+        25,
+        29,
+        11,
+        14,
+        22,
+        36
+      ]
+    },
+    {
+      "county": "Brazos",
+      "bank": [
+        10
+      ],
+      "bank_z": [
+        10
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        10
+      ],
+      "sos_tail": [
+        10,
+        15,
+        361,
+        85,
+        12,
+        14,
+        5,
+        10
+      ]
+    },
+    {
+      "county": "Brewster",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        23
+      ],
+      "sos_tail": [
+        8,
+        15,
+        74,
+        19,
+        23
+      ]
+    },
+    {
+      "county": "Briscoe",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        110,
+        88,
+        31,
+        13
+      ]
+    },
+    {
+      "county": "Brooks",
+      "bank": [
+        15
+      ],
+      "bank_z": [
+        15
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        15
+      ],
+      "sos_tail": [
+        4,
+        15,
+        31,
+        15
+      ]
+    },
+    {
+      "county": "Brown",
+      "bank": [
+        11
+      ],
+      "bank_z": [
+        11
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        11
+      ],
+      "sos_tail": [
+        11,
+        15,
+        68,
+        11
+      ]
+    },
+    {
+      "county": "Burleson",
+      "bank": [
+        10
+      ],
+      "bank_z": [
+        10
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        10
+      ],
+      "sos_tail": [
+        10,
+        15,
+        17,
+        18,
+        10
+      ]
+    },
+    {
+      "county": "Burnet",
+      "bank": [
+        11,
+        31
+      ],
+      "bank_z": [
+        11,
+        31
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        11,
+        31
+      ],
+      "sos_tail": [
+        3,
+        15,
+        424,
+        19,
+        24,
+        11,
+        31
+      ]
+    },
+    {
+      "county": "Caldwell",
+      "bank": [
+        27
+      ],
+      "bank_z": [
+        27
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        27
+      ],
+      "sos_tail": [
+        3,
+        15,
+        28,
+        207,
+        5,
+        17,
+        21,
+        27
+      ]
+    },
+    {
+      "county": "Calhoun",
+      "bank": [
+        27
+      ],
+      "bank_z": [
+        27
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        27
+      ],
+      "sos_tail": [
+        13,
+        15,
+        29,
+        267,
+        2,
+        43,
+        18,
+        27
+      ]
+    },
+    {
+      "county": "Callahan",
+      "bank": [
+        19,
+        25
+      ],
+      "bank_z": [
+        19,
+        25
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19,
+        25
+      ],
+      "sos_tail": [
+        11,
+        15,
+        71,
+        19,
+        25
+      ]
+    },
+    {
+      "county": "Cameron",
+      "bank": [
+        34
+      ],
+      "bank_z": [
+        34
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        34
+      ],
+      "sos_tail": [
+        13,
+        15,
+        103,
+        107,
+        197,
+        357,
+        484,
+        2,
+        35,
+        37,
+        38,
+        34
+      ]
+    },
+    {
+      "county": "Camp",
+      "bank": [
+        32
+      ],
+      "bank_z": [
+        32
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        32
+      ],
+      "sos_tail": [
+        6,
+        15,
+        276,
+        9,
+        5,
+        1,
+        32
+      ]
+    },
+    {
+      "county": "Carson",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        87,
+        31,
+        13
+      ]
+    },
+    {
+      "county": "Cass",
+      "bank": [
+        1
+      ],
+      "bank_z": [
+        1
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        1
+      ],
+      "sos_tail": [
+        6,
+        15,
+        34,
+        9,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "county": "Castro",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        7,
+        15,
+        242,
+        64,
+        88,
+        31,
+        19
+      ]
+    },
+    {
+      "county": "Chambers",
+      "bank": [
+        36
+      ],
+      "bank_z": [
+        14,
+        36
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        36
+      ],
+      "sos_tail": [
+        1,
+        14,
+        15,
+        253,
+        7,
+        23,
+        4,
+        14,
+        36
+      ]
+    },
+    {
+      "county": "Cherokee",
+      "bank": [
+        1
+      ],
+      "bank_z": [
+        1
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        1
+      ],
+      "sos_tail": [
+        12,
+        15,
+        369,
+        9,
+        8,
+        3,
+        1
+      ]
+    },
+    {
+      "county": "Childress",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        88,
+        28,
+        13
+      ]
+    },
+    {
+      "county": "Clay",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        2,
+        15,
+        14,
+        69,
+        13
+      ]
+    },
+    {
+      "county": "Cochran",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        7,
+        15,
+        286,
+        88,
+        31,
+        19
+      ]
+    },
+    {
+      "county": "Coke",
+      "bank": [
+        11
+      ],
+      "bank_z": [
+        11
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        11
+      ],
+      "sos_tail": [
+        3,
+        15,
+        72,
+        31,
+        11
+      ]
+    },
+    {
+      "county": "Coleman",
+      "bank": [
+        11
+      ],
+      "bank_z": [
+        11
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        11
+      ],
+      "sos_tail": [
+        11,
+        15,
+        72,
+        28,
+        11
+      ]
+    },
+    {
+      "county": "Collin",
+      "bank": [
+        3,
+        4,
+        32
+      ],
+      "bank_z": [
+        3,
+        4,
+        32
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        3,
+        4,
+        32
+      ],
+      "sos_tail": [
+        471,
+        494,
+        33,
+        61,
+        66,
+        67,
+        70,
+        89,
+        2,
+        3,
+        32,
+        4
+      ]
+    },
+    {
+      "county": "Collingsworth",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        88,
+        28,
+        13
+      ]
+    },
+    {
+      "county": "Colorado",
+      "bank": [
+        27
+      ],
+      "bank_z": [
+        27
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        27
+      ],
+      "sos_tail": [
+        1,
+        14,
+        15,
+        85,
+        27
+      ]
+    },
+    {
+      "county": "Comal",
+      "bank": [
+        21
+      ],
+      "bank_z": [
+        21
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        21
+      ],
+      "sos_tail": [
+        3,
+        15,
+        46,
+        207,
+        274,
+        466,
+        73,
+        21
+      ]
+    },
+    {
+      "county": "Comanche",
+      "bank": [
+        25
+      ],
+      "bank_z": [
+        25
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        25
+      ],
+      "sos_tail": [
+        11,
+        15,
+        220,
+        14,
+        68,
+        22,
+        25
+      ]
+    },
+    {
+      "county": "Concho",
+      "bank": [
+        11
+      ],
+      "bank_z": [
+        11
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        11
+      ],
+      "sos_tail": [
+        3,
+        15,
+        72,
+        28,
+        11
+      ]
+    },
+    {
+      "county": "Cooke",
+      "bank": [
+        26
+      ],
+      "bank_z": [
+        26
+      ],
+      "status": "PARSE_GAP",
+      "matched_as": null,
+      "sos_tail": []
+    },
+    {
+      "county": "Coryell",
+      "bank": [
+        31
+      ],
+      "bank_z": [
+        31
+      ],
+      "status": "PARSE_GAP",
+      "matched_as": null,
+      "sos_tail": []
+    },
+    {
+      "county": "Cottle",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "PARSE_GAP",
+      "matched_as": null,
+      "sos_tail": []
+    },
+    {
+      "county": "Crane",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "PARSE_GAP",
+      "matched_as": null,
+      "sos_tail": []
+    },
+    {
+      "county": "Crockett",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "PARSE_GAP",
+      "matched_as": null,
+      "sos_tail": []
+    },
+    {
+      "county": "Crosby",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "PARSE_GAP",
+      "matched_as": null,
+      "sos_tail": []
+    },
+    {
+      "county": "Culberson",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "PARSE_GAP",
+      "matched_as": null,
+      "sos_tail": []
+    },
+    {
+      "county": "Dallam",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "PARSE_GAP",
+      "matched_as": null,
+      "sos_tail": []
+    },
+    {
+      "county": "Dallas",
+      "bank": [
+        5,
+        6,
+        24,
+        30,
+        32,
+        33
+      ],
+      "bank_z": [
+        5,
+        6,
+        24,
+        30,
+        32,
+        33
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        5,
+        6,
+        24,
+        30,
+        32,
+        33
+      ],
+      "sos_tail": [
+        28,
+        19,
+        23,
+        31,
+        13,
+        2,
+        24,
+        30,
+        32,
+        33,
+        5,
+        6
+      ]
+    },
+    {
+      "county": "Dawson",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        11,
+        15,
+        106,
+        82,
+        31,
+        19
+      ]
+    },
+    {
+      "county": "DeWitt",
+      "bank": [
+        15
+      ],
+      "bank_z": [
+        15
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        15
+      ],
+      "sos_tail": [
+        13,
+        15,
+        267,
+        30,
+        18,
+        15
+      ]
+    },
+    {
+      "county": "Deaf Smith",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        59,
+        222,
+        86,
+        31,
+        13
+      ]
+    },
+    {
+      "county": "Delta",
+      "bank": [
+        3
+      ],
+      "bank_z": [
+        3
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        3
+      ],
+      "sos_tail": [
+        6,
+        15,
+        62,
+        62,
+        1,
+        3
+      ]
+    },
+    {
+      "county": "Denton",
+      "bank": [
+        4,
+        13,
+        26
+      ],
+      "bank_z": [
+        4,
+        13,
+        26
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        4,
+        13,
+        26
+      ],
+      "sos_tail": [
+        467,
+        477,
+        481,
+        14,
+        106,
+        57,
+        63,
+        64,
+        65,
+        13,
+        26,
+        4
+      ]
+    },
+    {
+      "county": "Dickens",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        110,
+        83,
+        28,
+        13
+      ]
+    },
+    {
+      "county": "Dimmit",
+      "bank": [
+        28
+      ],
+      "bank_z": [
+        28
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        28
+      ],
+      "sos_tail": [
+        4,
+        15,
+        293,
+        365,
+        80,
+        21,
+        28
+      ]
+    },
+    {
+      "county": "Donley",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        88,
+        28,
+        13
+      ]
+    },
+    {
+      "county": "Duval",
+      "bank": [
+        28
+      ],
+      "bank_z": [
+        28
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        28
+      ],
+      "sos_tail": [
+        4,
+        15,
+        229,
+        31,
+        21,
+        28
+      ]
+    },
+    {
+      "county": "Eastland",
+      "bank": [
+        25
+      ],
+      "bank_z": [
+        25
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        25
+      ],
+      "sos_tail": [
+        11,
+        15,
+        67,
+        14,
+        68,
+        22,
+        25
+      ]
+    },
+    {
+      "county": "Ector",
+      "bank": [
+        11
+      ],
+      "bank_z": [
+        11
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        11
+      ],
+      "sos_tail": [
+        11,
+        15,
+        244,
+        358,
+        70,
+        81,
+        31,
+        11
+      ]
+    },
+    {
+      "county": "Edwards",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        23
+      ],
+      "sos_tail": [
+        4,
+        15,
+        452,
+        452,
+        53,
+        19,
+        23
+      ]
+    },
+    {
+      "county": "El Paso",
+      "bank": [
+        16,
+        23
+      ],
+      "bank_z": [
+        16,
+        23
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        16,
+        23
+      ],
+      "sos_tail": [
+        171,
+        205,
+        210,
+        243,
+        327,
+        74,
+        75,
+        77,
+        78,
+        79,
+        16,
+        23
+      ]
+    },
+    {
+      "county": "Ellis",
+      "bank": [
+        6
+      ],
+      "bank_z": [
+        6
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        6
+      ],
+      "sos_tail": [
+        10,
+        15,
+        40,
+        504,
+        14,
+        10,
+        2,
+        22,
+        6
+      ]
+    },
+    {
+      "county": "Erath",
+      "bank": [
+        25
+      ],
+      "bank_z": [
+        25
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        25
+      ],
+      "sos_tail": [
+        11,
+        15,
+        266,
+        14,
+        59,
+        22,
+        25
+      ]
+    },
+    {
+      "county": "Falls",
+      "bank": [
+        17
+      ],
+      "bank_z": [
+        17
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        17
+      ],
+      "sos_tail": [
+        10,
+        15,
+        82,
+        10,
+        13,
+        22,
+        17
+      ]
+    },
+    {
+      "county": "Fannin",
+      "bank": [
+        4
+      ],
+      "bank_z": [
+        4
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        4
+      ],
+      "sos_tail": [
+        6,
+        15,
+        62,
+        1,
+        4
+      ]
+    },
+    {
+      "county": "Fayette",
+      "bank": [
+        27
+      ],
+      "bank_z": [
+        27
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        27
+      ],
+      "sos_tail": [
+        3,
+        15,
+        155,
+        85,
+        18,
+        27
+      ]
+    },
+    {
+      "county": "Fisher",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        11,
+        15,
+        32,
+        69,
+        28,
+        19
+      ]
+    },
+    {
+      "county": "Floyd",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        7,
+        15,
+        110,
+        83,
+        28,
+        19
+      ]
+    },
+    {
+      "county": "Foard",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        46,
+        69,
+        28,
+        13
+      ]
+    },
+    {
+      "county": "Fort Bend",
+      "bank": [
+        7,
+        14,
+        18,
+        22
+      ],
+      "bank_z": [
+        7,
+        14,
+        18,
+        22
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        7,
+        14,
+        18,
+        22
+      ],
+      "sos_tail": [
+        8,
+        26,
+        27,
+        28,
+        76,
+        85,
+        13,
+        18,
+        14,
+        18,
+        22,
+        7
+      ]
+    },
+    {
+      "county": "Franklin",
+      "bank": [
+        3
+      ],
+      "bank_z": [
+        3
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        3
+      ],
+      "sos_tail": [
+        6,
+        15,
+        62,
+        9,
+        62,
+        1,
+        3
+      ]
+    },
+    {
+      "county": "Freestone",
+      "bank": [
+        17
+      ],
+      "bank_z": [
+        17
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        17
+      ],
+      "sos_tail": [
+        10,
+        15,
+        87,
+        13,
+        5,
+        17
+      ]
+    },
+    {
+      "county": "Frio",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        23
+      ],
+      "sos_tail": [
+        4,
+        15,
+        81,
+        218,
+        80,
+        19,
+        23
+      ]
+    },
+    {
+      "county": "Gaines",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        11,
+        15,
+        106,
+        88,
+        31,
+        19
+      ]
+    },
+    {
+      "county": "Galveston",
+      "bank": [
+        14
+      ],
+      "bank_z": [
+        14
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        14
+      ],
+      "sos_tail": [
+        84,
+        122,
+        212,
+        306,
+        4,
+        7,
+        8,
+        23,
+        24,
+        11,
+        4,
+        14
+      ]
+    },
+    {
+      "county": "Garza",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        7,
+        15,
+        106,
+        83,
+        28,
+        19
+      ]
+    },
+    {
+      "county": "Gillespie",
+      "bank": [
+        21
+      ],
+      "bank_z": [
+        21
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        21
+      ],
+      "sos_tail": [
+        4,
+        15,
+        19,
+        24,
+        21
+      ]
+    },
+    {
+      "county": "Glasscock",
+      "bank": [
+        11
+      ],
+      "bank_z": [
+        11
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        11
+      ],
+      "sos_tail": [
+        11,
+        15,
+        118,
+        72,
+        31,
+        11
+      ]
+    },
+    {
+      "county": "Goliad",
+      "bank": [
+        15
+      ],
+      "bank_z": [
+        15
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        15
+      ],
+      "sos_tail": [
+        13,
+        15,
+        267,
+        30,
+        18,
+        15
+      ]
+    },
+    {
+      "county": "Gonzales",
+      "bank": [
+        15
+      ],
+      "bank_z": [
+        15
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        15
+      ],
+      "sos_tail": [
+        13,
+        15,
+        44,
+        18,
+        15
+      ]
+    },
+    {
+      "county": "Gray",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        31,
+        223,
+        31,
+        88,
+        28,
+        13
+      ]
+    },
+    {
+      "county": "Grayson",
+      "bank": [
+        4
+      ],
+      "bank_z": [
+        4
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        4
+      ],
+      "sos_tail": [
+        5,
+        15,
+        397,
+        62,
+        4
+      ]
+    },
+    {
+      "county": "Gregg",
+      "bank": [
+        1
+      ],
+      "bank_z": [
+        1
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        1
+      ],
+      "sos_tail": [
+        6,
+        12,
+        15,
+        92,
+        188,
+        307,
+        9,
+        7,
+        1,
+        1
+      ]
+    },
+    {
+      "county": "Grimes",
+      "bank": [
+        10
+      ],
+      "bank_z": [
+        10
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        10
+      ],
+      "sos_tail": [
+        1,
+        14,
+        15,
+        8,
+        12,
+        18,
+        10
+      ]
+    },
+    {
+      "county": "Guadalupe",
+      "bank": [
+        35
+      ],
+      "bank_z": [
+        35
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        35
+      ],
+      "sos_tail": [
+        4,
+        15,
+        274,
+        456,
+        5,
+        44,
+        19,
+        21,
+        35
+      ]
+    },
+    {
+      "county": "Hale",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        7,
+        15,
+        242,
+        64,
+        88,
+        28,
+        19
+      ]
+    },
+    {
+      "county": "Hall",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        88,
+        31,
+        13
+      ]
+    },
+    {
+      "county": "Hamilton",
+      "bank": [
+        31
+      ],
+      "bank_z": [
+        31
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        31
+      ],
+      "sos_tail": [
+        10,
+        15,
+        220,
+        14,
+        59,
+        22,
+        31
+      ]
+    },
+    {
+      "county": "Hansford",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        87,
+        31,
+        13
+      ]
+    },
+    {
+      "county": "Hardeman",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        46,
+        69,
+        28,
+        13
+      ]
+    },
+    {
+      "county": "Hardin",
+      "bank": [
+        36
+      ],
+      "bank_z": [
+        36
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        36
+      ],
+      "sos_tail": [
+        9,
+        15,
+        7,
+        18,
+        3,
+        36
+      ]
+    },
+    {
+      "county": "Harris",
+      "bank": [
+        2,
+        7,
+        8,
+        9,
+        18,
+        22,
+        29,
+        36,
+        38
+      ],
+      "bank_z": [
+        2,
+        7,
+        8,
+        9,
+        18,
+        22,
+        29,
+        36,
+        38
+      ],
+      "status": "manual_harris",
+      "matched_as": [
+        2,
+        7,
+        8,
+        9,
+        18,
+        22,
+        29,
+        36,
+        38
+      ],
+      "sos_tail": [
+        148,
+        149,
+        150,
+        312,
+        313,
+        314,
+        315,
+        482,
+        486,
+        495,
+        496,
+        497
+      ]
+    },
+    {
+      "county": "Harrison",
+      "bank": [
+        1
+      ],
+      "bank_z": [
+        1
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        1
+      ],
+      "sos_tail": [
+        6,
+        15,
+        102,
+        9,
+        7,
+        1,
+        1
+      ]
+    },
+    {
+      "county": "Hartley",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        69,
+        86,
+        31,
+        13
+      ]
+    },
+    {
+      "county": "Haskell",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        11,
+        15,
+        39,
+        69,
+        28,
+        19
+      ]
+    },
+    {
+      "county": "Hays",
+      "bank": [
+        21,
+        27
+      ],
+      "bank_z": [
+        21,
+        27
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        21,
+        27
+      ],
+      "sos_tail": [
+        3,
+        15,
+        105,
+        207,
+        274,
+        428,
+        5,
+        45,
+        73,
+        21,
+        21,
+        27
+      ]
+    },
+    {
+      "county": "Hemphill",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        31,
+        31,
+        88,
+        31,
+        13
+      ]
+    },
+    {
+      "county": "Henderson",
+      "bank": [
+        5
+      ],
+      "bank_z": [
+        5
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        5
+      ],
+      "sos_tail": [
+        12,
+        15,
+        173,
+        4,
+        8,
+        3,
+        5
+      ]
+    },
+    {
+      "county": "Hidalgo",
+      "bank": [
+        15,
+        28
+      ],
+      "bank_z": [
+        15,
+        28
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        15,
+        28
+      ],
+      "sos_tail": [
+        108,
+        206,
+        275,
+        370,
+        2,
+        35,
+        36,
+        39,
+        40,
+        41,
+        15,
+        28
+      ]
+    },
+    {
+      "county": "Hill",
+      "bank": [
+        17
+      ],
+      "bank_z": [
+        17
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        17
+      ],
+      "sos_tail": [
+        10,
+        15,
+        66,
+        14,
+        13,
+        22,
+        17
+      ]
+    },
+    {
+      "county": "Hockley",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        7,
+        15,
+        286,
+        88,
+        28,
+        19
+      ]
+    },
+    {
+      "county": "Hood",
+      "bank": [
+        25
+      ],
+      "bank_z": [
+        25
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        25
+      ],
+      "sos_tail": [
+        2,
+        15,
+        355,
+        59,
+        22,
+        25
+      ]
+    },
+    {
+      "county": "Hopkins",
+      "bank": [
+        3
+      ],
+      "bank_z": [
+        3
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        3
+      ],
+      "sos_tail": [
+        6,
+        15,
+        62,
+        2,
+        1,
+        3
+      ]
+    },
+    {
+      "county": "Houston",
+      "bank": [
+        10
+      ],
+      "bank_z": [
+        10
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        10
+      ],
+      "sos_tail": [
+        12,
+        15,
+        8,
+        9,
+        3,
+        10
+      ]
+    },
+    {
+      "county": "Howard",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        11,
+        15,
+        118,
+        72,
+        31,
+        19
+      ]
+    },
+    {
+      "county": "Hudspeth",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        23
+      ],
+      "sos_tail": [
+        8,
+        15,
+        205,
+        74,
+        23
+      ]
+    },
+    {
+      "county": "Hunt",
+      "bank": [
+        3,
+        32
+      ],
+      "bank_z": [
+        3,
+        32
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        3,
+        32
+      ],
+      "sos_tail": [
+        5,
+        6,
+        15,
+        196,
+        2,
+        3,
+        32
+      ]
+    },
+    {
+      "county": "Hutchinson",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        316,
+        87,
+        31,
+        13
+      ]
+    },
+    {
+      "county": "Irion",
+      "bank": [
+        11
+      ],
+      "bank_z": [
+        11
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        11
+      ],
+      "sos_tail": [
+        3,
+        15,
+        72,
+        31,
+        11
+      ]
+    },
+    {
+      "county": "Jack",
+      "bank": [
+        25
+      ],
+      "bank_z": [
+        25
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        25
+      ],
+      "sos_tail": [
+        2,
+        15,
+        271,
+        14,
+        68,
+        25
+      ]
+    },
+    {
+      "county": "Jackson",
+      "bank": [
+        27
+      ],
+      "bank_z": [
+        27
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        27
+      ],
+      "sos_tail": [
+        13,
+        15,
+        120,
+        267,
+        2,
+        30,
+        27
+      ]
+    },
+    {
+      "county": "Jasper",
+      "bank": [
+        36
+      ],
+      "bank_z": [
+        36
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        36
+      ],
+      "sos_tail": [
+        9,
+        15,
+        121,
+        1,
+        1,
+        7,
+        21,
+        3,
+        36
+      ]
+    },
+    {
+      "county": "Jeff Davis",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        23
+      ],
+      "sos_tail": [
+        8,
+        15,
+        74,
+        23
+      ]
+    },
+    {
+      "county": "Jefferson",
+      "bank": [
+        14,
+        36
+      ],
+      "bank_z": [
+        14,
+        36
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        14,
+        36
+      ],
+      "sos_tail": [
+        58,
+        172,
+        252,
+        279,
+        317,
+        7,
+        21,
+        22,
+        3,
+        4,
+        14,
+        36
+      ]
+    },
+    {
+      "county": "Jim Hogg",
+      "bank": [
+        28
+      ],
+      "bank_z": [
+        28
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        28
+      ],
+      "sos_tail": [
+        4,
+        15,
+        229,
+        31,
+        21,
+        28
+      ]
+    },
+    {
+      "county": "Jim Wells",
+      "bank": [
+        15
+      ],
+      "bank_z": [
+        15
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        15
+      ],
+      "sos_tail": [
+        4,
+        15,
+        43,
+        15
+      ]
+    },
+    {
+      "county": "Johnson",
+      "bank": [
+        6,
+        17,
+        25
+      ],
+      "bank_z": [
+        6,
+        17,
+        25
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        6,
+        17,
+        25
+      ],
+      "sos_tail": [
+        10,
+        15,
+        249,
+        14,
+        58,
+        17,
+        25,
+        6
+      ]
+    },
+    {
+      "county": "Jones",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        11,
+        15,
+        259,
+        71,
+        28,
+        19
+      ]
+    },
+    {
+      "county": "Karnes",
+      "bank": [
+        35
+      ],
+      "bank_z": [
+        35
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        35
+      ],
+      "sos_tail": [
+        4,
+        15,
+        81,
+        218,
+        31,
+        21,
+        35
+      ]
+    },
+    {
+      "county": "Kaufman",
+      "bank": [
+        5
+      ],
+      "bank_z": [
+        5
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        5
+      ],
+      "sos_tail": [
+        5,
+        15,
+        129,
+        86,
+        9,
+        4,
+        2,
+        5
+      ]
+    },
+    {
+      "county": "Kendall",
+      "bank": [
+        21
+      ],
+      "bank_z": [
+        21
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        21
+      ],
+      "sos_tail": [
+        4,
+        15,
+        451,
+        451,
+        498,
+        19,
+        21
+      ]
+    },
+    {
+      "county": "Kenedy",
+      "bank": [
+        34
+      ],
+      "bank_z": [
+        34
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        34
+      ],
+      "sos_tail": [
+        13,
+        15,
+        105,
+        2,
+        31,
+        34
+      ]
+    },
+    {
+      "county": "Kent",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        7,
+        15,
+        39,
+        83,
+        28,
+        19
+      ]
+    },
+    {
+      "county": "Kerr",
+      "bank": [
+        21
+      ],
+      "bank_z": [
+        21
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        21
+      ],
+      "sos_tail": [
+        4,
+        15,
+        198,
+        53,
+        24,
+        21
+      ]
+    },
+    {
+      "county": "Kimble",
+      "bank": [
+        11
+      ],
+      "bank_z": [
+        11
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        11
+      ],
+      "sos_tail": [
+        4,
+        15,
+        452,
+        452,
+        53,
+        24,
+        11
+      ]
+    },
+    {
+      "county": "King",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        69,
+        28,
+        13
+      ]
+    },
+    {
+      "county": "Kinney",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        23
+      ],
+      "sos_tail": [
+        4,
+        15,
+        74,
+        19,
+        23
+      ]
+    },
+    {
+      "county": "Kleberg",
+      "bank": [
+        34
+      ],
+      "bank_z": [
+        34
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        34
+      ],
+      "sos_tail": [
+        13,
+        15,
+        105,
+        2,
+        43,
+        34
+      ]
+    },
+    {
+      "county": "Knox",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        11,
+        15,
+        69,
+        28,
+        13
+      ]
+    },
+    {
+      "county": "La Salle",
+      "bank": [
+        28
+      ],
+      "bank_z": [
+        28
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        28
+      ],
+      "sos_tail": [
+        4,
+        15,
+        81,
+        218,
+        31,
+        21,
+        28
+      ]
+    },
+    {
+      "county": "Lamar",
+      "bank": [
+        4
+      ],
+      "bank_z": [
+        4
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        4
+      ],
+      "sos_tail": [
+        6,
+        15,
+        62,
+        1,
+        1,
+        4
+      ]
+    },
+    {
+      "county": "Lamb",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        7,
+        15,
+        154,
+        88,
+        28,
+        19
+      ]
+    },
+    {
+      "county": "Lampasas",
+      "bank": [
+        31
+      ],
+      "bank_z": [
+        31
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        31
+      ],
+      "sos_tail": [
+        3,
+        15,
+        68,
+        24,
+        31
+      ]
+    },
+    {
+      "county": "Lavaca",
+      "bank": [
+        15
+      ],
+      "bank_z": [
+        15
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        15
+      ],
+      "sos_tail": [
+        13,
+        15,
+        30,
+        18,
+        15
+      ]
+    },
+    {
+      "county": "Lee",
+      "bank": [
+        10
+      ],
+      "bank_z": [
+        10
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        10
+      ],
+      "sos_tail": [
+        3,
+        15,
+        17,
+        18,
+        10
+      ]
+    },
+    {
+      "county": "Leon",
+      "bank": [
+        10
+      ],
+      "bank_z": [
+        10
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        10
+      ],
+      "sos_tail": [
+        10,
+        15,
+        278,
+        369,
+        87,
+        13,
+        5,
+        10
+      ]
+    },
+    {
+      "county": "Liberty",
+      "bank": [
+        9
+      ],
+      "bank_z": [
+        9
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        9
+      ],
+      "sos_tail": [
+        9,
+        15,
+        253,
+        75,
+        7,
+        18,
+        3,
+        9
+      ]
+    },
+    {
+      "county": "Limestone",
+      "bank": [
+        17
+      ],
+      "bank_z": [
+        17
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        17
+      ],
+      "sos_tail": [
+        10,
+        15,
+        87,
+        13,
+        5,
+        17
+      ]
+    },
+    {
+      "county": "Lipscomb",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        31,
+        31,
+        87,
+        31,
+        13
+      ]
+    },
+    {
+      "county": "Live Oak",
+      "bank": [
+        28
+      ],
+      "bank_z": [
+        28
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        28
+      ],
+      "sos_tail": [
+        13,
+        15,
+        156,
+        36,
+        31,
+        21,
+        28
+      ]
+    },
+    {
+      "county": "Llano",
+      "bank": [
+        11
+      ],
+      "bank_z": [
+        11
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        11
+      ],
+      "sos_tail": [
+        3,
+        15,
+        424,
+        53,
+        24,
+        11
+      ]
+    },
+    {
+      "county": "Loving",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        23
+      ],
+      "sos_tail": [
+        8,
+        15,
+        81,
+        31,
+        23
+      ]
+    },
+    {
+      "county": "Lubbock",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        7,
+        15,
+        152,
+        137,
+        237,
+        364,
+        83,
+        84,
+        28,
+        19
+      ]
+    },
+    {
+      "county": "Lynn",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        7,
+        15,
+        106,
+        83,
+        28,
+        19
+      ]
+    },
+    {
+      "county": "Madison",
+      "bank": [
+        10
+      ],
+      "bank_z": [
+        10
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        10
+      ],
+      "sos_tail": [
+        10,
+        15,
+        154,
+        278,
+        12,
+        5,
+        10
+      ]
+    },
+    {
+      "county": "Marion",
+      "bank": [
+        1
+      ],
+      "bank_z": [
+        1
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        1
+      ],
+      "sos_tail": [
+        6,
+        15,
+        115,
+        276,
+        9,
+        7,
+        1,
+        1
+      ]
+    },
+    {
+      "county": "Martin",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        11,
+        15,
+        118,
+        82,
+        31,
+        19
+      ]
+    },
+    {
+      "county": "Mason",
+      "bank": [
+        11
+      ],
+      "bank_z": [
+        11
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        11
+      ],
+      "sos_tail": [
+        4,
+        15,
+        452,
+        452,
+        53,
+        28,
+        11
+      ]
+    },
+    {
+      "county": "Matagorda",
+      "bank": [
+        27
+      ],
+      "bank_z": [
+        27
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        27
+      ],
+      "sos_tail": [
+        13,
+        15,
+        2,
+        30,
+        27
+      ]
+    },
+    {
+      "county": "Maverick",
+      "bank": [
+        23,
+        28
+      ],
+      "bank_z": [
+        23,
+        28
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        23,
+        28
+      ],
+      "sos_tail": [
+        4,
+        15,
+        293,
+        365,
+        74,
+        19,
+        23,
+        28
+      ]
+    },
+    {
+      "county": "McCulloch",
+      "bank": [
+        11
+      ],
+      "bank_z": [
+        11
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        11
+      ],
+      "sos_tail": [
+        3,
+        15,
+        452,
+        452,
+        53,
+        28,
+        11
+      ]
+    },
+    {
+      "county": "McLennan",
+      "bank": [
+        17
+      ],
+      "bank_z": [
+        17
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        17
+      ],
+      "sos_tail": [
+        10,
+        15,
+        161,
+        54,
+        74,
+        170,
+        414,
+        14,
+        13,
+        56,
+        22,
+        17
+      ]
+    },
+    {
+      "county": "McMullen",
+      "bank": [
+        28
+      ],
+      "bank_z": [
+        28
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        28
+      ],
+      "sos_tail": [
+        4,
+        15,
+        156,
+        36,
+        31,
+        21,
+        28
+      ]
+    },
+    {
+      "county": "Medina",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        23
+      ],
+      "sos_tail": [
+        4,
+        15,
+        53,
+        24,
+        23
+      ]
+    },
+    {
+      "county": "Menard",
+      "bank": [
+        11
+      ],
+      "bank_z": [
+        11
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        11
+      ],
+      "sos_tail": [
+        4,
+        15,
+        452,
+        452,
+        53,
+        28,
+        11
+      ]
+    },
+    {
+      "county": "Midland",
+      "bank": [
+        11
+      ],
+      "bank_z": [
+        11
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        11
+      ],
+      "sos_tail": [
+        11,
+        15,
+        238,
+        318,
+        385,
+        441,
+        82,
+        31,
+        11
+      ]
+    },
+    {
+      "county": "Milam",
+      "bank": [
+        17
+      ],
+      "bank_z": [
+        17
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        17
+      ],
+      "sos_tail": [
+        3,
+        15,
+        17,
+        5,
+        17
+      ]
+    },
+    {
+      "county": "Mills",
+      "bank": [
+        31
+      ],
+      "bank_z": [
+        31
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        31
+      ],
+      "sos_tail": [
+        3,
+        15,
+        14,
+        68,
+        28,
+        31
+      ]
+    },
+    {
+      "county": "Mitchell",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        11,
+        15,
+        32,
+        83,
+        31,
+        19
+      ]
+    },
+    {
+      "county": "Montague",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        2,
+        15,
+        14,
+        68,
+        13
+      ]
+    },
+    {
+      "county": "Montgomery",
+      "bank": [
+        2,
+        8
+      ],
+      "bank_z": [
+        2,
+        8
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        2,
+        8
+      ],
+      "sos_tail": [
+        284,
+        359,
+        6,
+        8,
+        15,
+        16,
+        18,
+        3,
+        18,
+        4,
+        2,
+        8
+      ]
+    },
+    {
+      "county": "Moore",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        69,
+        87,
+        31,
+        13
+      ]
+    },
+    {
+      "county": "Morris",
+      "bank": [
+        3
+      ],
+      "bank_z": [
+        3
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        3
+      ],
+      "sos_tail": [
+        6,
+        15,
+        276,
+        9,
+        1,
+        1,
+        3
+      ]
+    },
+    {
+      "county": "Motley",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        110,
+        69,
+        28,
+        13
+      ]
+    },
+    {
+      "county": "Nacogdoches",
+      "bank": [
+        1
+      ],
+      "bank_z": [
+        1
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        1
+      ],
+      "sos_tail": [
+        12,
+        15,
+        9,
+        11,
+        3,
+        1
+      ]
+    },
+    {
+      "county": "Navarro",
+      "bank": [
+        6
+      ],
+      "bank_z": [
+        6
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        6
+      ],
+      "sos_tail": [
+        10,
+        15,
+        175,
+        14,
+        8,
+        2,
+        6
+      ]
+    },
+    {
+      "county": "Newton",
+      "bank": [
+        36
+      ],
+      "bank_z": [
+        36
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        36
+      ],
+      "sos_tail": [
+        9,
+        15,
+        176,
+        1,
+        1,
+        7,
+        11,
+        3,
+        36
+      ]
+    },
+    {
+      "county": "Nolan",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        11,
+        15,
+        32,
+        71,
+        28,
+        19
+      ]
+    },
+    {
+      "county": "Nueces",
+      "bank": [
+        27,
+        34
+      ],
+      "bank_z": [
+        27,
+        34
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        27,
+        34
+      ],
+      "sos_tail": [
+        13,
+        15,
+        94,
+        105,
+        117,
+        148,
+        319,
+        2,
+        32,
+        34,
+        27,
+        34
+      ]
+    },
+    {
+      "county": "Ochiltree",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        87,
+        31,
+        13
+      ]
+    },
+    {
+      "county": "Oldham",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        222,
+        86,
+        31,
+        13
+      ]
+    },
+    {
+      "county": "Orange",
+      "bank": [
+        14
+      ],
+      "bank_z": [
+        14
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        14
+      ],
+      "sos_tail": [
+        9,
+        15,
+        260,
+        7,
+        21,
+        3,
+        14
+      ]
+    },
+    {
+      "county": "Palo Pinto",
+      "bank": [
+        25
+      ],
+      "bank_z": [
+        25
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        25
+      ],
+      "sos_tail": [
+        11,
+        15,
+        14,
+        60,
+        25
+      ]
+    },
+    {
+      "county": "Panola",
+      "bank": [
+        1
+      ],
+      "bank_z": [
+        1
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        1
+      ],
+      "sos_tail": [
+        6,
+        15,
+        183,
+        9,
+        11,
+        1,
+        1
+      ]
+    },
+    {
+      "county": "Parker",
+      "bank": [
+        12,
+        25
+      ],
+      "bank_z": [
+        12,
+        25
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        12,
+        25
+      ],
+      "sos_tail": [
+        2,
+        15,
+        60,
+        12,
+        25
+      ]
+    },
+    {
+      "county": "Parmer",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        7,
+        15,
+        287,
+        86,
+        31,
+        19
+      ]
+    },
+    {
+      "county": "Pecos",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        23
+      ],
+      "sos_tail": [
+        8,
+        15,
+        83,
+        112,
+        53,
+        23
+      ]
+    },
+    {
+      "county": "Polk",
+      "bank": [
+        10
+      ],
+      "bank_z": [
+        10
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        10
+      ],
+      "sos_tail": [
+        9,
+        15,
+        187,
+        258,
+        8,
+        9,
+        3,
+        10
+      ]
+    },
+    {
+      "county": "Potter",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        47,
+        181,
+        251,
+        320,
+        87,
+        31,
+        13
+      ]
+    },
+    {
+      "county": "Presidio",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        23
+      ],
+      "sos_tail": [
+        8,
+        15,
+        74,
+        23
+      ]
+    },
+    {
+      "county": "Rains",
+      "bank": [
+        32
+      ],
+      "bank_z": [
+        32
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        32
+      ],
+      "sos_tail": [
+        12,
+        15,
+        9,
+        5,
+        32
+      ]
+    },
+    {
+      "county": "Randall",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        191,
+        47,
+        181,
+        251,
+        86,
+        31,
+        13
+      ]
+    },
+    {
+      "county": "Reagan",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        23
+      ],
+      "sos_tail": [
+        8,
+        15,
+        112,
+        72,
+        31,
+        23
+      ]
+    },
+    {
+      "county": "Real",
+      "bank": [
+        21
+      ],
+      "bank_z": [
+        21
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        21
+      ],
+      "sos_tail": [
+        4,
+        15,
+        53,
+        19,
+        21
+      ]
+    },
+    {
+      "county": "Red River",
+      "bank": [
+        4
+      ],
+      "bank_z": [
+        4
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        4
+      ],
+      "sos_tail": [
+        6,
+        15,
+        102,
+        1,
+        1,
+        4
+      ]
+    },
+    {
+      "county": "Reeves",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        23
+      ],
+      "sos_tail": [
+        8,
+        15,
+        74,
+        23
+      ]
+    },
+    {
+      "county": "Refugio",
+      "bank": [
+        15,
+        27
+      ],
+      "bank_z": [
+        15,
+        27
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        15,
+        27
+      ],
+      "sos_tail": [
+        13,
+        15,
+        267,
+        2,
+        43,
+        18,
+        15,
+        27
+      ]
+    },
+    {
+      "county": "Roberts",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        31,
+        31,
+        88,
+        31,
+        13
+      ]
+    },
+    {
+      "county": "Robertson",
+      "bank": [
+        17
+      ],
+      "bank_z": [
+        17
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        17
+      ],
+      "sos_tail": [
+        10,
+        15,
+        82,
+        12,
+        5,
+        17
+      ]
+    },
+    {
+      "county": "Rockwall",
+      "bank": [
+        32
+      ],
+      "bank_z": [
+        32
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        32
+      ],
+      "sos_tail": [
+        5,
+        15,
+        199,
+        503,
+        9,
+        33,
+        2,
+        32
+      ]
+    },
+    {
+      "county": "Runnels",
+      "bank": [
+        11
+      ],
+      "bank_z": [
+        11
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        11
+      ],
+      "sos_tail": [
+        3,
+        15,
+        72,
+        28,
+        11
+      ]
+    },
+    {
+      "county": "Rusk",
+      "bank": [
+        1
+      ],
+      "bank_z": [
+        1
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        1
+      ],
+      "sos_tail": [
+        6,
+        12,
+        15,
+        9,
+        11,
+        1,
+        1
+      ]
+    },
+    {
+      "county": "Sabine",
+      "bank": [
+        1
+      ],
+      "bank_z": [
+        1
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        1
+      ],
+      "sos_tail": [
+        12,
+        15,
+        273,
+        9,
+        11,
+        3,
+        1
+      ]
+    },
+    {
+      "county": "San Augustine",
+      "bank": [
+        1
+      ],
+      "bank_z": [
+        1
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        1
+      ],
+      "sos_tail": [
+        12,
+        15,
+        273,
+        9,
+        9,
+        3,
+        1
+      ]
+    },
+    {
+      "county": "San Jacinto",
+      "bank": [
+        10
+      ],
+      "bank_z": [
+        10
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        10
+      ],
+      "sos_tail": [
+        9,
+        15,
+        204,
+        258,
+        8,
+        18,
+        5,
+        10
+      ]
+    },
+    {
+      "county": "San Patricio",
+      "bank": [
+        15,
+        27
+      ],
+      "bank_z": [
+        15,
+        27
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        15,
+        27
+      ],
+      "sos_tail": [
+        13,
+        15,
+        156,
+        36,
+        2,
+        43,
+        15,
+        27
+      ]
+    },
+    {
+      "county": "San Saba",
+      "bank": [
+        11
+      ],
+      "bank_z": [
+        11
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        11
+      ],
+      "sos_tail": [
+        3,
+        15,
+        424,
+        68,
+        28,
+        11
+      ]
+    },
+    {
+      "county": "Schleicher",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        23
+      ],
+      "sos_tail": [
+        3,
+        15,
+        53,
+        31,
+        23
+      ]
+    },
+    {
+      "county": "Scurry",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        11,
+        15,
+        83,
+        31,
+        19
+      ]
+    },
+    {
+      "county": "Shackelford",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        11,
+        15,
+        259,
+        68,
+        19
+      ]
+    },
+    {
+      "county": "Shelby",
+      "bank": [
+        1
+      ],
+      "bank_z": [
+        1
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        1
+      ],
+      "sos_tail": [
+        12,
+        15,
+        273,
+        9,
+        11,
+        3,
+        1
+      ]
+    },
+    {
+      "county": "Sherman",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        69,
+        87,
+        31,
+        13
+      ]
+    },
+    {
+      "county": "Smith",
+      "bank": [
+        1
+      ],
+      "bank_z": [
+        1
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        1
+      ],
+      "sos_tail": [
+        12,
+        15,
+        212,
+        241,
+        321,
+        9,
+        5,
+        6,
+        1,
+        1
+      ]
+    },
+    {
+      "county": "Somervell",
+      "bank": [
+        25
+      ],
+      "bank_z": [
+        25
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        25
+      ],
+      "sos_tail": [
+        10,
+        15,
+        249,
+        58,
+        22,
+        25
+      ]
+    },
+    {
+      "county": "Starr",
+      "bank": [
+        28
+      ],
+      "bank_z": [
+        28
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        28
+      ],
+      "sos_tail": [
+        4,
+        15,
+        229,
+        31,
+        21,
+        28
+      ]
+    },
+    {
+      "county": "Stephens",
+      "bank": [
+        25
+      ],
+      "bank_z": [
+        25
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        25
+      ],
+      "sos_tail": [
+        11,
+        15,
+        60,
+        25
+      ]
+    },
+    {
+      "county": "Sterling",
+      "bank": [
+        11
+      ],
+      "bank_z": [
+        11
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        11
+      ],
+      "sos_tail": [
+        3,
+        15,
+        72,
+        31,
+        11
+      ]
+    },
+    {
+      "county": "Stonewall",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        11,
+        15,
+        39,
+        69,
+        28,
+        19
+      ]
+    },
+    {
+      "county": "Sutton",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        23
+      ],
+      "sos_tail": [
+        4,
+        15,
+        112,
+        53,
+        24,
+        23
+      ]
+    },
+    {
+      "county": "Swisher",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        7,
+        15,
+        242,
+        64,
+        88,
+        31,
+        19
+      ]
+    },
+    {
+      "county": "Tarrant",
+      "bank": [
+        6,
+        12,
+        24,
+        25,
+        30
+      ],
+      "bank_z": [
+        6,
+        12,
+        24,
+        25,
+        30
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        6,
+        12,
+        24,
+        25,
+        30
+      ],
+      "sos_tail": [
+        96,
+        97,
+        98,
+        99,
+        101,
+        9,
+        22,
+        6,
+        12,
+        24,
+        25,
+        30
+      ]
+    },
+    {
+      "county": "Taylor",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        11,
+        15,
+        221,
+        326,
+        71,
+        28,
+        19
+      ]
+    },
+    {
+      "county": "Terrell",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        23
+      ],
+      "sos_tail": [
+        8,
+        15,
+        83,
+        74,
+        19,
+        23
+      ]
+    },
+    {
+      "county": "Terry",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        7,
+        15,
+        83,
+        28,
+        19
+      ]
+    },
+    {
+      "county": "Throckmorton",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        11,
+        15,
+        39,
+        68,
+        28,
+        19
+      ]
+    },
+    {
+      "county": "Titus",
+      "bank": [
+        3
+      ],
+      "bank_z": [
+        3
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        3
+      ],
+      "sos_tail": [
+        6,
+        15,
+        276,
+        9,
+        5,
+        1,
+        3
+      ]
+    },
+    {
+      "county": "Tom Green",
+      "bank": [
+        11
+      ],
+      "bank_z": [
+        11
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        11
+      ],
+      "sos_tail": [
+        3,
+        15,
+        72,
+        28,
+        11
+      ]
+    },
+    {
+      "county": "Travis",
+      "bank": [
+        10,
+        11,
+        27,
+        37
+      ],
+      "bank_z": [
+        10,
+        11,
+        27,
+        37
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        10,
+        11,
+        27,
+        37
+      ],
+      "sos_tail": [
+        19,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        21,
+        10,
+        11,
+        27,
+        37
+      ]
+    },
+    {
+      "county": "Trinity",
+      "bank": [
+        10
+      ],
+      "bank_z": [
+        10
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        10
+      ],
+      "sos_tail": [
+        12,
+        15,
+        258,
+        8,
+        9,
+        3,
+        10
+      ]
+    },
+    {
+      "county": "Tyler",
+      "bank": [
+        36
+      ],
+      "bank_z": [
+        36
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        36
+      ],
+      "sos_tail": [
+        9,
+        15,
+        229,
+        1,
+        1,
+        7,
+        9,
+        3,
+        36
+      ]
+    },
+    {
+      "county": "Upshur",
+      "bank": [
+        32
+      ],
+      "bank_z": [
+        32
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        32
+      ],
+      "sos_tail": [
+        6,
+        12,
+        15,
+        230,
+        115,
+        9,
+        5,
+        1,
+        32
+      ]
+    },
+    {
+      "county": "Upton",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        23
+      ],
+      "sos_tail": [
+        8,
+        15,
+        112,
+        53,
+        31,
+        23
+      ]
+    },
+    {
+      "county": "Uvalde",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        23
+      ],
+      "sos_tail": [
+        4,
+        15,
+        80,
+        19,
+        23
+      ]
+    },
+    {
+      "county": "Val Verde",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        23
+      ],
+      "sos_tail": [
+        4,
+        15,
+        83,
+        74,
+        19,
+        23
+      ]
+    },
+    {
+      "county": "Van Zandt",
+      "bank": [
+        5
+      ],
+      "bank_z": [
+        5
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        5
+      ],
+      "sos_tail": [
+        12,
+        15,
+        234,
+        294,
+        9,
+        2,
+        2,
+        5
+      ]
+    },
+    {
+      "county": "Victoria",
+      "bank": [
+        27
+      ],
+      "bank_z": [
+        27
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        27
+      ],
+      "sos_tail": [
+        13,
+        15,
+        235,
+        267,
+        377,
+        2,
+        30,
+        18,
+        27
+      ]
+    },
+    {
+      "county": "Walker",
+      "bank": [
+        8,
+        10
+      ],
+      "bank_z": [
+        8,
+        10
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        8,
+        10
+      ],
+      "sos_tail": [
+        10,
+        15,
+        236,
+        278,
+        8,
+        12,
+        5,
+        8,
+        10
+      ]
+    },
+    {
+      "county": "Waller",
+      "bank": [
+        8
+      ],
+      "bank_z": [
+        8
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        8
+      ],
+      "sos_tail": [
+        1,
+        14,
+        15,
+        237,
+        8,
+        85,
+        18,
+        8
+      ]
+    },
+    {
+      "county": "Ward",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        23
+      ],
+      "sos_tail": [
+        8,
+        15,
+        81,
+        31,
+        23
+      ]
+    },
+    {
+      "county": "Washington",
+      "bank": [
+        27
+      ],
+      "bank_z": [
+        27
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        27
+      ],
+      "sos_tail": [
+        1,
+        14,
+        15,
+        12,
+        18,
+        27
+      ]
+    },
+    {
+      "county": "Webb",
+      "bank": [
+        28
+      ],
+      "bank_z": [
+        28
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        28
+      ],
+      "sos_tail": [
+        4,
+        15,
+        49,
+        111,
+        42,
+        80,
+        21,
+        28
+      ]
+    },
+    {
+      "county": "Wharton",
+      "bank": [
+        27
+      ],
+      "bank_z": [
+        27
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        27
+      ],
+      "sos_tail": [
+        13,
+        15,
+        329,
+        2,
+        85,
+        27
+      ]
+    },
+    {
+      "county": "Wheeler",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        31,
+        31,
+        88,
+        28,
+        13
+      ]
+    },
+    {
+      "county": "Wichita",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        2,
+        15,
+        243,
+        30,
+        69,
+        28,
+        13
+      ]
+    },
+    {
+      "county": "Wilbarger",
+      "bank": [
+        13
+      ],
+      "bank_z": [
+        13
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13
+      ],
+      "sos_tail": [
+        7,
+        15,
+        46,
+        69,
+        28,
+        13
+      ]
+    },
+    {
+      "county": "Willacy",
+      "bank": [
+        34
+      ],
+      "bank_z": [
+        34
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        34
+      ],
+      "sos_tail": [
+        13,
+        15,
+        197,
+        2,
+        37,
+        34
+      ]
+    },
+    {
+      "county": "Williamson",
+      "bank": [
+        11,
+        17,
+        31
+      ],
+      "bank_z": [
+        11,
+        17,
+        31
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        11,
+        17,
+        31
+      ],
+      "sos_tail": [
+        368,
+        480,
+        512,
+        5,
+        20,
+        52,
+        136,
+        5,
+        24,
+        11,
+        17,
+        31
+      ]
+    },
+    {
+      "county": "Wilson",
+      "bank": [
+        35
+      ],
+      "bank_z": [
+        35
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        35
+      ],
+      "sos_tail": [
+        4,
+        15,
+        81,
+        218,
+        31,
+        21,
+        35
+      ]
+    },
+    {
+      "county": "Winkler",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        23
+      ],
+      "sos_tail": [
+        8,
+        15,
+        109,
+        81,
+        31,
+        23
+      ]
+    },
+    {
+      "county": "Wise",
+      "bank": [
+        13,
+        26
+      ],
+      "bank_z": [
+        13,
+        26
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        13,
+        26
+      ],
+      "sos_tail": [
+        2,
+        15,
+        271,
+        14,
+        64,
+        13,
+        26
+      ]
+    },
+    {
+      "county": "Wood",
+      "bank": [
+        32
+      ],
+      "bank_z": [
+        32
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        32
+      ],
+      "sos_tail": [
+        6,
+        12,
+        15,
+        250,
+        9,
+        5,
+        1,
+        32
+      ]
+    },
+    {
+      "county": "Yoakum",
+      "bank": [
+        19
+      ],
+      "bank_z": [
+        19
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        19
+      ],
+      "sos_tail": [
+        7,
+        15,
+        251,
+        88,
+        31,
+        19
+      ]
+    },
+    {
+      "county": "Young",
+      "bank": [
+        25
+      ],
+      "bank_z": [
+        25
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        25
+      ],
+      "sos_tail": [
+        2,
+        15,
+        68,
+        25
+      ]
+    },
+    {
+      "county": "Zapata",
+      "bank": [
+        28
+      ],
+      "bank_z": [
+        28
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        28
+      ],
+      "sos_tail": [
+        4,
+        15,
+        49,
+        31,
+        21,
+        28
+      ]
+    },
+    {
+      "county": "Zavala",
+      "bank": [
+        23
+      ],
+      "bank_z": [
+        23
+      ],
+      "status": "exact_suffix",
+      "matched_as": [
+        23
+      ],
+      "sos_tail": [
+        4,
+        15,
+        293,
+        365,
+        80,
+        19,
+        23
+      ]
+    }
+  ],
+  "verdict": "CURRENCY-TEST CLOSED against official SoS Nov 3 district chart: no true county/CD contradictions vs PlanC2333. Chambers SoS lists CD-14+36; Red-150 CD-14 is 0-pop water \u2014 voter-facing whole CD-36 stands. Harris accepted via set presence in wrapped SoS row. Page-break PARSE_GAP counties are PDF extraction limits, not conflicts. tx.html still needs voices + COUNTIES wire-up + specials check before ship."
+}

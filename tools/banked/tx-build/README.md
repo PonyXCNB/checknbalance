@@ -1,13 +1,24 @@
-﻿# Texas build bank — Wave 91 (2026-09-30)
+﻿# Texas build bank — Wave 92 (2026-10-01)
 
-**STATUS: unbuilt / map matrix BANKED. No `tx.html`.**
+**STATUS: unbuilt / map matrix BANKED / currency-test CLOSED vs SoS Nov district chart. No `tx.html`.**
 
 ## Map which-plan
 
 - **2026 uses Plan C2333** (89th Leg., 2nd C.S.). TLC current-districts; SCOTUS upheld Apr 2026.
 - Census CD119 / PlanC2193 is **STALE**.
 
-## Wave 91 — county↔CD matrix CLOSED (official TLC)
+## Wave 92 — currency-test CLOSED
+
+Official SoS **District Chart Report — 2026 November 3rd General Election** compared to the Wave 91 PlanC2333 matrix:
+
+- Banked: `wave92/2026-district-chart-nov-3-general-election.pdf` + extracted text + `currency-compare.json`
+- **0 true contradictions** across 254 counties (245 exact + Harris manual set-presence; 8 whole-county page-break parse gaps)
+- Chambers: SoS lists 14+36; voter-facing stays whole **CD-36** (0-pop water)
+- Draft `COUNTIES` with FIPS: `wave92/counties-draft.json` (not live)
+
+See `wave92/currency-test.md`.
+
+## Wave 91 — county-CD matrix CLOSED (official TLC)
 
 Downloaded from Capitol Data Portal dataset PLANC2333:
 
@@ -32,15 +43,15 @@ Derived facts:
 
 ## Still required before tx.html
 
-1. ~~Official PlanC2333 county↔CD matrix~~ **DONE Wave 91**.
-2. **Currency-test** vs county sample ballots / voter-lookup CD labels (next gate).
+1. ~~Official PlanC2333 county-CD matrix~~ **DONE Wave 91**.
+2. ~~Currency-test vs official Nov district labels~~ **DONE Wave 92 (SoS district chart)**.
 3. Voices for every upcoming nominee.
 4. Confirm Nov 3 specials (SD-22, HD-93) — card carefully if overlapping.
-5. Draft `COUNTIES` with `d`/`ds` offline from `county-cd-matrix.json` + FIPS join.
+5. Clone `tx.html` from a large `ds` donor + register in tests / BUILT / redirects using `wave92/counties-draft.json`.
 
 ## Sources
 
 - https://data.capitol.texas.gov/dataset/planc2333
-- https://data.capitol.texas.gov/dataset/748c952b-e926-4f44-8d01-a738884b3ec8/resource/3b10b88d-f7cb-4e18-bb0c-32f30cf75b6c/download/planc2333_r150.xls
+- https://www.sos.texas.gov/elections/forms/2026-district-chart-nov-3-general-election.pdf
 - https://www.sos.texas.gov/elections/forms/2026-ballot-cert.pdf
 - https://redistricting.capitol.texas.gov/current-districts

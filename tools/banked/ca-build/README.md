@@ -1,3 +1,5 @@
+> Wave 92 recheck (2026-10-01): unchanged -- see wave92-recheck.md.
+
 ﻿# California build bank — Wave 88 (2026-09-25)
 
 Source of truth for Nov 3, 2026 general nominees:
