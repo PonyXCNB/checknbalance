@@ -1,0 +1,5 @@
+# checknbalance.org
+User-agent: *
+Allow: /
+
+Sitemap: https://checknbalance.org/sitemap.xml
