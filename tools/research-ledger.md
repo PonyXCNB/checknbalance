@@ -1245,3 +1245,24 @@ Ryan batch before push of `580d374`. Local only.
 - Bank + `CLAUDE.md` Current state → Wave 90. No live HTML race changes. Voices 0. Landing unchanged.
 
 2026-09-29 | mo/tx/ca bank + CLAUDE.md | Wave 90 MO currency + TX cert bank | Free web only (0 Grok). Verify 1→1. Auto-publish after green tests.
+
+## 2026-10-05 - Wave 93 morning reconnect catch-up
+- **Catch-up ran:** yes (PC connected after 8:02 / 8:15 / 8:46 / 9:20 skips). Tip pulled 932c7f9 → 89332ca (PR #1 already merged on main: CA/MO/TX/DC 404s + sitemap).
+- **NM Goolsby:** Money Trail NM still May 27–Jun 27 window (~$53,704 / $25k debt). CFIS public First General aggregate still not located. Transparency USA Cloudflare to fetch. **Leave [Verify] locked.** Grand total still **1**.
+- **DE:** DOE open-data / certified Sep 18 prose; no remaining "uncertified" implication found in de.html scan.
+- **NH:** no residual "unofficial/AP-unofficial" hits in nh.html scan.
+- **MO:** Jackson County LEA Nov sample ballot banked — CD-4/5/6 match mo-cd120 29095. STL County August FIO URL still 404. Still NO mo.html.
+- **CA:** SLO County ballot-type-46 VIG spot-check — CD-19 + CD-24 match AB604 matrix 06079. Plurality d still block-hint. Still NO ca.html.
+- **TX:** currency-test already CLOSED Wave 92; 	x.html build in progress (cloud agent) from cert + counties-draft.
+- Grok queries this run so far: **0**.
+
+## 2026-10-05 - Wave 93 morning reconnect catch-up (ship)
+- **Catch-up ran:** yes after 8:02/8:15/8:46/9:20 skips. Pulled PR #1 already-on-main (89332ca).
+- **TX built:** 	x.html Wave 93 (9dfcece) — 48th full state; 109 upcoming candidates; 0 voices gaps; **192** [Verify] on tx.html (solid-seat/thin third-party honesty). Grand total **193** with locked NM Goolsby.
+- **NM Goolsby:** Money Trail still May 27–Jun 27 (~,704 / ). No post–Sept 14 First General public aggregate. **Left locked.**
+- **MO:** Jackson LEA Nov sample CD-4/5/6 = mo-cd120 29095. STL August FIO still 404. Still NO mo.html.
+- **CA:** SLO BT-46 VIG CD-19/24 match AB604 06079. Plurality d still block-hint. Still NO ca.html.
+- **DE/NH freshness:** no remaining false uncertified/unofficial prose found.
+- **Grok queries:** 0.
+- **Owner to-dos:** Voices remain 0 gaps; no other open owner UX items worked this run.
+- Draft PR #3 was the TX build branch; content FF-merged to local main for authorized auto-publish.
