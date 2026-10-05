@@ -1,7 +1,8 @@
 // public-shell.js — redirects, sitemap, robots, and the landing-page coverage claim.
 //
-// CA, MO, TX, and DC have no dedicated page. Their pretty paths must redirect to
-// state.html, the sitemap must list the pages that exist (plus those four routes),
+// CA, MO, and DC have no dedicated page. Texas does (tx.html). Pretty paths for
+// the unfinished states must redirect to state.html, the sitemap must list the
+// pages that exist (plus those starter routes),
 // and the home page must not claim every race in every state is built.
 //
 // Run:  node tests/public-shell.js
@@ -100,7 +101,7 @@ for (const [ab] of ALIASES) {
 const robots = fs.readFileSync(path.join(SITE_ROOT, "robots.txt"), "utf8");
 check(robots.includes("Sitemap: https://checknbalance.org/sitemap.xml"), "robots.txt points at the sitemap");
 
-const HONEST = "47 states fully built";
+const HONEST = "48 states fully built";
 for (const page of ["index.html", "states.html"]) {
   const src = fs.readFileSync(path.join(SITE_ROOT, page), "utf8");
   const desc = (src.match(/<meta name="description" content="([^"]*)"/) || [])[1] || "";
@@ -108,7 +109,7 @@ for (const page of ["index.html", "states.html"]) {
   check(!/every race in every state/i.test(desc + og), `${page}: description does not claim every race in every state`);
   check(!/every state, every race/i.test(desc + og), `${page}: description does not claim every state, every race`);
   check(!/every election guide/i.test(desc + og), `${page}: description does not claim every election guide`);
-  check(desc.includes("47") && og.includes("47"), `${page}: description counts the 47 full guides`);
+  check(desc.includes("48") && og.includes("48"), `${page}: description counts the 48 full guides`);
   check(/starter/i.test(desc) && /starter/i.test(og), `${page}: description says the unfinished states are starter pages`);
 }
 const index = fs.readFileSync(path.join(SITE_ROOT, "index.html"), "utf8");

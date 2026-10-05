@@ -1,6 +1,6 @@
-﻿# Texas build bank — Wave 92 (2026-10-01)
+﻿# Texas build bank
 
-**STATUS: unbuilt / map matrix BANKED / currency-test CLOSED vs SoS Nov district chart. No `tx.html`.**
+**STATUS: BUILT Wave 93 (2026-10-05).** `tx.html` is live. Counties, statewide, and all 38 House districts are in `wave93/`. The notes below are the Wave 92 map record; do not re-derive the county table.
 
 ## Map which-plan
 
@@ -41,13 +41,13 @@ Derived facts:
 
 - SoS Aug 28, 2026 ballot certification PDF + all 38 House pairs + statewide ticket in `wave90/`.
 
-## Still required before tx.html
+## Wave 93 — page shipped
 
 1. ~~Official PlanC2333 county-CD matrix~~ **DONE Wave 91**.
 2. ~~Currency-test vs official Nov district labels~~ **DONE Wave 92 (SoS district chart)**.
-3. Voices for every upcoming nominee.
-4. Confirm Nov 3 specials (SD-22, HD-93) — card carefully if overlapping.
-5. Clone `tx.html` from a large `ds` donor + register in tests / BUILT / redirects using `wave92/counties-draft.json`.
+3. ~~Voices for every upcoming nominee~~ **DONE Wave 93** (109 candidates, 0 gaps).
+4. ~~Nov 3 specials SD-22 and HD-93~~ **noted in the Senate race, not carded as U.S. House**.
+5. ~~Clone and register~~ **DONE** — `tx.html` from `fl.html`, using `wave93/`.
 
 ## Sources
 

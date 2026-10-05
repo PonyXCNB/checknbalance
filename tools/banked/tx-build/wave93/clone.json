@@ -1,0 +1,23 @@
+{
+  "abbr": "TX",
+  "name": "Texas",
+  "donor": "fl.html",
+  "donorAbbr": "FL",
+  "donorName": "Florida",
+  "donorCountyCount": 67,
+  "donorHouseSeats": 28,
+  "donorStatewideCount": 8,
+  "donorFips": "12",
+  "donorLastUpdated": "September 11, 2026 (Wave 75)",
+  "out": "tx.html",
+  "countyCount": 254,
+  "houseSeats": 38,
+  "statewideCount": 8,
+  "fips": "48",
+  "lastUpdated": "October 5, 2026",
+  "capital": { "name": "Austin", "lng": -97.7431, "lat": 30.2672 },
+  "sources": "Texas Secretary of State — Ballot Certification Report certified Aug. 28, 2026 (sos.texas.gov/elections/forms/2026-ballot-cert.pdf) and the Nov. 3, 2026 U.S. Congress District Chart by county; PLAN C2333 (89th Legislature, 2nd Called Session); Cook Political Report public Senate page (last updated Aug. 20, 2026), TX-15 and TX-35 race pages, and the Sep. 25, 2026 House ratings print page; Texas Tribune 2026 voter guides (Sep. 15–Oct. 5, 2026) and congressional profiles; CBS Texas; KERA; FOX 7; KLTV; The Texan; the Tennessean; Gov. Abbott's proclamations for the Nov. 3, 2026 special elections in Senate District 22 and House District 93; Wikipedia's 2026 Texas House elections page for district geography and 2024 margins, attributed as such.",
+  "countiesFile": "tools/banked/tx-build/wave93/counties.js",
+  "statewideFile": "tools/banked/tx-build/wave93/statewide.js",
+  "houseFile": "tools/banked/tx-build/wave93/house.js"
+}

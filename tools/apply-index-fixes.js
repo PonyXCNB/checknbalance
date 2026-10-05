@@ -57,10 +57,11 @@ const subRe = (label, re, to, already) => {
 subRe("head links", /<meta name="theme-color" content="#FBF9F4">\n(?!<link rel="canonical")/,
     `<meta name="theme-color" content="#FBF9F4">\n<link rel="canonical" href="https://checknbalance.org/">\n<link rel="preconnect" href="https://cdn.jsdelivr.net">\n`,
     /<link rel="canonical" href="https:\/\/checknbalance\.org\/">/);
-const HONEST_DESC = `<meta name="description" content="47 states fully built, DC marquee races, CA/MO/TX starter pages. Nonpartisan county-by-county guides to the November 3, 2026 ballot, working toward all fifty." />`;
+const HONEST_DESC = `<meta name="description" content="48 states fully built, DC marquee races, CA/MO starter pages. Nonpartisan county-by-county guides to the November 3, 2026 ballot, working toward all fifty." />`;
 subAny("meta description", [
   `<meta name="description" content="An interactive 50-state atlas of election coverage." />`,
   `<meta name="description" content="A nonpartisan, county-by-county guide to who is on your November 3, 2026 ballot — every state, every race, with sourced positions and the arguments for and against each candidate." />`,
+  `<meta name="description" content="47 states fully built, DC marquee races, CA/MO/TX starter pages. Nonpartisan county-by-county guides to the November 3, 2026 ballot, working toward all fifty." />`,
 ], HONEST_DESC);
 
 // ───────────── CSS ─────────────
@@ -73,7 +74,7 @@ sub("map-shell overflow", `.map-shell { background: var(--paper-pure); border: 1
 subRe("tooltip z-index", /(\.tooltip \{[^}]*?)z-index: 10;/, "$1z-index: 60;", /\.tooltip \{[^}]*?z-index: 60;/);
 sub("tooltip below variant", `  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }`,
     `  .tooltip.below { transform: translate(-50%, 26px); }\n  .tooltip-meta { opacity: .7; font-size: 11px; margin-top: 2px; }`);
-sub("home glow on callouts", `  .home-note {
+if (!s.includes(".states-list-link {")) sub("home glow on callouts", `  .home-note {
     text-align: center; font-size: 12px; color: var(--ink-soft);
     margin-top: 14px; display: none;
   }`, `  .callout.home .callout-abbr { fill: var(--gold-deep); font-weight: 700; animation: homeText 3.4s ease-in-out infinite; }
@@ -114,17 +115,19 @@ sub("hero lede", `    Click any state to meet their election candidates, county 
     `    A nonpartisan, county-by-county guide to who is on your ballot. Choose your state to begin.`);
 // The interim (Sept 3, 2026) legend, from the hours when DC was a starter, becomes the final one.
 // Runs BEFORE the main legend replacement so a page in that state converges.
-sub("legend interim → final", `    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(AK, CA, MO, TX, DC)</span></span>`,
-    `    <span class="legend-swatch"><i style="background:#D9BE85;border-color:#B8893C"></i> Marquee races built <span class="legend-count">(DC)</span></span>
-    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(CA, MO, TX)</span></span>`);
-sub("legend counts", `    <span class="legend-swatch"><i style="background:#D9BE85;border-color:#B8893C"></i> Marquee races built</span>
+const LEGEND_FINAL = `    <span class="legend-swatch"><i style="background:#D9BE85;border-color:#B8893C"></i> Marquee races built <span class="legend-count">(DC)</span></span>
+    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(CA, MO)</span></span>`;
+subAny("legend interim → final", [
+  `    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(AK, CA, MO, TX, DC)</span></span>`,
+  `    <span class="legend-swatch"><i style="background:#D9BE85;border-color:#B8893C"></i> Marquee races built <span class="legend-count">(DC)</span></span>
+    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(CA, MO, TX)</span></span>`,
+], LEGEND_FINAL);
+subAny("legend counts", [
+  `    <span class="legend-swatch"><i style="background:#D9BE85;border-color:#B8893C"></i> Marquee races built</span>
     <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework</span>`,
-    `    <span class="legend-swatch"><i style="background:#D9BE85;border-color:#B8893C"></i> Marquee races built <span class="legend-count">(DC)</span></span>
-    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(CA, MO, TX)</span></span>`);
-// The interim (Sept 3, 2026) legend, from the hours when DC was a starter, becomes the final one.
-sub("legend interim → final", `    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(AK, CA, MO, TX, DC)</span></span>`,
-    `    <span class="legend-swatch"><i style="background:#D9BE85;border-color:#B8893C"></i> Marquee races built <span class="legend-count">(DC)</span></span>
-    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(CA, MO, TX)</span></span>`);
+  `    <span class="legend-swatch"><i style="background:#D9BE85;border-color:#B8893C"></i> Marquee races built <span class="legend-count">(DC)</span></span>
+    <span class="legend-swatch"><i style="background:#F1E9D2;border-color:#E5DDC9"></i> Starter framework <span class="legend-count">(CA, MO, TX)</span></span>`,
+], LEGEND_FINAL);
 // DC's marquee races live in state.html's STATE_RACES (tools/apply-dc-races.js), so it wears the
 // lighter-gold tier honestly; it was briefly a starter on Sept 3, 2026 while that was untrue.
 subRe("DC tier", /const PARTIAL = new Set\(\[[^\]]*\]\);[^\n]*/, `const PARTIAL = new Set(["11"]); // DC — marquee races in state.html's STATE_RACES`, /const PARTIAL = new Set\(\["11"\]\); \/\/ DC — marquee races in state\.html/);
@@ -179,7 +182,7 @@ sub("fact 2", `        Of eligible voters do <em>not</em> participate in primari
       </div>
       <div class="fact-source">Source: Bipartisan Policy Center</div>`,
     `        Of eligible voters did <em>not</em> vote in the 2022 midterm primaries — turnout was 21.3%. Reformers set a
-        35% goal for 2026; halfway through this year's primary season only two states had reached it.
+        35% goal for 2026; as of the Bipartisan Policy Center's July 2026 update, only two states had reached it.
       </div>
       <div class="fact-source">Source: <a href="https://bipartisanpolicy.org/" rel="noopener">Bipartisan Policy Center</a>, primary-turnout reports (2022; July 2026 update)</div>`);
 sub("fact 3 source", `      <div class="fact-source">Source: study cited in Maine Law faculty publication</div>`,
@@ -206,8 +209,11 @@ sub("section lead", `      The races on this site — Senate, House, judges, cou
 sub("honeypot aria", `    <p class="contrib-hp">`, `    <p class="contrib-hp" aria-hidden="true">`);
 sub("privacy note", `      <p class="contrib-note">Your email is used only to reply to you. Nothing is published, shared, or added to a mailing list.</p>`,
     `      <p class="contrib-note">Your email is used only to reply to you. Submissions are stored by Netlify, our hosting provider; nothing is published, shared, or added to a mailing list.</p>`);
-sub("footer links", `    <div class="footer-meta">Last updated: September 2026</div>`,
-    `    <div class="footer-meta">Last updated: September 2026 · <a href="#contribute">Report a correction</a> · Every candidate claim is meant to trace to a real source; anything unconfirmed is marked [Verify].</div>`);
+subAny("footer links", [
+  `    <div class="footer-meta">Last updated: September 2026</div>`,
+  `    <div class="footer-meta">Last updated: September 2026 · <a href="#contribute">Report a correction</a> · Every candidate claim is meant to trace to a real source; anything unconfirmed is marked [Verify].</div>`,
+  `    <div class="footer-meta">Last updated: October 2026</div>`,
+], `    <div class="footer-meta">Last updated: October 2026 · <a href="#contribute">Report a correction</a> · Every candidate claim is meant to trace to a real source; anything unconfirmed is marked [Verify].</div>`);
 
 // ───────────── JS ─────────────
 sub("pinned CDN", `<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
@@ -226,7 +232,7 @@ d3.json(TOPO_URL).then((us) => {
   // their labels became transform(NaN,NaN) — ten console errors a load. Keep the 51 we name.
   const states = topojson.feature(us, us.objects.states).features.filter(d => ST[String(d.id).padStart(2, "0")])`);
 const OLD_OG = `<meta property="og:description" content="A nonpartisan, county-by-county guide to every race in every state, with sourced positions and the arguments for and against each candidate.">`;
-const NEW_OG = `<meta property="og:description" content="47 states fully built, DC marquee races, CA/MO/TX starter pages. Nonpartisan county-by-county guides to the November 3, 2026 ballot, working toward all fifty.">`;
+const NEW_OG = `<meta property="og:description" content="48 states fully built, DC marquee races, CA/MO starter pages. Nonpartisan county-by-county guides to the November 3, 2026 ballot, working toward all fifty.">`;
 if (s.includes(OLD_OG)) s = s.split(OLD_OG).join(NEW_OG);
 sub("social meta", `<link rel="canonical" href="https://checknbalance.org/">`,
     `<link rel="canonical" href="https://checknbalance.org/">
@@ -305,6 +311,18 @@ sub("form failure copy", `          ? "This form isn't accepting messages right 
 subRe("form console runbook", /          console\.error\(\n            "\[contribute\] submission failed: "[\s\S]*?\n          \);/,
       `          console.error("[contribute] submission failed: " + (err && err.message ? err.message : err) + (dead ? " \\u2014 the POST did not reach a form handler (see CLAUDE.md, owner to-do item 8)." : ""));`,
       /owner to-do item 8/);
+
+// Wave 93: Texas left the starter tier. Idempotent — a page already on the 48-state
+// wording returns early because `to` is present.
+sub("wave 93 built count",
+  "47 states fully built, DC marquee races, CA/MO/TX starter pages.",
+  "48 states fully built, DC marquee races, CA/MO starter pages.");
+sub("wave 93 legend built",
+  `Fully built <span class="legend-count">(47 states)</span>`,
+  `Fully built <span class="legend-count">(48 states)</span>`);
+sub("wave 93 legend starter",
+  `Starter framework <span class="legend-count">(CA, MO, TX)</span>`,
+  `Starter framework <span class="legend-count">(CA, MO)</span>`);
 
 if (missing.length) { console.error("✗ Anchors missing — index.html NOT written:\n  " + missing.join("\n  ")); process.exit(1); }
 const out = s.replace(/\n/g, eol);
