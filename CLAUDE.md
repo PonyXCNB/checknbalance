@@ -236,9 +236,10 @@ Finally `node tools/fit-map-frames.js` so the new page's map frame takes the sta
 4. The footer credits sources and a "Last updated" date (`SITE_META.lastUpdated` on each built
    state page — update it whenever that state's data changes).
 
-## Current state (as of October 5, 2026 — Wave 93 daily)
+## Current state (as of October 6, 2026 — Wave 94 daily)
+- **Wave 94 (Oct 6, 2026):** Verify **193 → 172** (21 tx.html markers cleared with Texas Tribune Sep. 30 / Oct. 6 reporting and FEC candidate-summary data through June 30, 2026). Live race updates: TX Senate (no debate set; Paxton's $18M Q3 claim), TX Governor (no debate set), TX-35 money + Trump rally, VA-7 Ollivant AML diagnosis (staying in). **CA pop-weighted plurality `d` CLOSED** (`tools/banked/ca-build/wave94-popweighted-d.md`: SWDB adjusted block pop reproduces all 52 official AB 604 district totals exactly; 9 split counties change `d` vs the block hint; 24 districts are plurality of no county). **MO Jefferson County Nov sample CLOSED** (CD-3 + CD-8 = `mo-cd120` 29099). Still no `ca.html` / `mo.html`. Grok 0.
 - **Built bloc = 48 states + DC PARTIAL marquee.** Fully built: everything except CA and MO (starter framework on the map) and DC (marquee-only). `ak.html` is built (Wave 85). `tx.html` is built (Wave 93). No `mo.html` / `ca.html` on disk.
-- **Verify backlog: grand total 193.** `nm.html` still has the one locked marker (do NOT invent-clear): SoS open seat — Ramona L. Goolsby differentiators (Wave 93 recheck: Money Trail NM + Transparency USA / CFIS still **May 27–Jun 27 / through 06/27/2026** only — closing cash ~$53,704 / $25k debt; no post–Sept 14 First General public aggregate located). `tx.html` adds **192** honest markers, almost all on solid-seat House cards whose 2026 issues pages were not re-fetched and on thin Libertarian/Green nominees. Competitive and open seats (Senate, Governor, TX-9, TX-15, TX-23, TX-28, TX-34, TX-35) are sourced; do not invent platforms to clear the solid-seat markers.
+- **Verify backlog: grand total 172 (Wave 94; was 193 at the end of Wave 93).** `nm.html` still has the one locked marker (do NOT invent-clear): SoS open seat — Ramona L. Goolsby differentiators (Wave 93 recheck: Money Trail NM + Transparency USA / CFIS still **May 27–Jun 27 / through 06/27/2026** only — closing cash ~$53,704 / $25k debt; no post–Sept 14 First General public aggregate located). `tx.html` added **192** honest markers in Wave 93 (**171** left after Wave 94, which cleared the TX-34/TX-35 platform markers, the TX-23/28/34 third-party FEC markers, Ted Brown's FEC marker and 11 challenger FEC markers), almost all on solid-seat House cards whose 2026 issues pages were not re-fetched and on thin Libertarian/Green nominees. Competitive and open seats (Senate, Governor, TX-9, TX-15, TX-23, TX-28, TX-34, TX-35) are sourced; do not invent platforms to clear the solid-seat markers.
 - **DE Sept 15 primary:** DOE **certified** results **Sep 18, 2026**. Mentioned-dates "pending" hits remain scanner false-positives against certified prose.
 - **NH:** governor + Senate/House official SoS clerk-return tallies via InDepthNH (Sep 10/12). SoS Excel still Akamai-403 to automated fetch.
 - **RI:** BOE-certified Sep 15 (Wave 80).
@@ -1271,7 +1272,7 @@ label's anchor was hit-tested with SVG `isPointInFill` to confirm it sits inside
    Guilford[5,6,9] Mecklenburg[8,12,14] Onslow[1,3] Polk[11,14] Robeson[7,8] Sampson[3,7] Wake[2,4,13]. All 14
    districts remain some county's plurality. Only CD1/CD3 moved in the redraw, and **the page's existing "6 GOP-leaning
    coastal counties into D1" note was exactly right**.
-   ➤ ⚠ Merits litigation is still pending — re-check before late October.
+   ➤ ✅ **Merits litigation is OVER (checked Wave 94, Oct 6, 2026):** the *Williams v. Hall* and *NAACP v. Berger* plaintiffs filed a stipulation of dismissal **with prejudice** on Fri **Jan 16, 2026** (Carolina Journal, Jan 20, 2026; Courthouse News), after the Nov 26, 2025 preliminary-injunction denial. SL 2025-95 governs Nov 2026 with no pending challenge; nc.html carries no "litigation pending" text, so no page edit was needed.
    ➤ **THE GENERAL LESSON: the county→district table on an OLD page can be wrong in ways nothing surfaces.** It is
    internally consistent, so every test passes; it predates our own `ds` model, so it silently hides races; and it was
    built once and never re-derived. **Every legacy page's map deserves the same audit nc.html just got** — sc.html and
@@ -1290,7 +1291,7 @@ Kansas certification and a handful cleared elsewhere. ✅ **The time-sensitive c
 ONE OF THEIR U.S. HOUSE RACES SINCE AUG 11.** See lesson #29. `nc.html` had the `ds` data and the map shading and a
 `getCountyElections` that read neither. Every test passed throughout, because every test asked the data and none asked
 the function. Fixed on all 45 pages, with a regression test verified to fail on the old code.
-⚠ **A SECOND STRUCTURAL GAP IS NOW OPEN AND SHOULD LEAD THE NEXT RUN:** the merge honours `ds`, but a number of pages
+✅ **RESOLVED (re-verified Wave 94, Oct 6, 2026): `node tools/ds-merge-audit.js` now reports 0 pages ignoring `ds`; every page with split counties carries `ds`, and the 8 no-split pages are at-large states (AK DE ND SD VT WY) or documented negatives (IA, WV).** Historical note follows. ⚠ **A SECOND STRUCTURAL GAP WAS OPEN:** the merge honours `ds`, but a number of pages
 carry **no `ds` data at all**, including states that certainly split counties (GA, VA, NJ, MD, SC, OH, IN, KY, CT).
 `node tools/ds-merge-audit.js` lists them in seconds. Some are genuine negatives already documented — Iowa's law forbids
 splitting counties, West Virginia splits none — but the rest never got the lesson-#12 derivation.

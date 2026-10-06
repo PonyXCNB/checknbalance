@@ -1266,3 +1266,24 @@ Ryan batch before push of `580d374`. Local only.
 - **Grok queries:** 0.
 - **Owner to-dos:** Voices remain 0 gaps; no other open owner UX items worked this run.
 - Draft PR #3 was the TX build branch; content FF-merged to local main for authorized auto-publish.
+
+## 2026-10-06 - Wave 94 (weekday 8am daily)
+
+### Research (free web + FEC bulk data; Grok 0)
+- **TX Senate:** no debate set — WFAA Sep. 22 (Paxton camp silent since Aug. 24; https://www.wbap.com/2026/09/23/paxton-said-hed-debate-talarico-now-his-campaign-has-gone-silent/), KXAN Oct. 3, Spectrum News Oct. 5 (https://spectrumlocalnews.com/tx/austin/news/2026/10/05/texas-senate-governor-election-debate). Paxton $18M Q3 claim — Texas Tribune Oct. 5 (https://www.texastribune.org/2026/10/05/ken-paxton-third-quarter-fundraising-texas-senate-race-2026/).
+- **TX Governor:** no Abbott–Hinojosa debate (Spectrum Oct. 5).
+- **TX-34 / TX-35:** Texas Tribune Sep. 30 congressional guide (https://www.texastribune.org/2026/09/30/texas-congress-house-elections-2026-midterms/) + Oct. 6 TX-35 feature (https://www.texastribune.org/2026/10/06/texas-35th-congressional-district-san-antonio-redistricting-elections/).
+- **FEC:** bulk candidate summary `webl26.zip` + candidate master `cn26.zip` (fec.gov/files/bulk-downloads/2026/, pulled Oct. 6, coverage through June 30, 2026). DEMO_KEY API rate-limited after one call — use bulk files.
+- **VA-7:** Ollivant AML diagnosis, staying in (WJLA Oct. 6: https://wjla.com/news/local/virginia-congressional-candidate-doug-ollivant-announces-blood-cancer-diagnosis-november-general-election-eugene-vindman-7th-district-acute-myeloid-leukemia ; Free Lance-Star/Daily Progress).
+- **NC map litigation:** dismissed with prejudice Jan 16, 2026 (Carolina Journal Jan 20, 2026: https://www.carolinajournal.com/nc-congressional-map-critics-drop-federal-lawsuits/). Owner-queue item 9 note closed.
+- **OK SQ 843:** OK Supreme Court struck it Oct. 5 (KFOR) — pre-signature, never on the Nov ballot; ok.html does not carry it. No edit.
+- **CA:** pop-weighted `d` CLOSED with SWDB adjusted block pop (52/52 district totals = official AB 604 dbf). `ca-build/wave94-popweighted-d.md`.
+- **MO:** Jefferson County Nov sample CD-3 + CD-8 = mo-cd120 29099 (CLOSED). STL County FIO URLs all 404; Warren no PDFs. `mo-gate/wave94-currency-test.md`.
+- **Left locked:** NM Goolsby (not re-checked this wave; last check Wave 93). TX-34 Eric Flores residency (2 markers) — not re-checked.
+
+### Edits
+- `tx.html`: 21 [Verify] cleared (TX-35 De La Cruz/Garcia platforms + attack lines; TX-34 Gonzalez platform + opponents; Royal/Mendoza/Durán FEC no-receipts; Ted Brown FEC; 11 challenger FEC June 30 totals). Senate/Governor/TX-35 notes updated. Sources line + SITE_META Oct 6.
+- `va.html`: VA-7 Ollivant note; SITE_META Oct 6 (Wave 94).
+- Verify **193 → 172**. Voices 0 gaps.
+
+2026-10-06 | tx.html va.html + CA/MO banks | Wave 94 | Free web + FEC bulk (0 Grok). Auto-publish after green tests.

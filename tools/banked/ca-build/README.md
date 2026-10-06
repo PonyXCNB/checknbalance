@@ -1,3 +1,5 @@
+> Wave 94 (2026-10-06): **pop-weighted plurality `d` CLOSED** -- see `wave94-popweighted-d.md` and `map/ca-county-cd-popweighted.json` (SWDB adjusted 2020 block pop; all 52 district totals equal the official AB 604 dbf). The "Plurality `d` is still OPEN" paragraph below is superseded.
+
 > Wave 92 recheck (2026-10-01): unchanged -- see wave92-recheck.md.
 
 ﻿# California build bank — Wave 88 (2026-09-25)
