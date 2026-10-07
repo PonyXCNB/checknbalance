@@ -1287,3 +1287,24 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **193 → 172**. Voices 0 gaps.
 
 2026-10-06 | tx.html va.html + CA/MO banks | Wave 94 | Free web + FEC bulk (0 Grok). Auto-publish after green tests.
+
+## 2026-10-07 - Wave 95 (catch-up; 8:07 AM daily skipped, PC offline)
+
+### Research (free web + FEC bulk data; Grok 0)
+- **TX Senate:** still no debate - Texas Tribune Oct. 7 (https://www.texastribune.org/2026/10/07/texas-debate-republicans-talarico-paxton-abbott-hinojosa-election/); Fox offer per Houston Chronicle Sep. 29.
+- **TX Governor:** Oct. 6 reports (July 1-Sep. 24) - Texas Tribune Oct. 6 (https://www.texastribune.org/2026/10/06/texas-governor-race-greg-abbott-gina-hinojosa-campaign-fundraising-2026/). No debate (Tribune Oct. 7).
+- **TX Railroad Commissioner:** Tribune Oct. 6 (https://www.texastribune.org/2026/10/06/jon-rosenthal-bo-french-fundraising-election-2026-texas-railroad-commission/); Dallas Morning News Oct. 6 (https://www.dallasnews.com/news/politics/article/bo-french-jon-rosenthal-donations-22464889.php) for cash on hand + Oct. 22 debate.
+- **TX-1:** KTBS Sep. 30 Moran profile; KLTV Oct. 2; yolandaprince.com/issues; KETK Feb. 23 Prince interview.
+- **TX-2:** Community Impact Aug. 31 CD-2 Q&A; stevetothforcongress.com/issues; shaunfinnieforcongress.com.
+- **TX-3:** Community Impact Aug. 20 CD-3 Q&A (Self, Hunt).
+- **TX-4:** Community Impact Feb. 18/19 primary Q&As (Pearce; Fallon did not respond); fallonforcongress.com/issues (Biden-era entries, noted as such).
+- **TX-5:** Lone Star Left Feb. 16 Hockett Q&A (candidate's own answers). Gooden left marked (only house.gov topic list found).
+- **FEC:** bulk `webl26.zip` re-pulled Oct. 7 (through June 30, 2026) for incumbent cash on hand.
+- **MO:** STL County BOE FIO URLs still 404; St. Louis American Sep. 8 guide banked as lead (`tools/banked/mo-gate/wave95-currency-test.md`).
+- **Not re-checked (inside 21 days, no trigger):** NM Goolsby (Wave 93), DE/RI/NH certifications.
+
+### Edits
+- `tx.html`: 17 [Verify] cleared (TX-1..TX-5); Senate/Governor/Railroad notes + money lines updated; Sources line; SITE_META + footer Oct 7.
+- Verify **172 → 155**. Voices 0 gaps.
+
+2026-10-07 | tx.html + MO bank | Wave 95 | Free web + FEC bulk (0 Grok). Auto-publish after green tests.
