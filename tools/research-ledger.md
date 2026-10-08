@@ -1308,3 +1308,21 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **172 → 155**. Voices 0 gaps.
 
 2026-10-07 | tx.html + MO bank | Wave 95 | Free web + FEC bulk (0 Grok). Auto-publish after green tests.
+
+## 2026-10-08 - Wave 96 (weekday 8am daily)
+
+### Research (free web + FEC bulk data; Grok 0)
+- **TX-6:** Fort Worth Report Oct. 7 roundup (https://fortworthreport.org/2026/10/07/3-fort-worth-area-us-house-races-affected-by-redistricting-to-watch-in-midterm-election/) - Ellzey website focuses; Minton website priorities + finances. Same piece covers TX-25 (Williams/Sims) and TX-30 (Haynes/Jackson): NOT yet applied - next run.
+- **TX-7:** Community Impact Aug. 28 general Q&A (https://communityimpact.com/heights-river-oaks-montrose/election/qa-meet-the-candidates-running-for-us-house-district-7/) - Fletcher, Hale, Ngabo.
+- **TX-8:** Community Impact Sep. 1 general Q&A (https://communityimpact.com/spring-klein/election/qa-meet-the-candidates-for-us-house-district-8/) - Steinmann, Jones.
+- **TX-10:** Community Impact Sep. 16 general Q&A (https://communityimpact.com/lake-travis-westlake/election/q-a-meet-the-candidates-for-us-house-district-10/) - Gober, Rourk.
+- **TX-12:** helifortexas.com/issues (Prilliman, attributed); craiggoldman.org (Molly Jane's Law); Fort Worth Report Jan. 2, 2025 (https://fortworthreport.org/2025/01/02/taking-over-from-granger-craig-goldman-already-knows-his-top-priority-in-washington/). Star-Telegram primary Q&A returned 500.
+- **FEC:** bulk `webl26.zip` + `cn26.zip` pulled Oct. 8 (summaries through June 30, 2026). No summary rows (candidate master only) for Prilliman (TX-12, no committee), Bauman (TX-16), Whitfield (TX-18), Sims (TX-25), Gray (TX-26), Gillespie (TX-33, no committee). FEC API DEMO_KEY rate-limited.
+- **MO:** St. Louis County BOE November FIO PDF now live (https://extcontent.stlouisco.com/BOE/FIO/NovemberFIO.pdf) - CD-1 + CD-2 only = `mo-cd120` 29189. Banked `tools/banked/mo-gate/wave96-stl-county-nov-fio.md`.
+- **Left marked:** Gooden (TX-5), TX-11, TX-13+ House cards. **Not re-checked (inside 21 days, no trigger):** NM Goolsby (Wave 93), DE/RI/NH certifications, CA bank.
+
+### Edits
+- `tx.html`: 24 [Verify] cleared (TX-6 x4, TX-7 x7, TX-8 x4, TX-10 x4, TX-12 x5); paired "Without a public issues page" lines replaced with sourced 2024 presidential share or FEC contrast; Sources line adds Fort Worth Report; SITE_META + footer Oct 8.
+- Verify **155 -> 131**. Voices 0 gaps.
+
+2026-10-08 | tx.html + MO bank | Wave 96 | Free web + FEC bulk (0 Grok). Auto-publish after green tests.
