@@ -1326,3 +1326,20 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **155 -> 131**. Voices 0 gaps.
 
 2026-10-08 | tx.html + MO bank | Wave 96 | Free web + FEC bulk (0 Grok). Auto-publish after green tests.
+
+## 2026-10-09 - Wave 97 (weekday 8am daily)
+
+### Research (free web + FEC bulk data; Grok 0)
+- **TX-25/TX-30:** Fort Worth Report Oct. 7 (https://fortworthreport.org/2026/10/07/3-fort-worth-area-us-house-races-affected-by-redistricting-to-watch-in-midterm-election/) - priorities per websites + June 30 finances.
+- **TX-5:** gooden.house.gov issue pages (attributed); Lone Star Left Feb. 16 (Hockett).
+- **Community Impact Q&As:** TX-11 (communityimpact.com/northwest-austin/election/qa-meet-the-us-house-district-11-candidates/), TX-13 (denton/election/q-a-meet-the-candidates-running-for-u-s-house-district-13/), TX-17 (round-rock/election/qa-get-to-know-the-candidates-for-us-house-of-representatives-district-17/), TX-21 (southwest-austin-dripping-springs/election/meet-the-candidates-for-us-house-of-representatives-district-21/), TX-24 (grapevine-colleyville-southlake/election/q-a-meet-the-candidates-running-for-u-s-house-district-24/), TX-27 (bastrop-cedar-creek/election/meet-the-candidates-for-us-house-of-representatives-district-27/), TX-31 (georgetown/election/qa-meet-the-candidates-for-us-house-district-31/), TX-37 (central-austin/election/qa-meet-the-candidates-in-the-us-house-district-37-ahead-of-nov-3-election/).
+- **TX-11 debate:** Permian Press Oct. 6 (https://www.permianpress.com/pfluger-reynolds-basin-pbs-debate/). **TX-13:** KAUZ Aug. 6 (Nair). **TX-21:** TPR Mar. 4.
+- **TX Senate/Gov debate status:** Texas Tribune Oct. 8 (https://www.texastribune.org/2026/10/08/texas-senate-james-talarico-flu-ken-paxton-debate-trump/); San Antonio Observer Oct. 8 (Hinojosa Oct. 15 Governor's Mansion challenge).
+- **FEC:** bulk `webl26.zip` re-pulled Oct. 9 (to temp, not committed). No summary rows: Bauman, Whitfield, Gray, Gillespie.
+- **Not re-checked (inside 21 days, no trigger):** NM Goolsby, DE/RI/NH certifications, CA bank, MO gate.
+
+### Edits
+- `tx.html`: 59 [Verify] cleared (TX-5, 11, 13, 17, 21, 24, 25, 27, 30, 31, 37 platforms/opposition lines; 14 challenger FEC lines); Senate + Governor debate notes; Sources line; SITE_META + footer Oct. 9.
+- Verify **131 -> 72**. Voices 0 gaps.
+
+2026-10-09 | tx.html | Wave 97 | Free web + FEC bulk (0 Grok). Auto-publish after green tests.
