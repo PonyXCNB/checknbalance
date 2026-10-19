@@ -1343,3 +1343,22 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **131 -> 72**. Voices 0 gaps.
 
 2026-10-09 | tx.html | Wave 97 | Free web + FEC bulk (0 Grok). Auto-publish after green tests.
+
+## 2026-10-19 - Wave 98 (catch-up; dailies Oct 13-16 and 19 skipped, PC offline)
+
+### Research (free web + FEC API; Grok 0)
+- **TX Senate:** San Antonio Current Oct. 12 (https://www.sacurrent.com/news/texas-news/ken-paxton-says-hes-been-trying-to-organize-debate-with-talarico/); Texas Politics Oct. 14; Texas Tribune Oct. 14 CNN town hall (https://www.texastribune.org/2026/10/14/texas-senate-james-talarico-ken-paxton-cnn-town-hall/); FEC Form 3 Oct. quarterly (Talarico C00919084 filing 2027782; Paxton C00901918 filing 2026455); Community Impact Q3 roundup; Texas Tribune Oct. 8 + Houston Public Media Oct. 13 (leaked audio / Social Security).
+- **TX Governor:** The Hill Oct. 15 (https://thehill.com/homenews/campaign/6152001-hinojosa-abbott-texas-governor/); FOX 7 Austin Oct. 15.
+- **TX RRC:** The Washington Sun Oct. 15 (https://www.washingtonsun.com/campaigns/democrats-debate-bo-french); Texas Tribune Oct. 17 profile (not yet applied to cards).
+- **TX House Q&As:** Community Impact TX-14 Sep. 2 (pearland-friendswood-manvel/election/qa-get-to-know-the-candidates-running-for-texas-14th-congressional-district/), TX-22 Sep. 1 (sugar-land-missouri-city/election/qa-get-to-know-the-candidates-for-congressional-district-22/), TX-26 Sep. 15 (frisco/election/q-a-meet-the-candidates-running-for-u-s-house-district-26/; Gill and Gray did not respond), TX-29 Sep. 25 (lake-houston-humble-kingwood/election/q-a-meet-the-candidates-running-for-congressional-district-29/; Fierro did not respond), TX-38 Aug. 26 (conroe-montgomery/government/meet-the-candidates-for-us-house-texas-district-38/ - NOTE the page interleaves some Bonck answers under McDonough's heading; only clearly attributed answers were used); Lufkin Daily News Oct. 17 CD-36 Q&A; fierrofortexas.com/meet-martha (attributed).
+- **FEC:** api.open.fec.gov candidates/totals (DEMO_KEY, Oct. 19, coverage through Sept. 30): Hart $24,316 / $5,935; Fierro $485 / $396; Bauman $2,919 / $2,484; Shook $32,061 / $2,515; Greene-Scott $63,438 / $1,792; McDonough $117,069 / $60,074; McMenemy $9,888 / $761; Bartie $36,703 / $5,102; Bonck $2.17M / $330,140; T. Nehls $311,369 / $86,296. Gray, Whitfield, Gillespie: zero / no coverage.
+- **LA-6:** no post-qualifying source for Fields' SD-14 filing (WBRZ/Illuminator are July) -> [Verify] added. Retry: LA SoS candidate inquiry in a real browser.
+- **MO:** KOMU Oct. 18 Boone voters guide (CD-3 Onder/Mann/Higgins + CD-4 Alford/Herrera/Holbrook; Auditor Fitzpatrick/Wilson/Coffell; Amendments 3/6/7/8 + Prop A). Clay BEC sample page empty in static HTML; warrencountymoclerk.com Cloudflare challenge.
+- **Not re-checked (no trigger):** NM Goolsby (First General CFIS report - retry next run), DE/RI/NH certifications (all certified in Sept), CA bank. Other-state Senate debates Oct. 13-15 (ME/GA/IA/AK) seen only via an aggregator (electiontracker.live) - not applied; MI El-Sayed/Rogers WXYZ debate Oct. 21.
+
+### Edits
+- `tx.html`: 33 [Verify] cleared (TX-14/22/26/29/36/38 + Bauman/Whitfield/Gillespie FEC lines); Senate/Governor/RRC notes; Sources line; SITE_META + footer Oct. 19.
+- `la.html`: LA-6 Fields line past tense + 1 [Verify]; SITE_META + footer Oct. 19.
+- Verify **72 -> 40**. Voices 0 gaps.
+
+2026-10-19 | tx.html la.html + MO bank | Wave 98 | Free web + FEC API (0 Grok). Auto-publish after green tests.
