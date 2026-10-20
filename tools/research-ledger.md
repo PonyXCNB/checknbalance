@@ -1362,3 +1362,30 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **72 -> 40**. Voices 0 gaps.
 
 2026-10-19 | tx.html la.html + MO bank | Wave 98 | Free web + FEC API (0 Grok). Auto-publish after green tests.
+
+## 2026-10-20 - Wave 99 (weekday 8am daily)
+
+### Research (free web; Grok 0)
+- **TX statewide polls:** UH Hobby School Oct 10-14 likely-voter survey, released Oct 19 (https://www.uh.edu/news-events/stories/2026/october/10192026-hobby-texas-races.php).
+- **TX Ag Commissioner:** Texas Standard Oct 19 eligibility dispute (https://texasstandard.org/stories/texas-agriculture-commissioner-race-sheets-tucker-eligibility/).
+- **TX Senate debate:** still none as of Oct 19 (KSAT Oct 19; CBS Texas Oct 14) - no note change beyond poll.
+- **TX RRC:** Oct 22 Dallas Press Club debate still scheduled; French confirmation still unreported (Texas Tribune Oct 17 profile). Re-check after Oct 22.
+- **TX-16:** El Paso Matters Oct 16 (https://elpasomatters.org/2026/10/16/el-paso-texas-elections-nov-3-2026-congress-district-16-veronica-escobar-adam-bauman/).
+- **TX-19:** Lubbock Avalanche-Journal May 28; Lubbock Lights May 15 runoff Q&A; rableforwesttexas.com/issues (attributed).
+- **TX-20:** San Antonio Report Oct 15 Castro + Baez profiles (sanantonioreport.org/congressional-district-20-midterm-election-joaquin-castro-profile/ and ...-edgardo-baez-profile/).
+- **TX-32:** Community Impact Sep 4 Q&A (communityimpact.com/richardson/election/qa-meet-the-candidates-running-for-us-house-district-32/).
+- **TX-33:** colinallred.com home page; patrickgillespie4congress33.com (attributed).
+- **TX AG-L Oxford:** SNAP Stance on Science survey Aug 11 (snapcoalition.org/initiatives/stance-on-science/candidates/tx/tom-oxford); lp.org bio. **Comptroller-L Echavarria-Garza:** Community Impact Sep 10 - did not respond (absence now sourced).
+- **LA-6 / SD-14:** Ballotpedia (Cleo Fields page + SD-14 page) lists Fields (D) and Joel Porter (unaffiliated); no news or SoS list seen (SoS portal is JS). Ballotpedia 2027 special-elections page 403 to fetch.
+- **MI Senate:** AP Oct 8 debate recap; WXYZ/Fox 17 Oct 21 7 p.m. debate; Michigan News Source early voting Oct 24-Nov 1.
+- **MO gate:** Clay BEC /elections page - Sept 11 2022-map statement only, no CD content (Oct 20). KC Star Clay guide (Oct 13) is an interactive that did not render. Warren not fetched (Cloudflare per Wave 98). Still NO mo.html.
+- **Not re-checked (no trigger):** NM Goolsby, CA bank, DE/RI/NH certifications. OK Treasurer pre-general report window opens today (Oct 20-26) - check next run.
+- **Dead ends (retry after 2026-11-10 unless trigger):** TX-18 Whitfield, TX-23 Mendoza, TX-26 Gray, TX-28 Duran, TX-34 Royal - not searched this run (budget); next run should try Houston Chronicle/Houston Public Media (TX-18), Rio Grande Valley outlets (TX-28/34), Community Impact (TX-26 Gray did not respond).
+
+### Edits
+- `tx.html`: 24 [Verify] cleared (TX-16 x4, TX-19 x4, TX-20 x4, TX-32 x3, TX-33 x4, statewide L x5); POLL lines on 8 statewide notes; Ag eligibility dispute; Sources line; SITE_META + footer Oct 20.
+- `la.html`: LA-6 Fields line; SITE_META + footer Oct 20.
+- `mi.html`: Senate debates/early voting; Sources line; SITE_META + footer Oct 20 (Wave 99).
+- Verify **40 -> 15**. Voices 0 gaps.
+
+2026-10-20 | tx.html la.html mi.html + MO gate | Wave 99 | Free web (0 Grok). Auto-publish after green tests.
