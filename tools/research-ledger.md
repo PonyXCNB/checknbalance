@@ -1389,3 +1389,24 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **40 -> 15**. Voices 0 gaps.
 
 2026-10-20 | tx.html la.html mi.html + MO gate | Wave 99 | Free web (0 Grok). Auto-publish after green tests.
+
+## 2026-10-21 - Wave 100 (weekday 8am daily)
+
+### Research (free web; Grok 0)
+- **TX-18:** Houston Chronicle endorsement Oct 13, 2026 (houstonchronicle.com/opinion/endorsements/article/christian-menefee-congress-district-18-2026-22463144.php); Chronicle Oct 10, 2025 special-election candidate roundup (.../politics/houston/article/cd-18-special-election-candidates-21081239.php). christianmenefee.com issues list exists (not needed).
+- **TX-23:** El Paso Matters Oct 17 (elpasomatters.org/2026/10/17/el-paso-texas-elections-nov-3-2026-congress-district-23-brandon-herrera-ben-mendoza-katy-padilla-stout/); KSAT Oct 20 (background only).
+- **TX-26 Gray / TX-34 Royal:** lptexas.org/candidates; lp.org/candidate/christopher-barry-royal/. No issue pages for either.
+- **TX-27 Cloud:** Port Aransas South Jetty Feb 12, 2026 primary Q&A (portasouthjetty.com/articles/congressional-candidates-answer-questions/).
+- **TX-28 Duran:** marlonduran.com and /about (attributed). Washington Examiner Oct 17 (Tijerina debate challenge).
+- **TX-34:** The Texan Oct 16 (TSU poll, Q3 FEC); Spectrum News Oct 14 (background); Washington Examiner Oct 17 (debate canceled, citing Corpus Christi Cronica); FEC Form 2 Sept 2 (docquery 202609029904074737: San Benito PO box only). Flores residency still unresolved -> 2 [Verify] kept.
+- **NM Goolsby:** w4politics.org/nm/finance (CFIS cycle summary, First General filed Sept 14). CFIS login.cfis.sos.state.nm.us returns F5 403 to automated fetch; Transparency USA is JS-rendered.
+- **MO gate:** Clay voteclaycountymo.gov Sample Ballots page links only an ArcGIS representatives lookup (cceb.maps.arcgis.com appid e64be8ef...), not a sample ballot. Still open: Clay/Warren samples, Onder/Herrera parcels. No mo.html.
+- **Checked, no change:** TX Senate debate (still none as of Oct 20); MI Senate debate tonight Oct 21 (already on page); OK Pre-General reports due Oct 26 (not filed yet); TX RRC debate Oct 22.
+- **Dead ends (retry after trigger):** Flores home address (retry if a news outlet reports it); Clay sample ballot PDFs.
+
+### Edits
+- `tx.html`: 12 [Verify] cleared (TX-18 x4, TX-23 x2, TX-26 x1, TX-27 x1, TX-28 x2, TX-34 Royal x2); TX-23 money refresh (Herrera/Padilla Stout) + debate line; TX-34 poll/money/debate; TX-28 debate line; TX-18 endorsement line; Sources line; SITE_META + footer Oct 21.
+- `nm.html`: Goolsby CFIS First General figures; SITE_META + footer Oct 21.
+- Verify **15 -> 2**. Voices 0 gaps.
+
+2026-10-21 | tx.html nm.html + MO gate | Wave 100 | Free web (0 Grok). Auto-publish after green tests.
