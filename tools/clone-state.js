@@ -269,6 +269,13 @@ for (const needle of [donorName, `${donorAB}_STATE_FIPS`, `${donorab}map`,
   if (n > 0) leftovers.push(`${needle} x${n}`);
 }
 
+// The donor's jsDelivr tags are copied through unchanged. Refuse a page whose
+// map libraries are not pinned with the same SRI hashes the live pages use.
+if (!html.includes('src="https://cdn.jsdelivr.net/npm/d3@7.9.0" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous"'))
+  missed.push("d3@7.9.0 script tag with SRI");
+if (!html.includes('src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0" integrity="sha384-Ukv1p/xTma6P4/2bY5KzWBw+ydSpXmhCMtyciIQVDJ1RmOxtCYNMF1uXT9T63H67" crossorigin="anonymous"'))
+  missed.push("topojson-client@3.1.0 script tag with SRI");
+
 if (missed.length) {
   console.error("\n✗ These replacements found NO match in the donor — the page was NOT written:");
   for (const m of missed) console.error(`    ${m}`);

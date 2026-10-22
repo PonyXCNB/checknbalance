@@ -179,10 +179,14 @@ sub("footer", `    <div class="footer-crest"><strong>Elections Hub</strong> · A
     `    <div class="footer-crest"><strong id="footer-crest">Elections Hub</strong> · A civic side-project, not affiliated with any government agency.</div>
     <div class="footer-meta">Last updated: <span id="last-updated">${LAST_UPDATED}</span></div>`);
 subRe("footer date current", /Last updated: <span id="last-updated">[^<]*<\/span>/, `Last updated: <span id="last-updated">${LAST_UPDATED}</span>`);
+opt(`<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0"></script>`,
+    `<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0" integrity="sha384-Ukv1p/xTma6P4/2bY5KzWBw+ydSpXmhCMtyciIQVDJ1RmOxtCYNMF1uXT9T63H67" crossorigin="anonymous"></script>`);
 sub("pinned CDN", `<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>`,
-    `<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0"></script>
-<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0"></script>`);
+    `<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0" integrity="sha384-Ukv1p/xTma6P4/2bY5KzWBw+ydSpXmhCMtyciIQVDJ1RmOxtCYNMF1uXT9T63H67" crossorigin="anonymous"></script>`);
 
 // ───────────── JS ─────────────
 subRe("abbr handling + redirect chain", /\/\/ ---- Read \?state=XX \(abbreviation\) ----\nconst params = new URLSearchParams\(window\.location\.search\);\nlet abbr = \(params\.get\("state"\) \|\| "CA"\)\.toUpperCase\(\);\nif \(!STATES\[abbr\]\) abbr = "CA";\n\/\/ If someone lands here for NC, send them to the full build\.\n(?:if \(abbr === "[A-Z]{2}"\) \{ window\.location\.replace\("[a-z]{2}\.html"\); \}\n)+/,

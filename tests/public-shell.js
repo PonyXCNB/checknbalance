@@ -32,7 +32,8 @@ function redirectRules(toml) {
 const toml = fs.readFileSync(path.join(SITE_ROOT, "netlify.toml"), "utf8");
 const rules = redirectRules(toml);
 check(rules.length > 0 && rules.every(r => r.from && r.to && r.status), "netlify.toml: every redirect has from, to, and status");
-check(!toml.includes("force = true"), "netlify.toml: redirects do not force over a real file");
+check(rules.filter(r => r.status === "302").every(r => !r.force), "netlify.toml: pretty-path redirects do not force over a future real page");
+check(rules.some(r => r.status === "404" && r.force), "netlify.toml: internal files are forced 404s");
 check(!fs.existsSync(path.join(SITE_ROOT, "_redirects")), "redirects live only in netlify.toml, not a second _redirects file");
 
 for (const [ab, AB] of ALIASES) {
@@ -65,7 +66,7 @@ const EXTRA = [
 for (const [from, AB] of EXTRA) {
   const target = `/state.html?state=${AB}`;
   const hit = rules.filter(r => r.from === from);
-  check(hit.length === 1 && hit[0].to === target && hit[0].status === "302",
+  check(hit.length === 1 && hit[0].to === target && hit[0].status === "302" && !hit[0].force,
     `netlify.toml: ${from} → ${target} (302)`);
 }
 
@@ -121,7 +122,7 @@ check(/var PLAUSIBLE_DOMAIN = ""/.test(analytics), "analytics.js ships with an e
 check(!/G-[A-Z0-9]{6,}/.test(analytics) && !/UA-\d+/.test(analytics), "analytics.js has no Google measurement ID");
 new Function(analytics);
 
-const publicPages = ["index.html", "states.html", "state.html", ...built];
+const publicPages = ["index.html", "states.html", "state.html", "404.html", ...built];
 const untagged = publicPages.filter(page => {
   const src = fs.readFileSync(path.join(SITE_ROOT, page), "utf8");
   return src.split('src="analytics.js"').length !== 2;
@@ -135,5 +136,98 @@ const utm = fs.readFileSync(path.join(SITE_ROOT, "docs/UTM-CONVENTION.md"), "utf
 check(utm.includes("utm_source=x") && utm.includes("cnb-calendar-YYYY-MM"), "UTM convention: source x and calendar campaign");
 check(utm.includes("nc.html") && utm.includes("state.html?state=CA"), "UTM convention lands on canonical pages, not the CA redirect");
 check(!locs.some(u => /^https:\/\/checknbalance\.org\/[a-z]{2}$/.test(u)), "sitemap lists built states as .html, not bare /nc paths");
+
+// ---- security headers (enforced CSP, not report-only) ----
+const headerBlock = (toml.split("[[headers]]")[1] || "").split("[[redirects]]")[0];
+check(headerBlock.includes('for = "/*"'), "netlify.toml: security headers apply to every path");
+for (const line of [
+  'X-Content-Type-Options = "nosniff"',
+  'X-Frame-Options = "DENY"',
+  'Referrer-Policy = "strict-origin-when-cross-origin"',
+  'Permissions-Policy = "camera=(), microphone=(), geolocation=()"',
+  'Strict-Transport-Security = "max-age=31536000; includeSubDomains"',
+  "frame-ancestors 'none'",
+  "https://cdn.jsdelivr.net",
+  "https://fonts.googleapis.com",
+  "https://fonts.gstatic.com",
+  "https://ipapi.co",
+  "https://plausible.io",
+  "'unsafe-inline'",
+]) {
+  check(headerBlock.includes(line), `netlify.toml headers include ${line}`);
+}
+check(headerBlock.includes('Content-Security-Policy = "') && !headerBlock.includes("Content-Security-Policy-Report-Only"),
+  "netlify.toml: Content-Security-Policy is enforced");
+
+// ---- SRI on every jsDelivr script tag ----
+const D3_TAG = '<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous"></script>';
+const TOPO_TAG = '<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0" integrity="sha384-Ukv1p/xTma6P4/2bY5KzWBw+ydSpXmhCMtyciIQVDJ1RmOxtCYNMF1uXT9T63H67" crossorigin="anonymous"></script>';
+let sriTags = 0;
+for (const page of publicPages) {
+  const src = fs.readFileSync(path.join(SITE_ROOT, page), "utf8");
+  const tags = [...src.matchAll(/<script\b[^>]*cdn\.jsdelivr\.net[^>]*>/g)].map(m => m[0]);
+  if (page === "states.html" || page === "404.html") {
+    check(tags.length === 0, `${page}: no jsDelivr script (nothing to hash)`);
+    continue;
+  }
+  check(src.includes(D3_TAG), `${page}: d3@7.9.0 script has the sha384 integrity and crossorigin`);
+  check(src.includes(TOPO_TAG), `${page}: topojson-client@3.1.0 script has the sha384 integrity and crossorigin`);
+  check(tags.length === 2 && tags.every(t => t.includes("integrity=\"sha384-") && t.includes('crossorigin="anonymous"')),
+    `${page}: every jsDelivr script tag carries SRI`);
+  sriTags += tags.length;
+}
+check(sriTags === (publicPages.length - 2) * 2, `SRI on ${sriTags} jsDelivr script tags`);
+for (const tool of ["tools/apply-index-fixes.js", "tools/apply-review-fixes.js", "tools/apply-state-page-fixes.js", "tools/clone-state.js"]) {
+  const src = fs.readFileSync(path.join(SITE_ROOT, tool), "utf8");
+  check(src.includes("sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i")
+    && src.includes("sha384-Ukv1p/xTma6P4/2bY5KzWBw+ydSpXmhCMtyciIQVDJ1RmOxtCYNMF1uXT9T63H67"),
+    `${tool}: future pages keep the jsDelivr SRI hashes`);
+}
+
+// ---- internal files 404, public files do not ----
+// Netlify splats match only when * is at the end of the path. "/tools/*" matches
+// "/tools/anything", including nested files. It does not match "/tools" itself.
+function ruleMatches(from, pathname) {
+  if (from.endsWith("/*")) return pathname.startsWith(from.slice(0, -1));
+  return pathname === from;
+}
+const HIDDEN = [
+  "/CLAUDE.md", "/MIDNIGHT_PUSH_NOTES.md", "/netlify.toml", "/.gitignore",
+  "/package.json", "/package-lock.json", "/yarn.lock", "/pnpm-lock.yaml",
+  "/docs", "/docs/", "/docs/*",
+  "/tools", "/tools/", "/tools/*",
+  "/tests", "/tests/", "/tests/*",
+  "/node_modules", "/node_modules/", "/node_modules/*",
+];
+const hiddenRules = rules.filter(r => r.status === "404");
+check(hiddenRules.every(r => r.force && r.to === "/404.html"), "every 404 rule forces /404.html");
+for (const from of HIDDEN) {
+  const hit = hiddenRules.filter(r => r.from === from);
+  check(hit.length === 1, `netlify.toml hides ${from}`);
+}
+const PUBLIC_ROOT = new Set(["index.html", "states.html", "state.html", "404.html", "analytics.js",
+  "sitemap.xml", "robots.txt", "favicon.ico", "favicon.png", "favicon.svg", "apple-touch-icon.png", ...built]);
+function walk(dir, base) {
+  const out = [];
+  for (const name of fs.readdirSync(dir)) {
+    if (name === ".git") continue;
+    const abs = path.join(dir, name);
+    const rel = base ? `${base}/${name}` : name;
+    if (fs.statSync(abs).isDirectory()) out.push(...walk(abs, rel));
+    else out.push(rel);
+  }
+  return out;
+}
+const leaked = [];
+const overblocked = [];
+for (const rel of walk(SITE_ROOT, "")) {
+  const pathname = "/" + rel;
+  const hidden = hiddenRules.some(r => ruleMatches(r.from, pathname));
+  const isPublic = !rel.includes("/") && PUBLIC_ROOT.has(rel);
+  if (isPublic && hidden) overblocked.push(pathname);
+  if (!isPublic && !hidden) leaked.push(pathname);
+}
+check(overblocked.length === 0, `404 rules leave public files alone${overblocked.length ? " — " + overblocked.join(", ") : ""}`);
+check(leaked.length === 0, `every non-public file is covered by a 404 rule${leaked.length ? " — " + leaked.slice(0, 12).join(", ") : ""}`);
 
 summary("public-shell");

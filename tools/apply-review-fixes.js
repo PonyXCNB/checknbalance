@@ -277,10 +277,14 @@ for (const page of pages) {
         supporters and opponents say. On a desktop, hover for a quick preview.`);
   sub("dialog semantics", `<aside class="panel" id="panel" aria-hidden="true">`,
       `<aside class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title" aria-hidden="true">`);
+  opt(`<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0"></script>`,
+      `<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0" integrity="sha384-Ukv1p/xTma6P4/2bY5KzWBw+ydSpXmhCMtyciIQVDJ1RmOxtCYNMF1uXT9T63H67" crossorigin="anonymous"></script>`);
   sub("pinned CDN versions", `<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>`,
-      `<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0"></script>
-<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0"></script>`);
+      `<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0" integrity="sha384-Ukv1p/xTma6P4/2bY5KzWBw+ydSpXmhCMtyciIQVDJ1RmOxtCYNMF1uXT9T63H67" crossorigin="anonymous"></script>`);
   // Footer crest: two-letter form everywhere (ia/in/ky/oh spelled the state out).
   if (stateName) s = s.replace(`<strong>${stateName} Elections Hub</strong> ·`, `<strong>${AB} Elections Hub</strong> ·`);
   // Static footer fallback date = SITE_META.lastUpdated, so the two can never disagree.

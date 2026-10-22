@@ -3,6 +3,27 @@
 [build]
   publish = "."
 
+# Security headers on every response, including HTML, the 404 page, and assets.
+# CSP is enforced (not report-only). script-src and style-src allow 'unsafe-inline'
+# because each page is one file: 50 pages carry a large inline <script>, and every
+# page carries an inline <style> plus style="" attributes. A static host cannot
+# put a fresh nonce on each response. Maps need cdn.jsdelivr.net for d3,
+# topojson-client, and the us-atlas JSON fetch. Fonts load from Google.
+# ipapi.co is the home-state highlight on the national map (it fails open).
+# plausible.io is unused until PLAUSIBLE_DOMAIN is set in analytics.js; it is
+# allowed so turning that on does not silently break. d3's bundle contains a
+# CSV parser that calls new Function; the pages never call it, so 'unsafe-eval'
+# is not allowed.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self'; connect-src 'self' https://cdn.jsdelivr.net https://ipapi.co https://plausible.io; form-action 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'"
+
 # California, Missouri, and the District of Columbia do not have their own
 # pages yet. Texas does (tx.html, Wave 93). /ca.html (and the bare /ca path)
 # were 404s. Send those addresses to the starter or marquee page that already
@@ -148,3 +169,132 @@
   from = "/district-of-columbia/"
   to = "/state.html?state=DC"
   status = 302
+
+# Hide repo files that are not the website. The force flag is on so Netlify
+# returns 404 even though the file sits in the publish directory. These rules
+# are AFTER the 302s above, and none of them match /ca, /mo, /tx, /dc, or a real page.
+# Asterisks only work at the end of a redirect path (Netlify ignores a
+# mid-path star such as /*.md), so whole folders are blocked with a splat and
+# root files are named one by one. Do not add analytics.js, the HTML pages,
+# sitemap.xml, robots.txt, the favicons, or apple-touch-icon.png here.
+# The 302 rules above stay force-off so a future ca.html is served as a file.
+
+[[redirects]]
+  from = "/CLAUDE.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/MIDNIGHT_PUSH_NOTES.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/netlify.toml"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/.gitignore"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/package.json"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/package-lock.json"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/yarn.lock"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/pnpm-lock.yaml"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/docs"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/docs/"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/docs/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/tools"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/tools/"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/tools/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/tests"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/tests/"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/tests/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/node_modules"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/node_modules/"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/node_modules/*"
+  to = "/404.html"
+  status = 404
+  force = true

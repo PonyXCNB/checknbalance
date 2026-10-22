@@ -216,10 +216,13 @@ subAny("footer links", [
 ], `    <div class="footer-meta">Last updated: October 2026 · <a href="#contribute">Report a correction</a> · Every candidate claim is meant to trace to a real source; anything unconfirmed is marked [Verify].</div>`);
 
 // ───────────── JS ─────────────
-sub("pinned CDN", `<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+subAny("pinned CDN", [
+  `<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>`,
-    `<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0"></script>
-<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0"></script>`);
+  `<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0"></script>`,
+], `<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0" integrity="sha384-Ukv1p/xTma6P4/2bY5KzWBw+ydSpXmhCMtyciIQVDJ1RmOxtCYNMF1uXT9T63H67" crossorigin="anonymous"></script>`);
 subRe("dead CAP table", /\/\/ State capitals: \[lng, lat\]\nconst CAP = \{[\s\S]*?\n\};\n/, "", /^(?![\s\S]*const CAP = \{)/);
 subRe("dead starPath", /function starPath\(cx, cy, r\) \{[\s\S]*?\n\}\n\n/, "", /^(?![\s\S]*function starPath)/);
 sub("cdn guard", `d3.json(TOPO_URL).then((us) => {
