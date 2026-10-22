@@ -1410,3 +1410,23 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **15 -> 2**. Voices 0 gaps.
 
 2026-10-21 | tx.html nm.html + MO gate | Wave 100 | Free web (0 Grok). Auto-publish after green tests.
+
+## 2026-10-22 - Wave 101 (weekday 8am daily)
+
+### Research (free web; Grok 0)
+- **Sabato House ratings:** centerforpolitics.org/crystalball/the-house-28-rating-changes/ (Kondik, Oct 20, 2026) - 28 moves, all toward Democrats; 26 on built pages carded.
+- **Cook Senate:** CNN live updates Oct 20, 2026 (cnn.com/2026/10/20/politics/live-news/midterm-election-congress) - SC, MS, MN.
+- **MI Senate debate Oct 21:** michiganpublic.org/politics-government/2026-10-22/final-michigan-us-senate-debate-puts-rogers-el-sayed-against-each-other-on-the-issues; clickondetroit.com Oct 21. AP piece timed out (not needed).
+- **TX RRC debate:** texastribune.org/2026/10/20/bo-french-jon-rosenthal-texas-railroad-commission-debate-canceled-election/.
+- **TX Senate debate:** yahoo.com/news/politics/articles/talarico-wants-tmz-host-debate-191215149.html; fox4news.com/news/talarico-paxton-senate-debate-tmz.
+- **PA-7:** wvia.org/news/local/2026-10-20/brooks-drops-out-of-the-only-lehigh-valley-congressional-debate-in-pa-7th-district-race.
+- **NV-1 Willert:** FEC Form 99 Oct 16 says no longer running - page already lists him as not qualified; no change.
+- **TX-34 Flores residency:** search Oct 22 found only Tribune Jul 2025 + FEC Form 2; 2 [Verify] kept. Retry only on new reporting.
+- **MO gate:** voteclaycountymo.gov/elections (Sept 11 2022-map statement only); warrencountymoclerk.com Cloudflare-gated. Still no mo.html.
+- **Dead ends / leads not carded:** Cook House moves (IA-1, IA-3, PA-7, PA-10, MT-1) seen only in mwcllc.com Oct 21 summary - need Cook primary source + date.
+
+### Edits
+- 21 pages (az co ia in ks md mi mn ms nc ne nh nj nv ny oh pa sc tx wa wi): rating-change lines, debate updates, SITE_META + footer span Oct 22, 2026 (Wave 101).
+- Verify **2 -> 2**. Voices unchanged.
+
+2026-10-22 | 21 pages + MO gate | Wave 101 | Free web (0 Grok). Auto-publish after green tests.
