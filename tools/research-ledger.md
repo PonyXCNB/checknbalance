@@ -1430,3 +1430,21 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **2 -> 2**. Voices unchanged.
 
 2026-10-22 | 21 pages + MO gate | Wave 101 | Free web (0 Grok). Auto-publish after green tests.
+
+## 2026-10-23 - Wave 102 (weekday 8am daily)
+
+### Research (free web; Grok 0)
+- **Cook House (primary source):** cookpolitical.com/ratings/house-race-ratings (page dated Oct 23, 2026) read in full; Cook analysis index lists House overviews Sept 25, Oct 9 ("Eighteen More House Race Ratings Move in Democrats' Favor"), Oct 16 ("Eleven More House Races Shift Toward Democrats", names MT-1 -> Toss Up) and Oct 23 ("Democrats' Projected Majority Grows as 19 More House Races Shift Away From the GOP", paywalled - the 19 names are NOT public, so no card claims an Oct 23 move date; cards state the current rating). Sept 25 / Oct 9 from->to pairs from 270toWin's Cook history page (270towin.com/2026-house-election/cook-political-report-2026-house-ratings) + Axios Oct 9 + USA Today Sept 25. Resolves Wave 101 lead (IA-1/IA-3/PA-7/PA-10 Lean D since Oct 9; MT-1 Toss Up since Oct 16).
+- **Cook Senate / Governor pages:** cookpolitical.com/ratings/senate-race-ratings (Oct 20) and /governor-race-ratings (Oct 13).
+- **Inside Elections:** rollcall.com/2026/10/20/rating-changes-democrats-inside-elections/ (Gonzales, Oct 20) - 30 moves; all 30 are on built pages and carded (incl. WY-AL, NJ-9, NY-19).
+- **Sabato governors:** centerforpolitics.org/crystalball/the-governors-ohio-to-leans-democratic-among-other-changes-as-dems-eye-gubernatorial-majority/ (Oct 22) - AL, MI, OH, OK.
+- **TX Senate:** fox7austin.com Oct 22 (Fox News poll Oct 21: 49-49; no debate; early voting through Oct 30); Washington Times / The Hill Oct 22 (TMZ exchange, already carded Wave 101).
+- **TX-34 Flores residency:** recheck Oct 23 - Punchbowl (2025, pre-map: lives in Mission), FEC Form 3 Oct 15 + Form 6 Oct 21 (San Benito PO box only), Ballotpedia mailing address PO box. Whether Mission is in Plan C2333 CD-34 not established -> 2 [Verify] kept. Retry only on new reporting.
+- **Dead ends:** midtermmonday.com/movers Cloudflare-gated to fetch (search snippet only, used as a lead).
+
+### Edits
+- 32 pages: Cook rating lines (63 House notes + 14 Senate/Governor notes), Inside Elections Oct 20 lines (30 notes: 22 House, 5 Senate, 3 Governor), Sabato Oct 22 governor lines (4), TX Senate Fox poll; SITE_META + footer span Oct 23, 2026 (Wave 102).
+- tests/public-shell.js: the 404-coverage walk now skips git-ignored local files (.claude/launch.json was failing the suite; Netlify builds from git, so ignored files never publish).
+- Verify **2 -> 2**. Voices unchanged (0 missing / 1687).
+
+2026-10-23 | 32 pages + public-shell test | Wave 102 | Free web (0 Grok). Auto-publish after green tests.

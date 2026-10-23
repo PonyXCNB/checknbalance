@@ -218,9 +218,16 @@ function walk(dir, base) {
   }
   return out;
 }
+// Netlify builds from the git repo, so git-ignored local files (e.g. .claude/) never
+// publish. Skip them; fall back to the full walk if git is unavailable.
+let ignoredSet = new Set();
+try {
+  const out = require("child_process").execSync("git ls-files --others --ignored --exclude-standard", { cwd: SITE_ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024, stdio: ["ignore", "pipe", "ignore"] });
+  ignoredSet = new Set(out.split(/\r?\n/).filter(Boolean));
+} catch (e) { /* no git: check everything */ }
 const leaked = [];
 const overblocked = [];
-for (const rel of walk(SITE_ROOT, "")) {
+for (const rel of walk(SITE_ROOT, "").filter(r => !ignoredSet.has(r))) {
   const pathname = "/" + rel;
   const hidden = hiddenRules.some(r => ruleMatches(r.from, pathname));
   const isPublic = !rel.includes("/") && PUBLIC_ROOT.has(rel);
