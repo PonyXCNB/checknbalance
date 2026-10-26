@@ -1448,3 +1448,21 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **2 -> 2**. Voices unchanged (0 missing / 1687).
 
 2026-10-23 | 32 pages + public-shell test | Wave 102 | Free web (0 Grok). Auto-publish after green tests.
+
+## 2026-10-26 - Wave 103 (weekday 8am daily)
+
+### Research (free web; Grok 0)
+- **Cook:** cookpolitical.com/ratings/governor-race-ratings (page dated Oct 23, 2026: OH Lean D, ME Solid D, SD Solid R); /house-race-ratings still Oct 23 (no change since Wave 102); /senate-race-ratings still Oct 20. OH Gov move: cookpolitical.com/analysis/governors/ohio-governor/amid-ad-uproar-ohio-governors-race-moves-toss-lean-democrat (Oct 23) + thehill.com Oct 23.
+- **Sabato / Inside Elections:** no new moves since Oct 22 (Sabato) / Oct 20 (Inside Elections, Roll Call). midtermmonday.com/movers used only as a lead.
+- **Polls:** Marist OH (Oct 20), MI (Oct 21), IA (Oct 15) at maristpoll.marist.edu; Fox News Maine topline PDF (Oct 16-20, released Oct 22); Emerson/KELOLAND SD (Oct 23). Not used (not reputable / lead only): RedBox Research (afightworthhaving.com), Trafalgar via 535.wtf, activote.
+- **Debates:** NBC Oct 15 (ME final, 4 debates); WFAE Oct 12 (SC Oct 11 only debate); CNN Oct 21 (KS); GPB Oct 14 (GA Oct 13); Alaska Public Media Oct 15 (AK); MPR Oct 16 (MN); Des Moines Register Oct 13 (IA final); Axios Cincinnati Oct 22 (OH: no Senate debate, Acton declined); Boston Globe + NHPR Oct 22 (NH schedule; NHPR Oct 29 Senate forum cancelled). electiontracker.live Senate debate tracker = lead only.
+- **NH Senate third candidate:** WMUR Oct 15 (Laplante, Constitution Party, petition-qualified); ballot-access.org Sept 2; laplante4constitutionalnh.com (attributed). Carded as party I (Constitution Party line, same convention as id.html).
+- **TX:** Spectrum News 1 Oct 23 (>2M early votes by Oct 22; Harris first-day midterm record); Texas Tribune Oct 26 TX-34 profile (CLF money shift, Trump rally Oct 27 Corpus Christi, FEC totals). TX SoS early-vote page fetch failed (WAF).
+- **TX-34 Flores residency:** Texas Tribune Oct 26 profile does not mention his residence; search-engine summary claiming Mission is in the new CD-34 was NOT sourced - 2 [Verify] kept. Retry only on new reporting.
+- **Leads not carded:** Texas Tribune/ProPublica Oct 23 Paxton $600K investment story (not read in full); Trump to campaign for Hyde-Smith Oct 26 (HuffPost Oct 24 - schedule only); UFL Election Lab TX early-vote CSV (4.37M by Oct 26 file - not cross-checked).
+
+### Edits
+- 12 pages (ak ga ia ks me mi mn nh oh sc sd tx): 20 race notes updated + Laplante candidate card on nh.html; SITE_META + footer span Oct 26, 2026 (Wave 103).
+- Verify **2 -> 2**. Voices: Laplante card carries supporters/opponents (0 gaps).
+
+2026-10-26 | 12 pages | Wave 103 | Free web (0 Grok). Auto-publish after green tests.
