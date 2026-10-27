@@ -1466,3 +1466,24 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **2 -> 2**. Voices: Laplante card carries supporters/opponents (0 gaps).
 
 2026-10-26 | 12 pages | Wave 103 | Free web (0 Grok). Auto-publish after green tests.
+
+## 2026-10-27 - Wave 104 (weekday 8am daily)
+
+### Research (free web; Grok 0)
+- **Ratings:** no new moves. Cook House page still dated Oct 23, Senate Oct 20, Governor Oct 23 (all three pages re-read Oct 27). Sabato: latest article Oct 26 (Virginia, no rating changes); last moves Oct 22 (governors) / Oct 20 (House). Inside Elections: last changes Oct 20 (Roll Call); ratings page "Updated Oct 15"; Oct 23 podcast confirms no newer issue.
+- **OK Pre-General reports (due Oct 26) - DONE:** guardian.ok.gov OrganizationDetail.aspx?OrganizationID=<id> -> Filing History -> ASP.NET postback (lnkFilingHist) -> FilingAmendmentSelect.aspx?FilingID=<n> -> postback lnkView -> /PublicSite/Reports/FetchReportToPDF.aspx (same session). Method script: tools/_w104/okpdf.ps1 (scratch, untracked). Page-1 summaries (period Aug 11-Oct 19): Forbes 11876 (Lt Gov D) raised 40,667.27 / spent 31,468.13 / cash 17,657.94 (filed Oct 26); Echols 11756 (AG R) 491,922.66 / 361,021.89 / 352,150.32 (Oct 26); Coffey 11949 (AG D) 311,211.04 / 428,978.39 / 170,875.39 (Oct 26, FilingID 233947); Byrd 12335 (Treasurer R) 26,326.22 / 8,295.63 / 57,183.62 (Oct 26, FilingID 245428); West 11914 (Labor) 41,420.00 / 41,397.12 / 24,141.62 (Oct 24); Dawson 12295 (Labor) 8,440.20 / 7,106.42 / 2,756.71 (Oct 25); Sullivan 12098 (Insurance) 90,540.00 / 113,374.95 / 49,240.61 (Oct 26); MacIntyre 12375 (Insurance) 16,127.72 / 14,265.09 / 4,174.01 (Oct 26); Eastman 12361 (Corp Comm) 19,132.62 / 17,576.20 / 2,146.30 (Oct 25). Kiefer Perry (Treasurer L): still no Guardian committee located (not re-searched by name this run).
+- **Polls (independent/media only):** NYT/Philadelphia Inquirer/Siena PA-1/7/8/10 (Oct 16-22; sri.siena.edu Oct 25; Inquirer; PoliticsPA); Washington Post-Schar School TX-34/TX-35 (Oct 14-19; WaPo PDF questionnaire + Oct 23 story); MSU IPPSR State of the State/YouGov MI Sen+Gov (Oct 2-19; ippsr.msu.edu Oct 26); South Dakota News Watch/USD Chiesman/Mason-Dixon SD Sen+Gov (Oct 12-14; sdnewswatch.org Oct 22); AJC/UGA SPIA GA Sen+Gov (Oct 7-15; ajc.com Oct 20/21). Not used: Rasmussen (NH/TX/MN), Trafalgar (ME), InsiderAdvantage, TPOR, Quantus, Concord (Bengs campaign-adjacent).
+- **Wedgewood Polls** admitted fabricating most of its data (PBS NewsHour via politalking.us Oct 25): grep of all pages found NO Wedgewood (or RedBox/Trafalgar/ActiVote/Quantus/AtlasIntel) citation - nothing to remove.
+- **Debates:** GA Gov - Oct 6 Atlanta News First town-hall debate was the only head-to-head; Jackson skipped the Oct 12 Atlanta Press Club debate (AJC Oct 13). WI Gov - only debate Oct 21, WISN 12 at Marquette Law (WBAY Oct 16). AR Gov - Oct 13 Arkansas TV debate, first with all three (Arkansas Advocate Oct 13).
+- **Ad money:** NC-11 No Going Back canceled remaining reservations Oct 20 (Asheville Watchdog; NC Political News Oct 22, citing Washington Sun/Punchbowl). NJ-7 CLF + Trump's Affordability and Safety PAC pulled out Oct 13 (New Jersey Globe, citing NYT).
+- **TX early vote:** Texas Tribune Oct 27 (4.5M / 23.4% through Sun Oct 25 vs 24.3% in 2018). TX-34 Trump rally is tonight (Oct 27) - refresh next run.
+- **NH Senate field check (dead end, page unchanged):** Rasmussen Oct 20-23 questionnaire and AllCiv (AI aggregator, Oct 19) list independents Tim Harris / Day / Lopez / Morrow; but WMUR Oct 15 says "three choices" and Project Curia's Sept 21 copy of the NH SoS list shows only Pappas / Sununu / Laplante. Those were declarations of intent (candidatefilings.com) - no evidence they qualified. Kept "third candidate" wording. Retry only if the SoS posts a list with more names.
+- **TX-34 Flores residency:** no new reporting (WaPo poll story does not address it) - 2 [Verify] kept.
+- **MO gate:** voteclaycountymo.gov/elections unchanged (Sept 11 2022-map statement; sample ballots only via lookup). Still no mo.html. CA: bank unchanged, no candidate build (52 districts) - no ca.html.
+- **Incumbent-status check:** no deaths/withdrawals found among marquee nominees (searches Oct 27).
+
+### Edits
+- 10 pages (ar ga mi nc nj ok pa sd tx wi): 17 race notes + 11 OK finance/no-filing lines; SITE_META + footer span Oct 27, 2026 (Wave 104).
+- Verify **2 -> 2**. Voices unchanged (no candidates added).
+
+2026-10-27 | 10 pages | Wave 104 | Free web (0 Grok). Auto-publish after green tests.
