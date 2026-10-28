@@ -1487,3 +1487,20 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **2 -> 2**. Voices unchanged (no candidates added).
 
 2026-10-27 | 10 pages | Wave 104 | Free web (0 Grok). Auto-publish after green tests.
+
+## 2026-10-28 - Wave 105 (weekday 8am daily)
+
+### Research (free web; Grok 0)
+- **Ratings:** Sabato Oct 27 (centerforpolitics.org, "Democrats Appear to Hold Narrow Senate Edge with Week to Go; Rating Changes for Senate, House, and Governors") - Senate FL Safe->Likely R, NC Leans->Likely D, SC Likely->Leans R; Gov AZ Leans->Likely D, VT Likely->Leans R; House AL-2/CO-5/KY-6/MT-1/PA-1/VA-5 (and MO-2, no page) Leans R->Toss-up, AK-AL/AZ-2/FL-13/OH-10/OH-15 Likely->Leans R, PA-8/TX-15 Toss-up->Leans D, OR-5/VA-7 Likely->Safe D. All carded except MO-2. Cook final governor ratings Oct 27 (cookpolitical.com analysis + WaPo): NE Likely->Lean R, KS Lean R->Toss Up; rest unchanged. Inside Elections: no change since Oct 20 (ratings page still "Updated Oct 15").
+- **Polls:** SC Policy Council/Targoz Oct 16-25 (FOX Carolina Oct 26) Sen Graham 47-46, Gov Wilson 51-41; TSU Barbara Jordan Center TX-15 Oct 13-16 (jordanresearchcenter.org Oct 22) Pulido 51-44; State Navigate VT Gov Oct 23-25 (Political Wire Oct 27) Scott 49-46; Glengariff/WDIV/Detroit News MI Oct 19-22 (ClickOnDetroit Oct 27) El-Sayed 51.4-45.1, Benson 51.4-44.5.
+- **TX-34 Trump rally Oct 27 (DONE):** KIII-TV live story + San Antonio Express-News + Texas Scorecard. Flores spoke (water supply, Army Depot); De La Cruz and Paxton also spoke. Note's future-tense rally sentence made past tense.
+- **TX early vote:** only aggregator figures (~5.1M through Oct 27, theoelections/Transparency USA) and SoS Oct 26 release (4.2M first half) - not carded; wait for an SoS or Tribune total after early voting ends Oct 30.
+- **TX-34 Flores residency:** rally coverage and Tribune Oct 26 do not address his address - 2 [Verify] kept.
+- **MO gate:** Clay sample ballots still only via address lookup (third-party ZIP previews are not official). Still no mo.html. CA: no candidate build. DC: no-county model not started.
+- **Not used:** PoliAgg / Midterm Mondays / electionsinusa (aggregators; leads only). Split Ticket, DDHQ, RCP, FiftyPlusOne moves not carded (site cards Cook/Sabato/Inside Elections).
+
+### Edits
+- 18 pages (ak al az co fl ks ky mi mt nc ne oh or pa sc tx va vt): 27 race notes; SITE_META + footer span Oct 28, 2026 (Wave 105).
+- Verify **2 -> 2**. Voices unchanged (no candidates added).
+
+2026-10-28 | 18 pages | Wave 105 | Free web (0 Grok). Auto-publish after green tests.
