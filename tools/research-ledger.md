@@ -1504,3 +1504,22 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **2 -> 2**. Voices unchanged (no candidates added).
 
 2026-10-28 | 18 pages | Wave 105 | Free web (0 Grok). Auto-publish after green tests.
+
+## 2026-10-29 - Wave 106 (weekday 8am daily)
+
+### Research (free web; Grok 0)
+- **Ratings:** no new race ratings. Cook House page still Oct 23; Cook final governors Oct 27 (already carded); Sabato last moves Oct 27 (Oct 29 Abramowitz generic-ballot model only); Inside Elections last changes Oct 20 (ratings page still Updated Oct 15). midtermmonday.com/movers lead only.
+- **NH WMUR debates Oct 28 (DONE):** wmur.com/article/chris-pappas-john-e-sununu-debate-1026/74278521 and wmur.com/article/maggie-goodlander-lily-tang-williams-debate-1026/74278249 (both updated Oct 29). Gov + NH-1 debates are tonight Oct 29 - refresh next run.
+- **NH polls:** Saint Anselm College Survey Center Oct 19-20 (anselm.edu news, Oct 22; 1,672 LV, MOE 2.4; CD1 3.3, CD2 3.4); UMass Lowell/YouGov NH Oct 2-19 (uml.edu press release Oct 28; 600 LV, adj. MOE 5) and MA Oct 7-18 (850 LV, MOE 4.4). UNH Granite State Poll latest is Sept 24 - not carded.
+- **NYT/Siena Oct 19-26:** sri.siena.edu Oct 28 toplines; FL n=813 MOE 3.9 (Florida Politics Oct 28); SC n=707 MOE 4.3 (The Hill Oct 28); MN n=752 (The Hill/NYT toplines; MOE reported inconsistently 4.1 vs 4.3 in summaries - not printed).
+- **MI:** Mitchell Research for CBS Detroit Oct 26-27 (636 LV, MOE 3.9; CBS Detroit Oct 28).
+- **OH:** Trump Chillicothe rally Oct 28 (10TV Oct 28). **GA:** Obama Morrow rally Oct 28 (FOX 5 Atlanta); SoS in-person early vote 2,000,452 by Oct 27 4:30pm + 97,382 absentee (WRDW Oct 28).
+- **OK Kiefer Perry (CLOSED):** KGOU/OPMX Oct 25 - Perry does not appear in the state campaign-finance system; filing required only above $1,000 raised/spent. Platform at kieferperry.com/platform-details (attributed). Stop searching Guardian for a Perry committee.
+- **Not carded:** Emerson/Nexstar TX Oct 17-19 (Talarico 48-46, Abbott 49-45) - TX Senate note already ~4,900 chars with UH Hobby + Fox polls; TX early vote ~5.5M through Oct 28 (FOX 7, SoS-cited) - wait for the final post-Oct 30 total. St. Pete Polls / ActiVote FL not used.
+- **TX-34 Flores residency:** no new reporting - 2 [Verify] kept. **MO/CA/DC:** unchanged (no mo.html / ca.html; DC no-county model not started).
+
+### Edits
+- 9 pages (fl ga ma mi mn nh oh ok sc): 19 race notes + OK Perry card (3 positions, finance differentiator, opponents line) + NH Laplante opponents line; SITE_META + footer span Oct 29, 2026 (Wave 106).
+- Verify **2 -> 2**. Voices unchanged (0 gaps; no candidates added).
+
+2026-10-29 | 9 pages | Wave 106 | Free web (0 Grok). Auto-publish after green tests.
