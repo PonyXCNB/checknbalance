@@ -1523,3 +1523,20 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **2 -> 2**. Voices unchanged (0 gaps; no candidates added).
 
 2026-10-29 | 9 pages | Wave 106 | Free web (0 Grok). Auto-publish after green tests.
+
+## 2026-10-30 - Wave 107 (weekday 8am daily)
+
+### Research (free web; Grok 0)
+- **Inside Elections final ratings Oct 29 (DONE):** own JSON at insideelections.com/wp-content/themes/inside-elections/cache/ratings_latest_<office>_year=2026_district=all_clean.json (last_updated 2026-10-29T13:05-05:00); each row has rating/previous_rating/date/shift. 9 Senate, 45 House (all leftward), 10 Gov (OR rightward). Newsweek summary matched the Senate list.
+- **Cook House Oct 30 (DONE):** cookpolitical.com/ratings/house-race-ratings dated Oct 30; prior state from Wayback 20261023142728id_ (gzip - gunzip before parsing). 12 diffs = the article Four Days Out, a Dozen More House Races Move Toward Democrats (Oct 30, list paywalled). Cook Senate page Oct 30 vs Wayback 20261023143152 (dated Oct 20): FL, NE moved. Cook governor page Oct 29 vs Wayback 20261027190609: AZ, WI moved.
+- **Sabato:** 2026 Rating Changes page lists Oct 29 Senate LA Safe->Likely R, MN Leans->Likely D (no article located; the Oct 29 Crystal Ball piece is AG/SoS outlook). Final Toss-up push expected ~Nov 2.
+- **NH WMUR debates Oct 29 (DONE):** wmur.com/article/kelly-ayotte-cinde-warmington-debate-1026/74289632 and wmur.com/article/anthony-dilorenzo-stefany-shaheen-debate-1026/74289344 (updated Oct 30).
+- **GA early vote:** Atlanta News First Oct 29 (SoS data, 2,294,275 in-person by 1:35pm; 2022 total 2,289,951). Wave 106 WRDW-based 2022 comparison (1,640,652 whole period) was wrong and was replaced.
+- **Not carded:** TX early vote - only aggregators (PollingSource, callthemap, Transparency USA) for Oct 28-29 totals and SoS page 403s to fetch; wait for the final post-Oct 30 SoS/Texas Tribune total. Roll Call Oct 29 (PA-1 money, NY-21 Vance visit) not carded.
+- **TX-34 Flores residency:** only 2025 sources (Texas Tribune Jul 21, 2025; Punchbowl) - 2 [Verify] kept. MO/CA/DC unchanged.
+
+### Edits
+- 30 pages: FINAL RATINGS line on 70 race notes (48 House, 22 statewide); NH Gov/NH-1 debate recaps; GA early-vote line corrected on Senate + Gov notes; SITE_META + footer span Oct 30, 2026 (Wave 107).
+- Verify **2 -> 2**. Voices unchanged (0 gaps).
+
+2026-10-30 | 30 pages | Wave 107 | Free web (0 Grok). Auto-publish after green tests.
