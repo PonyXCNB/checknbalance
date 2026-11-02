@@ -1540,3 +1540,20 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **2 -> 2**. Voices unchanged (0 gaps).
 
 2026-10-30 | 30 pages | Wave 107 | Free web (0 Grok). Auto-publish after green tests.
+
+## 2026-11-02 - Wave 108 (Monday 8am daily, election eve)
+
+### Research (free web; Grok 0)
+- **NYT/Siena final polls (DONE):** sri.siena.edu/2026/11/01/nytimes-siena-poll-of-likely-voters-alaska-iowa-kansas-maine-michigan-ohio-and-texas/ - Senate + Gov toplines and per-state MOE for AK, IA, KS, ME, MI, OH, TX. (Field dates not on the SRI page; NYT toplines page has them.)
+- **TX final early vote (DONE):** CBS Texas Oct 31 (7,410,631; 38.92% of 19,041,684; 2022 ~5.5M, 2018 ~4.9M) + Texas Tribune via KWTX Oct 31 (~39%, nearly matching 2018). Aggregators (callthemap 7,716,720; Transparency USA 7,706,944; TexPolls 7,706,981) disagree because Oct 30 county reports were incomplete - NOT cited.
+- **GA final early vote (DONE):** Atlanta News First Oct 30 9:31 p.m. (2,691,841 in person, 118,329 absentee, 2,810,170 total, ~37.3%). PollingSource 2,826,146 through Nov 1 (Election Lab) - aggregator, not cited.
+- **MI:** Spectrum News Oct 27 (absentee must be received by 8 p.m. Nov 3). Nov 1 dashboard total 2,174,173 seen only via badpd.com aggregator - not cited; official dashboard is JS-rendered.
+- **Ratings:** Cook pages unchanged (House/Senate Oct 30, Gov Oct 29). Inside Elections JSON last_updated 2026-10-29T13:05 (politalking.us calls it Oct 31 - same data). Sabato: no final-ratings post as of ~8:30 a.m. ET Nov 2 (homepage newest Oct 31; rating-changes page newest Oct 29). Retry next run.
+- **TX-34 Flores residency:** State Bar profile lists a Mission practice location (not a residence); FEC still San Benito PO box - 2 [Verify] kept. MO/CA/DC unchanged.
+
+### Edits
+- 48 pages: hero eyebrow -> Election Day · Tuesday, November 3, 2026; SITE_META + footer span Nov 2, 2026 (Wave 108). index.html footer November 2026.
+- 8 pages (ak ga ia ks me mi oh tx): 14 FINAL NYT/SIENA POLL lines; TX + GA final early-vote lines (Senate + Gov); MI early-voting tense fix.
+- Verify **2 -> 2**. Voices unchanged (0 gaps).
+
+2026-11-02 | 48 pages | Wave 108 | Free web (0 Grok). Auto-publish after green tests.
