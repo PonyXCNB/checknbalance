@@ -1557,3 +1557,18 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **2 -> 2**. Voices unchanged (0 gaps).
 
 2026-11-02 | 48 pages | Wave 108 | Free web (0 Grok). Auto-publish after green tests.
+
+## 2026-11-03 - Wave 109 (Tuesday 8am daily, ELECTION DAY - polls not closed; no results)
+
+### Research (free web; Grok 0)
+- **Sabato final ratings (DONE):** centerforpolitics.org/crystalball/2026finalratings/ (Nov 2). Senate/Gov tables are text; House Table 2 is an image (centerforpolitics upload is Cloudflare-challenged to curl; Substack copy sabatoscrystalball.substack.com/p/the-final-2026-ratings-democrats has the image on substack-post-media S3, c03d1412-c2aa-4421-81ed-ad55fbeb65ed_500x913.png). The 2026-rating-changes page lists the Oct 27 House table under a Nov. 2 heading - do NOT use it for House.
+- **NC final early vote (DONE):** dl.ncsbe.gov/Press/2026 General/NC Absentee Stats for 2026 General/2026-11-02 Daily Absentee Stats Report - 2026 General.pdf (ballots through Nov 1). WXII Nov 1 quoted 2,816,820 (earlier snapshot) - official PDF used instead.
+- **AK Senate:** Alaska Public Media Oct 28 (NYT report); D. Alaska order dismissing U.S. v. Alaska Nov 1 (ACLU-AK copy of order), AP/The Hill/MS NOW Nov 1 (DOJ notice of appeal).
+- **MI Senate:** AP, NBC, CBS, Al Jazeera Nov 1 (Stevens endorses Rogers).
+- **TX-34 Flores residency:** still no residence reporting - 2 [Verify] kept. Cook/Inside Elections not rechecked (both said final on Oct 29-30).
+
+### Edits
+- 22 pages: 35 SABATO FINAL RATING lines; AK/MI Senate late-development lines; NC Senate official early vote + poll hours. SITE_META + footer span Nov 3, 2026 (Wave 109).
+- Verify **2 -> 2**. Voices unchanged (0 gaps). No results published.
+
+2026-11-03 | 22 pages | Wave 109 | Free web (0 Grok). Auto-publish after green tests.
