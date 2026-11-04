@@ -647,7 +647,7 @@
      HERO
      ============================================= -->
 <section class="hero">
-  <div class="eyebrow"><span class="dot"></span> Election Day · Tuesday, November 3, 2026</div>
+  <div class="eyebrow"><span class="dot"></span> Election held Tuesday, November 3, 2026 · Results being added as races are called</div>
   <h1 class="hero-title">Every Maine <em>election</em>, in one place.</h1>
   <p class="hero-lede">
     A county-by-county guide to the races that have shaped — and will shape — our state.
@@ -714,7 +714,7 @@
       <strong>ME Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">November 3, 2026 (Wave 109)</span><br>
+      Last updated: <span id="last-updated">November 4, 2026 (Wave 110)</span><br>
       Sources: Maine Secretary of State / Bureau of Corporations, Elections &amp; Commissions (maine.gov/sos), Ballotpedia, Wikipedia, Cook Political Report, Bangor Daily News, Portland Press Herald, Maine Public, Maine Morning Star, AP.
     </div>
   </div>
@@ -786,17 +786,17 @@ const STATEWIDE = [
   // UPCOMING — 2026 General Election (Nov 3, 2026)
   {
     date: "Nov 3, 2026",
-    type: "upcoming",
+    type: "past",
     scope: "Federal · Statewide",
     office: "U.S. Senate — Maine",
-    note: "Susan Collins (R) seeks a sixth term against Troy Jackson (D), named the replacement nominee 566–5 at a July 25 convention in Bangor after primary winner Graham Platner withdrew July 10 — Maine's first replacement U.S. Senate nominee since 1918. The Maine SoS certified list (July 27) shows these two candidates only; no independents qualified. Toss Up (Cook, Sabato); Tilt R (Inside Elections), as of July 21. ⚠ UPDATE, OCT 2026: TOSS UP at all three raters - Cook's own Senate ratings page (updated Oct 20, 2026), Sabato's Crystal Ball (one of its five Senate Toss-ups, Oct 14, 2026) and Inside Elections (Roll Call, Oct 20, 2026); this supersedes the July 21 ratings above. POLL: Jackson 49%, Collins 49% among 1,514 likely voters in a Fox News Poll fielded Oct 16-20, 2026 (MOE ±2.5 points); 19% of likely voters said they had already voted (Fox News, released Oct 22, 2026). DEBATES: the two met four times in October; the fourth and final debate, Oct 15 in Bangor (Maine Public, Portland Press Herald and WCSH), was the first before a live audience. Jackson reported raising more than $20 million in July-September to Collins's $5.2 million (NBC News, Oct 15, 2026). ⚠ FINAL NYT/SIENA POLL: Jackson (D) 51%, Collins (R) 45% among likely voters (MOE ±4.7) in the New York Times/Siena College final seven-state Senate and governor polls; a poll is a snapshot, not a result (Siena Research Institute, Nov 1, 2026). ⚠ SABATO FINAL RATING: in its final pre-election update on Nov 2, 2026 - which left no race rated Toss-up - Sabato's Crystal Ball moved this race from Toss-up to LEANS DEMOCRATIC (Sabato's Crystal Ball, THE FINAL 2026 RATINGS: Democrats Favored to Capture House, Senate, and Gubernatorial Majorities, Nov 2, 2026). A rating is a forecast, not a result.",
+    note: "✅ RESULT (UNOFFICIAL): Troy Jackson (D) defeated Sen. Susan Collins (R), per the Associated Press race call (source: AP, apnews.com, Nov 4, 2026). Results stay unofficial until the state certifies them. Susan Collins (R) seeks a sixth term against Troy Jackson (D), named the replacement nominee 566–5 at a July 25 convention in Bangor after primary winner Graham Platner withdrew July 10 — Maine's first replacement U.S. Senate nominee since 1918. The Maine SoS certified list (July 27) shows these two candidates only; no independents qualified. Toss Up (Cook, Sabato); Tilt R (Inside Elections), as of July 21. ⚠ UPDATE, OCT 2026: TOSS UP at all three raters - Cook's own Senate ratings page (updated Oct 20, 2026), Sabato's Crystal Ball (one of its five Senate Toss-ups, Oct 14, 2026) and Inside Elections (Roll Call, Oct 20, 2026); this supersedes the July 21 ratings above. POLL: Jackson 49%, Collins 49% among 1,514 likely voters in a Fox News Poll fielded Oct 16-20, 2026 (MOE ±2.5 points); 19% of likely voters said they had already voted (Fox News, released Oct 22, 2026). DEBATES: the two met four times in October; the fourth and final debate, Oct 15 in Bangor (Maine Public, Portland Press Herald and WCSH), was the first before a live audience. Jackson reported raising more than $20 million in July-September to Collins's $5.2 million (NBC News, Oct 15, 2026). ⚠ FINAL NYT/SIENA POLL: Jackson (D) 51%, Collins (R) 45% among likely voters (MOE ±4.7) in the New York Times/Siena College final seven-state Senate and governor polls; a poll is a snapshot, not a result (Siena Research Institute, Nov 1, 2026). ⚠ SABATO FINAL RATING: in its final pre-election update on Nov 2, 2026 - which left no race rated Toss-up - Sabato's Crystal Ball moved this race from Toss-up to LEANS DEMOCRATIC (Sabato's Crystal Ball, THE FINAL 2026 RATINGS: Democrats Favored to Capture House, Senate, and Gubernatorial Majorities, Nov 2, 2026). A rating is a forecast, not a result.",
     candidates: [
       { name: "Susan Collins (incumbent)", party: "R", winner: false,
         positions: ["Steer federal appropriations to Maine projects and shipyards","Protect Medicaid and food assistance from deep cuts","Bipartisan compromise; breaks with Trump case by case"],
         differentiators: ["Chairs Senate Appropriations — first Maine senator to do so in 90+ years","Says she has secured ~$1.5B over five years for ~700 Maine projects","~$9.7M cash on hand as of the May 2026 filing"],
         supporters: ["Her Appropriations gavel delivers money and jobs no freshman could match","Maine has elected her five times, including in 2020 as the state backed Biden"],
         opponents: ["Votes with Trump most of the time despite a moderate brand","One 2026 poll put her net favorability at −18"] },
-      { name: "Troy Jackson (D nominee)", party: "D", winner: false,
+      { name: "Troy Jackson (D nominee)", party: "D", winner: true,
         positions: ["Medicare for All; lower prescription drug costs","Tax billionaires and large corporations","Federal right to abortion"],
         differentiators: ["Fifth-generation logger from Allagash; former Maine Senate President","Refuses corporate PAC and billionaire money","Won the July 25 replacement convention 566–5 over Saundra Pelletier"],
         supporters: ["Backers call him the bare-knuckle brawler the Senate needs","Deep organized-labor strength across Maine","Blockaded the border in 1998 to defend Maine loggers"],
@@ -805,12 +805,12 @@ const STATEWIDE = [
   },
   {
     date: "Nov 3, 2026",
-    type: "upcoming",
+    type: "past",
     scope: "State · Statewide",
     office: "Governor of Maine (OPEN SEAT)",
-    note: "OPEN SEAT — Janet Mills (D) is term-limited. A three-way race: Hannah Pingree (D), Bobby Charles (R) and independent Rick Bennett, the only independent to qualify. Rated Solid/Likely Democratic. Note: the governor's general election is decided by PLURALITY, not ranked-choice voting. ✅ COOK RATING, OCT 23, 2026: the Cook Political Report's own governor ratings page (updated Oct 23, 2026) rates this race SOLID D. ⚠ POLL: Pingree 49%, Charles 39%, Bennett 9% among likely voters in a Fox News Poll fielded Oct 16-20, 2026 (MOE ±2.5 points; Fox News, released Oct 22, 2026). ⚠ FINAL NYT/SIENA POLL: Pingree (D) 49%, Charles (R) 37%, Bennett (I) 8% among likely voters (MOE ±4.7) in the New York Times/Siena College final seven-state Senate and governor polls; a poll is a snapshot, not a result (Siena Research Institute, Nov 1, 2026).",
+    note: "✅ RESULT (UNOFFICIAL): Hannah Pingree (D) defeated Bobby Charles (R) and Rick Bennett (I), per the Associated Press race call (source: Maine Public, Nov 3, 2026 (AP call)). Results stay unofficial until the state certifies them. OPEN SEAT — Janet Mills (D) is term-limited. A three-way race: Hannah Pingree (D), Bobby Charles (R) and independent Rick Bennett, the only independent to qualify. Rated Solid/Likely Democratic. Note: the governor's general election is decided by PLURALITY, not ranked-choice voting. ✅ COOK RATING, OCT 23, 2026: the Cook Political Report's own governor ratings page (updated Oct 23, 2026) rates this race SOLID D. ⚠ POLL: Pingree 49%, Charles 39%, Bennett 9% among likely voters in a Fox News Poll fielded Oct 16-20, 2026 (MOE ±2.5 points; Fox News, released Oct 22, 2026). ⚠ FINAL NYT/SIENA POLL: Pingree (D) 49%, Charles (R) 37%, Bennett (I) 8% among likely voters (MOE ±4.7) in the New York Times/Siena College final seven-state Senate and governor polls; a poll is a snapshot, not a result (Siena Research Institute, Nov 1, 2026).",
     candidates: [
-      { name: "Hannah Pingree", party: "D", winner: false,
+      { name: "Hannah Pingree", party: "D", winner: true,
         positions: ["$100M a year in state affordable-housing investment","A public health-insurance option at state-negotiated rates","Expand clean energy; shield ratepayers from data-center costs"],
         differentiators: ["Former Speaker of the Maine House; led Mills' policy-innovation office","Endorsed by Gov. Janet Mills and EMILY's List","Fundraising leader — $3M+ raised as of July 2026"],
         supporters: ["A deep policy record on climate, housing and economic development"],
@@ -979,7 +979,7 @@ const HOUSE_RACES = {
     races: [
       {
         date: "Nov 3, 2026", type: "upcoming",
-        note: "OPEN SEAT — Jared Golden (D) announced in Nov 2025 he would not seek re-election. Former Gov. Paul LePage (R), Trump-endorsed, was unopposed; State Auditor Matt Dunlap (D) won a ranked-choice runoff 52%–48% over Joe Baldacci. Sabato moved the seat to Likely Republican on July 16, 2026. ✅ COOK RATING, OCT 23, 2026: the Cook Political Report's own House ratings page (updated Oct 23, 2026, the day Cook moved 19 more House races toward Democrats) rates this race LEAN R; Cook had moved it from Likely R to Lean R on Oct 9, 2026. ⚠ RATING CHANGE: Inside Elections moved this race from Likely Republican to Lean Republican in its Oct 20, 2026 update, one of 30 races it shifted toward Democrats (Roll Call, \"Rating changes: 30 races shift toward Democrats,\" Oct 20, 2026).",
+        note: "⚠ NOT YET CALLED (as of the morning of Nov 4, 2026): Dunlap (D) and LePage (R) were within about a thousand votes with no majority, and the Maine Morning Star reported it likely heads to a ranked-choice tabulation (Nov 4). No winner is shown here until the race is decided. OPEN SEAT — Jared Golden (D) announced in Nov 2025 he would not seek re-election. Former Gov. Paul LePage (R), Trump-endorsed, was unopposed; State Auditor Matt Dunlap (D) won a ranked-choice runoff 52%–48% over Joe Baldacci. Sabato moved the seat to Likely Republican on July 16, 2026. ✅ COOK RATING, OCT 23, 2026: the Cook Political Report's own House ratings page (updated Oct 23, 2026, the day Cook moved 19 more House races toward Democrats) rates this race LEAN R; Cook had moved it from Likely R to Lean R on Oct 9, 2026. ⚠ RATING CHANGE: Inside Elections moved this race from Likely Republican to Lean Republican in its Oct 20, 2026 update, one of 30 races it shifted toward Democrats (Roll Call, \"Rating changes: 30 races shift toward Democrats,\" Oct 20, 2026).",
         candidates: [
           { name: "Matt Dunlap", party: "D", winner: false,
             positions: ["Make billionaires and large corporations pay their fair share","Strengthen Social Security and enact Medicare for All","Universal childcare and affordable housing; opposes ICE raids in Maine"],
@@ -1011,7 +1011,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Maine Elections Hub", lastUpdated: "November 3, 2026 (Wave 109)" };
+const SITE_META = { name: "Maine Elections Hub", lastUpdated: "November 4, 2026 (Wave 110)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Maine county-level down-ballot research is the next phase.)

@@ -647,7 +647,7 @@
      HERO
      ============================================= -->
 <section class="hero">
-  <div class="eyebrow"><span class="dot"></span> Election Day · Tuesday, November 3, 2026</div>
+  <div class="eyebrow"><span class="dot"></span> Election held Tuesday, November 3, 2026 · Results being added as races are called</div>
   <h1 class="hero-title">Every Wyoming <em>election</em>, in one place.</h1>
   <p class="hero-lede">
     A county-by-county guide to the races that have shaped — and will shape — our state.
@@ -714,7 +714,7 @@
       <strong>WY Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">November 2, 2026 (Wave 108)</span><br>
+      Last updated: <span id="last-updated">November 4, 2026 (Wave 110)</span><br>
       Sources: Wyoming Secretary of State (sos.wyo.gov) — the 2026 Official Primary Election Results summaries certified by the State Canvassing Board on Aug 26, 2026, the Statewide Candidates Summary, the Successful Write-In Candidates list, '2026 Offices Up for Election', '2026 Judges Standing for Retention', the 2026 Voter's Guide and the property-tax initiative certificate; U.S. Census Bureau 2020 county FIPS file; FEC; WyoFile's 2026 Election Guide; Cowboy State Daily; Casper Star-Tribune; Gillette News Record; Oil City News; Wyoming Public Media.</div>
   </div>
 </footer>
@@ -800,10 +800,10 @@ const COUNTIES = {
 // (Constitution Party, Governor) is confirmed, via press. RE-PULL the roster after Sept 1.
 const STATEWIDE = [
   // ─────────────────────────── UPCOMING ───────────────────────────
-  { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · Statewide", office: "U.S. Senator from Wyoming (Class 2)",
-    note: "OPEN SEAT — CYNTHIA LUMMIS IS RETIRING, and U.S. Rep. Harriet Hageman won the Republican nomination on Aug 18 with 64.7%. ⚠ Wyoming's other seat (John Barrasso, Class 1) is NOT on the 2026 ballot; the Secretary of State's official 'Offices Up for Election' lists exactly one U.S. Senate seat. ✅ Primary figures here are OFFICIAL — certified by the Wyoming State Canvassing Board on Aug 26, 2026. ⚠ No Democrat has won a statewide race in Wyoming since 2006 (Wave 75 — a press summary, not an authoritative election-history source), and Hageman has outraised Byrd by roughly a hundred to one. ✅ Trump endorsed Hageman, as did the retiring Lummis.",
+  { date: "Nov 3, 2026", type: "past", scope: "Federal · Statewide", office: "U.S. Senator from Wyoming (Class 2)",
+    note: "✅ RESULT (UNOFFICIAL): Harriet Hageman (R) defeated James Byrd (D), per the Associated Press race call (source: AP race call, apnews.com, Nov 3, 2026). Results stay unofficial until the state certifies them. OPEN SEAT — CYNTHIA LUMMIS IS RETIRING, and U.S. Rep. Harriet Hageman won the Republican nomination on Aug 18 with 64.7%. ⚠ Wyoming's other seat (John Barrasso, Class 1) is NOT on the 2026 ballot; the Secretary of State's official 'Offices Up for Election' lists exactly one U.S. Senate seat. ✅ Primary figures here are OFFICIAL — certified by the Wyoming State Canvassing Board on Aug 26, 2026. ⚠ No Democrat has won a statewide race in Wyoming since 2006 (Wave 75 — a press summary, not an authoritative election-history source), and Hageman has outraised Byrd by roughly a hundred to one. ✅ Trump endorsed Hageman, as did the retiring Lummis.",
     candidates: [
-      { name: "Harriet Hageman", party: "R", winner: false,
+      { name: "Harriet Hageman", party: "R", winner: true,
         positions: [
           "Fight what she calls the bloated administrative state",
           "Develop Wyoming energy to create jobs",
@@ -847,10 +847,10 @@ const STATEWIDE = [
           "Outraised roughly a hundred to one, with no realistic path to statewide paid media (structural)",
           "He was the losing 2018 Democratic nominee for Secretary of State, so he has not previously won statewide"
         ] } ] },
-  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Governor of Wyoming",
-    note: "OPEN SEAT — GOV. MARK GORDON DECLINED TO SEEK A THIRD TERM in April 2026, and state Sen. Eric Barlow beat TRUMP-ENDORSED Superintendent Megan Degenfelder 45.0% to 29.6%. ⚠ Gordon was NOT settled law as term-limited: the Wyoming Supreme Court has struck down term limits for legislators and other offices but has never ruled on the gubernatorial statute, which remains untested. He weighed a challenge and chose not to bring one. ⚠ This is a three-way general — Constitution Party nominee Rebecca Bextel is on the ballot alongside the major-party nominees. ✅ Primary figures are OFFICIAL, certified Aug 26, 2026.",
+  { date: "Nov 3, 2026", type: "past", scope: "State · Statewide", office: "Governor of Wyoming",
+    note: "✅ RESULT (UNOFFICIAL): Eric Barlow (R) defeated Kenneth Casner (D) and Rebecca Bextel (I), per the Associated Press race call (source: AP race call, apnews.com, Nov 3, 2026). Results stay unofficial until the state certifies them. OPEN SEAT — GOV. MARK GORDON DECLINED TO SEEK A THIRD TERM in April 2026, and state Sen. Eric Barlow beat TRUMP-ENDORSED Superintendent Megan Degenfelder 45.0% to 29.6%. ⚠ Gordon was NOT settled law as term-limited: the Wyoming Supreme Court has struck down term limits for legislators and other offices but has never ruled on the gubernatorial statute, which remains untested. He weighed a challenge and chose not to bring one. ⚠ This is a three-way general — Constitution Party nominee Rebecca Bextel is on the ballot alongside the major-party nominees. ✅ Primary figures are OFFICIAL, certified Aug 26, 2026.",
     candidates: [
-      { name: "Eric Barlow", party: "R", winner: false,
+      { name: "Eric Barlow", party: "R", winner: true,
         positions: [
           "Cash-based budgeting and right-sized government",
           "Oppose wholesale sale of public lands; multiple use with local stewardship",
@@ -1274,7 +1274,7 @@ const HOUSE_RACES = {
           { name: "Elena Del Real", party: "D", winner: false, positions: [], differentiators: ["2,660 votes — 21.8%", "Strongest in Laramie County (660 votes)"], supporters: [], opponents: [] } ] } ] },
 };
 
-const SITE_META = { name: "Wyoming Elections Hub", lastUpdated: "November 2, 2026 (Wave 108)" };
+const SITE_META = { name: "Wyoming Elections Hub", lastUpdated: "November 4, 2026 (Wave 110)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Wyoming county-level down-ballot research has not started.)

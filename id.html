@@ -647,7 +647,7 @@
      HERO
      ============================================= -->
 <section class="hero">
-  <div class="eyebrow"><span class="dot"></span> Election Day · Tuesday, November 3, 2026</div>
+  <div class="eyebrow"><span class="dot"></span> Election held Tuesday, November 3, 2026 · Results being added as races are called</div>
   <h1 class="hero-title">Every Idaho <em>election</em>, in one place.</h1>
   <p class="hero-lede">
     A county-by-county guide to the races that have shaped — and will shape — our state.
@@ -714,7 +714,7 @@
       <strong>ID Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">November 2, 2026 (Wave 108)</span><br>
+      Last updated: <span id="last-updated">November 4, 2026 (Wave 110)</span><br>
       Sources: Idaho Secretary of State — the CERTIFIED 2026 primary canvass report (archive.voteidaho.gov), the official results API, the candidate-filing system at run.voteidaho.gov, the historical canvass database at canvass.sos.idaho.gov, and the initiatives-and-amendments list — plus the Idaho Commission for Reapportionment&#39;s enacted Plan C03 and its Final Report appendices, U.S. Census Bureau congressional-district relationship files and 2020 PL 94-171 data, FEC filings read directly from docquery.fec.gov, Cook Political Report, Sabato&#39;s Crystal Ball and Inside Elections, the Clerk of the U.S. House roll-call records, and reporting from the Idaho Capital Sun, Idaho Ed News, Boise State Public Radio, the Spokesman-Review, East Idaho News, BoiseDev, the Coeur d&#39;Alene Press, the Sandpoint Reader, KPVI, KMVT, Gem State Chronicle and ProPublica.</div>
   </div>
 </footer>
@@ -821,12 +821,12 @@ const COUNTIES = {
 const STATEWIDE = [
   {
     date: "Nov 3, 2026",
-    type: "upcoming",
+    type: "past",
     scope: "Federal · Statewide",
     office: "U.S. Senate — Idaho",
-    note: "⚠ THE DEMOCRAT WON THE PRIMARY AND THEN QUIT — AND HE IS OFF THE NOVEMBER BALLOT. David Roth (D) took 61.9% on May 19 and announced on July 28 that he was ending his campaign. ✅ HE HAS NOW FORMALLY WITHDRAWN: the Secretary of State's own candidate system (run.voteidaho.gov) carried his status as \"Withdrawn\" when checked on Sept 3, 2026, and NO Democratic replacement was named. The complete November U.S. Senate field is Jim Risch (R), Todd Achilles (I), Natalie M. Fleming (I) and Matt Loesby (L) — there is no Democrat on Idaho's Senate ballot. ⚠ Sept 4 withdrawal/write-in deadline has now passed. Roth submitted the withdrawal form Aug 28 (Idaho Capital Sun Sept 2 public-records check); the Nov field remains Risch (R), Achilles (I), Fleming (I) and Loesby (L) — no Democrat. ⚠ Whether the Idaho Democratic Party could then substitute a nominee is genuinely unsettled — § 34-715(1) allows a post-primary replacement only for \"death or disqualification\" and pointedly omits withdrawal, while § 34-714(2) routes withdrawal-caused vacancies into that same machinery. No Secretary of State guidance resolving it was located — and no substitute appeared after the Sept 4/11 windows (Wave 56). If replacement IS allowed the deadline was Sept 11; no Democratic substitute has been named in free-web coverage as of September 11, 2026 (Idaho Capital Sun / party silence). Meanwhile the real contest is between Sen. Jim Risch and independent TODD ACHILLES, a former Democratic state representative who left the party in June 2025 — Idaho's third-party story this cycle, and one of three 2026 Senate races nationally where a Democrat stepped aside for an independent. RATINGS, all seen firsthand: Cook SOLID R (its rating stamp reads Feb 11, 2025 — 17 months before these events, and Cook has not revisited it), Inside Elections SOLID R (Aug 6, 2026), Sabato SAFE R (Aug 5, 2026 map). Cook PVI R+18 (Apr 27, 2026). ⚠ No rater has moved this seat since Roth's exit.",
+    note: "✅ RESULT (UNOFFICIAL): Jim Risch (R) won re-election over Todd Achilles (I), per the Associated Press race call (source: AP race call via The Washington Post, Nov 4, 2026; Idaho Capital Sun). Results stay unofficial until the state certifies them. ⚠ THE DEMOCRAT WON THE PRIMARY AND THEN QUIT — AND HE IS OFF THE NOVEMBER BALLOT. David Roth (D) took 61.9% on May 19 and announced on July 28 that he was ending his campaign. ✅ HE HAS NOW FORMALLY WITHDRAWN: the Secretary of State's own candidate system (run.voteidaho.gov) carried his status as \"Withdrawn\" when checked on Sept 3, 2026, and NO Democratic replacement was named. The complete November U.S. Senate field is Jim Risch (R), Todd Achilles (I), Natalie M. Fleming (I) and Matt Loesby (L) — there is no Democrat on Idaho's Senate ballot. ⚠ Sept 4 withdrawal/write-in deadline has now passed. Roth submitted the withdrawal form Aug 28 (Idaho Capital Sun Sept 2 public-records check); the Nov field remains Risch (R), Achilles (I), Fleming (I) and Loesby (L) — no Democrat. ⚠ Whether the Idaho Democratic Party could then substitute a nominee is genuinely unsettled — § 34-715(1) allows a post-primary replacement only for \"death or disqualification\" and pointedly omits withdrawal, while § 34-714(2) routes withdrawal-caused vacancies into that same machinery. No Secretary of State guidance resolving it was located — and no substitute appeared after the Sept 4/11 windows (Wave 56). If replacement IS allowed the deadline was Sept 11; no Democratic substitute has been named in free-web coverage as of September 11, 2026 (Idaho Capital Sun / party silence). Meanwhile the real contest is between Sen. Jim Risch and independent TODD ACHILLES, a former Democratic state representative who left the party in June 2025 — Idaho's third-party story this cycle, and one of three 2026 Senate races nationally where a Democrat stepped aside for an independent. RATINGS, all seen firsthand: Cook SOLID R (its rating stamp reads Feb 11, 2025 — 17 months before these events, and Cook has not revisited it), Inside Elections SOLID R (Aug 6, 2026), Sabato SAFE R (Aug 5, 2026 map). Cook PVI R+18 (Apr 27, 2026). ⚠ No rater has moved this seat since Roth's exit.",
     candidates: [
-      { name: "Jim Risch (incumbent)", party: "R", winner: false,
+      { name: "Jim Risch (incumbent)", party: "R", winner: true,
         positions: ["Move health care \"significantly back into the private sector\"; calls the ACA \"a mess\"","\"Over my dead body that we sell off public lands\"","\"All in on the SAVE Act\" — proof-of-citizenship voting; opposes citizenship paths for those who entered illegally, but backs year-round H-2A farm-visa reform"],
         differentiators: [
           "Chairman of the Senate Foreign Relations Committee since Jan 2025; the only Idahoan to have served as governor, lieutenant governor and U.S. senator",
@@ -882,12 +882,12 @@ const STATEWIDE = [
   },
   {
     date: "Nov 3, 2026",
-    type: "upcoming",
+    type: "past",
     scope: "State · Statewide",
     office: "Governor of Idaho",
-    note: "NOT an open seat — Idaho has no gubernatorial term limits and Brad Little (R) is seeking a THIRD term, announced Feb 24, 2026. He took 58.96% against seven primary challengers; 41% of Republican primary voters chose someone else. The race's distinctive feature is JOHN STEGNER, a former Idaho Supreme Court justice running as an independent — the lane Ammon Bundy showed was real when he took 17.2% here in 2022. Stegner has outraised the Democratic nominee nearly three to one. ⚠ The Cook (Sep 11, 2025), Sabato (Sep 4, 2025) and Inside Elections (Aug 28, 2025) ratings are all Solid/Safe R and all PRE-PRIMARY — no post-primary rater revisit or public poll of this race was located through Wave 64. ⚠ Melissa-Sue Robinson is listed by several directories as a Libertarian candidate; she LOST the Libertarian primary 523–392 and is not on the ballot. Jacob Burnett is a registered WRITE-IN only.",
+    note: "✅ RESULT (UNOFFICIAL): Brad Little (R) won re-election over Terri Pickens (D) and John Stegner (I), per the Associated Press race call (source: KHQ and Idaho Capital Sun, Nov 3, 2026). Results stay unofficial until the state certifies them. NOT an open seat — Idaho has no gubernatorial term limits and Brad Little (R) is seeking a THIRD term, announced Feb 24, 2026. He took 58.96% against seven primary challengers; 41% of Republican primary voters chose someone else. The race's distinctive feature is JOHN STEGNER, a former Idaho Supreme Court justice running as an independent — the lane Ammon Bundy showed was real when he took 17.2% here in 2022. Stegner has outraised the Democratic nominee nearly three to one. ⚠ The Cook (Sep 11, 2025), Sabato (Sep 4, 2025) and Inside Elections (Aug 28, 2025) ratings are all Solid/Safe R and all PRE-PRIMARY — no post-primary rater revisit or public poll of this race was located through Wave 64. ⚠ Melissa-Sue Robinson is listed by several directories as a Libertarian candidate; she LOST the Libertarian primary 523–392 and is not on the ballot. Jacob Burnett is a registered WRITE-IN only.",
     candidates: [
-      { name: "Brad Little (incumbent)", party: "R", winner: false,
+      { name: "Brad Little (incumbent)", party: "R", winner: true,
         positions: [
           "\"Historic tax relief\" across eight years in office",
           "Record school, public-safety and infrastructure investment",
@@ -1750,7 +1750,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Idaho Elections Hub", lastUpdated: "November 2, 2026 (Wave 108)" };
+const SITE_META = { name: "Idaho Elections Hub", lastUpdated: "November 4, 2026 (Wave 110)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Idaho county-level down-ballot research has not started.)

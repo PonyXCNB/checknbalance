@@ -647,7 +647,7 @@
      HERO
      ============================================= -->
 <section class="hero">
-  <div class="eyebrow"><span class="dot"></span> Election Day · Tuesday, November 3, 2026</div>
+  <div class="eyebrow"><span class="dot"></span> Election held Tuesday, November 3, 2026 · Results being added as races are called</div>
   <h1 class="hero-title">Every Illinois <em>election</em>, in one place.</h1>
   <p class="hero-lede">
     A county-by-county guide to the races that have shaped — and will shape — our state.
@@ -714,7 +714,7 @@
       <strong>IL Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">November 2, 2026 (Wave 108)</span><br>
+      Last updated: <span id="last-updated">November 4, 2026 (Wave 110)</span><br>
       Sources: Illinois State Board of Elections (elections.il.gov), U.S. Census Bureau congressional-district relationship files, FEC, Ballotpedia, Wikipedia, Cook Political Report, Capitol News Illinois, Chicago Tribune, Chicago Sun-Times, WBEZ, Crain's Chicago Business, AP.
     </div>
   </div>
@@ -867,15 +867,15 @@ const STATEWIDE = [
   // UPCOMING — 2026 General Election (Nov 3, 2026)
   {
     date: "Nov 3, 2026",
-    type: "upcoming",
+    type: "past",
     scope: "Federal · Statewide",
     office: "U.S. Senate — Illinois (OPEN SEAT)",
-    note: "OPEN SEAT — Dick Durbin announced in April 2025 that he would not seek a sixth term. Lt. Gov. Juliana Stratton won the March 17 Democratic primary with 40.4% over Rep. Raja Krishnamoorthi (32.7%) and Rep. Robin Kelly (18.3%); Pritzker's allied super PAC spent about $10M boosting her. Former Illinois GOP chair Don Tracy won the Republican nomination with 40.0%. Rated Solid or Safe Democratic by Cook (Apr 13), Sabato (Mar 4) and Inside Elections (Apr 23); of eight forecasters only The Economist is weaker, at Likely D. ⚠ Third-party and independent Senate lines are UNRESOLVED — three candidate directories give three different, non-overlapping names, and the Illinois State Board of Elections does not certify the general-election ballot until Aug 21, 2026. None is listed here rather than assert one.",
+    note: "✅ RESULT (UNOFFICIAL): Juliana Stratton (D) defeated Don Tracy (R), per the Associated Press race call (source: AP race call, apnews.com, Nov 3, 2026; Capitol News Illinois). Results stay unofficial until the state certifies them. OPEN SEAT — Dick Durbin announced in April 2025 that he would not seek a sixth term. Lt. Gov. Juliana Stratton won the March 17 Democratic primary with 40.4% over Rep. Raja Krishnamoorthi (32.7%) and Rep. Robin Kelly (18.3%); Pritzker's allied super PAC spent about $10M boosting her. Former Illinois GOP chair Don Tracy won the Republican nomination with 40.0%. Rated Solid or Safe Democratic by Cook (Apr 13), Sabato (Mar 4) and Inside Elections (Apr 23); of eight forecasters only The Economist is weaker, at Likely D. ⚠ Third-party and independent Senate lines are UNRESOLVED — three candidate directories give three different, non-overlapping names, and the Illinois State Board of Elections does not certify the general-election ballot until Aug 21, 2026. None is listed here rather than assert one.",
     candidates: [
       {
         name: "Juliana Stratton",
         party: "D",
-        winner: false,
+        winner: true,
         positions: [
           "Raise the federal minimum wage to $25 an hour as a living wage (Sun-Times candidate questionnaire; NBC Chicago / WTTW 2026 interviews). She cites Illinois' existing $15 state wage as still only $31,200 a year",
           "Codify abortion, IVF and contraception protections into federal law (campaign statements)",
@@ -926,15 +926,15 @@ const STATEWIDE = [
   },
   {
     date: "Nov 3, 2026",
-    type: "upcoming",
+    type: "past",
     scope: "State · Statewide",
     office: "Governor of Illinois",
-    note: "JB Pritzker (D) seeks a THIRD term — no Illinois governor has been elected to three since Jim Thompson in 1982, and no Democrat ever. He was unopposed for renomination, with new running mate Christian Mitchell after Stratton vacated the slot. Darren Bailey (R) won renomination with 53.3%, setting up the first Illinois gubernatorial rematch since 1986; his running mate is Cook County GOP chair Aaron Del Mar. Independents Collin Corbett and Carolyn Schofield ARE on the ballot — 27,323 signatures validated against 25,000 required, with Bailey's objection withdrawn at the Board of Elections' July 14 meeting. ⚠ The Green Party ticket FAILED ballot access with roughly 12,500 signatures and is pursuing a write-in, so it is not listed. ⚠ Cook, Sabato and Inside Elections all rate this Solid or Safe Democratic, but their ratings date from August and September 2025 — BEFORE the primary that chose Bailey — and have not been refreshed.",
+    note: "✅ RESULT (UNOFFICIAL): JB Pritzker (D) won a third term over Darren Bailey (R), per the Associated Press race call (source: AP race call, apnews.com, Nov 3, 2026). Results stay unofficial until the state certifies them. JB Pritzker (D) seeks a THIRD term — no Illinois governor has been elected to three since Jim Thompson in 1982, and no Democrat ever. He was unopposed for renomination, with new running mate Christian Mitchell after Stratton vacated the slot. Darren Bailey (R) won renomination with 53.3%, setting up the first Illinois gubernatorial rematch since 1986; his running mate is Cook County GOP chair Aaron Del Mar. Independents Collin Corbett and Carolyn Schofield ARE on the ballot — 27,323 signatures validated against 25,000 required, with Bailey's objection withdrawn at the Board of Elections' July 14 meeting. ⚠ The Green Party ticket FAILED ballot access with roughly 12,500 signatures and is pursuing a write-in, so it is not listed. ⚠ Cook, Sabato and Inside Elections all rate this Solid or Safe Democratic, but their ratings date from August and September 2025 — BEFORE the primary that chose Bailey — and have not been refreshed.",
     candidates: [
       {
         name: "JB Pritzker (incumbent)",
         party: "D",
-        winner: false,
+        winner: true,
         positions: [
           "Make life more affordable for working families (campaign launch)",
           "Protect abortion rights and personal freedoms (campaign launch)",
@@ -2426,7 +2426,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Illinois Elections Hub", lastUpdated: "November 2, 2026 (Wave 108)" };
+const SITE_META = { name: "Illinois Elections Hub", lastUpdated: "November 4, 2026 (Wave 110)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Illinois county-level down-ballot research is the next phase.

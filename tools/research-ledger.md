@@ -1572,3 +1572,18 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **2 -> 2**. Voices unchanged (0 gaps). No results published.
 
 2026-11-03 | 22 pages | Wave 109 | Free web (0 Grok). Auto-publish after green tests.
+
+## 2026-11-04 - Wave 110 (Wednesday 8am daily, DAY AFTER ELECTION - first results)
+
+### Research (free web; Grok 0)
+- **Senate/Governor calls (DONE):** per-race searches for AP race-call articles (apnews.com race-call pages, WaPo AP race-call pages, Seattle Times AP) and local outlets citing AP/major networks. AP live results page timed out - not used. Aggregators (exa.ai, movement.vote, polling-desk) NOT cited; no vote tallies published.
+- **House toss-ups (DONE for ~40 seats):** AP race calls or concessions for 27; 9 still uncalled (CO-5, MI-4, MI-7, MI-10, VA-1, VA-5, ME-2, AZ-1, AZ-6). AZ-6 has a DDHQ projection only.
+- **Pending statewide:** AK Sen/Gov (RCV Nov 18), MS Senate (dozens of votes apart), KS Governor (late mail).
+- **Not yet researched:** AG/LG/SoS/other statewide results; House seats outside the toss-up list; LA House (Dec 12 runoffs).
+- 21-day skip: Election results are a trigger event - all Nov 3 races eligible.
+
+### Edits
+- 48 pages: SITE_META + footer span Nov 4, 2026 (Wave 110); hero eyebrow retensed. 42 pages with called Senate/Gov races; 27 House results; 13 NOT YET CALLED notes.
+- Verify **2 -> 2**. Voices unchanged (0 gaps).
+
+2026-11-04 | 48 pages | Wave 110 | Free web (0 Grok). Auto-publish after green tests.

@@ -647,7 +647,7 @@
      HERO
      ============================================= -->
 <section class="hero">
-  <div class="eyebrow"><span class="dot"></span> Election Day · Tuesday, November 3, 2026</div>
+  <div class="eyebrow"><span class="dot"></span> Election held Tuesday, November 3, 2026 · Results being added as races are called</div>
   <h1 class="hero-title">Every New York <em>election</em>, in one place.</h1>
   <p class="hero-lede">
     A county-by-county guide to the races that have shaped — and will shape — our state.
@@ -714,7 +714,7 @@
       <strong>NY Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">November 3, 2026 (Wave 109)</span><br>
+      Last updated: <span id="last-updated">November 4, 2026 (Wave 110)</span><br>
       Sources: New York State Board of Elections, Ballotpedia, Wikipedia, AP, The New York Times, Times Union, City & State NY, Spectrum News NY1.
     </div>
   </div>
@@ -1014,15 +1014,15 @@ const COUNTIES = {
 const STATEWIDE = [
   {
     "date": "Nov 3, 2026",
-    "type": "upcoming",
+    "type": "past",
     "scope": "State · Statewide",
     "office": "Governor of New York",
-    "note": "Hochul (D) seeks her first full term; ran unopposed in the June 23 primary, now on a joint ticket with Lt. Gov. nominee Adrienne Adams. GOP's Bruce Blakeman (Nassau County Executive, Trump-endorsed) won his primary unopposed after Rep. Elise Stefanik dropped out Dec. 2025. Rated Solid/Safe D (Cook), Likely D (Sabato); Hochul led 49–33 in a May 2026 Siena poll.",
+    "note": "✅ RESULT (UNOFFICIAL): Kathy Hochul (D) won re-election over Bruce Blakeman (R), per the Associated Press race call (source: AP race call, apnews.com, Nov 3, 2026). Results stay unofficial until the state certifies them. Hochul (D) seeks her first full term; ran unopposed in the June 23 primary, now on a joint ticket with Lt. Gov. nominee Adrienne Adams. GOP's Bruce Blakeman (Nassau County Executive, Trump-endorsed) won his primary unopposed after Rep. Elise Stefanik dropped out Dec. 2025. Rated Solid/Safe D (Cook), Likely D (Sabato); Hochul led 49–33 in a May 2026 Siena poll.",
     "candidates": [
       {
         "name": "Kathy Hochul",
         "party": "D",
-        "winner": false,
+        "winner": true,
         "positions": [
           "Affordability: 'inflation refund' checks, middle-class tax cuts, universal child care, no state tax on tips (FY2026 budget)",
           "Abortion rights: protections for out-of-state patients, telehealth medication abortion",
@@ -2523,8 +2523,8 @@ const HOUSE_RACES = {
     "races": [
       {
         "date": "Nov 3, 2026",
-        "type": "upcoming",
-        "note": "Not open and not a rematch. Incumbent Mike Lawler (R) is seeking a third term after declining the 2026 governor's race (announced July 2025, kicked off reelection April 2026). The June 23, 2026 Democratic primary was won by Cait Conley with ~49%, over Beth Davidson (~30%, Rockland County Legislator), Effie Phillips-Staley (~15%, Tarrytown trustee), Mike Sacks, and John Cappello (5-candidate field; AP called it election night). NY-17 is one of only three GOP-held districts nationally that Kamala Harris carried in 2024, making it a top national target. Lawler runs on Republican/Conservative lines; Conley is the Democratic (and Working Families-aligned) nominee. Lawler primary vote totals not separately reported this run (uncontested/dominant). ✅ COOK RATING, OCT 23, 2026: the Cook Political Report's own House ratings page (updated Oct 23, 2026, the day Cook moved 19 more House races toward Democrats) rates this race TOSS UP. ⚠ SABATO FINAL RATING: in its final pre-election update on Nov 2, 2026 - which left no race rated Toss-up - Sabato's Crystal Ball moved this race from Toss-up to LEANS REPUBLICAN (Sabato's Crystal Ball, THE FINAL 2026 RATINGS: Democrats Favored to Capture House, Senate, and Gubernatorial Majorities, Nov 2, 2026). A rating is a forecast, not a result.",
+        "type": "past",
+        "note": "✅ RESULT (UNOFFICIAL): Cait Conley (D) defeated Rep. Mike Lawler (R). Lawler conceded on election night (Bloomberg Law; The Highlands Current; City & State New York, Nov 4, 2026); an AP race call had not been reported when he conceded. Results stay unofficial until the state certifies them. Not open and not a rematch. Incumbent Mike Lawler (R) is seeking a third term after declining the 2026 governor's race (announced July 2025, kicked off reelection April 2026). The June 23, 2026 Democratic primary was won by Cait Conley with ~49%, over Beth Davidson (~30%, Rockland County Legislator), Effie Phillips-Staley (~15%, Tarrytown trustee), Mike Sacks, and John Cappello (5-candidate field; AP called it election night). NY-17 is one of only three GOP-held districts nationally that Kamala Harris carried in 2024, making it a top national target. Lawler runs on Republican/Conservative lines; Conley is the Democratic (and Working Families-aligned) nominee. Lawler primary vote totals not separately reported this run (uncontested/dominant). ✅ COOK RATING, OCT 23, 2026: the Cook Political Report's own House ratings page (updated Oct 23, 2026, the day Cook moved 19 more House races toward Democrats) rates this race TOSS UP. ⚠ SABATO FINAL RATING: in its final pre-election update on Nov 2, 2026 - which left no race rated Toss-up - Sabato's Crystal Ball moved this race from Toss-up to LEANS REPUBLICAN (Sabato's Crystal Ball, THE FINAL 2026 RATINGS: Democrats Favored to Capture House, Senate, and Gubernatorial Majorities, Nov 2, 2026). A rating is a forecast, not a result.",
         "candidates": [
           {
             "name": "Mike Lawler",
@@ -2552,7 +2552,7 @@ const HOUSE_RACES = {
           {
             "name": "Cait Conley",
             "party": "D",
-            "winner": false,
+            "winner": true,
             "positions": [
               "Lower health-care costs: a public insurance option open to all ages, defending the ACA and Medicaid, expanding Medicare to vision/dental/hearing, capping insulin at $35, and letting Medicare negotiate drug prices (per caitconley.com/policy).",
               "Reproductive freedom: codify Roe v. Wade into federal law, protect abortion, contraception and IVF access, and restore federal funding for Planned Parenthood.",
@@ -3287,7 +3287,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "New York Elections Hub", lastUpdated: "November 3, 2026 (Wave 109)" };
+const SITE_META = { name: "New York Elections Hub", lastUpdated: "November 4, 2026 (Wave 110)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — GA county-level down-ballot research is the next phase).

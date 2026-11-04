@@ -647,7 +647,7 @@
      HERO
      ============================================= -->
 <section class="hero">
-  <div class="eyebrow"><span class="dot"></span> Election Day · Tuesday, November 3, 2026</div>
+  <div class="eyebrow"><span class="dot"></span> Election held Tuesday, November 3, 2026 · Results being added as races are called</div>
   <h1 class="hero-title">Every Tennessee <em>election</em>, in one place.</h1>
   <p class="hero-lede">
     A county-by-county guide to the races that have shaped — and will shape — our state.
@@ -714,7 +714,7 @@
       <strong>TN Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">November 3, 2026 (Wave 109)</span><br>
+      Last updated: <span id="last-updated">November 4, 2026 (Wave 110)</span><br>
       Sources: Tennessee Secretary of State, Division of Elections (sos.tn.gov) certified candidate lists and Aug 6, 2026 primary results; the enacted congressional plan (Public Chapter 3, Second Extraordinary Session of the 114th General Assembly, signed May 7, 2026) at T.C.A. § 2-16-103; U.S. Census Bureau 2020 P.L. 94-171; FEC; Cook Political Report; Sabato's Crystal Ball; Inside Elections; Tennessee Lookout; WPLN; AP.</div>
   </div>
 </footer>
@@ -838,10 +838,10 @@ const COUNTIES = {
 
 const STATEWIDE = [
   // ─────────────────────────── UPCOMING ───────────────────────────
-  { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · Statewide", office: "U.S. Senate — Tennessee",
-    note: "Tennessee's Class 2 seat — Bill Hagerty's, not Marsha Blackburn's. Blackburn was re-elected in 2024 and is not on any 2026 ballot. A 2020 rematch: Hagerty won that race by 27 points. Cook, Sabato and Inside Elections all rate it Safe/Solid R (Aug 4-6, 2026).",
+  { date: "Nov 3, 2026", type: "past", scope: "Federal · Statewide", office: "U.S. Senate — Tennessee",
+    note: "✅ RESULT (UNOFFICIAL): Bill Hagerty (R) won re-election over Marquita Bradshaw (D), per the Associated Press race call (source: AP via WUSA9 syndication and FOX 17, Nov 3, 2026). Results stay unofficial until the state certifies them. Tennessee's Class 2 seat — Bill Hagerty's, not Marsha Blackburn's. Blackburn was re-elected in 2024 and is not on any 2026 ballot. A 2020 rematch: Hagerty won that race by 27 points. Cook, Sabato and Inside Elections all rate it Safe/Solid R (Aug 4-6, 2026).",
     candidates: [
-      { name: "Bill Hagerty", party: "R", winner: false,
+      { name: "Bill Hagerty", party: "R", winner: true,
         positions: ["Lower taxes", "Energy independence and border security", "Advancing Trump's America First agenda"],
         differentiators: ["First-term incumbent; former U.S. Ambassador to Japan (hagerty.senate.gov/about)", "Endorsed by President Trump at launch", "$5,234,429 cash on hand through July 17, 2026 (FEC)"],
         supporters: ["Renominated unopposed — a unified state GOP", "Beat this same opponent by 27 points in 2020", "Money advantage lets him defend the seat cheaply"],
@@ -973,10 +973,10 @@ const STATEWIDE = [
         opponents: ["No FEC filing on record", "No independent has won a Tennessee statewide race (structural)"] }
     ] },
 
-  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Governor of Tennessee",
-    note: "OPEN seat — Bill Lee is term-limited. Tennessee will elect its first female governor: both major-party nominees are women. Fourteen independents also qualified. Cook, Sabato and Inside Elections all rate it Safe/Solid R (July 10 – Aug 6, 2026). ⚠ FINAL RATINGS: Inside Elections moved this race from Solid Republican to LIKELY REPUBLICAN in its final Oct 29, 2026 governor update (Inside Elections ratings data, updated Oct 29, 2026).",
+  { date: "Nov 3, 2026", type: "past", scope: "State · Statewide", office: "Governor of Tennessee",
+    note: "✅ RESULT (UNOFFICIAL): Marsha Blackburn (R) defeated Jerri Green (D), per the Associated Press race call (source: AP race call via The Washington Post, Nov 4, 2026; WPLN). Results stay unofficial until the state certifies them. OPEN seat — Bill Lee is term-limited. Tennessee will elect its first female governor: both major-party nominees are women. Fourteen independents also qualified. Cook, Sabato and Inside Elections all rate it Safe/Solid R (July 10 – Aug 6, 2026). ⚠ FINAL RATINGS: Inside Elections moved this race from Solid Republican to LIKELY REPUBLICAN in its final Oct 29, 2026 governor update (Inside Elections ratings data, updated Oct 29, 2026).",
     candidates: [
-      { name: "Marsha Blackburn", party: "R", winner: false,
+      { name: "Marsha Blackburn", party: "R", winner: true,
         positions: ["Economic growth and tax cuts", "Stopping illegal immigration; public safety", "'Bell to Bell: No Cell' phone-free schools"],
         differentiators: ["Sitting U.S. Senator since 2019 (elected 2018; seeking first term as governor)", "Trump endorsement; treasurer is Knox County Mayor Glenn Jacobs", "$2,691,224 cash on hand as of Aug 14, 2026 TREF refresh (Tennessee Firefly aggregation of Registry filings)"],
         supporters: ["Best-known Republican in a state the GOP carries comfortably", "Beat a self-funding congressman who outspent her", "Long, predictable conservative record"],
@@ -1500,7 +1500,7 @@ const HOUSE_RACES = {
   },
 };
 
-const SITE_META = { name: "Tennessee Elections Hub", lastUpdated: "November 3, 2026 (Wave 109)" };
+const SITE_META = { name: "Tennessee Elections Hub", lastUpdated: "November 4, 2026 (Wave 110)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Tennessee county-level down-ballot research has not started.)

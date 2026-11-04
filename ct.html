@@ -647,7 +647,7 @@
      HERO
      ============================================= -->
 <section class="hero">
-  <div class="eyebrow"><span class="dot"></span> Election Day · Tuesday, November 3, 2026</div>
+  <div class="eyebrow"><span class="dot"></span> Election held Tuesday, November 3, 2026 · Results being added as races are called</div>
   <h1 class="hero-title">Every Connecticut <em>election</em>, in one place.</h1>
   <p class="hero-lede">
     A county-by-county guide to the races that have shaped — and will shape — our state.
@@ -714,7 +714,7 @@
       <strong>CT Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">November 2, 2026 (Wave 108)</span><br>
+      Last updated: <span id="last-updated">November 4, 2026 (Wave 110)</span><br>
       Sources: CT Secretary of the State (portal.ct.gov), Ballotpedia, Wikipedia, Cook Political Report, CT Mirror, Hartford Courant, CT Public / WNPR, AP.
     </div>
   </div>
@@ -785,12 +785,12 @@ const STATEWIDE = [
   // UPCOMING — 2026 General Election (Nov 3, 2026)
   {
     date: "Nov 3, 2026",
-    type: "upcoming",
+    type: "past",
     scope: "State · Statewide",
     office: "Governor of Connecticut",
-    note: "✅ THE FIELD IS SET. Ned Lamont (D) beat state Rep. Josh Elliott 67.91%–32.09% on Aug 11 — a 64,126-vote margin and the first primary challenge to a sitting Connecticut governor in about fifty years. He now seeks a rare third consecutive term against state Sen. Ryan Fazio, the settled Republican nominee since the May convention (~92%). Rated Solid Democratic. ⚠ UNOFFICIAL — 740 of 760 precincts reporting; the statutory canvass is pending. AP called the race about twenty minutes after polls closed and Elliott conceded. Source: CT Secretary of the State results portal; CT Mirror.",
+    note: "✅ RESULT (UNOFFICIAL): Ned Lamont (D) won a third term over Ryan Fazio (R), per the Associated Press race call (source: AP race call via 10TV/AP and WFSB, Nov 3, 2026). Results stay unofficial until the state certifies them. ✅ THE FIELD IS SET. Ned Lamont (D) beat state Rep. Josh Elliott 67.91%–32.09% on Aug 11 — a 64,126-vote margin and the first primary challenge to a sitting Connecticut governor in about fifty years. He now seeks a rare third consecutive term against state Sen. Ryan Fazio, the settled Republican nominee since the May convention (~92%). Rated Solid Democratic. ⚠ UNOFFICIAL — 740 of 760 precincts reporting; the statutory canvass is pending. AP called the race about twenty minutes after polls closed and Elliott conceded. Source: CT Secretary of the State results portal; CT Mirror.",
     candidates: [
-      { name: "Ned Lamont (incumbent)", party: "D", winner: false,
+      { name: "Ned Lamont (incumbent)", party: "D", winner: true,
         positions: ["Fiscal-moderate budgeting and statutory 'fiscal guardrails'","Protect and expand abortion access","Affordability and childcare investment"],
         differentiators: ["Governor since 2019; seeking a rare third term","Former Greenwich entrepreneur; largely self-funds","Won the Aug 11 Democratic primary 67.91%–32.09%, better than two-to-one"],
         supporters: ["Record budget surpluses and high approval","A better-than-two-to-one primary win reads as a mandate","Fiscal steadiness and the state's 'guardrails' budget framework are working, his backers argue"],
@@ -1116,7 +1116,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Connecticut Elections Hub", lastUpdated: "November 2, 2026 (Wave 108)" };
+const SITE_META = { name: "Connecticut Elections Hub", lastUpdated: "November 4, 2026 (Wave 110)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Connecticut county-level down-ballot research is the next phase.)

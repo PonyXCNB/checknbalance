@@ -647,7 +647,7 @@
      HERO
      ============================================= -->
 <section class="hero">
-  <div class="eyebrow"><span class="dot"></span> Election Day · Tuesday, November 3, 2026</div>
+  <div class="eyebrow"><span class="dot"></span> Election held Tuesday, November 3, 2026 · Results being added as races are called</div>
   <h1 class="hero-title">Every Maryland <em>election</em>, in one place.</h1>
   <p class="hero-lede">
     A county-by-county guide to the races that have shaped — and will shape — our state.
@@ -714,7 +714,7 @@
       <strong>MD Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">November 2, 2026 (Wave 108)</span><br>
+      Last updated: <span id="last-updated">November 4, 2026 (Wave 110)</span><br>
       Sources: Maryland State Board of Elections, Ballotpedia, Wikipedia, AP, Maryland Matters, The Baltimore Banner.
     </div>
   </div>
@@ -766,15 +766,15 @@ const STATEWIDE = [
   // UPCOMING — 2026 General Election (Nov 3, 2026)
   {
     date: "Nov 3, 2026",
-    type: "upcoming",
+    type: "past",
     scope: "State · Statewide",
     office: "Governor of Maryland",
-    note: "A rematch of 2022 — Wes Moore (D) vs. Dan Cox (R), Maryland's first gubernatorial rematch since 2010. Rated Solid/Safe Democratic (Cook, Sabato (Wave 75 — labels)). No U.S. Senate seat is on Maryland's 2026 ballot.",
+    note: "✅ RESULT (UNOFFICIAL): Wes Moore (D) won re-election over Dan Cox (R), per the Associated Press race call (source: AP race call, apnews.com, Nov 3, 2026). Results stay unofficial until the state certifies them. A rematch of 2022 — Wes Moore (D) vs. Dan Cox (R), Maryland's first gubernatorial rematch since 2010. Rated Solid/Safe Democratic (Cook, Sabato (Wave 75 — labels)). No U.S. Senate seat is on Maryland's 2026 ballot.",
     candidates: [
       {
         name: "Wes Moore (incumbent)",
         party: "D",
-        winner: false,
+        winner: true,
         positions: [
           "Crime reduction — touts Baltimore's lowest homicide numbers in ~50 years",
           "Middle-class and veteran tax cuts",
@@ -1303,7 +1303,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Maryland Elections Hub", lastUpdated: "November 2, 2026 (Wave 108)" };
+const SITE_META = { name: "Maryland Elections Hub", lastUpdated: "November 4, 2026 (Wave 110)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — MD county-level down-ballot research is the next phase).

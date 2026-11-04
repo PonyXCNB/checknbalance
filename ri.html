@@ -647,7 +647,7 @@
      HERO
      ============================================= -->
 <section class="hero">
-  <div class="eyebrow"><span class="dot"></span> Election Day · Tuesday, November 3, 2026</div>
+  <div class="eyebrow"><span class="dot"></span> Election held Tuesday, November 3, 2026 · Results being added as races are called</div>
   <h1 class="hero-title">Every Rhode Island <em>election</em>, in one place.</h1>
   <p class="hero-lede">
     A county-by-county guide to the races that have shaped — and will shape — our state.
@@ -714,7 +714,7 @@
       <strong>RI Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">November 2, 2026 (Wave 108)</span><br>
+      Last updated: <span id="last-updated">November 4, 2026 (Wave 110)</span><br>
       Sources: RI Department of State / Board of Elections, Ballotpedia, Wikipedia, Cook Political Report, AP, CNN, The Boston Globe, WPRI, Ocean State Media, Rhode Island Current.
     </div>
   </div>
@@ -768,11 +768,11 @@ const COUNTIES = {
 // Sources: WPRI, CNN, AP (via WSJ), Ocean State Media, News From The States, Rhode Island Current, Green Papers.
 const STATEWIDE = [
   {
-    date: "Nov 3, 2026", type: "upcoming", scope: "Federal · Statewide",
+    date: "Nov 3, 2026", type: "past", scope: "Federal · Statewide",
     office: "U.S. Senate — Rhode Island",
-    note: "Jack Reed (D), first elected 1996, seeks a 6th term; Armed Services leadership. Rated Solid/Safe Democratic. ✅ Sept 9 result (Ocean State Media / News From The States; BOE-certified Sep 15 (What's Up Newp / News From The States): Reed won ~76%–14%–10% over Burbridge and Muñoz on early Board tallies. Raymond McKay (R) won the GOP primary unopposed — Allen Waters did not appear on the GOP Senate ballot. Independent Michael Bahry is also on the November path (News From The States; Green Papers).",
+    note: "✅ RESULT (UNOFFICIAL): Jack Reed (D) won re-election over Raymond McKay (R), per the Associated Press race call (source: AP race call, apnews.com, Nov 3, 2026). Results stay unofficial until the state certifies them. Jack Reed (D), first elected 1996, seeks a 6th term; Armed Services leadership. Rated Solid/Safe Democratic. ✅ Sept 9 result (Ocean State Media / News From The States; BOE-certified Sep 15 (What's Up Newp / News From The States): Reed won ~76%–14%–10% over Burbridge and Muñoz on early Board tallies. Raymond McKay (R) won the GOP primary unopposed — Allen Waters did not appear on the GOP Senate ballot. Independent Michael Bahry is also on the November path (News From The States; Green Papers).",
     candidates: [
-    { name: "Jack Reed (incumbent)", party: "D", winner: false,
+    { name: "Jack Reed (incumbent)", party: "D", winner: true,
       positions: ["Defense and the Rhode Island submarine industrial base (Armed Services leader)", "Veterans' benefits and VA reform", "Affordable housing and homelessness"],
       differentiators: ["Senior Senate Armed Services leadership", "Low-profile, bipartisan institutionalist", "Won the Sept 9 Democratic primary over Burbridge and Muñoz (Ocean State Media; ~76% BOE-certified)"],
       supporters: ["Delivers for a small state through seniority and defense clout", "Cleared progressive primary challengers by a wide margin", "Massive cash edge — ~$3.6M on hand vs. challengers' low five figures (FEC, pre-primary)"],
@@ -790,11 +790,11 @@ const STATEWIDE = [
     ]
   },
   {
-    date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide",
+    date: "Nov 3, 2026", type: "past", scope: "State · Statewide",
     office: "Governor of Rhode Island",
-    note: "Helena Foulkes (D) is the Democratic nominee after defeating incumbent Gov. Dan McKee on Sept 9 — CNN/AP/WPRI-called; AP early tallies ~62%–38% (WSJ). Aaron Guckian (R) is the Republican nominee — WPRI-projected over Elaine Pelino in a very close race (~51%–49% / ~200–300 vote margins in late returns; BOE-certified Sep 15). November also includes independents Ken Block, Jasjit “Jay” Gotra, and C.D. Reynolds (Ocean State Media / WPRI / Rhode Island Current). Rated Solid/Likely Democratic.",
+    note: "✅ RESULT (UNOFFICIAL): Helena Foulkes (D) defeated Aaron Guckian (R) and Ken Block (I), per the Associated Press race call (source: AP race call, apnews.com, Nov 3, 2026; Rhode Island Current). Results stay unofficial until the state certifies them. Helena Foulkes (D) is the Democratic nominee after defeating incumbent Gov. Dan McKee on Sept 9 — CNN/AP/WPRI-called; AP early tallies ~62%–38% (WSJ). Aaron Guckian (R) is the Republican nominee — WPRI-projected over Elaine Pelino in a very close race (~51%–49% / ~200–300 vote margins in late returns; BOE-certified Sep 15). November also includes independents Ken Block, Jasjit “Jay” Gotra, and C.D. Reynolds (Ocean State Media / WPRI / Rhode Island Current). Rated Solid/Likely Democratic.",
     candidates: [
-    { name: "Helena Foulkes", party: "D", winner: false,
+    { name: "Helena Foulkes", party: "D", winner: true,
       positions: ["Housing — 'Rhode Home' fund to build 20,000 units, paid by a 3% tax on income over $1M", "Healthcare — raise Medicaid rates, rebuild primary care", "Jobs — 'Classroom-to-Career' $100M CTE bond; blue-economy/port investment"],
       differentiators: ["Former CVS Health executive; defeated incumbent McKee in the Sept 9 Democratic primary (CNN/AP/WPRI)", "2022 primary runner-up who rematched and won — first challenger in 32 years to unseat a RI governor seeking renomination (WPRI)", "Endorsed by AG Peter Neronha and most local Democratic committees heading into primary night"],
       supporters: ["Executive competence and urgency after the Washington Bridge crisis hurt McKee", "Large primary margin (~62% early AP tallies) and fundraising edge over the incumbent", "Starts as the frontrunner in a Solid/Likely D state (WPRI)"],
@@ -1006,7 +1006,7 @@ const HOUSE_RACES = {
   }
 }
 
-const SITE_META = { name: "Rhode Island Elections Hub", lastUpdated: "November 2, 2026 (Wave 108)" };
+const SITE_META = { name: "Rhode Island Elections Hub", lastUpdated: "November 4, 2026 (Wave 110)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — RI county-level down-ballot research is the next phase.)

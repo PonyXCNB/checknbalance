@@ -647,7 +647,7 @@
      HERO
      ============================================= -->
 <section class="hero">
-  <div class="eyebrow"><span class="dot"></span> Election Day · Tuesday, November 3, 2026</div>
+  <div class="eyebrow"><span class="dot"></span> Election held Tuesday, November 3, 2026 · Results being added as races are called</div>
   <h1 class="hero-title">Every New Jersey <em>election</em>, in one place.</h1>
   <p class="hero-lede">
     A county-by-county guide to the races that have shaped — and will shape — our state.
@@ -714,7 +714,7 @@
       <strong>NJ Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">November 3, 2026 (Wave 109)</span><br>
+      Last updated: <span id="last-updated">November 4, 2026 (Wave 110)</span><br>
       Sources: NJ Division of Elections, Ballotpedia, Wikipedia, AP, New Jersey Globe, NJ Monitor, WHYY.
     </div>
   </div>
@@ -765,15 +765,15 @@ const STATEWIDE = [
   // UPCOMING — 2026 General Election (Nov 3, 2026)
   {
     date: "Nov 3, 2026",
-    type: "upcoming",
+    type: "past",
     scope: "Federal · Statewide",
     office: "U.S. Senate — New Jersey",
-    note: "Cory Booker (D) seeks a third full term against attorney and Navy veteran Justin Murphy (R). Rated Solid Democratic (Cook). Republicans haven't won a New Jersey Senate race since 1972. No governor's race in 2026 (Sherrill's term runs to January 2030).",
+    note: "✅ RESULT (UNOFFICIAL): Cory Booker (D) won re-election over Justin Murphy (R), per the Associated Press race call (source: AP call via Patch and NJ.com, Nov 3, 2026). Results stay unofficial until the state certifies them. Cory Booker (D) seeks a third full term against attorney and Navy veteran Justin Murphy (R). Rated Solid Democratic (Cook). Republicans haven't won a New Jersey Senate race since 1972. No governor's race in 2026 (Sherrill's term runs to January 2030).",
     candidates: [
       {
         name: "Cory Booker (incumbent)",
         party: "D",
-        winner: false,
+        winner: true,
         positions: [
           "Healthcare costs: protect and expand the ACA, fight Medicaid cuts, lower prescription prices",
           "Affordability: eliminate federal income tax on roughly the first $75,000 of income; expand tax credits; raise taxes on the wealthy (Wave 75 — plan details)",
@@ -1102,15 +1102,15 @@ const HOUSE_RACES = {
     region: "Western and central NJ — Hunterdon, Warren, parts of Morris, Somerset, Sussex, Union",
     races: [
       {
-        date: "Nov 3, 2026", type: "upcoming",
-        note: "New Jersey's marquee race — the state's only Cook Toss Up (PVI EVEN). Tom Kean Jr. (R), back after a four-month absence he attributed to a depression diagnosis, faces Navy test pilot Rebecca Bennett (D). ✅ COOK RATING, OCT 23, 2026: the Cook Political Report's own House ratings page (updated Oct 23, 2026, the day Cook moved 19 more House races toward Democrats) rates this race LEAN D; Cook had moved it from Toss Up to Lean D on Sept 25, 2026. This supersedes any older Cook rating cited above. ⚠ AD MONEY: the Congressional Leadership Fund and Trump's Affordability and Safety PAC withdrew their remaining NJ-7 advertising on Oct 13 to defend redder seats; the NRCC promised to match Bennett's spending, and Kean's campaign said it will be at parity on the air (New Jersey Globe, Oct 13, 2026, citing the New York Times).",
+        date: "Nov 3, 2026", type: "past",
+        note: "✅ RESULT (UNOFFICIAL): Rebecca Bennett (D) defeated Rep. Tom Kean Jr. (R), who conceded, per the Associated Press race call (source: NBC News and ABC7 New York, Nov 3-4, 2026). Results stay unofficial until the state certifies them. New Jersey's marquee race — the state's only Cook Toss Up (PVI EVEN). Tom Kean Jr. (R), back after a four-month absence he attributed to a depression diagnosis, faces Navy test pilot Rebecca Bennett (D). ✅ COOK RATING, OCT 23, 2026: the Cook Political Report's own House ratings page (updated Oct 23, 2026, the day Cook moved 19 more House races toward Democrats) rates this race LEAN D; Cook had moved it from Toss Up to Lean D on Sept 25, 2026. This supersedes any older Cook rating cited above. ⚠ AD MONEY: the Congressional Leadership Fund and Trump's Affordability and Safety PAC withdrew their remaining NJ-7 advertising on Oct 13 to defend redder seats; the NRCC promised to match Bennett's spending, and Kean's campaign said it will be at parity on the air (New Jersey Globe, Oct 13, 2026, citing the New York Times).",
         candidates: [
           { name: "Tom Kean Jr. (incumbent)", party: "R", winner: false,
             positions: ["Republican Main Street / Problem Solvers Caucus positioning","Voted for the 2025 tax-and-spending law (the 'One Big Beautiful Bill')","Trump gave him a 'complete and total endorsement'"],
             differentiators: ["Son of former Gov. Tom Kean — the most famous name in NJ politics","Absent from Congress March–June 2026; disclosed a depression diagnosis and hospitalization on June 30","Unopposed in the primary; twice won this even-PVI seat"],
             supporters: ["A mainstream, bipartisan-branded Republican who fits the district","Deserves grace, not attacks, on a disclosed mental-health condition"],
             opponents: ["Missed 100+ votes with months of secrecy about why","Rubber-stamped the Trump agenda, including health-coverage cuts"] },
-          { name: "Rebecca Bennett", party: "D", winner: false,
+          { name: "Rebecca Bennett", party: "D", winner: true,
             positions: ["Affordability: cap childcare costs at 7% of family income, funded by repealing the 2025 tax cuts for the top 1%","Reverse the Medicaid cuts; lower patient costs","Veterans' services and transition support"],
             differentiators: ["39-year-old former Navy/Air National Guard helicopter and experimental test pilot; healthcare executive","Won the four-way primary decisively (~47%) despite a GOP-linked super PAC spending against her","EMILY's List and DCCC backing; fundraising leader"],
             supporters: ["A moderate veteran-outsider profile that wins districts exactly like this"],
@@ -1324,7 +1324,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "New Jersey Elections Hub", lastUpdated: "November 3, 2026 (Wave 109)" };
+const SITE_META = { name: "New Jersey Elections Hub", lastUpdated: "November 4, 2026 (Wave 110)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — NJ county-level down-ballot research is the next phase).

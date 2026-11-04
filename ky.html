@@ -647,7 +647,7 @@
      HERO
      ============================================= -->
 <section class="hero">
-  <div class="eyebrow"><span class="dot"></span> Election Day · Tuesday, November 3, 2026</div>
+  <div class="eyebrow"><span class="dot"></span> Election held Tuesday, November 3, 2026 · Results being added as races are called</div>
   <h1 class="hero-title">Every Kentucky <em>election</em>, in one place.</h1>
   <p class="hero-lede">
     A county-by-county guide to the races that have shaped — and will shape — our state.
@@ -714,7 +714,7 @@
       <strong>KY Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">November 3, 2026 (Wave 109)</span><br>
+      Last updated: <span id="last-updated">November 4, 2026 (Wave 110)</span><br>
       Sources: Kentucky Secretary of State, Kentucky Legislative Research Commission (district statutes), AP-called primary results, FEC filings, campaign sites, Kentucky Lantern, Lexington Herald-Leader, Ballotpedia, Wikipedia, Cook Political Report, Sabato's Crystal Ball, Inside Elections.
     </div>
   </div>
@@ -896,12 +896,12 @@ const COUNTIES = {
 const STATEWIDE = [
   {
     date: "Nov 3, 2026",
-    type: "upcoming",
+    type: "past",
     scope: "Federal · Statewide",
     office: "U.S. Senate — Kentucky (OPEN SEAT)",
-    note: "OPEN SEAT — Mitch McConnell is retiring after seven terms, ending the longest Senate leadership tenure in U.S. history. Rated Solid R (Cook, Apr 13; Inside Elections, Apr 23) and Safe R (Sabato, Mar 4). Kentucky last elected a Democrat to the Senate in 1992, though Democrats have won the governorship as recently as 2023. Republican Nate Morris withdrew May 1, 2026 after Trump asked him to step aside, and endorsed Barr.",
+    note: "✅ RESULT (UNOFFICIAL): Andy Barr (R) defeated Charles Booker (D), per the Associated Press race call (source: AP race call via The Washington Post, Nov 3, 2026; Kentucky Lantern). Results stay unofficial until the state certifies them. OPEN SEAT — Mitch McConnell is retiring after seven terms, ending the longest Senate leadership tenure in U.S. history. Rated Solid R (Cook, Apr 13; Inside Elections, Apr 23) and Safe R (Sabato, Mar 4). Kentucky last elected a Democrat to the Senate in 1992, though Democrats have won the governorship as recently as 2023. Republican Nate Morris withdrew May 1, 2026 after Trump asked him to step aside, and endorsed Barr.",
     candidates: [
-      { name: "Andy Barr", party: "R", winner: false,
+      { name: "Andy Barr", party: "R", winner: true,
         positions: ["Deport criminal illegal immigrants and secure the border","Extend the Trump tax cuts; touts $4,200 in family savings","Revive coal production; opposes environmental and ESG mandates"],
         differentiators: ["U.S. Rep. for KY-6 since 2013; chairs a Financial Services subcommittee","Trump gave a \"Complete and Total Endorsement\"; also Thune and the NRSC","$9.92M raised and $2.25M cash on hand through June 30, 2026"],
         supporters: ["A Trump-endorsed conservative the party trusts to hold the seat","Helped deliver the 2017 tax law that cut rates for Kentucky families","Runs on coal, gun rights and law enforcement in a state that rewards all three"],
@@ -1301,15 +1301,15 @@ const HOUSE_RACES = {
     region: "The Lexington-anchored Bluegrass — Fayette (Lexington), Madison (Richmond), Scott (Georgetown) plus Bourbon, Woodford, Clark and Jessamine horse country. Note: Frankfort is NOT in this district — Franklin County sits in KY-1",
     races: [
       {
-        date: "Nov 3, 2026", type: "upcoming",
-        note: "⚠ OPEN SEAT and Kentucky's marquee House race — Andy Barr vacated it to run for the Senate. At Cook PVI R+7 this is by far the most competitive of Kentucky's six seats, and raters have been moving it: Cook to LIKELY R on July 16, 2026 (off Safe/Solid R) and Sabato to Likely R. Trump carried the district by about 15 points in 2024, but Gov. Andy Beshear carried it by about 20 in 2023 — the split that makes Democrats hopeful. Dembo leads on cash on hand. Both public polls are Democratic-sponsored; no independent poll has been released. ✅ COOK RATING, OCT 23, 2026: the Cook Political Report's own House ratings page (updated Oct 23, 2026, the day Cook moved 19 more House races toward Democrats) rates this race TOSS UP; Cook had moved it from Likely R to Lean R on Oct 9, 2026. This supersedes any older Cook rating cited above. ⚠ RATING CHANGE: Inside Elections moved this race from Lean Republican to Tilt Republican in its Oct 20, 2026 update, one of 30 races it shifted toward Democrats (Roll Call, \"Rating changes: 30 races shift toward Democrats,\" Oct 20, 2026). ⚠ RATING CHANGE: Sabato's Crystal Ball moved this race from Leans Republican to Toss-up on Oct 27, 2026 (Sabato's Crystal Ball, Democrats Appear to Hold Narrow Senate Edge with Week to Go; Rating Changes for Senate, House, and Governors, Oct 27, 2026). ⚠ FINAL RATINGS: Inside Elections moved this race from Tilt Republican to TOSS-UP in its final Oct 29, 2026 update, one of 45 House races it shifted toward Democrats (Inside Elections ratings data, updated Oct 29, 2026). ⚠ SABATO FINAL RATING: in its final pre-election update on Nov 2, 2026 - which left no race rated Toss-up - Sabato's Crystal Ball moved this race from Toss-up to LEANS REPUBLICAN (Sabato's Crystal Ball, THE FINAL 2026 RATINGS: Democrats Favored to Capture House, Senate, and Gubernatorial Majorities, Nov 2, 2026). A rating is a forecast, not a result.",
+        date: "Nov 3, 2026", type: "past",
+        note: "✅ RESULT (UNOFFICIAL): Zach Dembo (D) defeated Ralph Alvarado (R) for the open seat, per the Associated Press race call (source: Kentucky Lantern and Washington Examiner, Nov 3-4, 2026). Results stay unofficial until the state certifies them. ⚠ OPEN SEAT and Kentucky's marquee House race — Andy Barr vacated it to run for the Senate. At Cook PVI R+7 this is by far the most competitive of Kentucky's six seats, and raters have been moving it: Cook to LIKELY R on July 16, 2026 (off Safe/Solid R) and Sabato to Likely R. Trump carried the district by about 15 points in 2024, but Gov. Andy Beshear carried it by about 20 in 2023 — the split that makes Democrats hopeful. Dembo leads on cash on hand. Both public polls are Democratic-sponsored; no independent poll has been released. ✅ COOK RATING, OCT 23, 2026: the Cook Political Report's own House ratings page (updated Oct 23, 2026, the day Cook moved 19 more House races toward Democrats) rates this race TOSS UP; Cook had moved it from Likely R to Lean R on Oct 9, 2026. This supersedes any older Cook rating cited above. ⚠ RATING CHANGE: Inside Elections moved this race from Lean Republican to Tilt Republican in its Oct 20, 2026 update, one of 30 races it shifted toward Democrats (Roll Call, \"Rating changes: 30 races shift toward Democrats,\" Oct 20, 2026). ⚠ RATING CHANGE: Sabato's Crystal Ball moved this race from Leans Republican to Toss-up on Oct 27, 2026 (Sabato's Crystal Ball, Democrats Appear to Hold Narrow Senate Edge with Week to Go; Rating Changes for Senate, House, and Governors, Oct 27, 2026). ⚠ FINAL RATINGS: Inside Elections moved this race from Tilt Republican to TOSS-UP in its final Oct 29, 2026 update, one of 45 House races it shifted toward Democrats (Inside Elections ratings data, updated Oct 29, 2026). ⚠ SABATO FINAL RATING: in its final pre-election update on Nov 2, 2026 - which left no race rated Toss-up - Sabato's Crystal Ball moved this race from Toss-up to LEANS REPUBLICAN (Sabato's Crystal Ball, THE FINAL 2026 RATINGS: Democrats Favored to Capture House, Senate, and Gubernatorial Majorities, Nov 2, 2026). A rating is a forecast, not a result.",
         candidates: [
           { name: "Ralph Alvarado", party: "R", winner: false,
             positions: ["Support Trump's America First agenda","Keep the border secured and stop the flow of fentanyl","\"Make America Healthy Again\" — runs explicitly as a MAHA physician"],
             differentiators: ["Physician of ~30 years; Kentucky state senator 2015–2023","First Hispanic member of the Kentucky General Assembly; 2019 Lt. Gov. nominee","Tennessee Health Commissioner 2023–2025; won the primary 56.5%, carrying all 16 counties"],
             supporters: ["Trump gave a \"Complete and Total Endorsement\"; Speaker Johnson and Jim Jordan followed","The physician credential gives the MAHA health message a credential to stand on","Swept every county in the primary, leaving no intraparty weakness to exploit","Unites the Trump lane and the U.S. Chamber establishment lane"],
             opponents: ["Rivals attack him for leaving Kentucky for a Tennessee post — a residency line","Opposed Kentucky's Medicaid expansion and backs cuts hitting rural hospitals","Backs tariffs he concedes hurt bourbon and farm exports","His campaign site lists five issue headers with no body text behind them"] },
-          { name: "Zach Dembo", party: "D", winner: false,
+          { name: "Zach Dembo", party: "D", winner: true,
             positions: ["End the trade war and bring costs down for Kentucky families","Stop endless wars in the Middle East while strengthening NATO and alliances","Root out corruption — ban congressional stock trading and end dark money"],
             differentiators: ["Navy JAG officer, then federal prosecutor in the DOJ Civil Rights Division","Resigned as an Assistant U.S. Attorney in protest over DOJ politicization","$1.46M raised and $491K cash on hand — about $93K MORE than Alvarado"],
             supporters: ["Ben Chandler, the last Democrat to hold the seat, calls him the party's best shot","Endorsed by Gov. Andy Beshear, who carried this district by roughly 20 points","A prosecutor-and-Navy résumé blunts the usual soft-on-crime attacks","Out-raising a Trump-endorsed opponent in a district Democrats rarely fund"],
@@ -1358,7 +1358,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Kentucky Elections Hub", lastUpdated: "November 3, 2026 (Wave 109)" };
+const SITE_META = { name: "Kentucky Elections Hub", lastUpdated: "November 4, 2026 (Wave 110)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Kentucky county-level down-ballot research is the next phase.)

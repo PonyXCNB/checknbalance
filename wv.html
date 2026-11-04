@@ -647,7 +647,7 @@
      HERO
      ============================================= -->
 <section class="hero">
-  <div class="eyebrow"><span class="dot"></span> Election Day · Tuesday, November 3, 2026</div>
+  <div class="eyebrow"><span class="dot"></span> Election held Tuesday, November 3, 2026 · Results being added as races are called</div>
   <h1 class="hero-title">Every West Virginia <em>election</em>, in one place.</h1>
   <p class="hero-lede">
     A county-by-county guide to the races that have shaped — and will shape — our state.
@@ -714,7 +714,7 @@
       <strong>WV Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">November 2, 2026 (Wave 108)</span><br>
+      Last updated: <span id="last-updated">November 4, 2026 (Wave 110)</span><br>
       Sources: West Virginia Secretary of State (sos.wv.gov), Ballotpedia, Wikipedia, Cook Political Report, Sabato's Crystal Ball, WV MetroNews, West Virginia Watch, The Dominion Post, WV Gazette-Mail, WTRF, WHSV, AP/NBC.
     </div>
   </div>
@@ -816,12 +816,12 @@ const STATEWIDE = [
   // UPCOMING — 2026 General Election (Nov 3, 2026)
   {
     date: "Nov 3, 2026",
-    type: "upcoming",
+    type: "past",
     scope: "Federal · Statewide",
     office: "U.S. Senate — West Virginia",
-    note: "Shelley Moore Capito (R) seeks a third term against Rachel Fetty Anderson (D), a public-interest attorney and former Morgantown city councilmember who won a five-way primary with 33%. Rated Solid R (Cook) / Safe R (Sabato). This is the only statewide candidate race on West Virginia's November ballot.",
+    note: "✅ RESULT (UNOFFICIAL): Shelley Moore Capito (R) won re-election over Rachel Fetty Anderson (D), per the Associated Press race call (source: AP race call, apnews.com, Nov 3, 2026). Results stay unofficial until the state certifies them. Shelley Moore Capito (R) seeks a third term against Rachel Fetty Anderson (D), a public-interest attorney and former Morgantown city councilmember who won a five-way primary with 33%. Rated Solid R (Cook) / Safe R (Sabato). This is the only statewide candidate race on West Virginia's November ballot.",
     candidates: [
-      { name: "Shelley Moore Capito (incumbent)", party: "R", winner: false,
+      { name: "Shelley Moore Capito (incumbent)", party: "R", winner: true,
         positions: ["All-of-the-above energy; pro-coal and gas permitting reform","Border security and the Trump administration's agenda","Broadband, infrastructure and jobs for West Virginia"],
         differentiators: ["Chairs the Senate Environment and Public Works Committee","Holds Trump's 'complete and total' endorsement","First woman to represent West Virginia in the U.S. Senate"],
         supporters: ["A committee gavel that turns federal infrastructure money toward West Virginia","Seniority no newcomer could match — she is the state's most powerful elected official"],
@@ -1035,7 +1035,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "West Virginia Elections Hub", lastUpdated: "November 2, 2026 (Wave 108)" };
+const SITE_META = { name: "West Virginia Elections Hub", lastUpdated: "November 4, 2026 (Wave 110)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — West Virginia county-level down-ballot research is the next phase.)

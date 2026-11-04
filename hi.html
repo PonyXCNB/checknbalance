@@ -647,7 +647,7 @@
      HERO
      ============================================= -->
 <section class="hero">
-  <div class="eyebrow"><span class="dot"></span> Election Day · Tuesday, November 3, 2026</div>
+  <div class="eyebrow"><span class="dot"></span> Election held Tuesday, November 3, 2026 · Results being added as races are called</div>
   <h1 class="hero-title">Every Hawaii <em>election</em>, in one place.</h1>
   <p class="hero-lede">
     A county-by-county guide to the races that have shaped — and will shape — our state.
@@ -714,7 +714,7 @@
       <strong>HI Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">November 2, 2026 (Wave 108)</span><br>
+      Last updated: <span id="last-updated">November 4, 2026 (Wave 110)</span><br>
       Sources: Hawaii Office of Elections (elections.hawaii.gov) official Aug 8, 2026 primary results and voter guides; Hawaii Campaign Spending Commission (csc.hawaii.gov) disclosure reports; the 2021 Reapportionment Commission plan; U.S. Census Bureau 2020 congressional-district summary files; FEC; U.S. House Clerk member roster; Cook Political Report 2025 PVI; Sabato's Crystal Ball; Inside Elections; Honolulu Civil Beat; Honolulu Star-Advertiser; Hawaii Public Radio.</div>
   </div>
 </footer>
@@ -766,10 +766,10 @@ const COUNTIES = {
 // NOTE: Hawaii does NOT elect judges. The Judicial Selection Commission decides retention, so no
 //   judicial contest appears on any Hawaii ballot.
 const STATEWIDE = [
-  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Governor and Lieutenant Governor of Hawaii",
-    note: "⚠ ONE VOTE, A TICKET YOU DID NOT ASSEMBLE. Hawaii nominates Governor and Lt. Governor SEPARATELY in the primary, then locks them together in November: under Hawaii Const. Art. V §2 a vote for the governor nominee is deemed cast for that party's LG nominee, and HRS §11-115 puts one box beside the pair. Neither running mate was chosen by the other. Rated Solid/Safe Democratic by Cook (Jul 10), Sabato (Jul 23) and Inside Elections (baseline D+35.6).",
+  { date: "Nov 3, 2026", type: "past", scope: "State · Statewide", office: "Governor and Lieutenant Governor of Hawaii",
+    note: "✅ RESULT (UNOFFICIAL): The Josh Green / Derek Kawakami (D) ticket defeated Gary Cordery / Daniel Anthony (R), per the Associated Press race call (source: AP race call via The Seattle Times, Nov 4, 2026; Honolulu Star-Advertiser). Results stay unofficial until the state certifies them. ⚠ ONE VOTE, A TICKET YOU DID NOT ASSEMBLE. Hawaii nominates Governor and Lt. Governor SEPARATELY in the primary, then locks them together in November: under Hawaii Const. Art. V §2 a vote for the governor nominee is deemed cast for that party's LG nominee, and HRS §11-115 puts one box beside the pair. Neither running mate was chosen by the other. Rated Solid/Safe Democratic by Cook (Jul 10), Sabato (Jul 23) and Inside Elections (baseline D+35.6).",
     candidates: [
-      { name: "Josh Green (incumbent)", party: "D", winner: false,
+      { name: "Josh Green (incumbent)", party: "D", winner: true,
         positions: [
           "Protect the 2024 middle-class income tax cuts and the expanded earned-income, food and child-care credits (his own framing)",
           "Build housing by deregulating through emergency proclamation; expand \"kauhale\" villages for homelessness",
@@ -790,7 +790,7 @@ const STATEWIDE = [
           "None of Lahaina's destroyed businesses have been rebuilt, and residents describe permitting rules that changed repeatedly; 702 households were still on FEMA temporary housing assistance in late July 2026",
           "More people are homeless, in shelters and on the street, than when he took office in 2022 — the premise of Civil Beat's own question to him"
         ] },
-      { name: "Derek S. K. Kawakami", party: "D", winner: false,
+      { name: "Derek S. K. Kawakami", party: "D", winner: true,
         positions: [
           "Continue the early-childhood education expansion (his own framing)",
           "State–county collaboration on land, infrastructure and permitting to bring housing costs down",
@@ -1030,7 +1030,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Hawaii Elections Hub", lastUpdated: "November 2, 2026 (Wave 108)" };
+const SITE_META = { name: "Hawaii Elections Hub", lastUpdated: "November 4, 2026 (Wave 110)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Hawaii county-level down-ballot research has not started.)
