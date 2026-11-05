@@ -133,7 +133,7 @@ const STATE_PAGES = [
   { page: "mi.html", countyCount: 83,  sampleFips: "26163", sampleName: "Wayne",        expectedRaces: 15 },
   // East Baton Rouge is deliberately the LA sample: it is split between LA-02 and LA-06 via `ds`,
   // and LA-06 is the seat *Louisiana v. Callais* redrew, so this count guards the merge on the new map.
-  { page: "la.html", countyCount: 64,  sampleFips: "22033", sampleName: "East Baton Rouge", expectedRaces: 14 },
+  { page: "la.html", countyCount: 64,  sampleFips: "22033", sampleName: "East Baton Rouge", expectedRaces: 15 },
   // Texas: PLAN C2333. Harris is the sample because it touches nine districts via ds,
   // including CD-7, CD-18 and CD-38, which are the plurality of no county (lesson #12).
   // 8 upcoming statewide races + 9 House races = 17. No past cards on this page.

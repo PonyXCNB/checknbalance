@@ -1587,3 +1587,17 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **2 -> 2**. Voices unchanged (0 gaps).
 
 2026-11-04 | 48 pages | Wave 110 | Free web (0 Grok). Auto-publish after green tests.
+
+## 2026-11-05 - Wave 111 (Thursday daily catch-up, results wave 2)
+
+### Research (free web; Grok 0)
+- **House results (DONE for MI, NV, NC, SC, TX, NJ, WA, OR, WI, MN, NY, AZ, IN, OH, LA):** AP calls via local outlets citing AP (Bridge Michigan, Las Vegas Review-Journal, Indiana Capital Chronicle, Ohio Capital Journal, KTAR, OPB, USA TODAY Network, Courier) and concessions (SC-1, NJ-2, TX-9, NY Comptroller). apnews.com fetches timed out; WaPo results pages empty; Star Tribune 429; Shreveport Times 402.
+- **Held (DDHQ-only or projection-only, not carded):** AZ-1, AZ-6, VA-5, NY-3, NY-21, VA-1, NJ-4, TX-23, NC-6/9/13/14, AK-AL, WA-4, OH-10, NY-1, CO-3, AZ-2.
+- **LA-6 conflict:** WGNO/KLFY early report had Miguez-Edmonds; WAFB + Louisiana Illuminator (later count) have Banks 50,878 / Miguez 50,213 / Edmonds 49,241 - used the later count.
+- **Not yet researched:** most statewide down-ballot (AG/SoS/Treasurer etc.) outside NY; remaining safe House seats in other states.
+
+### Edits
+- 21 pages: SITE_META + footer span Nov 5, 2026 (Wave 111). 63 result/NOT YET CALLED notes; LA-5/LA-6 Dec 12 runoff races added (la.html EBR pin 14 -> 15).
+- Verify **2 -> 2**. Voices unchanged (0 gaps).
+
+2026-11-05 | 21 pages | Wave 111 | Free web (0 Grok). Auto-publish after green tests.
