@@ -714,7 +714,7 @@
       <strong>ME Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">November 6, 2026 (Wave 112)</span><br>
+      Last updated: <span id="last-updated">November 9, 2026 (Wave 113)</span><br>
       Sources: Maine Secretary of State / Bureau of Corporations, Elections &amp; Commissions (maine.gov/sos), Ballotpedia, Wikipedia, Cook Political Report, Bangor Daily News, Portland Press Herald, Maine Public, Maine Morning Star, AP.
     </div>
   </div>
@@ -942,10 +942,10 @@ const HOUSE_RACES = {
     region: "Southern & coastal Maine — Portland, Biddeford, Brunswick; Cumberland, York, Sagadahoc, Lincoln & Knox counties plus part of Kennebec",
     races: [
       {
-        date: "Nov 3, 2026", type: "upcoming",
-        note: "Chellie Pingree (D) seeks a 10th term against retired Army colonel Ron Russell (R), who won the June 9 GOP primary 53.5%–46.5% to set up a rematch of 2024. Rated Solid/Safe Democratic. (Wave 75 — Cook's current label).",
+        date: "Nov 3, 2026", type: "past",
+        note: "✅ RESULT (UNOFFICIAL): Chellie Pingree (D) defeated Ron Russell (R), 66.8% to 33.2% in unofficial returns, a first-round majority, so no ranked-choice count was needed (source: Ballotpedia race page, ballotpedia.org, read Nov 9, 2026). Results stay unofficial until the state certifies them. Pre-election background: Chellie Pingree (D) seeks a 10th term against retired Army colonel Ron Russell (R), who won the June 9 GOP primary 53.5%–46.5% to set up a rematch of 2024. Rated Solid/Safe Democratic. (Wave 75 — Cook's current label).",
         candidates: [
-          { name: "Chellie Pingree (incumbent)", party: "D", winner: false,
+          { name: "Chellie Pingree (incumbent)", party: "D", winner: true,
             positions: ["Sustainable and organic farming; cutting food waste","Net-zero farm emissions via her Agriculture Resilience Act","Veterans' health and healthy-food access for children"],
             differentiators: ["Senior House Appropriations member chairing three subcommittees","A working organic farmer turned legislator","Works across ideological lines with food-reform advocates"],
             supporters: ["Appropriations seniority delivers federal dollars to Maine","A nationally recognized leader on farm and food policy"],
@@ -978,15 +978,15 @@ const HOUSE_RACES = {
     region: "Northern & rural Maine — Bangor, Lewiston, Aroostook and the North Woods; ten counties plus most of Kennebec (Augusta)",
     races: [
       {
-        date: "Nov 3, 2026", type: "upcoming",
-        note: "⚠ NOT YET CALLED (as of the morning of Nov 6, 2026): the Associated Press had still not called this race. Maine's Secretary of State announced that because no candidate won a majority of first-choice votes, ME-2 will proceed to ranked-choice tabulation beginning Monday, Nov 9, 2026, at 10 a.m. in Augusta (Maine SoS news release). Municipal totals: Paul LePage (R) 170,263 (49.894%), Matthew Dunlap (D) 164,845 (48.307%), declared write-ins 123, blanks 6,017 of 341,248 ballots. LePage declared victory on Nov 5; Dunlap has not conceded; AP vote desk still showed LePage ahead with counting ongoing (WMTW, Nov 5). No winner is shown here until the race is called or RCV finishes.",
+        date: "Nov 3, 2026", type: "past",
+        note: "✅ RESULT (UNOFFICIAL): Paul LePage (R) won the open seat. Matthew Dunlap (D) conceded on Nov 5 and congratulated him (Maine Public, Nov 5, 2026). First-choice municipal totals: LePage 170,263 (49.894%), Dunlap 164,845 (48.307%), declared write-ins 123, blanks 6,017, of 341,248 ballots. LePage fell just short of a majority because of the blank ballots, so state law still requires the ranked-choice tabulation, which began Nov 9 in Augusta and usually takes about a week (Maine Secretary of State release; WGME). Results stay unofficial until that tabulation finishes and the state certifies.",
         candidates: [
           { name: "Matt Dunlap", party: "D", winner: false,
             positions: ["Make billionaires and large corporations pay their fair share","Strengthen Social Security and enact Medicare for All","Universal childcare and affordable housing; opposes ICE raids in Maine"],
             differentiators: ["Maine State Auditor and seven-term former Secretary of State","Helped get Trump's 2017 voter-fraud commission disbanded","Won on second-choice strength after finishing second on first choices"],
             supporters: ["Decades of statewide experience and high name recognition"],
             opponents: ["Opponents cast him as a longtime party insider"] },
-          { name: "Paul LePage", party: "R", winner: false,
+          { name: "Paul LePage", party: "R", winner: true,
             positions: ["Finish the wall; end illegal immigration and restore law and order","Lower taxes, less red tape, more jobs for Maine families","Defend Second Amendment rights; protect Social Security and Medicare"],
             differentiators: ["Two-term former governor with near-universal name recognition","Endorsed by President Trump (Dec 2025)","In the NRCC's 'MAGA Majority' program"],
             supporters: ["As governor, repaid roughly $750M in state hospital Medicaid debt","Cut income taxes and overhauled the state pension system"],
@@ -1011,7 +1011,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Maine Elections Hub", lastUpdated: "November 6, 2026 (Wave 112)" };
+const SITE_META = { name: "Maine Elections Hub", lastUpdated: "November 9, 2026 (Wave 113)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Maine county-level down-ballot research is the next phase.)

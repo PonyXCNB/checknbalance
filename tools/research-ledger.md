@@ -1601,3 +1601,5 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **2 -> 2**. Voices unchanged (0 gaps).
 
 2026-11-05 | 21 pages | Wave 111 | Free web (0 Grok). Auto-publish after green tests.
+
+2026-11-09 | 43 pages | Wave 113 | Free web (0 Grok). Ballotpedia district pages for 263 House results (+ WSHU, FOX 5 Atlanta, Texas Tribune, WLRN, WTSP, Bay News 9, CFPublic, KATV, Memphis Report, Colorado Newsline, okcfox, KTAR, Tennessee Lookout); Anchorage Daily News (Nov 7), Kansas City Star (Nov 6), Olathe Today (Nov 6), KMBC (Nov 9), MS NOW/Washington Post (Nov 6-7), Hattiesburg American (Nov 9), Maine Public (Nov 5), Maine SoS, KTTC/MPR (MN-1), The Assembly/ABC45/The Hill (NC), Florida Politics/CFPublic (Nov 7), USA TODAY Network (TX statewide, Nov 4), The Texan. Re-check all NOT YET CALLED races before Nov 30; TX-34 Flores residency still unresolved.
