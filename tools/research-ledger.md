@@ -1603,3 +1603,18 @@ Ryan batch before push of `580d374`. Local only.
 2026-11-05 | 21 pages | Wave 111 | Free web (0 Grok). Auto-publish after green tests.
 
 2026-11-09 | 43 pages | Wave 113 | Free web (0 Grok). Ballotpedia district pages for 263 House results (+ WSHU, FOX 5 Atlanta, Texas Tribune, WLRN, WTSP, Bay News 9, CFPublic, KATV, Memphis Report, Colorado Newsline, okcfox, KTAR, Tennessee Lookout); Anchorage Daily News (Nov 7), Kansas City Star (Nov 6), Olathe Today (Nov 6), KMBC (Nov 9), MS NOW/Washington Post (Nov 6-7), Hattiesburg American (Nov 9), Maine Public (Nov 5), Maine SoS, KTTC/MPR (MN-1), The Assembly/ABC45/The Hill (NC), Florida Politics/CFPublic (Nov 7), USA TODAY Network (TX statewide, Nov 4), The Texan. Re-check all NOT YET CALLED races before Nov 30; TX-34 Flores residency still unresolved.
+
+## 2026-11-10 - Wave 114 (Tuesday daily, results week 2)
+
+### Research (free web; Grok 0)
+- **Statewide down-ballot:** Ballotpedia "<State> state executive official elections, 2026" pages (read Nov 10, 2026) for 30 states; second outlets for <3-pt races (CBS Miami, Independent Florida Alligator, Florida Election Watch, WeAreIowa, Indiana Public Radio, Purdue Exponent, Sunflower State Journal, WKYC, Ohio Capital Journal, The State, KCRG).
+- **Race calls:** KTAR (AZ-2), WLRN (FL-26), NC Political News (NC-8), KREM (WA-5), KSHB/KCUR (KS AG). Status: Alaska Public Media / ADN / KTVF (AK), WJTV/WLBT (MS), KWCH/Axios/LJWorld/KCTV5 (KS), KTTC (MN-1), WCTI/WBTV (NC-3/5), Colorado Newsline (CO-4), Spectrum News 13/WPBF (FL-7/9), CBS Miami/NBC 6 (FL-27), WIS/WACH (SC-2), WPLN (TN-4).
+- **Dead ends:** Grand Junction Sentinel CNN-call article timed out (headline only used); Ballotpedia has no block for WY Auditor/Treasurer, SD AG, judicial races; MI AG uncalled.
+- 21-day skip: election results are a trigger event - all Nov 3 races eligible.
+
+### Edits
+- 35 pages: SITE_META Nov 10, 2026 (Wave 114). 130 statewide results + 5 newly called NOT YET CALLED races + 17 refreshed NOT YET CALLED notes.
+- tools/normalize-vocabulary.js step (k) skip for Nov 3 general cards.
+- Verify **2 -> 2**. Voices unchanged (0 gaps).
+
+2026-11-10 | 35 pages | Wave 114 | Free web (0 Grok). Auto-publish after green tests.

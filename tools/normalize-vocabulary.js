@@ -257,6 +257,9 @@ for (const page of pages) {
       block = block.replace(/\n  (\d+): \{([\s\S]*?)(?=\n  \d+: \{|$)/g, (all, dist, body) => {
         const out = body.replace(/(\{\s*date: "[^"]+",\s*type: "past",)((?:(?!candidates:)[\s\S])*?note: "((?:[^"\\]|\\.)*)")/g, (m, head, rest, note) => {
           if (/\bscope:|\boffice:/.test(rest)) return m;
+          // Wave 114: Nov 3, 2026 GENERAL cards (results / not-yet-called) quote older primary text as
+          // "Pre-election background", so the primary/runoff keyword test below would mislabel them.
+          if (/date: "Nov 3, 2026"/.test(head) || /^(\u2705 RESULT|\u2705 FIRST-ROUND RESULT|\u26a0 NOT YET CALLED)/.test(note)) return m;
           if (!/\b(primary|primaries|runoff)\b/i.test(note)) return m;
           const runoff = /\brunoff\b/i.test(note) && /(won|beat|defeated|took|routed|carried|prevailed)[^.]{0,80}\brunoff\b|\brunoff (was|result|winner|victory)/i.test(note);
           k++;
