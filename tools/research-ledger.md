@@ -1618,3 +1618,17 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **2 -> 2**. Voices unchanged (0 gaps).
 
 2026-11-10 | 35 pages | Wave 114 | Free web (0 Grok). Auto-publish after green tests.
+
+## 2026-11-12 - Wave 116 (Thursday daily, results week 2)
+
+### Research (free web; Grok 0)
+- **Calls/concessions:** Vicksburg Post + AP + The Guardian (MS Sen, Nov 11); Spectrum News 13 (FL-7/FL-9, Nov 10); WRAL, ABC11, Charlotte Observer, News & Observer (NC-3 Murphy concession; NC-5/7/10 post-provisional margins, Nov 11).
+- **Status refresh:** Anchorage Daily News Nov 11 (AK Sen/Gov/AL); KKTV Nov 11 + Seattle Times/Denver Post Nov 10 (CO-4); Kansas Public Radio Nov 11 + Kansas City Star + KWCH (KS Gov); KSTP, MPR, Star Tribune, FOX 9 (MN-1); Tennessee Lookout Nov 11 (TN-4).
+- **Statewide:** Ballotpedia NE and SD state executive pages (curl from the box, read Nov 12); Nebraska SoS Final Statewide General Candidate Filing List (Sept 11, 2026 PDF) confirms John Knight (America First) on the Auditor ballot.
+- **Dead ends / held:** TX-34 Flores residency - no new reporting (Verify kept). KS SoS - no AP call, no new numbers. Search-engine synthesis claimed TN-4 was "called" - NOT supported by Tennessee Lookout (Nov 11); not used. WRAL NC district list conflicts with site numbering - used only for the Murphy concession.
+
+### Edits
+- 10 pages: SITE_META + footer span Nov 12, 2026 (Wave 116). 6 results carded (MS Sen, FL-7, FL-9, NC-3, NE Auditor, SD SoS); 10 NOT YET CALLED notes refreshed.
+- Verify **2 -> 2**. Voices unchanged (0 gaps).
+
+2026-11-12 | 10 pages | Wave 116 | Free web (0 Grok). Auto-publish after green tests.

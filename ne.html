@@ -714,7 +714,7 @@
       <strong>NE Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">November 10, 2026 (Wave 114)</span><br>
+      Last updated: <span id="last-updated">November 12, 2026 (Wave 116)</span><br>
       Sources: Nebraska Secretary of State certified Statewide Candidate Filing List and 2026 Primary Canvass Book, 2026 Election Calendar and judicial-retention list, Nebraska Accountability and Disclosure Commission, U.S. Census Bureau congressional-district relationship files and 2020 PL 94-171 data, FEC, U.S. House Clerk member roster, Cook Political Report, Sabato's Crystal Ball, Inside Elections, Nebraska Public Media, Nebraska Examiner, WOWT, 1011now, KLKN, AP.
     </div>
   </div>
@@ -1166,17 +1166,17 @@ const STATEWIDE = [
   },
   {
     date: "Nov 3, 2026",
-    type: "upcoming",
+    type: "past",
     scope: "State · Statewide",
-    office: "Auditor of Public Accounts — Nebraska (unopposed)",
-    note: "⚠ THIS RACE IS UNCONTESTED. Republican incumbent Mike Foley is the only certified candidate — no Democrat, Libertarian or Legal Marijuana NOW candidate filed. He was also unopposed in the May primary. Foley has an unusual career arc: Auditor, then Lieutenant Governor under Gov. Ricketts, then Auditor again.",
+    office: "Auditor of Public Accounts — Nebraska",
+    note: "✅ RESULT (UNOFFICIAL): Mike Foley (R) defeated John Knight (America First Party), 72.8% (258,570 votes) to 27.2% (96,588) in unofficial returns (Ballotpedia, \"Nebraska state executive official elections, 2026\", read Nov 12, 2026). CORRECTION: this race was earlier labeled uncontested; the Secretary of State's final Sept. 11, 2026 statewide general-election candidate list includes Knight, of Clay Center, as the America First nominee. Results stay unofficial until the state certifies them. Pre-election background: Foley was unopposed in the May primary. He has an unusual career arc: Auditor, then Lieutenant Governor under Gov. Ricketts, then Auditor again.",
     candidates: [
-      { name: "Mike Foley (incumbent)", party: "R", winner: false,
+      { name: "Mike Foley (incumbent)", party: "R", winner: true,
         positions: ["Audited Gov. Pillen's $2.5M no-bid contract (office record)","Scrutinized then-Secretary of State Evnen's international travel spending (office record)","Tracked misuse of state vehicles — work that drew Wall Street Journal coverage; runs a Fraud, Waste and Abuse reporting line under the office motto \"Accountability, Integrity, Reliability\""],
         differentiators: [
           "A long-serving statewide officeholder — Auditor, then Lieutenant Governor under Pete Ricketts, then Auditor again; won in 2022 with 68.5% in a three-way race",
           "⚠ HE AUDITS OFFICIALS OF HIS OWN PARTY — the sitting Republican governor and the then-Republican secretary of state",
-          "$120,818 on hand (NADC, June 16, 2026) atop essentially dormant fundraising — $1,503 raised this cycle. No endorsements found, consistent with an uncontested race"
+          "$120,818 on hand (NADC, June 16, 2026) atop essentially dormant fundraising — $1,503 raised this cycle. No endorsements found; his only opponent was a minor-party nominee"
         ],
         supporters: [
           "His audits of a Republican governor's no-bid contract and a Republican secretary of state's travel are evidence the office is genuinely independent",
@@ -1184,7 +1184,7 @@ const STATEWIDE = [
           "The near-total absence of campaign spending suggests he is doing the job rather than campaigning"
         ],
         opponents: [
-          "A statewide watchdog facing no opponent means voters never get to weigh his record — structural; no organized opposition in an uncontested race",
+          "With no Democratic opponent and a near-dormant campaign, voters got little public debate over his record (structural)",
           "Long tenure in an oversight role can breed coziness with the agencies being audited (structural critique)"
         ] }
     ]
@@ -1888,7 +1888,7 @@ const HOUSE_RACES = {
   }
 };
 
-const SITE_META = { name: "Nebraska Elections Hub", lastUpdated: "November 10, 2026 (Wave 114)" };
+const SITE_META = { name: "Nebraska Elections Hub", lastUpdated: "November 12, 2026 (Wave 116)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Nebraska county-level down-ballot research is the next phase.
