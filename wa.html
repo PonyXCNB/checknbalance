@@ -714,7 +714,7 @@
       <strong>WA Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">November 10, 2026 (Wave 114)</span><br>
+      Last updated: <span id="last-updated">November 13, 2026 (Wave 117)</span><br>
       Sources: Washington Secretary of State — the certified Aug 4, 2026 primary canvass at results.votewa.gov (county boards certified Aug 18; SoS Steve Hobbs certified statewide Aug 21, 2026), the Certification of Candidates to the General Election, and the votewa initiative tracker; RCW 29A.52.220 and 29A.52.231 via app.leg.wa.gov; the 2021 Redistricting Commission congressional plan as amended by HCR 4407; MCDC Geocorr 2022 and the Census CD119 county relationship file for county-district populations; FEC; The Spokesman-Review, Everett Herald, Cascadia Daily News, Yakima Herald, OPB, KUOW, MyNorthwest, Inlander, Kitsap Daily News, Peninsula Daily News, Seattle Times, KOMO, Ballotpedia News.</div>
   </div>
 </footer>
@@ -866,10 +866,10 @@ const COUNTIES = {
 // "IP26-645" and "Initiative 645" forms; both are given.
 const STATEWIDE = [
   // ─────────────────────────── UPCOMING ───────────────────────────
-  { date: "Nov 3, 2026", type: "upcoming", scope: "Judicial · Statewide", office: "Washington Supreme Court — Justice Position 1 (SPECIAL ELECTION)",
-    note: "OFFICIAL: MELODY TOOK 52.90% IN THE AUG 4 PRIMARY, 923,965 of 1,746,550. ✅ Certified by SoS Steve Hobbs on Aug 21, 2026. ✅ The November matchup is Melody vs. Scott Edwards (29.39%); Laura Christensen Colberg (17.47%) is eliminated. ⚠ A primary majority does NOT elect a judge outright in Washington when three candidates file — the top two advance regardless of share. ⚠ This is a nonpartisan office, but a state party has endorsed in it.",
+  { date: "Nov 3, 2026", type: "past", scope: "Judicial · Statewide", office: "Washington Supreme Court — Justice Position 1 (SPECIAL ELECTION)",
+    note: "✅ RESULT (UNOFFICIAL): Justice Colleen Melody defeated Scott Edwards, 59.5% (1,572,330 votes) to 40.2% (1,061,827) (Ballotpedia, \"Washington Supreme Court elections, 2026\", read Nov 13, 2026). Results stay unofficial until the Secretary of State certifies them. Pre-election background: OFFICIAL: MELODY TOOK 52.90% IN THE AUG 4 PRIMARY, 923,965 of 1,746,550. ✅ Certified by SoS Steve Hobbs on Aug 21, 2026. ✅ The November matchup is Melody vs. Scott Edwards (29.39%); Laura Christensen Colberg (17.47%) is eliminated. ⚠ A primary majority does NOT elect a judge outright in Washington when three candidates file — the top two advance regardless of share. ⚠ This is a nonpartisan office, but a state party has endorsed in it.",
     candidates: [
-      { name: "Colleen Melody (incumbent)", party: "I", winner: false,
+      { name: "Colleen Melody (incumbent)", party: "I", winner: true,
         positions: [
           "Careful fact-based rulings, few easy answers",
           "Civil rights and anti-discrimination enforcement focus",
@@ -915,8 +915,8 @@ const STATEWIDE = [
         ] }
     ] },
 
-  { date: "Nov 3, 2026", type: "upcoming", scope: "Judicial · Statewide", office: "Washington Supreme Court — Justice Position 3 (OPEN SEAT)",
-    note: "OPEN SEAT: JUSTICE RAQUEL MONTOYA-LEWIS IS NOT SEEKING RE-ELECTION. ✅ Certified primary: David Stevens 35.19% (612,267 of 1,740,028), Jaime Michelle Hawk 33.27%, Mike Diaz 31.25% — a near three-way tie in which no candidate came close to a majority. ✅ Stevens vs. Hawk in November. ⚠ Nonpartisan office.",
+  { date: "Nov 3, 2026", type: "past", scope: "Judicial · Statewide", office: "Washington Supreme Court — Justice Position 3 (OPEN SEAT)",
+    note: "✅ RESULT (UNOFFICIAL): Jaime Hawk defeated David Stevens, 57.3% (1,507,444 votes) to 42.3% (1,113,165), for the open seat (Ballotpedia, \"Washington Supreme Court elections, 2026\", read Nov 13, 2026). Results stay unofficial until the Secretary of State certifies them. Pre-election background: OPEN SEAT: JUSTICE RAQUEL MONTOYA-LEWIS IS NOT SEEKING RE-ELECTION. ✅ Certified primary: David Stevens 35.19% (612,267 of 1,740,028), Jaime Michelle Hawk 33.27%, Mike Diaz 31.25% — a near three-way tie in which no candidate came close to a majority. ✅ Stevens vs. Hawk in November. ⚠ Nonpartisan office.",
     candidates: [
       { name: "David Stevens", party: "I", winner: false,
         positions: [
@@ -940,7 +940,7 @@ const STATEWIDE = [
           "Outside taxpayer-advocacy spending raises independence questions",
           "He has the least appellate experience of the three primary candidates (Wave 75 — a comparison drawn from reported biographies, not a formal assessment)"
         ] },
-      { name: "Jaime Michelle Hawk", party: "I", winner: false,
+      { name: "Jaime Michelle Hawk", party: "I", winner: true,
         positions: [
           "Access to justice and equal treatment in court",
           "Public defense experience should inform criminal rulings",
@@ -1013,10 +1013,10 @@ const STATEWIDE = [
         ] }
     ] },
 
-  { date: "Nov 3, 2026", type: "upcoming", scope: "Judicial · Statewide", office: "Washington Supreme Court — Justice Position 5 (SPECIAL ELECTION)",
-    note: "OFFICIAL: ANGELIS LED WITH 35.84%, 623,396 of 1,739,425 — THE WEAKEST SHOWING BY ANY INCUMBENT ON THIS BALLOT. ✅ Certified Aug 21, 2026. ✅ Angelis vs. Dave Larson (32.17%); Sharonda Amamilo (21.33%) and Greg Miller (10.44%) are eliminated. ⚠ This is the closest of the five races. ⚠ Angelis was appointed by Gov. Ferguson in 2026 to the seat of retired Justice Barbara Madsen; his exact swearing-in date is reported inconsistently. ⚠ Nonpartisan office.",
+  { date: "Nov 3, 2026", type: "past", scope: "Judicial · Statewide", office: "Washington Supreme Court — Justice Position 5 (SPECIAL ELECTION)",
+    note: "✅ RESULT (UNOFFICIAL): Justice Theo Angelis defeated Dave Larson, 55.2% (1,444,569 votes) to 44.5% (1,163,498) (Ballotpedia, \"Washington Supreme Court elections, 2026\", read Nov 13, 2026). Results stay unofficial until the Secretary of State certifies them. Pre-election background: OFFICIAL: ANGELIS LED WITH 35.84%, 623,396 of 1,739,425 — THE WEAKEST SHOWING BY ANY INCUMBENT ON THIS BALLOT. ✅ Certified Aug 21, 2026. ✅ Angelis vs. Dave Larson (32.17%); Sharonda Amamilo (21.33%) and Greg Miller (10.44%) are eliminated. ⚠ This is the closest of the five races. ⚠ Angelis was appointed by Gov. Ferguson in 2026 to the seat of retired Justice Barbara Madsen; his exact swearing-in date is reported inconsistently. ⚠ Nonpartisan office.",
     candidates: [
-      { name: "Theo Angelis (incumbent)", party: "I", winner: false,
+      { name: "Theo Angelis (incumbent)", party: "I", winner: true,
         positions: [
           "Documents his own potential bias before each case",
           "Appellate specialization is the core qualification",
@@ -1062,10 +1062,10 @@ const STATEWIDE = [
         ] }
     ] },
 
-  { date: "Nov 3, 2026", type: "upcoming", scope: "Judicial · Statewide", office: "Washington Supreme Court — Justice Position 7 (Chief Justice)",
-    note: "OFFICIAL: CHIEF JUSTICE STEPHENS TOOK 54.37%, 938,584 of 1,726,167. ✅ Certified Aug 21, 2026. ✅ Stephens vs. Todd A. Bloom (27.13%); Karim A. Merchant (12.03%) and David R Shelvey (6.24%) are eliminated. ⚠ Her outright majority did NOT end the race, because four candidates filed and Washington's top-two rule sends the leading pair to November regardless. ⚠ Nonpartisan office.",
+  { date: "Nov 3, 2026", type: "past", scope: "Judicial · Statewide", office: "Washington Supreme Court — Justice Position 7 (Chief Justice)",
+    note: "✅ RESULT (UNOFFICIAL): Chief Justice Debra Stephens defeated Todd Bloom, 63.1% (1,650,480 votes) to 36.6% (956,714) (Ballotpedia, \"Washington Supreme Court elections, 2026\", read Nov 13, 2026). Results stay unofficial until the Secretary of State certifies them. Pre-election background: OFFICIAL: CHIEF JUSTICE STEPHENS TOOK 54.37%, 938,584 of 1,726,167. ✅ Certified Aug 21, 2026. ✅ Stephens vs. Todd A. Bloom (27.13%); Karim A. Merchant (12.03%) and David R Shelvey (6.24%) are eliminated. ⚠ Her outright majority did NOT end the race, because four candidates filed and Washington's top-two rule sends the leading pair to November regardless. ⚠ Nonpartisan office.",
     candidates: [
-      { name: "Debra L. Stephens (incumbent)", party: "I", winner: false,
+      { name: "Debra L. Stephens (incumbent)", party: "I", winner: true,
         positions: [
           "Rule of law and equal justice for all",
           "Court transparency and access to justice",
@@ -1111,8 +1111,8 @@ const STATEWIDE = [
         ] }
     ] },
 
-  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Initiative 645 (IP26-645) — Repeal the tax on income over one million dollars",
-    note: "CERTIFIED JULY 15, 2026 AFTER 511,408 SIGNATURES WERE SUBMITTED, nearly double the requirement. ✅ It repeals the 9.9% tax on household income above one million dollars and bars state and local individual income taxes. ⚠ IT DOES NOT REPEAL THE CAPITAL GAINS TAX — a point both sides make. ⚠ Collection of the tax would not begin until 2029 either way. ⚠ Two lawsuits challenged the state's ballot-title wording. ⚠ The exact printed ballot title could not be read (Wave 75 — sos.wa.gov returned 403 on every path).",
+  { date: "Nov 3, 2026", type: "past", scope: "State · Statewide", office: "Initiative 645 (IP26-645) — Repeal the tax on income over one million dollars (REJECTED)",
+    note: "✅ RESULT (UNOFFICIAL): REJECTED, 57.98% No (1,801,761) to 42.02% Yes (1,305,751) (The Spokesman-Review statewide measure results, updated Nov 10, 2026; The Seattle Times, \"WA 'millionaires tax' is upheld as Initiative 645 fails\"). The 9.9% tax on income over $1 million stays on the books,; collection would start in 2029. Results stay unofficial until the Secretary of State certifies them. Pre-election background: CERTIFIED JULY 15, 2026 AFTER 511,408 SIGNATURES WERE SUBMITTED, nearly double the requirement. ✅ It repeals the 9.9% tax on household income above one million dollars and bars state and local individual income taxes. ⚠ IT DOES NOT REPEAL THE CAPITAL GAINS TAX — a point both sides make. ⚠ Collection of the tax would not begin until 2029 either way. ⚠ Two lawsuits challenged the state's ballot-title wording. ⚠ The exact printed ballot title could not be read (Wave 75 — sos.wa.gov returned 403 on every path).",
     candidates: [
       { name: "Yes — repeal the million-dollar income tax", party: "I", winner: false,
         positions: [
@@ -1136,7 +1136,7 @@ const STATEWIDE = [
           "SEIU put one million dollars into the opposition campaign",
           "Critics note it leaves the capital gains tax untouched anyway"
         ] },
-      { name: "No — keep the million-dollar income tax", party: "I", winner: false,
+      { name: "No — keep the million-dollar income tax", party: "I", winner: true,
         positions: [
           "Keep the tax on income above one million dollars",
           "Protect K-12, child care and early learning funding",
@@ -1160,10 +1160,10 @@ const STATEWIDE = [
         ] }
     ] },
 
-  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Initiative 638 (IL26-638) — Fairness in Girls' Athletics",
-    note: "IT REACHED THE BALLOT BECAUSE THE LEGISLATURE TOOK NO ACTION BEFORE ADJOURNING MARCH 12, 2026 — an Initiative to the Legislature goes to voters if lawmakers neither pass nor amend it. ✅ Certified by SoS Hobbs Jan 22, 2026 after Let's Go Washington filed 445,187 signatures. ⚠ It would require a health provider to verify a student's biological sex for female school athletics eligibility, by anatomy, genetics or testosterone levels. ⚠ Legislative Democrats declined to hold public hearings on it.",
+  { date: "Nov 3, 2026", type: "past", scope: "State · Statewide", office: "Initiative 638 (IL26-638) — Fairness in Girls' Athletics (APPROVED)",
+    note: "✅ RESULT (UNOFFICIAL): APPROVED, 56.00% Yes (1,730,987) to 44.00% No (1,360,030) (The Spokesman-Review statewide measure results, updated Nov 10, 2026; KIRO 7 and KOMO News, Nov 2026). Results stay unofficial until the Secretary of State certifies them. Pre-election background: IT REACHED THE BALLOT BECAUSE THE LEGISLATURE TOOK NO ACTION BEFORE ADJOURNING MARCH 12, 2026 — an Initiative to the Legislature goes to voters if lawmakers neither pass nor amend it. ✅ Certified by SoS Hobbs Jan 22, 2026 after Let's Go Washington filed 445,187 signatures. ⚠ It would require a health provider to verify a student's biological sex for female school athletics eligibility, by anatomy, genetics or testosterone levels. ⚠ Legislative Democrats declined to hold public hearings on it.",
     candidates: [
-      { name: "Yes — approve the athletics eligibility rule", party: "I", winner: false,
+      { name: "Yes — approve the athletics eligibility rule", party: "I", winner: true,
         positions: [
           "Bar biologically male students from female school sports",
           "Require provider verification of biological sex",
@@ -1209,8 +1209,8 @@ const STATEWIDE = [
         ] }
     ] },
 
-  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Initiative 1 (IL26-001) — Restoring Parents' Rights in Public Schools",
-    note: "IT RE-ENACTS THE 2024 PARENTAL RIGHTS LAW (I-2081) THAT THE LEGISLATURE PARTLY REPEALED IN MAY 2025 — voters passed it, lawmakers rolled part of it back, and the sponsors are asking voters again. ✅ Certified to the Legislature, which held no hearing and adjourned March 12, 2026, sending it to the ballot. ⚠ Sponsored by Let's Go Washington, the same group behind Initiatives 638 and 645, so all three measures on this ballot come from one organization.",
+  { date: "Nov 3, 2026", type: "past", scope: "State · Statewide", office: "Initiative 1 (IL26-001) — Restoring Parents' Rights in Public Schools (REJECTED)",
+    note: "✅ RESULT (UNOFFICIAL): REJECTED, 52.42% No (1,586,470) to 47.58% Yes (1,440,045), so the Legislature's 2025 revisions stand (The Spokesman-Review statewide measure results, updated Nov 10, 2026; The Seattle Times, \"WA voters reject parent rights Initiative 001\"). Results stay unofficial until the Secretary of State certifies them. Pre-election background: IT RE-ENACTS THE 2024 PARENTAL RIGHTS LAW (I-2081) THAT THE LEGISLATURE PARTLY REPEALED IN MAY 2025 — voters passed it, lawmakers rolled part of it back, and the sponsors are asking voters again. ✅ Certified to the Legislature, which held no hearing and adjourned March 12, 2026, sending it to the ballot. ⚠ Sponsored by Let's Go Washington, the same group behind Initiatives 638 and 645, so all three measures on this ballot come from one organization.",
     candidates: [
       { name: "Yes — restore the parental rights law", party: "I", winner: false,
         positions: [
@@ -1234,7 +1234,7 @@ const STATEWIDE = [
           "Educators warn it strips protections from abused students",
           "Critics say it limits confidential student counselling"
         ] },
-      { name: "No — keep the Legislature's 2025 revisions", party: "I", winner: false,
+      { name: "No — keep the Legislature's 2025 revisions", party: "I", winner: true,
         positions: [
           "Keep the Legislature's 2025 revisions in place",
           "Protect confidential counselling for students",
@@ -1795,7 +1795,7 @@ const HOUSE_RACES = {
     ] }
 };
 
-const SITE_META = { name: "Washington Elections Hub", lastUpdated: "November 10, 2026 (Wave 114)" };
+const SITE_META = { name: "Washington Elections Hub", lastUpdated: "November 13, 2026 (Wave 117)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Washington county-level down-ballot research has not started.)

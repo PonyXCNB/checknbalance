@@ -1632,3 +1632,20 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **2 -> 2**. Voices unchanged (0 gaps).
 
 2026-11-12 | 10 pages | Wave 116 | Free web (0 Grok). Auto-publish after green tests.
+
+## 2026-11-13 - Wave 117 (Friday daily, results week 2)
+
+### Research (free web; Grok 0)
+- **Calls/concessions:** AP race call 4:43 p.m. Nov 12 + Masterson concession (KS Gov) - Kansas City Star Nov 12, Kansas Public Radio/Kansas Reflector Nov 12, Axios Kansas City Nov 13, KMBC Nov 13; vote totals from Kansas SoS via KSNT Nov 11. MI AG - Michigan Public/AP Nov 4 (2:28 a.m. call), MLive Nov 4, Ballotpedia MI AG page (read Nov 13).
+- **Statewide down-ballot (Ballotpedia, curl from the box, read Nov 13):** MI Supreme Court; ND state exec (PSC special, Supt special); ND Supreme Court (Tufte, Bahr); WY state exec (Auditor, Treasurer - listed certified); WA Supreme Court Pos 1/3/5/7 (Pos 4 Birk vs O'Donnell NOT called - left upcoming).
+- **Ballot measures:** WA I-645/IL26-638/IL26-001 - Spokesman-Review statewide measure table (updated Nov 10) + Seattle Times/KIRO 7/KOMO headlines. MI Prop 1 (con-con) and Prop 2 (Money Out of Politics) - Michigan Advance Nov 3 (AP calls) and Nov 6 (two federal First Amendment lawsuits; takes effect by Dec 3 unless blocked); Prop 1 totals from Wikipedia (citing MI SoS unofficial). Wikipedia's Prop 2 totals disagree with other compilations - percentages only used.
+- **Status refresh:** KS SoS (KSNT Nov 11 SoS totals; KSN Nov 12 still uncertain). CO-4: Colorado SoS Nov 6 release shows cure + UOCAVA deadline was **Nov 12**, not Nov 13 as the Wave 116 note said (corrected); counties finish counting Nov 13 (9NEWS), canvass Nov 25, statutory recount order by Nov 27.
+- **Not refreshed (no new reporting found this morning):** AK Sen/Gov/AL (ADN Nov 11 still latest; next DoE update expected Nov 13, RCV Nov 18), MN-1, TN-4, NC-5/7/10 (Carolina Journal Nov 12 restates the Nov 11 margins; county canvasses start 11 a.m. Nov 13 - after this run).
+- **Dead ends / held:** WXII Bell recount story (fetch timed out / empty via curl) and Greensboro News & Record Nov 13 (paywalled) - not cited. A "Colorado Express" Nov 12 story uses a stock photo and only re-cites KKTV - not cited. Ballotpedia "<State>_2026_ballot_propositions" slugs returned stub pages.
+- **TX-34 Flores residency (2 [Verify]):** race over (Gonzalez won, Flores conceded). Markers reworded to past-tense, sourced-only statements (Tribune July 2025 report; FEC Form 2 P.O. box; no 2026 address reporting located) rather than cleared by a new source. Owner may revert if he prefers to keep them.
+
+### Edits
+- 7 pages: SITE_META + footer span Nov 13, 2026 (Wave 117): co, ks, mi, nd, tx, wa, wy. 19 results carded; 2 NOT YET CALLED notes refreshed (KS SoS, CO-4 with cure-deadline correction).
+- Verify **2 -> 0**. Voices unchanged (0 gaps).
+
+2026-11-13 | 7 pages | Wave 117 | Free web (0 Grok). Auto-publish after green tests.
