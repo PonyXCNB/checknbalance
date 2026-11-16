@@ -714,7 +714,7 @@
       <strong>AK Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">November 12, 2026 (Wave 116)</span><br>
+      Last updated: <span id="last-updated">November 16, 2026 (Wave 118)</span><br>
       Sources: Alaska Division of Elections (elections.alaska.gov) — the CERTIFIED Aug 18, 2026 Election Summary Report (OFFICIAL RESULTS, Aug 31, 2026), the 2026 general-election candidate list, the Official Election Pamphlet candidate statements, and the 2020/2022/2024 RCV Detailed Reports; Alaska Judicial Council retention evaluations; Office of the Lieutenant Governor; Alaska Public Offices Commission and FEC filings as reported; U.S. Census Bureau 2020 county-equivalent files; Alaska Department of Labor population estimates; Alaska Beacon, Anchorage Daily News, Alaska Public Media, KTOO, The Alaska Current and Alaska Landmine.</div>
   </div>
 </footer>
@@ -803,7 +803,7 @@ const COUNTIES = {
 const STATEWIDE = [
   // ─────────────────────────── UPCOMING ───────────────────────────
   { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · Statewide", office: "U.S. Senator from Alaska (Class 2)",
-    note: "⚠ NOT YET CALLED (as of Nov 12, 2026): the Associated Press had still not called this race. After the Nov 11 count (more than 248,000 ballots, about 86% of the expected vote), Mary Peltola (D) led Sen. Dan Sullivan (R) by 3,975 first-choice votes, 121,487 (48.9%) to 117,512 (47.3%), down 275 from Nov 10 as absentee ballots from Republican-leaning regions were counted; Gerald Heikes (R) had 5,426 (2.2%) and Daniel J. Sullivan Jr. 4,100 (1.6%), and their voters' later rankings could decide the race if no one tops 50%. Peltola's campaign declared victory on Nov 11; Sullivan's campaign said there is still a long way to go. Absentee counting continues through Nov 18, when ranked-choice tabulation runs if needed, and certification is expected Nov 25 (Anchorage Daily News, Nov 11, 2026). No winner is shown here until the race is called.",
+    note: "⚠ NOT YET CALLED (as of Nov 16, 2026): the Associated Press had still not called this race. In the Division of Elections' Nov 14 report (about 283,600 ballots, roughly 97% of the expected vote), Mary Peltola (D) led Sen. Dan Sullivan (R) by 11,213 first-choice votes, 140,637 (49.94% including write-ins) to 129,424 (45.96%); Gerald Heikes (R) had 6,002 and Daniel J. Sullivan Jr. 4,652 (Alaska Story, Nov 14, 2026, reporting the Division's 3:15 p.m. update). The Anchorage Daily News reported that with write-ins set aside Peltola has 50.1%, which would make her the outright winner without ranked-choice tabulation if it holds, and that preliminary ranking data indicate she is likely to win even if tabulation is needed (Anchorage Daily News, Nov 14, 2026). The last overseas absentee ballots are due Nov 18, when tabulation runs if needed; certification is targeted for Nov 25. No winner is shown here until the race is called.",
     candidates: [
       { name: "Mary Peltola", party: "D", winner: false,
         positions: [
@@ -874,10 +874,10 @@ const STATEWIDE = [
           "Repeated unsuccessful candidacies and no evident campaign organization (structural)",
           "He is on the ballot by operation of a withdrawal rule rather than by finishing in the top four"] }
     ] },
-  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Governor of Alaska (OPEN SEAT)",
-    note: "⚠ NOT YET CALLED (as of Nov 12, 2026): the Associated Press had still not called this race. In the Nov 11 count, Democrat Jonathan Kreiss-Tomkins had 49.6% of first-choice votes (down from 49.9%) against three Republican tickets: Bernadette Wilson 28.9%, Dave Bronson 13.9% and Treg Taylor 7.3%. Kreiss-Tomkins said he expects to cross 50% once the remaining ballots are counted, which would avoid ranked-choice tabulation; counting runs through Nov 18 and certification is expected Nov 25 (Anchorage Daily News, Nov 11, 2026). No winner is shown here until the race is called. Pre-election background: OPEN SEAT — Gov. Mike Dunleavy is term-limited; ranked-choice rules apply if no ticket reaches 50% of first-choice votes.",
+  { date: "Nov 3, 2026", type: "past", scope: "State · Statewide", office: "Governor of Alaska (OPEN SEAT)",
+    note: "✅ RESULT (UNOFFICIAL): Jonathan Kreiss-Tomkins (D) and running mate Zac Johnson won with a majority of first-choice votes, so no ranked-choice tabulation is needed. In the Division of Elections' Nov 14 report the ticket had 141,623 votes (50.90%) to 77,943 (28.01%) for Bernadette Wilson / Mike Shower, 37,913 (13.63%) for Dave Bronson / Josh Church and 19,977 (7.18%) for Treg Taylor / Candi English (Alaska Story, Nov 14, 2026, reporting the Division's 3:15 p.m. update). The Associated Press called the race at 12:01 a.m. Eastern on Nov 14, 2026 (AP, Nov 14, 2026). He is the first Democrat to win the office since 1998 and is due to be sworn in Dec 7 (Anchorage Daily News, Nov 14, 2026). Counting continues through Nov 18 and certification is targeted for Nov 25; results stay unofficial until then. Pre-election background: OPEN SEAT — Gov. Mike Dunleavy is term-limited; ranked-choice rules apply if no ticket reaches 50% of first-choice votes.",
     candidates: [
-      { name: "Jonathan Kreiss-Tomkins / Zac Johnson", party: "D", winner: false,
+      { name: "Jonathan Kreiss-Tomkins / Zac Johnson", party: "D", winner: true,
         positions: [
           "Fully fund schools and forward-fund education by constitutional amendment",
           "A moratorium on new data centers until Alaska regulates AI",
@@ -950,8 +950,8 @@ const STATEWIDE = [
           "Opponents note he spent most of his public career inside the Dunleavy administration and has not yet won statewide election as governor"
         ] }
     ] },
-  { date: "Nov 3, 2026", type: "upcoming", scope: "Ballot Measure · Statewide", office: "Ballot Measures — Alaska (2 measures)",
-    note: "TWO MEASURES ARE ON THE NOVEMBER BALLOT, AND MEASURE 2 WOULD UNDO THE VERY SYSTEM THIS ELECTION IS BEING RUN UNDER. ⚠ A THIRD, Measure 1 on campaign contribution limits, is ALREADY DECIDED — it was on the AUGUST PRIMARY ballot and passed with about 71% (Wave 74 — certified totals not retrieved). ✅ On Aug 27, 2026 the Alaska Supreme Court called the state's ballot summary for Measure 2 'true and impartial' but ordered one addition, that Governor and Lieutenant Governor would run separately, before the Sept 2 printing deadline. ⚠ WE DO NOT QUOTE THE BALLOT TITLES HERE: the Division's own title document is a scanned image with no readable text and has been superseded by that court-ordered revision, and the General Election Ballot Measure Pamphlet is not yet posted. The plain-language descriptions below are ours, not the state's wording.",
+  { date: "Nov 3, 2026", type: "past", scope: "Ballot Measure · Statewide", office: "Ballot Measures — Alaska (2 measures: Measure 2 REJECTED, Measure 3 APPROVED)",
+    note: "✅ RESULT (UNOFFICIAL): Ballot Measure 2, the repeal of the open primary and ranked-choice voting, was REJECTED, 144,098 No (53.62%) to 124,631 Yes (46.38%) in the Division of Elections' Nov 14 report (Alaska Story, Nov 14, 2026); the Associated Press reported that voters rejected it (AP, Nov 14, 2026), and the Anchorage Daily News reported it failed by about seven points, so the top-four primary and ranked-choice general stay in place for 2028 (Anchorage Daily News, Nov 14, 2026). Ballot Measure 3, the citizen-only voting language, was APPROVED, 184,202 Yes (68.38%) to 85,167 No (31.62%) in the same report (Alaska Story, Nov 14, 2026; Alaska Beacon, Nov 4, 2026). Results stay unofficial until certification, targeted for Nov 25. Pre-election background: TWO MEASURES ARE ON THE NOVEMBER BALLOT, AND MEASURE 2 WOULD UNDO THE VERY SYSTEM THIS ELECTION IS BEING RUN UNDER. ⚠ A THIRD, Measure 1 on campaign contribution limits, is ALREADY DECIDED — it was on the AUGUST PRIMARY ballot and passed with about 71% (Wave 74 — certified totals not retrieved). ✅ On Aug 27, 2026 the Alaska Supreme Court called the state's ballot summary for Measure 2 'true and impartial' but ordered one addition, that Governor and Lieutenant Governor would run separately, before the Sept 2 printing deadline. ⚠ WE DO NOT QUOTE THE BALLOT TITLES HERE: the Division's own title document is a scanned image with no readable text and has been superseded by that court-ordered revision, and the General Election Ballot Measure Pamphlet is not yet posted. The plain-language descriptions below are ours, not the state's wording.",
     candidates: [
       { name: "Ballot Measure 2 — repeal the open primary and ranked-choice voting", party: "I", winner: false,
         positions: [
@@ -970,7 +970,7 @@ const STATEWIDE = [
           "No on 2 argues the current system produced the state's most competitive elections in years and lets voters rank a sincere first choice without wasting a vote",
           "Opponents note the repeal would also delete the 'true source' disclosure law, which is about dark money rather than about ranked ballots",
           "⚠ The no campaign has raised roughly $5.75M, most of it from Unite America and a Washington nonprofit — so both sides are largely funded from outside Alaska (Wave 74 — as-of dates are mixed)"] },
-      { name: "Ballot Measure 3 — citizen-only voting language", party: "I", winner: false,
+      { name: "Ballot Measure 3 — citizen-only voting language", party: "I", winner: true,
         positions: [
           "A YES vote rewrites AS 15.05.010 so that ONLY a United States citizen may vote in any Alaska election",
           "A NO vote leaves the statute as it reads today: a person may vote who is a citizen of the United States"],
@@ -987,10 +987,10 @@ const STATEWIDE = [
           "Opponents argue such measures invite added documentary-proof requirements that burden eligible voters (Wave 74 — a general argument against this class of measure; no Alaska-specific opposition campaign was located)",
           "(Wave 74 absence) No organized Alaska opposition committee could be located"] }
     ] },
-  { date: "Nov 3, 2026", type: "upcoming", scope: "Judicial · Statewide · Retention", office: "Judicial Retention — Alaska (1 statewide jurist)",
-    note: "ONLY ONE JUDGE APPEARS ON EVERY ALASKAN'S BALLOT — Supreme Court Justice Jude Pate. ✅ NO Court of Appeals judge stands for retention in 2026, in the Alaska Judicial Council's own words. ✅ The Council recommends YES on Pate, unanimously, in a release updated Sept 4, 2026. ⚠ TWENTY OTHER JUDGES ARE ON 2026 RETENTION BALLOTS BUT ONLY WITHIN THEIR OWN JUDICIAL DISTRICT — three in the First, one in the Second, twelve in the Third and four in the Fourth — so they are NOT carded here as statewide. ⚠ Two of those district judges carry a recommendation of NO: Kenai Superior Judge Kelly Lawson, 6-0, and Kenai District Judge Martin Fallon, 5-0 with one abstention. A third, Juneau Superior Judge Marianna Carpeneti, received NO RECOMMENDATION after the Council split three against, two for, with two abstentions.",
+  { date: "Nov 3, 2026", type: "past", scope: "Judicial · Statewide · Retention", office: "Judicial Retention — Alaska (1 statewide jurist)",
+    note: "✅ RESULT (UNOFFICIAL): Justice Jude Pate was RETAINED, 140,055 Yes (60.06%) to 93,154 No (39.94%) as of Nov 14 (Decision Desk HQ results page, updated Nov 14, 2026; Wikipedia's 2026 Alaska judicial election page also lists him retained). Results stay unofficial until certification, targeted for Nov 25. Pre-election background: ONLY ONE JUDGE APPEARS ON EVERY ALASKAN'S BALLOT — Supreme Court Justice Jude Pate. ✅ NO Court of Appeals judge stands for retention in 2026, in the Alaska Judicial Council's own words. ✅ The Council recommends YES on Pate, unanimously, in a release updated Sept 4, 2026. ⚠ TWENTY OTHER JUDGES ARE ON 2026 RETENTION BALLOTS BUT ONLY WITHIN THEIR OWN JUDICIAL DISTRICT — three in the First, one in the Second, twelve in the Third and four in the Fourth — so they are NOT carded here as statewide. ⚠ Two of those district judges carry a recommendation of NO: Kenai Superior Judge Kelly Lawson, 6-0, and Kenai District Judge Martin Fallon, 5-0 with one abstention. A third, Juneau Superior Judge Marianna Carpeneti, received NO RECOMMENDATION after the Council split three against, two for, with two abstentions.",
     candidates: [
-      { name: "Justice Jude Pate — Alaska Supreme Court", party: "I", winner: false,
+      { name: "Justice Jude Pate — Alaska Supreme Court", party: "I", winner: true,
         positions: [
           "A YES vote retains him on the Alaska Supreme Court",
           "A NO vote removes him and the seat is refilled through the Judicial Council's nomination process"],
@@ -1082,7 +1082,7 @@ const HOUSE_RACES = {
   1: { name: "U.S. House — AK At-Large", region: "The entire state — all 29 boroughs and census areas vote the same congressional ballot",
     races: [
       { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · At-Large",
-        note: "⚠ NOT YET CALLED (as of Nov 12, 2026): the Associated Press had not called Alaska's at-large House race. In the Nov 11 count, Rep. Nick Begich (R) had 121,324 first-choice votes (49.0%) to independent Bill Hill's 101,297 (40.9%), with Eric Hafner (D) at 18,562 (7.5%) and Jim McDermott (L) at 6,606 (2.7%); ranked-choice tabulation is Nov 18 if no one clears 50% (Anchorage Daily News, Nov 11, 2026). No winner is shown here until the race is called. Pre-election background: EIGHTH PLACE IS ON THE BALLOT. ✅ Rep. Nick Begich won the certified Aug 18 primary with 72,696 votes (44.62%) over nonpartisan Bill Hill's 53,008 (32.53%). ✅ Mary Peltola is NOT in this race — she is running for the U.S. Senate.",
+        note: "⚠ NOT YET CALLED (as of Nov 16, 2026): the Associated Press had not called Alaska's at-large House race. In the Division of Elections' Nov 14 report, Rep. Nick Begich (R) had 133,707 first-choice votes (47.71%) to independent Bill Hill's 116,932 (41.72%), with Eric Hafner (D) at 21,815 (7.78%) and Jim McDermott (L) at 7,384 (2.63%) (Alaska Story, Nov 14, 2026). Because no one has 50%, ranked-choice tabulation is scheduled for Nov 18; the Anchorage Daily News reported that ballot data indicate Begich is on track to defeat Hill in tabulation (Anchorage Daily News, Nov 14, 2026). No winner is shown here until the race is called. Pre-election background: EIGHTH PLACE IS ON THE BALLOT. ✅ Rep. Nick Begich won the certified Aug 18 primary with 72,696 votes (44.62%) over nonpartisan Bill Hill's 53,008 (32.53%). ✅ Mary Peltola is NOT in this race — she is running for the U.S. Senate.",
         candidates: [
           { name: "Nick Begich (incumbent)", party: "R", winner: false,
             positions: [
@@ -1210,7 +1210,7 @@ const HOUSE_RACES = {
     ] }
 };
 
-const SITE_META = { name: "Alaska Elections Hub", lastUpdated: "November 12, 2026 (Wave 116)" };
+const SITE_META = { name: "Alaska Elections Hub", lastUpdated: "November 16, 2026 (Wave 118)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Alaska county-level down-ballot research has not started.)

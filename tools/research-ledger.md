@@ -1649,3 +1649,17 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **2 -> 0**. Voices unchanged (0 gaps).
 
 2026-11-13 | 7 pages | Wave 117 | Free web (0 Grok). Auto-publish after green tests.
+
+## 2026-11-16 - Wave 118 (Monday daily, results week 3)
+
+### Research (free web; Grok 0)
+- **Calls/concessions:** CO-4 AP call 12:53 p.m. Nov 13 (AP; ABC News; The Voice/Douglas County citing CBS Colorado + Deseret News; Colorado Sun via Colorado Tribune). AK Gov AP call 12:01 a.m. ET Nov 14 (AP via 13newsnow syndication; ADN Nov 14). AK Measure 2 rejected (AP headline; ADN Nov 14). NC-7 Hardy concession Nov 16 (WECT). NC-10 Bell recount request Nov 13 (FOX8 WGHP).
+- **Counts:** AK DoE Nov 14 3:15 p.m. report via Alaska Story + ADN Nov 14 (Sen/Gov/AL/measures). DDHQ Pate retention (Nov 14). NCSBE post-canvass precinct file (results_pct_20261103.zip, Nov 13 19:05) for NC-5/7/10 and all New Hanover local contests; Wilmington Daily Nov 14 matched it exactly. Spokesman-Review WA Pos 4 table (Nov 13 5:01 p.m.) + WA State Standard Nov 11 + Cascadia Daily News Nov 13. Utah Lt. Gov. electionresults.utah.gov (Nov 14 6:01 p.m.) for Amendments A/B and retention. WPR + WBAY Nov 4 (WI amendments). Tennessee Lookout Nov 5 (TN amendments). KAAL ABC 6 (MN-1 recount schedule).
+- **Dead ends / held:** Ballotpedia blocked (curl 202 empty; WebFetch 403). apnews.com Cloudflare 403 to curl; WebFetch timed out (used syndicated AP + other outlets). StarNews canvass story 302. KS SoS - only Call the Map (aggregator) calls Proctor; search synthesis claimed AP call + Day concession with no supporting source - NOT used. TN-4 - Davidson count at 8 a.m. today not yet reported; synthesis claimed Broderick won - NOT used. NPR AK story fetch timed out.
+- 21-day skip: election results are a trigger event - all Nov 3 races eligible.
+
+### Edits
+- 8 pages: SITE_META + footer span Nov 16, 2026 (Wave 118): ak, co, mn, nc, tn, ut, wa, wi. Carded: CO-4, AK Gov, AK measures card, AK retention, NC-7, WA SC Pos 4, UT Amend A, UT Amend B, UT retention (7), WI amendments card, TN amendments x3, New Hanover Sheriff/Commission/BOE/DA/Clerk/SD-7/HD-18&19. Refreshed: NC-5, NC-10, AK Sen, AK-AL, MN-1, NC HD-20 (left upcoming).
+- Verify **0 -> 0**. Voices unchanged (0 gaps).
+
+2026-11-16 | 8 pages | Wave 118 | Free web (0 Grok). Auto-publish after green tests.
