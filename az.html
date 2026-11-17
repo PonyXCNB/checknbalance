@@ -714,7 +714,7 @@
       <strong>AZ Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">November 10, 2026 (Wave 114)</span><br>
+      Last updated: <span id="last-updated">November 17, 2026 (Wave 119)</span><br>
       Sources: Arizona Secretary of State (July 21, 2026 primary; Aug 6, 2026 statewide canvass; 2026 ballot-measure filings; State Voter Registration Report), Maricopa County official canvass, U.S. Census Bureau, MCDC Geocorr 2022, FEC, seethemoney.az.gov, Arizona Independent Redistricting Commission, Cook Political Report, Inside Elections, Sabato’s Crystal Ball, Votebeat Arizona, Arizona Mirror, Arizona Capitol Times, AZCentral, KJZZ, KTAR, AZPM, Arizona Daily Independent</div>
   </div>
 </footer>
@@ -1261,10 +1261,10 @@ const STATEWIDE = [
         ] }
     ] },
 
-  { date: "Nov 3, 2026", type: "upcoming", scope: "Ballot Measure · Statewide", office: "Ballot Measures — Arizona (8 measures)",
-    note: "⚠ EIGHT MEASURES, AND ALL EIGHT ARE LEGISLATIVE REFERRALS — THERE IS NO CITIZEN INITIATIVE ON ARIZONA'S 2026 BALLOT. Ten referrals plus one initiative had advanced, and litigation cut the field to eight: PROP 143 (school-district payroll deduction) was STRUCK DOWN by Judge Greg Como in late July under the constitution's separate-amendment rule, and Republicans said they would not appeal; PROP 145 (military-family ESA funds) was STRUCK by Judge Joseph Kreamer on the same ground; and the PROTECT EDUCATION ACT, which would have appeared as Prop 212, is OFF — the Arizona Supreme Court rejected its ballot description on Aug 14 and then held on Aug 18 that it fell short of the 255,949 valid signatures required, after challenges by the Arizona Free Enterprise Club and the Goldwater Institute. Its sponsors conceded. ✅ Props 142, 144 and 318 all survived challenges and stay on the ballot. The field is now FINAL — Maricopa County's ballot-printing deadline passed on Aug 20, 2026. ⚠ Maricopa County voters will also see a local Proposition 413, which is a county measure and is not covered here.",
+  { date: "Nov 3, 2026", type: "past", scope: "Ballot Measure · Statewide", office: "Ballot Measures — Arizona (8 measures: 5 APPROVED, 3 REJECTED)",
+    note: "✅ RESULT (UNOFFICIAL): Voters approved five and rejected three, per Associated Press calls and unofficial returns with all 15 counties reporting (KTAR, Nov 9, 2026). APPROVED: Prop 141 (ban mileage-based vehicle taxes) 50.99% yes; Prop 316 (cap municipal grocery taxes at 2%) 62.05%; Prop 317 (drug cartels as terrorist organizations) 56.68%; Prop 318 (student athletics by birth sex) 58.74%; Prop 319 (limits on photo-enforcement cameras) 62.39%. REJECTED: Prop 142 (preferential treatment / DEI) 40.08% yes; Prop 144 (election requirements, including ID for mail voting) 46.70% yes; Prop 320 (60% classroom-spending requirement) 48.12% yes. Pre-election background: ⚠ EIGHT MEASURES, AND ALL EIGHT ARE LEGISLATIVE REFERRALS — THERE IS NO CITIZEN INITIATIVE ON ARIZONA'S 2026 BALLOT. Ten referrals plus one initiative had advanced, and litigation cut the field to eight: PROP 143 (school-district payroll deduction) was STRUCK DOWN by Judge Greg Como in late July under the constitution's separate-amendment rule, and Republicans said they would not appeal; PROP 145 (military-family ESA funds) was STRUCK by Judge Joseph Kreamer on the same ground; and the PROTECT EDUCATION ACT, which would have appeared as Prop 212, is OFF — the Arizona Supreme Court rejected its ballot description on Aug 14 and then held on Aug 18 that it fell short of the 255,949 valid signatures required, after challenges by the Arizona Free Enterprise Club and the Goldwater Institute. Its sponsors conceded. ✅ Props 142, 144 and 318 all survived challenges and stay on the ballot. The field is now FINAL — Maricopa County's ballot-printing deadline passed on Aug 20, 2026. ⚠ Maricopa County voters will also see a local Proposition 413, which is a county measure and is not covered here.",
     candidates: [
-      { name: "Prop 141 — ban mileage-based vehicle taxes (constitutional)", party: "I", winner: false,
+      { name: "Prop 141 — ban mileage-based vehicle taxes (constitutional)", party: "I", winner: true,
         positions: ["A YES vote permanently bars the state and local governments from taxing or charging fees based on vehicle miles traveled, and from monitoring or limiting mileage without consent","A NO vote leaves a mileage-based road-funding option available to future legislatures"],
         differentiators: [
           "A constitutional amendment referred by the Legislature (SCR 1004, 2025)",
@@ -1309,7 +1309,7 @@ const STATEWIDE = [
           "It is unclear how mail voters would show ID at all — signatures verify them now, and Arizona already uniquely requires documentary proof of citizenship to register",
           "Opponents say it hands the Legislature power to restructure or end mail voting; Civic Engagement Beyond Voting asserts the sponsor designed it to eliminate mail-in voting (Wave 74 — that is CEBV's characterization of his intent, not a sourced statement by him)"
         ] },
-      { name: "Prop 316 — cap municipal grocery taxes at 2%", party: "I", winner: false,
+      { name: "Prop 316 — cap municipal grocery taxes at 2%", party: "I", winner: true,
         positions: ["A YES vote caps city and town taxes on food for home consumption at 2% and requires local voter approval for any increase; cities already above the cap could only go down","A NO vote leaves cities their current authority over food taxes"],
         differentiators: [
           "Referred by the Legislature (HCR 2021)",
@@ -1324,7 +1324,7 @@ const STATEWIDE = [
           "It is disguised tax relief that handcuffs local budgets and erodes home rule",
           "Gov. Hobbs vetoed a similar 2023 bill projected to cost 65 cities more than $150 million a year, and the food tax is over 30% of the town of Taylor's budget"
         ] },
-      { name: "Prop 317 — declare drug cartels terrorist organizations", party: "I", winner: false,
+      { name: "Prop 317 — declare drug cartels terrorist organizations", party: "I", winner: true,
         positions: ["A YES vote declares drug cartels terrorist organizations and directs the Arizona Department of Homeland Security to do everything in its authority to counter them","A NO vote means no such designation, and AZDOHS keeps its current grant-administration role"],
         differentiators: [
           "Referred by the Legislature (HCR 2055)",
@@ -1339,7 +1339,7 @@ const STATEWIDE = [
           "It is symbolic — Gov. Hobbs vetoed a similar bill because AZDOHS mainly administers federal grants rather than conducting law enforcement",
           "Barring the designation from supporting an asylum claim by someone fleeing that same cartel is, critics say, the tell that it is about messaging"
         ] },
-      { name: "Prop 318 — student athletics and private spaces (constitutional)", party: "I", winner: false,
+      { name: "Prop 318 — student athletics and private spaces (constitutional)", party: "I", winner: true,
         positions: ["A YES vote bars K-12 schools and athletic associations from letting anyone use a restroom, locker room, shower or other private space not designated for their sex; designates sports Male, Female or Co-Ed; and creates a private right to sue","A NO vote leaves these decisions to schools and athletic associations"],
         differentiators: [
           "The Protect Girls Sports in Arizona Act (HCR 2003); challenged in court and upheld for the ballot",
@@ -1354,7 +1354,7 @@ const STATEWIDE = [
           "Schools and athletic associations should handle this, not a constitutional-scale mandate",
           "Enforcement invites invasive sex-checking of ALL girls, and the broad language creates lawsuit exposure for schools and educators"
         ] },
-      { name: "Prop 319 — ban photo-radar and red-light cameras", party: "I", winner: false,
+      { name: "Prop 319 — ban photo-radar and red-light cameras", party: "I", winner: true,
         positions: ["A YES vote bans government photo-radar and red-light camera enforcement; cities with existing contracts must win voter approval to continue, for ten years at a time, or shut down within 90 days","A NO vote leaves photo enforcement as it is"],
         differentiators: [
           "Referred by the Legislature (SCR 1004, 2026)",
@@ -1976,7 +1976,7 @@ const HOUSE_RACES = {
     ] }
 };
 
-const SITE_META = { name: "Arizona Elections Hub", lastUpdated: "November 10, 2026 (Wave 114)" };
+const SITE_META = { name: "Arizona Elections Hub", lastUpdated: "November 17, 2026 (Wave 119)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Arizona county-level down-ballot research has not started.)

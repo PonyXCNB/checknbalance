@@ -1663,3 +1663,18 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **0 -> 0**. Voices unchanged (0 gaps).
 
 2026-11-16 | 8 pages | Wave 118 | Free web (0 Grok). Auto-publish after green tests.
+
+## 2026-11-17 - Wave 119 (Tuesday daily, results week 3)
+
+### Research (free web; Grok 0)
+- **Calls/concessions:** TN-4 DesJarlais conceded Nov 16 after Davidson provisionals (+116 Broderick, +28 DesJarlais) - Nashville Banner Nov 16, Tennessee Lookout Nov 16 (no AP call as of 1:15 p.m. Nov 16). KS SoS - SoS spokesperson Nov 16: statewide close-race audit complete, "no race was changed"; Kansas City Star Nov 16 says audit finalized Proctor's win (no AP call, no Day concession found).
+- **Recounts:** NC-5 Foxx requested recount Nov 16 (N&O, Watauga Democrat, WataugaOnline, WXII, WCNC). NC-10 Catawba recount 8:30 a.m. Nov 18 (WCNC). NC HD-20 Scalise requested recount Nov 16; New Hanover BOE machine recount 9 a.m. Nov 19 (WECT, Port City Daily, Wilmington Daily, WWAY).
+- **Measures/judicial backlog carded:** FL amendments + Muñiz retention (floridaelectionwatch.gov, official DOS results site). OK SQ 845/847 (KOCO Nov 4); OK retention (NonDoc Nov 4) + Lumpkin not on ballot (NonDoc Oct 29 - CORRECTION). AZ 8 props (KTAR Nov 9, AP calls). AL Place 8 Shaw (Alabama Political Reporter SOS feed); AL 4 amendments (Alabama Daily News Nov 4). HI RISE amendment (HPR; HNN; Star-Advertiser) - CORRECTION: there were TWO HI amendments (Amendment 1 judicial confirmations also approved). ND Measures 1 & 2 rejected (North Dakota Monitor Nov 3, Nov 5). WY retention + Prop 1 (sos.wyo.gov official summary PDFs, curl from box works). MI SBOE (Chalkbeat via Oakland Press Nov 10), UM regents (WEMU), MSU trustees (State News), WSU governors (mlive). RI SoS Amore (Rhode Island Current Nov 3).
+- **Dead ends / held:** AZ retention Lopez - only DDHQ/aggregators + official enhancedvoting JS app (not readable); held. KS appellate retention - only a Substack (2 justices) + DDHQ; held. AL five uncontested appellate seats - not carded (no fetched source). freep.com 302/blocked via WebFetch and curl. QNC News (TN-4) not used (unknown outlet; its margin conflicts). AK/MN-1 not refreshed (no new numbers; AK RCV Nov 18, MN-1 canvass Nov 19).
+- 21-day skip: election results are a trigger event - all Nov 3 races eligible.
+
+### Edits
+- 12 pages: SITE_META + footer span Nov 17, 2026 (Wave 119): al, az, fl, hi, ks, mi, nc, nd, ok, ri, tn, wy. Carded: TN-4 Broderick, KS SoS Proctor, FL retention, FL amendments card, OK retention (corrected), OK SQ 845, OK SQ 847, AZ props card, AL Place 8, AL amendments card, HI amendment (corrected), ND measures card, WY retention, WY Prop 1, MI SBOE/UM/MSU/WSU, RI SoS. Refreshed: NC-5, NC-10, NC HD-20.
+- Verify **0 -> 0**. Voices unchanged (0 gaps).
+
+2026-11-17 | 12 pages | Wave 119 | Free web (0 Grok). Auto-publish after green tests.

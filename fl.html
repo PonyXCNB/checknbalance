@@ -714,7 +714,7 @@
       <strong>FL Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">November 12, 2026 (Wave 116)</span><br>
+      Last updated: <span id="last-updated">November 17, 2026 (Wave 119)</span><br>
       Sources: Florida Department of State, Division of Elections (dos.fl.gov/elections) and its official Aug 18, 2026 primary results at floridaelectionwatch.gov, certified by the Elections Canvassing Commission on Aug 27, 2026; the Florida Legislature's own HB 1D (2026D) congressional plan EOGPCRP2026, its Congressional Redistricting Data Packet and block-assignment file; the Division of Elections constitutional-initiatives database; FEC; Cook Political Report (2026 PVI on the new lines); Inside Elections; Florida Politics, Tampa Bay Times, Miami Herald, Orlando Sentinel, WUSF, WLRN, WFSU, Florida Phoenix, News Service of Florida, AP.</div>
   </div>
 </footer>
@@ -1142,10 +1142,10 @@ const STATEWIDE = [
           "No farming, ranching or agency-management background; his credential is legal advocacy",
           "He opposes the lab-grown-meat ban that is one of Simpson's signature accomplishments with growers, a hard sell in agricultural counties"
         ] } ] },
-  { date: "Nov 3, 2026", type: "upcoming", scope: "State · Statewide", office: "Florida Supreme Court — Merit Retention",
-    note: "EXACTLY ONE FLORIDA SUPREME COURT JUSTICE IS ON THE 2026 RETENTION BALLOT — CHIEF JUSTICE CARLOS G. MUÑIZ. This is a nonpartisan yes/no vote, not a contest between candidates: a majority 'yes' grants a new six-year term, a majority 'no' creates a vacancy the Governor fills. ✅ The Division of Elections confirms only justices whose terms expire January 2027 appear. ⚠ Twenty-two District Court of Appeal judges also stand for retention, but those are DISTRICT ballots, not statewide, and are not listed here. ⚠ No Florida justice has ever been removed by a retention vote.",
+  { date: "Nov 3, 2026", type: "past", scope: "State · Statewide", office: "Florida Supreme Court — Merit Retention (RETAINED)",
+    note: "✅ RESULT (UNOFFICIAL): Chief Justice Carlos G. Muñiz was RETAINED, 4,300,931 yes (57.68%) to 3,155,466 no (42.32%) (Florida Division of Elections results site, floridaelectionwatch.gov, read Nov 17, 2026). Results stay unofficial until the state certifies them. Pre-election background: EXACTLY ONE FLORIDA SUPREME COURT JUSTICE IS ON THE 2026 RETENTION BALLOT — CHIEF JUSTICE CARLOS G. MUÑIZ. This is a nonpartisan yes/no vote, not a contest between candidates: a majority 'yes' grants a new six-year term, a majority 'no' creates a vacancy the Governor fills. ✅ The Division of Elections confirms only justices whose terms expire January 2027 appear. ⚠ Twenty-two District Court of Appeal judges also stand for retention, but those are DISTRICT ballots, not statewide, and are not listed here. ⚠ No Florida justice has ever been removed by a retention vote.",
     candidates: [
-      { name: "Carlos G. Muñiz — Chief Justice (retain / do not retain)", party: "I", winner: false,
+      { name: "Carlos G. Muñiz — Chief Justice (retain / do not retain)", party: "I", winner: true,
         positions: ["⚠ Merit-retention candidates do not campaign on a platform; Florida's judicial canons sharply limit what a sitting justice may say about issues"],
         differentiators: [
           "Appointed to the Florida Supreme Court on Jan 22, 2019 by Gov. DeSantis; the 89th justice since statehood",
@@ -1163,8 +1163,8 @@ const STATEWIDE = [
           "Reform advocates argue retention votes have become meaningless because no Florida justice has ever lost one, effectively granting lifetime tenure",
           "Some voters object that he was appointed by the sitting Governor and has ruled favorably on that administration's priorities (Wave 75 — a general criticism; no specific ruling tally was located)"
         ] } ] },
-  { date: "Nov 3, 2026", type: "upcoming", scope: "Ballot Measure · Statewide", office: "Ballot Measures — Florida (3 amendments)",
-    note: "EXACTLY THREE AMENDMENTS, AND ALL THREE ARE LEGISLATIVE REFERRALS — NO CITIZEN INITIATIVE QUALIFIED FOR FLORIDA'S 2026 BALLOT. All 22 petition campaigns failed the 891,523-signature threshold, so the widely reported recreational-marijuana and abortion measures are NOT on this ballot. ⚠ EACH AMENDMENT NEEDS 60% TO PASS, not a simple majority. ⚠ AMENDMENT 3'S BALLOT TITLE WAS REWRITTEN BY COURT ORDER: on Aug 3, 2026 Leon County Circuit Judge David Frank ruled the original title, 'Save Our Homes From Excessive Property Taxes,' was 'not fair or neutral' and read 'more akin to a political slogan.' DeSantis declined to appeal and AG Uthmeier filed revised language on Aug 14, 2026. Numbers, titles and sponsoring joint resolutions below are from the Division of Elections' own initiatives database.",
+  { date: "Nov 3, 2026", type: "past", scope: "Ballot Measure · Statewide", office: "Ballot Measures — Florida (3 amendments: 1 APPROVED, 2 REJECTED)",
+    note: "✅ RESULT (UNOFFICIAL): Only Amendment 3 passed. Amendment 3 (higher homestead exemption; lower cap on non-homestead assessment increases) was APPROVED, 4,922,977 yes (61.98%) to 3,020,085 no. Amendment 1 (Budget Stabilization Fund) was REJECTED, 40.9% yes to 59.1% no. Amendment 2 (farm-equipment property-tax exemption) FAILED even with majority support, 58.21% yes, short of the 60% Florida requires (Florida Division of Elections results site, floridaelectionwatch.gov, read Nov 17, 2026). Pre-election background: EXACTLY THREE AMENDMENTS, AND ALL THREE ARE LEGISLATIVE REFERRALS — NO CITIZEN INITIATIVE QUALIFIED FOR FLORIDA'S 2026 BALLOT. All 22 petition campaigns failed the 891,523-signature threshold, so the widely reported recreational-marijuana and abortion measures are NOT on this ballot. ⚠ EACH AMENDMENT NEEDS 60% TO PASS, not a simple majority. ⚠ AMENDMENT 3'S BALLOT TITLE WAS REWRITTEN BY COURT ORDER: on Aug 3, 2026 Leon County Circuit Judge David Frank ruled the original title, 'Save Our Homes From Excessive Property Taxes,' was 'not fair or neutral' and read 'more akin to a political slogan.' DeSantis declined to appeal and AG Uthmeier filed revised language on Aug 14, 2026. Numbers, titles and sponsoring joint resolutions below are from the Division of Elections' own initiatives database.",
     candidates: [
       { name: "Amendment 1 — Budget Stabilization Fund", party: "I", winner: false,
         positions: ["A YES vote raises Florida's rainy-day fund cap from 10% to 25% of general revenue collections and requires the Legislature to transfer the lesser of $750 million or the amount needed to reach 25% each year unless certain conditions are met, while allowing withdrawals for critical state needs","A NO vote leaves the existing 10% cap and the current transfer rules in place"],
@@ -1196,7 +1196,7 @@ const STATEWIDE = [
           "Rep. Anna Eskamani argues the benefit flows mainly to large agribusiness rather than small family farms",
           "The roughly $31M a year falls on counties and school districts, which have no way to replace it (structural)"
         ] },
-      { name: "Amendment 3 — increased homestead exemption; lower cap on non-homestead assessment increases", party: "I", winner: false,
+      { name: "Amendment 3 — increased homestead exemption; lower cap on non-homestead assessment increases", party: "I", winner: true,
         positions: ["A YES vote raises the non-school homestead exemption to $150,000 in 2027 and $250,000 in 2028, and cuts the non-homestead assessment cap from 10% to 5%","A NO vote leaves the current homestead exemption and the 10% non-homestead cap unchanged"],
         differentiators: [
           "⚠ Its ballot title was REWRITTEN BY COURT ORDER on Aug 3, 2026 after a judge found the original 'more akin to a political slogan'",
@@ -2130,7 +2130,7 @@ const HOUSE_RACES = {
             ] } ] } ] },
 };
 
-const SITE_META = { name: "Florida Elections Hub", lastUpdated: "November 12, 2026 (Wave 116)" };
+const SITE_META = { name: "Florida Elections Hub", lastUpdated: "November 17, 2026 (Wave 119)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Florida county-level down-ballot research has not started.)
