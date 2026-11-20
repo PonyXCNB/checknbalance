@@ -1678,3 +1678,17 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **0 -> 0**. Voices unchanged (0 gaps).
 
 2026-11-17 | 12 pages | Wave 119 | Free web (0 Grok). Auto-publish after green tests.
+
+## 2026-11-20 - Wave 120 (Friday daily, results week 3; catch-up after PC offline Nov 18-19)
+
+### Research (free web; Grok 0)
+- **Calls/concessions:** AK Sen - AP call Nov 17 (AP via Anchorage Daily News Nov 17/18; Alaska Beacon Nov 17); Sullivan not conceding until certification (Democracy Docket Nov 16, Nov 19; Division director says the state will certify, DOJ appeal pending). AK-AL - Division RCV tabulation Nov 18 (Alaska Watchman Nov 18 round-by-round; Alaska Beacon Nov 18 incl. Hill concession; ADN Nov 18).
+- **Recounts/canvass:** MN-1 State Canvassing Board certified Nov 19, Johnson +324; Finstad requested recount; counties Nov 30-Dec 3; board Dec 8 (MPR Nov 19; FOX 9 Nov 19; sos.mn.gov recount locations PDF). NC-5 Watauga recount Foxx +2 (lead 329), Guilford began Nov 19 (WXII, FOX8 WGHP Nov 19; Foxx request letter on dl.ncsbe.gov). NC-10 Catawba recount Nov 18, Bell +0 (WHKY Nov 19; WBTV Nov 18). NC HD-20 recount began Nov 19, resumes Nov 20 8:45 a.m. (WECT Nov 19; WWAY Nov 19).
+- **Dead ends / held:** apnews.com (Cloudflare), startribune.com (Vercel checkpoint), results.arizona.vote (Cloudflare), sos.ks.gov results URL 404. AZ Lopez and KS appellate retention still held (search synthesis gives numbers but only from aggregators/Ballotpedia). Aggregator sites watch.vote, election.org, exa.ai, The Henryettan, WhatsNewPaper - NOT used.
+- 21-day skip: election results are a trigger event - all Nov 3 races eligible.
+
+### Edits
+- 3 pages: SITE_META + footer span Nov 20, 2026 (Wave 120): ak, mn, nc. Carded: AK Sen Peltola, AK-AL Begich. Refreshed: MN-1, NC-5, NC-10, NC HD-20 (left upcoming).
+- Verify **0 -> 0**. Voices unchanged (0 gaps).
+
+2026-11-20 | 3 pages | Wave 120 | Free web (0 Grok). Auto-publish after green tests.

@@ -714,7 +714,7 @@
       <strong>AK Elections Hub</strong> · A civic side-project, not affiliated with any government agency.
     </div>
     <div class="footer-meta" id="sources">
-      Last updated: <span id="last-updated">November 16, 2026 (Wave 118)</span><br>
+      Last updated: <span id="last-updated">November 20, 2026 (Wave 120)</span><br>
       Sources: Alaska Division of Elections (elections.alaska.gov) — the CERTIFIED Aug 18, 2026 Election Summary Report (OFFICIAL RESULTS, Aug 31, 2026), the 2026 general-election candidate list, the Official Election Pamphlet candidate statements, and the 2020/2022/2024 RCV Detailed Reports; Alaska Judicial Council retention evaluations; Office of the Lieutenant Governor; Alaska Public Offices Commission and FEC filings as reported; U.S. Census Bureau 2020 county-equivalent files; Alaska Department of Labor population estimates; Alaska Beacon, Anchorage Daily News, Alaska Public Media, KTOO, The Alaska Current and Alaska Landmine.</div>
   </div>
 </footer>
@@ -802,10 +802,10 @@ const COUNTIES = {
 // the U.S. House race, four times over, putting the EIGHTH-place finisher on the ballot.
 const STATEWIDE = [
   // ─────────────────────────── UPCOMING ───────────────────────────
-  { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · Statewide", office: "U.S. Senator from Alaska (Class 2)",
-    note: "⚠ NOT YET CALLED (as of Nov 16, 2026): the Associated Press had still not called this race. In the Division of Elections' Nov 14 report (about 283,600 ballots, roughly 97% of the expected vote), Mary Peltola (D) led Sen. Dan Sullivan (R) by 11,213 first-choice votes, 140,637 (49.94% including write-ins) to 129,424 (45.96%); Gerald Heikes (R) had 6,002 and Daniel J. Sullivan Jr. 4,652 (Alaska Story, Nov 14, 2026, reporting the Division's 3:15 p.m. update). The Anchorage Daily News reported that with write-ins set aside Peltola has 50.1%, which would make her the outright winner without ranked-choice tabulation if it holds, and that preliminary ranking data indicate she is likely to win even if tabulation is needed (Anchorage Daily News, Nov 14, 2026). The last overseas absentee ballots are due Nov 18, when tabulation runs if needed; certification is targeted for Nov 25. No winner is shown here until the race is called.",
+  { date: "Nov 3, 2026", type: "past", scope: "Federal · Statewide", office: "U.S. Senator from Alaska (Class 2)",
+    note: "✅ RESULT (UNOFFICIAL): Mary Peltola (D) defeated Sen. Dan Sullivan (R), per the Associated Press race call on Nov 17, 2026, made after the Division of Elections' update showed her above 50% of first-choice votes, so no ranked-choice tabulation was needed. In those preliminary results (about 290,000 ballots counted), Peltola had 144,302 first-choice votes (50.1%) to Sullivan's 131,844 (45.8%); Gerald Heikes (R) had 6,105 (2.1%) and Daniel J. Sullivan Jr. 4,760 (1.7%) (AP via Anchorage Daily News, Nov 17, 2026; Alaska Beacon, Nov 17, 2026). Sullivan had not conceded as of Nov 19; his campaign said it would wait until every legal vote is counted and certified. After the Nov 18 tabulation the Division of Elections director said the state plans to certify the election, including the Senate race; a federal judge dismissed a Justice Department lawsuit seeking to block certification, and the department is appealing (Democracy Docket, Nov 16 and Nov 19, 2026). Certification is targeted for Nov 25. Results stay unofficial until the state certifies them.",
     candidates: [
-      { name: "Mary Peltola", party: "D", winner: false,
+      { name: "Mary Peltola", party: "D", winner: true,
         positions: [
           "Cut the cost of energy, freight, childcare and housing",
           "Back ANWR and NPR-A oil and gas, with fishermen at the table",
@@ -1081,10 +1081,10 @@ const STATEWIDE = [
 const HOUSE_RACES = {
   1: { name: "U.S. House — AK At-Large", region: "The entire state — all 29 boroughs and census areas vote the same congressional ballot",
     races: [
-      { date: "Nov 3, 2026", type: "upcoming", scope: "Federal · At-Large",
-        note: "⚠ NOT YET CALLED (as of Nov 16, 2026): the Associated Press had not called Alaska's at-large House race. In the Division of Elections' Nov 14 report, Rep. Nick Begich (R) had 133,707 first-choice votes (47.71%) to independent Bill Hill's 116,932 (41.72%), with Eric Hafner (D) at 21,815 (7.78%) and Jim McDermott (L) at 7,384 (2.63%) (Alaska Story, Nov 14, 2026). Because no one has 50%, ranked-choice tabulation is scheduled for Nov 18; the Anchorage Daily News reported that ballot data indicate Begich is on track to defeat Hill in tabulation (Anchorage Daily News, Nov 14, 2026). No winner is shown here until the race is called. Pre-election background: EIGHTH PLACE IS ON THE BALLOT. ✅ Rep. Nick Begich won the certified Aug 18 primary with 72,696 votes (44.62%) over nonpartisan Bill Hill's 53,008 (32.53%). ✅ Mary Peltola is NOT in this race — she is running for the U.S. Senate.",
+      { date: "Nov 3, 2026", type: "past", scope: "Federal · At-Large",
+        note: "✅ RESULT (UNOFFICIAL): Rep. Nick Begich (R) won re-election in the Division of Elections' ranked-choice tabulation on Nov 18, 2026. First choices: Begich 136,658 (47.56%), independent Bill Hill 120,156 (41.82%), Eric Hafner (D) 22,874 (7.96%), Jim McDermott (L) 7,649 (2.66%). McDermott and then Hafner were eliminated, and in the final round Begich had 140,346 votes (51.35%) to Hill's 132,961 (48.65%); more than 13,900 ballots were exhausted (Alaska Watchman, Nov 18, 2026, reporting the Division's ranked-choice results; Alaska Beacon and Anchorage Daily News, Nov 18, 2026). Hill said in a statement that he called Begich to concede (Alaska Beacon, Nov 18, 2026). Results stay unofficial until certification, targeted for Nov 25. Pre-election background: EIGHTH PLACE IS ON THE BALLOT. ✅ Rep. Nick Begich won the certified Aug 18 primary with 72,696 votes (44.62%) over nonpartisan Bill Hill's 53,008 (32.53%). ✅ Mary Peltola is NOT in this race — she is running for the U.S. Senate.",
         candidates: [
-          { name: "Nick Begich (incumbent)", party: "R", winner: false,
+          { name: "Nick Begich (incumbent)", party: "R", winner: true,
             positions: [
               "Expand oil, gas and mineral development in the NPR-A and ANWR",
               "Make the tax cuts permanent, including no tax on tips and overtime",
@@ -1210,7 +1210,7 @@ const HOUSE_RACES = {
     ] }
 };
 
-const SITE_META = { name: "Alaska Elections Hub", lastUpdated: "November 16, 2026 (Wave 118)" };
+const SITE_META = { name: "Alaska Elections Hub", lastUpdated: "November 20, 2026 (Wave 120)" };
 
 // ----- County-level LOCAL races (the down-ballot depth project) -----
 // Sources: (none yet — Alaska county-level down-ballot research has not started.)
