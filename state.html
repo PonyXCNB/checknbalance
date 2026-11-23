@@ -289,7 +289,7 @@
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-crest"><strong id="footer-crest">Elections Hub</strong> · A civic side-project, not affiliated with any government agency.</div>
-    <div class="footer-meta">Last updated: <span id="last-updated">September 4, 2026</span></div>
+    <div class="footer-meta">Last updated: <span id="last-updated">November 23, 2026</span></div>
   </div>
 </footer>
 
@@ -339,7 +339,7 @@ const CAP = {
 const params = new URLSearchParams(window.location.search);
 const abbr = (params.get("state") || "").toUpperCase();
 if (!STATES[abbr]) { window.location.replace("index.html#map"); throw new Error("redirecting home: unknown state " + JSON.stringify(abbr)); }
-const SITE_META = { lastUpdated: "September 4, 2026" };
+const SITE_META = { lastUpdated: "November 23, 2026" };
 
 const STATE = STATES[abbr];
 const FIPS = STATE.f;
@@ -458,11 +458,11 @@ const STATE_RACES = {
   DC: [
     // ---------- UPCOMING — Nov 3, 2026 general (DCBOE candidate roster dated July 15, 2026) ----------
     {
-      key: "delegate", date: "Nov 3, 2026", type: "upcoming", scope: "Federal · At-Large",
+      key: "delegate", date: "Nov 3, 2026", type: "past", scope: "Federal · At-Large",
       office: "Delegate to the U.S. House — District of Columbia (OPEN SEAT)",
-      note: "Eleanor Holmes Norton (D), delegate since 1991, ended her reelection campaign on Jan 26, 2026 after months of questions about her health [Verify — reported by NPR and the Washington Blade; read only in search summaries]. At-large Councilmember Robert White won the June 16 Democratic primary with 63.6% in a five-way field. In a city that gave Kamala Harris about 90% in 2024, the Democratic nominee is the overwhelming favorite. ⚠ The November roster is DCBOE's July 15, 2026 list — [Verify] no post-challenge changes.",
+      note: "✅ RESULT (UNOFFICIAL): Robert White (D) won, 201,900 votes (87.1%) to 14,680 for Denise Rosado (R) and 13,608 for Kymone Freeman (Statehood Green), with 1,533 write-ins (DCBOE pre-certified results report, Nov 20, 2026). He is DC's first new delegate in 35 years; he resigned his at-large Council seat on Nov 2 over an eligibility question (51st, Nov 5, 2026). The Board of Elections tentatively certifies results Dec 2 (DCBOE 2026 general election calendar); results stay unofficial until then. Pre-election background: Eleanor Holmes Norton (D), delegate since 1991, ended her reelection campaign on Jan 26, 2026 after months of questions about her health [Verify — reported by NPR and the Washington Blade; read only in search summaries]. At-large Councilmember Robert White won the June 16 Democratic primary with 63.6% in a five-way field. In a city that gave Kamala Harris about 90% in 2024, the Democratic nominee is the overwhelming favorite.",
       candidates: [
-        { name: "Robert White", party: "D", winner: false,
+        { name: "Robert White", party: "D", winner: true,
           positions: [
             "Defend DC home rule against congressional intervention — a 'Defend DC' effort to recruit, train and bus residents to campaign in nearby House districts against members who back federal control (AP, Aug 24, 2026)",
             "Launch a PAC to support congressional candidates who back DC statehood and local control (AP, Aug 24, 2026)",
@@ -501,11 +501,11 @@ const STATE_RACES = {
       ]
     },
     {
-      key: "mayor", date: "Nov 3, 2026", type: "upcoming", scope: "Local · District",
+      key: "mayor", date: "Nov 3, 2026", type: "past", scope: "Local · District",
       office: "Mayor of the District of Columbia (OPEN SEAT)",
-      note: "Muriel Bowser (D) announced on Nov 25, 2025 that she would not seek a fourth term. Ward 4 Councilmember Janeese Lewis George, a democratic socialist, won the June 16 Democratic primary outright with 54.1% to former Councilmember Kenyan McDuffie's 35.1% — no ranked-choice rounds were needed in DC's first ranked-choice mayoral primary. President Trump said he 'won't put up with it' and floated a federal takeover if she won; she called that 'an attack on democracy itself' (NBC News, June 18, 2026). The Democratic nominee has won every mayoral election since home rule began in 1974. ⚠ No Republican qualified; the November field is DCBOE's July 15 roster [Verify final].",
+      note: "✅ RESULT (UNOFFICIAL): Janeese Lewis George (D) won with a majority of first choices, 193,348 votes (84.3%), to 23,103 (10.1%) for Rhonda Hamilton (I) and 8,037 (3.5%) for Robert L. Gross (Statehood Green), so no ranked-choice rounds were needed (DCBOE pre-certified results report, Nov 20, 2026; FairVote, Nov 17, 2026). She is DC's first democratic-socialist mayor-elect (51st, Nov 5, 2026). The Board of Elections tentatively certifies results Dec 2 (DCBOE 2026 general election calendar); results stay unofficial until then. Pre-election background: Muriel Bowser (D) announced on Nov 25, 2025 that she would not seek a fourth term. Ward 4 Councilmember Janeese Lewis George, a democratic socialist, won the June 16 Democratic primary outright with 54.1% to former Councilmember Kenyan McDuffie's 35.1% — no ranked-choice rounds were needed in DC's first ranked-choice mayoral primary. President Trump said he 'won't put up with it' and floated a federal takeover if she won; she called that 'an attack on democracy itself' (NBC News, June 18, 2026). The Democratic nominee has won every mayoral election since home rule began in 1974. ⚠ No Republican qualified; the November field matched DCBOE's July 15 roster (confirmed by the results report).",
       candidates: [
-        { name: "Janeese Lewis George", party: "D", winner: false,
+        { name: "Janeese Lewis George", party: "D", winner: true,
           positions: [
             "Universal child care [Verify — campaign site could not be reached]",
             "Social housing and housing affordability [Verify — campaign site could not be reached]",
@@ -535,11 +535,11 @@ const STATE_RACES = {
       ]
     },
     {
-      key: "attorney-general", date: "Nov 3, 2026", type: "upcoming", scope: "Local · District",
+      key: "attorney-general", date: "Nov 3, 2026", type: "past", scope: "Local · District",
       office: "Attorney General — District of Columbia",
-      note: "Brian Schwalb (D), elected in 2022, seeks a second four-year term after beating ANC commissioner J.P. Szymkowicz 90.6% to 8.9% in the primary. He faces immigration lawyer Manuel Rivera (R), a self-described 'unconventional Republican' and former conservative Democrat. Schwalb's suits against the federal police takeover and immigration actions frame the race.",
+      note: "✅ RESULT (UNOFFICIAL): Brian Schwalb (D) won a second term, 211,417 votes (92.4%) to 15,823 for Manuel Rivera (R), with 1,587 write-ins (DCBOE pre-certified results report, Nov 20, 2026). The Board of Elections tentatively certifies results Dec 2 (DCBOE 2026 general election calendar); results stay unofficial until then. Pre-election background: Brian Schwalb (D), elected in 2022, seeks a second four-year term after beating ANC commissioner J.P. Szymkowicz 90.6% to 8.9% in the primary. He faces immigration lawyer Manuel Rivera (R), a self-described 'unconventional Republican' and former conservative Democrat. Schwalb's suits against the federal police takeover and immigration actions frame the race.",
       candidates: [
-        { name: "Brian Schwalb (incumbent)", party: "D", winner: false,
+        { name: "Brian Schwalb (incumbent)", party: "D", winner: true,
           positions: [
             "Oppose federal takeover of DC governance — blocked the police takeover in court and filed suits protecting residents (WJLA candidate guide, June 2026)",
             "'Swift and certain consequences' for youth offenders plus prevention; cites an 85% prosecution rate for violent juvenile cases (WJLA, June 2026)",
@@ -569,11 +569,11 @@ const STATE_RACES = {
       ]
     },
     {
-      key: "council-chair", date: "Nov 3, 2026", type: "upcoming", scope: "Local · District",
+      key: "council-chair", date: "Nov 3, 2026", type: "past", scope: "Local · District",
       office: "Chairman of the Council — District of Columbia",
-      note: "Phil Mendelson (D), chairman since 2012, seeks a fifth term; he took 95.8% in the Democratic primary. The Office of Campaign Finance fined him and his committee $4,000 for printing campaign material on government printers [Verify — OCF order and Washington City Paper report seen only in search summaries]. Challenger Abi-Ananiah Prudent (R) is a faith-based organizer who moved to DC two years ago. ⚠ Former Councilmember Jack Evans announced a primary run in January (Hill Rag, Jan 28, 2026) — [Verify] whether he appeared on the June ballot.",
+      note: "✅ RESULT (UNOFFICIAL): Phil Mendelson (D) won a fifth term as chairman, 207,857 votes (92.9%) to 13,437 for Abi-Ananiah Prudent (R), with 2,520 write-ins (DCBOE pre-certified results report, Nov 20, 2026). The Board of Elections tentatively certifies results Dec 2 (DCBOE 2026 general election calendar); results stay unofficial until then. Pre-election background: Phil Mendelson (D), chairman since 2012, seeks a fifth term; he took 95.8% in the Democratic primary. The Office of Campaign Finance fined him and his committee $4,000 for printing campaign material on government printers [Verify — OCF order and Washington City Paper report seen only in search summaries]. Challenger Abi-Ananiah Prudent (R) is a faith-based organizer who moved to DC two years ago. ⚠ Former Councilmember Jack Evans announced a primary run in January (Hill Rag, Jan 28, 2026) — [Verify] whether he appeared on the June ballot.",
       candidates: [
-        { name: "Phil Mendelson (incumbent)", party: "D", winner: false,
+        { name: "Phil Mendelson (incumbent)", party: "D", winner: true,
           positions: ["[Verify] 2026 platform not yet read"],
           differentiators: [
             "Council chairman since 2012, on the Council since 1999",
@@ -590,11 +590,11 @@ const STATE_RACES = {
       ]
     },
     {
-      key: "council-at-large", date: "Nov 3, 2026", type: "upcoming", scope: "Local · District",
+      key: "council-at-large", date: "Nov 3, 2026", type: "past", scope: "Local · District",
       office: "Council At-Large — two seats",
-      note: "Two of the four at-large seats are up: Anita Bonds (D) is retiring, and the seat Kenyan McDuffie (I) vacated to run for mayor was filled in a June 16 special election by former Councilmember Elissa Silverman (I), who now seeks a full term. Under the Home Rule Act no more than two of the four at-large seats may be held by the majority party, so in practice one of the two seats filled each cycle goes to the top non-Democratic finisher [Verify the statutory wording and how ranked-choice tabulation applies to a two-seat race]. Democratic nominee Oye Owolewa, the outgoing shadow representative, won an eight-round ranked-choice primary. Four independents, a Republican and a Statehood Green compete for the non-Democratic seat.",
+      note: "✅ RESULT (UNOFFICIAL): Oye Owolewa (D) and Elissa Silverman (I) won the two seats. First choices: Owolewa 160,216 (69.4%), Silverman 48,094 (20.8%), Darrell Green (R) 13,453 (5.8%), Darryl Moch (Statehood Green) 7,722 (3.4%), write-ins 1,362 (DCBOE pre-certified results report, Nov 20, 2026). In the ranked-choice tally Owolewa finished with 140,002 (75.7%) and Silverman with 45,060 (24.3%) (WUSA9 results; FairVote, Nov 17, 2026, citing DCBOE's preliminary tally). ⚠ CORRECTION: this card earlier listed three more independents (Joseph Jackson, Nina Taylor, Danielle Urey) from DCBOE's July 15 roster; they do not appear as ballot candidates in DCBOE's results report and have been removed. The Board of Elections tentatively certifies results Dec 2 (DCBOE 2026 general election calendar); results stay unofficial until then. Pre-election background: Two of the four at-large seats are up: Anita Bonds (D) is retiring, and the seat Kenyan McDuffie (I) vacated to run for mayor was filled in a June 16 special election by former Councilmember Elissa Silverman (I), who now seeks a full term. Under the Home Rule Act no more than two of the four at-large seats may be held by the majority party, so in practice one of the two seats filled each cycle goes to the top non-Democratic finisher [Verify the statutory wording and how ranked-choice tabulation applies to a two-seat race]. Democratic nominee Oye Owolewa, the outgoing shadow representative, won an eight-round ranked-choice primary. On the November ballot, independent Silverman, Republican Darrell Green and Statehood Green Darryl Moch competed for the non-Democratic seat.",
       candidates: [
-        { name: "Oye Owolewa", party: "D", winner: false,
+        { name: "Oye Owolewa", party: "D", winner: true,
           positions: ["Affordable housing (Hill Rag, Jan 15, 2026)", "DC statehood advocacy (Hill Rag, Jan 15, 2026)", "Traffic safety (Hill Rag, Jan 15, 2026)"],
           differentiators: [
             "DC's shadow representative since 2021; pharmacist; former ANC commissioner; son of Nigerian immigrants (WTOP, June 22, 2026)",
@@ -602,7 +602,7 @@ const STATE_RACES = {
           ],
           supporters: ["A proven statehood advocate with a city-wide base (WTOP, June 22, 2026)"],
           opponents: ["Started the primary with barely a third of first choices in a nine-way field (WTOP, June 22, 2026)"] },
-        { name: "Elissa Silverman (incumbent)", party: "I", winner: false,
+        { name: "Elissa Silverman (incumbent)", party: "I", winner: true,
           positions: [
             "'Standing up to political intimidation'; reduce truancy (Hill Rag, Jan 15, 2026)",
             "Refuses corporate contributions; campaign-finance reform [Verify]",
@@ -621,27 +621,15 @@ const STATE_RACES = {
         { name: "Darryl Moch", party: "G", winner: false,
           positions: ["[Verify] platform not yet read"],
           differentiators: ["DC Statehood Green Party chair, pastor and frequent candidate (politics1.com)"],
-          supporters: [], opponents: [] },
-        { name: "Joseph Jackson", party: "I", winner: false,
-          positions: ["[Verify] platform not yet read"],
-          differentiators: ["Go-go music industry advocate; 2024 at-large candidate (politics1.com); qualified by petition (DCBOE roster)"],
-          supporters: [], opponents: [] },
-        { name: "Nina Taylor", party: "I", winner: false,
-          positions: ["[Verify] platform not yet read"],
-          differentiators: ["Nonprofit executive (politics1.com); qualified by petition (DCBOE roster)"],
-          supporters: [], opponents: [] },
-        { name: "Danielle Urey", party: "I", winner: false,
-          positions: ["[Verify] platform not yet read"],
-          differentiators: ["Workforce-development professional; former Cottage City, Md. commissioner (politics1.com); qualified by petition (DCBOE roster)"],
           supporters: [], opponents: [] }
       ]
     },
     {
-      key: "council-ward-1", date: "Nov 3, 2026", type: "upcoming", scope: "Local · Ward 1",
+      key: "council-ward-1", date: "Nov 3, 2026", type: "past", scope: "Local · Ward 1",
       office: "Council — Ward 1 (OPEN SEAT)",
-      note: "Brianne Nadeau (D) is not seeking a fourth term — the first open Ward 1 seat in 44 years [Verify — WUSA9, seen in a search summary]. Aparna Raj, a 32-year-old tenant organizer and former Metro DC DSA chair, won the Democratic primary in the fourth ranked-choice round with 52.3% over Miguel Trindade Deramo (26.7%). She faces a Republican, a Statehood Green and an independent in November.",
+      note: "✅ RESULT (UNOFFICIAL): Aparna Raj (D) won, 25,670 votes (86.2%) to 1,561 for Jett James Jasper (R), 1,133 for Ryan Prince (I) and 830 for Jude Crannitch (Statehood Green), with 596 write-ins (DCBOE pre-certified results report, Nov 20, 2026). The Board of Elections tentatively certifies results Dec 2 (DCBOE 2026 general election calendar); results stay unofficial until then. Pre-election background: Brianne Nadeau (D) is not seeking a fourth term — the first open Ward 1 seat in 44 years [Verify — WUSA9, seen in a search summary]. Aparna Raj, a 32-year-old tenant organizer and former Metro DC DSA chair, won the Democratic primary in the fourth ranked-choice round with 52.3% over Miguel Trindade Deramo (26.7%). She faces a Republican, a Statehood Green and an independent in November.",
       candidates: [
-        { name: "Aparna Raj", party: "D", winner: false,
+        { name: "Aparna Raj", party: "D", winner: true,
           positions: ["Housing affordability and tenant protections (WTOP, June 22, 2026)"],
           differentiators: [
             "Tenant organizer; former chair of the Metro DC Democratic Socialists of America (WTOP, June 22, 2026)",
@@ -659,22 +647,22 @@ const STATE_RACES = {
       ]
     },
     {
-      key: "council-ward-3", date: "Nov 3, 2026", type: "upcoming", scope: "Local · Ward 3",
+      key: "council-ward-3", date: "Nov 3, 2026", type: "past", scope: "Local · Ward 3",
       office: "Council — Ward 3",
-      note: "Matt Frumin (D), first elected in 2022, was unopposed in the primary and is the only candidate on the November ballot; only write-ins oppose him (DCBOE roster, July 15, 2026).",
+      note: "✅ RESULT (UNOFFICIAL): Matthew Frumin (D) won a second term unopposed on the ballot, 27,773 votes (96.3%) to 1,055 write-ins (DCBOE pre-certified results report, Nov 20, 2026). The Board of Elections tentatively certifies results Dec 2 (DCBOE 2026 general election calendar); results stay unofficial until then. Pre-election background: Matt Frumin (D), first elected in 2022, was unopposed in the primary and is the only candidate on the November ballot; only write-ins oppose him (DCBOE roster, July 15, 2026).",
       candidates: [
-        { name: "Matthew Frumin (incumbent)", party: "D", winner: false,
+        { name: "Matthew Frumin (incumbent)", party: "D", winner: true,
           positions: ["[Verify] platform not yet read"],
           differentiators: ["16,123 votes (96.1%) in the primary (DCBOE-derived [Verify certified])", "Unopposed on the general-election ballot (DCBOE roster)"],
           supporters: [], opponents: [] }
       ]
     },
     {
-      key: "council-ward-5", date: "Nov 3, 2026", type: "upcoming", scope: "Local · Ward 5",
+      key: "council-ward-5", date: "Nov 3, 2026", type: "past", scope: "Local · Ward 5",
       office: "Council — Ward 5",
-      note: "Zachary Parker (D), first elected in 2022, won renomination with about 78% over Bernita Carmichael (about 14%) and Bridget French (about 7%) (51st, June 25, 2026 — uncertified [Verify DCBOE canvass]). He faces Peruvian-born debt-collection lawyer Jeffrey Kihien-Palza (R) and Statehood Green Joyce Robinson-Paul.",
+      note: "✅ RESULT (UNOFFICIAL): Zachary Parker (D) won a second term, 29,635 votes (89.9%) to 2,043 for Joyce Robinson-Paul (Statehood Green) and 1,146 for Jeffrey Kihien-Palza (R), with 140 write-ins (DCBOE pre-certified results report, Nov 20, 2026). The Board of Elections tentatively certifies results Dec 2 (DCBOE 2026 general election calendar); results stay unofficial until then. Pre-election background: Zachary Parker (D), first elected in 2022, won renomination with about 78% over Bernita Carmichael (about 14%) and Bridget French (about 7%) (51st, June 25, 2026 — uncertified [Verify DCBOE canvass]). He faces Peruvian-born debt-collection lawyer Jeffrey Kihien-Palza (R) and Statehood Green Joyce Robinson-Paul.",
       candidates: [
-        { name: "Zachary Parker (incumbent)", party: "D", winner: false,
+        { name: "Zachary Parker (incumbent)", party: "D", winner: true,
           positions: ["[Verify] platform not yet read"],
           differentiators: ["About 78% in the primary (51st, June 25, 2026 [Verify certified])", "Endorsed by IAFF Local 36 among others [Verify]"],
           supporters: [], opponents: [] },
@@ -686,11 +674,11 @@ const STATE_RACES = {
       ]
     },
     {
-      key: "council-ward-6", date: "Nov 3, 2026", type: "upcoming", scope: "Local · Ward 6",
+      key: "council-ward-6", date: "Nov 3, 2026", type: "past", scope: "Local · Ward 6",
       office: "Council — Ward 6",
-      note: "Charles Allen (D), on the Council since 2015, won renomination with about 76% over Gloria Nauden (about 18%) and Michael Murphy (about 6%) (51st, June 25, 2026 — uncertified [Verify]). He faces Jorge Rice (R), a federal-agency conflict mediator who entered politics after being assaulted on the streetcar in 2024.",
+      note: "✅ RESULT (UNOFFICIAL): Charles Allen (D) won another term, 30,972 votes (89.1%) to 3,473 for Jorge Rice (R), with 323 write-ins (DCBOE pre-certified results report, Nov 20, 2026). The Board of Elections tentatively certifies results Dec 2 (DCBOE 2026 general election calendar); results stay unofficial until then. Pre-election background: Charles Allen (D), on the Council since 2015, won renomination with about 76% over Gloria Nauden (about 18%) and Michael Murphy (about 6%) (51st, June 25, 2026 — uncertified [Verify]). He faces Jorge Rice (R), a federal-agency conflict mediator who entered politics after being assaulted on the streetcar in 2024.",
       candidates: [
-        { name: "Charles Allen (incumbent)", party: "D", winner: false,
+        { name: "Charles Allen (incumbent)", party: "D", winner: true,
           positions: ["[Verify] platform not yet read"],
           differentiators: ["About 76% in the primary (51st, June 25, 2026 [Verify certified])", "Organized-labor backing [Verify]"],
           supporters: [], opponents: [] },
@@ -701,65 +689,73 @@ const STATE_RACES = {
       ]
     },
     {
-      key: "shadow-senator", date: "Nov 3, 2026", type: "upcoming", scope: "Federal · At-Large",
+      key: "shadow-senator", date: "Nov 3, 2026", type: "past", scope: "Federal · At-Large",
       office: "U.S. Senator (Shadow) — District of Columbia",
-      note: "An unpaid lobbying post recognized only by the District; the holder is not seated in the Senate. Paul Strauss (D), shadow senator since 1997, seeks another six-year term; he took 97.3% in the primary and is the only name on the November ballot (DCBOE roster, July 15, 2026).",
+      note: "✅ RESULT (UNOFFICIAL): Paul Strauss (D) won another term, 205,862 votes (92.1%) to 15,054 for Robert Simmons (R), with 2,555 write-ins (DCBOE pre-certified results report, Nov 20, 2026). ⚠ CORRECTION: this card earlier said Strauss was the only name on the November ballot; DCBOE's results report lists Republican Robert Simmons as well. The Board of Elections tentatively certifies results Dec 2 (DCBOE 2026 general election calendar); results stay unofficial until then. Pre-election background: An unpaid lobbying post recognized only by the District; the holder is not seated in the Senate. Paul Strauss (D), shadow senator since 1997, seeks another six-year term; he took 97.3% in the primary (DCBOE roster, July 15, 2026).",
       candidates: [
-        { name: "Paul Strauss (incumbent)", party: "D", winner: false,
+        { name: "Paul Strauss (incumbent)", party: "D", winner: true,
           positions: ["DC statehood advocacy in Congress"],
           differentiators: ["102,765 votes (97.3%) in the primary; the Republican and Statehood Green primaries produced write-ins only (DCBOE-derived [Verify certified])"],
+          supporters: [], opponents: [] },
+        { name: "Robert Simmons", party: "R", winner: false,
+          positions: [],
+          differentiators: ["Republican candidate listed on DCBOE's Nov 20, 2026 results report; 15,054 votes"],
           supporters: [], opponents: [] }
       ]
     },
     {
-      key: "shadow-representative", date: "Nov 3, 2026", type: "upcoming", scope: "Federal · At-Large",
+      key: "shadow-representative", date: "Nov 3, 2026", type: "past", scope: "Federal · At-Large",
       office: "U.S. Representative (Shadow) — District of Columbia (OPEN SEAT)",
-      note: "Incumbent Oye Owolewa (D) announced on Aug 22, 2025 that he would not seek reelection and instead ran for Council at-large [Verify — WTOP, seen in a search summary]. Franklin Garcia (D), who held the post from 2015 to 2021, won the primary with 97.9% and is the only name on the November ballot (DCBOE roster).",
+      note: "✅ RESULT (UNOFFICIAL): Franklin Garcia (D) won, 206,039 votes (93.1%) to 12,928 for Ciprian Ivanof (R), with 2,393 write-ins (DCBOE pre-certified results report, Nov 20, 2026). ⚠ CORRECTION: this card earlier said Garcia was the only name on the November ballot; DCBOE's results report lists Republican Ciprian Ivanof as well. The Board of Elections tentatively certifies results Dec 2 (DCBOE 2026 general election calendar); results stay unofficial until then. Pre-election background: Incumbent Oye Owolewa (D) announced on Aug 22, 2025 that he would not seek reelection and instead ran for Council at-large [Verify — WTOP, seen in a search summary]. Franklin Garcia (D), who held the post from 2015 to 2021, won the primary with 97.9% (DCBOE roster).",
       candidates: [
-        { name: "Franklin Garcia", party: "D", winner: false,
+        { name: "Franklin Garcia", party: "D", winner: true,
           positions: ["DC statehood advocacy [Verify 2026 platform]"],
           differentiators: ["Shadow representative 2015–2021; 2020 Council candidate", "99,964 votes (97.9%) in the primary (DCBOE-derived [Verify certified])"],
+          supporters: [], opponents: [] },
+        { name: "Ciprian Ivanof", party: "R", winner: false,
+          positions: [],
+          differentiators: ["Republican candidate listed on DCBOE's Nov 20, 2026 results report; 12,928 votes"],
           supporters: [], opponents: [] }
       ]
     },
     {
-      key: "sboe-ward-1", date: "Nov 3, 2026", type: "upcoming", scope: "Local · Ward 1",
+      key: "sboe-ward-1", date: "Nov 3, 2026", type: "past", scope: "Local · Ward 1",
       office: "State Board of Education — Ward 1",
-      note: "Nonpartisan seat, four-year term. Four of the eight ward seats (1, 3, 5, 6) are up this year. Ben Williams is the only candidate on DCBOE's July 15, 2026 roster [Verify final list].",
-      candidates: [ { name: "Ben Williams", party: "NP", winner: false, positions: ["[Verify] platform not yet read"], differentiators: ["Nonpartisan office (DCBOE roster)"], supporters: [], opponents: [] } ]
+      note: "✅ RESULT (UNOFFICIAL): Ben Williams won unopposed on the ballot, 22,339 votes (98.4%) to 353 write-ins (DCBOE pre-certified results report, Nov 20, 2026). The Board of Elections tentatively certifies results Dec 2 (DCBOE 2026 general election calendar); results stay unofficial until then. Pre-election background: Nonpartisan seat, four-year term. Four of the eight ward seats (1, 3, 5, 6) are up this year. Ben Williams, the incumbent (51st, Nov 5, 2026), was the only candidate on the ballot (DCBOE results report).",
+      candidates: [ { name: "Ben Williams", party: "NP", winner: true, positions: ["[Verify] platform not yet read"], differentiators: ["Nonpartisan office (DCBOE roster)"], supporters: [], opponents: [] } ]
     },
     {
       key: "sboe-ward-3", date: "Nov 3, 2026", type: "upcoming", scope: "Local · Ward 3",
       office: "State Board of Education — Ward 3",
-      note: "Nonpartisan seat. Aaron Wesolowski and Eric Goulet qualified (DCBOE roster, July 15, 2026) [Verify final list and incumbent status].",
+      note: "⚠ NOT YET FINAL (as of Nov 23, 2026): incumbent Eric Goulet leads Aaron Wesolowski by 236 votes, 12,692 (49.9%) to 12,456 (49.0%), with 286 write-ins, in DCBOE's pre-certified count (DCBOE pre-certified results report, Nov 20, 2026). 51st reported Goulet appeared to have narrowly held the seat (51st, Nov 5, 2026), but his share of all first choices is just under 50% and no ranked-choice tally for this seat was found, so no winner is shown until the Board of Elections certifies (tentatively Dec 2, per the DCBOE 2026 general election calendar). Wesolowski outraised Goulet and was endorsed by the Washington Teachers' Union (51st, Nov 5, 2026). Nonpartisan seat; both candidates were on the ballot.",
       candidates: [
         { name: "Aaron Wesolowski", party: "NP", winner: false, positions: ["[Verify] platform not yet read"], differentiators: ["Nonpartisan office (DCBOE roster)"], supporters: [], opponents: [] },
         { name: "Eric Goulet", party: "NP", winner: false, positions: ["[Verify] platform not yet read"], differentiators: ["Nonpartisan office (DCBOE roster)"], supporters: [], opponents: [] }
       ]
     },
     {
-      key: "sboe-ward-5", date: "Nov 3, 2026", type: "upcoming", scope: "Local · Ward 5",
+      key: "sboe-ward-5", date: "Nov 3, 2026", type: "past", scope: "Local · Ward 5",
       office: "State Board of Education — Ward 5",
-      note: "Nonpartisan seat. Jon Alfuth and Lynn Jennings qualified (DCBOE roster, July 15, 2026) [Verify final list and incumbent status].",
+      note: "✅ RESULT (UNOFFICIAL): Lynn Jennings won, 21,528 votes (76.4%) to 6,343 for Jon Alfuth, with 299 write-ins (DCBOE pre-certified results report, Nov 20, 2026). The Board of Elections tentatively certifies results Dec 2 (DCBOE 2026 general election calendar); results stay unofficial until then. Pre-election background: Nonpartisan seat. Jon Alfuth and Lynn Jennings qualified (DCBOE roster, July 15, 2026) [Verify incumbent status].",
       candidates: [
         { name: "Jon Alfuth", party: "NP", winner: false, positions: ["[Verify] platform not yet read"], differentiators: ["Nonpartisan office (DCBOE roster)"], supporters: [], opponents: [] },
-        { name: "Lynn Jennings", party: "NP", winner: false, positions: ["[Verify] platform not yet read"], differentiators: ["Nonpartisan office (DCBOE roster)"], supporters: [], opponents: [] }
+        { name: "Lynn Jennings", party: "NP", winner: true, positions: ["[Verify] platform not yet read"], differentiators: ["Nonpartisan office (DCBOE roster)"], supporters: [], opponents: [] }
       ]
     },
     {
-      key: "sboe-ward-6", date: "Nov 3, 2026", type: "upcoming", scope: "Local · Ward 6",
+      key: "sboe-ward-6", date: "Nov 3, 2026", type: "past", scope: "Local · Ward 6",
       office: "State Board of Education — Ward 6",
-      note: "Nonpartisan seat. David Parker, Joshua Wiley and Amber A. Williams qualified (DCBOE roster, July 15, 2026) [Verify final list and incumbent status].",
+      note: "✅ RESULT (UNOFFICIAL): Amber A. Williams won with a majority of first choices, 16,588 votes (57.2%), to 8,295 (28.6%) for Joshua Wiley and 3,699 for David Parker, with 441 write-ins (DCBOE pre-certified results report, Nov 20, 2026). The Board of Elections tentatively certifies results Dec 2 (DCBOE 2026 general election calendar); results stay unofficial until then. Pre-election background: Nonpartisan seat. David Parker, Joshua Wiley and Amber A. Williams qualified (DCBOE roster, July 15, 2026) [Verify incumbent status].",
       candidates: [
         { name: "David Parker", party: "NP", winner: false, positions: ["[Verify] platform not yet read"], differentiators: ["Nonpartisan office (DCBOE roster)"], supporters: [], opponents: [] },
         { name: "Joshua Wiley", party: "NP", winner: false, positions: ["[Verify] platform not yet read"], differentiators: ["Nonpartisan office (DCBOE roster)"], supporters: [], opponents: [] },
-        { name: "Amber A. Williams", party: "NP", winner: false, positions: ["[Verify] platform not yet read"], differentiators: ["Nonpartisan office (DCBOE roster)"], supporters: [], opponents: [] }
+        { name: "Amber A. Williams", party: "NP", winner: true, positions: ["[Verify] platform not yet read"], differentiators: ["Nonpartisan office (DCBOE roster)"], supporters: [], opponents: [] }
       ]
     },
     {
-      key: "initiative-86", date: "Nov 3, 2026", type: "upcoming", scope: "Ballot Measure · District",
-      office: "Initiative Measure No. 86 — Prohibiting Force-Feeding of Birds Act (foie gras ban)",
-      note: "Would ban force-feeding birds to enlarge their livers and prohibit the commercial sale, distribution and importation of foie gras and similar products in DC, with fines of $1,000 to $5,000 per violation and license suspension for repeat offenders; effective July 1, 2027 if approved. DCBOE verified 31,726 valid signatures on Aug 5, 2026 against a 23,940 requirement [Verify — WTOP, Washingtonian and WJLA reports seen in search summaries; the measure is named on DCBOE's news page]. Backed by Pro-Animal DC; restaurant opposition has been reported [Verify organized opposition committee]. ⚠ The rent-freeze measure, Initiative 88, did NOT qualify — a landlord-industry lawsuit blocked signature gathering and it missed the deadline [Verify].",
+      key: "initiative-86", date: "Nov 3, 2026", type: "past", scope: "Ballot Measure · District",
+      office: "Initiative Measure No. 86 — Prohibiting Force-Feeding of Birds Act (foie gras ban) (APPROVED)",
+      note: "✅ RESULT (UNOFFICIAL): APPROVED, 149,220 yes (73.2%) to 54,637 no (DCBOE pre-certified results report, Nov 20, 2026). The ban on producing and selling foie gras is set to take effect July 1, 2027, subject to Council funding and any legal challenge (51st, Nov 5, 2026). The Board of Elections tentatively certifies results Dec 2 (DCBOE 2026 general election calendar); results stay unofficial until then. Pre-election background: Would ban force-feeding birds to enlarge their livers and prohibit the commercial sale, distribution and importation of foie gras and similar products in DC, with fines of $1,000 to $5,000 per violation and license suspension for repeat offenders; effective July 1, 2027 if approved. DCBOE verified 31,726 valid signatures on Aug 5, 2026 against a 23,940 requirement [Verify — WTOP, Washingtonian and WJLA reports seen in search summaries; the measure is named on DCBOE's news page]. Backed by Pro-Animal DC; restaurant opposition has been reported [Verify organized opposition committee]. ⚠ The rent-freeze measure, Initiative 88, did NOT qualify — a landlord-industry lawsuit blocked signature gathering and it missed the deadline [Verify].",
       candidates: []
     },
 

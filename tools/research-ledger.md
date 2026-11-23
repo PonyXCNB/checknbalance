@@ -1692,3 +1692,18 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **0 -> 0**. Voices unchanged (0 gaps).
 
 2026-11-20 | 3 pages | Wave 120 | Free web (0 Grok). Auto-publish after green tests.
+
+## 2026-11-23 - Wave 121 (Monday daily, results week 4)
+
+### Research (free web; Grok 0)
+- **Calls/concessions:** NC-5 AP call Nov 22 + Foxx concession (ABC News Nov 22; Washington Post Nov 22; HERE Raleigh Nov 22 for recount totals). NC-10 Bell concession Nov 20 (Winston-Salem Journal; NC Independent). NC HD-20 recount done Nov 20, Scalise conceded (StarNews; WECT; WHQR; Port City Daily). Official totals for all three + NC-3 from the NCSBE live results feed er.ncsbe.gov/enr/20261103/data/results_0.txt (Last-Modified Nov 22 21:00 UTC).
+- **Measures/judicial backlog carded:** AZ Lopez retained (azcentral, updated Nov 7). LA 10 amendments (nola.com / The Advocate, final unofficial). DC 15 races + Initiative 86 (DCBOE pre-certified results PDF, Nov 20 4:04 p.m.; FairVote Nov 17 and WUSA9 for at-large RCV; 51st Nov 5 for context; DCBOE calendar PDF for Dec 2 tentative certification).
+- **Corrections:** NC-3 margin 293 -> 258 (post-canvass). KS Malone/Hill not on ballot (Sunflower State Journal Sept 8; Sabetha Herald Nov 19). DC at-large roster (3 independents removed), shadow senator/rep Republicans added.
+- **Dead ends / held:** KS Court of Appeals statewide retention totals - only Ballotpedia/DDHQ/aggregators; Johnson County Post has county-only numbers. KS SoS results page has no 2026 general file. AZ results app is JS-only. LA PSC/BESE results - only aggregators (exa.ai, ladf.us). DC SBOE Ward 3 - Goulet +236 at 49.9% of first choices; no RCV tally found; held until DCBOE certification Dec 2.
+- 21-day skip: election results are a trigger event - all Nov 3 races eligible.
+
+### Edits
+- 5 pages: nc, az, ks, la (SITE_META + footer "November 23, 2026 (Wave 121)"), state.html ("November 23, 2026"). Carded: NC-5, NC-10, NC HD-20, AZ Lopez, LA Amendments 1-10, DC (15). Corrected: NC-3, KS roster, DC at-large/shadow rosters. Refreshed (left upcoming): KS retention, DC SBOE Ward 3.
+- Verify **0 -> 0** on built pages (DC Nov 3 section of state.html 81 -> 74). Voices unchanged (0 gaps).
+
+2026-11-23 | 5 pages | Wave 121 | Free web (0 Grok). Auto-publish after green tests.
