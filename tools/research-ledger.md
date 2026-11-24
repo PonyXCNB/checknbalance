@@ -1707,3 +1707,17 @@ Ryan batch before push of `580d374`. Local only.
 - Verify **0 -> 0** on built pages (DC Nov 3 section of state.html 81 -> 74). Voices unchanged (0 gaps).
 
 2026-11-23 | 5 pages | Wave 121 | Free web (0 Grok). Auto-publish after green tests.
+
+## 2026-11-24 - Wave 122 (Tuesday daily, results week 4)
+
+### Research (free web; Grok 0)
+- **Certifications:** AL state canvassing board certified Nov 23 (WSFA Nov 23). MI Board of State Canvassers certified Nov 23 (Michigan Dept of State release; mlive; Michigan Public); recount deadline Nov 25 5 p.m. WA: counties certify Nov 24, SoS certifies Dec 3 (SoS release Nov 4). NC State Board canvass meeting Nov 24 11 a.m. (NCSBE notice Nov 20; WRAL Nov 24).
+- **Results carded:** AL 5 uncontested appellate seats (alreporter.com/election-results pages 902000000007, 903000000004/5, 904000000004/5 - SoS export). MI Court of Appeals 11 unopposed (Michigan Daily Nov 4; Ballotpedia via search for seat count). LA PSC D1/D5 + BESE D1 (WWNO Nov 3 x2; WBRZ Nov 3; Shreveport-Bossier Advocate Nov 4; Louisiana Illuminator Nov 3 x2). WA Pos 4 totals (results.votewa.gov, Nov 23 8:54 p.m.).
+- **Dead ends / held:** KS Court of Appeals statewide retention totals - still only Ballotpedia/DDHQ. ladf.us and movement.vote (LA) not used.
+- 21-day skip: election results are a trigger event - all Nov 3 races eligible.
+
+### Edits
+- 4 pages: al, mi, la, wa (SITE_META + footer "November 24, 2026 (Wave 122)"). Carded: AL appellate (5), MI Court of Appeals, LA PSC/BESE district card. Corrected: MI seat count (8 -> 11), WA certification date + totals.
+- Verify **0 -> 0**. Voices unchanged (0 gaps).
+
+2026-11-24 | 4 pages | Wave 122 | Free web (0 Grok). Auto-publish after green tests.
